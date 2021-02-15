@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201610-01" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="kassa" columnName="c_document" defaultValueNumeric="0"/>
+        <addDefaultValue tableName="kassa" columnName="c_reisdoc" defaultValueNumeric="0"/>
+    </changeSet>
+
+    <changeSet id="201610-02" author="Procura (Frits Janssen)">
+        <sql>
+            <![CDATA[update kassa set c_reisdoc = 0 where kassa_type != 1]]>
+        </sql>
+        <sql>
+            <![CDATA[update kassa set c_reisdoc = 0 where c_reisdoc is null or c_reisdoc < 0]]>
+        </sql>
+        <sql>
+            <![CDATA[update kassa set c_rijb = 0 where kassa_type != 2]]>
+        </sql>
+        <sql>
+            <![CDATA[update kassa set c_rijb = 0 where c_rijb < 0]]>
+        </sql>
+        <sql>
+            <![CDATA[update kassa set c_document = 0 where kassa_type != 3]]>
+        </sql>
+        <sql>
+            <![CDATA[update kassa set c_document = 0 where c_document is null or c_document < 0]]>
+        </sql>
+        <sql>
+            <![CDATA[update kassa set bundel = 0 where bundel < 0]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="201610-03" author="Procura (Frits Janssen)">
+        <sql>
+            <![CDATA[delete from reisdoc where c_reisdoc > 0 and (zkarg = '')]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

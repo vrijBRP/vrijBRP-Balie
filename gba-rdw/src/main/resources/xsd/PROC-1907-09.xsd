@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PROC-1907-09" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>AANVRAGEN RYBEWYSKAART OVERZICHT</xs:documentation>
+    <xs:documentation>Proces: Raadplegen aanvragen rybewyskaart incl historie op BSN</xs:documentation>
+    <xs:documentation>Functie: Foutbericht</xs:documentation>
+    <xs:documentation>Versie: 3.0</xs:documentation>
+    <xs:documentation>Gegenereerd op 08-03-2018 09:48</xs:documentation>
+  </xs:annotation>
+  <xs:element name="AAN-RYB-K-OVERZ" type="AAN-RYB-K-OVERZ" />
+  <xs:complexType name="AAN-RYB-K-OVERZ">
+    <xs:all>
+      <xs:element name="ALG-GEG" type="ALG-GEG" />
+      <xs:element name="NAT-PERSOON-GEG" minOccurs="0" type="NAT-PERSOON-GEG" />
+      <xs:element name="APPL-MELD-GEG" minOccurs="0" type="APPL-MELD-GEG" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ALG-GEG">
+    <xs:all>
+      <xs:element name="GEBR-IDENT" type="GEBR-IDENT" />
+      <xs:element name="PROC-IDENT" type="PROC-IDENT" />
+      <xs:element name="PROC-FUNC" type="PROC-FUNC" />
+      <xs:element name="STAT-RIP" minOccurs="0" type="STAT-RIP" />
+      <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST" />
+      <xs:element name="STAT-TEKST-RIP" minOccurs="0" type="STAT-TEKST-RIP" />
+      <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR" />
+      <xs:element name="KL-NR-EXT-TOEG" minOccurs="0" type="KLANT-NR-EXT" />
+      <xs:element name="NETW-EXT-TOEG" minOccurs="0" type="NETWERK-EXT" />
+      <xs:element name="EXT-DIENSTV-ID" minOccurs="0" type="EXT-DIENSTV-ID" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="NAT-PERSOON-GEG">
+    <xs:all>
+      <xs:element name="BURG-SERVICE-NR" minOccurs="0" type="FISC-NR-NAT-P" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="APPL-MELD-GEG">
+    <xs:all>
+      <xs:element name="SYST-AFK" type="SYST-AFK" />
+      <xs:element name="MELDING-NR" type="MELDING-NR" />
+      <xs:element name="KORTE-MELDING" type="KORTE-MELDING" />
+      <xs:element name="SOORT-MELDING" type="SOORT-MELDING" />
+      <xs:element name="MELDING-VAR" minOccurs="0" type="MELD-VAR" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="EXT-DIENSTV-ID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FISC-NR-NAT-P">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GEBR-IDENT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="INFO-GEBR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="52" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="KLANT-NR-EXT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="KORTE-MELDING">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="78" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MELDING-NR">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MELD-VAR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NETWERK-EXT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OPT-STAT-TEKST">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:totalDigits value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PROC-FUNC">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PROC-IDENT">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SOORT-MELDING">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="STAT-RIP">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="STAT-TEKST-RIP">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SYST-AFK">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

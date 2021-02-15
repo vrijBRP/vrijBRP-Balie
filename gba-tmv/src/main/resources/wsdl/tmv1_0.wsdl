@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+	targetNamespace="http://www.bprbzk.nl/GBA/Terugmeldvoorziening/version1.0"
+	xmlns:apachesoap="http://xml.apache.org/xml-soap"
+	xmlns:Terugmeldvoorziening="http://www.bprbzk.nl/GBA/Terugmeldvoorziening/version1.0"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<schema elementFormDefault="qualified"
+			targetNamespace="http://www.bprbzk.nl/GBA/Terugmeldvoorziening/version1.0"
+			xmlns="http://www.w3.org/2001/XMLSchema">
+			<element name="registrerenTerugmelding">
+				<complexType>
+					<sequence>
+						<element name="terugmelding"
+							type="Terugmeldvoorziening:Terugmelding" />
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="Terugmelding">
+				<sequence>
+					<element name="berichtcode" nillable="false">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="4" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="berichtnummer" nillable="false">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="12" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="anummer" nillable="true" type="xsd:long" />
+					<element name="bsn" nillable="true" type="xsd:long" />
+					<element name="melderId" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="16" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="toelichting" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="350" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="details" nillable="false" type="Terugmeldvoorziening:ArrayOfTerugmeldingDetail" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfTerugmeldingDetail">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="1" name="terugmeldingDetail" type="Terugmeldvoorziening:TerugmeldingDetail" />
+				</sequence>
+			</complexType>
+			<complexType name="TerugmeldingDetail">
+				<sequence>
+					<element name="rubrieknummer" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="int">
+								<xsd:totalDigits value="6"></xsd:totalDigits>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="origineleWaardeGBAV" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="200" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="voorgesteldeWaarde"
+						nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="200" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+				</sequence>
+			</complexType>
+			<element name="registrerenTerugmeldingResponse">
+				<complexType>
+					<sequence>
+						<element name="registrerenTerugmeldingReturn" type="Terugmeldvoorziening:Ontvangstbevestiging" />
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="Ontvangstbevestiging">
+				<complexContent>
+					<extension base="Terugmeldvoorziening:Antwoord">
+						<sequence>
+							<element name="dossiernummer" nillable="true" type="xsd:long" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="opvragenDossierGegevens">
+				<complexType>
+					<sequence>
+						<element name="inzageverzoek" type="Terugmeldvoorziening:InzageVerzoek" />
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="InzageVerzoek">
+				<sequence>
+					<element name="berichtcode" nillable="false">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="4"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="berichtnummer" nillable="false">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="12"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="soortOverzicht" nillable="false">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="1" fixed="true"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="anummer" nillable="true" type="xsd:long"/>
+					<element name="bsn" nillable="true" type="xsd:long"/>
+					<element name="dossiernummer" nillable="true" type="xsd:long"/>
+					<element name="behandelendeGemeente" nillable="true" type="xsd:int"/>
+					<element name="datumVanaf" nillable="true" type="xsd:int"/>
+					<element name="datumTot" nillable="true" type="xsd:int"/>
+					<element name="statusDossier" nillable="true" type="xsd:int"/>
+				</sequence>
+			</complexType>
+			<element name="opvragenDossierGegevensResponse">
+				<complexType>
+					<sequence>
+						<element name="opvragenDossierGegevensReturn" type="Terugmeldvoorziening:Statusoverzicht" />
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="Statusoverzicht">
+				<complexContent>
+					<extension base="Terugmeldvoorziening:Antwoord">
+						<sequence>
+							<element name="statusoverzicht" nillable="true" type="Terugmeldvoorziening:ArrayOfDossier" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<complexType name="ArrayOfDossier">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="dossier" type="Terugmeldvoorziening:Dossier" />
+				</sequence>
+			</complexType>
+			<complexType name="Dossier">
+				<sequence>
+					<element name="aantalMeldingen" nillable="true" type="xsd:int" />
+					<element name="anummer" nillable="true" type="xsd:long" />
+					<element name="behandelendeGemeente" nillable="true" type="xsd:int" />
+					<element name="bsn" nillable="true" type="xsd:long" />
+					<element name="datumVanAanleggenDossier" nillable="true" type="xsd:int" />
+					<element name="datumVanWijzigenDossier" nillable="true" type="xsd:int" />
+					<element name="datumVerwachteAfhandelingDossier" nillable="true" type="xsd:int" />
+					<element name="dossiernummer" nillable="true" type="xsd:long" />
+					<element name="resultaatOnderzoek" nillable="true" type="xsd:int" />
+					<element name="statusDossier" nillable="true" type="xsd:int" />
+					<element name="terugmeldingen" nillable="true" type="Terugmeldvoorziening:ArrayOfDossierAfnemer" />
+					<element name="toelichting" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="350" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfDossierAfnemer">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="dossierAfnemer" type="Terugmeldvoorziening:DossierAfnemer" />
+				</sequence>
+			</complexType>
+			<complexType name="DossierAfnemer">
+				<sequence>
+					<element name="afnemersindicatie" nillable="true" type="xsd:int" />
+					<element name="datumOpnameInDossier" nillable="true" type="xsd:int" />
+					<element name="details" nillable="true" type="Terugmeldvoorziening:ArrayOfTerugmeldingDetail" />
+					<element name="melderId" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="16" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="toelichting" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="350" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="volgnummerMelding" nillable="true" type="xsd:int" />
+				</sequence>
+			</complexType>
+			<complexType abstract="true" name="Antwoord">
+				<sequence>
+					<element name="berichtcode" nillable="false">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="4" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="berichtreferentie" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="12" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+					<element name="tmvBerichtnummer" nillable="true" type="xsd:long" />
+					<element name="verwerkingcode" nillable="true" type="xsd:int" />
+					<element name="verwerkingomschrijving" nillable="true">
+						<xsd:simpleType>
+							<xsd:restriction base="string">
+								<xsd:maxLength value="400" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</element>
+				</sequence>
+			</complexType>
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="opvragenDossierGegevensRequest">
+
+		<wsdl:part element="Terugmeldvoorziening:opvragenDossierGegevens" name="parameters" />
+
+	</wsdl:message>
+
+	<wsdl:message name="opvragenDossierGegevensResponse">
+
+		<wsdl:part element="Terugmeldvoorziening:opvragenDossierGegevensResponse" name="parameters" />
+
+	</wsdl:message>
+
+	<wsdl:message name="registrerenTerugmeldingResponse">
+
+		<wsdl:part element="Terugmeldvoorziening:registrerenTerugmeldingResponse" name="parameters" />
+
+	</wsdl:message>
+
+	<wsdl:message name="registrerenTerugmeldingRequest">
+
+		<wsdl:part element="Terugmeldvoorziening:registrerenTerugmelding" name="parameters" />
+
+	</wsdl:message>
+
+	<wsdl:portType name="Terugmeldvoorziening">
+
+		<wsdl:operation name="registrerenTerugmelding">
+
+			<wsdl:input message="Terugmeldvoorziening:registrerenTerugmeldingRequest" name="registrerenTerugmeldingRequest" />
+
+			<wsdl:output message="Terugmeldvoorziening:registrerenTerugmeldingResponse" name="registrerenTerugmeldingResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="opvragenDossierGegevens">
+
+			<wsdl:input message="Terugmeldvoorziening:opvragenDossierGegevensRequest" name="opvragenDossierGegevensRequest" />
+
+			<wsdl:output message="Terugmeldvoorziening:opvragenDossierGegevensResponse" name="opvragenDossierGegevensResponse" />
+
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="TerugmeldvoorzieningSoapBinding" type="Terugmeldvoorziening:Terugmeldvoorziening">
+
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="registrerenTerugmelding">
+
+			<wsdlsoap:operation soapAction="registrerenTerugmelding" />
+
+			<wsdl:input name="registrerenTerugmeldingRequest">
+
+				<wsdlsoap:body use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="registrerenTerugmeldingResponse">
+
+				<wsdlsoap:body use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="opvragenDossierGegevens">
+
+			<wsdlsoap:operation soapAction="opvragenDossierGegevens" />
+
+			<wsdl:input name="opvragenDossierGegevensRequest">
+
+				<wsdlsoap:body use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="opvragenDossierGegevensResponse">
+
+				<wsdlsoap:body use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="TerugmeldvoorzieningService">
+
+		<wsdl:port binding="Terugmeldvoorziening:TerugmeldvoorzieningSoapBinding" name="Terugmeldvoorziening">
+
+			<wsdlsoap:address location="http://www.bprbzk.nl/gba-v/services/Terugmeldvoorziening" />
+
+		</wsdl:port>
+
+	</wsdl:service>
+
+</wsdl:definitions>

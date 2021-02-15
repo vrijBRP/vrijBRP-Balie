@@ -1,0 +1,90 @@
+.mutatie {
+    background: none repeat scroll 0 0 #AC0000;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 1px 3px;
+    border-radius: 10px;
+}
+
+.v-accordion .accordion-layout .v-label.mutatie-list {
+    background: none repeat scroll 0 0 #AC0000;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 0px;
+    text-align: center;
+    line-height: 16px;
+    margin-right: 8px;
+    border-radius: 10px;
+}
+
+.kladblok .v-label {
+	border: 1px solid #eee;
+	border-bottom: none;
+	background-color: #f9f9f9;
+	padding: 5px;
+}
+
+.kladblok_line {
+	padding: 3px;
+	border-bottom: 1px solid #fff;
+}
+
+.indicatie {
+	margin-top: 0px;
+	padding: 3px 8px 3px 8px;
+	font-weight: 700;
+	font-size: 11px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	text-align: center;
+	height: 18px;
+}
+
+.indicatie.warn,
+.mainbuttons .v-button-link.indicatie.warn {
+	background: #FFBB47;
+}
+
+.indicatie.yes,
+.mainbuttons .v-button-link.indicatie.yes {
+	color: #000;
+	background: #7DED88;
+}
+
+.indicatie.no,
+.mainbuttons .v-button-link.indicatie.no {
+	color: #000;
+	background: #eee;
+}
+
+.mutation-button.v-button-link,
+.mutation-button.v-button-link:active,
+.mutation-button.v-button-link.v-pressed,
+.mutation-button.v-button-link:focus {
+	background: #FFBB47;
+	padding: 3px 10px 4px 10px;
+	margin: 0px;
+	text-decoration: none;
+	color: #000;
+	font-weight: 700;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	font-size: 11px;
+	border: 1px solid #fff;
+}
+
+.mutation-button.v-button-link .v-button-caption {
+	text-decoration: none;
+	color: #000;
+	font-weight: 700;
+}
+
+.mutation-button.v-button-link:hover,
+.mutation-button.v-button-link:active,
+.mutation-button.v-button-link.v-pressed,
+.mutation-button.v-button-link:focus,
+.mutation-button.overlay:hover {
+	border: 1px solid #ddd;
+}

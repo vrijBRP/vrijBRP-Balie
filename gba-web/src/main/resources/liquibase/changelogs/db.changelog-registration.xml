@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <!-- this changeSet should get a new id and dropTable should be removed before merging to develop -->
+    <changeSet author="Procura (Maarten)" id="registration-1">
+        <createTable tableName="doss_registration">
+            <column name="c_doss_registration" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="straat" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_l" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_t" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_a" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pc" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="plaats" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="func_adr" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="toest_bsn" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="toest_geg" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="toest_anders" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aant_pers" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duur" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_of_departure" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aangever_type" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aangever_c_pers" type="numeric"/>
+            <column name="aangever_toelichting" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="c_doss_registration"
+                       constraintName="c_doss_registration_pkey"
+                       tableName="doss_registration"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_registration"
+                                 baseTableName="doss_registration"
+                                 constraintName="doss_registration_c_doss_registration_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss"
+                                 referencedTableName="doss"/>
+
+        <addColumn tableName="doss_natio">
+            <column name="source_description" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source_foreign_id" type="VARCHAR(50)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <createTable tableName="doss_travel_doc">
+            <column name="c_doss_travel_doc" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_doss_pers" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ned_reisdoc" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doc_nr" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_verkrijging" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_end" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aut_verstrek" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aut_verstrek_gem" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aut_verstrek_land" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doss_gem" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doss_d_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doss_oms" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="serial">
+            <column name="id" value="doss_travel_doc"/>
+            <column name="val" valueNumeric="0"/>
+        </insert>
+        <addPrimaryKey columnNames="c_doss_travel_doc"
+                       constraintName="c_doss_travel_doc_pkey"
+                       tableName="doss_travel_doc"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_pers"
+                                 baseTableName="doss_travel_doc"
+                                 constraintName="doss_travel_doc_c_doss_pers_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_pers"
+                                 referencedTableName="doss_pers"/>
+
+
+        <addColumn tableName="doss_pers">
+            <column name="c_doss_source_doc" type="numeric"/>
+            <column name="prev_type" type="VARCHAR(1)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prev_description" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bron" type="VARCHAR(1)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_presentievraag" type="numeric"/>
+            <column name="documentnr" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="soort" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_issue_country" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <createTable tableName="doss_source_doc">
+            <column name="c_doss_source_doc" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_type" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="municipality" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="c_doss_source_doc"
+                       constraintName="c_doss_source_doc_pkey"
+                       tableName="doss_source_doc"/>
+        <insert tableName="serial">
+            <column name="id" value="doss_source_doc"/>
+            <column name="val" valueNumeric="0"/>
+        </insert>
+        <addForeignKeyConstraint baseColumnNames="c_doss_source_doc"
+                                 baseTableName="doss_pers"
+                                 constraintName="doss_pers_c_doss_source_doc_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_source_doc"
+                                 referencedTableName="doss_source_doc"/>
+
+        <createTable tableName="doss_pers_rel">
+            <column name="c_doss_pers_rel" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_doss_pers_1" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_doss_pers_2" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="relation_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in_land" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in_gem" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in_gem_desc" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_end_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_end" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_end_land" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_end_gem" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_end_gem_desc" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_doss_source_doc" type="numeric"/>
+            <column name="srt_huw" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rdn_huw_ontb" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="serial">
+            <column name="id" value="doss_pers_rel"/>
+            <column name="val" valueNumeric="0"/>
+        </insert>
+
+        <addPrimaryKey columnNames="c_doss_pers_rel"
+                       constraintName="c_doss_pers_rel_pkey"
+                       tableName="doss_pers_rel"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_pers_1"
+                                 baseTableName="doss_pers_rel"
+                                 constraintName="doss_pers_rel_c_doss_pers_1_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_pers"
+                                 referencedTableName="doss_pers"/>
+
+        <addForeignKeyConstraint baseColumnNames="c_doss_pers_2"
+                                 baseTableName="doss_pers_rel"
+                                 constraintName="doss_pers_rel_c_doss_pers_2_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_pers"
+                                 referencedTableName="doss_pers"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_source_doc"
+                                 baseTableName="doss_pers_rel"
+                                 constraintName="doss_pers_rel_c_doss_source_doc_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="c_doss_source_doc"
+                                 referencedTableName="doss_source_doc"/>
+
+
+    </changeSet>
+    <changeSet author="Procura (Hasitha)" id="registration-2">
+        <addColumn tableName="doss_registration">
+            <column name="interpreter" type="VARCHAR(1)" defaultValue="N"/>
+            <column name="interpreter_name" type="VARCHAR(255)" defaultValue=""/>
+            <column name="interpreter_language" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-3">
+        <addColumn tableName="doss_pers_rel">
+            <column name="match_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_pers_rel">
+            <column name="voorn" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+        <addColumn tableName="doss_pers_rel">
+            <column name="geslachtsnaam" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+        <addColumn tableName="doss_pers_rel">
+            <column name="voorv" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+        <addColumn tableName="doss_pers_rel">
+            <column name="tp" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-4">
+        <dropColumn tableName="doss_pers_rel" columnName="d_end_type"/>
+        <dropColumn tableName="doss_pers_rel" columnName="d_end_gem_desc"/>
+        <dropColumn tableName="doss_pers_rel" columnName="d_in_gem_desc"/>
+        <modifyDataType tableName="doss_pers_rel" columnName="d_in_gem" newDataType="VARCHAR(255)"/>
+        <modifyDataType tableName="doss_pers_rel" columnName="d_end_gem" newDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-5">
+        <dropColumn tableName="doss_pers" columnName="c_presentievraag"/>
+        <createTable tableName="doss_pers_presentievraag">
+            <column name="c_doss_pers" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_presentievraag" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="c_doss_pers, c_presentievraag"
+                       constraintName="doss_pers_presentievraag_pkey"
+                       tableName="doss_pers_presentievraag"/>
+        <addForeignKeyConstraint
+                baseColumnNames="c_doss_pers"
+                baseTableName="doss_pers_presentievraag"
+                constraintName="doss_pers_pv1_fkey"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="CASCADE"
+                onUpdate="NO ACTION"
+                referencedColumnNames="c_doss_pers"
+                referencedTableName="doss_pers"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="c_presentievraag"
+                baseTableName="doss_pers_presentievraag"
+                constraintName="doss_pers_pv2_fkey"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="CASCADE"
+                onUpdate="NO ACTION"
+                referencedColumnNames="c_presentievraag"
+                referencedTableName="presentievraag"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-6">
+        <addColumn tableName="doss_registration">
+            <column name="address_source" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-7">
+        <addColumn tableName="doss_registration">
+            <column name="aon" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-8">
+        <addColumn tableName="aant3">
+            <column name="country" type="numeric" defaultValue="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="registration-9">
+        <addColumn tableName="doss">
+            <column name="descr" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

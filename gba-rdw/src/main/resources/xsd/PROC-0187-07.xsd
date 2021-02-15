@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PROC-0187-07" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>NATUURL PERS MET RYBEWYZEN EN MAATREGELEN</xs:documentation>
+    <xs:documentation>Proces: Raadplegen persoon met evt. rijb op GBA-nummer</xs:documentation>
+    <xs:documentation>Functie: Antwoordbericht</xs:documentation>
+    <xs:documentation>Versie: 3.0</xs:documentation>
+    <xs:documentation>Gegenereerd op 10-01-2018 16:26</xs:documentation>
+  </xs:annotation>
+  <xs:element name="NAT-P-RYB-MAATR" type="NAT-P-RYB-MAATR" />
+  <xs:complexType name="NAT-P-RYB-MAATR">
+    <xs:all>
+      <xs:element name="ALG-GEG" type="ALG-GEG" />
+      <xs:element name="NAT-P-ZOEK-GEG" type="NAT-P-ZOEK-GEG" />
+      <xs:element name="UITG-MAATR-TAB" minOccurs="0" type="UITG-MAATR-TAB" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ALG-GEG">
+    <xs:all>
+      <xs:element name="GEBR-IDENT" type="GEBR-IDENT" />
+      <xs:element name="PROC-IDENT" type="PROC-IDENT" />
+      <xs:element name="PROC-FUNC" type="PROC-FUNC" />
+      <xs:element name="STAT-RIP" minOccurs="0" type="STAT-RIP" />
+      <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST" />
+      <xs:element name="STAT-TEKST-RIP" minOccurs="0" type="STAT-TEKST-RIP" />
+      <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR" />
+      <xs:element name="KL-NR-EXT-TOEG" minOccurs="0" type="KLANT-NR-EXT" />
+      <xs:element name="NETW-EXT-TOEG" minOccurs="0" type="NETWERK-EXT" />
+      <xs:element name="EXT-DIENSTV-ID" minOccurs="0" type="EXT-DIENSTV-ID" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="NAT-P-ZOEK-GEG">
+    <xs:all>
+      <xs:element name="GBA-NR-NP-A" type="GBA-NR" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="UITG-MAATR-TAB">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UITG-MAATR-GEG" type="UITG-MAATR-GEG" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="UITG-MAATR-GEG">
+    <xs:all>
+      <xs:element name="MAATREGEL-GEG" minOccurs="0" type="MAATREGEL-GEG" />
+      <xs:element name="VORD-PROC-GEG" minOccurs="0" type="VORD-PROC-GEG" />
+      <xs:element name="ONG-VERKL-GEG" minOccurs="0" type="ONG-VERKL-GEG" />
+      <xs:element name="ONGELD-CAT-TAB" minOccurs="0" type="ONGELD-CAT-TAB" />
+      <xs:element name="STRAF-MAATR-GEG" minOccurs="0" type="STRAF-MAATR-GEG" />
+      <xs:element name="INHOUD-PER-TAB" minOccurs="0" type="INHOUD-PER-TAB" />
+      <xs:element name="ONTZEG-PER-TAB" minOccurs="0" type="ONTZEG-PER-TAB" />
+      <xs:element name="INNEM-RYB-GEG" minOccurs="0" type="INNEM-RYB-GEG" />
+      <xs:element name="INNEM-PER-TAB" minOccurs="0" type="INNEM-PER-TAB" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="MAATREGEL-GEG">
+    <xs:all>
+      <xs:element name="MAATR-VOLG-NR" minOccurs="0" type="MAATR-VOLG-NR" />
+      <xs:element name="SRT-MAATR" minOccurs="0" type="SRT-MAATR" />
+      <xs:element name="SRT-AUT-MAATR" minOccurs="0" type="SOORT-AUTOR" />
+      <xs:element name="AUTOR-C-MAATR" minOccurs="0" type="AUTOR-CODE-RYB" />
+      <xs:element name="NAAM-AUT-MAATR" minOccurs="0" type="NAAM-AUTOR" />
+      <xs:element name="NAAM-MAATR-DIA" minOccurs="0" type="NAAM-AUTOR-DIA" />
+      <xs:element name="REG-DAT-MAATR" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EIND-DAT-MAATR" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="GEVORD-INL-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="GEVORD-INL-SRT" minOccurs="0" type="GEVORD-INL-SRT" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="VORD-PROC-GEG">
+    <xs:all>
+      <xs:element name="INVORD-DAT-VP" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-INV-VP" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="SRT-AUT-INL-VP" minOccurs="0" type="SOORT-AUTOR" />
+      <xs:element name="AUTOR-C-INL-VP" minOccurs="0" type="AUTOR-C-INL-VP" />
+      <xs:element name="NAAM-AUT-INL-VP" minOccurs="0" type="NAAM-AUTOR" />
+      <xs:element name="NAAM-INL-VP-DIA" minOccurs="0" type="NAAM-AUTOR-DIA" />
+      <xs:element name="RKK-CODE-VP" minOccurs="0" type="REGIOKORPS-CODE" />
+      <xs:element name="KORPS-CODE-VP" minOccurs="0" type="KORPS-CODE" />
+      <xs:element name="VERBALIS-NR-VP" minOccurs="0" type="VERBALIS-NR" />
+      <xs:element name="DOSSIER-NR-VP" minOccurs="0" type="DOSSIER-NR-VP" />
+      <xs:element name="SCHORS-GELD-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-SCH-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="FEIT-IN-DAT-SCH" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="ONGELD-DAT-VP" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="ONGELD-CODE-VP" minOccurs="0" type="ONGELD-CODE-VP" />
+      <xs:element name="FEIT-INL-DAT-VP" minOccurs="0" type="DATUM-EJMD" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ONG-VERKL-GEG">
+    <xs:all>
+      <xs:element name="INLEV-DAT-OV" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="SRT-AUT-INL-OV" minOccurs="0" type="SOORT-AUTOR" />
+      <xs:element name="AUTOR-C-INL-OV" minOccurs="0" type="AUTOR-CODE-AFG" />
+      <xs:element name="NAAM-AUT-INL-OV" minOccurs="0" type="NAAM-AUTOR" />
+      <xs:element name="NAAM-INL-OV-DIA" minOccurs="0" type="NAAM-AUTOR-DIA" />
+      <xs:element name="ONGELD-CODE-OV" minOccurs="0" type="ONGELD-CODE-OV" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ONGELD-CAT-TAB">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ONGELD-CAT-GEG" type="ONGELD-CAT-GEG" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ONGELD-CAT-GEG">
+    <xs:all>
+      <xs:element name="RYB-CAT-OV" minOccurs="0" type="RYB-CAT" />
+      <xs:element name="ONGELD-DAT-CAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-O-DAT-CAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="SCHORS-ONG-CODE" minOccurs="0" type="SCHORS-ONG-CODE" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="STRAF-MAATR-GEG">
+    <xs:all>
+      <xs:element name="STR-MAATR-NR" minOccurs="0" type="STR-MAATR-NR" />
+      <xs:element name="INVORD-DAT-STR" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-INV-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="RKK-CODE-STR" minOccurs="0" type="REGIOKORPS-CODE" />
+      <xs:element name="KORPS-CODE-STR" minOccurs="0" type="KORPS-CODE" />
+      <xs:element name="VERBALIS-NR-STR" minOccurs="0" type="VERBALIS-NR" />
+      <xs:element name="INH-TERMYN" minOccurs="0" type="INH-TERMYN" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="INHOUD-PER-TAB">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="INHOUD-PER-GEG" type="INHOUD-PER-GEG" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="INHOUD-PER-GEG">
+    <xs:all>
+      <xs:element name="INHOUD-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-INH-DAT" minOccurs="0" type="DATUM-EJMD" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ONTZEG-PER-TAB">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ONTZEG-PER-GEG" type="ONTZEG-PER-GEG" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ONTZEG-PER-GEG">
+    <xs:all>
+      <xs:element name="ONTZEG-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="INLEV-DAT-ONTZ" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-ONTZ-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="ONTZ-TERMYN" minOccurs="0" type="ONTZ-TERMYN" />
+      <xs:element name="OMSCH-PART-ONTZ" minOccurs="0" type="TEKST-100" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="INNEM-RYB-GEG">
+    <xs:all>
+      <xs:element name="INNEMING-NR" minOccurs="0" type="INNEMING-NR" />
+      <xs:element name="TOEGEST-INN-PER" minOccurs="0" type="TOEGEST-INN-PER" />
+      <xs:element name="SANC-BEDR-INN" minOccurs="0" type="BEDRAG-7" />
+      <xs:element name="BETAAL-DAT-INN" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="KORPS-CODE-INN" minOccurs="0" type="KORPS-CODE" />
+      <xs:element name="VERBALIS-NR-INN" minOccurs="0" type="VERBALIS-NR" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="INNEM-PER-TAB">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="INNEM-PER-GEG" type="INNEM-PER-GEG" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="INNEM-PER-GEG">
+    <xs:all>
+      <xs:element name="INNEM-DAT" minOccurs="0" type="DATUM-EJMD" />
+      <xs:element name="EINDE-INN-DAT" minOccurs="0" type="DATUM-EJMD" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="AUTOR-C-INL-VP">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AUTOR-CODE-AFG">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AUTOR-CODE-RYB">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="BEDRAG-7">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="7" />
+      <xs:fractionDigits value="2" />
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DATUM-EJMD">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DOSSIER-NR-VP">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="14" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EXT-DIENSTV-ID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GBA-NR">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GEBR-IDENT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GEVORD-INL-SRT">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:totalDigits value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="INFO-GEBR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="52" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="INH-TERMYN">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="15" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="INNEMING-NR">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="KLANT-NR-EXT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="KORPS-CODE">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MAATR-VOLG-NR">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NAAM-AUTOR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NAAM-AUTOR-DIA">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NETWERK-EXT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ONGELD-CODE-OV">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ONGELD-CODE-VP">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ONTZ-TERMYN">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="35" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OPT-STAT-TEKST">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:totalDigits value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PROC-FUNC">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PROC-IDENT">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="REGIOKORPS-CODE">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RYB-CAT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SCHORS-ONG-CODE">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SOORT-AUTOR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SRT-MAATR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="STAT-RIP">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="STAT-TEKST-RIP">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="STR-MAATR-NR">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TEKST-100">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TOEGEST-INN-PER">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:totalDigits value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VERBALIS-NR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

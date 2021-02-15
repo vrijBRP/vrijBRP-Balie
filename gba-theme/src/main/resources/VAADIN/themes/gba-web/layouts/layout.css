@@ -1,0 +1,16 @@
+@import "toolbarlayout.css";
+@import "footerlayout.css";
+@import "menulayout.css";
+@import "bslayout.css";
+
+.login-logo {
+	background: url(img/login-logo.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 60px;
+}
+
+.loginWindow .h1 {
+	font-size: 20px;
+	text-shadow: none;
+}

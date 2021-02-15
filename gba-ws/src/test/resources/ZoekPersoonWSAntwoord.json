@@ -1,0 +1,434 @@
+{
+  "meldingen": [
+    "Melding1",
+    "Melding2"
+  ],
+  "persoonslijsten": [
+    {
+      "persoon": {
+        "persoon_actueel": {
+          "anummer": "",
+          "vorig_anummer": "",
+          "volgend_anummer": "",
+          "aktenummer": "",
+          "burgerservicenummer": "",
+          "voornaam": "",
+          "titel_predikaat": "",
+          "voorvoegsel": "",
+          "geslachtsnaam": "",
+          "geboortedatum": "",
+          "geboorteplaats": "",
+          "geboorteland": "",
+          "geslacht": "",
+          "naamgebruik": "",
+          "gemeente_document": "",
+          "datum_document": "",
+          "beschrijving_document": "",
+          "datum_geldigheid": "",
+          "datum_opneming": "",
+          "indicatie_onjuist": "",
+          "registergemeente_akte": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "datum_einde_onderzoek": ""
+        },
+        "persoon_historie": []
+      },
+      "ouder_1": {
+        "ouder_actueel": {
+          "anummer": "",
+          "burgerservicenummer": "",
+          "voornaam": "",
+          "titel_predikaat": "",
+          "voorvoegsel": "",
+          "geslachtsnaam": "",
+          "geboortedatum": "",
+          "geboorteplaats": "",
+          "geboorteland": "",
+          "geslacht": "",
+          "datum_familierechtelijke_betrekking": "",
+          "gemeente_document": "",
+          "datum_document": "",
+          "beschrijving_document": "",
+          "indicatie_onjuist": "",
+          "datum_geldigheid": "",
+          "datum_opneming": "",
+          "registergemeente_akte": "",
+          "aktenummer": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "datum_einde_onderzoek": ""
+        },
+        "ouder_historie": null
+      },
+      "ouder_2": {
+        "ouder_actueel": {
+          "anummer": "",
+          "burgerservicenummer": "",
+          "voornaam": "",
+          "titel_predikaat": "",
+          "voorvoegsel": "",
+          "geslachtsnaam": "",
+          "geboortedatum": "",
+          "geboorteplaats": "",
+          "geboorteland": "",
+          "geslacht": "",
+          "datum_familierechtelijke_betrekking": "",
+          "gemeente_document": "",
+          "datum_document": "",
+          "beschrijving_document": "",
+          "indicatie_onjuist": "",
+          "datum_geldigheid": "",
+          "datum_opneming": "",
+          "registergemeente_akte": "",
+          "aktenummer": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "datum_einde_onderzoek": ""
+        },
+        "ouder_historie": null
+      },
+      "nationaliteiten": [
+        {
+          "nationaliteit_actueel": {
+            "nationaliteit": "",
+            "gemeente_document": "",
+            "datum_document": "",
+            "beschrijving_document": "",
+            "datum_geldigheid": "",
+            "datum_opneming": "",
+            "reden_verkrijging_nederlanderschap": "",
+            "reden_verlies_nederlanderschap": "",
+            "aanduiding_bijzonder_nederlanderschap": "",
+            "aanduiding_gegevens_in_onderzoek": "",
+            "datum_ingang_onderzoek": "",
+            "datum_einde_onderzoek": "",
+            "indicatie_onjuist": ""
+          },
+          "nationaliteit_historie": null
+        }
+      ],
+      "huwelijken": [
+        {
+          "huwelijk_actueel": {
+            "anummer": "",
+            "burgerservicenummer": "",
+            "voornaam": "",
+            "titel_predikaat": "",
+            "voorvoegsel": "",
+            "geslachtsnaam": "",
+            "geboortedatum": "",
+            "geboorteplaats": "",
+            "geboorteland": "",
+            "geslacht": "",
+            "huwelijksdatum": "",
+            "huwelijksplaats": "",
+            "huwelijksland": "",
+            "ontbindingsdatum": "",
+            "ontbindingsplaats": "",
+            "ontbindingsland": "",
+            "ontbindingsreden": "",
+            "soort": "",
+            "gemeente_document": "",
+            "datum_document": "",
+            "beschrijving_document": "",
+            "datum_geldigheid": "",
+            "datum_opneming": "",
+            "registergemeente_akte": "",
+            "aktenummer": "",
+            "aanduiding_gegevens_in_onderzoek": "",
+            "datum_ingang_onderzoek": "",
+            "indicatie_onjuist": "",
+            "datum_einde_onderzoek": ""
+          },
+          "huwelijk_historie": null
+        }
+      ],
+      "kinderen": [
+        {
+          "kind_actueel": {
+            "anummer": "",
+            "voornaam": "",
+            "geslachtsnaam": "",
+            "geboortedatum": "",
+            "geboorteplaats": "",
+            "geboorteland": "",
+            "registergemeente_akte": "",
+            "aktenummer": "",
+            "datum_geldigheid": "",
+            "datum_opneming": "",
+            "voorvoegsel": "",
+            "burgerservicenummer": "",
+            "gemeente_document": "",
+            "datum_document": "",
+            "beschrijving_document": "",
+            "indicatie_onjuist": "",
+            "titel_predikaat": "",
+            "aanduiding_gegevens_in_onderzoek": "",
+            "datum_ingang_onderzoek": "",
+            "datum_einde_onderzoek": ""
+          },
+          "kind_historie": null
+        }
+      ],
+      "afnemers": [
+        {
+          "afnemer_actueel": {
+            "omschrijving": "",
+            "afnemersindicatie": "",
+            "datum_geldigheid": ""
+          },
+          "afnemer_historie": null
+        }
+      ],
+      "reisdocumenten": [
+        {
+          "reisdocument_actueel": {
+            "buitenlands_reisdocument": "",
+            "gemeente_document": "",
+            "datum_document": "",
+            "beschrijving_document": "",
+            "datum_geldigheid": "",
+            "datum_opneming": "",
+            "nummer_document": "",
+            "datum_uitgifte": "",
+            "datum_einde_geldigheid": "",
+            "autoriteit_van_afgifte": "",
+            "datum_inhouding_vermissing": "",
+            "aanduiding_inhouding_vermissing": "",
+            "lengte_houder": "",
+            "aanduiding_gegevens_in_onderzoek": "",
+            "datum_ingang_onderzoek": "",
+            "signalering": "",
+            "datum_einde_onderzoek": "",
+            "nederlands_reisdocument": ""
+          },
+          "reisdocument_historie": null
+        }
+      ],
+      "lokaleafnemersindicaties": [
+        {
+          "aantekening": "",
+          "omschrijving": "",
+          "opmerking": ""
+        }
+      ],
+      "inschrijving": {
+        "inschrijving_actueel": {
+          "datum_eerste_inschrijving_gba": "",
+          "gemeente_pk": "",
+          "indicatie_geheim": "",
+          "pk_conversie": "",
+          "datum_opschorting_pl": "",
+          "reden_opschorting_pl": "",
+          "naamgebruik": "",
+          "datum_ingang_blokkering_pl": "",
+          "versienummer": "",
+          "datumtijdstempel": "",
+          "datum_opneming": "",
+          "datum_geldigheid": "",
+          "gemeente_blokkering_pl": ""
+        },
+        "inschrijving_historie": null
+      },
+      "verblijfplaats": {
+        "verblijfplaats_actueel": {
+          "gemeente_inschrijving": "",
+          "gemeente_inschrijving_code": "",
+          "datum_inschrijving": "",
+          "functie_adres": "",
+          "datum_aanvang_adreshouding": "",
+          "woningcode_object": "",
+          "straatnaam_boco": "",
+          "straatnaam_officieel": "",
+          "straatnaam_nen": "",
+          "huisnummer": "",
+          "postcode": "",
+          "immigratieland": "",
+          "immigratiedatum": "",
+          "adresaangifte": "",
+          "datum_geldigheid": "",
+          "datum_opneming": "",
+          "code_object_1_wijkcode": "",
+          "code_object_2_buurtcode": "",
+          "code_object_3_subbuurtcode": "",
+          "huisletter": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "datum_einde_onderzoek": "",
+          "indicatie_onjuist": "",
+          "emigratieland": "",
+          "emigratiedatum": "",
+          "locatie": "",
+          "documentindicatie": "",
+          "adres_buitenland_waarnaar_vertrokken_1": "",
+          "adres_buitenland_waarnaar_vertrokken_2": "",
+          "adres_buitenland_waarnaar_vertrokken_3": "",
+          "gemeentedeel": "",
+          "ppd_code_object": "",
+          "code_stemdistrict_object": "",
+          "toevoeging": "",
+          "aanduiding": "",
+          "naam_openbare_ruimte": "",
+          "woonplaatsnaam": "",
+          "identificatiecode_verblijfplaats": "",
+          "identificatiecode_nummeraanduiding": ""
+        },
+        "verblijfplaats_historie": null
+      },
+      "diversen": {
+        "diversen_actueel": {
+          "gezinsverhouding_omschrijving": "",
+          "datum_pl_verstrekt": "",
+          "anummer": "",
+          "datum_geldigheid": "",
+          "kenmerk": "",
+          "kenmerk_omschrijving": "",
+          "vuurwapen": "",
+          "ots": "",
+          "signaal": "",
+          "correspondentie_adres_1": "",
+          "correspondentie_adres_2": "",
+          "gezinsverhouding": "",
+          "indicatie_pl_verstrekt": ""
+        },
+        "diversen_historie": null
+      },
+      "rijbewijs": {
+        "rijbewijs_actueel": {
+          "datum_geldigheid": "",
+          "nummer": "",
+          "categorie": "",
+          "datum_einde_geldigheid": "",
+          "datum_verfrissing": "",
+          "belemmering": "",
+          "beperking": ""
+        },
+        "rijbewijs_historie": null
+      },
+      "woningkaart": {
+        "woningkaart_actueel": {
+          "volgorde_gezin": "",
+          "volgorde_persoon": "",
+          "datum_aanvang_adreshouding": "",
+          "datum_einde_adreshouding": "",
+          "datum_inschrijving": "",
+          "woning_code": ""
+        },
+        "woningkaart_historie": null
+      },
+      "verwijzing": {
+        "verwijzing_actueel": {
+          "anummer": "",
+          "burgerservicenummer": "",
+          "datum_opneming": "",
+          "datum_geldigheid": "",
+          "indicatie_onjuist": "",
+          "datum_einde_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "indicatie_geheim": "",
+          "locatie": "",
+          "toevoeging": "",
+          "huisletter": "",
+          "huisnummer": "",
+          "straatnaam_boco": "",
+          "datum_inschrijving": "",
+          "gemeente_inschrijving": "",
+          "geboorteland": "",
+          "straatnaam_officieel": "",
+          "straatnaam_nen": "",
+          "geslachtsnaam": "",
+          "aanduiding": "",
+          "postcode": "",
+          "geboorteplaats": "",
+          "geboortedatum": "",
+          "voorvoegsel": "",
+          "titel_predikaat": "",
+          "voornaam": "",
+          "naam_openbare_ruimte": "",
+          "woonplaatsnaam": "",
+          "identificatiecode_verblijfplaats": "",
+          "identificatiecode_nummeraanduiding": ""
+        },
+        "verwijzing_historie": null
+      },
+      "overlijden": {
+        "overlijden_actueel": {
+          "overlijdensdatum": "",
+          "overlijdensland": "",
+          "overlijdensplaats": "",
+          "aktenummer": "",
+          "datum_opneming": "",
+          "datum_geldigheid": "",
+          "indicatie_onjuist": "",
+          "datum_einde_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "beschrijving_document": "",
+          "datum_document": "",
+          "gemeente_document": "",
+          "registergemeente_akte": ""
+        },
+        "overlijden_historie": null
+      },
+      "gezag": {
+        "gezag_actueel": {
+          "gezag_minderjarige": "",
+          "datum_document": "",
+          "gemeente_document": "",
+          "curatele": "",
+          "beschrijving_document": "",
+          "datum_geldigheid": "",
+          "indicatie_onjuist": "",
+          "datum_einde_onderzoek": "",
+          "datum_ingang_onderzoek": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "datum_opneming": ""
+        },
+        "gezag_historie": null
+      },
+      "kiesrecht": {
+        "kiesrecht_actueel": {
+          "aanduiding_uitsluiting_kiesrecht": "",
+          "beschrijving_document": "",
+          "gemeente_document": "",
+          "datum_document": "",
+          "einddatum_uitsluiting_europees_kiesrecht": "",
+          "datum_verzoek_of_mededeling_europees_kiesrecht": "",
+          "aanduiding_europees_kiesrecht": "",
+          "einddatum_uitsluiting_kiesrecht": "",
+          "datum_geldigheid": ""
+        },
+        "kiesrecht_historie": null
+      },
+      "verblijfstitel": {
+        "verblijfstitel_actueel": {
+          "datum_einde_onderzoek": "",
+          "ingangsdatum_verblijfstitel": "",
+          "datum_opneming": "",
+          "datum_geldigheid": "",
+          "indicatie_onjuist": "",
+          "datum_ingang_onderzoek": "",
+          "aanduiding_verblijfstitel": "",
+          "datum_einde_verblijfstitel": "",
+          "aanduiding_gegevens_in_onderzoek": "",
+          "verblijfstitel_omschrijving": ""
+        },
+        "verblijfstitel_historie": null
+      },
+      "kladblokaantekening": {
+        "regels": [
+          ""
+        ]
+      },
+      "metaInfoGegevens": [
+        {
+          "type": "",
+          "waarde": ""
+        }
+      ]
+    }
+  ],
+  "databron": 1
+}

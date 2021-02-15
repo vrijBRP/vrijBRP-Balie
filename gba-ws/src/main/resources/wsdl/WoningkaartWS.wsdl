@@ -1,0 +1,177 @@
+<wsdl:definitions xmlns:axis2="http://woningkaartws.ws.procura.nl" xmlns:ns2="http://woningkaartws.ws.procura.nl/xsd" xmlns:ns1="http://objecten.woningkaart.diensten.procura.nl/xsd"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://argumenten.procura.wk.gba.diensten.procura.nl/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://woningkaartws.ws.procura.nl">
+    <wsdl:documentation>Webservice voor het opvragen van adressen uit de GBA</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:ax21="http://argumenten.procura.wk.gba.diensten.procura.nl/xsd" attributeFormDefault="qualified" elementFormDefault="qualified"
+            targetNamespace="http://argumenten.procura.wk.gba.diensten.procura.nl/xsd">
+            <xs:element name="ZoekArgumenten" type="ns0:ZoekArgumenten" />
+            <xs:complexType name="ZoekArgumenten">
+                <xs:sequence>
+                    <xs:element name="code_gemeentedeel" nillable="true" type="xs:string" />
+                    <xs:element name="code_lokatie" nillable="true" type="xs:string" />
+                    <xs:element name="code_object" nillable="true" type="xs:string" />
+                    <xs:element name="code_straat" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde" nillable="true" type="xs:string" />
+                    <xs:element name="extra_pl_gegevens" type="xs:boolean" />
+                    <xs:element name="geen_bewoners" type="xs:boolean" />
+                    <xs:element name="gemeentedeel" nillable="true" type="xs:string" />
+                    <xs:element name="gevuld" type="xs:boolean" />
+                    <xs:element name="huisletter" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummer" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummeraanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummertoevoeging" nillable="true" type="xs:string" />
+                    <xs:element name="lokatie" nillable="true" type="xs:string" />
+                    <xs:element name="postcode" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam" nillable="true" type="xs:string" />
+                    <xs:element name="volgcode_einde" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax22="http://objecten.woningkaart.diensten.procura.nl/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://objecten.woningkaart.diensten.procura.nl/xsd">
+            <xs:element name="Adres" type="ns1:Adres" />
+            <xs:complexType name="Adres">
+                <xs:sequence>
+                    <xs:element name="aanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="adres_indicatie" nillable="true" type="xs:string" />
+                    <xs:element name="buurt_code" nillable="true" type="xs:string" />
+                    <xs:element name="code_object" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang" nillable="true" type="xs:string" />
+                    <xs:element name="gemeentedeel" nillable="true" type="xs:string" />
+                    <xs:element name="gemeentedeel_code" nillable="true" type="xs:string" />
+                    <xs:element name="huisletter" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummer" nillable="true" type="xs:string" />
+                    <xs:element name="identificatiecode_nummeraanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="identificatiecode_verblijfplaats" nillable="true" type="xs:string" />
+                    <xs:element name="locatie" nillable="true" type="xs:string" />
+                    <xs:element name="locatie_code" nillable="true" type="xs:string" />
+                    <xs:element name="naam_openbare_ruimte" nillable="true" type="xs:string" />
+                    <xs:element maxOccurs="unbounded" name="personen" nillable="true" type="ns1:Persoon" />
+                    <xs:element name="postcode" nillable="true" type="xs:string" />
+                    <xs:element name="ppd_code" nillable="true" type="xs:string" />
+                    <xs:element name="stemdistrict_code" nillable="true" type="xs:string" />
+                    <xs:element name="straat" nillable="true" type="xs:string" />
+                    <xs:element name="straat_code" nillable="true" type="xs:string" />
+                    <xs:element name="sub_buurt_code" nillable="true" type="xs:string" />
+                    <xs:element name="toevoeging" nillable="true" type="xs:string" />
+                    <xs:element name="volgcode_einde" nillable="true" type="xs:string" />
+                    <xs:element name="wijk_code" nillable="true" type="xs:string" />
+                    <xs:element name="woning_code" nillable="true" type="xs:string" />
+                    <xs:element name="woning_indicatie" nillable="true" type="xs:string" />
+                    <xs:element name="woonplaatsnaam" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Persoon" type="ns1:Persoon" />
+            <xs:complexType name="Persoon">
+                <xs:sequence>
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="burgerservicenummer" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geboren" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang" nillable="true" type="xs:string" />
+                    <xs:element name="datum_vertrek" nillable="true" type="xs:string" />
+                    <xs:element name="gezin_code" nillable="true" type="xs:string" />
+                    <xs:element name="volg_code" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ns="http://woningkaartws.ws.procura.nl/xsd" xmlns:ax23="http://objecten.woningkaart.diensten.procura.nl/xsd" attributeFormDefault="qualified" elementFormDefault="qualified"
+            targetNamespace="http://woningkaartws.ws.procura.nl/xsd">
+            <xs:import namespace="http://objecten.woningkaart.diensten.procura.nl/xsd" />
+            <xs:element name="zoeken">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="zoekArgumenten" nillable="true" type="ns0:ZoekArgumenten" />
+                        <xs:element name="loginArgumenten" nillable="true" type="ns:LoginArgumenten" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LoginArgumenten" type="ns:LoginArgumenten" />
+            <xs:complexType name="LoginArgumenten">
+                <xs:sequence>
+                    <xs:element name="gebruikersnaam" nillable="true" type="xs:string" />
+                    <xs:element name="wachtwoord" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="zoekenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ns:WoningkaartWSAntwoord" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="WoningkaartWSAntwoord" type="ns:WoningkaartWSAntwoord" />
+            <xs:complexType name="WoningkaartWSAntwoord">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="adressen" nillable="true" type="ax23:Adres" />
+                    <xs:element maxOccurs="unbounded" name="meldingen" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="zoekenMessage">
+        <wsdl:part name="part1" element="ns2:zoeken" />
+    </wsdl:message>
+    <wsdl:message name="zoekenResponse">
+        <wsdl:part name="part1" element="ns2:zoekenResponse" />
+    </wsdl:message>
+    <wsdl:portType name="WoningkaartWSPortType">
+        <wsdl:operation name="zoeken">
+            <wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" message="axis2:zoekenMessage" wsaw:Action="urn:zoeken" />
+            <wsdl:output message="axis2:zoekenResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="WoningkaartWSSOAP11Binding" type="axis2:WoningkaartWSPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="zoeken">
+            <soap:operation soapAction="urn:zoeken" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="WoningkaartWSSOAP12Binding" type="axis2:WoningkaartWSPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="zoeken">
+            <soap12:operation soapAction="urn:zoeken" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="WoningkaartWSHttpBinding" type="axis2:WoningkaartWSPortType">
+        <http:binding verb="POST" />
+        <wsdl:operation name="zoeken">
+            <http:operation location="zoeken" />
+            <wsdl:input>
+                <mime:content type="text/xml" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="WoningkaartWS">
+        <wsdl:port name="WoningkaartWSSOAP11port_http" binding="axis2:WoningkaartWSSOAP11Binding">
+            <soap:address location="http://192.0.1.26:28080/personen-ws/services/WoningkaartWS" />
+        </wsdl:port>
+        <wsdl:port name="WoningkaartWSSOAP11port_tcp1" binding="axis2:WoningkaartWSSOAP11Binding">
+            <soap:address location="tcp://192.0.1.26:6062/axis2/services/WoningkaartWS" />
+        </wsdl:port>
+        <wsdl:port name="WoningkaartWSSOAP12port_http" binding="axis2:WoningkaartWSSOAP12Binding">
+            <soap12:address location="http://192.0.1.26:28080/personen-ws/services/WoningkaartWS" />
+        </wsdl:port>
+        <wsdl:port name="WoningkaartWSSOAP12port_tcp1" binding="axis2:WoningkaartWSSOAP12Binding">
+            <soap12:address location="tcp://192.0.1.26:6062/axis2/services/WoningkaartWS" />
+        </wsdl:port>
+        <wsdl:port name="WoningkaartWSHttpport" binding="axis2:WoningkaartWSHttpBinding">
+            <http:address location="http://192.0.1.26:28080/personen-ws/services/WoningkaartWS" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

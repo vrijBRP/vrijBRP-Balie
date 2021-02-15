@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201508-1" author="Procura (Frits Janssen)">
+        <createIndex indexName="ind_verwerkt_zaak_id_idx"
+                     tableName="ind_verwerkt"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-2" author="Procura (Frits Janssen)">
+        <createIndex indexName="aantekening_zaak_id_idx"
+                     tableName="aantekening"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-3" author="Procura (Frits Janssen)">
+        <createIndex indexName="bvh_park_zaak_id_idx"
+                     tableName="bvh_park"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-4" author="Procura (Frits Janssen)">
+        <createIndex indexName="corr_zaak_id_idx"
+                     tableName="correspondentie"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-5" author="Procura (Frits Janssen)">
+        <createIndex indexName="doss_zaak_id_idx"
+                     tableName="doss"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-6" author="Procura (Frits Janssen)">
+        <createIndex indexName="geheimh_zaak_id_idx"
+                     tableName="geheimhouding"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-7" author="Procura (Frits Janssen)">
+        <createIndex indexName="gpk_zaak_id_idx"
+                     tableName="gpk"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-8" author="Procura (Frits Janssen)">
+        <createIndex indexName="gv_zaak_id_idx"
+                     tableName="gv"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-9" author="Procura (Frits Janssen)">
+        <createIndex indexName="indicatie_zaak_id_idx"
+                     tableName="indicatie"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-10" author="Procura (Frits Janssen)">
+        <createIndex indexName="naamgebruik_zaak_id_idx"
+                     tableName="naamgebruik"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-11" author="Procura (Frits Janssen)">
+        <createIndex indexName="nrd_zaak_id_idx"
+                     tableName="nrd"
+                     unique="false">
+            <column name="zaak_id"/>
+            <column name="aanvr_nr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-12" author="Procura (Frits Janssen)">
+        <createIndex indexName="rdm01_zaak_id_idx"
+                     tableName="rdm01"
+                     unique="false">
+            <column name="zaak_id"/>
+            <column name="aanvr_nr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-13" author="Procura (Frits Janssen)">
+        <createIndex indexName="reisd_inh_zaak_id_idx"
+                     tableName="reisd_inh"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-14" author="Procura (Frits Janssen)">
+        <createIndex indexName="terugmelding_zaak_id_idx"
+                     tableName="terugmelding"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-15" author="Procura (Frits Janssen)">
+        <createIndex indexName="uitt_aanvr_zaak_id_idx"
+                     tableName="uitt_aanvr"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-16" author="Procura (Frits Janssen)">
+        <createIndex indexName="vog_aanvr_zaak_id_idx"
+                     tableName="vog_aanvr"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-17" author="Procura (Frits Janssen)">
+        <createIndex indexName="zaak_attr_zaak_id_idx"
+                     tableName="zaak_attr"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201508-18" author="Procura (Frits Janssen)">
+        <createIndex indexName="zaak_rel_zaak_id_idx"
+                     tableName="zaak_rel"
+                     unique="false">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

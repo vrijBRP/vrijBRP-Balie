@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by - - - (Bistro) -->
+<xs:schema xmlns="http://www.rechtspraak.nl/namespaces/updateWs" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.rechtspraak.nl/namespaces/updateWs" elementFormDefault="qualified" attributeFormDefault="unqualified" version="01.02">
+	<xs:element name="lastUpdate">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lastUpdateDate" type="xs:date"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

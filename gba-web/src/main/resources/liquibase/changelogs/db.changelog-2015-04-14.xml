@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="20150414-2" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_usr"
+                                 baseTableName="terugm_tmv"
+                                 constraintName="terugm_tmv_c_usr_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet id="20150414-3" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_usr"
+                                 baseTableName="nrd_status"
+                                 constraintName="nrd_status_c_usr_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet id="20150414-4" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="prot_new"
+                         columnName="c_usr"
+                         defaultValueNumeric="0"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,37 @@
+<jaxb:bindings
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" version="2.0">
+    <!--
+    Voor de namespace van de BRP het package waar de gegenereerde code in komt aanpassen.
+    -->
+    <!--
+    <jaxb:bindings schemaLocation="../xsd/BRP0100/BRP0100_Objecttypen.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="nl.moderniseringgba.brp.koppelvlak" />
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    -->
+    <!--
+    <jaxb:bindings schemaLocation="../xsd/BRP0100/BRP0100_NaamGeslacht_Basis.xsd"
+        node="/xs:schema"> <jaxb:bindings node="xs:complexType[@name='Groep_PersoonSamengesteldeNaam_Bijhouding']">
+        <jaxb:class name="Groep_PersoonSamengesteldeNaam_BijhoudingGeslacht" /> </jaxb:bindings>
+        </jaxb:bindings>
+    -->
+    <!--
+    Voor de Stuf objecten een ander package gebruiken en voor TijdstipRegistratie en TijdstipVerval een prefix Stuf introduceren om conflicten met de BRP objecten te voorkomen.
+    -->
+    <!--
+    <jaxb:bindings schemaLocation="../xsd/0302/stuf0302.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="nl.kinggemeenten.stuf" />
+        </jaxb:schemaBindings>
+
+        <jaxb:bindings node="//xs:element[@name='tijdstipRegistratie']">
+            <jaxb:class name="StufTijdstipRegistratie" />
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:element[@name='tijdstipVerval']">
+            <jaxb:class name="StufTijdstipVerval" />
+        </jaxb:bindings>
+    </jaxb:bindings>
+     -->
+</jaxb:bindings>

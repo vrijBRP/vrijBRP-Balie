@@ -1,0 +1,100 @@
+.mainbuttons .icon.v-button {
+	background: url(img/main_bg.png);
+	border: 1px solid #fff;
+	background: #efefef;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	overflow: hidden;
+	height: 29px;
+	width: 29px;
+}
+
+.mainbuttons .icon.v-button .v-button-wrap {
+	height: 25px;
+	width: 25px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	overflow: hidden;
+	border: 1px solid #fff;
+	background-repeat: no-repeat;
+}
+
+.mainbuttons .icon.v-button:hover,
+.mainbuttons .icon.v-button.v-button-active {
+	border: 1px solid #6b8fa5;
+}
+
+.mainbuttons .overlay,
+.mainbuttons .v-button-link,
+.mainbuttons .v-button-link:active,
+.mainbuttons .v-button-link.v-pressed,
+.mainbuttons .v-button-link:focus {
+	padding: 3px 10px 4px 10px;
+	margin: 0px;
+	text-decoration: none;
+	color: #000;
+	font-weight: 700;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	font-size: 11px;
+	border: 1px solid #fff;
+	}
+
+.mainbuttons .overlay,
+.mainbuttons .v-button-link {
+	background: #eee;
+}
+
+.mainbuttons .v-button-link:hover,
+.mainbuttons .v-button-link:active,
+.mainbuttons .v-button-link.v-pressed,
+.mainbuttons .v-button-link:focus,
+.mainbuttons .overlay:hover {
+	border: 1px solid #ddd;
+	}
+
+.mainbuttons .overlay {
+	padding: 3px 25px 3px 10px;
+	height: 18px;
+	line-height: 18px;
+}
+
+.mainbuttons .overlay {
+	background-image: url(img/down.png);
+	background-repeat: no-repeat;
+	background-position: 62px center;
+	}
+
+.mainbuttons .v-button-link,
+.mainbuttons .v-button-link:active,
+.mainbuttons .v-button-link.v-pressed,
+.mainbuttons .v-button-link:focus {
+	height: 26px;
+	line-height: 26px;
+}
+
+.mainbuttons .v-button-link .v-button-caption,
+.mainbuttons .v-button-link .v-button-caption:hover {
+	text-decoration: none;
+	color: #000;
+	font-weight: 700;
+	font-size: 11px;
+}
+
+.mainbuttons .v-button-link.title-file, 
+.mainbuttons .v-button-link.title-file .v-button-caption {
+	background: transparent;
+	border: none;
+	color: #1b699f;
+	font-weight: 400;
+	padding-left: 0px;
+	margin-left: 0px;
+	font-size: 12px;
+}
+
+.mainbuttons .v-button-link.title-file .v-button-caption:hover {
+    text-decoration: underline;
+}

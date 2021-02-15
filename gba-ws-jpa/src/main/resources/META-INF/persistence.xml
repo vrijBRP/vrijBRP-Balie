@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="personen-ws-jpa">
+        <class>nl.procura.gba.jpa.personenws.db.Usr</class>
+        <class>nl.procura.gba.jpa.personenws.db.UsrParm</class>
+        <class>nl.procura.gba.jpa.personenws.db.UsrParmPK</class>
+        <class>nl.procura.gba.jpa.personenws.db.Parm</class>
+        <class>nl.procura.gba.jpa.personenws.db.Request</class>
+        <class>nl.procura.gba.jpa.personenws.db.Profile</class>
+        <class>nl.procura.gba.jpa.personenws.db.ProfileElement</class>
+        <class>nl.procura.gba.jpa.personenws.db.ProfileElementPK</class>
+        <class>nl.procura.gba.jpa.personenws.db.ProfileParm</class>
+        <class>nl.procura.gba.jpa.personenws.db.ProfileParmPK</class>
+        <class>nl.procura.gba.jpa.personenws.db.GbavProfile</class>
+        <class>nl.procura.gba.jpa.personenws.db.GbavProfileParm</class>
+        <class>nl.procura.gba.jpa.personenws.db.GbavProfileParmPK</class>
+        <class>nl.procura.gba.jpa.personenws.db.Landtab</class>
+        <class>nl.procura.gba.jpa.personenws.db.LandtabElement</class>
+        <class>nl.procura.gba.jpa.personenws.db.LandtabRecord</class>
+        <class>nl.procura.gba.jpa.personenws.db.LandtabRecordPK</class>
+        <class>nl.procura.gba.jpa.personenws.db.Landtab</class>
+        <class>nl.procura.gba.jpa.personenws.db.EmailConfig</class>
+        <class>nl.procura.gba.jpa.personenws.db.EmailLog</class>
+    </persistence-unit>
+</persistence>

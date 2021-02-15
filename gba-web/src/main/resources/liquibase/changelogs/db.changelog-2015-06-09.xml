@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="20150609-1" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_geb">
+            <column name="doodsoorzaak" type="VARCHAR(3)"/>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="doodsoorzaak" type="VARCHAR(3)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-1" author="Procura (Frits Janssen)">
+        <addColumn tableName="gv">
+            <column name="c_toek" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-2" author="Procura (Frits Janssen)">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <addColumn tableName="gv">
+            <column name="motivering_tk" type="clob"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-3" author="Procura (Frits Janssen)">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="oracle"/>
+        </preConditions>
+        <addColumn tableName="gv">
+            <column name="motivering_tk" type="VARCHAR(4000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-4" author="Procura (Frits Janssen)">
+        <createTable tableName="gv_proces">
+            <column name="c_gv_proces" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_gv" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="c_procesactie" type="numeric"/>
+            <column defaultValueComputed="-1" name="c_reactie" type="numeric"/>
+            <column defaultValueComputed="-1" name="d_end_termijn" type="numeric"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20150617-5" author="Procura (Frits Janssen)">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="oracle"/>
+        </preConditions>
+
+        <addColumn tableName="gv_proces">
+            <column name="motivering" type="VARCHAR(4000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-6" author="Procura (Frits Janssen)">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+
+        <addColumn tableName="gv_proces">
+            <column name="motivering" type="clob"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-7" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_gv_proces" constraintName="gv_proces_pkey" tableName="gv_proces"/>
+    </changeSet>
+
+    <changeSet id="20150617-8" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_gv" baseTableName="gv_proces" constraintName="gv_proces_c_gv_fkey"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE"
+                                 onUpdate="NO ACTION" referencedColumnNames="c_gv" referencedTableName="gv"/>
+    </changeSet>
+
+    <changeSet id="20150617-9" author="Procura (Frits Janssen)">
+        <dropColumn tableName="gv" columnName="c_procesactie"/>
+    </changeSet>
+
+    <changeSet id="20150617-10" author="Procura (Frits Janssen)">
+        <dropColumn tableName="gv" columnName="d_end_termijn"/>
+    </changeSet>
+
+    <changeSet id="20150617-11" author="Procura (Frits Janssen)">
+        <dropColumn tableName="gv" columnName="c_reactie"/>
+    </changeSet>
+
+    <changeSet id="20150617-12" author="Procura (Frits Janssen)">
+        <dropColumn tableName="gv" columnName="motivering"/>
+    </changeSet>
+
+    <changeSet id="20150617-13" author="Procura (Frits Janssen)">
+        <addColumn tableName="gv_proces">
+            <column name="c_usr" type="numeric" defaultValueNumeric="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-14" author="Procura (Frits Janssen)">
+        <addColumn tableName="gv_proces">
+            <column defaultValueComputed="-1" name="d_in" type="numeric"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-15" author="Procura (Frits Janssen)">
+        <addColumn tableName="gv_proces">
+            <column defaultValueComputed="-1" name="t_in" type="numeric"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-16" author="Procura (Frits Janssen)">
+        <addColumn tableName="document_afn">
+            <column name="tav" type="VARCHAR(255)"/>
+            <column name="adres" type="VARCHAR(255)"/>
+            <column name="pc" type="VARCHAR(255)"/>
+            <column name="plaats" type="VARCHAR(255)"/>
+            <column name="kenmerk" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-17" author="Procura (Frits Janssen)">
+        <dropColumn tableName="document_afn" columnName="kenmerk"/>
+    </changeSet>
+
+    <changeSet id="20150617-18" author="Procura (Frits Janssen)">
+        <dropColumn tableName="document_afn" columnName="tav"/>
+    </changeSet>
+
+    <changeSet id="20150617-19" author="Procura (Frits Janssen)">
+        <addColumn tableName="document_afn">
+            <column name="c_grondslag" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-20" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="woon_land_akte" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150617-21" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="geb_land_akte" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,46 @@
+drop view zaken;
+create or replace view zaken as 
+(select distinct (zaak_id), 10 as type, 'uittreksel' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from uitt_aanvr, document
+where uitt_aanvr.c_document = document.c_document and document.document_type = 'pl'
+union
+select distinct (zaak_id), 20 as type, 'geheimhouding' as oms, d_in as d_invoer, t_in as t_invoer, d_wijz as d_ingang from geheimhouding
+union
+select distinct (zaak_id), 30 as type, 'naamgebruik' as oms, d_in as d_invoer, t_in as t_invoer, d_wijz as d_ingang from naamgebruik
+union
+select distinct (zaak_id), 40 as type, 'verhuizing' as oms, d_opn as d_invoer, t_opn as t_invoer, d_aanv as d_ingang from bvh_park
+union
+select distinct (zaak_id), 50 as type, 'vog' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from vog_aanvr
+union
+select distinct (zaak_id), 60 as type, 'gpk' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from gpk
+union
+select distinct (zaak_id), 70 as type, 'reisdocument' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from rdm01
+union
+select distinct (zaak_id), 75 as type, 'inhouding reisdocument' as oms, d_inneming as d_invoer, t_inneming as t_invoer, d_inneming as d_ingang from reisd_inh
+union
+select distinct (zaak_id), 80 as type, 'rijbewijs' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from nrd
+union
+select distinct (zaak_id), 90 as type, 'terugmelding' as oms, d_in as d_invoer, t_in as t_invoer, d_in as d_ingang from terugmelding
+union
+select distinct (zaak_id), 100 as type, 'geboorte' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=100
+union
+select distinct (zaak_id), 200 as type, 'erkenning' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=200
+union
+select distinct (zaak_id), 300 as type, 'huwelijk/gps' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=300
+union
+select distinct (zaak_id), 400 as type, 'naamskeuze' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=400
+union
+select distinct (zaak_id), 500 as type, 'overlijden in gemeente' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=500
+union
+select distinct (zaak_id), 600 as type, 'lijkvinding' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=600
+union
+select distinct (zaak_id), 700 as type, 'overlijden in buitenland' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=700
+union
+select distinct (zaak_id), 800 as type, 'levenloos geboren kind' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=800
+union
+select distinct (zaak_id), 900 as type, 'indicatie' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=900
+union
+select distinct (zaak_id), 1100 as type, 'correspondentie' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=1100
+union
+select distinct (zaak_id), 1200 as type, 'gegevensverstrekking' as oms, d_aanvr as d_invoer, t_aanvr as t_invoer, d_aanvr as d_ingang from doss where type_doss=1200
+order by d_invoer desc, t_invoer desc
+);

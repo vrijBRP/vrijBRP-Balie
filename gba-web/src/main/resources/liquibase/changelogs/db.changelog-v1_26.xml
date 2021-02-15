@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits)" id="v1_26-1">
+        <createTable tableName="doss_nk">
+            <column name="c_doss_nk" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="doss_nk_pkey"/>
+            </column>
+            <column name="type" type="VARCHAR(1)"/>
+            <column defaultValueNumeric="-1" name="c_land_naam_recht" type="numeric"/>
+            <column defaultValueNumeric="-1" name="person_type"
+                    remarks="Type persoon die de naamskeuze bepaald (moeder, partner)" type="numeric"/>
+            <column defaultValueNumeric="-1" name="c_gem" type="numeric"/>
+            <column defaultValueNumeric="-1"
+                    name="b_eerste_kind"
+                    remarks="Is er sprake van een eerste kind"
+                    type="numeric"/>
+            <column name="keuze_naam_gesl" type="VARCHAR(255)"/>
+            <column name="keuze_naam_voorv" type="VARCHAR(255)"/>
+            <column name="keuze_naam_tp" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_26-2">
+        <addColumn tableName="doss_geb">
+            <column name="c_doss_nk" type="numeric"/>
+            <column name="type_nk" type="VARCHAR(255)"/>
+            <column name="akte_nk" type="VARCHAR(255)"/>
+            <column name="plaats_nk" type="VARCHAR(255)"/>
+            <column name="d_in_nk" type="numeric" defaultValueNumeric="-1"/>
+            <column name="c_gem_nk" type="numeric" defaultValueNumeric="-1"/>
+            <column name="c_land_nk" type="numeric" defaultValueNumeric="-1"/>
+            <column name="person_type_nk" type="numeric" defaultValueNumeric="-1"/>
+            <column name="bijz_nk" type="TEXT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-3">
+        <addForeignKeyConstraint baseColumnNames="c_doss_nk"
+                                 baseTableName="doss_nk"
+                                 constraintName="doss_nk_c_doss_nk_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss"
+                                 referencedTableName="doss"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-4">
+        <addColumn tableName="doss_registration">
+            <column name="origin_situation" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-5">
+        <createTable tableName="zaak_conf">
+            <column name="c_zaak_conf" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="zaak_conf_pkey"/>
+            </column>
+            <column name="zaak_conf" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bron" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="leverancier" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ind_zaaksysteem_id" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zaaktypes" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-6">
+        <createTable tableName="profile_zaak_conf">
+            <column name="c_profile" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_zaak_conf" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-7">
+        <createIndex indexName="prof_zaak_conf_c_profile_idx" tableName="profile_zaak_conf">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-8">
+        <createIndex indexName="prof_zaak_conf_c_zaak_conf_idx"
+                     tableName="profile_zaak_conf">
+            <column name="c_zaak_conf"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-9">
+        <addForeignKeyConstraint baseColumnNames="c_profile"
+                                 baseTableName="profile_zaak_conf"
+                                 constraintName="prof_zaak_conf_prof_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="v1_26-10">
+        <addForeignKeyConstraint baseColumnNames="c_zaak_conf"
+                                 baseTableName="profile_zaak_conf"
+                                 constraintName="prof_aant_zaak_conf_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_zaak_conf"
+                                 referencedTableName="zaak_conf"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_26-11">
+        <addColumn tableName="doss_onderz">
+            <column name="aanl_aant_pers" type="numeric" defaultValueNumeric="-1"/>
+            <column name="res_aant_pers" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_26-12">
+        <addColumn tableName="doss_onderz_bron">
+            <column name="inst_bsn_betrok" type="numeric" defaultValueNumeric="-1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inst_bsn_rel" type="numeric" defaultValueNumeric="-1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inst_aanschr" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

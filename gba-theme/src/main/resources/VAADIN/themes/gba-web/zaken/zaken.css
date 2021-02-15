@@ -1,0 +1,118 @@
+.zakentable .v-scrollable {
+	overflow: visible;
+	overflow-y: visible;
+	overflow-x: visible;
+}
+
+.zakentable {
+	border-color: #fff
+}
+
+.zakentable .v-table-cell-content,
+.zakentable.v-table .v-selected .v-table-cell-content {
+	border-right: none;
+	border-left: none;
+	padding-right: 10px;
+}
+
+.zakentable .v-treetable-node-closed {
+   background-image: url(img/plus.png);
+   background-position: right center;
+   margin-right: 5px;
+}
+
+.zakentable .v-treetable-node-open {
+   background-image: url(img/min.png);
+   background-position: right center;
+   margin-right: 5px;
+}
+
+.zakentable .v-table-cell-content .v-label {
+	cursor: pointer;
+}
+
+.zakentable .v-table-row-odd {
+	background: #fff;
+	border-bottom: 1px solid #f9f9f9;
+}
+
+.zakentable .v-selected {
+	background: #4f79a2;
+	color: #fff;
+	text-shadow: none;
+}
+
+.zakentable .v-treetable-treespacer {
+	width: 15px;
+}
+
+.zakentable .v-treetable-node-open,
+.zakentable .v-treetable-node-closed {
+    margin-right1: 5px;
+}
+
+.v-panel-content-panel_zaken .v-form.tableform fieldset {
+	border-top: 1px solid #ddd;
+}
+
+.zaken_icon {
+	border: 1px solid #f2f2f2;
+	border-bottom: 1px solid #bfccdf;
+	border-right: 1px solid #bfccdf;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	background-color: #f6f8fb;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.zaken_icon .v-label {
+	color: #1B699F;
+	font-size: 16px;
+	text-shadow: 0 1px white;
+	}
+
+.zaken_icon:hover,
+.zaken_icon.zaken_active {
+	border: 1px solid #44698B;
+	text-decoration: none;
+	background-color: #f6f8fb;
+}
+
+.zaken_icon:hover,
+.zaken_icon.zaken_active,
+.zaken_icon .v-label:hover,
+.zaken_icon .v-label.zaken_active {
+	cursor: pointer;
+}
+
+.zaken_icon:hover .v-caption {
+	text-decoration: none;
+}
+
+.zaken_controle {
+	padding-right: 5px;
+}
+
+.zaken_overige_tree .v-tree-node-caption span {
+	padding: 8px;
+	padding-left: 15px;
+	font-size: 13px;		
+	width: 135px;
+	border: 0px;
+}
+
+.zaken_overige_tree .v-tree-node-caption.v-tree-node-selected span,
+.zaken_overige_tree .v-tree-node-caption.v-tree-node-focused span {
+	background: #4f79a2;	
+	color: #fff;
+}
+
+.zaken_overige_tree .v-tree-node-caption {
+	margin-left: 0px;
+}
+
+.zaaktab .v-tabsheet-tabitem .v-caption {
+	padding: 9px 35px 0px 30px;
+}

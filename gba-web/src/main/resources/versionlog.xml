@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<versionlog>
+    <versions>
+        <version date="20181115" name="1.19-beta">
+            <categories>
+                <category name="Aanpassing">
+                    <changes>
+                        <change>
+                            <description>Zie http://personen.faq.procura.nl</description>
+                        </change>
+                    </changes>
+                </category>
+            </categories>
+        </version>
+        <version date="20180927" name="1.18">
+            <categories>
+                <category name="Aanpassing">
+                    <changes>
+                        <change>
+                            <description>Zie http://personen.faq.procura.nl</description>
+                        </change>
+                    </changes>
+                </category>
+            </categories>
+        </version>
+        <version date="20170514" name="1.17">
+            <categories>
+                <category name="Aanpassing">
+                    <changes>
+                        <change>
+                            <description>Zie http://personen.faq.procura.nl</description>
+                        </change>
+                    </changes>
+                </category>
+            </categories>
+        </version>
+    </versions>
+</versionlog>

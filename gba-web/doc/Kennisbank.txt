@@ -1,0 +1,21 @@
+Beschrijving kennisbank.csv
+===========================
+
+Regel 1: kolom 1 = "Uitgave"
+Regel 1: kolom 2 = "Beschrijving uitgave (bijv. 21 april 2017)"
+
+Kolom 1 / A: code nationaliteit
+Kolom 2 / B: omschrijving nationaliteit
+Kolom 3 / C: code land
+Kolom 4 / D: omschrijving land
+Kolom 5 / E: omschrijving land (kennisbank)
+Kolom 6 / F: URL afstamming
+Kolom 7 / G: URL nationaliteit
+Kolom 8 / H: URL land
+
+Alleen regels met een geldige nationaliteitscode(kolom 1) of landcode(kolom 3) worden ingelezen.
+De overige regels worden overgeslagen en kunnen als commentaar worden toegevoegd.
+opslaan met UTF-8 encoding zonder BOM. Kan met notepad++.
+
+Na inlezen wordt bestand hernoemd naar kennisbank.csv
+Applicatie controleert alleen op .csv extensie

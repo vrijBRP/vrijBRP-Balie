@@ -1,0 +1,1658 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1.10.0-1" author="Procura (Frits Janssen)">
+        <addColumn tableName="reisd_inh">
+            <column name="ind_rijbewijs" type="numeric" defaultValue="0"
+                    remarks="Sprake van verlies / diefstal van een rijbewijs"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.10.0-2" author="Procura (Frits Janssen)">
+        <renameTable oldTableName="reisd_inh" newTableName="doc_inh"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-1">
+        <createIndex indexName="aant3_c_aantek3_idx" tableName="aant3">
+            <column name="c_aantek3"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-2">
+        <createIndex indexName="aant3_d_in_idx" tableName="aant3">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-3">
+        <createIndex indexName="aantekening_bsn_idx" tableName="aantekening">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-4">
+        <createIndex indexName="aant_hist_c_aantekening_idx" tableName="aantekening_hist">
+            <column name="c_aantekening"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-5">
+        <createIndex indexName="aant_hist_c_aant_ind_idx" tableName="aantekening_hist">
+            <column name="c_aantekening_ind"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-6">
+        <createIndex indexName="aantekening_hist_c_usr_idx" tableName="aantekening_hist">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-7">
+        <createIndex indexName="aantekening_hist_d_in_idx" tableName="aantekening_hist">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-8">
+        <createIndex indexName="aantekening_hist_t_in_idx" tableName="aantekening_hist">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-9">
+        <createIndex indexName="belangh_d_in_idx" tableName="belangh">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-10">
+        <createIndex indexName="brp_bsn_idx" tableName="brp">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-11">
+        <createIndex indexName="brp_c_soap_idx" tableName="brp">
+            <column name="c_soap"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-12">
+        <createIndex indexName="brp_d_in_idx" tableName="brp">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-13">
+        <createIndex indexName="brp_melding_c_brp_idx" tableName="brp_melding">
+            <column name="c_brp"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-14">
+        <createIndex indexName="brp_t_in_idx" tableName="brp">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-15">
+        <createIndex indexName="brp_zaak_id_idx" tableName="brp">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-16">
+        <createIndex indexName="bvh_park_aangifte_anr_idx" tableName="bvh_park">
+            <column name="aangifte_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-17">
+        <createIndex indexName="bvh_park_aangifte_bsn_idx" tableName="bvh_park">
+            <column name="aangifte_bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-18">
+        <createIndex indexName="bvh_park_anr_idx" tableName="bvh_park">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-19">
+        <createIndex indexName="bvh_park_bsn_idx" tableName="bvh_park">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-20">
+        <createIndex indexName="bvh_park_c_location_idx" tableName="bvh_park">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-21">
+        <createIndex indexName="bvh_park_c_usr_idx" tableName="bvh_park">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-22">
+        <createIndex indexName="bvh_park_d_opn_idx" tableName="bvh_park">
+            <column name="d_opn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-23">
+        <createIndex indexName="bvh_park_hoofd_bsn_idx" tableName="bvh_park">
+            <column name="hoofd_bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-24">
+        <createIndex indexName="bvh_park_ind_verwerkt_idx" tableName="bvh_park">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-25">
+        <createIndex indexName="bvh_park_t_opn_idx" tableName="bvh_park">
+            <column name="t_opn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-26">
+        <createIndex indexName="bvh_park_toest_anr_idx" tableName="bvh_park">
+            <column name="toest_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-27">
+        <createIndex indexName="bvh_park_toest_bsn_idx" tableName="bvh_park">
+            <column name="toest_bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-28">
+        <createIndex indexName="correspondentie_anr_idx" tableName="correspondentie">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-29">
+        <createIndex indexName="correspondentie_bsn_idx" tableName="correspondentie">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-30">
+        <createIndex indexName="correspondentie_c_location_idx" tableName="correspondentie">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-31">
+        <createIndex indexName="correspondentie_c_usr_idx" tableName="correspondentie">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-32">
+        <createIndex indexName="correspondentie_d_in_idx" tableName="correspondentie">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-33">
+        <createIndex indexName="corres_ind_verwerkt_idx" tableName="correspondentie">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-34">
+        <createIndex indexName="corres_t_in_idx" tableName="correspondentie">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-35">
+        <createIndex indexName="doc_inh_anr_idx" tableName="doc_inh">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-36">
+        <createIndex indexName="doc_inh_bsn_idx" tableName="doc_inh">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-37">
+        <createIndex indexName="doc_inh_c_location_idx" tableName="doc_inh">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-38">
+        <createIndex indexName="doc_inh_c_usr_idx" tableName="doc_inh">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-39">
+        <createIndex indexName="doc_inh_d_in_idx" tableName="doc_inh">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-40">
+        <createIndex indexName="doc_inh_d_inneming_idx" tableName="doc_inh">
+            <column name="d_inneming"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-41">
+        <createIndex indexName="doc_inh_ind_verwerkt_idx" tableName="doc_inh">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-42">
+        <createIndex indexName="doc_inh_t_in_idx" tableName="doc_inh">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-43">
+        <createIndex indexName="doc_inh_t_inneming_idx" tableName="doc_inh">
+            <column name="t_inneming"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-44">
+        <createIndex indexName="doc_kenm_c_document_idx" tableName="document_kenmerk">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-45">
+        <createIndex indexName="docum_stemp_c_document_idx" tableName="document_stempel">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-46">
+        <createIndex indexName="docum_stemp_c_stempel_idx" tableName="document_stempel">
+            <column name="c_stempel"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-47">
+        <createIndex indexName="docum_usr_c_document_idx" tableName="document_usr">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-48">
+        <createIndex indexName="document_usr_c_usr_idx" tableName="document_usr">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-49">
+        <createIndex indexName="doss_akte_bsn_idx" tableName="doss_akte">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-50">
+        <createIndex indexName="doss_akte_c_doss_idx" tableName="doss_akte">
+            <column name="c_doss"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-51">
+        <createIndex indexName="doss_akte_d_in_idx" tableName="doss_akte">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-52">
+        <createIndex indexName="doss_akte_p_bsn_idx" tableName="doss_akte">
+            <column name="p_bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-53">
+        <createIndex indexName="doss_akte_rd_cat_idx" tableName="doss_akte_rd">
+            <column name="c_doss_akte_rd_cat"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-54">
+        <createIndex indexName="doss_c_location_idx" tableName="doss">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-55">
+        <createIndex indexName="doss_c_usr_idx" tableName="doss">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-56">
+        <createIndex indexName="doss_d_aanvr_idx" tableName="doss">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-57">
+        <createIndex indexName="doss_d_in_idx" tableName="doss">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-58">
+        <createIndex indexName="doss_doc_c_doss_idx" tableName="doss_doc">
+            <column name="c_doss"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-59">
+        <createIndex indexName="doss_geb_erk_idx" tableName="doss_geb">
+            <column name="c_doss_erk_geb"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-60">
+        <createIndex indexName="doss_geb_c_doss_erk_idx" tableName="doss_geb">
+            <column name="c_doss_erk"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-61">
+        <createIndex indexName="doss_geb_d_in_erkenning_idx" tableName="doss_geb">
+            <column name="d_in_erkenning"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-62">
+        <createIndex indexName="doss_huw_c_huw_locatie_idx" tableName="doss_huw">
+            <column name="c_huw_locatie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-63">
+        <createIndex indexName="doss_huw_optie_c_doss_huw_idx" tableName="doss_huw_optie">
+            <column name="c_doss_huw"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-64">
+        <createIndex indexName="doss_huw_optie_2_idx" tableName="doss_huw_optie">
+            <column name="c_huw_locatie_optie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-65">
+        <createIndex indexName="doss_ind_verwerkt_idx" tableName="doss">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-66">
+        <createIndex indexName="doss_natio_c_doss_idx" tableName="doss_natio">
+            <column name="c_doss"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-67">
+        <createIndex indexName="doss_natio_c_doss_pers_idx" tableName="doss_natio">
+            <column name="c_doss_pers"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-68">
+        <createIndex indexName="doss_omzet_c_huw_locatie_idx" tableName="doss_omzet">
+            <column name="c_huw_locatie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-69">
+        <createIndex indexName="doss_ontb_d_in_idx" tableName="doss_ontb">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-70">
+        <createIndex indexName="doss_overl_aangever_bsn_idx" tableName="doss_overl_aangever">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-71">
+        <createIndex indexName="doss_overl_aangever_d_in_idx" tableName="doss_overl_aangever">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-72">
+        <createIndex indexName="doss_pers_akte1_idx" tableName="doss_pers_akte">
+            <column name="c_doss_akte"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-73">
+        <createIndex indexName="doss_pers_akte_c_doss_pers_idx" tableName="doss_pers_akte">
+            <column name="c_doss_pers"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-74">
+        <createIndex indexName="doss_pers_anr_idx" tableName="doss_pers">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-75">
+        <createIndex indexName="doss_pers_bsn_idx" tableName="doss_pers">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-76">
+        <createIndex indexName="doss_pers_c_doss_idx" tableName="doss_pers">
+            <column name="c_doss"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-77">
+        <createIndex indexName="doss_t_aanvr_idx" tableName="doss">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-78">
+        <createIndex indexName="doss_vereiste_c_doss_idx" tableName="doss_vereiste">
+            <column name="c_doss"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-79">
+        <createIndex indexName="geheimh_anr_aangever_idx" tableName="geheimhouding">
+            <column name="anr_aangever"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-80">
+        <createIndex indexName="geheimh_anr_idx" tableName="geheimhouding">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-81">
+        <createIndex indexName="geheimh_bsn_aangever_idx" tableName="geheimhouding">
+            <column name="bsn_aangever"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-82">
+        <createIndex indexName="geheimh_bsn_idx" tableName="geheimhouding">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-83">
+        <createIndex indexName="geheimh_c_location_idx" tableName="geheimhouding">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-84">
+        <createIndex indexName="geheimh_c_usr_idx" tableName="geheimhouding">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-85">
+        <createIndex indexName="geheimh_d_in_idx" tableName="geheimhouding">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-86">
+        <createIndex indexName="geheimh_ind_verwerkt_idx" tableName="geheimhouding">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-87">
+        <createIndex indexName="geheimh_t_in_idx" tableName="geheimhouding">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-88">
+        <createIndex indexName="gpk_anr_idx" tableName="gpk">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-89">
+        <createIndex indexName="gpk_bsn_idx" tableName="gpk">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-90">
+        <createIndex indexName="gpk_c_location_idx" tableName="gpk">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-91">
+        <createIndex indexName="gpk_c_usr_idx" tableName="gpk">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-92">
+        <createIndex indexName="gpk_d_aanvr_idx" tableName="gpk">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-93">
+        <createIndex indexName="gpk_ind_verwerkt_idx" tableName="gpk">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-94">
+        <createIndex indexName="gpk_t_aanvr_idx" tableName="gpk">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-95">
+        <createIndex indexName="gv_anr_idx" tableName="gv">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-96">
+        <createIndex indexName="gv_bsn_idx" tableName="gv">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-97">
+        <createIndex indexName="gv_c_location_idx" tableName="gv">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-98">
+        <createIndex indexName="gv_c_usr_idx" tableName="gv">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-99">
+        <createIndex indexName="gv_d_in_idx" tableName="gv">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-100">
+        <createIndex indexName="gv_ind_verwerkt_idx" tableName="gv">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-101">
+        <createIndex indexName="gv_proces_c_gv_idx" tableName="gv_proces">
+            <column name="c_gv"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-102">
+        <createIndex indexName="gv_proces_d_in_idx" tableName="gv_proces">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-103">
+        <createIndex indexName="gv_proces_t_in_idx" tableName="gv_proces">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-104">
+        <createIndex indexName="gv_t_in_idx" tableName="gv">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-105">
+        <createIndex indexName="huw_ambt_bsn_idx" tableName="huw_ambt">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-106">
+        <createIndex indexName="huw_ambt_d_in_idx" tableName="huw_ambt">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-107">
+        <createIndex indexName="huw_loc_opt_c_huw_locatie_idx" tableName="huw_loc_opt">
+            <column name="c_huw_locatie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-108">
+        <createIndex indexName="huw_loc_opt_1_idx" tableName="huw_loc_opt">
+            <column name="c_huw_locatie_optie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-109">
+        <createIndex indexName="huw_locatie_d_in_idx" tableName="huw_locatie">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-110">
+        <createIndex indexName="idvaststelling_bsn_idx" tableName="idvaststelling">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-111">
+        <createIndex indexName="idvaststelling_c_usr_idx" tableName="idvaststelling">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-112">
+        <createIndex indexName="idvaststelling_d_in_idx" tableName="idvaststelling">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-113">
+        <createIndex indexName="idvaststelling_t_in_idx" tableName="idvaststelling">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-114">
+        <createIndex indexName="inbox_bestand_c_inbox_idx" tableName="inbox_bestand">
+            <column name="c_inbox"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-115">
+        <createIndex indexName="inbox_c_location_idx" tableName="inbox">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-116">
+        <createIndex indexName="inbox_c_usr_idx" tableName="inbox">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-117">
+        <createIndex indexName="inbox_d_ingang_idx" tableName="inbox">
+            <column name="d_ingang"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-118">
+        <createIndex indexName="inbox_d_invoer_idx" tableName="inbox">
+            <column name="d_invoer"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-119">
+        <createIndex indexName="inbox_ind_verwerkt_idx" tableName="inbox">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-120">
+        <createIndex indexName="inbox_t_invoer_idx" tableName="inbox">
+            <column name="t_invoer"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-121">
+        <createIndex indexName="inbox_zaak_id_extern_idx" tableName="inbox">
+            <column name="zaak_id_extern"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-122">
+        <createIndex indexName="inbox_zaak_id_idx" tableName="inbox">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-123">
+        <createIndex indexName="ind_verwerkt_c_usr_idx" tableName="ind_verwerkt">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-124">
+        <createIndex indexName="ind_verwerkt_d_in_idx" tableName="ind_verwerkt">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-125">
+        <createIndex indexName="ind_verw_ind_verwerkt_idx" tableName="ind_verwerkt">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-126">
+        <createIndex indexName="ind_verw_t_in_idx" tableName="ind_verwerkt">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-127">
+        <createIndex indexName="indicatie_anr_idx" tableName="indicatie">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-128">
+        <createIndex indexName="indicatie_bsn_idx" tableName="indicatie">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-129">
+        <createIndex indexName="ind_c_aantekening_ind_idx" tableName="indicatie">
+            <column name="c_aantekening_ind"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-130">
+        <createIndex indexName="ind_c_location_idx" tableName="indicatie">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-131">
+        <createIndex indexName="ind_c_usr_idx" tableName="indicatie">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-132">
+        <createIndex indexName="ind_d_in_idx" tableName="indicatie">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-133">
+        <createIndex indexName="ind_ind_verwerkt_idx" tableName="indicatie">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-134">
+        <createIndex indexName="ind_t_in_idx" tableName="indicatie">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-135">
+        <createIndex indexName="kassa_b_c_p_kassa_idx" tableName="kassa_bundel">
+            <column name="c_parent_kassa"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-136">
+        <createIndex indexName="kassa_b_c_sub_kassa_idx" tableName="kassa_bundel">
+            <column name="c_sub_kassa"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-137">
+        <createIndex indexName="kassa_c_document_idx" tableName="kassa">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-138">
+        <createIndex indexName="kassa_c_reisdoc_idx" tableName="kassa">
+            <column name="c_reisdoc"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-139">
+        <createIndex indexName="kopp_doc_c_doc_idx" tableName="koppelenum_document">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-140">
+        <createIndex indexName="kopp_doc_c_koppelen_idx" tableName="koppelenum_document">
+            <column name="c_koppelenum"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-141">
+        <createIndex indexName="link_d_in_idx" tableName="link">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-142">
+        <createIndex indexName="naamgebruik_anr_idx" tableName="naamgebruik">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-143">
+        <createIndex indexName="naamgebruik_bsn_idx" tableName="naamgebruik">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-144">
+        <createIndex indexName="naamgebruik_c_location_idx" tableName="naamgebruik">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-145">
+        <createIndex indexName="naamgebruik_c_usr_idx" tableName="naamgebruik">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-146">
+        <createIndex indexName="naamgebruik_d_in_idx" tableName="naamgebruik">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-147">
+        <createIndex indexName="naamg_ind_verwerkt_idx" tableName="naamgebruik">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-148">
+        <createIndex indexName="naamg_t_in_idx" tableName="naamgebruik">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-149">
+        <createIndex indexName="nrd_anr_idx" tableName="nrd">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-150">
+        <createIndex indexName="nrd_bsn_idx" tableName="nrd">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-151">
+        <createIndex indexName="nrd_c_afhaal_loc_idx" tableName="nrd">
+            <column name="c_afhaal_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-152">
+        <createIndex indexName="nrd_c_loc_idx" tableName="nrd">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-153">
+        <createIndex indexName="nrd_c_usr_aanvr_idx" tableName="nrd">
+            <column name="c_usr_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-154">
+        <createIndex indexName="nrd_d_aanvr_idx" tableName="nrd">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-155">
+        <createIndex indexName="nrd_ind_verwerkt_idx" tableName="nrd">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-156">
+        <createIndex indexName="nrd_stat_c_aanvr_idx" tableName="nrd_status">
+            <column name="c_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-157">
+        <createIndex indexName="nrd_stat_c_usr_idx" tableName="nrd_status">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-158">
+        <createIndex indexName="nrd_t_aanvr_idx" tableName="nrd">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-159">
+        <createIndex indexName="parm_c_profile_idx" tableName="parm">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-160">
+        <createIndex indexName="parm_c_usr_idx" tableName="parm">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-161">
+        <createIndex indexName="pl_hist_c_usr_idx" tableName="pl_hist">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-162">
+        <createIndex indexName="presvr_c_location_idx" tableName="presentievraag">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-163">
+        <createIndex indexName="presvr_c_usr_idx" tableName="presentievraag">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-164">
+        <createIndex indexName="presvr_d_in_idx" tableName="presentievraag">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-165">
+        <createIndex indexName="presvr_t_in_idx" tableName="presentievraag">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-166">
+        <createIndex indexName="presvr_zaak_id_idx" tableName="presentievraag">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-167">
+        <createIndex indexName="printopt_doc_c_doc_idx" tableName="printoptie_document">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-168">
+        <createIndex indexName="printopt_doc_c_printopt_idx" tableName="printoptie_document">
+            <column name="c_printoptie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-169">
+        <createIndex indexName="printopt_loc_c_loc_idx" tableName="printoptie_location">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-170">
+        <createIndex indexName="printopt_loc_c_printopt_idx" tableName="printoptie_location">
+            <column name="c_printoptie"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-171">
+        <createIndex indexName="prof_aant_ind_c_aant_ind_idx" tableName="profile_aantekening_ind">
+            <column name="c_aantekening_ind"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-172">
+        <createIndex indexName="prof_aant_ind_c_profile_idx" tableName="profile_aantekening_ind">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-173">
+        <createIndex indexName="prof_action_c_action_idx" tableName="profile_action">
+            <column name="c_action"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-174">
+        <createIndex indexName="prof_action_c_profile_idx" tableName="profile_action">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-175">
+        <createIndex indexName="prof_field_c_field_idx" tableName="profile_field">
+            <column name="c_field"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-176">
+        <createIndex indexName="prof_field_c_prof_idx" tableName="profile_field">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-177">
+        <createIndex indexName="prof_gba_cat_c_gba_cat_idx" tableName="profile_gba_category">
+            <column name="c_gba_category"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-178">
+        <createIndex indexName="prof_gba_cat_c_prof_idx" tableName="profile_gba_category">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-179">
+        <createIndex indexName="prof_gba_elem_c_gba_elem_idx" tableName="profile_gba_element">
+            <column name="c_gba_element"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-180">
+        <createIndex indexName="prof_gba_elem_c_prof_idx" tableName="profile_gba_element">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-181">
+        <createIndex indexName="prot_new_search_attr_1_idx" tableName="prot_new_search_attr">
+            <column name="c_prot_new_search"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-182">
+        <createIndex indexName="rdm01_anr_idx" tableName="rdm01">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-183">
+        <createIndex indexName="rdm01_bsn_idx" tableName="rdm01">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-184">
+        <createIndex indexName="rdm01_c_afh_loc_idx" tableName="rdm01">
+            <column name="c_afhaal_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-185">
+        <createIndex indexName="rdm01_c_loc_idx" tableName="rdm01">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-186">
+        <createIndex indexName="rdm01_c_usr_aanvr_idx" tableName="rdm01">
+            <column name="c_usr_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-187">
+        <createIndex indexName="rdm01_c_usr_uitg_idx" tableName="rdm01">
+            <column name="c_usr_uitgifte"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-188">
+        <createIndex indexName="rdm01_d_aanvr_idx" tableName="rdm01">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-189">
+        <createIndex indexName="rdm01_ind_verw_idx" tableName="rdm01">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-190">
+        <createIndex indexName="rdm01_t_aanvr_idx" tableName="rdm01">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-191">
+        <createIndex indexName="rdm01_toest_ouder1_anr_idx" tableName="rdm01">
+            <column name="toest_ouder1_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-192">
+        <createIndex indexName="rdm01_toest_ouder2_anr_idx" tableName="rdm01">
+            <column name="toest_ouder2_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-193">
+        <createIndex indexName="rdm02_anr_idx" tableName="rdm02">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-194">
+        <createIndex indexName="rdm02_d_aanvr_idx" tableName="rdm02">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-195">
+        <createIndex indexName="rdm02_ind_verwerkt_idx" tableName="rdm02">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-196">
+        <createIndex indexName="rdm02_rdm01_id_idx" tableName="rdm02">
+            <column name="rdm01_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-197">
+        <createIndex indexName="rdm02_t_aanvr_idx" tableName="rdm02">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-198">
+        <createIndex indexName="rdm02_toest_ouder1_anr_idx" tableName="rdm02">
+            <column name="toest_ouder1_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-199">
+        <createIndex indexName="rdm02_toest_ouder2_anr_idx" tableName="rdm02">
+            <column name="toest_ouder2_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-200">
+        <createIndex indexName="rdm02_zaak_id_idx" tableName="rdm02">
+            <column name="zaak_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-201">
+        <createIndex indexName="soap_d_in_idx" tableName="soap">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-202">
+        <createIndex indexName="soap_t_in_idx" tableName="soap">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-203">
+        <createIndex indexName="terugm_d_c_terugm_idx" tableName="terugm_detail">
+            <column name="c_terugmelding"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-204">
+        <createIndex indexName="terugm_r_c_terugm_idx" tableName="terugm_reactie">
+            <column name="c_terugmelding"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-205">
+        <createIndex indexName="terugm_r_c_usr_idx" tableName="terugm_reactie">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-206">
+        <createIndex indexName="terugm_r_d_in_idx" tableName="terugm_reactie">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-207">
+        <createIndex indexName="terugm_r_t_in_idx" tableName="terugm_reactie">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-208">
+        <createIndex indexName="terugm_tmv_c_usr_idx" tableName="terugm_tmv">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-209">
+        <createIndex indexName="terugm_tmv_rel_c_terugm_idx" tableName="terugm_tmv_rel">
+            <column name="c_terugmelding"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-210">
+        <createIndex indexName="terugm_anr_idx" tableName="terugmelding">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-211">
+        <createIndex indexName="terugm_c_location_idx" tableName="terugmelding">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-212">
+        <createIndex indexName="terugm_c_usr_afh_idx" tableName="terugmelding">
+            <column name="c_usr_afh"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-213">
+        <createIndex indexName="terugm_c_usr_toev_idx" tableName="terugmelding">
+            <column name="c_usr_toev"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-214">
+        <createIndex indexName="terugm_c_usr_verantw_idx" tableName="terugmelding">
+            <column name="c_usr_verantw"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-215">
+        <createIndex indexName="terugm_d_in_idx" tableName="terugmelding">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-216">
+        <createIndex indexName="terugm_ind_verwerkt_idx" tableName="terugmelding">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-217">
+        <createIndex indexName="terugm_t_in_idx" tableName="terugmelding">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-218">
+        <createIndex indexName="uitt_aanvr_anr_idx" tableName="uitt_aanvr">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-219">
+        <createIndex indexName="uitt_aanvr_bsn_idx" tableName="uitt_aanvr">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-220">
+        <createIndex indexName="uitt_aanvr_c_doc_idx" tableName="uitt_aanvr">
+            <column name="c_document"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-221">
+        <createIndex indexName="uitt_aanvr_c_loc_idx" tableName="uitt_aanvr">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-222">
+        <createIndex indexName="uitt_aanvr_c_usr_aanvr_idx" tableName="uitt_aanvr">
+            <column name="c_usr_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-223">
+        <createIndex indexName="uitt_aanvr_d_aanvr_idx" tableName="uitt_aanvr">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-224">
+        <createIndex indexName="uitt_aanvr_ind_verwerkt_idx" tableName="uitt_aanvr">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-225">
+        <createIndex indexName="uitt_aanvr_rel_anr_idx" tableName="uitt_aanvr">
+            <column name="rel_anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-226">
+        <createIndex indexName="uitt_aanvr_rel_bsn_idx" tableName="uitt_aanvr">
+            <column name="rel_bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-227">
+        <createIndex indexName="uitt_aanvr_t_aanvr_idx" tableName="uitt_aanvr">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-228">
+        <createIndex indexName="usr_d_in_idx" tableName="usr">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-229">
+        <createIndex indexName="usr_loc_c_loc_idx" tableName="usr_location">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-230">
+        <createIndex indexName="usr_loc_c_usr_idx" tableName="usr_location">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-231">
+        <createIndex indexName="usr_profile_c_profile_idx" tableName="usr_profile">
+            <column name="c_profile"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-232">
+        <createIndex indexName="usr_profile_c_usr_idx" tableName="usr_profile">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-233">
+        <createIndex indexName="usr_pw_hist_c_usr_idx" tableName="usr_pw_hist">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-234">
+        <createIndex indexName="vog_aanvr_anr_idx" tableName="vog_aanvr">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-235">
+        <createIndex indexName="vog_aanvr_bsn_a_idx" tableName="vog_aanvr">
+            <column name="bsn_a"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-236">
+        <createIndex indexName="vog_aanvr_c_location_idx" tableName="vog_aanvr">
+            <column name="c_location"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-237">
+        <createIndex indexName="vog_aanvr_c_scr_prof_idx" tableName="vog_aanvr">
+            <column name="c_scr_prof"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-238">
+        <createIndex indexName="vog_aanvr_c_usr_idx" tableName="vog_aanvr">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-239">
+        <createIndex indexName="vog_aanvr_d_aanvr_idx" tableName="vog_aanvr">
+            <column name="d_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-240">
+        <createIndex indexName="vog_aanvr_ind_verwerkt_idx" tableName="vog_aanvr">
+            <column name="ind_verwerkt"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-241">
+        <createIndex indexName="vog_aanvr_t_aanvr_idx" tableName="vog_aanvr">
+            <column name="t_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-242">
+        <createIndex indexName="vog_aanvr_vog_doel_idx" tableName="vog_aanvr">
+            <column name="vog_doel"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-243">
+        <createIndex indexName="vog_doel_tab_d_in_idx" tableName="vog_doel_tab">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-244">
+        <createIndex indexName="vog_func_asp_c_vog_aanvr_idx" tableName="vog_func_asp">
+            <column name="c_vog_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-245">
+        <createIndex indexName="vog_func_asp_1_idx" tableName="vog_func_asp">
+            <column name="c_vog_func_tab"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-246">
+        <createIndex indexName="vog_func_tab_d_in_idx" tableName="vog_func_tab">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-247">
+        <createIndex indexName="vog_hist_bsn_a_idx" tableName="vog_hist">
+            <column name="bsn_a"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-248">
+        <createIndex indexName="vog_hist_c_vog_aanvr_idx" tableName="vog_hist">
+            <column name="c_vog_aanvr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-249">
+        <createIndex indexName="vog_prof_tab_d_in_idx" tableName="vog_prof_tab">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-250">
+        <createIndex indexName="terugm_tmv_d_in_idx" tableName="terugm_tmv">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-251">
+        <createIndex indexName="terugm_tmv_t_in_idx" tableName="terugm_tmv">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-252">
+        <createIndex indexName="usr_pw_hist_d_in_idx" tableName="usr_pw_hist">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-253">
+        <createIndex indexName="usr_pw_hist_t_in_idx" tableName="usr_pw_hist">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-254">
+        <createIndex indexName="log_d_in_idx" tableName="log">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-255">
+        <createIndex indexName="log_t_in_idx" tableName="log">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-256">
+        <createIndex indexName="log_c_usr_idx" tableName="log">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-257">
+        <createIndex indexName="prot_d_in_idx" tableName="prot">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-258">
+        <createIndex indexName="prot_t_in_idx" tableName="prot">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-259">
+        <createIndex indexName="prot_anr_idx" tableName="prot">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-260">
+        <createIndex indexName="prot_new_c_usr_idx" tableName="prot">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-261">
+        <createIndex indexName="prot_new_anr_idx" tableName="prot_new">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-262">
+        <createIndex indexName="prot_new_d_in_idx" tableName="prot_new">
+            <column name="d_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-263">
+        <createIndex indexName="prot_new_search_t_in_idx" tableName="prot_new_search">
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-264">
+        <createIndex indexName="prot_new_s_c_prot_new_idx" tableName="prot_new_search">
+            <column name="c_prot_new"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-265">
+        <createIndex indexName="zaak_id_extern_id_idx" tableName="zaak_id">
+            <column name="extern_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-266">
+        <createIndex indexName="zaak_id_zaak_type_idx" tableName="zaak_id">
+            <column name="zaak_type"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-267">
+        <createIndex indexName="zaak_id_id_type_idx" tableName="zaak_id">
+            <column name="id_type"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1500034902106-268">
+        <createIndex indexName="zaak_id_intern_id_idx" tableName="zaak_id">
+            <column name="intern_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.10.0-3" author="Procura (Frits Janssen)">
+        <dropTable cascadeConstraints="true" tableName="brp"/>
+    </changeSet>
+
+    <changeSet id="1.10.0-4" author="Procura (Frits Janssen)">
+        <dropTable cascadeConstraints="true" tableName="brp_melding"/>
+    </changeSet>
+
+    <changeSet id="1.10.0-5" author="Procura (Frits Janssen)">
+        <dropTable cascadeConstraints="true" tableName="soap"/>
+    </changeSet>
+
+    <changeSet id="1.10.0-6" author="Procura (Frits Janssen)">
+        <createTable tableName="sms">
+            <column name="c_sms" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="sender_id" type="VARCHAR(255)"/>
+            <column name="content" type="TEXT"/>
+            <column defaultValueNumeric="0" name="active" type="numeric(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="auto" type="numeric(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.10.0-7" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_sms" constraintName="sms_pkey" tableName="sms"/>
+    </changeSet>
+</databaseChangeLog>

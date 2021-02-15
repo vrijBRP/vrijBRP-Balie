@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201603-1" author="Procura (Frits Janssen)">
+        <createTable tableName="doss_ontb">
+            <column name="c_doss_ontb" remarks="Tabelcode" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="soort_vb" remarks="Soort verbintenis" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="d_vb"
+                    remarks="Datum verbintenis"
+                    type="numeric"/>
+            <column name="p_vb" remarks="Plaats verbintenis" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="l_vb"
+                    remarks="Land verbintenis"
+                    type="numeric"/>
+            <column name="akte_nr" remarks="Aktenummer verbintenis" type="VARCHAR(255)"/>
+            <column name="akte_plaats"
+                    remarks="Akteplaats verbintenis"
+                    type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="akte_jaar"
+                    remarks="Aktejaar verbintenis"
+                    type="numeric"/>
+            <column name="p1_naam"
+                    remarks="Naam na naamswijziging persoon 1"
+                    type="VARCHAR(255)"/>
+            <column name="p2_naam"
+                    remarks="Naam na naamswijziging persoon 2"
+                    type="VARCHAR(255)"/>
+            <column name="p1_ng"
+                    remarks="Naamgebruik na ontbinding persoon 1"
+                    type="VARCHAR(1)"/>
+            <column name="p2_ng"
+                    remarks="Naamgebruik na ontbinding persoon 2"
+                    type="VARCHAR(255)"/>
+            <column name="p1_voorv"
+                    remarks="Voorvoegsel na ontbinding persoon 1"
+                    type="VARCHAR(255)"/>
+            <column name="p2_voorv"
+                    remarks="Voorvoegsel na ontbinding persoon 2"
+                    type="VARCHAR(255)"/>
+            <column name="p1_titel"
+                    remarks="Titel na ontbinding persoon 1"
+                    type="VARCHAR(255)"/>
+            <column name="p2_titel"
+                    remarks="Titel na ontbinding persoon 2"
+                    type="VARCHAR(255)"/>
+            <column name="uitspraak" remarks="Uitspraak door" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="d_gewijsde"
+                    remarks="Datum kracht van gewijsde"
+                    type="numeric"/>
+            <column name="verzoek_door"
+                    remarks="Verzoek tot inschrijving door"
+                    type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="d_verzoek"
+                    remarks="Verzoek ontvangen op"
+                    type="numeric"/>
+            <column defaultValueComputed="-1" name="binnen_termijn" type="numeric(1)"/>
+            <column name="soort_einde_vb"
+                    remarks="Wijze van beeindiging door"
+                    type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="d_verklaring"
+                    remarks="Verklaring ontvangen op"
+                    type="numeric"/>
+            <column name="ondert_door" remarks="Ondertekend door" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="-1"
+                    name="d_ondert"
+                    remarks="Datum ondertekening"
+                    type="numeric"/>
+            <column name="verzoek_door_oms"
+                    remarks="Verzoek tot inschrijving door (omschrijving)"
+                    type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201603-2" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_doss_ontb"
+                       constraintName="doss_ontb_pkey"
+                       tableName="doss_ontb"/>
+    </changeSet>
+
+    <changeSet id="201603-3" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_doss_ontb"
+                                 baseTableName="doss_ontb"
+                                 constraintName="doss_ontb_c_doss_ontb_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss"
+                                 referencedTableName="doss"/>
+    </changeSet>
+
+    <changeSet id="201603-4" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_ontb">
+            <column name="d_uitspraak"
+                    remarks="Datum uitspraak"
+                    type="numeric"
+                    defaultValueComputed="-1"
+            />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201603-5" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_ontb">
+            <column name="d_in"
+                    remarks="Datum ingang"
+                    type="numeric"
+                    defaultValueComputed="-1"
+            />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201603-6" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_ontb">
+            <column name="adv_naam"
+                    remarks="Naam (advocaat)"
+                    type="VARCHAR(255)"
+            />
+        </addColumn>
+
+        <addColumn tableName="doss_ontb">
+            <column name="adv_tav"
+                    remarks="Ter attentie van (advocaat)"
+                    type="VARCHAR(255)"
+            />
+        </addColumn>
+
+        <addColumn tableName="doss_ontb">
+            <column name="adv_adres"
+                    remarks="Adres (advocaat)"
+                    type="VARCHAR(255)"
+            />
+        </addColumn>
+
+        <addColumn tableName="doss_ontb">
+            <column name="adv_pc"
+                    remarks="Postcode (advocaat)"
+                    type="VARCHAR(255)"
+            />
+        </addColumn>
+
+        <addColumn tableName="doss_ontb">
+            <column name="adv_plaats"
+                    remarks="Plaats (advocaat)"
+                    type="VARCHAR(255)"
+            />
+        </addColumn>
+
+        <addColumn tableName="doss_ontb">
+            <column name="adv_kenmerk"
+                    remarks="Kenmerk (advocaat)"
+                    type="VARCHAR(255)"
+            />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201603-7" author="Procura (Frits Janssen)">
+        <createTable tableName="belangh">
+            <column defaultValueNumeric="0"
+                    name="c_belangh"
+                    remarks="Tabelcode"
+                    type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="naam" remarks="Naam belanghebbende" type="VARCHAR(255)"/>
+            <column name="tav" remarks="Ter attentie van" type="VARCHAR(255)"/>
+            <column name="adres"
+                    remarks="Adres (Straat / huisnummer / huisletter)"
+                    type="VARCHAR(255)"/>
+            <column name="pc" remarks="Postcode" type="VARCHAR(255)"/>
+            <column name="plaats" remarks="Plaats" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1"
+                    name="c_land"
+                    remarks="Landcode"
+                    type="numeric"/>
+            <column name="tel" remarks="Telefoonnummer" type="VARCHAR(255)"/>
+            <column name="email" remarks="E-mail" type="VARCHAR(255)"/>
+            <column name="type" remarks="Type belanghebbende" type="VARCHAR(255)"/>
+        </createTable>
+
+        <addPrimaryKey columnNames="c_belangh"
+                       constraintName="belangh_pkey"
+                       tableName="belangh"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits Janssen)" id="1.12.0-1">
+        <createTable tableName="app">
+            <column name="c_app" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="attr" type="TEXT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.12.0-2">
+        <addPrimaryKey columnNames="c_app" constraintName="app_pkey" tableName="app"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.12.0-3">
+        <addColumn tableName="app">
+            <column name="active" type="numeric" defaultValueComputed="0"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

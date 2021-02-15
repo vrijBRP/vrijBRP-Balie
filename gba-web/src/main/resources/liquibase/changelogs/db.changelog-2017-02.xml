@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201702-01" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_ontb">
+            <column name="brp_akte_nr" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201702-02" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_ontb">
+            <column name="adv_land" type="VARCHAR(255)" remarks="Land (advocaat)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201702-03" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_ontb">
+            <column name="c_ontb_gem" type="numeric" defaultValue="-1" remarks="gemeente ontbinding"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201702-04" author="Procura (Frits Janssen)">
+        <sql>
+            <![CDATA[update doss_akte set d_in = d_feit where registersoort in (3,5) and d_in > 0 and d_feit > 0 and d_in != d_feit]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

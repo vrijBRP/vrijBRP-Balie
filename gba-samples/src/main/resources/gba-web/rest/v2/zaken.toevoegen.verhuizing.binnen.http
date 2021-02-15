@@ -1,0 +1,94 @@
+### Zoek op alle zaakgegevens
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken/toevoegen
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaak": {
+    "algemeen": {
+      "zaakId": "",
+      "type": "BINNENVERHUIZING",
+      "status": "INCOMPLEET",
+      "bron": "SIM-APP",
+      "leverancier": "SIM",
+      "datumIngang": 20200201,
+      "ids": [
+        {
+          "id": "SIM-1234",
+          "systeem": "ZAAKSYSTEEM"
+        },
+        {
+          "id": "GEMEENTE-1234",
+          "systeem": "GEMEENTE"
+        }
+      ]
+    },
+    "verhuizing": {
+      "type": "BINNENGEMEENTELIJK",
+      "bestemmmingHuidigeBewoners": "Geen idee",
+      "aangever": {
+        "bsn": 1351,
+        "contactgegevens": {
+          "email": "burgerzaken@procura.nl",
+          "telefoonThuis": "1234",
+          "telefoonWerk": "5678",
+          "telefoonMobiel": "9876",
+          "telefoonBuitenland": {
+            "telefoon": "32312",
+            "landCode": 6047
+          }
+        },
+        "ambtshalve": true,
+        "hoofdInstelling": true,
+        "toelichting": "Dit is de aangever"
+      },
+      "hoofdbewoner": {
+        "bsn": 1351
+      },
+      "inwoning": {
+        "sprakeVanInwoning": true,
+        "toestemminggever": {
+          "bsn": 1351,
+          "anders": null
+        },
+        "aangifteStatus": "NIET_INGEVULD",
+        "toestemmingStatus": "NIET_VAN_TOEPASSING"
+      },
+      "binnenverhuizing": {
+        "nieuwAdres": {
+          "gemeente": {
+            "waarde": "0361",
+            "omschrijving": "Alkmaar"
+          },
+          "locatie": null,
+          "postcode": "1234AA",
+          "straat": "Dorpstraat",
+          "woonplaats": "Oudorp",
+          "aantalPersonen": 1,
+          "functieAdres": "WOONADRES",
+          "hnr": 1,
+          "hnrL": "L",
+          "hnrT": "T"
+        }
+      },
+      "buitenverhuizing": null,
+      "emigratie": null,
+      "hervestiging": null,
+      "verhuizers": [
+        {
+          "bsn": 1351,
+          "aangifte": "INGESCHREVENE",
+          "verwerken": true
+        },
+        {
+          "bsn": 999994335,
+          "aangifte": "ECHTGENOOT_GEREGISTREERD_PARTNER",
+          "verwerken": false
+        }
+      ]
+    }
+  }
+}
+
+###

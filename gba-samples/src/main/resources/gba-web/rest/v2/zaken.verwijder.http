@@ -1,0 +1,5 @@
+### Verwijderen op zaak-id
+DELETE http://{{host}}:{{port}}/personen/rest/v2/zaken/SIM-1234
+Authorization: Basic {{username}} {{password}}
+
+###

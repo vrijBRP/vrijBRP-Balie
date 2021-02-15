@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>gba-parent</artifactId>
+        <groupId>nl.procura.gba</groupId>
+        <version>1.26.1</version>
+    </parent>
+
+    <artifactId>gba-curatele</artifactId>
+    <name>Proweb GBA - Curatele webservice</name>
+
+    <properties>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>nl.procura</groupId>
+            <artifactId>javax</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.pom</groupId>
+            <artifactId>logging</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.soap</groupId>
+            <artifactId>soap-utils</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>gba-curatele</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true
+                    </useDefaultManifestFile>
+                    <includes>
+                        <include>nl/**/*</include>
+                        <include>wsdl/**/*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <!-- WSDL2Java genereren -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>wsimport-generate</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <bindingDirectory>src/main/resources/bindings</bindingDirectory>
+                            <wsdlDirectory>${basedir}/src/main/resources/wsdl/</wsdlDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-value-constructor</artifactId>
+                        <version>${org.jvnet.jaxb2_commons.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-fluent-api</artifactId>
+                        <version>${org.jvnet.jaxb2_commons.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <sourceDestDir>${project.build.directory}/generated-sources1/main/java</sourceDestDir>
+                    <wsdlDirectory>${basedir}/src/main/resources/wsdl/</wsdlDirectory>
+                    <staleFile>${project.build.directory}/generated-sources1/wsimport/stale/wsdl.done</staleFile>
+                    <encoding>UTF-8</encoding>
+                    <extension>true</extension>
+                    <target>2.2</target>
+                    <xnocompile>true</xnocompile>
+                    <verbose>true</verbose>
+                    <xjcArgs>
+                        <xjcArg>-Xfluent-api</xjcArg>
+                        <xjcArg>-Xvalue-constructor</xjcArg>
+                    </xjcArgs>
+                </configuration>
+            </plugin>
+
+            <!-- XSD2Java genereren -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jaxb-test</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateDirectory>${project.build.directory}/generated-sources2/main/java</generateDirectory>
+                    <schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>
+                    <schemaIncludes>
+                        <include>RSpublicWS_GuardianshipContent01.xsd</include>
+                        <include>RSpublicWS_LastUpdate01.xsd</include>
+                    </schemaIncludes>
+                </configuration>
+            </plugin>
+
+            <!-- wsimport toevoegen -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources1/main/java/</source>
+                                <source>${project.build.directory}/generated-sources2/main/java/</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

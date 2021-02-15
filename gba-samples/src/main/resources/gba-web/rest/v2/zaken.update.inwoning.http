@@ -1,0 +1,37 @@
+### Wel toestemming geven
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken/verhuizing/inwoning
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaakId": "SIM-1234",
+  "inwoning": {
+    "sprakeVanInwoning": true,
+    "toestemminggever": {
+      "bsn": 1351
+    },
+    "toestemmingStatus": "JA",
+    "aangifteStatus": "GEACCEPTEERD"
+  }
+}
+
+### Geen toestemming geven
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken/verhuizing/inwoning
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaakId": "SIM-1234",
+  "inwoning": {
+    "sprakeVanInwoning": true,
+    "toestemminggever": {
+      "bsn": 1351
+    },
+    "toestemmingStatus": "NEE",
+    "aangifteStatus": "NIET_GEACCEPTEERD"
+  }
+}
+
+###

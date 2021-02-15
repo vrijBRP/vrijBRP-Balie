@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201609-01" author="Procura (Frits Janssen)">
+        <createTable tableName="inbox">
+            <column name="c_inbox" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zaak_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zaak_id_extern" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verwerk_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="true" name="nieuw" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="d_invoer" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="t_invoer" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="ind_verwerkt" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bron" type="VARCHAR(255)"/>
+            <column name="leverancier" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="0" name="c_usr" type="numeric"/>
+            <column defaultValueNumeric="0" name="c_location" type="numeric"/>
+            <column name="bestandsnaam" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="omschrijving" type="VARCHAR(4000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201609-02" author="Procura (Frits Janssen)">
+        <createTable tableName="inbox_bestand">
+            <column name="c_inbox_bestand" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_inbox" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bestand" type="blob">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201609-03" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_inbox_bestand" constraintName="inbox_bestand_pkey" tableName="inbox_bestand"/>
+    </changeSet>
+
+    <changeSet id="201609-04" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_inbox" constraintName="inbox_pkey" tableName="inbox"/>
+    </changeSet>
+
+    <changeSet id="201609-05" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_inbox" baseTableName="inbox_bestand"
+                                 constraintName="inbox_bestand_c_inbox_fkey" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_inbox"
+                                 referencedTableName="inbox"/>
+    </changeSet>
+
+    <changeSet id="201609-06" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_location" baseTableName="inbox"
+                                 constraintName="inbox_c_location_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_location"
+                                 referencedTableName="location"/>
+    </changeSet>
+
+    <changeSet id="201609-07" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_usr" baseTableName="inbox" constraintName="inbox_c_usr_fkey"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION" referencedColumnNames="c_usr" referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet id="201609-08" author="Procura (Frits Janssen)">
+        <addColumn tableName="inbox">
+            <column name="d_ingang" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201609-09" author="Procura (Frits Janssen)">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <modifyDataType
+                tableName="presentievraag"
+                columnName="antwoord"
+                newDataType="text"/>
+    </changeSet>
+
+    <changeSet id="201609-10" author="Procura (Frits Janssen)">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <modifyDataType
+                tableName="presentievraag"
+                columnName="vraag"
+                newDataType="text"/>
+    </changeSet>
+</databaseChangeLog>

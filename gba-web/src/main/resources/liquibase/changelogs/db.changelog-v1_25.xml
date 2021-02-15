@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits)" id="v1_25-1">
+        <dropColumn tableName="usr" columnName="pw"/>
+        <dropColumn tableName="usr" columnName="d_end_pw"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_25-2">
+        <addColumn tableName="usr_pw_hist">
+            <column name="pw_version" type="numeric" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Maarten)" id="v1_25-residents-on-extract">
+        <insert tableName="kenmerk">
+            <column name="c_kenmerk" valueNumeric="4"/>
+            <column name="kenmerk" value="Ophalen bewoners"/>
+            <column name="kenmerk_type" value="bewoners"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_25-3">
+        <comment>Add fields to store correspondence values supplied via the API</comment>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_ind" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_25-4">
+        <comment>
+            Add fields to compare the name and death info provided via the API
+            with the actual info from the BRP
+        </comment>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_voorn" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_gesl_naam" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_voorv" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_titel" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_d_geb" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_p_geb" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_overl">
+            <column name="verzoek_overl_l_geb" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_25-5">
+        <comment>
+            Add fields to store extract for death dossiers
+        </comment>
+        <createTable tableName="doss_overl_uitt">
+            <column name="c_doss_overl_uitt" type="numeric">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="c_doss_overl" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uitt_code" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uitt_descr" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uitt_amount" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_25-6">
+        <addForeignKeyConstraint baseColumnNames="c_doss_overl"
+                                 baseTableName="doss_overl_uitt"
+                                 constraintName="doss_overl_uitt_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_overl"
+                                 referencedTableName="doss_overl"/>
+    </changeSet>
+
+    <changeSet author="Procura (Maarten)" id="v1_25-7">
+        <comment>
+            Create correspondence destination table for dossiers
+        </comment>
+        <createTable tableName="doss_corr_dest">
+            <column name="c_doss_corr_dest" type="numeric">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="comm_type" type="VARCHAR(2)" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organisatie" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="afdeling" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="naam" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tel" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="straat" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr" type="numeric" defaultValueComputed="-1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_l" type="VARCHAR(1)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_t" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pc" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="plaats" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="doss_corr_dest"
+                                 baseColumnNames="c_doss_corr_dest"
+                                 constraintName="doss_corr_dest_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss"
+                                 referencedTableName="doss"/>
+    </changeSet>
+
+    <changeSet author="Procura (Maarten)" id="v1_25-risk-analysis">
+        <comment></comment>
+        <createTable tableName="rp_type" remarks="Types per risk profile">
+            <column name="c_rp_type" remarks="primary key" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_rp" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="c_rp_type" constraintName="rp_type_pkey" tableName="rp_type"/>
+        <dropColumn tableName="rp" columnName="rel_type"/>
+        <dropColumn tableName="rp" columnName="fail_type"/>
+        <dropColumn tableName="rp" columnName="success_type"/>
+    </changeSet>
+</databaseChangeLog>

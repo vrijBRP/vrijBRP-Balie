@@ -1,0 +1,101 @@
+### Zoek op zaak-id
+GET http://{{host}}:{{port}}/personen/rest/v2/zaken/0300-e7a-s6o
+Authorization: Basic {{username}} {{password}}
+
+### Zoek op alle zaakgegevens
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "persoonId": null,
+  "zaakIds": null,
+  "zaakTypes": null,
+  "zaakStatussen": null,
+  "zaakAttributen": null,
+  "ingangsDatum": {
+    "van": 19000424,
+    "tm": 20200424
+  },
+  "invoerDatum": {
+    "van": 19000424,
+    "tm": 20200424
+  },
+  "mutatieDatum": {
+    "van": 19000424,
+    "tm": 20200424
+  },
+  "sortering": "DATUM_INVOER_NIEUW_OUD",
+  "max": 10,
+  "zoekGegevens": [
+    "ALGEMENE_ZAAKGEGEVENS"
+  ]
+}
+
+
+### Zoek op alle zaakgegevens
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaakIds": [
+    "overl-1234"
+  ],
+  "zoekGegevens": [
+    "SPECIFIEKE_ZAAKGEGEVENS"
+  ]
+}
+
+
+### Zoek zaken met algemene zaakgegevens
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaakIds": [
+    "Zaak-1234"
+  ],
+  "zoekGegevens": [
+    "ALGEMENE_ZAAKGEGEVENS"
+  ]
+}
+
+
+### Zoek aantallen
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "persoonId": 1351,
+  "zaakStatussen": [
+    "OPGENOMEN",
+    "INBEHANDELING"
+  ],
+  "zoekGegevens": [
+    "AANTALLEN"
+  ]
+}
+
+
+### Zoek sleutels
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "sortering": "DATUM_INVOER_NIEUW_OUD",
+  "max": 10,
+  "zoekGegevens": [
+    "SLEUTELS"
+  ]
+}
+
+###

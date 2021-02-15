@@ -1,0 +1,64 @@
+.bslayout .v-button {
+	text-align: left;
+	height: 25px;
+}
+
+.bslayout .v-label {
+	padding-top: 2px;
+	height: 28px;
+	font-size: 13px;
+	color: #44698b;
+	font-weight: 700;
+	font-family: arial;
+}
+
+.bslayout .v-button,
+.bslayout .v-button .v-button-wrap {
+	background: #ffffff;
+}
+
+.bslayout .v-button .v-button-wrap,
+.bslayout .v-button.current .v-button-wrap {
+	display: inherit;
+	background: none;
+	vertical-align: middle;
+	padding-top: 4px;
+}
+
+.bslayout .v-button .v-button-caption {
+	text-shadow: none;
+}
+
+.bslayout .v-button.prev {
+	background1: #f9f9f9;
+}
+
+.bslayout .v-button.prev:hover {
+	background1: #e9eff8;
+}
+
+.bslayout .v-button.current {
+	background: #e9eff8;
+}
+
+.bslayout .v-button.incomplete,
+.bslayout .v-button.incomplete:hover {
+	background-image: url(../../procura3/icons/16/warning.png);
+	background-repeat: no-repeat;
+	background-position: 95%;
+}
+
+.bslayout .v-button.disabled,
+.bslayout .v-button.next {
+	cursor: default;
+	border-bottom: 0px;
+}
+
+.bslayout .v-button.last {
+	border-bottom: 0px;
+}
+
+.bslayout .v-button.disabled .v-button-caption,
+.bslayout .v-button.next .v-button-caption {
+	color: #bbb;
+}

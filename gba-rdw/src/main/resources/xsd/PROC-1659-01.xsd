@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PROC-1659-01" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>ONDERHOUD AANVRAAG RYBEWYSKAART EN STATUS</xs:documentation>
+    <xs:documentation>Proces: Raadplegen aanvraag rybewyskaart op aanvraagnr</xs:documentation>
+    <xs:documentation>Functie: Aanvraagbericht</xs:documentation>
+    <xs:documentation>Versie: 3.0</xs:documentation>
+    <xs:documentation>Gegenereerd op 08-03-2018 10:58</xs:documentation>
+  </xs:annotation>
+  <xs:element name="AANVR-RYB-KRT" type="AANVR-RYB-KRT" />
+  <xs:complexType name="AANVR-RYB-KRT">
+    <xs:all>
+      <xs:element name="ALG-GEG" type="ALG-GEG" />
+      <xs:element name="AANVR-RYB-K-GEG" type="AANVR-RYB-K-GEG" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ALG-GEG">
+    <xs:all>
+      <xs:element name="GEBR-IDENT" type="GEBR-IDENT" />
+      <xs:element name="WACHT-WOORD-ACT" type="WACHT-WOORD-RDW" />
+      <xs:element name="PROC-IDENT" type="PROC-IDENT" />
+      <xs:element name="PROC-FUNC" type="PROC-FUNC" />
+      <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST" />
+      <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR" />
+      <xs:element name="KL-NR-EXT-TOEG" minOccurs="0" type="KLANT-NR-EXT" />
+      <xs:element name="NETW-EXT-TOEG" minOccurs="0" type="NETWERK-EXT" />
+      <xs:element name="EXT-DIENSTV-ID" minOccurs="0" type="EXT-DIENSTV-ID" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="AANVR-RYB-K-GEG">
+    <xs:all>
+      <xs:element name="AANVR-NR-RYB-K" type="AANVR-NR-RYB-K" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="AANVR-NR-RYB-K">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EXT-DIENSTV-ID">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GEBR-IDENT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="INFO-GEBR">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="52" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="KLANT-NR-EXT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NETWERK-EXT">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OPT-STAT-TEKST">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:totalDigits value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PROC-FUNC">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PROC-IDENT">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:totalDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="WACHT-WOORD-RDW">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-1">
+        <addColumn tableName="doss_pers">
+            <column name="p_voorv" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="doss_pers">
+            <column name="p_naam" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="doss_pers">
+            <column name="p_tp" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="doss_pers">
+            <column name="p_voorn" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-2">
+        <createTable tableName="doss_onderz_bron">
+            <column name="c_doss_onderz_bron" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bron" type="VARCHAR(255)"/>
+            <column name="gesprek" type="TEXT"/>
+            <column name="c_doss_onderz" type="numeric"/>
+            <column name="adr_type" type="numeric"/>
+            <column name="adr" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1" name="adr_hnr" type="numeric"/>
+            <column name="adr_hnr_l" type="VARCHAR(1)"/>
+            <column name="adr_hnr_t" type="VARCHAR(255)"/>
+            <column name="adr_hnr_a" type="VARCHAR(255)"/>
+            <column name="adr_pc" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1" name="adr_c_gem" type="numeric"/>
+            <column name="adr_buitenl1" type="VARCHAR(255)"/>
+            <column name="adr_buitenl2" type="VARCHAR(255)"/>
+            <column name="adr_buitenl3" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1" name="adr_c_land" type="numeric"/>
+            <column name="adr_plaats" type="VARCHAR(255)"/>
+            <column name="inst" type="VARCHAR(255)"/>
+            <column name="inst_naam" type="VARCHAR(255)"/>
+            <column name="inst_tav" type="VARCHAR(255)"/>
+            <column name="inst_voorl" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-3">
+        <dropColumn tableName="doss_onderz" columnName="fase2_bron1"/>
+        <dropColumn tableName="doss_onderz" columnName="fase2_bron2"/>
+        <dropColumn tableName="doss_onderz" columnName="fase2_bron1_toel"/>
+        <dropColumn tableName="doss_onderz" columnName="fase2_bron2_toel"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-4">
+        <addPrimaryKey columnNames="c_doss_onderz_bron"
+                       constraintName="doss_onderz_bron_pkey"
+                       tableName="doss_onderz_bron"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-5">
+        <addForeignKeyConstraint baseColumnNames="c_doss_onderz"
+                                 baseTableName="doss_onderz_bron"
+                                 constraintName="doss_onderz_bron_fkey1"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_onderz"
+                                 referencedTableName="doss_onderz"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-6">
+        <renameColumn tableName="doss_onderz_bron" oldColumnName="inst_tav" newColumnName="inst_aanhef"/>
+        <renameColumn tableName="doss_onderz" oldColumnName="aanl_inst_tav" newColumnName="aanl_inst_aanhef"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-7">
+        <addColumn tableName="doss_onderz">
+            <column name="aanl_relatie" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="1.18.0-8">
+        <addColumn tableName="doss_onderz_bron">
+            <column name="inst_afdeling" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

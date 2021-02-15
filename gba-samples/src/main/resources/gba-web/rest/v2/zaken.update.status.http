@@ -1,0 +1,13 @@
+### Zoek op zaak-id
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken/status
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaakId": "commitment-1234",
+  "zaakStatus": "GEANNULEERD",
+  "opmerking": "Doe toch maar niet!"
+}
+
+###

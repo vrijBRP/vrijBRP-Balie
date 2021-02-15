@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>gba-parent</artifactId>
+        <groupId>nl.procura.gba</groupId>
+        <version>1.26.1</version>
+    </parent>
+
+    <artifactId>gba-gbav</artifactId>
+    <name>Proweb GBA - GBA-V</name>
+
+    <properties>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.gba</groupId>
+            <artifactId>gba-ple</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.soap</groupId>
+            <artifactId>soap-utils</artifactId>
+        </dependency>
+
+        <!-- voor reflection -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>gba-gba-new</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <includes>
+                        <include>nl/**/*</include>
+                        <include>wsdl/**/*</include>
+                        <include>xsd/**/*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>wsimport-generate-gbav-1</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-B-XautoNameResolution</arg>
+                            </args>
+                            <bindingDirectory>src/main/resources/bindings</bindingDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>lrdplus.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/generated-sources/wsimport/lrdplus_wsdl.done
+                            </staleFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>wsimport-generate-gbav-2</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-B-XautoNameResolution</arg>
+                            </args>
+                            <bindingDirectory>src/main/resources/bindings</bindingDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>vraagPL-v0.1.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/generated-sources/wsimport/vraagpl_wsdl.done
+                            </staleFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>wsimport-generate-afnemer-ind</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-B-XautoNameResolution</arg>
+                            </args>
+                            <bindingDirectory>src/main/resources/bindings</bindingDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>vraagAI-v0.1.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/generated-sources/wsimport/vraagai_wsdl.done
+                            </staleFile>
+                        </configuration>
+                    </execution>
+                </executions>
+
+                <dependencies>
+                    <!-- Generate value constructors -->
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-value-constructor</artifactId>
+                        <version>${org.jvnet.jaxb2_commons.version}</version>
+                    </dependency>
+
+                    <!-- method chaining -->
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-fluent-api</artifactId>
+                        <version>${org.jvnet.jaxb2_commons.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <sourceDestDir>${project.build.directory}/generated-sources/main/java</sourceDestDir>
+                    <wsdlDirectory>${basedir}/src/main/resources/wsdl/</wsdlDirectory>
+                    <encoding>UTF-8</encoding>
+                    <extension>true</extension>
+                    <target>2.2</target>
+                    <xnocompile>true</xnocompile>
+                    <verbose>true</verbose>
+                    <xjcArgs>
+                        <xjcArg>-Xfluent-api</xjcArg>
+                        <xjcArg>-Xvalue-constructor</xjcArg>
+                    </xjcArgs>
+                </configuration>
+            </plugin>
+
+            <!-- wsimport toevoegen -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/main/java/</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

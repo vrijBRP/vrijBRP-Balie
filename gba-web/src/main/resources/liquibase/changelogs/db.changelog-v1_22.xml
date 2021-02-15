@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits)" id="v1_22-1">
+        <createTable tableName="pl_mut">
+            <column name="c_pl_mut" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zaak_id" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ind_verwerkt" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="t_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_usr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="anr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bsn" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_location" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="explanation" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descr_cat" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descr_action" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descr_set" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descr_rec" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cat" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="set" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-2">
+        <createTable tableName="pl_mut_rec">
+            <column name="c_pl_mut" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="elem" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="val_org" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="val_new" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="val_org_descr" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="val_new_descr" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-3">
+        <addPrimaryKey columnNames="c_pl_mut" constraintName="pl_mut_pkey" tableName="pl_mut"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-4">
+        <addPrimaryKey columnNames="c_pl_mut, elem" constraintName="pl_mut_rec_pkey" tableName="pl_mut_rec"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-5">
+        <createIndex indexName="fki_pl_mut_rec_fk" tableName="pl_mut_rec">
+            <column name="c_pl_mut"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-6">
+        <addForeignKeyConstraint baseColumnNames="c_pl_mut" baseTableName="pl_mut_rec" constraintName="pl_mut_rec_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_pl_mut" referencedTableName="pl_mut"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-7">
+        <sql>
+            <![CDATA[delete from rp_sig where type = 2 and pc = '']]>
+        </sql>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-8">
+        <addColumn tableName="rdm01">
+            <column name="vermeld_tp" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-9">
+        <addColumn tableName="rdm01">
+            <column name="vermeld_land" type="numeric" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-10">
+        <addColumn tableName="nrd">
+            <column name="vermeld_tp" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_22-11">
+        <comment>Add field version_ts (version timestamp)</comment>
+        <addColumn tableName="doc_inh">
+            <column name="version_ts" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

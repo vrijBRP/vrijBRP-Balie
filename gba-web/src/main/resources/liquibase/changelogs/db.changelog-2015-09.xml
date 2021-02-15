@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201509-1" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="ng" type="VARCHAR(1)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-2" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="d_huw_sluit" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-3" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="c_p_huw_sluit" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-4" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="p_huw_sluit" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-5" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="l_huw_sluit" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-6" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="d_huw_ontb" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-7" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="c_p_huw_ontb" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-8" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="l_huw_ontb" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-9" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="p_huw_ontb" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-10" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="rdn_huw_ontb" type="VARCHAR(1)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201509-11" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="srt_huw" type="VARCHAR(1)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

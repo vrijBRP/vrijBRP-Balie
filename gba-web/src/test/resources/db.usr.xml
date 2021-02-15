@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="" id="1538740120644-1">
+        <insert tableName="usr">
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="usr" value=""/>
+            <column name="usrfullname" value=""/>
+            <column name="d_end" valueNumeric="0"/>
+            <column name="admin" valueNumeric="0"/>
+            <column name="blok" valueNumeric="0"/>
+            <column name="descr" value=""/>
+            <column name="path" value=""/>
+            <column name="d_in" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

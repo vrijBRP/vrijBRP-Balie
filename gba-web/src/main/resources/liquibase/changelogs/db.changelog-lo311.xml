@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits Janssen)" id="lo311-1">
+        <addColumn tableName="document">
+            <column name="sb_allowed" type="numeric" defaultValue="0" remarks="Stillborn allowed on document"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

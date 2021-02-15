@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: RYBEWYSKAART AANVRAAG OVERZICHT</xs:documentation>
+  <xs:documentation>Proces : Raadplegen rijbewijsaanvragen op actuele status</xs:documentation>
+  <xs:documentation>Functie: Antwoordbericht</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 16-07-2009 08:47</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="RYB-AANVR-OVERZ" type="RYB-AANVR-OVERZ"/>
+
+ <xs:complexType name="RYB-AANVR-OVERZ">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+   <xs:element name="AANVR-RYB-Z-GEG" type="AANVR-RYB-Z-GEG"/>
+   <xs:element name="NAT-P-AANVR-TAB" minOccurs="0" type="NAT-P-AANVR-TAB"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST"/>
+   <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR"/>
+   <xs:element name="KL-NR-EXT-TOEG" minOccurs="0" type="KLANT-NR-EXT"/>
+   <xs:element name="NETW-EXT-TOEG" minOccurs="0" type="NETWERK-EXT"/>
+   <xs:element name="EXT-DIENSTV-ID" minOccurs="0" type="EXT-DIENSTV-ID"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="AANVR-RYB-Z-GEG">
+  <xs:all>
+   <xs:element name="AUTOR-A-RYB-K" type="AUTOR-CODE"/>
+   <xs:element name="STAT-CODE-RYB-K" type="STAT-AAN-RYB-K"/>
+   <xs:element name="GEM-LOC-A-RYB-A" minOccurs="0" type="GEM-LOC-CODE"/>
+   <xs:element name="GEM-LOC-A-RYB-L" minOccurs="0" type="GEM-LOC-CODE"/>
+   <xs:element name="AANVR-NR-RYB-L" minOccurs="0" type="AANVR-NR-RYB-K"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-P-AANVR-TAB">
+  <xs:sequence>
+   <xs:element name="NAT-P-AANVR-GEG" maxOccurs="unbounded" type="NAT-P-AANVR-GEG"/>
+  </xs:sequence>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-P-AANVR-GEG">
+  <xs:all>
+   <xs:element name="NAT-PERSOON-GEG" type="NAT-PERSOON-GEG"/>
+   <xs:element name="AANVR-RYB-K-GEG" type="AANVR-RYB-K-GEG"/>
+   <xs:element name="STAT-RYB-K-GEG" type="STAT-RYB-K-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-PERSOON-GEG">
+  <xs:all>
+   <xs:element name="GBA-NR-NAT-P" type="GBA-NR"/>
+   <xs:element name="BURG-SERVICE-NR" type="FISC-NR-NAT-P"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="AANVR-RYB-K-GEG">
+  <xs:all>
+   <xs:element name="AANVR-NR-RYB-K" type="AANVR-NR-RYB-K"/>
+   <xs:element name="GEM-LOC-A-RYB-K" type="GEM-LOC-CODE"/>
+   <xs:element name="AANVR-DAT-RYB-K" type="DATUM-EJMD"/>
+   <xs:element name="AANVR-TYD-RYB-K" type="TYD-UM"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="STAT-RYB-K-GEG">
+  <xs:all>
+   <xs:element name="STAT-DAT-RYB-K" type="DATUM-EJMD"/>
+   <xs:element name="STAT-TYD-RYB-K" type="TYD-UM"/>
+   <xs:element name="RYB-STAT-RYB-K" type="RYB-NR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="AANVR-NR-RYB-K">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="AUTOR-CODE">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="DATUM-EJMD">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="EXT-DIENSTV-ID">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="6"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="FISC-NR-NAT-P">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="9"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GBA-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEM-LOC-CODE">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="KLANT-NR-EXT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="30"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="NETWERK-EXT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="OPT-STAT-TEKST">
+  <xs:restriction base="xs:positiveInteger">
+   <xs:totalDigits value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="RYB-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="STAT-AAN-RYB-K">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="TYD-UM">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

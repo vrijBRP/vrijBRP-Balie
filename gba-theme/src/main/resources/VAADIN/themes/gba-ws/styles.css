@@ -1,0 +1,107 @@
+@import "../flat/styles.css";
+
+.v-button .v-icon, .v-nativebutton .v-icon {
+	margin-right: 10px;
+}
+
+.login-logo {
+	background: url(layouts/img/login-logo.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 60px;
+}
+
+.loginWindow .h1 {
+    font-size: 20px;
+    text-shadow: none;
+}
+
+.v-tabsheet-tabitem .v-caption {
+	width: 150px !important;
+	height: 100% !important;
+	box-sizing: border-box;
+}
+
+/* Footer */
+
+.v-panel-loginWindow .v-dashlayout.footerLayout {
+	font-size: 11px;
+}
+
+.v-panel-loginWindow .footerLayout .v-label {
+	text-align: center;
+}
+
+.v-app .config-area {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	line-height: 1.5;
+	line-height: 1.5em;
+	line-height: 150%;
+}
+
+.job-progress {
+	text-indent: 25px;
+	background: url(layouts/img/indicator.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+.search {
+	background: url(layouts/img/search.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	text-indent: 20px;
+}
+
+.indent {
+	margin-left: 15px;
+}
+
+/*
+Andere grootte accordion 
+*/
+.v-accordion .v-button.v-button-link-accordion,
+.v-accordion .v-button.v-button-link-accordion:focus,
+.v-accordion .v-button.v-button-link-accordion:active,
+.v-accordion .v-button-link-accordion.v-pressed,
+.v-accordion .v-disabled.v-button.v-button-link-accordion,
+.v-accordion .v-button.v-button-link-accordion .v-button-wrap,
+.v-accordion .v-button.v-button-link-accordion:focus .v-button-wrap,
+.v-accordion .v-button.v-button-link-accordion:active .v-button-wrap,
+.v-accordion .v-button-link-accordion.v-pressed .v-button-wrap,
+.v-accordion .v-disabled.v-button.v-button-link-accordion .v-button-wrap {
+	background: none;
+	background: transparent;
+	height: auto;
+	padding: 7px;
+	cursor: pointer;
+	line-height: 20px;
+	text-align: left;
+	margin: 0px;
+}
+
+.button-refresh.on {
+    background-image: url(layouts/img/refresh-on.gif);
+}
+
+.button-refresh.off {
+    background-image: url(layouts/img/refresh-off.gif);
+}
+
+.button-refresh {
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+.button-refresh:focus {
+	outline: none;
+}
+
+.zoektab .v-tabsheet-tabitem .v-caption {
+    width: 200px !important;
+    height: 100% !important;
+    box-sizing: border-box;
+}

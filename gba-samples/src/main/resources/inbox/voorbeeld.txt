@@ -1,0 +1,19 @@
+Gebruiker     : Frits Janssen
+Datum         : 05-02-2016 14:07:50
+Onderwerp     : Afdrukvoorbeelden sjabloon 1
+
+E-mailadressen
+==============
+Van           : Frits <frits@procura.nl>
+Aan           : Marco Terlouw <frits.janssen@procura.nl>
+Antwoord naar : Frits <no-reply@procura.nl>
+CC            : 
+BCC           : 
+
+Bijlages
+==============
+Afschrift_GBA_(basis).pdf
+
+Inhoud
+======
+<div>Hello World!!</div>

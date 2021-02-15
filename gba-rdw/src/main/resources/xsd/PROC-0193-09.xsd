@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: ZOEKEN RYBEWYSHOUDER OP NAAM</xs:documentation>
+  <xs:documentation>Proces : Raadplegen persoon op naam in verband met opvoeren</xs:documentation>
+  <xs:documentation>Functie: Foutbericht</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 14-04-2006 13:21</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="RYB-BEVR-NAAM" type="RYB-BEVR-NAAM"/>
+
+ <xs:complexType name="RYB-BEVR-NAAM">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+   <xs:element name="NAT-P-ZOEK-GEG" type="NAT-P-ZOEK-GEG"/>
+   <xs:element name="APPL-MELD-GEG" minOccurs="0" type="APPL-MELD-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="STAT-RIP" minOccurs="0" type="STAT-RIP"/>
+   <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST"/>
+   <xs:element name="STAT-TEKST-RIP" minOccurs="0" type="STAT-TEKST-RIP"/>
+   <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-P-ZOEK-GEG">
+  <xs:all>
+   <xs:element name="GESL-NAAM-NP-A" type="GESL-NAAM-NP"/>
+   <xs:element name="VOOR-LET-NP-A" type="VOORLETTERS"/>
+   <xs:element name="GEB-DAT-NP-A" type="DATUM-EJMD"/>
+   <xs:element name="NAT-PERS-SL-L" minOccurs="0" type="NAT-PERS-SL"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="APPL-MELD-GEG">
+  <xs:all>
+   <xs:element name="SYST-AFK" type="SYST-AFK"/>
+   <xs:element name="MELDING-NR" type="MELDING-NR"/>
+   <xs:element name="KORTE-MELDING" type="KORTE-MELDING"/>
+   <xs:element name="SOORT-MELDING" type="SOORT-MELDING"/>
+   <xs:element name="MELDING-VAR" minOccurs="0" type="MELD-VAR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="DATUM-EJMD">
+  <xs:restriction base="xs:nonNegativeInteger">
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GESL-NAAM-NP">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="30"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="KORTE-MELDING">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="78"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="MELDING-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="MELD-VAR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="40"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="NAT-PERS-SL">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="16"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="OPT-STAT-TEKST">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="SOORT-MELDING">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="STAT-RIP">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="STAT-TEKST-RIP">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="40"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="SYST-AFK">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="VOORLETTERS">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

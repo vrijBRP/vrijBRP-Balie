@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: BERICHTAFHANDELING GEGEVENS</xs:documentation>
+  <xs:documentation>Proces : Testen verbinding OS2200 (BAR)</xs:documentation>
+  <xs:documentation>Functie: Aanvraag (Ping)</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 16-07-2009 08:47</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="LEEG-BERICHT" type="LEEG-BERICHT"/>
+
+ <xs:complexType name="LEEG-BERICHT">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="WACHT-WOORD-ACT" type="WACHT-WOORD-RDW"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="INFO-GEBR" type="INFO-GEBR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="WACHT-WOORD-RDW">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

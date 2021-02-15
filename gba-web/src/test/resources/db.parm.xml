@@ -1,0 +1,973 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="" id="1538740120642-1">
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="359"/>
+            <column name="parm" value="reisd_pv_nr"/>
+            <column name="value" value="1111"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="356"/>
+            <column name="parm" value="reisd_termijn_wijziging"/>
+            <column name="value" value="05-01-2014"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="377"/>
+            <column name="parm" value="handleiding_gebruiker"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="387"/>
+            <column name="parm" value="curatele_ww"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="386"/>
+            <column name="parm" value="curatele_url"/>
+            <column name="value" value="http://localhost/curateleregister.asmx"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="388"/>
+            <column name="parm" value="curatele_gebr"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="392"/>
+            <column name="parm" value="zaken_eindstatus"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="396"/>
+            <column name="parm" value="zaken_init_indicatie"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="540"/>
+            <column name="parm" value="ryb_vervaltermijn_dagen"/>
+            <column name="value" value="30"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="398"/>
+            <column name="parm" value="zaken_init_inh_vermis"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="399"/>
+            <column name="parm" value="zaken_init_rijbewijs"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="411"/>
+            <column name="parm" value="zaken_status_eigen_zaak"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="401"/>
+            <column name="parm" value="zaken_init_tmv"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="402"/>
+            <column name="parm" value="zaken_init_corres"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="395"/>
+            <column name="parm" value="zaken_init_reisdoc"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="403"/>
+            <column name="parm" value="zaken_init_naamgebruik"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="404"/>
+            <column name="parm" value="zaken_init_verstrek"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="407"/>
+            <column name="parm" value="zaken_init_gpk"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="336"/>
+            <column name="parm" value="remember_me"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="440"/>
+            <column name="parm" value="gv_datum_kenbaar_maken"/>
+            <column name="value" value="14"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="544"/>
+            <column name="parm" value="email_pw"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="405"/>
+            <column name="parm" value="zaken_init_huw_gps"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="545"/>
+            <column name="parm" value="email_eigenschappen"/>
+            <column name="value" value="mail.smtp.starttls.enable=true&#10;mail.smtp.auth=true"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="523"/>
+            <column name="parm" value="zaken_init_inbox"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="406"/>
+            <column name="parm" value="zaken_init_covog"/>
+            <column name="value" value="2"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="408"/>
+            <column name="parm" value="zaken_init_uittreksel"/>
+            <column name="value" value="2"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="410"/>
+            <column name="parm" value="zaken_init_verhuizing_ba"/>
+            <column name="value" value="5"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="546"/>
+            <column name="parm" value="email_username"/>
+            <column name="value" value="no-reply@procura.nl"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="557"/>
+            <column name="parm" value="RAAS_ident_bewijs"/>
+            <column name="value" value="ID-document/vragen"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="559"/>
+            <column name="parm" value="bsm_zaken_dms_variant"/>
+            <column name="value" value="2"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="500"/>
+            <column name="parm" value="ontbinding_kb_url"/>
+            <column name="value" value="http://localhost/doc/312021/"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="443"/>
+            <column name="parm" value="zaken_init_gv"/>
+            <column name="value" value="2"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="556"/>
+            <column name="parm" value="RAAS_endpoint"/>
+            <column name="value" value="http://localhost/raas/api"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="560"/>
+            <column name="parm" value="ryb_wijz"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="562"/>
+            <column name="parm" value="zoek_ple_admin_hist"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="477"/>
+            <column name="parm" value="zoek_all_records"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="561"/>
+            <column name="parm" value="gemeente_codes"/>
+            <column name="value" value="0398"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="454"/>
+            <column name="parm" value="zoek_personen_profiel2_username"/>
+            <column name="value" value="foo"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="455"/>
+            <column name="parm" value="zoek_personen_profiel2_password"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="515"/>
+            <column name="parm" value="bsm_zaken_dms"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="537"/>
+            <column name="parm" value="SMS_endpoint"/>
+            <column name="value" value="http://localhost/sms/api"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="558"/>
+            <column name="parm" value="RAAS_enabled"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="465"/>
+            <column name="parm" value="zaken_tab_volgorde"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="439"/>
+            <column name="parm" value="gv_kb_url"/>
+            <column name="value" value="http://localhost/doc/285782/"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="471"/>
+            <column name="parm" value="zaken_init_afstam_erk"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="492"/>
+            <column name="parm" value="toon_aantekening"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="473"/>
+            <column name="parm" value="zaken_init_afstam_geb"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="474"/>
+            <column name="parm" value="zaken_init_overl_lijkv"/>
+            <column name="value" value="5"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="511"/>
+            <column name="parm" value="schermopbouwtype"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="475"/>
+            <column name="parm" value="zaken_init_overl_levenloos"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="564"/>
+            <column name="parm" value="system_accounts"/>
+            <column name="value" value="bsm, sync"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="485"/>
+            <column name="parm" value="gv_datum_verstrekk_geen_bezw"/>
+            <column name="value" value="14"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="486"/>
+            <column name="parm" value="gv_datum_verstrekk"/>
+            <column name="value" value="28"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="565"/>
+            <column name="parm" value="onderz_fase1_termijn"/>
+            <column name="value" value="14"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="182"/>
+            <column name="parm" value="covog_relatiecode"/>
+            <column name="value" value="398"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="567"/>
+            <column name="parm" value="onderz_voornemen_termijn"/>
+            <column name="value" value="29"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="514"/>
+            <column name="parm" value="bsm_zaken_dms_zaaktype"/>
+            <column name="value" value="ZAAKSYSTEEM"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="568"/>
+            <column name="parm" value="onderz_extra_termijn"/>
+            <column name="value" value="14"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="566"/>
+            <column name="parm" value="onderz_fase2_termijn"/>
+            <column name="value" value="21"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="491"/>
+            <column name="parm" value="mijn_overheid_bulk_uittreksels"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="466"/>
+            <column name="parm" value="zaken_max_status_zaak_wijzigen"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="472"/>
+            <column name="parm" value="zaken_init_overl_gem"/>
+            <column name="value" value="5"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="524"/>
+            <column name="parm" value="zaken_init_omzet_gps"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="412"/>
+            <column name="parm" value="zaken_init_verh_binnen_wa"/>
+            <column name="value" value="5"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="525"/>
+            <column name="parm" value="zaken_init_ontbinding"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="437"/>
+            <column name="parm" value="bsm_external_url"/>
+            <column name="value" value="https://personen-demo.procura.nl/bsm"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="516"/>
+            <column name="parm" value="zaken_dms_overl_gem"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="513"/>
+            <column name="parm" value="zaken_dms_naamgebruik"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="528"/>
+            <column name="parm" value="zaken_dms_uittreksel"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="529"/>
+            <column name="parm" value="zaken_dms_covog"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="530"/>
+            <column name="parm" value="zaken_dms_verstrek"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="531"/>
+            <column name="parm" value="zaken_dms_rijbewijs"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="532"/>
+            <column name="parm" value="zaken_dms_reisdoc"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="533"/>
+            <column name="parm" value="zaken_dms_ontb_huw_gps"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="519"/>
+            <column name="parm" value="zaken_dms_huw_gps"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="536"/>
+            <column name="parm" value="SMS_password"/>
+            <column name="value" value="procura1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="538"/>
+            <column name="parm" value="SMS_username"/>
+            <column name="value" value="procura"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="176"/>
+            <column name="parm" value="presentie_vraag_endpoint"/>
+            <column name="value" value="http://localhost/gemnet/bcgba/test"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="518"/>
+            <column name="parm" value="zaken_dms_overl_levenloos"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="502"/>
+            <column name="parm" value="ww_verloop"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="517"/>
+            <column name="parm" value="zaken_dms_overl_lijkv"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="541"/>
+            <column name="parm" value="zaken_dms_afstam_geb"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="542"/>
+            <column name="parm" value="zaken_dms_afstam_erk"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="347"/>
+            <column name="parm" value="email_ontvanger_test"/>
+            <column name="value" value="frits@procura.nl"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="177"/>
+            <column name="parm" value="verhuis_datum_limiet"/>
+            <column name="value" value="30"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="49"/>
+            <column name="parm" value="doc_verwijderen"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="352"/>
+            <column name="parm" value="locatie_opslag"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="286"/>
+            <column name="parm" value="gpk_afgever"/>
+            <column name="value" value="Burgemeester van ......"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="147"/>
+            <column name="parm" value="ver_vraag_endpoint"/>
+            <column name="value" value="http://localhost/gemnet/bvbsn/test"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="137"/>
+            <column name="parm" value="java_ple_server_password"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="329"/>
+            <column name="parm" value="verhuis_datum_limiet_verleden"/>
+            <column name="value" value="20"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="183"/>
+            <column name="parm" value="covog_idcode"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="522"/>
+            <column name="parm" value="zaken_init_verhuizing"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="330"/>
+            <column name="parm" value="testomgeving"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="351"/>
+            <column name="parm" value="email_port"/>
+            <column name="value" value="587"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="350"/>
+            <column name="parm" value="email_host"/>
+            <column name="value" value="smtp.office365.com"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="348"/>
+            <column name="parm" value="email_afzender_test"/>
+            <column name="value" value="no-reply@procura.nl"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="136"/>
+            <column name="parm" value="java_ple_server_username"/>
+            <column name="value" value="foo"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="187"/>
+            <column name="parm" value="tmv_url"/>
+            <column name="value" value="http://localhost/gemnet/tmv/test"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="190"/>
+            <column name="parm" value="covog_volgnr"/>
+            <column name="value" value="20180831_5000"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="30"/>
+            <column name="parm" value="prot_store_level"/>
+            <column name="value" value="2"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="438"/>
+            <column name="parm" value="bsm_internal_url"/>
+            <column name="value" value="http://localhost/bsm"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="173"/>
+            <column name="parm" value="kassa_id"/>
+            <column name="value" value="HDEMO"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="275"/>
+            <column name="parm" value="openoffice_port"/>
+            <column name="value" value="8101"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="141"/>
+            <column name="parm" value="gmapkey"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="309"/>
+            <column name="parm" value="zoek_ple_bron_gemeente"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="315"/>
+            <column name="parm" value="id_verplicht"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="316"/>
+            <column name="parm" value="contact_verplicht"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="318"/>
+            <column name="parm" value="ryb_gebr_ident"/>
+            <column name="value" value="02500013"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="319"/>
+            <column name="parm" value="ryb_gebr_ww"/>
+            <column name="value" value="mas4bon0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="83"/>
+            <column name="parm" value="ryb_vergelijkscherm"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="302"/>
+            <column name="parm" value="sessiontimeout"/>
+            <column name="value" value="35"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="341"/>
+            <column name="parm" value="procura_ftp_pw"/>
+            <column name="value" value="bla"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="310"/>
+            <column name="parm" value="zoek_ple_bron_gbav"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="337"/>
+            <column name="parm" value="doc_toon_bestand"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="138"/>
+            <column name="parm" value="inlogopmerking"/>
+            <column name="value" value="Opmerking!!"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="340"/>
+            <column name="parm" value="procura_dl_username"/>
+            <column name="value" value="prosup"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="168"/>
+            <column name="parm" value="kassa_send_type"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="349"/>
+            <column name="parm" value="email_beantwoorder_test"/>
+            <column name="value" value="frits@procura.nl"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="156"/>
+            <column name="parm" value="zoek_ple_naamgebruik"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="181"/>
+            <column name="parm" value="covog_url"/>
+            <column name="value" value="http://localhost/gemnet/covog/acceptatie"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="174"/>
+            <column name="parm" value="zoek_max_find_count"/>
+            <column name="value" value="50"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="317"/>
+            <column name="parm" value="ryb_url"/>
+            <column name="value" value="http://localhost/gemnet/rdw/test"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="335"/>
+            <column name="parm" value="procura_dl_url"/>
+            <column name="value" value="http://localhost/downloads"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="274"/>
+            <column name="parm" value="openoffice_hostname"/>
+            <column name="value" value="localhost"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="285"/>
+            <column name="parm" value="kassa_clear_file"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="169"/>
+            <column name="parm" value="kassa_filename"/>
+            <column name="value" value="/pro/proweb-personen/kassa/${kassa-id}/procura"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="345"/>
+            <column name="parm" value="kassa_type"/>
+            <column name="value" value="centric"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="342"/>
+            <column name="parm" value="procura_dl_check"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="327"/>
+            <column name="parm" value="ryb_test"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="301"/>
+            <column name="parm" value="openoffice_convert"/>
+            <column name="value" value="remote"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="332"/>
+            <column name="parm" value="fs_rijbewijs"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="333"/>
+            <column name="parm" value="fs_reisdocument"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="121"/>
+            <column name="parm" value="java_ple_server_url"/>
+            <column name="value" value="http://localhost/personen-ws"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="539"/>
+            <column name="parm" value="SMS_enabled"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="328"/>
+            <column name="parm" value="ssl_proxy_url"/>
+            <column name="value" value="http://localhost/ssl-web"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="571"/>
+            <column name="parm" value="zaken_dms_onderzoek"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="276"/>
+            <column name="parm" value="test"/>
+            <column name="value" value="1"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

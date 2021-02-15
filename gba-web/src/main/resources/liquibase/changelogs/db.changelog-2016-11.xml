@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201611-01" author="Procura (Frits Janssen)">
+        <addColumn tableName="huw_locatie">
+            <column name="alias" type="VARCHAR(1000)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie_optie">
+            <column name="alias" type="VARCHAR(1000)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_ambt">
+            <column name="alias" type="VARCHAR(1000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201611-02" author="Procura (Frits Janssen)">
+        <addColumn tableName="zaak_id">
+            <column name="zaak_type" type="numeric(10)" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201611-03" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss">
+            <column name="pagina" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

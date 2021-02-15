@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201512-1" author="Procura (Frits Janssen)">
+        <addColumn tableName="stempel">
+            <column name="font" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201512-2" author="Procura (Frits Janssen)">
+        <addColumn tableName="stempel">
+            <column name="fontsize" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201512-3" author="Procura (Frits Janssen)">
+        <createTable tableName="gem">
+            <column name="c_gem" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cbscode" type="numeric"/>
+            <column name="gemeente" type="VARCHAR(255)"/>
+            <column name="adres" type="VARCHAR(255)"/>
+            <column name="pc" type="VARCHAR(6)"/>
+            <column name="plaats" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201512-4" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_gem"
+                       constraintName="gem_pkey"
+                       tableName="gem"/>
+    </changeSet>
+
+    <changeSet id="201512-5" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="v_doss_pers" type="numeric" defaultValueNumeric="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201512-6" author="Procura (Frits Janssen)">
+        <addColumn tableName="aantekening_hist">
+            <column name="status" type="numeric" defaultValueNumeric="1"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

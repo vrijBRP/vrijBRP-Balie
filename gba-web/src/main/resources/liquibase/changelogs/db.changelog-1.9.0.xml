@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1.9.0-1" author="Procura (Frits Janssen)">
+        <addColumn tableName="huw_locatie">
+            <column name="cp_tav_aanhef" remarks="Ter attentie van (aanhef)" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_tav_voorl" remarks="Ter attentie van (voorletters)" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_tav_naam" remarks="Ter attentie van" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_adres" remarks="Adres (Straat / huisnummer / huisletter)" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_pc" remarks="Postcode" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_plaats" remarks="Plaats" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_c_land" remarks="Landcode" type="numeric" defaultValueComputed="-1"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_tel" remarks="Telefoonnummer" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="cp_email" remarks="E-mail" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.9.0-2" author="Procura (Frits Janssen)">
+        <addColumn tableName="huw_locatie">
+            <column name="d_in" type="numeric" defaultValue="-1" remarks="Datum ingang geldigheid"/>
+        </addColumn>
+
+        <addColumn tableName="huw_locatie">
+            <column name="d_end" type="numeric" defaultValue="-1" remarks="Datum einde geldigheid"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.9.0-3" author="Procura (Frits Janssen)">
+        <addColumn tableName="huw_ambt">
+            <column name="d_in" type="numeric" defaultValue="-1" remarks="Datum ingang geldigheid"/>
+        </addColumn>
+
+        <addColumn tableName="huw_ambt">
+            <column name="d_end" type="numeric" defaultValue="-1" remarks="Datum einde geldigheid"/>
+        </addColumn>
+
+        <addColumn tableName="huw_ambt">
+            <column name="tel" remarks="Telefoonnummer" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.9.0-4" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_overl_aangever">
+            <column name="tel" remarks="Telefoonnummer" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="doss_overl_aangever">
+            <column name="email" remarks="E-mail" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addColumn tableName="doss_overl_aangever">
+            <column name="d_in" type="numeric" defaultValue="-1" remarks="Datum ingang geldigheid"/>
+        </addColumn>
+
+        <addColumn tableName="doss_overl_aangever">
+            <column name="d_end" type="numeric" defaultValue="-1" remarks="Datum einde geldigheid"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.9.0-5" author="Procura (Frits Janssen)">
+        <addColumn tableName="belangh">
+            <column name="d_in" type="numeric" defaultValue="-1" remarks="Datum ingang geldigheid"/>
+        </addColumn>
+
+        <addColumn tableName="belangh">
+            <column name="d_end" type="numeric" defaultValue="-1" remarks="Datum einde geldigheid"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.9.0-6" author="Procura (Frits Janssen)">
+        <sql>
+            <![CDATA[delete from aantekening where aantekening.c_aantekening in (select c_aantekening from aantekening_hist where inhoud = '')]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="1.9.0-7" author="Procura (Frits Janssen)">
+        <sql>
+            <![CDATA[delete from aantekening where c_aantekening not in (select c_aantekening from aantekening_hist)]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="1.9.0-8" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_pers">
+            <column name="geb_akte_brp_nr" remarks="Geboorteakte BRP nummer" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.9.0-9" author="Procura (Frits Janssen)">
+        <addColumn tableName="doss_omzet">
+            <column name="akte_brp_nr_gps" remarks="GPS BRP nummer" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="1.9.0-10" author="Procura (Frits Janssen)">
+        <createIndex indexName="aant3_anr_idx"
+                     tableName="aant3"
+                     unique="false">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.9.0-11" author="Procura (Frits Janssen)">
+        <createIndex indexName="aant3_bsn_idx"
+                     tableName="aant3"
+                     unique="false">
+            <column name="bsn"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.9.0-12" author="Procura (Frits Janssen)">
+        <createIndex indexName="usr_info_info_key_descr_idx"
+                     tableName="usr_info"
+                     unique="false">
+            <column name="info_key"/>
+            <column name="descr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.9.0-13" author="Procura (Frits Janssen)">
+        <createIndex indexName="usr_info_c_usr_idx"
+                     tableName="usr_info"
+                     unique="false">
+            <column name="c_usr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.9.0-14" author="Procura (Frits Janssen)">
+        <createIndex indexName="idv_idx"
+                     tableName="idvaststelling"
+                     unique="false">
+            <column name="bsn"/>
+            <column name="d_in"/>
+            <column name="c_usr"/>
+            <column name="soort"/>
+            <column name="t_in"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

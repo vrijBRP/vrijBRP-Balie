@@ -1,0 +1,69 @@
+# Compiled source #
+###################
+*.class
+rebel.xml
+log4j.xml
+log4j.properties
+
+# Eclipse #
+############
+*.project
+*.classpath
+
+# Netbeans #
+############
+nbactions.xml
+nb-configuration.xml
+
+# Intellij #
+############
+.idea
+*.iml
+
+# Packages #
+############
+*.jar
+*.war
+*.ear
+
+# Logs #
+########
+*.log
+
+# Folders #
+###########
+bin/
+build/
+target/
+.settings/
+
+# OS junk #
+###########
+.DS_Store*
+ehthumbs.db
+Thumbs.db
+
+# GBA #
+#######
+git.properties
+gba-web/src/main/java/notes/
+gba-web/src/main/webapp/VAADIN/widgetsets/
+gba-web/src/main/webapp/VAADIN/gwt-*
+!gba-web/src/main/resources/META-INF/
+gba-web/procura/applicaties/
+
+gba-ws/src/main/webapp/VAADIN/widgetsets/
+gba-ws/src/main/webapp/VAADIN/gwt-*
+!gba-ws/src/main/webapp/WEB-INF/services/WoningkaartWS/META-INF/
+!gba-ws/src/main/webapp/WEB-INF/services/ZoekpersoonWS/META-INF/
+
+!gba-gbaws/src/main/java/META-INF/
+!gba-gbaws/src/main/webapp/WEB-INF/services/WoningkaartWS/META-INF/
+!gba-gbaws/src/main/webapp/WEB-INF/services/ZoekpersoonWS/META-INF/
+
+!gba-jpa/src/main/resources/META-INF/
+!gba-ple/src/main/resources/META-INF/
+gba-rdw/src/main/resources/examples/generated/
+gba-rdw/src/main/resources/tcp*
+gba-db-updates/src/main/resources/liquibase/generated/
+gba-jpa/.factorypath

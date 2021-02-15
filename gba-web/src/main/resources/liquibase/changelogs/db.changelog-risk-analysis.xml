@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <!-- Add table rp (riskprofile) -->
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-1">
+        <createTable remarks="risk profile" tableName="rp">
+            <column name="c_rp" remarks="primary key" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" remarks="name of the risk profile" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1"
+                    name="rel_type"
+                    remarks="situation enum type"
+                    type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="threshold" remarks="threshold for action" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column defaultValueComputed="-1" name="fail_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column defaultValueComputed="-1" name="success_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-2">
+        <addPrimaryKey columnNames="c_rp" constraintName="rp_pkey" tableName="rp"/>
+    </changeSet>
+
+    <!-- Add table rp (riskprofile rule) -->
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-3">
+        <createTable remarks="Risk profile rule" tableName="rp_rule">
+            <column name="c_rp_rule" remarks="primary key" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_rp" remarks="FK with table rp" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" remarks="name of the rule" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1"
+                    name="type"
+                    remarks="rule enum type"
+                    type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attr" remarks="variable properties" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="score" remarks="score of the rule" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="0"
+                    name="vnr"
+                    type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-4">
+        <addPrimaryKey columnNames="c_rp_rule"
+                       constraintName="rp_rule_pkey"
+                       tableName="rp_rule"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-5">
+        <addForeignKeyConstraint baseColumnNames="c_rp"
+                                 baseTableName="rp_rule"
+                                 constraintName="rp_rule_c_rp_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_rp"
+                                 referencedTableName="rp"/>
+    </changeSet>
+
+    <!-- Add table doss_ra (riskanalysis) -->
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-6">
+        <createTable remarks="risk analysis dossier" tableName="doss_ra">
+            <column name="c_doss_ra" remarks="primary key" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_rp" type="numeric"/>
+            <column name="ref_case_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="ref_case_type" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ref_case_descr" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-7">
+        <addPrimaryKey columnNames="c_doss_ra"
+                       constraintName="doss_ra_pkey"
+                       tableName="doss_ra"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-8">
+        <addForeignKeyConstraint baseColumnNames="c_doss_ra"
+                                 baseTableName="doss_ra"
+                                 constraintName="doss_ra_c_doss_ra_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss"
+                                 referencedTableName="doss"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-9">
+        <addForeignKeyConstraint baseColumnNames="c_rp"
+                                 baseTableName="doss_ra"
+                                 constraintName="doss_ra_c_rp_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="SET NULL"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_rp"
+                                 referencedTableName="rp"/>
+    </changeSet>
+
+    <!-- Add table doss_ra_subject (riskprofile subject) -->
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-10">
+        <createTable remarks="Dossier risk analysis subject" tableName="doss_ra_subject">
+            <column name="c_doss_ra_subject" remarks="primary key" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_doss_ra" remarks="FK with table doss_ra" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_doss_pers" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="score" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="log" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-11">
+        <addPrimaryKey columnNames="c_doss_ra_subject"
+                       constraintName="doss_ra_item_pkey"
+                       tableName="doss_ra_subject"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-12">
+        <addForeignKeyConstraint baseColumnNames="c_doss_ra"
+                                 baseTableName="doss_ra_subject"
+                                 constraintName="doss_ra_item_c_doss_ra_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_ra"
+                                 referencedTableName="doss_ra"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits Janssen)" id="risk-analysis-13">
+        <addForeignKeyConstraint baseColumnNames="c_doss_pers"
+                                 baseTableName="doss_ra_subject"
+                                 constraintName="doss_ra_subject_c_doss_pers_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_pers"
+                                 referencedTableName="doss_pers"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,63 @@
+data.items (Lijst)
+
+item.zaak.zaakId
+item.zaak.datumTijdInvoer
+item.zaak.ingevoerdDoor
+item.zaak.locatieInvoer
+
+item.aanleiding.bron
+item.aanleiding.kenmerk
+item.aanleiding.burger.naam (pred_adel_voorv_gesl_voorn)
+item.aanleiding.tmv.nr
+item.aanleiding.instantie.instantie
+item.aanleiding.instantie.tav
+item.aanleiding.instantie.voorl
+item.aanleiding.instantie.naam
+item.aanleiding.instantie.adres
+item.aanleiding.instantie.pc
+item.aanleiding.instantie.plaats
+item.aanleiding.ambtshalve.afdeling
+item.aanleiding.melding.datumOntvangst
+item.aanleiding.melding.aard
+item.aanleiding.melding.vermoedAdres
+
+item.betreft.personen (lijst)
+item.betreft.adres (adresformats)
+
+item.beoordeling.datumOntvangst
+item.beoordeling.datumEinde
+item.beoordeling.binnenTermijn (Ja / Nee)
+item.beoordeling.redenTermijn
+item.beoordeling.onderzoekDatumAanvang
+item.beoordeling.onderzoekAanduidingGegevens
+item.beoordeling.gedegenOnderzoek (Ja / Nee)
+item.beoordeling.redenOverslaan (Ja / Nee)
+item.beoordeling.toelichtingOverslaan
+
+item.uitbreiding.fase1.datumIngang
+item.uitbreiding.fase1.datumEinde
+item.uitbreiding.fase1.reactie (Ja / Nee)
+item.uitbreiding.fase1.toelichting
+item.uitbreiding.fase1.vervolgActies (Ja / Nee)
+
+item.uitbreiding.fase2.datumIngang
+item.uitbreiding.fase2.datumEinde
+item.uitbreiding.fase2.bron1
+item.uitbreiding.fase2.bron2
+item.uitbreiding.fase2.verslag1
+item.uitbreiding.fase2.verslag2
+item.uitbreiding.fase2.onderzoekGewenst (Ja / Nee)
+item.uitbreiding.fase2.datumOnderzoek
+item.uitbreiding.fase2.toelichting
+
+item.resultaat.betrokkene
+item.resultaat.datumEinde
+item.resultaat.nogmaalsAanschrijven (Ja / Nee)
+item.resultaat.adres
+item.resultaat.toelichting
+
+item.aanschrijving.soort
+item.aanschrijving.datumFase1
+item.aanschrijving.datumFase2
+item.aanschrijving.datumVoornemen
+		

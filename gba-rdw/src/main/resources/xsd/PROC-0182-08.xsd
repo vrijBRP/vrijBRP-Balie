@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: MAATREGEL ONDERHOUD</xs:documentation>
+  <xs:documentation>Proces : Registreren ontvangst rijbewijs algemeen</xs:documentation>
+  <xs:documentation>Functie: Antwoordbericht</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 03-11-2005 16:48</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="MAATR-ONDERHOUD" type="MAATR-ONDERHOUD"/>
+
+ <xs:complexType name="MAATR-ONDERHOUD">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+   <xs:element name="RYB-GEG" type="RYB-GEG"/>
+   <xs:element name="VERBLYF-RYB-GEG" type="VERBLYF-RYB-GEG"/>
+   <xs:element name="NAT-PERSOON-GEG" type="NAT-PERSOON-GEG"/>
+   <xs:element name="APPL-MELD-GEG" minOccurs="0" type="APPL-MELD-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST"/>
+   <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="RYB-GEG">
+  <xs:all>
+   <xs:element name="RYB-NR" type="RYB-NR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="VERBLYF-RYB-GEG">
+  <xs:all>
+   <xs:element name="ONTV-RYB-DAT" type="DATUM-EJMD"/>
+   <xs:element name="ONTV-RYB-TYD" type="TYD-UM"/>
+   <xs:element name="AUTOR-CODE-ONTV" minOccurs="0" type="AUTOR-CODE-RYB"/>
+   <xs:element name="KORPS-CODE-ONTV" minOccurs="0" type="KORPS-CODE"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-PERSOON-GEG">
+  <xs:all>
+   <xs:element name="NAT-PERS-SL" type="NAT-PERS-SL"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="APPL-MELD-GEG">
+  <xs:all>
+   <xs:element name="SYST-AFK" minOccurs="0" type="SYST-AFK"/>
+   <xs:element name="MELDING-NR" minOccurs="0" type="MELDING-NR"/>
+   <xs:element name="KORTE-MELDING" minOccurs="0" type="KORTE-MELDING"/>
+   <xs:element name="SOORT-MELDING" minOccurs="0" type="SOORT-MELDING"/>
+   <xs:element name="MELDING-VAR" minOccurs="0" type="MELD-VAR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="AUTOR-CODE-RYB">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="DATUM-EJMD">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="KORPS-CODE">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="6"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="KORTE-MELDING">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="78"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="MELDING-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="MELD-VAR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="40"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="NAT-PERS-SL">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="16"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="OPT-STAT-TEKST">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="RYB-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="SOORT-MELDING">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="SYST-AFK">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="TYD-UM">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

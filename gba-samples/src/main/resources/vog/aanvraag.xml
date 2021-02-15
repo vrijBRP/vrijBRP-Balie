@@ -1,0 +1,58 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aan="AanvraagNpAPI" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aan:verzendAanvraagNP soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <relatieCode xsi:type="xsd:string"></relatieCode>
+         <identificatieCode xsi:type="xsd:string"></identificatieCode>
+         <aanvraag xsi:type="iaan:covog_model_grAanvraag" xmlns:iaan="http://covog/IAanvraagNpAPI.xsd">
+            <!--You may enter the following 14 items in any order-->
+            <aanvraagNummer xsi:type="xsd:string"></aanvraagNummer>
+            <gemeenteCode xsi:type="xsd:string"></gemeenteCode>
+            <locatieCode xsi:type="xsd:string"></locatieCode>
+            <aanvraagdatum xsi:type="xsd:string"></aanvraagdatum>
+            <doelCode xsi:type="xsd:string"></doelCode>
+            <toelichtingDoel xsi:type="xsd:string"></toelichtingDoel>
+            <indicatiePersisteren xsi:type="xsd:string"></indicatiePersisteren>
+            <indicatieBijzonderheden xsi:type="xsd:string"></indicatieBijzonderheden>
+            <indicatieOmstandigheden xsi:type="xsd:string"></indicatieOmstandigheden>
+            <indicatieCovogAdvies xsi:type="xsd:string"></indicatieCovogAdvies>
+            <opmerkingGemeente xsi:type="xsd:string"></opmerkingGemeente>
+            <burgemeestersadvies xsi:type="xsd:string"></burgemeestersadvies>
+            <onderzoeksPersoonNP xsi:type="iaan:covog_model_grOnderzoeksPersoonNP">
+               <!--You may enter the following 19 items in any order-->
+               <geslachtsnaam xsi:type="xsd:string"></geslachtsnaam>
+               <functie xsi:type="xsd:string"></functie>
+               <voorvoegsel xsi:type="xsd:string"></voorvoegsel>
+               <voornamen xsi:type="xsd:string"></voornamen>
+               <geboortedatum xsi:type="xsd:string"></geboortedatum>
+               <gemeenteCodeGeboren xsi:type="xsd:string"></gemeenteCodeGeboren>
+               <geboorteplaatsBuitenland xsi:type="xsd:string"></geboorteplaatsBuitenland>
+               <landCodeGeboren xsi:type="xsd:string"></landCodeGeboren>
+               <geslacht xsi:type="xsd:string"></geslacht>
+               <aanschrijfnaam xsi:type="xsd:string"></aanschrijfnaam>
+               <straat xsi:type="xsd:string"></straat>
+               <huisnummer xsi:type="xsd:string"></huisnummer>
+               <huisnummerToevoeging xsi:type="xsd:string"></huisnummerToevoeging>
+               <postcode xsi:type="xsd:string"></postcode>
+               <plaats xsi:type="xsd:string"></plaats>
+               <landCode xsi:type="xsd:string"></landCode>
+               <screeningsprofiel xsi:type="xsd:string"></screeningsprofiel>
+               <functieaspecten xsi:type="iaan:ArrayOfcovog_model_grFunctieaspect" soapenc:arrayType="iaan:covog_model_grFunctieaspect[]"/>
+               <histories xsi:type="iaan:ArrayOfcovog_model_grHistorie" soapenc:arrayType="iaan:covog_model_grHistorie[]"/>
+            </onderzoeksPersoonNP>
+            <belanghebbende xsi:type="iaan:covog_model_grBelanghebbende">
+               <!--You may enter the following 9 items in any order-->
+               <naamBelanghebbende xsi:type="xsd:string"></naamBelanghebbende>
+               <naamVertegenwoordiger xsi:type="xsd:string"></naamVertegenwoordiger>
+               <straat xsi:type="xsd:string"></straat>
+               <huisnummer xsi:type="xsd:string"></huisnummer>
+               <huisnummerToevoeging xsi:type="xsd:string"></huisnummerToevoeging>
+               <postcode xsi:type="xsd:string"></postcode>
+               <plaats xsi:type="xsd:string"></plaats>
+               <landCode xsi:type="xsd:string"></landCode>
+               <telefoon xsi:type="xsd:string"></telefoon>
+            </belanghebbende>
+         </aanvraag>
+      </aan:verzendAanvraagNP>
+   </soapenv:Body>
+</soapenv:Envelope>

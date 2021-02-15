@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201602-1" author="Procura (Frits Janssen)">
+        <createTable tableName="doss_omzet">
+            <column name="c_doss_omzet" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wijze_vn" type="VARCHAR(1)"/>
+            <column name="c_huw_locatie" type="numeric"/>
+            <column name="status_sl" type="VARCHAR(1)"/>
+            <column defaultValueComputed="-1" name="d_sl" type="numeric"/>
+            <column defaultValueComputed="-1" name="t_sl" type="numeric"/>
+            <column defaultValueComputed="-1" name="d_end_status" type="numeric"/>
+            <column name="ceremonie_toel" type="TEXT"/>
+            <column defaultValueComputed="-1" name="gem_getuigen" type="numeric"/>
+            <column defaultValueComputed="-1" name="p1_recht" type="numeric"/>
+            <column defaultValueComputed="-1" name="p2_recht" type="numeric"/>
+            <column name="p1_naam" type="VARCHAR(255)"/>
+            <column name="p2_naam" type="VARCHAR(255)"/>
+            <column name="p1_ng" type="VARCHAR(1)"/>
+            <column name="p2_ng" type="VARCHAR(255)"/>
+            <column defaultValueComputed="-1" name="c_huw_gem" type="numeric"/>
+            <column name="p1_voorv" type="VARCHAR(255)"/>
+            <column name="p2_voorv" type="VARCHAR(255)"/>
+            <column name="p1_titel" type="VARCHAR(255)"/>
+            <column name="p2_titel" type="VARCHAR(255)"/>
+            <column name="datum_gps" type="numeric" defaultValueNumeric="-1"/>
+            <column name="plaats_gps" type="VARCHAR(255)"/>
+            <column name="land_gps" type="numeric" defaultValueNumeric="-1"/>
+            <column name="akte_nr_gps" type="VARCHAR(255)"/>
+            <column name="akte_plaats_gps" type="VARCHAR(255)"/>
+            <column name="akte_jaar_gps" type="numeric" defaultValueNumeric="-1"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201602-2" author="Procura (Frits Janssen)">
+        <createTable tableName="doss_omzet_optie">
+            <column name="c_doss_omzet" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_huw_locatie_optie" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="waarde" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201602-3" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_doss_omzet, c_huw_locatie_optie"
+                       constraintName="doss_omzet_optie_pkey"
+                       tableName="doss_omzet_optie"/>
+    </changeSet>
+
+    <changeSet id="201602-4" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_doss_omzet"
+                       constraintName="doss_omzet_pkey"
+                       tableName="doss_omzet"/>
+    </changeSet>
+
+    <changeSet id="201602-5" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_doss_omzet"
+                                 baseTableName="doss_omzet"
+                                 constraintName="doss_omzet_c_doss_omzet_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss"
+                                 referencedTableName="doss"/>
+    </changeSet>
+
+    <changeSet id="201602-6" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_huw_locatie"
+                                 baseTableName="doss_omzet"
+                                 constraintName="doss_omzet_c_huw_locatie_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_huw_locatie"
+                                 referencedTableName="huw_locatie"/>
+    </changeSet>
+</databaseChangeLog>

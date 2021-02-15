@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://bcgba.bprbzk.nl/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://bcgba.bprbzk.nl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://bcgba.bprbzk.nl/">
+      <s:element name="Test">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="test" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MatchIdenGeg">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="berichtIn" type="tns:MatchIdenGegBI" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MatchIdenGegBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IdenGegVraag" type="tns:ArrayOfMatchIdenGegVraagDE" />
+              <s:element minOccurs="0" maxOccurs="1" name="Instantie" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BerichtInBase">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Afzender" type="tns:AfzenderDE" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="EntiteitBase" abstract="true" />
+      <s:complexType name="ProtocolRegelDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Bsn" type="s:long" />
+              <s:element minOccurs="0" maxOccurs="1" name="Afzender" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruiker" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtOpgeslagenDt" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtType" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="MatchIdenGegResultaatDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ResultaatCode" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Vraagnummer" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="ResultaatOmschrijving" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IdenGegAntwoord" type="tns:ArrayOfMatchIdenGegAntwoordDE" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfMatchIdenGegAntwoordDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MatchIdenGegAntwoordDE" nillable="true" type="tns:MatchIdenGegAntwoordDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MatchIdenGegAntwoordDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BeheerIdenGegVraagDE">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Bsn" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AdellijkeTitelPredikaat" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AanduidingGegevensInOnderzoekPersoon" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumIngangOnderzoekPersoon" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AanduidingGegevensInOnderzoekNationaliteit" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumIngangOnderzoekNationaliteit" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumOverlijden" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AanduidingGegevensInOnderzoekOverlijden" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumIngangOnderzoekOverlijden" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieGeheim" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="OmschrijvingRedenOpschorting" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FunctieAdres" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Gemeentedeel" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Straatnaam" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Huisnummer" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Huisnummertoevoeging" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Huisletter" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AanduidingBijHuisnummer" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Locatiebeschrijving" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LandVanwaarIngeschreven" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AanduidingGegevensInOnderzoekAdres" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumIngangOnderzoekAdres" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="VolgnummerMatch" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Score" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Registratie" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BeheerIdenGegVraagDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Voornamen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="VoorvoegselGeslachtsnaam" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Geslachtsnaam" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Geboortedatum" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Geboorteplaats" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Geboorteland" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Geslachtsaanduiding" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Nationaliteit" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="GemeenteVanInschrijving" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumVertrekUitNederland" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BerichtLogDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Inhoud" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtType" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Afzender" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CrossReferentieNummer" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="BerichtRichting" type="tns:BerichtRichtingType" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumTijdOntvangstVerzenden" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumTijdRegistratie" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Volgnummer" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="ReferentieNummer" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="BerichtRichtingType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Leeg" />
+          <s:enumeration value="IngaandBericht" />
+          <s:enumeration value="UitgaandBericht" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AuditLogDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Volgnummer" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="BcGbaBerichtNr" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AfzenderBerichtNr" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Afzender" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruikerOfInstantie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Gewijzigd" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Actie" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ResultaatActie" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="ResultaatCode" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BerichtUitBase">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Afzender" type="tns:AfzenderDE" />
+              <s:element minOccurs="0" maxOccurs="1" name="BcGBABericht" type="tns:BerichtInfoDE" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AfzenderDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtNr" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Afzender" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BerichtInfoDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="BcGbaBerichtNr" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="BerichtResultaatCode" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtResultaatOmschrijving" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SchoonBerichtLogBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="AantalVerwijderd" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BeheerBerichtLogBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="AantalVerwijderd" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="OphalenNummergegevensBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="NummerGegevens" type="tns:ArrayOfNummerGegevensDE" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfNummerGegevensDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NummerGegevensDE" nillable="true" type="tns:NummerGegevensDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NummerGegevensDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="BurgerServiceNr" type="s:long" />
+              <s:element minOccurs="1" maxOccurs="1" name="BsnStatus" type="tns:StatusBsn" />
+              <s:element minOccurs="0" maxOccurs="1" name="Instantie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdToekennen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="InstantieOpwaarderen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdOpwaarderen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="InstantieOmhangen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdOmhangen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="InstantieUitVerkeerHalen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdUitVerkeerHalen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Registratie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdWijziging" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="BvBsnBerichtnummerWijziging" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="StatusBsn">
+        <s:restriction base="s:string">
+          <s:enumeration value="Aangemaakt" />
+          <s:enumeration value="Gedistribueerd" />
+          <s:enumeration value="InVerkeer" />
+          <s:enumeration value="UitVerkeer" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="HaalProtocolOpBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TotaalAantalGevondenResultaten" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="ProtocolRegels" type="tns:ArrayOfProtocolRegelDE" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfProtocolRegelDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ProtocolRegelDE" nillable="true" type="tns:ProtocolRegelDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MatchIdenGegBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Resultaat" type="tns:ArrayOfMatchIdenGegResultaatDE" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfMatchIdenGegResultaatDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MatchIdenGegResultaatDE" nillable="true" type="tns:MatchIdenGegResultaatDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RegBsnGegBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="VraagBerichtLogOpBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtLog" type="tns:ArrayOfBerichtLogDE" />
+              <s:element minOccurs="1" maxOccurs="1" name="TotaalAantalBerichten" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfBerichtLogDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BerichtLogDE" nillable="true" type="tns:BerichtLogDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RegInstantiewijzigingBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="AantalGewijzigd" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="GenereerDistribueerNrBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="BcGbaBatchNr" type="s:long" />
+              <s:element minOccurs="1" maxOccurs="1" name="Aantal" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Nummers" type="tns:ArrayOfLong" />
+              <s:element minOccurs="1" maxOccurs="1" name="Hashtotal" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VraagAuditLogOpBU">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtUitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="AuditLog" type="tns:ArrayOfAuditLogDE" />
+              <s:element minOccurs="1" maxOccurs="1" name="TotaalAantalGevondenBerichten" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfAuditLogDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AuditLogDE" nillable="true" type="tns:AuditLogDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MatchIdenGegVraagDE">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntiteitBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IdenGegVraag" type="tns:BeheerIdenGegVraagDE" />
+              <s:element minOccurs="1" maxOccurs="1" name="Vraagnummer" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SchoonBerichtLogBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="VraagBerichtLogOpBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="AfzenderOfOntvanger" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="BerichtType" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ReferentieNummer" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="VanafVolgnummer" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruiker" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SelectieDtEind" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SelectieDtBegin" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="BerichtRichting" type="tns:BerichtRichtingType" />
+              <s:element minOccurs="0" maxOccurs="1" name="CrossReferentieNummer" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="HaalProtocolOpBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruiker" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Bsn" type="s:long" />
+              <s:element minOccurs="0" maxOccurs="1" name="SelectieDtBegin" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SelectieDtEind" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RegInstantiewijzigingBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="OudeInstantie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NieuweInstantie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumTijdInstantiewijziging" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="VraagAuditLogOpBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruiker" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SelectieDtBegin" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="VanafVolgnummer" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="SelectieDtEind" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruikerOfInstantie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AfzenderBerichtNr" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="BCGBABerichtNummer" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="AfzenderBericht" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="OphalenNummergegevensBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="BurgerServiceNr" type="s:long" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruiker" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BeheerBerichtLogBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="VerwijderenTm" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RegBsnGegBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IndicatieEindgebruiker" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="BurgerServiceNr" type="s:long" />
+              <s:element minOccurs="1" maxOccurs="1" name="BsnStatus" type="tns:StatusBsn" />
+              <s:element minOccurs="0" maxOccurs="1" name="Instantie" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdToekennen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="InstantieOpwaarderen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdOpwaarderen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="InstantieOmhangen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdOmhangen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="InstantieUitVerkeerHalen" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DatumtijdUitVerkeerHalen" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Registratie" type="tns:InAR" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="InAR">
+        <s:restriction base="s:string">
+          <s:enumeration value="Geen" />
+          <s:enumeration value="Rni" />
+          <s:enumeration value="Lrds" />
+          <s:enumeration value="Bvr" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="GenereerDistribueerNrBI">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BerichtInBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Aantal" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfMatchIdenGegVraagDE">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MatchIdenGegVraagDE" nillable="true" type="tns:MatchIdenGegVraagDE" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="MatchIdenGegResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MatchIdenGegResult" type="tns:MatchIdenGegBU" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenereerDistribueerNr">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="berichtIn" type="tns:GenereerDistribueerNrBI" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenereerDistribueerNrResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenereerDistribueerNrResult" type="tns:GenereerDistribueerNrBU" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="TestSoapIn">
+    <wsdl:part name="parameters" element="tns:Test" />
+  </wsdl:message>
+  <wsdl:message name="TestSoapOut">
+    <wsdl:part name="parameters" element="tns:TestResponse" />
+  </wsdl:message>
+  <wsdl:message name="MatchIdenGegSoapIn">
+    <wsdl:part name="parameters" element="tns:MatchIdenGeg" />
+  </wsdl:message>
+  <wsdl:message name="MatchIdenGegSoapOut">
+    <wsdl:part name="parameters" element="tns:MatchIdenGegResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenereerDistribueerNrSoapIn">
+    <wsdl:part name="parameters" element="tns:GenereerDistribueerNr" />
+  </wsdl:message>
+  <wsdl:message name="GenereerDistribueerNrSoapOut">
+    <wsdl:part name="parameters" element="tns:GenereerDistribueerNrResponse" />
+  </wsdl:message>
+  <wsdl:message name="TestHttpGetIn">
+    <wsdl:part name="test" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="TestHttpPostIn">
+    <wsdl:part name="test" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="BeheercomponentGBASoap">
+    <wsdl:operation name="Test">
+      <wsdl:input message="tns:TestSoapIn" />
+      <wsdl:output message="tns:TestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MatchIdenGeg">
+      <wsdl:input message="tns:MatchIdenGegSoapIn" />
+      <wsdl:output message="tns:MatchIdenGegSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenereerDistribueerNr">
+      <wsdl:input message="tns:GenereerDistribueerNrSoapIn" />
+      <wsdl:output message="tns:GenereerDistribueerNrSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="BeheercomponentGBAHttpGet">
+    <wsdl:operation name="Test">
+      <wsdl:input message="tns:TestHttpGetIn" />
+      <wsdl:output message="tns:TestHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="BeheercomponentGBAHttpPost">
+    <wsdl:operation name="Test">
+      <wsdl:input message="tns:TestHttpPostIn" />
+      <wsdl:output message="tns:TestHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BeheercomponentGBASoap" type="tns:BeheercomponentGBASoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <wsdl:operation name="Test">
+      <soap:operation soapAction="http://bcgba.bprbzk.nl/Test" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MatchIdenGeg">
+      <soap:operation soapAction="http://bcgba.bprbzk.nl/MatchIdenGeg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenereerDistribueerNr">
+      <soap:operation soapAction="http://bcgba.bprbzk.nl/GenereerDistribueerNr" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BeheercomponentGBAHttpGet" type="tns:BeheercomponentGBAHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="Test">
+      <http:operation location="/Test" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BeheercomponentGBAHttpPost" type="tns:BeheercomponentGBAHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="Test">
+      <http:operation location="/Test" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BeheercomponentGBA">
+    <wsdl:port name="BeheercomponentGBASoap" binding="tns:BeheercomponentGBASoap">
+      <soap:address location="https://bcgba.burgerservicenummer.nl/bcgba.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BeheercomponentGBAHttpGet" binding="tns:BeheercomponentGBAHttpGet">
+      <http:address location="https://bcgba.burgerservicenummer.nl/bcgba.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BeheercomponentGBAHttpPost" binding="tns:BeheercomponentGBAHttpPost">
+      <http:address location="https://bcgba.burgerservicenummer.nl/bcgba.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

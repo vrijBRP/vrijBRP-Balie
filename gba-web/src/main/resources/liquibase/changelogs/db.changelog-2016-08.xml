@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201608-01" author="Procura (Frits Janssen)">
+        <createTable tableName="presentievraag">
+            <column name="c_presentievraag" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zaak_id" type="VARCHAR(255)"/>
+            <column name="vraag" type="VARCHAR(4000)"/>
+            <column name="antwoord" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="-1" name="d_in" type="numeric"/>
+            <column defaultValueComputed="-1" name="t_in" type="numeric"/>
+            <column defaultValueNumeric="0" name="c_usr" type="numeric"/>
+            <column defaultValueNumeric="0" name="c_location" type="numeric"/>
+            <column name="versie" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201608-02" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_presentievraag"
+                       constraintName="presentievraag_pkey"
+                       tableName="presentievraag"/>
+    </changeSet>
+
+    <changeSet id="201608-03" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_location"
+                                 baseTableName="presentievraag"
+                                 constraintName="presentievraag_c_location_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_location"
+                                 referencedTableName="location"/>
+    </changeSet>
+
+    <changeSet id="201608-04" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_usr"
+                                 baseTableName="presentievraag"
+                                 constraintName="presentievraag_c_usr_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+</databaseChangeLog>

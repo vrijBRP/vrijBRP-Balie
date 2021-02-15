@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Frits)" id="v1_21-1">
+        <addColumn tableName="rdm01">
+            <column name="buitenl_doc" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_21-2">
+        <addColumn tableName="document_afn">
+            <column name="email" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_21-3">
+        <addColumn tableName="doss_onderz_bron">
+            <column name="inst_email" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_21-4">
+        <addColumn tableName="gv">
+            <column name="email" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_21-5">
+        <createTable tableName="rp_sig">
+            <column name="c_rp_sig" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="bsn" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pc" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="hnr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_l" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_t" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_a" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="-1" name="type" type="numeric(1)"/>
+            <column name="label" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_21-6">
+        <addPrimaryKey columnNames="c_rp_sig" constraintName="rp_sig_pkey" tableName="rp_sig"/>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_21-7">
+        <addColumn tableName="printoptie">
+            <column name="type" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

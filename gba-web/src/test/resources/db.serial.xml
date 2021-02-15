@@ -1,0 +1,277 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="" id="1538744069578-1">
+        <insert tableName="serial">
+            <column name="id" value="doss_aant"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="aantek3"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="app"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="aantekening_ind"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="usr"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="brp"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="brp_melding"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="correspondentie"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="document_afn"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="document_doel"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_akte_rd_cat"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_doc"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_overl_aangever"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="email"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="field"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="gba_category"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="gem"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="gpk"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="usr_info"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="inbox"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="huw_locatie_optie"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="bvh_park"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="indicatie"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="kenmerk"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="huw_ambt"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="inbox_bestand"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="koppelenum"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="printoptie"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="reisdoc"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="soap"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="terugm_reactie"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="vog_belang"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="link"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="uitt_aanvr"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="gba_element"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="gv"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="gv_proces"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="sms"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="belangh"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="location"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="profile"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="huw_locatie"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="sel"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="presentievraag"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="kassa"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_akte_rd"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="geheimhouding"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="terugmelding"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="naamgebruik"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="idvaststelling"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="rdm01"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="stempel"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_natio"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="vog_aanvr"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_onderz_bron"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="document"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="nrd"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="aantekening"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="aantekening_hist"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="prot_new"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="log"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="prot_new_search"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="action"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="parm"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_akte"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="ind_verwerkt"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+        <insert tableName="serial">
+            <column name="id" value="doss_pers"/>
+            <column name="val" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

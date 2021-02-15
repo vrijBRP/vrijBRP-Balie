@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: BEVRAGING BROMF CERTIFICAAT- EN PERSOONSGEGEVENS OP NA</xs:documentation>
+  <xs:documentation>Proces : Raadpl persoons- en bromf cert geg op naam</xs:documentation>
+  <xs:documentation>Functie: Aanvraagbericht</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 03-11-2005 16:48</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="BR-CERT-OP-NAAM" type="BR-CERT-OP-NAAM"/>
+
+ <xs:complexType name="BR-CERT-OP-NAAM">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+   <xs:element name="NAT-P-ZOEK-GEG" type="NAT-P-ZOEK-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="WACHT-WOORD-ACT" type="WACHT-WOORD"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST"/>
+   <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-P-ZOEK-GEG">
+  <xs:all>
+   <xs:element name="GESL-NAAM-NP-A" type="GESL-NAAM-NP"/>
+   <xs:element name="VOOR-LET-NP-A" type="VOORLETTERS"/>
+   <xs:element name="GEB-DAT-NP-A" type="DATUM-EJMD"/>
+   <xs:element name="NAT-PERS-SL-L" minOccurs="0" type="NAT-PERS-SL"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="DATUM-EJMD">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GESL-NAAM-NP">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="30"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="NAT-PERS-SL">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="16"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="OPT-STAT-TEKST">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="VOORLETTERS">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="WACHT-WOORD">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

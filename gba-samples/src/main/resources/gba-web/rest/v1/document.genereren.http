@@ -1,0 +1,10 @@
+GET http://{{host}}:{{port}}/personen/rest/v1.0/document/genereren/910/pdf/000001351
+Authorization: Basic {{username}} {{password}}
+Accept: application/octet-stream
+
+###
+
+GET http://{{host}}:{{port}}/personen/rest/v1.0/document/genereren/910/pdf-a1/000001351
+Authorization: Basic {{username}} {{password}}
+Accept: application/octet-stream
+###

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://covog/UnicodeAanvraagNpAPI.wsdl" xmlns:ns1="http://covog/IUnicodeAanvraagNpAPI.xsd" name="UnicodeAanvraagNpAPI" targetNamespace="http://covog/UnicodeAanvraagNpAPI.wsdl">
+	<types>
+		<schema targetNamespace="http://covog/IUnicodeAanvraagNpAPI.xsd" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<complexType name="covog_model_grAanvraag" jdev:packageName="covog.model" xmlns:jdev="http://xmlns.oracle.com/jdeveloper/webservices">
+				<all>
+					<element name="aanvraagNummer" type="string"/>
+					<element name="gemeenteCode" type="string"/>
+					<element name="locatieCode" type="string"/>
+					<element name="aanvraagdatum" type="string"/>
+					<element name="doelCode" type="string"/>
+					<element name="toelichtingDoel" type="string"/>
+					<element name="indicatiePersisteren" type="string"/>
+					<element name="indicatieBijzonderheden" type="string"/>
+					<element name="indicatieOmstandigheden" type="string"/>
+					<element name="indicatieCovogAdvies" type="string"/>
+					<element name="opmerkingGemeente" type="string"/>
+					<element name="burgemeestersadvies" type="string"/>
+					<element name="onderzoeksPersoonNP" type="ns1:covog_model_grOnderzoeksPersoonNP"/>
+					<element name="belanghebbende" type="ns1:covog_model_grBelanghebbende"/>
+				</all>
+			</complexType>
+			<complexType name="covog_model_grOnderzoeksPersoonNP" jdev:packageName="covog.model" xmlns:jdev="http://xmlns.oracle.com/jdeveloper/webservices">
+				<all>
+					<element name="geslachtsnaam" type="string"/>
+					<element name="functie" type="string"/>
+					<element name="voorvoegsel" type="string"/>
+					<element name="voornamen" type="string"/>
+					<element name="geboortedatum" type="string"/>
+					<element name="gemeenteCodeGeboren" type="string"/>
+					<element name="geboorteplaatsBuitenland" type="string"/>
+					<element name="landCodeGeboren" type="string"/>
+					<element name="nationaliteiten" type="ns1:NationaliteitenType"/>
+					<element name="burgerServiceNummer" type="string"/>
+					<element name="geslacht" type="string"/>
+					<element name="aanschrijfnaam" type="string"/>
+					<element name="straat" type="string"/>
+					<element name="huisnummer" type="string"/>
+					<element name="huisnummerToevoeging" type="string"/>
+					<element name="postcode" type="string"/>
+					<element name="plaats" type="string"/>
+					<element name="landCode" type="string"/>
+					<element name="screeningsprofiel" type="string"/>
+					<element name="functieaspecten" type="ns1:ArrayOfcovog_model_grFunctieaspect"/>
+					<element name="histories" type="ns1:ArrayOfcovog_model_grHistorie"/>
+				</all>
+			</complexType>
+			<complexType name="NationaliteitenType">
+				<xsd:sequence>
+					<xsd:element name="code" type="string" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</complexType>
+			<complexType name="covog_model_grFunctieaspect" jdev:packageName="covog.model" xmlns:jdev="http://xmlns.oracle.com/jdeveloper/webservices">
+				<all>
+					<element name="functieaspectCode" type="string"/>
+				</all>
+			</complexType>
+			<complexType name="ArrayOfcovog_model_grFunctieaspect" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+				<complexContent>
+					<restriction base="SOAP-ENC:Array">
+						<attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="ns1:covog_model_grFunctieaspect[]"/>
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="covog_model_grHistorie" jdev:packageName="covog.model" xmlns:jdev="http://xmlns.oracle.com/jdeveloper/webservices">
+				<all>
+					<element name="geslachtsnaam" type="string"/>
+					<element name="voorvoegsel" type="string"/>
+					<element name="voornamen" type="string"/>
+					<element name="geslacht" type="string"/>
+					<element name="geboortedatum" type="string"/>
+					<element name="gemeenteCodeGeboren" type="string"/>
+					<element name="geboorteplaatsBuitenland" type="string"/>
+					<element name="landCodeGeboren" type="string"/>
+					<element name="burgerServiceNummer" type="string"/>
+				</all>
+			</complexType>
+			<complexType name="ArrayOfcovog_model_grHistorie" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+				<complexContent>
+					<restriction base="SOAP-ENC:Array">
+						<attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="ns1:covog_model_grHistorie[]"/>
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="covog_model_grBelanghebbende" jdev:packageName="covog.model" xmlns:jdev="http://xmlns.oracle.com/jdeveloper/webservices">
+				<all>
+					<element name="naamBelanghebbende" type="string"/>
+					<element name="naamVertegenwoordiger" type="string"/>
+					<element name="straat" type="string"/>
+					<element name="huisnummer" type="string"/>
+					<element name="huisnummerToevoeging" type="string"/>
+					<element name="postcode" type="string"/>
+					<element name="plaats" type="string"/>
+					<element name="landCode" type="string"/>
+					<element name="telefoon" type="string"/>
+				</all>
+			</complexType>
+		</schema>
+	</types>
+	<message name="verzendAanvraagNP0Request">
+		<part name="relatieCode" type="xsd:string"/>
+		<part name="identificatieCode" type="xsd:string"/>
+		<part name="aanvraag" type="ns1:covog_model_grAanvraag"/>
+	</message>
+	<message name="verzendAanvraagNP0Response">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="isAanvraagOntvangen1Request">
+		<part name="aanvraagNummer" type="xsd:string"/>
+		<part name="relatieCode" type="xsd:string"/>
+		<part name="identificatieCode" type="xsd:string"/>
+	</message>
+	<message name="isAanvraagOntvangen1Response">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<portType name="UnicodeAanvraagNpAPIPortType">
+		<operation name="verzendAanvraagNP">
+			<input name="verzendAanvraagNP0Request" message="tns:verzendAanvraagNP0Request"/>
+			<output name="verzendAanvraagNP0Response" message="tns:verzendAanvraagNP0Response"/>
+		</operation>
+		<operation name="isAanvraagOntvangen">
+			<input name="isAanvraagOntvangen1Request" message="tns:isAanvraagOntvangen1Request"/>
+			<output name="isAanvraagOntvangen1Response" message="tns:isAanvraagOntvangen1Response"/>
+		</operation>
+	</portType>
+	<binding name="UnicodeAanvraagNpAPIBinding" type="tns:UnicodeAanvraagNpAPIPortType">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="verzendAanvraagNP">
+			<soap:operation soapAction="" style="rpc"/>
+			<input name="verzendAanvraagNP0Request">
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="UnicodeAanvraagNpAPI"/>
+			</input>
+			<output name="verzendAanvraagNP0Response">
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="UnicodeAanvraagNpAPI"/>
+			</output>
+		</operation>
+		<operation name="isAanvraagOntvangen">
+			<soap:operation soapAction="" style="rpc"/>
+			<input name="isAanvraagOntvangen1Request">
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="UnicodeAanvraagNpAPI"/>
+			</input>
+			<output name="isAanvraagOntvangen1Response">
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="UnicodeAanvraagNpAPI"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="UnicodeAanvraagNpAPI">
+		<documentation>&lt;p&gt;API class om aanvragen te kunnen verzenden, en om statusinformatie erover op te kunnen vragen.&lt;/p&gt; @version $Revision: 1.1 $</documentation>
+		<port name="UnicodeAanvraagNpAPIPort" binding="tns:UnicodeAanvraagNpAPIBinding">
+			<soap:address location="http://inaro.dev.sgti.nl:7779/webservices/UnicodeAanvraagNpAPI"/>
+		</port>
+	</service>
+</definitions>

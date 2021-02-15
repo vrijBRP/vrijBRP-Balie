@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:tns="http://www.rechtspraak.nl/namespaces/ccr01" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.rechtspraak.nl/namespaces/ccr01">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.rechtspraak.nl/namespaces/ccr01">
+      <s:element name="GetLastUpdate">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GetLastUpdateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastUpdateResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any/>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="searchPerson">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="prefix" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="surname" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="1" name="dateOfBirth" type="s:dateTime"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="searchPersonResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="searchPersonResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any/>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetLastUpdateSoapIn">
+    <wsdl:part element="tns:GetLastUpdate" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="GetLastUpdateSoapOut">
+    <wsdl:part element="tns:GetLastUpdateResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="searchPersonSoapIn">
+    <wsdl:part element="tns:searchPerson" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="searchPersonSoapOut">
+    <wsdl:part element="tns:searchPersonResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="curateleregisterSoap">
+    <wsdl:operation name="GetLastUpdate">
+      <wsdl:input message="tns:GetLastUpdateSoapIn"/>
+      <wsdl:output message="tns:GetLastUpdateSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="searchPerson">
+      <wsdl:input message="tns:searchPersonSoapIn"/>
+      <wsdl:output message="tns:searchPersonSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="curateleregisterSoap" type="tns:curateleregisterSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetLastUpdate">
+      <soap:operation soapAction="http://www.rechtspraak.nl/namespaces/ccr01/GetLastUpdate" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchPerson">
+      <soap:operation soapAction="http://www.rechtspraak.nl/namespaces/ccr01/searchPerson" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="curateleregisterSoap12" type="tns:curateleregisterSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetLastUpdate">
+      <soap12:operation soapAction="http://www.rechtspraak.nl/namespaces/ccr01/GetLastUpdate" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchPerson">
+      <soap12:operation soapAction="http://www.rechtspraak.nl/namespaces/ccr01/searchPerson" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="curateleregister">
+    <wsdl:port binding="tns:curateleregisterSoap" name="curateleregisterSoap">
+      <soap:address location="http://webservice.rechtspraak.nl/curateleregister.asmx"/>
+    </wsdl:port>
+    <wsdl:port binding="tns:curateleregisterSoap12" name="curateleregisterSoap12">
+      <soap12:address location="http://webservice.rechtspraak.nl/curateleregister.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

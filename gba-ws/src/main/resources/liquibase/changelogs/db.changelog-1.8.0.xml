@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1.8.0-1" author="Procura (Frits Janssen)">
+        <createIndex indexName="request_c_request_d_in_c_usr_t_in_idx" tableName="request" unique="false">
+            <column name="c_request" />
+            <column name="d_in" />
+            <column name="c_usr" />
+            <column name="t_in" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.8.0-2" author="Procura (Frits Janssen)">
+        <createIndex indexName="gbav_profile_gbav_profile_c_gbav_profile_block_type_idx" tableName="gbav_profile" unique="false">
+            <column name="gbav_profile" />
+            <column name="c_gbav_profile" />
+            <column name="block" />
+            <column name="type" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.8.0-3" author="Procura (Frits Janssen)">
+        <createIndex indexName="landtab_element_c_table_c_element_idx" tableName="landtab_element" unique="false">
+            <column name="c_table" />
+            <column name="c_element" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.8.0-4" author="Procura (Frits Janssen)">
+        <createIndex indexName="landtab_record_c_table_c_record_d_in_d_end_idx" tableName="landtab_record" unique="false">
+            <column name="c_table" />
+            <column name="c_record" />
+            <column name="d_in" />
+            <column name="d_end" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.8.0-5" author="Procura (Frits Janssen)">
+        <createIndex indexName="profile_element_c_profile_element_database_c_ref_idx" tableName="profile_element" unique="false">
+            <column name="c_profile" />
+            <column name="element" />
+            <column name="database" />
+            <column name="c_ref" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.8.0-6" author="Procura (Frits Janssen)">
+        <createIndex indexName="profile_profile_c_profile_idx" tableName="profile" unique="false">
+            <column name="profile" />
+            <column name="c_profile" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="1.8.0-7" author="Procura (Frits Janssen)">
+        <createIndex indexName="usr_usr_pw_admin_display_c_usr_c_profile_idx" tableName="usr" unique="false">
+            <column name="usr" />
+            <column name="pw" />
+            <column name="admin" />
+            <column name="display" />
+            <column name="c_usr" />
+            <column name="c_profile" />
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

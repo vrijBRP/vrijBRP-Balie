@@ -1,0 +1,15 @@
+<service name="ZoekpersoonWS" scope="application">
+    <Description>Webservice voor het opvragen van persoonsgegevens uit de GBA</Description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only"
+            class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver" />
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+            class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+    </messageReceivers>
+    <parameter name="ServiceClass" locked="false">
+        nl.procura.ws.zoekpersoonws.ZoekpersoonWS
+    </parameter>
+    <operation name="zoeken">
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+    </operation>
+</service>

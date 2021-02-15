@@ -1,0 +1,22 @@
+.v-tree-node-caption-filled {
+	font-weight: 700;
+}
+
+.v-customoverlay {
+	font-family: Arial, Helvetica, Tahoma, Verdana, sans-serif;
+	font-size: 12px;
+	line-height: normal;
+	color: #222;
+}
+
+.v-tabsheet-content-tabsheet-margin-top {
+	margin-top: 10px;
+}
+
+.v-upload .gwt-FileUpload {
+	width: 350px;
+}
+
+.v-upload .v-button {
+    width: 100px;
+}

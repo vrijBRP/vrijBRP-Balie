@@ -1,0 +1,53 @@
+POST http://{{host}}:{{port}}/personen/rest/v2/zaken/updaten
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic {{username}} {{password}}
+
+{
+  "zaak": {
+    "algemeen": {
+      "zaakId": "commitment-1234",
+      "type": "HUWELIJK_GPS_GEMEENTE"
+    },
+    "huwelijk": {
+      "partner1": {
+        "persoon": {
+          "bsn": 1351,
+          "contactgegevens": {
+            "email": null,
+            "telefoonThuis": null,
+            "telefoonWerk": null,
+            "telefoonMobiel": null,
+            "telefoonBuitenland": null
+          }
+        },
+        "naamgebruik": null
+      },
+      "partner2": {
+        "persoon": {
+          "bsn": 999994335,
+          "contactgegevens": {
+            "email": null,
+            "telefoonThuis": null,
+            "telefoonWerk": null,
+            "telefoonMobiel": null,
+            "telefoonBuitenland": null
+          }
+        }
+      },
+      "planning": {
+        "soort": "GPS",
+        "datumVerbintenis": 20200911,
+        "tijdVerbintenis": 111213,
+        "datumVoornemen": null,
+        "toelichting": null
+      },
+      "locatie": null,
+      "getuigen": null,
+      "ambtenaren": null,
+      "naamgebruik": null
+    }
+  }
+}
+
+###

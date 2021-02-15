@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: BROMFIETS CERTIFICAAT ONDERHOUD</xs:documentation>
+  <xs:documentation>Proces : Conversie bromfietscertificaat</xs:documentation>
+  <xs:documentation>Functie: Antwoordbericht</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 03-11-2005 16:48</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="BROMF-CERT-OND" type="BROMF-CERT-OND"/>
+
+ <xs:complexType name="BROMF-CERT-OND">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+   <xs:element name="BROMF-CERT-GEG" type="BROMF-CERT-GEG"/>
+   <xs:element name="NAT-PERSOON-GEG" type="NAT-PERSOON-GEG"/>
+   <xs:element name="ADRES-NAT-P-GEG" type="ADRES-NAT-P-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="STAT-RIP" minOccurs="0" type="STAT-RIP"/>
+   <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST"/>
+   <xs:element name="STAT-TEKST-RIP" minOccurs="0" type="STAT-TEKST-RIP"/>
+   <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR"/>
+   <xs:element name="KL-NR-EXT-TOEG" minOccurs="0" type="KLANT-NR-EXT"/>
+   <xs:element name="NETW-EXT-TOEG" minOccurs="0" type="NETWERK-EXT"/>
+   <xs:element name="EXT-DIENSTV-ID" minOccurs="0" type="EXT-DIENSTV-ID"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="BROMF-CERT-GEG">
+  <xs:all>
+   <xs:element name="BROMF-CERT-NR" type="BROMF-CERT-NR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="NAT-PERSOON-GEG">
+  <xs:all>
+   <xs:element name="FISC-NR-NAT-P" type="FISC-NR"/>
+   <xs:element name="GBA-NR-NAT-P" type="GBA-NR"/>
+   <xs:element name="GESL-NAAM-NAT-P" type="GESL-NAAM"/>
+   <xs:element name="VOOR-VOEG-NAT-P" minOccurs="0" type="VOOR-VOEG"/>
+   <xs:element name="VOOR-LET-NAT-P" minOccurs="0" type="VOOR-LET"/>
+   <xs:element name="VOOR-NAAM-NAT-P" minOccurs="0" type="VOOR-NAAM"/>
+   <xs:element name="GEB-DAT-NAT-P" type="DATUM-EJMD"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ADRES-NAT-P-GEG">
+  <xs:all>
+   <xs:element name="STRAAT-NAT-P" minOccurs="0" type="STRAAT-NAAM"/>
+   <xs:element name="HUIS-NR-NAT-P" minOccurs="0" type="HUIS-NR-NUM"/>
+   <xs:element name="HUIS-TV-NAT-P" minOccurs="0" type="HUIS-NR-TOEV"/>
+   <xs:element name="WW-AB-VERW-NP" minOccurs="0" type="WW-AB-VERW"/>
+   <xs:element name="POSTC-N-NAT-P" minOccurs="0" type="POSTC-NUM"/>
+   <xs:element name="POSTC-A-NAT-P" minOccurs="0" type="POSTC-ALF"/>
+   <xs:element name="WOONPL-NAT-P" type="WOONPL-NAAM"/>
+   <xs:element name="LOC-REG-NAT-P" minOccurs="0" type="ADRES-REGEL"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="ADRES-REGEL">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="35"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="BROMF-CERT-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="DATUM-EJMD">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="EXT-DIENSTV-ID">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="6"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="FISC-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="9"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GBA-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GESL-NAAM">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="200"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="HUIS-NR-NUM">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="5"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="HUIS-NR-TOEV">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="7"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="KLANT-NR-EXT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="30"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="NETWERK-EXT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="OPT-STAT-TEKST">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="POSTC-ALF">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="POSTC-NUM">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="STAT-RIP">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="STAT-TEKST-RIP">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="40"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="STRAAT-NAAM">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="24"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="VOOR-LET">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="17"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="VOOR-NAAM">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="28"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="VOOR-VOEG">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="WOONPL-NAAM">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="24"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="WW-AB-VERW">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

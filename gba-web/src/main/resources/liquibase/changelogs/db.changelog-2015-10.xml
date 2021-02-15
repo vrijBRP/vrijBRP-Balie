@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="201510-1" author="Procura (Frits Janssen)">
+        <createTable tableName="kenmerk">
+            <column name="c_kenmerk" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kenmerk" type="VARCHAR(255)"/>
+            <column name="kenmerk_type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201510-2" author="Procura (Frits Janssen)">
+        <createTable tableName="document_kenmerk">
+            <column defaultValueNumeric="0" name="c_document" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="c_kenmerk" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201510-3" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_kenmerk"
+                       constraintName="kenmerk_pkey"
+                       tableName="kenmerk"/>
+    </changeSet>
+
+    <changeSet id="201510-4" author="Procura (Frits Janssen)">
+        <addPrimaryKey columnNames="c_document, c_kenmerk"
+                       constraintName="document_kenmerk_pkey"
+                       tableName="document_kenmerk"/>
+    </changeSet>
+
+    <changeSet id="201510-5" author="Procura (Frits Janssen)">
+        <addForeignKeyConstraint baseColumnNames="c_document"
+                                 baseTableName="document_kenmerk"
+                                 constraintName="doc_kenmerk_c_doc_fkey"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet id="201510-6" author="Procura (Frits Janssen)">
+        <addColumn tableName="printoptie">
+            <column name="bsm_id" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201510-7" author="Procura (Frits Janssen)">
+        <addColumn tableName="printoptie">
+            <column name="mo_berichttype" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

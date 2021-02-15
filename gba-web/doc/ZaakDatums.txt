@@ -1,0 +1,16 @@
+Zaak                Datum invoer        Datum ingang
+====================================================
+Dossier             d_aanvr             d_in
+Correspondentie     d_in                ""
+COVOG               d_aanvr             ""
+Inhouding           d_in / d_inneming   ""
+Indicatie           d_in                ""
+GPK                 d_aanvr             ""
+Gegevensverstrek.   d_in                d_wijz
+Naamgebruik         d_in                d_wijz
+Geheimhouding       d_in                d_wijz
+Reisdocument        d_aanvr             ""
+Rijbewijs           d_aanvr             ""
+Terugmelding        d_in                ""
+Uittreksel          d_aanvr             ""
+Verhuizing          d_opn               d_aanv

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    <include relativeToChangelogFile="true" file="db.changelog-2015-03-17.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-03-24.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-03-26.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-03-30.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-04-13.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-04-14.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-05-01.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-05-22.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-06-09.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-07.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-08.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-09.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-10.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-11.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2015-12.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-01.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-02.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-03.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-04.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-07.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-08.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-09.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-10.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-11.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2016-12.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2017-01.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-2017-02.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-1.9.0.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-1.10.0.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-1.12.0.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-1.17.0.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-1.18.0.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-risk-analysis.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-lo311.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-research-module.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-registration.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-v1_21.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-v1_22.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-v1_24.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-v1_25.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-v1_26.xml"/>
+</databaseChangeLog>

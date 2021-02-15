@@ -1,0 +1,142 @@
+{
+  "zaak": {
+    "algemeen": {
+      "zaakId": "",
+      "meestRelevanteZaakId": null,
+      "type": "HUWELIJK_GPS_GEMEENTE",
+      "soort": null,
+      "omschrijving": null,
+      "status": "INCOMPLEET",
+      "bron": "PROWEB Personen",
+      "leverancier": "PROCURA",
+      "datumIngang": 20200201,
+      "datumInvoer": 20200428,
+      "tijdInvoer": 101112,
+      "locatieInvoer": null,
+      "gebruikerInvoer": null,
+      "ids": null,
+      "statussen": null,
+      "extraAttributen": null,
+      "gekoppeldeZaken": null
+    },
+    "verhuizing": null,
+    "geboorte": null,
+    "erkenning": null,
+    "huwelijk": {
+      "partner1": {
+        "persoon": {
+          "bsn": 1351,
+          "contactgegevens": {
+            "email": "burgerzaken@procura.nl",
+            "telefoonThuis": "1234",
+            "telefoonWerk": "5678",
+            "telefoonMobiel": "9876",
+            "telefoonBuitenland": {
+              "telefoon": "3232",
+              "landCode": 5010
+            }
+          }
+        },
+        "naamgebruik": {
+          "type": "N",
+          "geslachtsnaam": "Geld",
+          "titelPredikaat": "",
+          "voorvoegsel": "de"
+        }
+      },
+      "partner2": {
+        "persoon": {
+          "bsn": 999994335,
+          "contactgegevens": {
+            "email": "burgerzaken@procura.nl",
+            "telefoonThuis": "1234",
+            "telefoonWerk": "5678",
+            "telefoonMobiel": "9876",
+            "telefoonBuitenland": {
+              "telefoon": "3232",
+              "landCode": 5010
+            }
+          }
+        },
+        "naamgebruik": null
+      },
+      "planning": {
+        "soort": "HUWELIJK",
+        "datumVoornemen": 20200401,
+        "datumVerbintenis": 20200607,
+        "tijdVerbintenis": 80910,
+        "toelichting": "Nice Wedding"
+      },
+      "locatie": {
+        "naam": "Het Generaalshuis (Theater aan het Vrijthof)",
+        "aliassen": [
+          "generaalshuis"
+        ],
+        "opties": [
+          {
+            "type": "TEKST",
+            "naam": "Taalceremonie",
+            "waarde": "Spaans",
+            "omschrijving": "Taalceremonie",
+            "aliassen": [
+              "taal_ceremonie"
+            ]
+          },
+          {
+            "type": "NUMMER",
+            "naam": "Max. aantal personen",
+            "waarde": "75",
+            "omschrijving": "Max. aantal personen (1 - 250)",
+            "aliassen": [
+              "max_personen"
+            ]
+          },
+          {
+            "type": "BOOLEAN",
+            "naam": "Trouwboekje/Partnerschapsboekje",
+            "waarde": "true",
+            "omschrijving": "Trouwboekje/Partnerschapsboekje",
+            "aliassen": [
+              "trouwboekje"
+            ]
+          }
+        ]
+      },
+      "getuigen": {
+        "aantalGemeenteGetuigen": 2,
+        "eigenGetuigen": [
+          {
+            "persoon": {
+              "bsn": null,
+              "voornamen": "Firstname 1",
+              "geslachtsnaam": "Lastname 1",
+              "voorvoegsel": "prefix 1",
+              "titelPredikaat": "B",
+              "geboortedatum": 20041210,
+              "toelichting": "Witness 1"
+            }
+          },
+          {
+            "persoon": {
+              "bsn": 2045,
+              "toelichting": "Witness 2"
+            }
+          }
+        ]
+      },
+      "ambtenaren": {
+        "voorkeuren": [
+          {
+            "naam": null,
+            "telefoon": null,
+            "email": null,
+            "aliassen": [
+              "alias1"
+            ]
+          }
+        ],
+        "toegekend": null
+      }
+    }
+  }
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>gba-parent</artifactId>
+        <groupId>nl.procura.gba</groupId>
+        <version>1.26.1</version>
+    </parent>
+
+    <artifactId>gba-ple</artifactId>
+    <name>Proweb GBA - PLE</name>
+
+    <properties>
+    </properties>
+
+    <dependencies>
+        <!-- Own modules -->
+        <dependency>
+            <groupId>nl.procura.gba</groupId>
+            <artifactId>gba-ws-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.gba</groupId>
+            <artifactId>gba-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.gba</groupId>
+            <artifactId>gba-ws-rest-model</artifactId>
+        </dependency>
+
+        <!-- End own modules -->
+        <dependency>
+            <groupId>nl.procura.pom</groupId>
+            <artifactId>logging</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.martiansoftware</groupId>
+            <artifactId>jsap</artifactId>
+            <version>${jsap.version}</version>
+        </dependency>
+
+        <!-- Uitvoerformaten -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${yaml.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.procura.gba</groupId>
+            <artifactId>probev-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>gba-ple</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true
+                    </useDefaultManifestFile>
+                    <includes>
+                        <include>nl/**/*</include>
+                        <include>META-INF/**/*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jenkins</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>process-classes</phase>
+                                <configuration>
+                                    <tasks>
+                                        <java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave" classpathref="maven.runtime.classpath" fork="true">
+                                            <arg line="-loglevel INFO target/classes target/classes" />
+                                        </java>
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

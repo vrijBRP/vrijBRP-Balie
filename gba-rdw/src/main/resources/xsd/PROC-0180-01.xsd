@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+ <xs:annotation>
+  <xs:documentation>Bericht: RYBEWYS ONDERHOUD INCLUSIEF ONGELDIGVERKLARING</xs:documentation>
+  <xs:documentation>Proces : Registreren ontvangst rijbewijs na ontzegging</xs:documentation>
+  <xs:documentation>Functie: Aanvraagbericht</xs:documentation>
+  <xs:documentation>Versie: 3.0</xs:documentation>
+  <xs:documentation>Gegenereerd op 03-11-2005 16:48</xs:documentation>
+ </xs:annotation>
+
+ <xs:element name="RYB-ONDERHOUD" type="RYB-ONDERHOUD"/>
+
+ <xs:complexType name="RYB-ONDERHOUD">
+  <xs:all>
+   <xs:element name="ALG-GEG" type="ALG-GEG"/>
+   <xs:element name="RYB-GEG" type="RYB-GEG"/>
+   <xs:element name="MAATREGEL-GEG" type="MAATREGEL-GEG"/>
+   <xs:element name="ONTZEG-PER-GEG" type="ONTZEG-PER-GEG"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ALG-GEG">
+  <xs:all>
+   <xs:element name="GEBR-IDENT" type="GEBR-IDENT"/>
+   <xs:element name="WACHT-WOORD-ACT" type="WACHT-WOORD"/>
+   <xs:element name="PROC-IDENT" type="PROC-IDENT"/>
+   <xs:element name="PROC-FUNC" type="PROC-FUNC"/>
+   <xs:element name="OPT-STAT-TEKST" minOccurs="0" type="OPT-STAT-TEKST"/>
+   <xs:element name="INFO-GEBR" minOccurs="0" type="INFO-GEBR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="RYB-GEG">
+  <xs:all>
+   <xs:element name="RYB-NR" type="RYB-NR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="MAATREGEL-GEG">
+  <xs:all>
+   <xs:element name="MAATR-VOLG-NR" type="MAATR-VOLG-NR"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:complexType name="ONTZEG-PER-GEG">
+  <xs:all>
+   <xs:element name="ONTZEG-DAT" type="DATUM-EJMD"/>
+   <xs:element name="INLEV-DAT-ONTZ" type="DATUM-EJMD"/>
+  </xs:all>
+ </xs:complexType>
+
+ <xs:simpleType name="DATUM-EJMD">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="GEBR-IDENT">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="INFO-GEBR">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="52"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="MAATR-VOLG-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="3"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="OPT-STAT-TEKST">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-FUNC">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="2"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="PROC-IDENT">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="4"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="RYB-NR">
+  <xs:restriction base="xs:nonNegativeInteger">
+   <xs:totalDigits value="10"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="WACHT-WOORD">
+  <xs:restriction base="xs:string">
+   <xs:maxLength value="8"/>
+  </xs:restriction>
+ </xs:simpleType>
+
+</xs:schema>

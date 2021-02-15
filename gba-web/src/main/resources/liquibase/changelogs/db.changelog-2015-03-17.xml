@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="20150317-1" author="Procura (Frits Janssen)">
+        <renameColumn tableName="doss" oldColumnName="comment" newColumnName="commentaar"/>
+    </changeSet>
+
+    <changeSet id="20150317-2" author="Procura (Frits Janssen)">
+        <renameColumn tableName="doss_overl" oldColumnName="c_just_aang" newColumnName="just_aang"/>
+    </changeSet>
+
+    <changeSet id="20150317-3" author="Procura (Frits Janssen)">
+        <renameColumn tableName="doss_pers" oldColumnName="uid" newColumnName="userid"/>
+    </changeSet>
+
+    <changeSet id="20150317-4" author="Procura (Frits Janssen)">
+        <dropColumn tableName="doss_pers" columnName="type"/>
+    </changeSet>
+
+    <changeSet id="20150317-5" author="Procura (Frits Janssen)">
+        <renameColumn tableName="pl_hist" oldColumnName="timestamp" newColumnName="tijdstempel"/>
+    </changeSet>
+
+    <changeSet id="20150317-6" author="Procura (Frits Janssen)">
+        <dropTable tableName="dms"/>
+    </changeSet>
+
+    <changeSet id="20150317-7" author="Procura (Frits Janssen)">
+        <dropColumn tableName="gba_element" columnName="type"/>
+    </changeSet>
+
+    <changeSet id="20150317-8" author="Procura (Frits Janssen)">
+        <renameColumn tableName="link" oldColumnName="type" newColumnName="link_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-9" author="Procura (Frits Janssen)">
+        <renameColumn tableName="location" oldColumnName="type" newColumnName="location_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-10" author="Procura (Frits Janssen)">
+        <renameColumn tableName="stempel" oldColumnName="type" newColumnName="stempel_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-11" author="Procura (Frits Janssen)">
+        <renameColumn tableName="voorraad" oldColumnName="type" newColumnName="voorraad_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-12" author="Procura (Frits Janssen)">
+        <renameColumn tableName="zaak_id" oldColumnName="type" newColumnName="id_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-13" author="Procura (Frits Janssen)">
+        <renameColumn tableName="usr_info" oldColumnName="key" newColumnName="info_key"/>
+        <renameColumn tableName="usr_info" oldColumnName="value" newColumnName="info_value"/>
+    </changeSet>
+
+    <changeSet id="20150317-14" author="Procura (Frits Janssen)">
+        <renameColumn tableName="document" oldColumnName="type" newColumnName="document_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-15" author="Procura (Frits Janssen)">
+        <renameColumn tableName="kassa" oldColumnName="type" newColumnName="kassa_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-16" author="Procura (Frits Janssen)">
+        <renameColumn tableName="pl_hist" oldColumnName="type" newColumnName="pl_hist_type"/>
+    </changeSet>
+
+    <changeSet id="20150317-17" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="aant3" columnName="d_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-18" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="aantekening_hist" columnName="d_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-19" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="aantekening_hist" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-20" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="brp" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="brp" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-21" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="bvh_park" columnName="d_opn" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="bvh_park" columnName="t_opn" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="bvh_park" columnName="d_aanv" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-23" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="correspondentie" columnName="anr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="correspondentie" columnName="bsn" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="correspondentie" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="correspondentie" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-24" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="document" columnName="d_end" defaultValueNumeric="-1"/>
+    </changeSet>
+    <changeSet id="20150317-25" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="doss" columnName="c_usr" defaultValueNumeric="0"/>
+        <addDefaultValue tableName="doss" columnName="d_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss" columnName="t_aanvr" defaultValueNumeric="-1"/>
+    </changeSet>
+    <changeSet id="20150317-26" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="doss_huw" columnName="d_vn" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss_huw" columnName="d_sl" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss_huw" columnName="t_sl" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss_huw" columnName="d_end_status" defaultValueNumeric="-1"/>
+    </changeSet>
+    <changeSet id="20150317-27" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="doss_natio" columnName="afgeleid" defaultValueNumeric="0"/>
+    </changeSet>
+    <changeSet id="20150317-28" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="doss_overl" columnName="d_ontvangst" defaultValueNumeric="-1"/>
+    </changeSet>
+    <changeSet id="20150317-29" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="doss_overl_aangever" columnName="d_geb" defaultValueNumeric="-1"/>
+    </changeSet>
+    <changeSet id="20150317-30" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="doss_pers" columnName="d_geb" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss_pers" columnName="t_geb" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss_pers" columnName="d_moment" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="doss_pers" columnName="d_burg_staat" defaultValueNumeric="-1"/>
+    </changeSet>
+    <changeSet id="20150317-31" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="geheimhouding" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="geheimhouding" columnName="t_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="geheimhouding" columnName="d_wijz" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-32" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="gpk" columnName="anr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gpk" columnName="bsn" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gpk" columnName="d_verval" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gpk" columnName="d_print" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gpk" columnName="d_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gpk" columnName="t_aanvr" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-33" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="gv" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gv" columnName="t_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gv" columnName="d_wijz" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="gv" columnName="c_grondslag" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-34" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="idvaststelling" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="idvaststelling" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-35" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="indicatie" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="indicatie" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-36" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="log" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="log" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-37" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="naamgebruik" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="naamgebruik" columnName="t_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="naamgebruik" columnName="d_wijz" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-38" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="nrd" columnName="d_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="nrd" columnName="t_aanvr" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-39" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="nrd_status" columnName="d_stat" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="nrd_status" columnName="t_stat" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="nrd_status" columnName="rdw_d_stat" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="nrd_status" columnName="rdw_t_stat" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-40" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="rdm01" columnName="d_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="t_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="d_deliv" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="t_deliv" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="d_afsl" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="t_afsl" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="d_vb_doc" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm01" columnName="d_verstrek" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-41" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="rdm02" columnName="d_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="rdm02" columnName="t_aanvr" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-42" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="reisd_inh" columnName="t_inneming" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-43" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="soap" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-44" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="terugm_reactie" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="terugm_reactie" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-45" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="uitt_aanvr" columnName="d_aanvr" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="uitt_aanvr" columnName="t_aanvr" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-46" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="usr" columnName="d_end_pw" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="usr" columnName="d_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-47" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="usr_pw_hist" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="usr_pw_hist" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-48" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="vog_aanvr" columnName="t_aanvr" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-49" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="vog_doel_tab" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="vog_doel_tab" columnName="d_end" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-50" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="vog_func_tab" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="vog_func_tab" columnName="d_end" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-51" author="Procura (Frits Janssen)">
+        <addDefaultValue tableName="prot" columnName="d_in" defaultValueNumeric="-1"/>
+        <addDefaultValue tableName="prot" columnName="t_in" defaultValueNumeric="-1"/>
+    </changeSet>
+
+    <changeSet id="20150317-52" author="Procura (Frits Janssen)">
+        <dropTable tableName="brp_kennisgeving"/>
+    </changeSet>
+
+    <changeSet id="20150317-53" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="aantekening_hist"
+                                  constraintName="aantekening_hist_c_aantekening_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_aantekening" baseTableName="aantekening_hist"
+                                 constraintName="aant_hist_c_aant_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aantekening" referencedTableName="aantekening"/>
+    </changeSet>
+
+    <changeSet id="20150317-54" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="aantekening_hist"
+                                  constraintName="aantekening_hist_c_aantekening_ind_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_aantekening_ind" baseTableName="aantekening_hist"
+                                 constraintName="aant_hist_c_aant_ind_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aantekening_ind" referencedTableName="aantekening_ind"/>
+    </changeSet>
+
+    <changeSet id="20150317-55" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="correspondentie" constraintName="correspondentie_c_location_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_location" baseTableName="correspondentie"
+                                 constraintName="corr_c_loc_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_location"
+                                 referencedTableName="location"/>
+    </changeSet>
+
+    <changeSet id="20150317-56" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="document_stempel" constraintName="document_stempel_c_document_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_document" baseTableName="document_stempel"
+                                 constraintName="doc_stem_c_doc_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet id="20150317-57" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="document_stempel" constraintName="document_stempel_c_stempel_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_stempel" baseTableName="document_stempel"
+                                 constraintName="doc_stem_c_stem_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_stempel"
+                                 referencedTableName="stempel"/>
+    </changeSet>
+
+    <changeSet id="20150317-58" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="doss_akte_rd" constraintName="doss_akte_rd_c_doss_akte_rd_cat_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_akte_rd_cat" baseTableName="doss_akte_rd"
+                                 constraintName="doss_akte_doss_cat_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_doss_akte_rd_cat" referencedTableName="doss_akte_rd_cat"/>
+    </changeSet>
+
+    <changeSet id="20150317-59" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="doss_huw_optie" constraintName="doss_huw_optie_c_doss_huw_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_huw" baseTableName="doss_huw_optie"
+                                 constraintName="huw_optie_huw_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_doss_huw"
+                                 referencedTableName="doss_huw"/>
+    </changeSet>
+
+    <changeSet id="20150317-60" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="doss_huw_optie"
+                                  constraintName="doss_huw_optie_c_huw_locatie_optie_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_huw_locatie_optie" baseTableName="doss_huw_optie"
+                                 constraintName="doss_opt_huw_loc_opt" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_huw_locatie_optie" referencedTableName="huw_locatie_optie"/>
+    </changeSet>
+
+    <changeSet id="20150317-61" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="doss_pers_akte" constraintName="doss_pers_akte_c_doss_akte_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_akte" baseTableName="doss_pers_akte"
+                                 constraintName="pers_akte_akte_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_doss_akte"
+                                 referencedTableName="doss_akte"/>
+    </changeSet>
+
+    <changeSet id="20150317-62" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="doss_pers_akte" constraintName="doss_pers_akte_c_doss_pers_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_doss_pers" baseTableName="doss_pers_akte"
+                                 constraintName="pers_akte_pers_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_doss_pers"
+                                 referencedTableName="doss_pers"/>
+    </changeSet>
+
+    <changeSet id="20150317-63" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="huw_loc_opt" constraintName="huw_loc_opt_c_huw_locatie_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_huw_locatie" baseTableName="huw_loc_opt"
+                                 constraintName="huw_loc_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_huw_locatie"
+                                 referencedTableName="huw_locatie"/>
+    </changeSet>
+
+    <changeSet id="20150317-64" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="huw_loc_opt" constraintName="huw_loc_opt_c_huw_locatie_optie_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_huw_locatie_optie" baseTableName="huw_loc_opt"
+                                 constraintName="huw_huw_loc_opt_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_huw_locatie_optie" referencedTableName="huw_locatie_optie"/>
+    </changeSet>
+
+    <changeSet id="20150317-65" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="indicatie" constraintName="indicatie_c_aantekening_ind_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_aantekening_ind" baseTableName="indicatie"
+                                 constraintName="ind_aant_ind_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_aantekening_ind"
+                                 referencedTableName="aantekening_ind"/>
+    </changeSet>
+
+    <changeSet id="20150317-66" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="kassa_bundel" constraintName="kassa_bundel_c_parent_kassa_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_parent_kassa" baseTableName="kassa_bundel"
+                                 constraintName="b_kassa_p_kassa_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_kassa"
+                                 referencedTableName="kassa"/>
+    </changeSet>
+
+    <changeSet id="20150317-67" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="koppelenum_document"
+                                  constraintName="koppelenum_document_c_document_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_document" baseTableName="koppelenum_document"
+                                 constraintName="enum_doc_doc_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document" referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet id="20150317-68" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="koppelenum_document"
+                                  constraintName="koppelenum_document_c_koppelenum_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_koppelenum" baseTableName="koppelenum_document"
+                                 constraintName="enum_doc_enum_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_koppelenum" referencedTableName="koppelenum"/>
+    </changeSet>
+
+    <changeSet id="20150317-69" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="printoptie_document"
+                                  constraintName="printoptie_document_c_document_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_document" baseTableName="printoptie_document"
+                                 constraintName="print_doc_doc_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document" referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet id="20150317-70" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="printoptie_document"
+                                  constraintName="printoptie_document_c_printoptie_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_printoptie" baseTableName="printoptie_document"
+                                 constraintName="print_doc_print_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_printoptie" referencedTableName="printoptie"/>
+    </changeSet>
+
+    <changeSet id="20150317-71" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="printoptie_location"
+                                  constraintName="printoptie_location_c_location_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_location" baseTableName="printoptie_location"
+                                 constraintName="print_loc_loc_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_location" referencedTableName="location"/>
+    </changeSet>
+
+    <changeSet id="20150317-72" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="printoptie_location"
+                                  constraintName="printoptie_location_c_printoptie_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_printoptie" baseTableName="printoptie_location"
+                                 constraintName="print_loc_print_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_printoptie" referencedTableName="printoptie"/>
+    </changeSet>
+
+    <changeSet id="20150317-73" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="profile_aantekening_ind"
+                                  constraintName="profile_aantekening_ind_c_aantekening_ind_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_aantekening_ind" baseTableName="profile_aantekening_ind"
+                                 constraintName="prof_aant_aant_ind_fkey"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aantekening_ind" referencedTableName="aantekening_ind"/>
+    </changeSet>
+
+    <changeSet id="20150317-74" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="profile_aantekening_ind"
+                                  constraintName="profile_aantekening_ind_c_profile_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_profile" baseTableName="profile_aantekening_ind"
+                                 constraintName="prof_aant_ind_prof_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile" referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet id="20150317-75" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="profile_gba_category"
+                                  constraintName="profile_gba_category_c_gba_category_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_gba_category" baseTableName="profile_gba_category"
+                                 constraintName="prof_gba_gba_cat_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_gba_category" referencedTableName="gba_category"/>
+    </changeSet>
+
+    <changeSet id="20150317-76" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="profile_gba_category"
+                                  constraintName="profile_gba_category_c_profile_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_profile" baseTableName="profile_gba_category"
+                                 constraintName="prof_gba_cat_prof_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile" referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet id="20150317-77" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="profile_gba_element"
+                                  constraintName="profile_gba_element_c_gba_element_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_gba_element" baseTableName="profile_gba_element"
+                                 constraintName="prof_gba_elem_gba_elem_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_gba_element" referencedTableName="gba_element"/>
+    </changeSet>
+
+    <changeSet id="20150317-78" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="profile_gba_element"
+                                  constraintName="profile_gba_element_c_profile_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_profile" baseTableName="profile_gba_element"
+                                 constraintName="prof_gba_elem_prof_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile" referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet id="20150317-80" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="prot_new_search_attr"
+                                  constraintName="prot_new_search_attr_c_prot_new_search_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_prot_new_search" baseTableName="prot_new_search_attr"
+                                 constraintName="prot_n_s_attr_prot_n_s_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_prot_new_search" referencedTableName="prot_new_search"/>
+    </changeSet>
+
+    <changeSet id="20150317-81" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="prot_new_search" constraintName="prot_new_search_c_prot_new_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_prot_new" baseTableName="prot_new_search"
+                                 constraintName="prot_n_s_prot_new_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="c_prot_new"
+                                 referencedTableName="prot_new"/>
+    </changeSet>
+
+    <changeSet id="20150317-82" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="terugm_detail" constraintName="terugm_detail_c_terugmelding_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_terugmelding" baseTableName="terugm_detail"
+                                 constraintName="tm_detail_terugm_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding" referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet id="20150317-83" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="terugm_reactie" constraintName="terugm_reactie_c_terugmelding_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_terugmelding" baseTableName="terugm_reactie"
+                                 constraintName="tm_reactie_tm_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding" referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet id="20150317-84" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="terugm_tmv_rel" constraintName="terugm_tmv_rel_c_terugmelding_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_terugmelding" baseTableName="terugm_tmv_rel"
+                                 constraintName="tm_tmv_rel_tm_fkey" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding" referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet id="20150317-85" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="terugmelding" constraintName="terugmelding_c_usr_verantw_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_usr_verantw" baseTableName="terugmelding"
+                                 constraintName="tm_usr_verantw_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet id="20150317-86" author="Procura (Frits Janssen)">
+        <dropForeignKeyConstraint baseTableName="vog_func_asp" constraintName="vog_func_asp_c_vog_func_tab_fkey"/>
+        <addForeignKeyConstraint baseColumnNames="c_vog_func_tab" baseTableName="vog_func_asp"
+                                 constraintName="vfa_vft_fkey" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="c_vog_func_tab"
+                                 referencedTableName="vog_func_tab"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura (Maarten)" id="v1_24-1">
+        <createTable tableName="event_log">
+            <column name="c_event_log" type="numeric">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="type" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="object_type" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="object_id" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_stamp" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="serial">
+            <column name="id" value="event_log"/>
+            <column name="val" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_24-2">
+        <comment>Add fields for traveldocument consent for parents, third person or curator</comment>
+        <addColumn tableName="rdm01">
+            <column name="toest_ouder1" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="rdm01">
+            <column name="toest_ouder2" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="rdm01">
+            <column name="toest_derde" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="rdm01">
+            <column name="toest_curator" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_24-3">
+        <comment>Add fields to store check values supplied via the API</comment>
+        <addColumn tableName="doss_geb">
+            <column name="verzoek_ind" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_geb">
+            <column name="verzoek_bsn_vader_duo_moeder" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_geb">
+            <column name="verzoek_keuze_naam_gesl" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_geb">
+            <column name="verzoek_keuze_naam_voorv" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="doss_geb">
+            <column name="verzoek_keuze_naam_titel" type="VARCHAR(256)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_24-4">
+        <comment>Add field to store the status of the RVIG signaling</comment>
+        <addColumn tableName="rdm01">
+            <column name="ind_signal" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

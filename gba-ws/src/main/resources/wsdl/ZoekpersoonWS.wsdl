@@ -1,0 +1,692 @@
+<wsdl:definitions xmlns:axis2="http://zoekpersoonws.ws.procura.nl" xmlns:ns1="http://objecten.zoekpersoon.diensten.procura.nl/xsd" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://zoekpersoonws.ws.procura.nl/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://zoekpersoonws.ws.procura.nl">
+    <wsdl:documentation>Webservice voor het opvragen van persoonsgegevens uit de GBA</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:ns="http://zoekpersoonws.ws.procura.nl/xsd" xmlns:ax25="http://objecten.zoekpersoon.diensten.procura.nl/xsd" attributeFormDefault="qualified" elementFormDefault="qualified"
+            targetNamespace="http://zoekpersoonws.ws.procura.nl/xsd">
+            <xs:import namespace="http://objecten.zoekpersoon.diensten.procura.nl/xsd" />
+            <xs:element name="zoeken">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="zoekArgumenten" nillable="true" type="ns0:ZoekArgumenten" />
+                        <xs:element name="categorieArgumenten" nillable="true" type="ns0:CategorieArgumenten" />
+                        <xs:element name="loginArgumenten" nillable="true" type="ns0:LoginArgumenten" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ZoekArgumenten" type="ns0:ZoekArgumenten" />
+            <xs:complexType name="ZoekArgumenten">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="anummers" nillable="true" type="xs:string" />
+                    <xs:element maxOccurs="unbounded" name="burgerservicenummers" nillable="true" type="xs:string" />
+                    <xs:element name="geboortedatum" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente" nillable="true" type="xs:string" />
+                    <xs:element name="gemeentedeel" nillable="true" type="xs:string" />
+                    <xs:element name="geslacht" nillable="true" type="xs:string" />
+                    <xs:element name="geslachtsnaam" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummer" nillable="true" type="xs:string" />
+                    <xs:element name="postcode" nillable="true" type="xs:string" />
+                    <xs:element name="straat" nillable="true" type="xs:string" />
+                    <xs:element name="titel" nillable="true" type="xs:string" />
+                    <xs:element name="voornaam" nillable="true" type="xs:string" />
+                    <xs:element name="voorvoegsel" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="CategorieArgumenten" type="ns0:CategorieArgumenten" />
+            <xs:complexType name="CategorieArgumenten">
+                <xs:sequence>
+                    <xs:element name="alleen_actueel" type="xs:boolean" />
+                    <xs:element name="archief" type="xs:boolean" />
+                    <xs:element name="cat_afnemers" type="xs:boolean" />
+                    <xs:element name="cat_diversen" type="xs:boolean" />
+                    <xs:element name="cat_gezag" type="xs:boolean" />
+                    <xs:element name="cat_huwelijken" type="xs:boolean" />
+                    <xs:element name="cat_inschrijving" type="xs:boolean" />
+                    <xs:element name="cat_kiesrecht" type="xs:boolean" />
+                    <xs:element name="cat_kinderen" type="xs:boolean" />
+                    <xs:element name="cat_kladblokaantekening" type="xs:boolean" />
+                    <xs:element name="cat_lokaleafnemersindicaties" type="xs:boolean" />
+                    <xs:element name="cat_nationaliteiten" type="xs:boolean" />
+                    <xs:element name="cat_ouder_1" type="xs:boolean" />
+                    <xs:element name="cat_ouder_2" type="xs:boolean" />
+                    <xs:element name="cat_overlijden" type="xs:boolean" />
+                    <xs:element name="cat_persoon" type="xs:boolean" />
+                    <xs:element name="cat_reisdocumenten" type="xs:boolean" />
+                    <xs:element name="cat_rijbewijs" type="xs:boolean" />
+                    <xs:element name="cat_verblijfplaats" type="xs:boolean" />
+                    <xs:element name="cat_verblijfstitel" type="xs:boolean" />
+                    <xs:element name="cat_verwijzing" type="xs:boolean" />
+                    <xs:element name="cat_woningkaart" type="xs:boolean" />
+                    <xs:element name="databron" type="xs:int" />
+                    <xs:element name="gerelateerden" type="xs:boolean" />
+                    <xs:element name="niet_expanderen" type="xs:boolean" />
+                    <xs:element name="zoek_op_adres" type="xs:boolean" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="LoginArgumenten" type="ns0:LoginArgumenten" />
+            <xs:complexType name="LoginArgumenten">
+                <xs:sequence>
+                    <xs:element name="gebruikersnaam" nillable="true" type="xs:string" />
+                    <xs:element name="wachtwoord" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="zoekenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ns0:ZoekPersoonWSAntwoord" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ZoekPersoonWSAntwoord" type="ns0:ZoekPersoonWSAntwoord" />
+            <xs:complexType name="ZoekPersoonWSAntwoord">
+                <xs:sequence>
+                    <xs:element name="databron" type="xs:int" />
+                    <xs:element maxOccurs="unbounded" name="meldingen" nillable="true" type="xs:string" />
+                    <xs:element maxOccurs="unbounded" name="persoonslijsten" nillable="true" type="ax25:Persoonslijst" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax24="http://objecten.zoekpersoon.diensten.procura.nl/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://objecten.zoekpersoon.diensten.procura.nl/xsd">
+            <xs:element name="Persoonslijst" type="ax24:Persoonslijst" />
+            <xs:complexType name="Persoonslijst">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="afnemers" nillable="true" type="ax24:Afnemer" />
+                    <xs:element name="diversen" nillable="true" type="ax24:Diversen" />
+                    <xs:element name="gezag" nillable="true" type="ax24:Gezag" />
+                    <xs:element maxOccurs="unbounded" name="huwelijken" nillable="true" type="ax24:Huwelijk" />
+                    <xs:element name="inschrijving" nillable="true" type="ax24:Inschrijving" />
+                    <xs:element name="kiesrecht" nillable="true" type="ax24:Kiesrecht" />
+                    <xs:element maxOccurs="unbounded" name="kinderen" nillable="true" type="ax24:Kind" />
+                    <xs:element name="kladblokaantekening" nillable="true" type="ax24:Kladblokaantekening" />
+                    <xs:element maxOccurs="unbounded" name="lokaleafnemersindicaties" nillable="true" type="ax24:Lokaleafnemersindicatie" />
+                    <xs:element maxOccurs="unbounded" name="metaInfoGegevens" nillable="true" type="ax24:MetaInfoGegevens" />
+                    <xs:element maxOccurs="unbounded" name="nationaliteiten" nillable="true" type="ax24:Nationaliteit" />
+                    <xs:element name="ouder_1" nillable="true" type="ax24:Ouder" />
+                    <xs:element name="ouder_2" nillable="true" type="ax24:Ouder" />
+                    <xs:element name="overlijden" nillable="true" type="ax24:Overlijden" />
+                    <xs:element name="persoon" nillable="true" type="ax24:Persoon" />
+                    <xs:element maxOccurs="unbounded" name="reisdocumenten" nillable="true" type="ax24:Reisdocument" />
+                    <xs:element name="rijbewijs" nillable="true" type="ax24:Rijbewijs" />
+                    <xs:element name="verblijfplaats" nillable="true" type="ax24:Verblijfplaats" />
+                    <xs:element name="verblijfstitel" nillable="true" type="ax24:Verblijfstitel" />
+                    <xs:element name="verwijzing" nillable="true" type="ax24:Verwijzing" />
+                    <xs:element name="woningkaart" nillable="true" type="ax24:Woningkaart" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Afnemer" type="ax24:Afnemer" />
+            <xs:complexType name="Afnemer">
+                <xs:sequence>
+                    <xs:element name="afnemer_actueel" nillable="true" type="ax24:Afnemergegevens" />
+                    <xs:element maxOccurs="unbounded" name="afnemer_historie" nillable="true" type="ax24:Afnemergegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Afnemergegevens" type="ax24:Afnemergegevens" />
+            <xs:complexType name="Afnemergegevens">
+                <xs:sequence>
+                    <xs:element name="afnemersindicatie" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="omschrijving" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Diversen" type="ax24:Diversen" />
+            <xs:complexType name="Diversen">
+                <xs:sequence>
+                    <xs:element name="diversen_actueel" nillable="true" type="ax24:Diversengegevens" />
+                    <xs:element maxOccurs="unbounded" name="diversen_historie" nillable="true" type="ax24:Diversengegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Diversengegevens" type="ax24:Diversengegevens" />
+            <xs:complexType name="Diversengegevens">
+                <xs:sequence>
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="correspondentie_adres_1" nillable="true" type="xs:string" />
+                    <xs:element name="correspondentie_adres_2" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_pl_verstrekt" nillable="true" type="xs:string" />
+                    <xs:element name="gezinsverhouding" nillable="true" type="xs:string" />
+                    <xs:element name="gezinsverhouding_omschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_pl_verstrekt" nillable="true" type="xs:string" />
+                    <xs:element name="kenmerk" nillable="true" type="xs:string" />
+                    <xs:element name="kenmerk_omschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="ots" nillable="true" type="xs:string" />
+                    <xs:element name="signaal" nillable="true" type="xs:string" />
+                    <xs:element name="vuurwapen" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Gezag" type="ax24:Gezag" />
+            <xs:complexType name="Gezag">
+                <xs:sequence>
+                    <xs:element name="gezag_actueel" nillable="true" type="ax24:Gezaggegevens" />
+                    <xs:element maxOccurs="unbounded" name="gezag_historie" nillable="true" type="ax24:Gezaggegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Gezaggegevens" type="ax24:Gezaggegevens" />
+            <xs:complexType name="Gezaggegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="curatele" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="gezag_minderjarige" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Huwelijk" type="ax24:Huwelijk" />
+            <xs:complexType name="Huwelijk">
+                <xs:sequence>
+                    <xs:element name="huwelijk_actueel" nillable="true" type="ax24:Huwelijkgegevens" />
+                    <xs:element maxOccurs="unbounded" name="huwelijk_historie" nillable="true" type="ax24:Huwelijkgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Huwelijkgegevens" type="ax24:Huwelijkgegevens" />
+            <xs:complexType name="Huwelijkgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aktenummer" nillable="true" type="xs:string" />
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="burgerservicenummer" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="geboortedatum" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteland" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteplaats" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="geslacht" nillable="true" type="xs:string" />
+                    <xs:element name="geslachtsnaam" nillable="true" type="xs:string" />
+                    <xs:element name="huwelijksdatum" nillable="true" type="xs:string" />
+                    <xs:element name="huwelijksland" nillable="true" type="xs:string" />
+                    <xs:element name="huwelijksplaats" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="ontbindingsdatum" nillable="true" type="xs:string" />
+                    <xs:element name="ontbindingsland" nillable="true" type="xs:string" />
+                    <xs:element name="ontbindingsplaats" nillable="true" type="xs:string" />
+                    <xs:element name="ontbindingsreden" nillable="true" type="xs:string" />
+                    <xs:element name="registergemeente_akte" nillable="true" type="xs:string" />
+                    <xs:element name="soort" nillable="true" type="xs:string" />
+                    <xs:element name="titel_predikaat" nillable="true" type="xs:string" />
+                    <xs:element name="voornaam" nillable="true" type="xs:string" />
+                    <xs:element name="voorvoegsel" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Inschrijving" type="ax24:Inschrijving" />
+            <xs:complexType name="Inschrijving">
+                <xs:sequence>
+                    <xs:element name="inschrijving_actueel" nillable="true" type="ax24:Inschrijvinggegevens" />
+                    <xs:element maxOccurs="unbounded" name="inschrijving_historie" nillable="true" type="ax24:Inschrijvinggegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Inschrijvinggegevens" type="ax24:Inschrijvinggegevens" />
+            <xs:complexType name="Inschrijvinggegevens">
+                <xs:sequence>
+                    <xs:element name="datum_eerste_inschrijving_gba" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_blokkering_pl" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opschorting_pl" nillable="true" type="xs:string" />
+                    <xs:element name="datumtijdstempel" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_blokkering_pl" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_pk" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_geheim" nillable="true" type="xs:string" />
+                    <xs:element name="naamgebruik" nillable="true" type="xs:string" />
+                    <xs:element name="pk_conversie" nillable="true" type="xs:string" />
+                    <xs:element name="reden_opschorting_pl" nillable="true" type="xs:string" />
+                    <xs:element name="versienummer" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Kiesrecht" type="ax24:Kiesrecht" />
+            <xs:complexType name="Kiesrecht">
+                <xs:sequence>
+                    <xs:element name="kiesrecht_actueel" nillable="true" type="ax24:Kiesrechtgegevens" />
+                    <xs:element maxOccurs="unbounded" name="kiesrecht_historie" nillable="true" type="ax24:Kiesrechtgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Kiesrechtgegevens" type="ax24:Kiesrechtgegevens" />
+            <xs:complexType name="Kiesrechtgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_europees_kiesrecht" nillable="true" type="xs:string" />
+                    <xs:element name="aanduiding_uitsluiting_kiesrecht" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_verzoek_of_mededeling_europees_kiesrecht" nillable="true" type="xs:string" />
+                    <xs:element name="einddatum_uitsluiting_europees_kiesrecht" nillable="true" type="xs:string" />
+                    <xs:element name="einddatum_uitsluiting_kiesrecht" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Kind" type="ax24:Kind" />
+            <xs:complexType name="Kind">
+                <xs:sequence>
+                    <xs:element name="kind_actueel" nillable="true" type="ax24:Kindgegevens" />
+                    <xs:element maxOccurs="unbounded" name="kind_historie" nillable="true" type="ax24:Kindgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Kindgegevens" type="ax24:Kindgegevens" />
+            <xs:complexType name="Kindgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aktenummer" nillable="true" type="xs:string" />
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="burgerservicenummer" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="geboortedatum" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteland" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteplaats" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="geslachtsnaam" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="registergemeente_akte" nillable="true" type="xs:string" />
+                    <xs:element name="titel_predikaat" nillable="true" type="xs:string" />
+                    <xs:element name="voornaam" nillable="true" type="xs:string" />
+                    <xs:element name="voorvoegsel" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Kladblokaantekening" type="ax24:Kladblokaantekening" />
+            <xs:complexType name="Kladblokaantekening">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="regels" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Lokaleafnemersindicatie" type="ax24:Lokaleafnemersindicatie" />
+            <xs:complexType name="Lokaleafnemersindicatie">
+                <xs:sequence>
+                    <xs:element name="aantekening" nillable="true" type="xs:string" />
+                    <xs:element name="omschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="opmerking" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="MetaInfoGegevens" type="ax24:MetaInfoGegevens" />
+            <xs:complexType name="MetaInfoGegevens">
+                <xs:sequence>
+                    <xs:element name="type" nillable="true" type="xs:string" />
+                    <xs:element name="waarde" nillable="true" type="xs:anyType" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Nationaliteit" type="ax24:Nationaliteit" />
+            <xs:complexType name="Nationaliteit">
+                <xs:sequence>
+                    <xs:element name="nationaliteit_actueel" nillable="true" type="ax24:Nationaliteitgegevens" />
+                    <xs:element maxOccurs="unbounded" name="nationaliteit_historie" nillable="true" type="ax24:Nationaliteitgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Nationaliteitgegevens" type="ax24:Nationaliteitgegevens" />
+            <xs:complexType name="Nationaliteitgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_bijzonder_nederlanderschap" nillable="true" type="xs:string" />
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="nationaliteit" nillable="true" type="xs:string" />
+                    <xs:element name="reden_verkrijging_nederlanderschap" nillable="true" type="xs:string" />
+                    <xs:element name="reden_verlies_nederlanderschap" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Ouder" type="ax24:Ouder" />
+            <xs:complexType name="Ouder">
+                <xs:sequence>
+                    <xs:element name="ouder_actueel" nillable="true" type="ax24:Oudergegevens" />
+                    <xs:element maxOccurs="unbounded" name="ouder_historie" nillable="true" type="ax24:Oudergegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Oudergegevens" type="ax24:Oudergegevens" />
+            <xs:complexType name="Oudergegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aktenummer" nillable="true" type="xs:string" />
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="burgerservicenummer" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_familierechtelijke_betrekking" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="geboortedatum" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteland" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteplaats" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="geslacht" nillable="true" type="xs:string" />
+                    <xs:element name="geslachtsnaam" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="registergemeente_akte" nillable="true" type="xs:string" />
+                    <xs:element name="titel_predikaat" nillable="true" type="xs:string" />
+                    <xs:element name="voornaam" nillable="true" type="xs:string" />
+                    <xs:element name="voorvoegsel" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Overlijden" type="ax24:Overlijden" />
+            <xs:complexType name="Overlijden">
+                <xs:sequence>
+                    <xs:element name="overlijden_actueel" nillable="true" type="ax24:Overlijdengegevens" />
+                    <xs:element maxOccurs="unbounded" name="overlijden_historie" nillable="true" type="ax24:Overlijdengegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Overlijdengegevens" type="ax24:Overlijdengegevens" />
+            <xs:complexType name="Overlijdengegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aktenummer" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="overlijdensdatum" nillable="true" type="xs:string" />
+                    <xs:element name="overlijdensland" nillable="true" type="xs:string" />
+                    <xs:element name="overlijdensplaats" nillable="true" type="xs:string" />
+                    <xs:element name="registergemeente_akte" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Persoon" type="ax24:Persoon" />
+            <xs:complexType name="Persoon">
+                <xs:sequence>
+                    <xs:element name="persoon_actueel" nillable="true" type="ax24:Persoonsgegevens" />
+                    <xs:element maxOccurs="unbounded" name="persoon_historie" nillable="true" type="ax24:Persoonsgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Persoonsgegevens" type="ax24:Persoonsgegevens" />
+            <xs:complexType name="Persoonsgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aktenummer" nillable="true" type="xs:string" />
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="burgerservicenummer" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="geboortedatum" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteland" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteplaats" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="geslacht" nillable="true" type="xs:string" />
+                    <xs:element name="geslachtsnaam" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="naamgebruik" nillable="true" type="xs:string" />
+                    <xs:element name="registergemeente_akte" nillable="true" type="xs:string" />
+                    <xs:element name="titel_predikaat" nillable="true" type="xs:string" />
+                    <xs:element name="volgend_anummer" nillable="true" type="xs:string" />
+                    <xs:element name="voornaam" nillable="true" type="xs:string" />
+                    <xs:element name="voorvoegsel" nillable="true" type="xs:string" />
+                    <xs:element name="vorig_anummer" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Reisdocument" type="ax24:Reisdocument" />
+            <xs:complexType name="Reisdocument">
+                <xs:sequence>
+                    <xs:element name="reisdocument_actueel" nillable="true" type="ax24:Reisdocumentgegevens" />
+                    <xs:element maxOccurs="unbounded" name="reisdocument_historie" nillable="true" type="ax24:Reisdocumentgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Reisdocumentgegevens" type="ax24:Reisdocumentgegevens" />
+            <xs:complexType name="Reisdocumentgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aanduiding_inhouding_vermissing" nillable="true" type="xs:string" />
+                    <xs:element name="autoriteit_van_afgifte" nillable="true" type="xs:string" />
+                    <xs:element name="beschrijving_document" nillable="true" type="xs:string" />
+                    <xs:element name="buitenlands_reisdocument" nillable="true" type="xs:string" />
+                    <xs:element name="datum_document" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_inhouding_vermissing" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="datum_uitgifte" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_document" nillable="true" type="xs:string" />
+                    <xs:element name="lengte_houder" nillable="true" type="xs:string" />
+                    <xs:element name="nederlands_reisdocument" nillable="true" type="xs:string" />
+                    <xs:element name="nummer_document" nillable="true" type="xs:string" />
+                    <xs:element name="signalering" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Rijbewijs" type="ax24:Rijbewijs" />
+            <xs:complexType name="Rijbewijs">
+                <xs:sequence>
+                    <xs:element name="rijbewijs_actueel" nillable="true" type="ax24:Rijbewijsgegevens" />
+                    <xs:element maxOccurs="unbounded" name="rijbewijs_historie" nillable="true" type="ax24:Rijbewijsgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Rijbewijsgegevens" type="ax24:Rijbewijsgegevens" />
+            <xs:complexType name="Rijbewijsgegevens">
+                <xs:sequence>
+                    <xs:element name="belemmering" nillable="true" type="xs:string" />
+                    <xs:element name="beperking" nillable="true" type="xs:string" />
+                    <xs:element name="categorie" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_verfrissing" nillable="true" type="xs:string" />
+                    <xs:element name="nummer" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Verblijfplaats" type="ax24:Verblijfplaats" />
+            <xs:complexType name="Verblijfplaats">
+                <xs:sequence>
+                    <xs:element name="verblijfplaats_actueel" nillable="true" type="ax24:Verblijfplaatsgegevens" />
+                    <xs:element maxOccurs="unbounded" name="verblijfplaats_historie" nillable="true" type="ax24:Verblijfplaatsgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Verblijfplaatsgegevens" type="ax24:Verblijfplaatsgegevens" />
+            <xs:complexType name="Verblijfplaatsgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="adres_buitenland_waarnaar_vertrokken_1" nillable="true" type="xs:string" />
+                    <xs:element name="adres_buitenland_waarnaar_vertrokken_2" nillable="true" type="xs:string" />
+                    <xs:element name="adres_buitenland_waarnaar_vertrokken_3" nillable="true" type="xs:string" />
+                    <xs:element name="adresaangifte" nillable="true" type="xs:string" />
+                    <xs:element name="code_object_1_wijkcode" nillable="true" type="xs:string" />
+                    <xs:element name="code_object_2_buurtcode" nillable="true" type="xs:string" />
+                    <xs:element name="code_object_3_subbuurtcode" nillable="true" type="xs:string" />
+                    <xs:element name="code_stemdistrict_object" nillable="true" type="xs:string" />
+                    <xs:element name="datum_aanvang_adreshouding" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_inschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="documentindicatie" nillable="true" type="xs:string" />
+                    <xs:element name="emigratiedatum" nillable="true" type="xs:string" />
+                    <xs:element name="emigratieland" nillable="true" type="xs:string" />
+                    <xs:element name="functie_adres" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_inschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_inschrijving_code" nillable="true" type="xs:string" />
+                    <xs:element name="gemeentedeel" nillable="true" type="xs:string" />
+                    <xs:element name="huisletter" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummer" nillable="true" type="xs:string" />
+                    <xs:element name="identificatiecode_nummeraanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="identificatiecode_verblijfplaats" nillable="true" type="xs:string" />
+                    <xs:element name="immigratiedatum" nillable="true" type="xs:string" />
+                    <xs:element name="immigratieland" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="locatie" nillable="true" type="xs:string" />
+                    <xs:element name="naam_openbare_ruimte" nillable="true" type="xs:string" />
+                    <xs:element name="postcode" nillable="true" type="xs:string" />
+                    <xs:element name="ppd_code_object" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam_boco" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam_nen" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam_officieel" nillable="true" type="xs:string" />
+                    <xs:element name="toevoeging" nillable="true" type="xs:string" />
+                    <xs:element name="woningcode_object" nillable="true" type="xs:string" />
+                    <xs:element name="woonplaatsnaam" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Verblijfstitel" type="ax24:Verblijfstitel" />
+            <xs:complexType name="Verblijfstitel">
+                <xs:sequence>
+                    <xs:element name="verblijfstitel_actueel" nillable="true" type="ax24:Verblijfstitelgegevens" />
+                    <xs:element maxOccurs="unbounded" name="verblijfstitel_historie" nillable="true" type="ax24:Verblijfstitelgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Verblijfstitelgegevens" type="ax24:Verblijfstitelgegevens" />
+            <xs:complexType name="Verblijfstitelgegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="aanduiding_verblijfstitel" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_verblijfstitel" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="ingangsdatum_verblijfstitel" nillable="true" type="xs:string" />
+                    <xs:element name="verblijfstitel_omschrijving" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Verwijzing" type="ax24:Verwijzing" />
+            <xs:complexType name="Verwijzing">
+                <xs:sequence>
+                    <xs:element name="verwijzing_actueel" nillable="true" type="ax24:Verwijzinggegevens" />
+                    <xs:element maxOccurs="unbounded" name="verwijzing_historie" nillable="true" type="ax24:Verwijzinggegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Verwijzinggegevens" type="ax24:Verwijzinggegevens" />
+            <xs:complexType name="Verwijzinggegevens">
+                <xs:sequence>
+                    <xs:element name="aanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="aanduiding_gegevens_in_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="anummer" nillable="true" type="xs:string" />
+                    <xs:element name="burgerservicenummer" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_geldigheid" nillable="true" type="xs:string" />
+                    <xs:element name="datum_ingang_onderzoek" nillable="true" type="xs:string" />
+                    <xs:element name="datum_inschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="datum_opneming" nillable="true" type="xs:string" />
+                    <xs:element name="geboortedatum" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteland" nillable="true" type="xs:string" />
+                    <xs:element name="geboorteplaats" nillable="true" type="xs:string" />
+                    <xs:element name="gemeente_inschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="geslachtsnaam" nillable="true" type="xs:string" />
+                    <xs:element name="huisletter" nillable="true" type="xs:string" />
+                    <xs:element name="huisnummer" nillable="true" type="xs:string" />
+                    <xs:element name="identificatiecode_nummeraanduiding" nillable="true" type="xs:string" />
+                    <xs:element name="identificatiecode_verblijfplaats" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_geheim" nillable="true" type="xs:string" />
+                    <xs:element name="indicatie_onjuist" nillable="true" type="xs:string" />
+                    <xs:element name="locatie" nillable="true" type="xs:string" />
+                    <xs:element name="naam_openbare_ruimte" nillable="true" type="xs:string" />
+                    <xs:element name="postcode" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam_boco" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam_nen" nillable="true" type="xs:string" />
+                    <xs:element name="straatnaam_officieel" nillable="true" type="xs:string" />
+                    <xs:element name="titel_predikaat" nillable="true" type="xs:string" />
+                    <xs:element name="toevoeging" nillable="true" type="xs:string" />
+                    <xs:element name="voornaam" nillable="true" type="xs:string" />
+                    <xs:element name="voorvoegsel" nillable="true" type="xs:string" />
+                    <xs:element name="woonplaatsnaam" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Woningkaart" type="ax24:Woningkaart" />
+            <xs:complexType name="Woningkaart">
+                <xs:sequence>
+                    <xs:element name="woningkaart_actueel" nillable="true" type="ax24:Woningkaartgegevens" />
+                    <xs:element maxOccurs="unbounded" name="woningkaart_historie" nillable="true" type="ax24:Woningkaartgegevens" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Woningkaartgegevens" type="ax24:Woningkaartgegevens" />
+            <xs:complexType name="Woningkaartgegevens">
+                <xs:sequence>
+                    <xs:element name="datum_aanvang_adreshouding" nillable="true" type="xs:string" />
+                    <xs:element name="datum_einde_adreshouding" nillable="true" type="xs:string" />
+                    <xs:element name="datum_inschrijving" nillable="true" type="xs:string" />
+                    <xs:element name="volgorde_gezin" nillable="true" type="xs:string" />
+                    <xs:element name="volgorde_persoon" nillable="true" type="xs:string" />
+                    <xs:element name="woning_code" nillable="true" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="zoekenMessage">
+        <wsdl:part name="part1" element="ns0:zoeken" />
+    </wsdl:message>
+    <wsdl:message name="zoekenResponse">
+        <wsdl:part name="part1" element="ns0:zoekenResponse" />
+    </wsdl:message>
+    <wsdl:portType name="ZoekpersoonWSPortType">
+        <wsdl:operation name="zoeken">
+            <wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" message="axis2:zoekenMessage" wsaw:Action="urn:zoeken" />
+            <wsdl:output message="axis2:zoekenResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ZoekpersoonWSSOAP11Binding" type="axis2:ZoekpersoonWSPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="zoeken">
+            <soap:operation soapAction="urn:zoeken" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ZoekpersoonWSSOAP12Binding" type="axis2:ZoekpersoonWSPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="zoeken">
+            <soap12:operation soapAction="urn:zoeken" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ZoekpersoonWSHttpBinding" type="axis2:ZoekpersoonWSPortType">
+        <http:binding verb="POST" />
+        <wsdl:operation name="zoeken">
+            <http:operation location="zoeken" />
+            <wsdl:input>
+                <mime:content type="text/xml" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ZoekpersoonWS">
+        <wsdl:port name="ZoekpersoonWSSOAP11port_http" binding="axis2:ZoekpersoonWSSOAP11Binding">
+            <soap:address location="http://10.3.28.22:28080/personen-ws/services/ZoekpersoonWS" />
+        </wsdl:port>
+        <wsdl:port name="ZoekpersoonWSSOAP11port_tcp1" binding="axis2:ZoekpersoonWSSOAP11Binding">
+            <soap:address location="tcp://10.3.28.22:6062/axis2/services/ZoekpersoonWS" />
+        </wsdl:port>
+        <wsdl:port name="ZoekpersoonWSSOAP12port_http" binding="axis2:ZoekpersoonWSSOAP12Binding">
+            <soap12:address location="http://10.3.28.22:8080/personen-ws/services/ZoekpersoonWS" />
+        </wsdl:port>
+        <wsdl:port name="ZoekpersoonWSSOAP12port_tcp1" binding="axis2:ZoekpersoonWSSOAP12Binding">
+            <soap12:address location="tcp://10.3.28.22:6062/axis2/services/ZoekpersoonWS" />
+        </wsdl:port>
+        <wsdl:port name="ZoekpersoonWSHttpport" binding="axis2:ZoekpersoonWSHttpBinding">
+            <http:address location="http://10.3.28.22:8080/personen-ws/services/ZoekpersoonWS" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

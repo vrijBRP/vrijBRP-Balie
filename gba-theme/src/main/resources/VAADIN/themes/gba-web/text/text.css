@@ -1,0 +1,42 @@
+.grey,
+.v-form .grey {
+	color: #999;
+}
+
+.redbox,
+.v-form .redbox,
+.v-table-cell-content-redbox {
+	background: none repeat scroll 0 0 #AC0000;
+    border-color: #DDDDDD #EEEEEE #EEEEEE #DDDDDD;
+    border-style: solid;
+    border-width: 1px;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 3px 5px;
+}
+
+.classLabel {
+	font-size: 12px;
+}
+
+.logbestand {
+	width: 100%;
+}
+	
+.logbestand .nr {
+	text-align: right;
+	padding-right: 10px;
+	color: #BBBBBB;
+}
+
+.v-readonly.border {
+    border: 1px solid #ccc;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.online-declaration.v-button .v-icon {
+    margin-right: 10px;
+}
