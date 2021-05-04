@@ -246,7 +246,7 @@ public class ToolBar extends ToolBarLayout {
 
   private Label getLogo() {
 
-    Label logo_label = new Label("Burgerzaken");
+    Label logo_label = new Label("vrijBRP | Balie");
     logo_label.setStyleName("toolbar-logo");
 
     return logo_label;

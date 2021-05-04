@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.26.1</version>
+        <version>1.26.2</version>
     </parent>
 
     <packaging>war</packaging>
@@ -305,6 +305,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <offline>true</offline>
                     <prefix>git</prefix>
                     <dateFormat>yyyy-MM-dd HH:mm:ss z</dateFormat>
                     <verbose>false</verbose>

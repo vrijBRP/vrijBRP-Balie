@@ -31,7 +31,7 @@ public class BeheerWindow extends GbaWindow {
   private static final long serialVersionUID = 7505525771524723038L;
 
   public BeheerWindow() {
-    super("Proweb Personen", "beheer");
+    super("vrijBRP | Balie", "beheer");
   }
 
   @Override

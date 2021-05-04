@@ -24,7 +24,7 @@ import nl.procura.vaadin.theme.twee.window.LoginWindow3;
 public class GbaLoginWindow extends LoginWindow3 {
 
   public GbaLoginWindow(String caption) {
-    super("Procura", caption);
+    super("vrijBRP", caption);
   }
 
   @Override

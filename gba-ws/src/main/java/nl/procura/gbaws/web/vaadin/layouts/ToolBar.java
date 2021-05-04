@@ -59,7 +59,7 @@ public class ToolBar extends ToolBarLayout {
 
   protected Label getLogo() {
 
-    Label logo_label = new Label("Burgerzaken webservice");
+    Label logo_label = new Label("vrijBRP | Balie | webservice persoonsgegevens");
     logo_label.setStyleName("toolbar-logo");
 
     return logo_label;

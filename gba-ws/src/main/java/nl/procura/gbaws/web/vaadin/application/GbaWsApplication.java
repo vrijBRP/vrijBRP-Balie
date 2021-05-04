@@ -47,8 +47,9 @@ public class GbaWsApplication extends ProcuraApplication {
 
     setLoginEnabled(true);
 
-    LoginWindow3 lw = new LoginWindow3(GbaConfig.get(GbaConfigProperty.GEMEENTE));
-
+    String gemeente = GbaConfig.get(GbaConfigProperty.GEMEENTE);
+    LoginWindow3 lw = new LoginWindow3("vrijBRP", gemeente);
+    lw.setCaption("vrijBRP | " + gemeente);
     lw.setFooterLayout(new LoginFooterLayout());
     lw.setLoginValidator(new GbaWsLoginValidator());
     lw.getLoginPanel().setRememberMe(true);

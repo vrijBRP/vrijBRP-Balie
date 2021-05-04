@@ -35,7 +35,7 @@ public class PersoonslijstWindow extends GbaWindow {
   private static final long  serialVersionUID = 8361742333562056337L;
 
   public PersoonslijstWindow() {
-    super("Proweb Personen", NAME);
+    super("vrijBRP | Balie", NAME);
   }
 
   @Override

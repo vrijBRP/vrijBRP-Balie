@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>nl.procura.gba</groupId>
     <artifactId>gba-parent</artifactId>
-    <version>1.26.1</version>
+    <version>1.26.2</version>
     <name>Proweb GBA - Parent</name>
 
     <developers>
@@ -82,7 +82,7 @@
         <commons-net.version>3.2</commons-net.version>
         <wss4j.version>1.6.9</wss4j.version>
         <jaxws-rt.version>2.2.10</jaxws-rt.version>
-        <vaadin-componenten.version>2.5.5</vaadin-componenten.version>
+        <vaadin-componenten.version>3.0.0</vaadin-componenten.version>
         <vaadin-visualizations.version>1.1.2</vaadin-visualizations.version>
         <vaadin-ckeditor.version>1.8.2</vaadin-ckeditor.version>
         <vaadin-clipboard.version>0.5.0</vaadin-clipboard.version>
@@ -93,7 +93,7 @@
         <popupbutton.version>1.2.1</popupbutton.version>
         <overlays.version>0.9.8</overlays.version>
         <vaadin-aceeditor.version>0.3.1</vaadin-aceeditor.version>
-        <git-commit-id-plugin.version>2.1.4</git-commit-id-plugin.version>
+        <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
         <xerces.version>2.11.0</xerces.version>
         <xalan.version>2.7.2</xalan.version>
         <xml-apis.version>1.4.01</xml-apis.version>

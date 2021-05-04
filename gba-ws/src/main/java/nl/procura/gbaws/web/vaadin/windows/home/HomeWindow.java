@@ -28,9 +28,7 @@ import nl.procura.gbaws.web.vaadin.windows.home.layouts.Navigation;
 public class HomeWindow extends TemplateWindow {
 
   public HomeWindow() {
-
-    super("Home - keuzemenu", "home");
-
+    super("vrijBRP | Balie | Webservice", "home");
     getHeaderLayout().setToolBarLayout(new ToolBar());
     getMainLayout().setNavigationLayout(new Navigation());
     getMainLayout().setContentLayout(new HomeContent());

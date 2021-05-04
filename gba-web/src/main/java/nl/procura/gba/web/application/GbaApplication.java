@@ -81,7 +81,9 @@ public class GbaApplication extends ProcuraApplication {
     process = new ProcessInterceptor();
 
     // Nieuw loginWindow
-    GbaLoginWindow lw = new GbaLoginWindow(GbaConfig.get(GbaConfigProperty.GEMEENTE));
+    String gemeente = GbaConfig.get(GbaConfigProperty.GEMEENTE);
+    LoginWindow3 lw = new LoginWindow3("vrijBRP", gemeente);
+    lw.setCaption("vrijBRP | " + gemeente);
     lw.setFooterLayout(new GbaWebLoginFooterLayout());
     lw.setLoginValidator(new GBALoginValidator(this));
     lw.getLoginPanel().setRememberMe(isRememberMe());

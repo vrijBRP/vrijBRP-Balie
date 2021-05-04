@@ -40,7 +40,7 @@ public class HomeWindow extends GbaWindow {
   private static final String ZOEKEN = "zoeken";
 
   public HomeWindow() {
-    super("Proweb Personen", NAME);
+    super("vrijBRP | Balie", NAME);
   }
 
   @Override
