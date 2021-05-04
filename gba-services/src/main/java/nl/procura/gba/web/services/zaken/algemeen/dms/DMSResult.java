@@ -19,38 +19,22 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms;
 
-public enum DmsType {
+import java.util.ArrayList;
+import java.util.List;
 
-  PERSONEN("personen", "Opslaan in Procura Burgerzaken (oude manier)"),
-  STORAGE("storage", "Opslaan in Procura document service (nieuwe manier)");
+public class DMSResult {
 
-  private final String code;
-  private final String description;
+  private List<DMSDocument> documents = new ArrayList<>();
 
-  DmsType(String code, String description) {
-    this.code = code;
-    this.description = description;
+  public List<DMSDocument> getDocuments() {
+    return documents;
   }
 
-  public static DmsType valueOfCode(String code) {
-    for (DmsType value : DmsType.values()) {
-      if (value.code.equals(code)) {
-        return value;
-      }
-    }
-    return PERSONEN;
+  public void setDocuments(List<DMSDocument> records) {
+    this.documents = records;
   }
 
-  public String getCode() {
-    return code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  @Override
-  public String toString() {
-    return description;
+  public int size() {
+    return documents.size();
   }
 }

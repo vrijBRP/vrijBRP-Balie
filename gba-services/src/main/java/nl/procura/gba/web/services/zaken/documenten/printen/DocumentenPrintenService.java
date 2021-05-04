@@ -101,7 +101,6 @@ public class DocumentenPrintenService extends AbstractService {
   }
 
   public static File newTijdelijkBestand(String fileName) {
-
     try {
       String e = FilenameUtils.getExtension(fileName);
       String n = "upload-" + FilenameUtils.getBaseName(fileName) + "-";

@@ -311,7 +311,7 @@ public class Adres {
 
   private String getStraatOms(BasePLElem element) {
     String oms = element.getValue().getDescr();
-    return oms.equals(".") ? "puntadres" : oms;
+    return oms.equals(".") ? "Onbekend" : oms;
   }
 
   private String check(String s) {

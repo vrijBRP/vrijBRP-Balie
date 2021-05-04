@@ -19,11 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.document;
 
-import static nl.procura.standard.Globalfunctions.fil;
-
 import java.util.List;
-
-import org.apache.commons.io.FilenameUtils;
 
 import com.vaadin.ui.Embedded;
 
@@ -32,15 +28,15 @@ import nl.procura.gba.web.components.TableImage;
 import nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewWindow;
 import nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewWindow.PreviewFile;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsDocument;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsResultaat;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsStream;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
 import nl.procura.gba.web.services.zaken.documenten.BestandType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 
 public abstract class DocumentenTabel extends GbaTable {
 
-  public abstract DmsResultaat getOpgeslagenBestanden();
+  public abstract DMSResult getOpgeslagenBestanden();
 
   @Override
   public void onDoubleClick(Record record) {
@@ -50,23 +46,28 @@ public abstract class DocumentenTabel extends GbaTable {
   public void openBestand(Record record) {
 
     try {
-      DmsDocument file = (DmsDocument) record.getObject();
-      DmsStream stream = getApplication().getServices().getDmsService().getBestand(file);
+      DMSDocument dmsDocument = (DMSDocument) record.getObject();
+      DMSContent stream = dmsDocument.getContent();
 
-      BestandType type = BestandType.getType(file.getExtensie());
-      PreviewFile previewFile = new PreviewFile(stream.getInputStream(), file.getTitel(), file.getBestandsnaam(),
+      BestandType type = BestandType.getType(dmsDocument.getContent().getExtension());
+      PreviewFile previewFile = new PreviewFile(stream.getInputStream(),
+          dmsDocument.getTitle(),
+          dmsDocument.getContent().getFilename(),
           type);
-      previewFile.setProperty("Titel", file.getTitel());
-      previewFile.setProperty("Bestandsnaam", file.getBestandsnaam());
-      previewFile.setProperty("Aangemaakt door", file.getAangemaaktDoor());
-      previewFile.setProperty("Aangemaakt op", new DateTime(file.getDatum(), file.getTijd()).toString());
-      previewFile.setProperty("Zaak-id", file.getZaakId());
-      previewFile.setProperty("Opgeslagen op", parsePath(file.getPad()));
-      previewFile.setProperty("Dms-naam", file.getDmsNaam());
-      previewFile.setProperty("Vertrouwelijkheid",
-          DocumentVertrouwelijkheid.get(file.getVertrouwelijkheid()).getOmschrijving());
+
+      previewFile.setProperty("Titel", dmsDocument.getTitle());
+      previewFile.setProperty("Bestandsnaam", dmsDocument.getContent().getFilename());
+      previewFile.setProperty("Alias", dmsDocument.getAlias());
+      previewFile.setProperty("Aangemaakt door", dmsDocument.getUser());
+      previewFile.setProperty("Aangemaakt op", new DateTime(dmsDocument.getDate(), dmsDocument.getTime()).toString());
+      previewFile.setProperty("Zaak-id", dmsDocument.getZaakId());
+      previewFile.setProperty("Opgeslagen op", dmsDocument.getContent().getLocation());
+      previewFile.setProperty("Documenttype", dmsDocument.getDocumentTypeDescription());
+      previewFile.setProperty("Vertrouwelijkheid", DocumentVertrouwelijkheid.get(dmsDocument.getConfidentiality())
+          .getOmschrijving());
 
       FilePreviewWindow.preview(getApplication().getParentWindow(), previewFile);
+
     } catch (Exception e) {
       getApplication().handleException(getWindow(), e);
     }
@@ -82,6 +83,7 @@ public abstract class DocumentenTabel extends GbaTable {
     addColumn("Type", 30).setClassType(Embedded.class);
     addColumn("Datum/tijd", 140);
     addColumn("Document");
+    addColumn("DMS omschrijving", 200);
     addColumn("Vertrouwelijkheid", 130);
     addColumn("Zaak-id", 120);
     addColumn("Gebruiker", 150);
@@ -91,47 +93,22 @@ public abstract class DocumentenTabel extends GbaTable {
 
   @Override
   public void setRecords() {
+    DMSResult dmsResult = getOpgeslagenBestanden();
+    List<DMSDocument> records = dmsResult.getDocuments();
+    int index = records.size();
 
-    DmsResultaat dmsResult = getOpgeslagenBestanden();
-
-    List<DmsDocument> records = dmsResult.getDocumenten();
-
-    int i = records.size();
-
-    for (DmsDocument record : records) {
-
+    for (DMSDocument record : records) {
       Record r = addRecord(record);
-      r.addValue(i);
-      r.addValue(TableImage.getByBestandType(BestandType.getType(record.getExtensie())));
-      r.addValue(new DateTime(record.getDatum(), record.getTijd()));
-      r.addValue(getTitel(record));
-      r.addValue(DocumentVertrouwelijkheid.get(record.getVertrouwelijkheid()).getOmschrijving());
+      r.addValue(index);
+      r.addValue(TableImage.getByBestandType(BestandType.getType(record.getContent().getExtension())));
+      r.addValue(new DateTime(record.getDate(), record.getTime()));
+      r.addValue(record.getTitle());
+      r.addValue(record.getDocumentTypeDescription());
+      r.addValue(DocumentVertrouwelijkheid.get(record.getConfidentiality()).getOmschrijving());
       r.addValue(record.getZaakId());
-      r.addValue(record.getAangemaaktDoor());
+      r.addValue(record.getUser());
 
-      i--;
+      index--;
     }
-  }
-
-  private String getTitel(DmsDocument record) {
-
-    StringBuilder out = new StringBuilder();
-    out.append(record.getTitel());
-
-    if (fil(record.getDmsNaam())) {
-      out.append(" (");
-      out.append(record.getDmsNaam());
-      out.append(")");
-    }
-
-    return out.toString();
-  }
-
-  private String parsePath(String pad) {
-    String[] splits = pad.split("documenten");
-    if (splits.length > 1) {
-      return FilenameUtils.separatorsToUnix(splits[1]);
-    }
-    return pad;
   }
 }

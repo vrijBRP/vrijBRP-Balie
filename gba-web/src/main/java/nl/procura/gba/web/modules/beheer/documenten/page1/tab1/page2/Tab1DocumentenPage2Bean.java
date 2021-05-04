@@ -48,8 +48,9 @@ public class Tab1DocumentenPage2Bean implements Serializable {
   public static final String VERVALDATUM       = "vervaldatum";
   public static final String OMSCHRIJVING      = "omschrijving";
   public static final String AANTAL            = "aantal";
-  public static final String DMSNAAM           = "dmsNaam";
+  public static final String ALIAS             = "alias";
   public static final String VERTROUWELIJKHEID = "vertrouwelijkheid";
+  public static final String DOCUMENT_DMS_TYPE = "documentDmsType";
 
   @Field(type = FieldType.LABEL,
       caption = "Code")
@@ -108,10 +109,15 @@ public class Tab1DocumentenPage2Bean implements Serializable {
   private String aantal = "";
 
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "DMS-naam",
+      caption = "Alias",
       width = "350px")
   @TextField(maxLength = 100)
-  private String dmsNaam = "";
+  private String alias = "";
+
+  @Field(customTypeClass = GbaComboBox.class,
+      caption = "Documenttype",
+      width = "350px")
+  private String documentDmsType = "";
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Vertrouwelijkheid",

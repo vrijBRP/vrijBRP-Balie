@@ -57,9 +57,9 @@ public class GbaRestDocumentResources extends GbaRestServiceResource {
     DocumentRecord document;
 
     if (pos(vraag.getDocumentCode())) {
-      document = handler.getDocument(vraag.getDocumentCode());
+      document = handler.getDocumentByAlias(vraag.getDocumentCode());
     } else if (fil(vraag.getDocumentDmsNaam())) {
-      document = handler.getDocument(vraag.getDocumentDmsNaam());
+      document = handler.getDocumentByAlias(vraag.getDocumentDmsNaam());
     } else {
       throw new IllegalArgumentException("Geen documentcode of dms-naam opgegeven");
     }
@@ -67,9 +67,9 @@ public class GbaRestDocumentResources extends GbaRestServiceResource {
     byte[] bytes;
 
     if (vraag.getPersoon() != null) {
-      bytes = handler.getDocument(document, vraag.getDocumentType(), vraag.getPersoon());
+      bytes = handler.getDocumentByAlias(document, vraag.getDocumentType(), vraag.getPersoon());
     } else if (vraag.getZaak() != null) {
-      bytes = handler.getDocument(document, vraag.getDocumentType(), vraag.getZaak());
+      bytes = handler.getDocumentByAlias(document, vraag.getDocumentType(), vraag.getZaak());
     } else {
       throw new IllegalArgumentException("Zowel persoon als zaak zijn niet gevuld");
     }
@@ -85,8 +85,8 @@ public class GbaRestDocumentResources extends GbaRestServiceResource {
 
     GbaRestDocumentGenererenHandler handler = new GbaRestDocumentGenererenHandler(getServices());
 
-    DocumentRecord document = handler.getDocument(code);
-    byte[] bytes = handler.getDocument(document, type, new GbaRestDocumentPersoon(bsn));
+    DocumentRecord document = handler.getDocumentByAlias(code);
+    byte[] bytes = handler.getDocumentByAlias(document, type, new GbaRestDocumentPersoon(bsn));
 
     return getResponse(new ByteArrayInputStream(bytes), type);
   }

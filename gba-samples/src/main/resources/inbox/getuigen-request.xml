@@ -1,0 +1,30 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns3:toevoegenGetuigen xmlns:ns3="http://inbox.brp.procura.nl/v1/huwelijksplanner">
+            <vraag>
+                <zaak>
+                    <zaaknummer>1234</zaaknummer>
+                    <bron>Huwelijksplanner</bron>
+                    <leverancier>Gemeente Demodam</leverancier>
+                </zaak>
+                <getuigen>
+                    <aantal>2</aantal>
+                    <getuige>
+                        <voorkeur>1</voorkeur>
+                        <bsn>1235456789</bsn>
+                        <naam>Jan Klaasen</naam>
+                        <geboortedatum>19720202</geboortedatum>
+                        <relatiebruidspaar>Broer</relatiebruidspaar>
+                    </getuige>
+                    <getuige>
+                        <voorkeur>2</voorkeur>
+                        <bsn>987654321</bsn>
+                        <naam>Truus Geluk</naam>
+                        <geboortedatum>19730202</geboortedatum>
+                        <relatiebruidspaar>Buurvrouw</relatiebruidspaar>
+                    </getuige>
+                </getuigen>
+            </vraag>
+        </ns3:toevoegenGetuigen>
+    </soap:Body>
+</soap:Envelope>

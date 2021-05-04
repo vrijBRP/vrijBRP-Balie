@@ -19,28 +19,17 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.documentpage.page1;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
-
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.components.listeners.ChangeListener;
 import nl.procura.gba.web.modules.bs.common.pages.documentpage.page2.Page2BsDocument;
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsDocument;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsResultaat;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsStream;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
-import nl.procura.vaadin.functies.downloading.DownloadHandlerImpl;
-
-/**
- * Geboorte
- */
 
 public class Page1BsDocument extends ButtonPageTemplate {
 
@@ -85,10 +74,10 @@ public class Page1BsDocument extends ButtonPageTemplate {
   @Override
   public void onDelete() {
 
-    new DeleteProcedure<DmsDocument>(table) {
+    new DeleteProcedure<DMSDocument>(table) {
 
       @Override
-      public void deleteValue(DmsDocument record) {
+      public void deleteValue(DMSDocument record) {
         getServices().getDmsService().delete(record);
       }
 
@@ -100,37 +89,16 @@ public class Page1BsDocument extends ButtonPageTemplate {
   }
 
   @Override
-  public void onEnter() {
-    onSelect(table.getSelectedRecord());
-  }
-
-  @Override
   public void onNew() {
     getNavigation().goToPage(new Page2BsDocument(dossier, listener));
     super.onNew();
   }
 
-  private void onSelect(Record record) {
-
-    if (record == null) {
-      throw new ProException(SELECT, WARNING, "Geen records geselecteerd.");
-    }
-
-    try {
-      DmsDocument dmsDocument = (DmsDocument) record.getObject();
-      DmsStream stream = getServices().getDmsService().getBestand(dmsDocument);
-
-      new DownloadHandlerImpl(getWindow()).download(stream.getInputStream(), stream.getUitvoernaam(), true);
-    } catch (Exception e) {
-      getApplication().handleException(getWindow(), e);
-    }
-  }
-
   public class Table extends DocumentenTabel {
 
     @Override
-    public DmsResultaat getOpgeslagenBestanden() {
-      return getServices().getDmsService().getDocumenten(dossier);
+    public DMSResult getOpgeslagenBestanden() {
+      return getServices().getDmsService().getDocumentsByZaak(dossier);
     }
   }
 }

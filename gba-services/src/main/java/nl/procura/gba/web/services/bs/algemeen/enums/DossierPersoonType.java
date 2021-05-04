@@ -33,6 +33,7 @@ public enum DossierPersoonType {
   VADER_DUO_MOEDER(30, "Vader / duo-moeder", "", true),
   MOEDER(40, "Moeder", "V", true),
   PARTNER(50, "Partner", "", true, HUWELIJK, PARTNERSCHAP),
+  PARTNER_ANDERE_OUDER(51, "Partner / andere ouder", "", true),
   EXPARTNER(55, "Ex-partner", "", true),
   ERKENNER(60, "Erkenner", "", true),
   PARTNER1(70, "Partner 1", "", true),

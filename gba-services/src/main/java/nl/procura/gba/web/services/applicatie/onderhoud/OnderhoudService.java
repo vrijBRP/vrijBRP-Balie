@@ -44,6 +44,7 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 
+import nl.procura.burgerzaken.gba.StringUtils;
 import nl.procura.commons.liquibase.connections.LbDatabaseType;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.config.GbaConfigProperty;
@@ -122,50 +123,52 @@ public class OnderhoudService extends AbstractService {
    */
   public SslRestCertificatesResponse getSSLCertificates() {
     try {
-      SslWebRestClient client = new SslWebRestClient(getParm(SSL_PROXY_URL, true), "", "", "");
+      String parm = getParm(SSL_PROXY_URL, false);
+      if (StringUtils.isNotBlank(parm)) {
+        SslWebRestClient client = new SslWebRestClient(parm, "", "", "");
+        try {
+          SslWebRestClientResponse<SslRestCertificatesResponse> response = client.getCertificates().get();
+          ClientResponse clientResponse = response.getClientResponse();
 
-      try {
-        SslWebRestClientResponse<SslRestCertificatesResponse> response = client.getCertificates().get();
-        ClientResponse clientResponse = response.getClientResponse();
+          if (clientResponse.getStatus() == Status.OK.getStatusCode()) {
+            SslRestCertificatesResponse antwoord = response.getEntity();
 
-        if (clientResponse.getStatus() == Status.OK.getStatusCode()) {
-          SslRestCertificatesResponse antwoord = response.getEntity();
+            for (ProRestMelding melding : antwoord.getMeldingen()) {
+              switch (melding.getType()) {
+                case WAARSCHUWING:
+                  addMessage(true, SYSTEM, WARNING, melding.getOmschrijving());
+                  break;
 
-          for (ProRestMelding melding : antwoord.getMeldingen()) {
-            switch (melding.getType()) {
-              case WAARSCHUWING:
-                addMessage(true, SYSTEM, WARNING, melding.getOmschrijving());
-                break;
-
-              case FOUT:
-                addMessage(true, SYSTEM, ERROR, melding.getOmschrijving());
-                break;
+                case FOUT:
+                  addMessage(true, SYSTEM, ERROR, melding.getOmschrijving());
+                  break;
+              }
             }
-          }
 
-          for (SslRestCertificate certificate : antwoord.getCertificates()) {
-            if (certificate.getDaysValid() <= 0) {
-              addMessage(true, SYSTEM, ERROR,
-                  MessageFormat.format("Certificaat ({0}) is verlopen.", certificate.getDescription()));
-            } else if (certificate.getDaysValid() <= 30) {
-              addMessage(true, SYSTEM, WARNING,
-                  MessageFormat.format("Certificaat ({0}) verloopt over {1} {2}.",
-                      certificate.getDescription(),
-                      certificate.getDaysValid(),
-                      (certificate.getDaysValid() > 1 ? "dagen" : "dag")));
+            for (SslRestCertificate certificate : antwoord.getCertificates()) {
+              if (certificate.getDaysValid() <= 0) {
+                addMessage(true, SYSTEM, ERROR,
+                    MessageFormat.format("Certificaat ({0}) is verlopen.", certificate.getDescription()));
+              } else if (certificate.getDaysValid() <= 30) {
+                addMessage(true, SYSTEM, WARNING,
+                    MessageFormat.format("Certificaat ({0}) verloopt over {1} {2}.",
+                        certificate.getDescription(),
+                        certificate.getDaysValid(),
+                        (certificate.getDaysValid() > 1 ? "dagen" : "dag")));
+              }
             }
+
+            antwoord.getCertificates().sort((o1, o2) -> o1.getDaysValid() < o2.getDaysValid()
+                ? BigInteger.ONE.intValue()
+                : BigInteger.ZERO.intValue());
+
+            return antwoord;
           }
-
-          antwoord.getCertificates().sort((o1, o2) -> o1.getDaysValid() < o2.getDaysValid()
-              ? BigInteger.ONE.intValue()
-              : BigInteger.ZERO.intValue());
-
-          return antwoord;
+        } catch (Exception e) {
+          String message = "Kan geen verbinding maken met de proxy (SSL) server. controleer de URL in de parameters";
+          String cause = "Foutieve url wellicht? (" + client.getUrl() + ")";
+          addMessage(false, FAULT, ERROR, message, cause, e);
         }
-      } catch (Exception e) {
-        String message = "Kan geen verbinding maken met de proxy (SSL) server. controleer de URL in de parameters";
-        String cause = "Foutieve url wellicht? (" + client.getUrl() + ")";
-        addMessage(false, FAULT, ERROR, message, cause, e);
       }
     } catch (Exception e) {
       addMessage(false, FAULT, ERROR, e.getMessage(), "", e);
@@ -222,7 +225,7 @@ public class OnderhoudService extends AbstractService {
         throw new ProException(WARNING, "De BSM kan niet worden benaderd (controleer de parameters)");
 
       case UNAUTHORIZED:
-        throw new ProException(WARNING, "U heeft momenteel geen toegang tot de berichten service module (BSM)");
+        throw new ProException(WARNING, "U heeft momenteel geen toegang tot de taakplanner (BSM)");
 
       default:
         throw new ProException(ERROR, response.getStatusInfo().getReasonPhrase());

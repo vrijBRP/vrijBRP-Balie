@@ -20,10 +20,13 @@
 package nl.procura.gbaws.web.vaadin.module.sources.procura.page1;
 
 import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.*;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personenws.utils.GbaWsEclipseLinkUtil;
@@ -32,6 +35,7 @@ import nl.procura.gbaws.db.handlers.ParmDao;
 import nl.procura.gbaws.db.wrappers.ProcuraDbWrapper;
 import nl.procura.gbaws.web.vaadin.module.auth.profile.page1.Page1AuthProfile;
 import nl.procura.gbaws.web.vaadin.module.sources.ModuleDbPage;
+import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -139,6 +143,10 @@ public class Page1DbProcura extends ModuleDbPage {
     Page1DbProcuraBean bean3 = form3.getBean();
 
     Properties properties = GbaConfig.getProperties();
+
+    if (StringUtils.isBlank(bean1.getDatabase())) {
+      throw new ProException(WARNING, "Geen database geselecteerd");
+    }
 
     properties.put(GbaWsEclipseLinkUtil.DATABASE_TYPE, bean1.getDatabase());
     properties.put(GbaWsEclipseLinkUtil.DATABASE, bean1.getSid());

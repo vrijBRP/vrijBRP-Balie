@@ -79,7 +79,7 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
       getButtonLayout().setExpandRatio(progressLabel, 1f);
 
       betreftForm = getBetreftForm();
-      progressForm = new BsmUitvoerenForm("Verwerking van de berichten service module", false, STATUS, RESULTAAT,
+      progressForm = new BsmUitvoerenForm("Verwerking door de taakplanner", false, STATUS, RESULTAAT,
           MELDING);
 
       startVerwerking();

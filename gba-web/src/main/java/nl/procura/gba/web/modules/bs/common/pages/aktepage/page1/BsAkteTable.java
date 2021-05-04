@@ -47,7 +47,7 @@ public class BsAkteTable extends GbaTable {
     addColumn("Aktenummer");
     addColumn("Aktedatum", 100);
     addColumn("Type", 100);
-    addColumn("Type persoon", 120);
+    addColumn("Type persoon", 140);
     addColumn("Ingeschreven", 232);
     addColumn("Persoon", 400).setUseHTML(true);
     addStyleName(GbaWebTheme.TABLE.NEWLINE_WRAP);

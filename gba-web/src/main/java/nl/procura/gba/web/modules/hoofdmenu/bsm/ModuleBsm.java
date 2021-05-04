@@ -28,7 +28,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 @ModuleAnnotation(url = "#bsm",
-    caption = "BSM",
+    caption = "Taakplanner",
     service = BsmService.class,
     profielActie = ProfielActie.SELECT_HOOFD_BSM)
 public class ModuleBsm extends ModuleTemplate {

@@ -23,8 +23,8 @@ import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.modules.zaken.document.DocumentenPage;
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsDocument;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsResultaat;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -51,8 +51,8 @@ public class Page3Document extends DocumentenPage {
       table = new DocumentenTabel() {
 
         @Override
-        public DmsResultaat getOpgeslagenBestanden() {
-          return getServices().getDmsService().getDocumenten(getPl());
+        public DMSResult getOpgeslagenBestanden() {
+          return getServices().getDmsService().getDocumentsByPL(getPl());
         }
       };
       addExpandComponent(table);
@@ -64,7 +64,7 @@ public class Page3Document extends DocumentenPage {
   @Override
   public void onDelete() {
 
-    new DeleteProcedure<DmsDocument>(table) {
+    new DeleteProcedure<DMSDocument>(table) {
 
       @Override
       public void afterDelete() {
@@ -72,7 +72,7 @@ public class Page3Document extends DocumentenPage {
       }
 
       @Override
-      public void deleteValue(DmsDocument record) {
+      public void deleteValue(DMSDocument record) {
         getServices().getDmsService().delete(record);
       }
     };

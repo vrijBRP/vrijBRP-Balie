@@ -29,7 +29,7 @@ import org.eclipse.persistence.annotations.BatchFetchType;
 
 @Entity
 @Table(name = "document")
-public class Document extends BaseEntity {
+public class Document extends BaseEntity<Long> {
 
   private static final long serialVersionUID = 1L;
 
@@ -98,10 +98,13 @@ public class Document extends BaseEntity {
   private int aantal = -1;
 
   @Column(name = "dms_naam")
-  private String dmsNaam;
+  private String alias;
 
   @Column(name = "vertr")
   private int vertr = -1;
+
+  @Column(name = "document_dms_type")
+  private String documentDmsType;
 
   @ManyToMany
   @BatchFetch(BatchFetchType.IN)
@@ -249,6 +252,14 @@ public class Document extends BaseEntity {
     this.type = type;
   }
 
+  public String getDocumentDmsType() {
+    return documentDmsType;
+  }
+
+  public void setDocumentDmsType(String documentDmsType) {
+    this.documentDmsType = documentDmsType;
+  }
+
   public BigDecimal getVDocument() {
     return this.vDocument;
   }
@@ -329,12 +340,12 @@ public class Document extends BaseEntity {
     this.kenmerks = kenmerks;
   }
 
-  public String getDmsNaam() {
-    return dmsNaam;
+  public String getAlias() {
+    return alias;
   }
 
-  public void setDmsNaam(String dmsNaam) {
-    this.dmsNaam = dmsNaam;
+  public void setAlias(String alias) {
+    this.alias = alias;
   }
 
   public int getVertr() {

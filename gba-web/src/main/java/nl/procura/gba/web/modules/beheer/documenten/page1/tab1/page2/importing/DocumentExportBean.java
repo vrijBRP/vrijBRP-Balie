@@ -33,6 +33,12 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class DocumentExportBean implements Serializable {
 
+  public static final String ALIAS             = "alias";
+  public static final String DMS_DOCUMENT_TYPE = "documentTypeOms";
+  public static final String VERTROUWELIJKHEID = "vertrouwelijkheid";
+  public static final String OMSCHRIJVING      = "omschrijving";
+  public static final String FORMATS           = "formats";
+
   public static final String IEDEREEN_TOEGANG       = "iedereenToegang";
   public static final String STANDAARD_GESELECTEERD = "standaardGeselecteerd";
   public static final String PROTOCOLLERING         = "protocollering";
@@ -40,32 +46,62 @@ public class DocumentExportBean implements Serializable {
   public static final String STILLBORN_ALLOWED      = "stillbornAllowed";
 
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Iedereen toegang")
-  @Select(containerDataSource = AllAllowedContainer.class,
+      caption = "Alias")
+  @Select(containerDataSource = AllAllowedStringContainer.class,
       nullSelectionAllowed = false)
-  private DocumentImportOptieType iedereenToegang = DocumentImportOptieType.OVERNEMEN;
+  private DocumentImportOptieType alias = DocumentImportOptieType.INITIEEL_OVERNEMEN;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "DMS documenttype")
+  @Select(containerDataSource = AllAllowedStringContainer.class,
+      nullSelectionAllowed = false)
+  private DocumentImportOptieType documentTypeOms = DocumentImportOptieType.INITIEEL_OVERNEMEN;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Vertrouwelijkheid")
+  @Select(containerDataSource = AllAllowedStringContainer.class,
+      nullSelectionAllowed = false)
+  private DocumentImportOptieType vertrouwelijkheid = DocumentImportOptieType.INITIEEL_OVERNEMEN;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Omschrijving")
+  @Select(containerDataSource = AllAllowedStringContainer.class,
+      nullSelectionAllowed = false)
+  private DocumentImportOptieType omschrijving = DocumentImportOptieType.INITIEEL_OVERNEMEN;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Uitvoerformaten")
+  @Select(containerDataSource = AllAllowedStringContainer.class,
+      nullSelectionAllowed = false)
+  private DocumentImportOptieType formats = DocumentImportOptieType.INITIEEL_OVERNEMEN;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Iedereen toegang")
+  @Select(containerDataSource = AllAllowedBooleanContainer.class,
+      nullSelectionAllowed = false)
+  private DocumentImportOptieType iedereenToegang = DocumentImportOptieType.INITIEEL_OVERNEMEN;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Levenloos geboren")
-  @Select(containerDataSource = AllAllowedContainer.class,
+  @Select(containerDataSource = AllAllowedBooleanContainer.class,
       nullSelectionAllowed = false)
-  private DocumentImportOptieType stillbornAllowed = DocumentImportOptieType.OVERNEMEN;
+  private DocumentImportOptieType stillbornAllowed = DocumentImportOptieType.INITIEEL_OVERNEMEN;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Standaard geselecteerd")
-  @Select(containerDataSource = AllAllowedContainer.class,
+  @Select(containerDataSource = AllAllowedBooleanContainer.class,
       nullSelectionAllowed = false)
-  private DocumentImportOptieType standaardGeselecteerd = DocumentImportOptieType.OVERNEMEN;
+  private DocumentImportOptieType standaardGeselecteerd = DocumentImportOptieType.INITIEEL_OVERNEMEN;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Kopie opslaan")
-  @Select(containerDataSource = AllAllowedContainer.class,
+  @Select(containerDataSource = AllAllowedBooleanContainer.class,
       nullSelectionAllowed = false)
-  private DocumentImportOptieType kopieOpslaan = DocumentImportOptieType.OVERNEMEN;
+  private DocumentImportOptieType kopieOpslaan = DocumentImportOptieType.INITIEEL_OVERNEMEN;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Protocollering")
-  @Select(containerDataSource = AllAllowedContainer.class,
+  @Select(containerDataSource = AllAllowedBooleanContainer.class,
       nullSelectionAllowed = false)
-  private DocumentImportOptieType protocollering = DocumentImportOptieType.OVERNEMEN;
+  private DocumentImportOptieType protocollering = DocumentImportOptieType.INITIEEL_OVERNEMEN;
 }

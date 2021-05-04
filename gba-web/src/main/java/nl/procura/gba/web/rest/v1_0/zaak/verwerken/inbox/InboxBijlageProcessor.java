@@ -23,8 +23,6 @@ import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.List;
 
-import org.apache.commons.io.FilenameUtils;
-
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
@@ -33,7 +31,9 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.inbox.InboxRecord;
 import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
 import nl.procura.gba.web.services.zaken.algemeen.CaseProcessor;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsService;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSBytesContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 
 public class InboxBijlageProcessor extends CaseProcessor {
@@ -48,7 +48,6 @@ public class InboxBijlageProcessor extends CaseProcessor {
 
     byte[] bytes = inboxRecord.getBestandsbytes();
     String filename = inboxRecord.getBestandsnaam();
-    String extension = FilenameUtils.getExtension(filename);
 
     ZaakType zaakType = zaakKeys.get(0).getZaakType();
     String relatieZaakId = zaakKeys.get(0).getZaakId();
@@ -58,10 +57,15 @@ public class InboxBijlageProcessor extends CaseProcessor {
     log(INFO, "Verwerking: {0}", GbaRestInboxVerwerkingType.get(inboxRecord.getVerwerkingId()));
     log(INFO, "Zaaknummers: {0} (intern), {1} (extern)", inboxInterneZaakId, inboxExternZaakId);
 
-    DmsService dms = getServices().getDmsService();
-    dms.save(bytes, filename, extension, "Via e-loket", DocumentType.ONBEKEND.getType(), relatieZaakId,
-        relatieZaakId, "", "");
+    DMSService dms = getServices().getDmsService();
 
+    DMSDocument dmsDocument = DMSDocument.builder(DMSBytesContent.fromFilename(filename, bytes))
+        .user("Via e-loket")
+        .datatype(DocumentType.ONBEKEND.getType())
+        .zaakId(relatieZaakId)
+        .build();
+
+    dms.save(relatieZaakId, dmsDocument);
     addZaakRelatie(relatieZaakId, inboxRecord, zaakType);
 
     String statusMessage = "Bijlage toegevoegd aan de huwelijkszaak";

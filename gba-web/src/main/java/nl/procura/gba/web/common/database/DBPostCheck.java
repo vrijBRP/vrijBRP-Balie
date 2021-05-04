@@ -30,7 +30,6 @@ public class DBPostCheck {
   private static final String TYPE = "  ná";
 
   public DBPostCheck(EntityManager entityManager, Database database) {
-
     new DBCheckPost1(entityManager, database, TYPE);
     new DBCheckPost2(entityManager, database, TYPE);
     new DBCheckPost3(entityManager, database, TYPE);
@@ -39,11 +38,5 @@ public class DBPostCheck {
     new DBCheckPost6(entityManager, database, TYPE);
     new DBCheckPost7(entityManager, database, TYPE);
     new DBCheckPost8(entityManager, database, TYPE);
-    new DBCheckPost9(entityManager, database, TYPE);
-    new DBCheckPost10(entityManager, database, TYPE);
-    new DBCheckPost11(entityManager, database, TYPE);
-    new DBCheckPost12(entityManager, database, TYPE);
-    new DBCheckPost13(entityManager, database, TYPE);
-    new DBCheckPost14(entityManager, database, TYPE);
   }
 }

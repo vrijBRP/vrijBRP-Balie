@@ -19,13 +19,12 @@
 
 package nl.procura.gba.web.common.database.checks;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
-import nl.procura.commons.liquibase.objecten.LbColumn;
-import nl.procura.commons.liquibase.objecten.LbTable;
-import nl.procura.commons.liquibase.parameters.LbSchemaParameters;
-import nl.procura.commons.liquibase.utils.LbObjectUtils;
-import nl.procura.commons.liquibase.utils.LbUpdateUtils;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import nl.procura.gba.jpa.personen.db.DossPer;
 import nl.procura.gba.web.common.database.DBCheckTemplateLb;
 
 import liquibase.database.Database;
@@ -33,21 +32,19 @@ import liquibase.database.Database;
 public class DBCheckPost5 extends DBCheckTemplateLb {
 
   public DBCheckPost5(EntityManager entityManager, Database database, String type) {
-    super(entityManager, database, type, "Null waarden corrigeren met standaardwaarde");
+    super(entityManager, database, type, "Naamgebruik bijwerken bij huwelijkspartners");
   }
 
   @Override
   public void init() {
+    String sql = "select d from DossPer d where d.bsn > 0 and d.typePersoon in (70,71) and (d.ng is null or d.ng = '')";
+    TypedQuery<DossPer> query = getEntityManager().createQuery(sql, DossPer.class);
 
-    LbSchemaParameters parameters = new LbSchemaParameters();
-    parameters.setDatabase(getDatabase());
-    parameters.setExcludeTables("PROT", DATABASECHANGELOGLOCK, DATABASECHANGELOG);
-
-    for (LbTable table : LbObjectUtils.getSchema(parameters).getTables()) {
-      for (LbColumn column : table.getColumns()) {
-        String msg = "ongedefinieerde waarde " + table + "." + column;
-        count(LbUpdateUtils.updateNullValues(getDatabase(), table, column), msg);
-      }
+    List<DossPer> resultList = query.getResultList();
+    for (DossPer dossPer : resultList) {
+      dossPer.setNg("E");
+      getEntityManager().merge(dossPer);
     }
+    count(resultList.size());
   }
 }

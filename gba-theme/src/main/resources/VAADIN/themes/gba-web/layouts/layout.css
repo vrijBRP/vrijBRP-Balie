@@ -4,23 +4,13 @@
 @import "bslayout.css";
 
 .login-logo {
-	background: url(img/login-logo.png);
-	background-repeat: no-repeat;
-	background-position: center;
-	height: 60px;
+    background: url(img/login-logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 60px;
 }
 
 .loginWindow .h1 {
-	font-size: 20px;
-	text-shadow: none;
-}
-
-.toolbarLayout .v-label.login-toolbar-logo,
-.toolbarLayout .v-label.toolbar-logo {
-	background: url(img/vrijbrp-icon.png);
-	background-repeat: no-repeat;
-	background-position: left center;
-	background-size: 15px;
-	color: #e9f4ff;
-	font-size: 15px;
+    font-size: 20px;
+    text-shadow: none;
 }

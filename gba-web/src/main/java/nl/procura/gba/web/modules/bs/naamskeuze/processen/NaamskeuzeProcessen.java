@@ -48,7 +48,7 @@ public class NaamskeuzeProcessen extends BsProcessen {
 
     addProces("Moeder", Page1Naamskeuze.class);
     addProces("Kind(eren)", Page5Naamskeuze.class);
-    addProces("Partner", Page15Naamskeuze.class);
+    addProces("Partner / andere ouder", Page15Naamskeuze.class);
     addProces("Namenrecht en keuze", Page30Naamskeuze.class);
     addProces("Aktenummers", Page32Naamskeuze.class);
     addProces("Overzicht", Page35Naamskeuze.class);

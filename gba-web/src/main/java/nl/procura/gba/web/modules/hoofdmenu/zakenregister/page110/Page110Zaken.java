@@ -21,6 +21,10 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page110;
 
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.PARTNER_1;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.PARTNER_2;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER1;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER2;
+
+import java.util.function.Consumer;
 
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonControleWindow;
 import nl.procura.gba.web.modules.bs.huwelijk.ModuleHuwelijk;
@@ -31,6 +35,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOp
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page101.Page101Zaken;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
+import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
@@ -96,8 +101,15 @@ public class Page110Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
+    Consumer<DossierPersoon> personChangeListener = dossierPersoon -> {
+      if (dossierPersoon.getDossierPersoonType().is(PARTNER1, PARTNER2)) {
+        DossierHuwelijk dossier = (DossierHuwelijk) getZaak().getZaakDossier();
+        dossier.resetNaamGebruikPartner1();
+        dossier.resetNaamGebruikPartner2();
+      }
+    };
 
-    BsPersoonControleWindow window = new BsPersoonControleWindow(getZaak()) {
+    BsPersoonControleWindow window = new BsPersoonControleWindow(getZaak(), personChangeListener) {
 
       @Override
       public void afterBijwerken() {

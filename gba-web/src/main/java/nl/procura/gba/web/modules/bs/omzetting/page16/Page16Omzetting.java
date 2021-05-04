@@ -20,6 +20,9 @@
 package nl.procura.gba.web.modules.bs.omzetting.page16;
 
 import static java.util.Arrays.asList;
+import static nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage.PageBsGerelateerdenUtils.getOntbrekendePersonenMelding;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER1;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER2;
 
 import nl.procura.gba.web.components.layouts.tabsheet.GbaTabsheet;
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
@@ -73,7 +76,12 @@ public class Page16Omzetting extends BsPage<DossierOmzetting> {
         personenTabsheet.addTab(relatiesLayout1, "Partner 1");
         personenTabsheet.addTab(relatiesLayout2, "Partner 2");
 
+        addInfo(getOntbrekendePersonenMelding(getServices(),
+            getDossier().getPersonen(PARTNER1, PARTNER2))
+                .orElse(""));
+
         addExpandComponent(personenTabsheet);
+
       } else if (event.isEvent(AfterReturn.class)) {
         relatiesLayout1.init();
         relatiesLayout2.init();

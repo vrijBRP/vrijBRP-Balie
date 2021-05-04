@@ -15,6 +15,7 @@
         <class>nl.procura.gba.jpa.personen.db.Correspondentie</class>
         <class>nl.procura.gba.jpa.personen.db.Document</class>
         <class>nl.procura.gba.jpa.personen.db.DocumentAfn</class>
+        <class>nl.procura.gba.jpa.personen.db.DocumentDmsType</class>
         <class>nl.procura.gba.jpa.personen.db.DocumentDoel</class>
         <class>nl.procura.gba.jpa.personen.db.Field</class>
         <class>nl.procura.gba.jpa.personen.db.GbaElement</class>

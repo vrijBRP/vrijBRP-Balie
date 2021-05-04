@@ -21,7 +21,6 @@ package nl.procura.gba.web.modules.zaken.personmutations;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static nl.procura.burgerzaken.gba.StringUtils.isBlank;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.*;
@@ -33,9 +32,10 @@ import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.*;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.vaadin.data.Validator;
 
-import nl.procura.burgerzaken.gba.StringUtils;
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
@@ -194,7 +194,13 @@ public class PersonListMutationsChecks {
       }
     }
 
-    // Specifieke elementens
+    // Specifieke elementen
+    if (elem.getElem().isElement(BSN)
+        && (elem.getRec().getStatus().is(GBARecStatus.HIST)
+            || elem.getAction().is(ADD_HISTORIC, CORRECT_HISTORIC_GENERAL, CORRECT_HISTORIC_ADMIN))) {
+      return Optional.empty();
+    }
+
     if (elem.getGroup().is(IDNUMMERS)) {
       if (elem.getCat().is(PERSOON)) {
         return Optional.of("Verplicht in categorie 1 (persoon)");
@@ -234,14 +240,14 @@ public class PersonListMutationsChecks {
         .anyMatch(e -> e.is(elem.getElemType()));
   }
 
-  public static Optional<String> getValueError(PersonListMutElem mutElem, PersonListMutElems mutElems) {
-    if (!mutElem.getElemType().isNational()) {
+  public static Optional<String> getValueError(PersonListMutElem elem, PersonListMutElems elems) {
+    if (!elem.getElemType().isNational()) {
       return Optional.empty();
     }
 
-    if (GBAElem.INGANGSDAT_GELDIG.is(mutElem.getElemType())) {
-      ProcuraDate newDate = new ProcuraDate(mutElem.getNewValue());
-      int dOpsch = aval(mutElem.getPl().getCat(INSCHR).getLatestRec().getElemVal(DATUM_OPSCH_BIJHOUD).getVal());
+    if (GBAElem.INGANGSDAT_GELDIG.is(elem.getElemType())) {
+      ProcuraDate newDate = new ProcuraDate(elem.getNewValue());
+      int dOpsch = aval(elem.getPl().getCat(INSCHR).getLatestRec().getElemVal(DATUM_OPSCH_BIJHOUD).getVal());
       if (dOpsch > 0) {
         ProcuraDate currentDate = new ProcuraDate(dOpsch);
         if (isFirstDateOlderThanSecond(currentDate, newDate)) {
@@ -250,15 +256,15 @@ public class PersonListMutationsChecks {
         }
       }
 
-      BasePLValue currentVal = mutElem.getSet().getCurrentRec().getElemVal(INGANGSDAT_GELDIG);
+      BasePLValue currentVal = elem.getSet().getCurrentRec().getElemVal(INGANGSDAT_GELDIG);
       ProcuraDate currentDate = new ProcuraDate(currentVal.getVal());
 
-      if (StringUtils.isNotBlank(mutElem.getCurrentValue().getVal())) {
-        if (mutElem.getAction().is(UPDATE_SET)) {
+      if (StringUtils.isNotBlank(elem.getCurrentValue().getVal())) {
+        if (elem.getAction().is(UPDATE_SET)) {
           if (isFirstDateOlderThanSecond(newDate, currentDate)) {
             return Optional.of("Nieuwe datum moet recenter zijn dan de oude datum");
           }
-        } else if (mutElem.getAction().is(ADD_HISTORIC, CORRECT_HISTORIC_GENERAL)) {
+        } else if (elem.getAction().is(ADD_HISTORIC, CORRECT_HISTORIC_GENERAL)) {
           if (isFirstDateOlderThanSecond(currentDate, newDate)) {
             return Optional.of("Een historische datum moet vóór de datum van het actuele record ("
                 + currentDate.getFormatDate() + ") liggen");
@@ -268,27 +274,34 @@ public class PersonListMutationsChecks {
 
     }
 
-    if (isNotMutual(mutElem, mutElems, AKTE, DOCUMENT)) {
+    if (elem.getGroup().is(NAAM)
+        && elems.isApplicable(PersonListMutationsChecks::isDefaultValue, GESLACHTSNAAM)
+        && !elem.getElem().isElement(GESLACHTSNAAM)) {
+      return msg("Als %s onbekend is dan mogen de andere elementen uit de groep ook niet voorkomen",
+          GESLACHTSNAAM.getDescr());
+    }
+
+    if (isNotMutual(elem, elems, AKTE, DOCUMENT)) {
       return msg(MUTUAL_EXCLUSIVE, AKTE, DOCUMENT);
     }
 
-    if (GBARecStatus.HIST != mutElem.getRec().getStatus() && GBAElem.IND_ONJUIST == mutElem.getElemType()) {
+    if (!elem.getRec().getStatus().is(GBARecStatus.HIST) && GBAElem.IND_ONJUIST == elem.getElemType()) {
       return msg("%s kan uitsluitend in historie voorkomen.", ONJUIST);
     }
 
     // checks for category 2/3
-    if (mutElem.getCat().is(OUDER_1, OUDER_2)) {
-      if (mutElem.getGroup().is(IDNUMMERS, GEBOORTE, GESLACHT, FAM_RECHT_BETREK)) {
-        if (mutElems.isAllBlank(NAAM) && !mutElems.isAllBlank(mutElem.getGroup())) {
-          return msg(NOT_ALLOWED, NAAM, mutElem.getGroup());
+    if (elem.getCat().is(OUDER_1, OUDER_2)) {
+      if (elem.getGroup().is(IDNUMMERS, GEBOORTE, GESLACHT, FAM_RECHT_BETREK)) {
+        if (elems.isAllBlank(NAAM) && !elems.isAllBlank(elem.getGroup())) {
+          return msg(NOT_ALLOWED, NAAM, elem.getGroup());
         }
       }
     }
 
     // checks for category 4
-    if (mutElem.getCat().is(GBACat.NATIO)) {
-      if (mutElem.getGroup().is(BUITENL_PERSOONSNR)) {
-        Optional<PersonListMutElem> natio = mutElems.getElem(GBAElem.NATIONALITEIT);
+    if (elem.getCat().is(GBACat.NATIO)) {
+      if (elem.getGroup().is(BUITENL_PERSOONSNR)) {
+        Optional<PersonListMutElem> natio = elems.getElem(GBAElem.NATIONALITEIT);
         if (natio.isPresent() && !natio.get().isBlank()) {
           TabelFieldValue tabelFieldValue = (TabelFieldValue) natio.get().getField().getValue();
           if (!pos(tabelFieldValue.getAttributes().get("eu"))) {
@@ -303,22 +316,22 @@ public class PersonListMutationsChecks {
         }
       }
 
-      if (isNotMutual(mutElem, mutElems, NATIONALITEIT, BIJZ_NED_SCHAP)) {
+      if (isNotMutual(elem, elems, NATIONALITEIT, BIJZ_NED_SCHAP)) {
         return msg(MUTUAL_EXCLUSIVE, NATIONALITEIT, BIJZ_NED_SCHAP);
       }
-      if (isNotMutual(mutElem, mutElems, RND_OPN_NATIO, RDN_EINDE_NATIO)) {
+      if (isNotMutual(elem, elems, RND_OPN_NATIO, RDN_EINDE_NATIO)) {
         return msg(MUTUAL_EXCLUSIVE, RND_OPN_NATIO, RDN_EINDE_NATIO);
       }
     }
 
     // checks for category 5
-    if (mutElem.getCat().is(HUW_GPS)) {
-      if (isNotMutual(mutElem, mutElems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS)) {
+    if (elem.getCat().is(HUW_GPS)) {
+      if (isNotMutual(elem, elems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS)) {
         return msg(MUTUAL_EXCLUSIVE, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS);
       }
-      if (REGIST_GEM_AKTE.is(mutElem.getElemType())) {
-        Optional<BasePLValue> gemeente = getRegisterGemeenteVerbintenis(mutElems, mutElem);
-        if (gemeente.isPresent() && !mutElem.getNewValue().equals(gemeente.get().getVal())) {
+      if (REGIST_GEM_AKTE.is(elem.getElemType())) {
+        Optional<BasePLValue> gemeente = getRegisterGemeenteVerbintenis(elems, elem);
+        if (gemeente.isPresent() && !elem.getNewValue().equals(gemeente.get().getVal())) {
           String descr = gemeente.map(v -> v.getDescr() + " (" + v.getVal() + ")").orElse("");
           return msg("Element %s moet gelijk zijn aan de registergemeente akte in het sluitingsrecord (%s)",
               REGIST_GEM_AKTE.getDescrAndCode(), descr);
@@ -326,44 +339,51 @@ public class PersonListMutationsChecks {
       }
     }
     // checks for category 8
-    if (mutElem.getCat().is(GBACat.VB)) {
-      if (isNotMutual(mutElem, mutElems, EMIGRATIE, IMMIGRATIE)) {
+    if (elem.getCat().is(GBACat.VB)) {
+      if (isNotMutual(elem, elems, EMIGRATIE, IMMIGRATIE)) {
         return msg(MUTUAL_EXCLUSIVE, EMIGRATIE, IMMIGRATIE);
       }
-      if (mutElem.getGroup().is(DOCUMENTINDICATIE) && !mutElems.isAllBlank(DOCUMENTINDICATIE)) {
-        String rdn = mutElem.getPl().getCat(INSCHR).getLatestRec().getElemVal(OMSCHR_REDEN_OPSCH_BIJHOUD).getVal();
+      if (elem.getGroup().is(DOCUMENTINDICATIE) && !elems.isAllBlank(DOCUMENTINDICATIE)) {
+        String rdn = elem.getPl().getCat(INSCHR).getLatestRec().getElemVal(OMSCHR_REDEN_OPSCH_BIJHOUD).getVal();
         if (!rdn.matches("[EM]")) {
           return msg("Groep %s kan voorkomen wanneer in categorie inschrijving (07), groep %s is " +
               "aangegeven dat de bijhouding is opgeschort met reden \"E\" of \"M\"",
               DOCUMENTINDICATIE, OPSCHORTING);
         }
       }
+
+      if (elem.getGroup().is(ADRES)
+          && elems.isApplicable(PersonListMutationsChecks::isDefaultValue, STRAATNAAM)
+          && !elem.getElem().isElement(STRAATNAAM)) {
+        return msg("Als %s onbekend is dan mogen de andere elementen uit de groep ook niet voorkomen",
+            STRAATNAAM.getDescr());
+      }
     }
 
     // checks for category 9
-    if (mutElem.getCat().is(KINDEREN)) {
-      if (isNotMutual(mutElem, mutElems, IDNUMMERS, REG_AFSTAMMING)) {
+    if (elem.getCat().is(KINDEREN)) {
+      if (isNotMutual(elem, elems, IDNUMMERS, REG_AFSTAMMING)) {
         return msg(MUTUAL_EXCLUSIVE, IDNUMMERS, REG_AFSTAMMING);
       }
     }
 
     // checks for category 11
-    if (mutElem.getCat().is(GBACat.GEZAG)) {
-      if (isNotMutual(mutElem, mutElems, GEZAG_MINDERJARIGE, CURATELE)) {
+    if (elem.getCat().is(GBACat.GEZAG)) {
+      if (isNotMutual(elem, elems, GEZAG_MINDERJARIGE, CURATELE)) {
         return msg(MUTUAL_EXCLUSIVE, GEZAG_MINDERJARIGE, CURATELE);
       }
     }
 
     // checks for category 12
-    if (mutElem.getCat().is(GBACat.REISDOC)) {
-      if (isNotMutual(mutElem, mutElems, NED_REISDOCUMENT, SIGNALERING)) {
+    if (elem.getCat().is(GBACat.REISDOC)) {
+      if (isNotMutual(elem, elems, NED_REISDOCUMENT, SIGNALERING)) {
         return msg(MUTUAL_EXCLUSIVE, NED_REISDOCUMENT, SIGNALERING);
       }
     }
 
     // checks for category 13
-    if (mutElem.getCat().is(GBACat.KIESR)) {
-      if (isNotMutual(mutElem, mutElems, EUROPEES_KIESRECHT, UITSL_KIESR)) {
+    if (elem.getCat().is(GBACat.KIESR)) {
+      if (isNotMutual(elem, elems, EUROPEES_KIESRECHT, UITSL_KIESR)) {
         return msg(MUTUAL_EXCLUSIVE, EUROPEES_KIESRECHT, UITSL_KIESR);
       }
     }
@@ -382,7 +402,7 @@ public class PersonListMutationsChecks {
             BasePLValue datumOntbinding = rec.getElemVal(DATUM_ONTBINDING);
             BasePLValue plaatsVerbintenis = rec.getElemVal(PLAATS_VERBINTENIS);
             BasePLValue registerGemeente = rec.getElemVal(REGIST_GEM_AKTE);
-            if (isBlank(datumOntbinding.getDescr())
+            if (StringUtils.isBlank(datumOntbinding.getDescr())
                 && plaatsVerbintenis.isNotBlank()
                 && registerGemeente.isNotBlank()) {
               return Optional.of(registerGemeente);
@@ -439,6 +459,10 @@ public class PersonListMutationsChecks {
       GBAGroup group2) {
     return ((mutElem.getGroup().is(group1) && !mutElems.isAllBlank(group2))
         || (mutElem.getGroup().is(group2) && !mutElems.isAllBlank(group1)));
+  }
+
+  private static boolean isDefaultValue(PersonListMutElem elem) {
+    return StringUtils.containsAny(elem.getNewValue().toLowerCase(), "onbekend", "standaardwaarde");
   }
 
   private static Map<GBAGroup, List<GBAElem>> getRequiredElements() {

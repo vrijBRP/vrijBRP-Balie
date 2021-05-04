@@ -21,6 +21,8 @@ package nl.procura.gba.web.services.gba.tabellen.gemeentelijk;
 
 import static nl.procura.standard.Globalfunctions.pos;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.diensten.gba.ple.procura.utils.diacrits.Diacs;
 
@@ -30,15 +32,21 @@ public class Straat extends GemeentelijkeTabel {
     super(GBATable.STRAAT);
     setDiacrietVeld(Diacs.STRAAT);
     setSql("select distinct x.cStraat, x.straat, x.diac from Straat x where x.lokaal = 0 " +
-        "and x.cStraat > 0 order by x.straat");
+        "and x.cStraat >= 0 order by x.straat");
   }
 
   @Override
   public String[] format(String[] row) {
-    setCode(row[0]);
-    setWaarde(row[1]);
-    setDiacriet(pos(row[2]));
+    if (NumberUtils.toInt(row[0], -1) == 0) { // Onbekend
+      setCode("0");
+      setWaarde("Onbekend (standaardwaarde)");
+      setDiacriet(false);
 
+    } else {
+      setCode(row[0]);
+      setWaarde(row[1]);
+      setDiacriet(pos(row[2]));
+    }
     return row;
   }
 }

@@ -71,6 +71,10 @@ public class RijbewijsService extends AbstractZaakContactService<RijbewijsAanvra
     checkRdw();
   }
 
+  public boolean isRijbewijzenServiceActive() {
+    return isTru(getServices().getParameterService().getSysteemParameter(ParameterConstant.RYB_ENABLED).getValue());
+  }
+
   @Override
   @Timer
   @ThrowException("Fout bij zoeken van de rijbewijsaanvragen")
@@ -242,7 +246,6 @@ public class RijbewijsService extends AbstractZaakContactService<RijbewijsAanvra
   }
 
   public RijbewijsAccount getAccount() {
-
     ParameterService parameters = getServices().getParameterService();
     String geb = parameters.getSysteemParameter(RYB_GEBRUIKERSNAAM).getValue();
     String url = parameters.getSysteemParameter(RYB_URL).getValue();

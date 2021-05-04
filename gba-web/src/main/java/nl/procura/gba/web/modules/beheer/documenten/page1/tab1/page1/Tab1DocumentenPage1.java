@@ -118,10 +118,6 @@ public class Tab1DocumentenPage1 extends DocumentenTabPage {
     getNavigation().goToPage(new Tab1DocumentenPage2(new DocumentRecord()));
   }
 
-  protected int totalNumberOfSelectedRecords() {
-    return getAllSelectedDocs().size();
-  }
-
   private void addbuttons() {
     addButton(buttonNew, buttonDel);
   }
@@ -285,9 +281,11 @@ public class Tab1DocumentenPage1 extends DocumentenTabPage {
         addColumn("Vnr", 40);
         addColumn("Naam").setUseHTML(true);
         addColumn("Code", 40);
+        addColumn("Alias", 150);
         addColumn("Sjabloon", 300).setUseHTML(true);
         addColumn("Type", 170);
         addColumn("Vertrouwelijkheid", 130);
+        addColumn("Documenttype", 130);
       }
 
       @Override
@@ -327,11 +325,13 @@ public class Tab1DocumentenPage1 extends DocumentenTabPage {
       r.addValue((along(doc.getVDocument()) > 0) ? doc.getVDocument() : "-");
       r.addValue(doc.getDocument() + errors);
       r.addValue(doc.getCDocument());
+      r.addValue(doc.getAlias());
       r.addValue(sjabloonBestaat(sjabloon) ? sjabloon
           : setClass("red",
               sjabloon + " (Dit sjabloon kan niet gevonden worden)"));
       r.addValue(doc.getDocumentType());
       r.addValue(doc.getVertrouwelijkheid().getOmschrijving());
+      r.addValue(doc.getDocumentDmsType());
     }
   }
 
@@ -355,6 +355,8 @@ public class Tab1DocumentenPage1 extends DocumentenTabPage {
       r.addValue("");
       r.addValue("");
       r.addValue("");
+      r.addValue("");
+      r.addValue("");
     }
 
     for (Dir dir : sorter.getDirs(path, null)) {
@@ -363,6 +365,8 @@ public class Tab1DocumentenPage1 extends DocumentenTabPage {
       r.addValue(TableImage.getByBestandType(BestandType.MAP));
       r.addValue("");
       r.addValue("<b>" + dir.getName() + " (" + sorter.getFileCount(dir.getPath()) + ")" + "</b>");
+      r.addValue("");
+      r.addValue("");
       r.addValue("");
       r.addValue("");
       r.addValue("");

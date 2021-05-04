@@ -45,6 +45,7 @@ import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
 import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratie;
 import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeraties;
 import nl.procura.gba.web.services.zaken.documenten.afnemers.DocumentAfnemer;
+import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.gba.web.services.zaken.documenten.doelen.DocumentDoel;
 import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerk;
 import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
@@ -68,6 +69,14 @@ public class DocumentService extends DocumentenPrintenService {
   }
 
   /**
+   * geeft de lijst met alle documenttypes
+   */
+  @ThrowException("Fout bij het zoeken van de DMS documenttypes")
+  public List<DmsDocumentType> getDmsDocumentTypes() {
+    return copyList(DocumentDao.findDmsTypes(), DmsDocumentType.class);
+  }
+
+  /**
    * Documenten die NIET specifiek aan een gebruiker zijn gekoppeld
    */
   @ThrowException("Fout bij ophalen van de documenten")
@@ -84,10 +93,10 @@ public class DocumentService extends DocumentenPrintenService {
     return copy(GenericDao.find(Document.class, documentCode), DocumentRecord.class);
   }
 
-  public List<DocumentRecord> getDocumentenByDmsNaam(String dmsNaam) {
+  public List<DocumentRecord> getDocumentenByAlias(String alias) {
     return getDocumenten(GeldigheidStatus.ACTUEEL, false)
         .stream()
-        .filter(r -> r.getDmsNaam().equalsIgnoreCase(dmsNaam))
+        .filter(r -> r.getAlias().equalsIgnoreCase(alias))
         .collect(Collectors.toList());
 
   }
@@ -304,6 +313,11 @@ public class DocumentService extends DocumentenPrintenService {
     saveEntity(documentAfnemer);
   }
 
+  @ThrowException("Fout bij het opslaan van documenttype")
+  public void save(DmsDocumentType dmsDocumentType) {
+    saveEntity(dmsDocumentType);
+  }
+
   @ThrowException("Fout bij het opslaan van een doel")
   public void save(DocumentDoel documentDoel) {
     saveEntity(documentDoel);
@@ -352,6 +366,11 @@ public class DocumentService extends DocumentenPrintenService {
   @ThrowException("Fout bij het verwijderen van een stempel")
   public void delete(DocumentStempel documentStempel) {
     removeEntity(documentStempel);
+  }
+
+  @ThrowException("Fout bij het verwijderen van een DMS documenttype")
+  public void delete(DmsDocumentType type) {
+    removeEntity(type);
   }
 
   /**

@@ -78,80 +78,83 @@ public class RijbewijsZaakControles extends ControlesTemplate<RijbewijsService> 
 
     Controles controles = new Controles();
 
-    List<RYBAANVROVERZ> overzichten = NrdServices.getNrdAanvragenByStatus(getService(), rijbewijsStatus, 1000,
-        listener, listener);
+    if (getService().isRijbewijzenServiceActive()) {
 
-    for (RYBAANVROVERZ overzicht : overzichten) {
-      List<NATPAANVRGEG> natpaanvrgeg = overzicht.getNatpaanvrtab().getNatpaanvrgeg();
+      List<RYBAANVROVERZ> overzichten = NrdServices.getNrdAanvragenByStatus(getService(), rijbewijsStatus, 1000,
+          listener, listener);
 
-      RijbewijsStatusType rst = RijbewijsStatusType.get(
-          overzicht.getAanvrrybzgeg().getStatcoderybk().longValue());
+      for (RYBAANVROVERZ overzicht : overzichten) {
+        List<NATPAANVRGEG> natpaanvrgeg = overzicht.getNatpaanvrtab().getNatpaanvrgeg();
 
-      HashSet<String> rijbewijsNrs = new HashSet<>();
-      for (NATPAANVRGEG aanvraag : natpaanvrgeg) {
-        AANVRRYBKGEG r = aanvraag.getAanvrrybkgeg();
-        rijbewijsNrs.add(r.getAanvrnrrybk().toString());
-      }
+        RijbewijsStatusType rst = RijbewijsStatusType.get(
+            overzicht.getAanvrrybzgeg().getStatcoderybk().longValue());
 
-      if (rijbewijsNrs.size() > 0) {
-
-        ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
-        zaakArgumenten.setZaakIds(rijbewijsNrs);
-
-        // Alleen zaken zoeken bijwerken met status opgenomen / inbehandeling
-        if (RIJBEWIJS_ONTVANGEN_DOOR_GEMEENTE_OK.is(rijbewijsStatus)) {
-          zaakArgumenten.setStatussen(OPGENOMEN, INBEHANDELING);
+        HashSet<String> rijbewijsNrs = new HashSet<>();
+        for (NATPAANVRGEG aanvraag : natpaanvrgeg) {
+          AANVRRYBKGEG r = aanvraag.getAanvrrybkgeg();
+          rijbewijsNrs.add(r.getAanvrnrrybk().toString());
         }
 
-        List<RijbewijsAanvraag> zaken = getService().getMinimalZaken(zaakArgumenten);
+        if (rijbewijsNrs.size() > 0) {
 
-        for (NATPAANVRGEG aanvraag : natpaanvrgeg) {
+          ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
+          zaakArgumenten.setZaakIds(rijbewijsNrs);
 
-          AANVRRYBKGEG r = aanvraag.getAanvrrybkgeg();
-          STATRYBKGEG s = aanvraag.getStatrybkgeg();
-          String aanvrNr = r.getAanvrnrrybk().toString();
+          // Alleen zaken zoeken bijwerken met status opgenomen / inbehandeling
+          if (RIJBEWIJS_ONTVANGEN_DOOR_GEMEENTE_OK.is(rijbewijsStatus)) {
+            zaakArgumenten.setStatussen(OPGENOMEN, INBEHANDELING);
+          }
 
-          for (RijbewijsAanvraag zaak : zaken) {
-            if (fil(aanvrNr) && aanvrNr.equals(zaak.getAanvraagNummer())) {
-              if (zaak.getStatus().isEindStatus()) {
-                continue;
-              }
+          List<RijbewijsAanvraag> zaken = getService().getMinimalZaken(zaakArgumenten);
 
-              zaak = getService().getStandardZaak(zaak);
-              ZaakControle<Zaak> controle = controles.addControle(
-                  new ZaakControle<>("Rijbewijzen", zaak));
+          for (NATPAANVRGEG aanvraag : natpaanvrgeg) {
 
-              boolean isAddRijbewijsNr = isRijbewijsNummerBijwerken(zaak, s);
-              boolean isAddStatus = isRijbewijsStatusBijwerken(zaak, s, rst);
+            AANVRRYBKGEG r = aanvraag.getAanvrrybkgeg();
+            STATRYBKGEG s = aanvraag.getStatrybkgeg();
+            String aanvrNr = r.getAanvrnrrybk().toString();
 
-              StringBuilder info = new StringBuilder();
-
-              if (isAddRijbewijsNr) {
-                info.append("rijbewijsnr. bijgewerkt");
-              }
-
-              if (isAddStatus) {
-                info.append(", Status ").append(rst.getCode()).append(" nu toegevoegd");
-              } else {
-                controle.addOpmerking(format("Status %d reeds bekend", rst.getCode()));
-              }
-
-              String infoMsg = trim(info.toString());
-
-              if (fil(infoMsg)) {
-                zaak.getZaakHistorie().addWijziging(info.toString());
-                if (listener != null) {
-                  listener.info(infoMsg);
+            for (RijbewijsAanvraag zaak : zaken) {
+              if (fil(aanvrNr) && aanvrNr.equals(zaak.getAanvraagNummer())) {
+                if (zaak.getStatus().isEindStatus()) {
+                  continue;
                 }
-              }
 
-              if (isAddRijbewijsNr || isAddStatus) {
-                getService().save(zaak);
+                zaak = getService().getStandardZaak(zaak);
+                ZaakControle<Zaak> controle = controles.addControle(
+                    new ZaakControle<>("Rijbewijzen", zaak));
 
-                // Zet de status op ontvangen
-                if (isAddStatus && RIJBEWIJS_ONTVANGEN_DOOR_GEMEENTE_OK.is(rijbewijsStatus)) {
-                  ZaakStatusService zaakStatusService = getService().getZaakStatussen();
-                  zaakStatusService.updateStatus(zaak, ZaakStatusType.DOCUMENT_ONTVANGEN, "");
+                boolean isAddRijbewijsNr = isRijbewijsNummerBijwerken(zaak, s);
+                boolean isAddStatus = isRijbewijsStatusBijwerken(zaak, s, rst);
+
+                StringBuilder info = new StringBuilder();
+
+                if (isAddRijbewijsNr) {
+                  info.append("rijbewijsnr. bijgewerkt");
+                }
+
+                if (isAddStatus) {
+                  info.append(", Status ").append(rst.getCode()).append(" nu toegevoegd");
+                } else {
+                  controle.addOpmerking(format("Status %d reeds bekend", rst.getCode()));
+                }
+
+                String infoMsg = trim(info.toString());
+
+                if (fil(infoMsg)) {
+                  zaak.getZaakHistorie().addWijziging(info.toString());
+                  if (listener != null) {
+                    listener.info(infoMsg);
+                  }
+                }
+
+                if (isAddRijbewijsNr || isAddStatus) {
+                  getService().save(zaak);
+
+                  // Zet de status op ontvangen
+                  if (isAddStatus && RIJBEWIJS_ONTVANGEN_DOOR_GEMEENTE_OK.is(rijbewijsStatus)) {
+                    ZaakStatusService zaakStatusService = getService().getZaakStatussen();
+                    zaakStatusService.updateStatus(zaak, ZaakStatusType.DOCUMENT_ONTVANGEN, "");
+                  }
                 }
               }
             }

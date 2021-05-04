@@ -59,7 +59,7 @@ public class BirthFatherBsnCheckWindow extends DeclarationCheckWindow {
     suppliedValue = new Bsn(dossier.getVerzoekBsnVaderDuoMoeder().longValue());
     derivedValue = new Bsn(dossierPersoon.getBurgerServiceNummer().getLongValue());
 
-    Form suppliedForm = new Form("Gegevens die door burger zijn aangeleverd", suppliedValue);
+    Form suppliedForm = new Form("Gegevens die in de e-aangifte zijn aangeleverd", suppliedValue);
     Form derivedForm = new Form("Gegevens die door de applicatie zijn afgeleid", derivedValue);
 
     VLayout vLayout = new VLayout().margin(true);

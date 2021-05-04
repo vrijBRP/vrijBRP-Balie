@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura" id="v1_27_1">
+        <createTable tableName="document_dms_type">
+            <column name="c_document_dms_type" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="document_dms_type_pkey"/>
+            </column>
+            <column name="document_dms_type" type="text" defaultValue="''"/>
+            <column name="zaak_types" type="text" defaultValue="''"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_2">
+        <addColumn tableName="document">
+            <column name="document_dms_type" type="text" defaultValue="''"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_3">
+        <sql>
+            <![CDATA[update document set document_dms_type = dms_naam]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -25,6 +25,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.jersey.api.client.ClientResponse;
+
 import nl.procura.gba.web.rest.client.GbaRestClientException;
 import nl.procura.gba.web.rest.v1_0.zaak.bestand.GbaRestZaakBestand;
 import nl.procura.gba.web.rest.v1_0.zaak.bestand.GbaRestZaakBestandAntwoord;
@@ -75,7 +77,7 @@ public class GbaRestClientZaakBestandVoorbeelden extends GbaRestClientVoorbeelde
 
   @Timer
   protected void bestandenZoeken() throws GbaRestClientException {
-    GbaRestZaakBestandAntwoord antwoord = getObject(client.getZaak().getBestand().get("0637120486"));
+    GbaRestZaakBestandAntwoord antwoord = getObject(client.getZaak().getBestand().get("Zaak-14dd7f"));
 
     for (ProRestMelding melding : antwoord.getMeldingen()) {
       LOGGER.info("Melding: " + melding.getOmschrijving());
@@ -88,23 +90,24 @@ public class GbaRestClientZaakBestandVoorbeelden extends GbaRestClientVoorbeelde
       info(2, "gebruiker", bestand.getGebruiker());
       info(2, "datum", bestand.getDatum());
       info(2, "tijd", bestand.getTijd());
-      info(2, "dms-naam", bestand.getDmsNaam());
+      info(2, "documentTypeOmschrijving", bestand.getDocumentTypeOmschrijving());
       info("");
     }
   }
 
   @Timer
   protected void bestandZoeken() throws GbaRestClientException {
-    String zaakId = "PROWEB_70_091811702";
+    String zaakId = "Zaak-14dd7f";
     GbaRestZaakBestandAntwoord antwoord = getObject(client.getZaak().getBestand().get(zaakId));
 
     for (GbaRestZaakBestand bestand : antwoord.getBestanden()) {
       String bestandsnaam = bestand.getBestandsnaam();
       String extension = FilenameUtils.getExtension(bestandsnaam);
-      writeStream(
-          getStream(client.getZaak().getBestand().get(bestand.getZaakId(), bestandsnaam).getClientResponse()),
-          extension);
-      break;
+      ClientResponse response = client.getZaak()
+          .getBestand()
+          .get(bestand.getZaakId(), bestandsnaam)
+          .getClientResponse();
+      writeStream(getStream(response), extension);
     }
   }
 

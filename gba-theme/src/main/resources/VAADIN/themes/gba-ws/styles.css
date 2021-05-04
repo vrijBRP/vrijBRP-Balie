@@ -108,11 +108,6 @@ Andere grootte accordion
 
 .toolbarLayout .v-label.login-toolbar-logo,
 .toolbarLayout .v-label.toolbar-logo {
-	background: url(layouts/img/vrijbrp-icon.png);
-	background-repeat: no-repeat;
-	background-position: left center;
-	background-size: 15px;
 	color: #e9f4ff;
-	font-size: 15px;
 	width: 400px;
 }

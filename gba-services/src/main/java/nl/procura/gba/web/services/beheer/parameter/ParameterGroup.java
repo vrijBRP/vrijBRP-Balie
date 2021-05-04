@@ -21,7 +21,7 @@ package nl.procura.gba.web.services.beheer.parameter;
 
 public enum ParameterGroup {
 
-  GROUP_BSM("BSM"),
+  GROUP_BSM("Taakplanner"),
   GROUP_ZAKEN_DMS("Zaken DMS", "Zaken DMS"),
   GROUP_ZAKEN_DMS_TYPES("Zaken DMS Types", "Zaken DMS types"),
   GROUP_ALGEMEEN("Algemeen"),

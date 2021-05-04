@@ -75,7 +75,7 @@ public class BsmService extends AbstractService implements ServiceControle {
         .isProfielActie(ProfielActie.SELECT_HOOFD_BSM);
 
     if (isBsmInProfiel && !isBsmCorrect()) {
-      String melding = "Er is iets aan de hand met de berichten service module (BSM).";
+      String melding = "Er is iets aan de hand met de taakplanner (BSM).";
       getServices().getMeldingService().add(new BsmMelding(melding));
     }
   }
@@ -169,7 +169,7 @@ public class BsmService extends AbstractService implements ServiceControle {
       }
     }
 
-    throw new ProException(WARNING, "De berichten service module (BSM) is niet geconfigureerd voor deze taak");
+    throw new ProException(WARNING, "De taakplanner (BSM) is niet geconfigureerd voor deze taak");
   }
 
   public List<BsmRestTaakLog> getBsmTaakLog(String sessie) {
@@ -189,7 +189,7 @@ public class BsmService extends AbstractService implements ServiceControle {
       }
     }
 
-    throw new ProException(WARNING, "De berichten service module (BSM) is niet geconfigureerd");
+    throw new ProException(WARNING, "De taakplanner (BSM) is niet geconfigureerd");
   }
 
   public List<BsmRestTaak> getBsmTaken() {
@@ -296,7 +296,7 @@ public class BsmService extends AbstractService implements ServiceControle {
       }
     }
 
-    throw new ProException(WARNING, "De berichten service module (BSM) is niet geconfigureerd");
+    throw new ProException(WARNING, "De taakplanner (BSM) is niet geconfigureerd");
   }
 
   private ClientResponse check(ClientResponse response) {
@@ -309,7 +309,7 @@ public class BsmService extends AbstractService implements ServiceControle {
         throw new ProException(WARNING, "De BSM kan niet worden benaderd (controleer de parameters)");
 
       case UNAUTHORIZED:
-        throw new ProException(WARNING, "U heeft momenteel geen toegang tot de berichten service module (BSM)");
+        throw new ProException(WARNING, "U heeft momenteel geen toegang tot de taakplanner (BSM)");
 
       default:
         throw new ProException(ERROR, response.getStatusInfo().getReasonPhrase());
@@ -319,9 +319,9 @@ public class BsmService extends AbstractService implements ServiceControle {
   private void handleException(BsmRestClientException e) {
 
     if (ExceptionUtils.getCause(e, ConnectException.class) != null) {
-      throw new ProException(WARNING, "Er kan geen contact worden gemaakt met de berichten service module (BSM)");
+      throw new ProException(WARNING, "Er kan geen contact worden gemaakt met de taakplanner (BSM)");
     }
 
-    throw new ProException(WEBSERVICE, "Fout bij aanroepen van de berichten service module (BSM)", e);
+    throw new ProException(WEBSERVICE, "Fout bij aanroepen van de taakplanner (BSM)", e);
   }
 }

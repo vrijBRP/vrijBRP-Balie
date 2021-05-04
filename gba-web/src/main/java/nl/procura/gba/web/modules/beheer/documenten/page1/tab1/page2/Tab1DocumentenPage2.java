@@ -309,13 +309,14 @@ public class Tab1DocumentenPage2 extends DocumentenTabPage {
 
     getDocument().setVDocument(toBigDecimal(defaultNul(b.getVolgnr())));
     getDocument().setDocument(b.getNaam());
+    getDocument().setAlias(b.getAlias());
     getDocument().setBestand(b.getSjabloon());
     getDocument().setType(b.getType().getType());
     getDocument().setPad(docPath);
     getDocument().setDatumVerval(new DateTime(along(b.getVervaldatum().getValue())));
     getDocument().setOmschrijving(b.getOmschrijving());
     getDocument().setAantal(aval(b.getAantal()));
-    getDocument().setDmsNaam(b.getDmsNaam());
+    getDocument().setDocumentDmsType(b.getDocumentDmsType());
     getDocument().setVertrouwelijkheid(b.getVertrouwelijkheid());
   }
 

@@ -49,6 +49,7 @@ import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.common.validators.GbaDatumValidator;
 import nl.procura.gba.web.components.containers.TabelContainer;
 import nl.procura.gba.web.components.fields.DateReference;
+import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.IndicatieOnjuistField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
@@ -64,6 +65,7 @@ import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.exceptions.ProException;
+import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.*;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -134,9 +136,11 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       FieldValue gem = (FieldValue) gemeente.getField().getValue();
       int plaatsCode = aval((gem != null) ? gem.getValue() : gemeente.getElem().getValue().getVal());
       boolean isGemeente = Services.getInstance().getGebruiker().isGemeente(plaatsCode);
-      AbstractField field = isGemeente ? getDefaultComponent(straat) : new GbaTextField();
+      AbstractField field = isGemeente ? getDefaultComponent(straat)
+          : getUnknownValueField(straat.getCurrentValue().getVal());
       straat.setField(setFieldStyle(field));
       setDefaultValues(straat);
+      setEditableFieldProperties(field, straat);
       if (getTable() != null) {
         getTable().init();
       }
@@ -151,6 +155,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       AbstractField field = isGemeente ? getDefaultComponent(obr) : new GbaTextField();
       obr.setField(setFieldStyle(field));
       setDefaultValues(obr);
+      setEditableFieldProperties(field, obr);
       if (getTable() != null) {
         getTable().init();
       }
@@ -178,6 +183,9 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
 
     } else if (pleE.getElem() == GBAElem.POSTCODE) {
       field = new PostalcodeField();
+
+    } else if (pleE.getElem() == GBAElem.GESLACHTSNAAM) {
+      field = getUnknownValueField(mutElem.getCurrentValue().getVal());
 
     } else if (pleE.getElem() == GBAElem.AAND_GEG_IN_ONDERZ) {
       field = new IndicatieOnjuistField(mutElem.getCat());
@@ -251,6 +259,10 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       }
     }
 
+    if (pleE.getElem().is(GBAElem.AKTENR, GBAElem.NR_NL_REISDOC)) {
+      field.addStyleName("uppercase");
+    }
+
     if (GBAElem.DATUM_VAN_OPNEMING.is(pleE.getElem())) {
       mutElem.setDefaultValue(() -> new DateFieldValue(new ProcuraDate().getSystemDate()));
     }
@@ -259,6 +271,16 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       setEditableFieldProperties(field, mutElem);
     }
 
+    return field;
+  }
+
+  private GbaComboBox getUnknownValueField(String initialValue) {
+    GbaComboBox field = new GbaComboBox();
+    ArrayListContainer container = new ArrayListContainer();
+    container.addItem(new FieldValue("Onbekend (standaardwaarde)"));
+    container.addItem(new FieldValue(initialValue));
+    field.setContainerDataSource(container);
+    field.setNewItemsAllowed(true);
     return field;
   }
 

@@ -1,0 +1,7 @@
+### Zoek op zaak-id
+GET http://{{host}}:{{port}}/personen/rest/v2/zaken/Zaak-14dd7f/documenten
+Authorization: Basic {{username}} {{password}}
+
+### Zoek document by id
+GET http://{{host}}:{{port}}/personen/rest/v2/zaken/Zaak-14dd7f/documenten/MjAyMTAzMzAxNjU1MTk1MzQucGRm
+Authorization: Basic {{username}} {{password}}

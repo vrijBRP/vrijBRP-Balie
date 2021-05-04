@@ -39,7 +39,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.*;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakDocument;
 import nl.procura.gba.web.rest.v2.services.GbaRestServices;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsStream;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 import nl.procura.standard.exceptions.ProException;
 
@@ -145,12 +145,12 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
       @PathParam("id") String documentId) {
     Response.ResponseBuilder builder;
     try {
-      DmsStream dmsStream = new GbaRestServices(getServices())
+      DMSContent dmsStream = new GbaRestServices(getServices())
           .getDmsService()
           .getDocumentByZaakId(zaakId, documentId);
       if (dmsStream != null) {
         builder = Response.ok(dmsStream.getInputStream(), MediaType.APPLICATION_OCTET_STREAM);
-        builder = builder.header("Content-Disposition", "attachment; filename=\"" + dmsStream.getUitvoernaam() + "\"");
+        builder = builder.header("Content-Disposition", "attachment; filename=\"" + dmsStream.getFilename() + "\"");
         return builder.build();
       } else {
         throw new ProException("Geen document met id: " + documentId);

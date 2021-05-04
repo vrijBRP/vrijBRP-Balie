@@ -23,7 +23,7 @@ import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ALGEMEEN;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ZAAKID;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +39,7 @@ import nl.procura.gba.web.rest.v1_0.zaak.verwerken.GbaRestZaakVerwerkenVraag;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMelding;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMeldingType;
 import nl.procura.standard.ProcuraDate;
+import nl.procura.standard.Resource;
 import nl.procura.standard.exceptions.ProException;
 
 import examples.nl.procura.gba.GbaRestClientVoorbeelden;
@@ -77,8 +78,7 @@ public class GbaRestClientInboxVoorbeelden extends GbaRestClientVoorbeelden {
     vraag.setZaakId("Gemeente-1234");
     vraag.setOmschrijving("Huwelijksreservering");
     vraag.setBestandsnaam("reservering.xml");
-    vraag.setBestand(
-        getBestand("C:/Users/pc16/Dropbox/Procura/Gemeenten/Haarlem/huwelijksplanner/soap/reservering.xml"));
+    vraag.setBestand(getBestand("inbox/reservering-request.xml"));
 
     check(getObject(client.getZaak().toevoegen(vraag)));
   }
@@ -116,7 +116,7 @@ public class GbaRestClientInboxVoorbeelden extends GbaRestClientVoorbeelden {
     vraag.setZaakId("Gemeente-1234");
     vraag.setOmschrijving("Voornemen huwelijk");
     vraag.setBestandsnaam("voornemen.xml");
-    vraag.setBestand(getBestand("inbox/voornemen.xml"));
+    vraag.setBestand(getBestand("inbox/voornemen-request.xml"));
 
     check(getObject(client.getZaak().toevoegen(vraag)));
   }
@@ -129,7 +129,7 @@ public class GbaRestClientInboxVoorbeelden extends GbaRestClientVoorbeelden {
     vraag.setZaakId("Gemeente-1234");
     vraag.setOmschrijving("Getuigen huwelijk");
     vraag.setBestandsnaam("getuigen.xml");
-    vraag.setBestand(getBestand("inbox/getuigen.xml"));
+    vraag.setBestand(getBestand("inbox/getuigen-request.xml"));
 
     check(getObject(client.getZaak().toevoegen(vraag)));
   }
@@ -142,7 +142,7 @@ public class GbaRestClientInboxVoorbeelden extends GbaRestClientVoorbeelden {
     vraag.setZaakId("Gemeente-1234");
     vraag.setOmschrijving("Bijlagen huwelijk.");
     vraag.setBestandsnaam("bijlagen.xml");
-    vraag.setBestand(getBestand("inbox/bijlage.xml"));
+    vraag.setBestand(getBestand("inbox/bijlage-request.xml"));
 
     check(getObject(client.getZaak().toevoegen(vraag)));
   }
@@ -200,9 +200,9 @@ public class GbaRestClientInboxVoorbeelden extends GbaRestClientVoorbeelden {
   }
 
   private String getBestand(String filename) {
-    FileInputStream inputStream = null;
+    InputStream inputStream = null;
     try {
-      inputStream = new FileInputStream(filename);
+      inputStream = Resource.getAsInputStream(filename);
       return encodeBase64String(IOUtils.toByteArray(inputStream));
     } catch (Exception e) {
       throw new ProException("Fout bij uitlezen bestand", e);

@@ -513,6 +513,20 @@ public class DossierOmzetting extends DossOmzet
     return true;
   }
 
+  public void resetNaamGebruikPartner1() {
+    setNaamGebruikPartner1("");
+    setTitelPartner1(new FieldValue());
+    setVoorvPartner1("");
+    setNaamPartner1("");
+  }
+
+  public void resetNaamGebruikPartner2() {
+    setNaamGebruikPartner2("");
+    setTitelPartner2(new FieldValue());
+    setVoorvPartner2("");
+    setNaamPartner2("");
+  }
+
   private void addDocumentNationaliteit(List<DocumentNationaliteit> list, String type, DossierPersoon persoon) {
 
     final DocumentNationaliteit dn = new DocumentNationaliteit();

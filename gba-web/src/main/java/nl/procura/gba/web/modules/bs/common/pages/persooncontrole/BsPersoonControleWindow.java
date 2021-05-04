@@ -19,18 +19,27 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.persooncontrole;
 
+import java.util.function.Consumer;
+
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.page1.BsPersoonControlePage1;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
+import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
 public abstract class BsPersoonControleWindow extends GbaModalWindow {
 
-  private final Dossier dossier;
+  private final Dossier            dossier;
+  private Consumer<DossierPersoon> changeListener;
 
   public BsPersoonControleWindow(Dossier dossier) {
+    this(dossier, dossierPersoon -> {});
+  }
+
+  public BsPersoonControleWindow(Dossier dossier, Consumer<DossierPersoon> changeListener) {
     super("Personen van het dossier (Druk op escape om te sluiten)", "80%");
     this.dossier = dossier;
+    this.changeListener = changeListener;
   }
 
   public abstract void afterBijwerken();
@@ -38,7 +47,7 @@ public abstract class BsPersoonControleWindow extends GbaModalWindow {
   @Override
   public void attach() {
     super.attach();
-    BsPersoonControlePage1 page = new BsPersoonControlePage1(dossier) {
+    BsPersoonControlePage1 page = new BsPersoonControlePage1(dossier, changeListener) {
 
       @Override
       public void afterBijwerken() {

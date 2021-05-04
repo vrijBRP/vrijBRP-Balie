@@ -45,10 +45,6 @@ public class DocumentPLConverter {
    * Remove the stillborns
    */
   public static void removeStillborns(DocumentPL documentPL) {
-    for (DocumentPL.OOKind kind : new ArrayList<>(documentPL.getKinderen())) {
-      if (kind.isStillborn()) {
-        documentPL.getKinderen().remove(kind);
-      }
-    }
+    documentPL.getKinderen().removeIf(DocumentPL.OOKind::isStillborn);
   }
 }

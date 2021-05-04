@@ -100,6 +100,10 @@ public final class TabellenServiceMock {
     streets.getRecords().add(new TabelRecord());
     tables.add(streets);
 
+    TabelResultaat obr = new TabelResultaat(GBATable.OPENBARE_RUIMTE.getTableCode(), GBATable.OPENBARE_RUIMTE.getDescr());
+    obr.getRecords().add(new TabelRecord());
+    tables.add(obr);
+
     TabelResultaat locations = new TabelResultaat(GBATable.LOCATIE.getTableCode(), GBATable.LOCATIE.getDescr());
     locations.getRecords().add(new TabelRecord());
     tables.add(locations);

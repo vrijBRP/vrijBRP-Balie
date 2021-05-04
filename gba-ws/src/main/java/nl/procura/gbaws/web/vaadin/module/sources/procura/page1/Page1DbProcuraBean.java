@@ -70,8 +70,7 @@ public class Page1DbProcuraBean implements Serializable {
   @Field(customTypeClass = ProNativeSelect.class,
       caption = "Database",
       width = "200px")
-  @Select(containerDataSource = DatabaseTypeContainer.class,
-      nullSelectionAllowed = false)
+  @Select(containerDataSource = DatabaseTypeContainer.class)
   private String database = "";
 
   @Field(customTypeClass = ProTextField.class,
@@ -97,16 +96,14 @@ public class Page1DbProcuraBean implements Serializable {
 
   @Field(customTypeClass = ProTextField.class,
       width = "200px",
-      caption = "Gebruikersnaam",
-      required = true)
+      caption = "Gebruikersnaam")
   @TextField(nullRepresentation = "",
       maxLength = 250)
   private String username = "";
 
   @Field(customTypeClass = ProTextField.class,
       width = "200px",
-      caption = "Wachtwoord",
-      required = true)
+      caption = "Wachtwoord")
   @TextField(nullRepresentation = "",
       maxLength = 250,
       secret = true)

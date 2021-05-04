@@ -34,8 +34,10 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.ZaakBes
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsDocument;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsResultaat;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
+import nl.procura.standard.exceptions.ProException;
+import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -68,7 +70,7 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
       table = new DocumentenTabel() {
 
         @Override
-        public DmsResultaat getOpgeslagenBestanden() {
+        public DMSResult getOpgeslagenBestanden() {
           return getBestanden(getApplication());
         }
       };
@@ -112,7 +114,7 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
       return;
     }
 
-    new DeleteProcedure<DmsDocument>(table) {
+    new DeleteProcedure<DMSDocument>(table) {
 
       @Override
       public void afterDelete() {
@@ -120,7 +122,7 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
       }
 
       @Override
-      public void deleteValue(DmsDocument record) {
+      public void deleteValue(DMSDocument record) {
         getApplication().getServices().getDmsService().delete(record);
       }
     };
@@ -128,6 +130,11 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
 
   @Override
   public void onNew() {
+
+    if (zaak.getStatus().isEindStatus()) {
+      throw new ProException(ProExceptionSeverity.WARNING, "Bij zaken met een eindstatus kunnen geen " +
+          "nieuwe documenten worden geupload");
+    }
 
     if (buttonNew.getParent() == null) {
       return;
@@ -152,16 +159,10 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
 
   public abstract void onReload();
 
-  private DmsResultaat getBestanden(GbaApplication application) {
-
-    // Alle bestanden zoeken
-
-    switch (type) {
-      case ZAAK:
-        return application.getServices().getDmsService().getDocumenten(zaak);
-
-      default:
-        return application.getServices().getDmsService().getDocumenten(zaak.getBasisPersoon());
+  private DMSResult getBestanden(GbaApplication application) {
+    if (type == BijlageReferentieType.ZAAK) {
+      return application.getServices().getDmsService().getDocumentsByZaak(zaak);
     }
+    return application.getServices().getDmsService().getDocumentsByPL(zaak.getBasisPersoon());
   }
 }

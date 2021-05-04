@@ -237,7 +237,7 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
     String zaakId = dossier.getZaakId();
     Services services = getApplication().getServices();
 
-    int countDocumenten = fil(zaakId) ? services.getDmsService().getDocumenten(dossier).size() : 0;
+    int countDocumenten = fil(zaakId) ? services.getDmsService().getDocumentsByZaak(dossier).size() : 0;
     buttonDocs.setCaption(MessageFormat.format("Documenten ({0})", countDocumenten));
   }
 

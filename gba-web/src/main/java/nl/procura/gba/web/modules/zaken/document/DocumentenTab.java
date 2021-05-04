@@ -72,7 +72,7 @@ public class DocumentenTab extends GbaPageTemplate {
   }
 
   public int getAantalArchief() {
-    return getServices().getDmsService().getAantalDocumenten(getPl());
+    return getServices().getDmsService().countDocumentsByPL(getPl());
   }
 
   public void reload() {

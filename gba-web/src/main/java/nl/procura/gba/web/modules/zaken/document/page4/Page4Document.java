@@ -23,7 +23,10 @@ import com.vaadin.ui.Upload.SucceededEvent;
 
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.ZaakBijlageVertrouwelijkheidForm;
 import nl.procura.gba.web.modules.zaken.document.DocumentenPage;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsService;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSFileContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
+import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 
 public class Page4Document extends DocumentenPage {
 
@@ -44,16 +47,19 @@ public class Page4Document extends DocumentenPage {
     @Override
     public void uploadSucceeded(SucceededEvent event) {
       form.commit();
-      DmsService dms = getApplication().getServices().getDmsService();
-
+      DMSService dms = getApplication().getServices().getDmsService();
       try {
-
         String gebruiker = getApplication().getServices().getGebruiker().getNaam();
-        dms.save(getFile(), getFileName(), getFileName(), gebruiker, getPl(),
-            form.getVertrouwelijkheid().getNaam());
-        super.uploadSucceeded(event);
+        DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(getFile()))
+            .user(gebruiker)
+            .documentTypeDescription(form.getDmsDocumentType().map(DmsDocumentType::toString).orElse(""))
+            .confidentiality(form.getVertrouwelijkheid().getNaam())
+            .build();
 
+        dms.save(getPl(), dmsDocument);
+        super.uploadSucceeded(event);
         reloadCaptions();
+
       } catch (Exception e) {
         getApplication().handleException(getWindow(), e);
       }

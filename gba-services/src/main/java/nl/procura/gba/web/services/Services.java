@@ -78,7 +78,7 @@ import nl.procura.gba.web.services.inbox.InboxService;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.AantekeningService;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutService;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsService;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatieService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakconfiguraties.ZaakConfiguratieService;
@@ -148,7 +148,7 @@ public class Services {
     add(ContactgegevensService.class);
     add(ProtocolleringService.class);
     add(DocumentService.class);
-    add(DmsService.class);
+    add(DMSService.class);
     add(ZaakDmsService.class);
     add(DocumentZakenService.class);
     add(TerugmeldingService.class);
@@ -263,8 +263,8 @@ public class Services {
     return get(CurateleService.class);
   }
 
-  public DmsService getDmsService() {
-    return get(DmsService.class);
+  public DMSService getDmsService() {
+    return get(DMSService.class);
   }
 
   public DocumentService getDocumentService() {

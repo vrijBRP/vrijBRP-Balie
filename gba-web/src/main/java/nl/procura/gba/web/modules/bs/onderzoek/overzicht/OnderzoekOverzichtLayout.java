@@ -171,7 +171,7 @@ public class OnderzoekOverzichtLayout extends VerticalLayout {
       setClickable(true);
 
       addColumn("Nr.", 50);
-      addColumn("Type persoon", 120);
+      addColumn("Type persoon", 140);
       addColumn("Naam");
       addColumn("Geboorte");
       addColumn("Adres");

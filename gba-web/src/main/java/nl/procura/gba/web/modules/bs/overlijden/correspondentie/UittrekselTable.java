@@ -50,7 +50,7 @@ public class UittrekselTable extends GbaTable {
     for (DossOverlUitt uitt : uittreksels) {
       IndexedTable.Record record = addRecord(uittreksels);
       record.addValue(uitt.getUittDescr());
-      record.addValue(getDocument(uitt, docService.getDocumentenByDmsNaam(uitt.getUittCode())));
+      record.addValue(getDocument(uitt, docService.getDocumentenByAlias(uitt.getUittCode())));
       record.addValue(uitt.getUittAmount());
     }
 

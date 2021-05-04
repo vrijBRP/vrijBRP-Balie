@@ -493,14 +493,14 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(BSM_INTERNAL_URL)
   @Position(order = "9a")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "Berichten Service Module (Interne URL)",
+      caption = "Taakplanner (Interne URL)",
       width = "400px")
   private String bsmInternalUrl = "";
 
   @ParameterAnnotation(BSM_EXTERNAL_URL)
   @Position(order = "9a")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "Berichten Service Module (Externe URL)",
+      caption = "Taakplanner (Externe URL)",
       width = "400px")
   private String bsmExternalUrl = "";
 
@@ -1020,8 +1020,17 @@ public class ParameterBean implements Serializable {
       itemCaptionPropertyId = RdwAanpassingenContainer.OMSCHRIJVING)
   private String rijbewijsWijzigingen = "";
 
+  @ParameterAnnotation(RYB_ENABLED)
+  @Position(order = "01")
+  @Field(customTypeClass = GbaNativeSelect.class,
+          caption = "Rijbewijzen service actief",
+          width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+          itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String rijbewijzenEnabled = "";
+
   @ParameterAnnotation(RYB_URL)
-  @Position(order = "01",
+  @Position(order = "02",
       direction = Direction.VERTICAL_WITH_RULER)
   @Field(type = FieldType.TEXT_FIELD,
       caption = "URL van de rijbewijzen",

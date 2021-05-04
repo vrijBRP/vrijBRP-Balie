@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
 public class DocumentExport implements Serializable {
 
   private static final long serialVersionUID = -3224414020738017065L;
@@ -45,16 +47,22 @@ public class DocumentExport implements Serializable {
     this.dList = dList;
   }
 
+  @Data
   public static class DocumentExportEntry implements Serializable {
 
     private static final long serialVersionUID = 7444156440521781425L;
 
-    private long       volgNr      = 0;
-    private String     naam        = "";
-    private String     sjabloon    = "";
-    private String     type        = "";
-    private String     map         = "";
-    private BigDecimal vervalDatum = null;
+    private long       volgNr            = 0;
+    private String     naam              = "";
+    private String     alias             = "";
+    private String     documentDmsType   = "";
+    private String     omschrijving      = "";
+    private String     sjabloon          = "";
+    private String     type              = "";
+    private String     map               = "";
+    private String     vertrouwelijkheid = "";
+    private String     formats           = "";
+    private BigDecimal vervalDatum       = null;
 
     private boolean kopieOpslaan          = false;
     private boolean protocollering        = false;
@@ -65,102 +73,6 @@ public class DocumentExport implements Serializable {
     private List<Long> koppelEnums = new ArrayList<>();
 
     public DocumentExportEntry() {
-    }
-
-    public List<Long> getKoppelEnums() {
-      return koppelEnums;
-    }
-
-    public void setKoppelEnums(List<Long> koppelEnums) {
-      this.koppelEnums = koppelEnums;
-    }
-
-    public String getMap() {
-      return map;
-    }
-
-    public void setMap(String map) {
-      this.map = map;
-    }
-
-    public String getNaam() {
-      return naam;
-    }
-
-    public void setNaam(String naam) {
-      this.naam = naam;
-    }
-
-    public String getSjabloon() {
-      return sjabloon;
-    }
-
-    public void setSjabloon(String sjabloon) {
-      this.sjabloon = sjabloon;
-    }
-
-    public String getType() {
-      return type;
-    }
-
-    public void setType(String type) {
-      this.type = type;
-    }
-
-    public BigDecimal getVervalDatum() {
-      return vervalDatum;
-    }
-
-    public void setVervalDatum(BigDecimal vervalDatum) {
-      this.vervalDatum = vervalDatum;
-    }
-
-    public long getVolgNr() {
-      return volgNr;
-    }
-
-    public void setVolgNr(long volgNr) {
-      this.volgNr = volgNr;
-    }
-
-    public boolean isIedereen() {
-      return iedereenToegang;
-    }
-
-    public boolean isKopieOpslaan() {
-      return kopieOpslaan;
-    }
-
-    public void setKopieOpslaan(boolean kopieOpslaan) {
-      this.kopieOpslaan = kopieOpslaan;
-    }
-
-    public boolean isProtocollering() {
-      return protocollering;
-    }
-
-    public void setProtocollering(boolean protocollering) {
-      this.protocollering = protocollering;
-    }
-
-    public boolean isStandaardGeselecteerd() {
-      return standaardGeselecteerd;
-    }
-
-    public void setStandaardGeselecteerd(boolean standaardGeselecteerd) {
-      this.standaardGeselecteerd = standaardGeselecteerd;
-    }
-
-    public void setIedereenToegang(boolean iedereenToegang) {
-      this.iedereenToegang = iedereenToegang;
-    }
-
-    public boolean isStillbornAllowed() {
-      return stillbornAllowed;
-    }
-
-    public void setStillbornAllowed(boolean stillbornAllowed) {
-      this.stillbornAllowed = stillbornAllowed;
     }
   }
 }

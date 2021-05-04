@@ -280,7 +280,7 @@ public class GbaRestOverlijdenService extends GbaRestAbstractService {
   }
 
   private void checkUittrekselByCode(GbaRestOverlijdenUittreksel uitt) {
-    List<DocumentRecord> documenten = getServices().getDocumentService().getDocumentenByDmsNaam(uitt.getCode());
+    List<DocumentRecord> documenten = getServices().getDocumentService().getDocumentenByAlias(uitt.getCode());
     if (documenten.size() > 1) {
       throw new ProException(WARNING, "Meerdere documenten gevonden met DMS code ''{0}''", uitt.getCode());
 

@@ -174,6 +174,7 @@ public class BsNamenrechtLayout extends GbaFieldsetLayout implements ClickListen
             break;
 
           case PARTNER:
+          case PARTNER_ANDERE_OUDER:
             form.setNewNaamskeuzePersoon(NaamsPersoonType.PARTNER);
             break;
 

@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.zaken.personmutations.page2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
@@ -33,6 +34,13 @@ public class PersonListMutElems extends ArrayList<PersonListMutElem> {
         .allMatch(elem -> stream()
             .filter(e -> e.getElemType() == elem)
             .allMatch(PersonListMutElem::isBlank));
+  }
+
+  public boolean isApplicable(Predicate<PersonListMutElem> predicate, GBAElem... elems) {
+    return Arrays.stream(elems)
+        .allMatch(elem -> stream()
+            .filter(e -> e.getElemType() == elem)
+            .allMatch(predicate::test));
   }
 
   public boolean isAllBlank(GBAGroup... groups) {

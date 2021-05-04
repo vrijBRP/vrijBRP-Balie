@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing;
 
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing.DocumentExportBean.*;
+
 import java.util.List;
 
 import com.vaadin.ui.Upload.SucceededEvent;
@@ -40,7 +42,8 @@ public class ImportDocPage extends NormalPageTemplate {
 
   private final Uploader     docUploader = new Uploader();
   private ImportTable        table       = null;
-  private DocumentImportForm form        = null;
+  private DocumentImportForm form1       = null;
+  private DocumentImportForm form2       = null;
 
   public ImportDocPage() {
     super("Importeren van documenten");
@@ -53,11 +56,14 @@ public class ImportDocPage extends NormalPageTemplate {
 
     if (event.isEvent(InitPage.class)) {
 
-      form = new DocumentImportForm();
+      form1 = new DocumentImportForm(ALIAS, DMS_DOCUMENT_TYPE, VERTROUWELIJKHEID, OMSCHRIJVING, FORMATS);
+      form2 = new DocumentImportForm(KOPIE_OPSLAAN, PROTOCOLLERING, STANDAARD_GESELECTEERD,
+          IEDEREEN_TOEGANG, STILLBORN_ALLOWED);
       table = new ImportTable();
 
       addComponent(docUploader);
-      addComponent(new Fieldset("Opties", form));
+      addComponent(new Fieldset("Document", form1));
+      addComponent(new Fieldset("Opslag en toegang", form2));
       addComponent(new Fieldset("Resultaten", table));
     }
 
@@ -75,7 +81,8 @@ public class ImportDocPage extends NormalPageTemplate {
     public void uploadSucceeded(final SucceededEvent event) {
 
       table.clear();
-      form.commit();
+      form1.commit();
+      form2.commit();
       clearMessage();
 
       final DocumentImportExportHandler docImExHandl = new DocumentImportExportHandler();
@@ -97,12 +104,20 @@ public class ImportDocPage extends NormalPageTemplate {
 
             private void uploadDocs(boolean overwrite) {
 
+              //form1
               docImExHandl.setOverwriteDocs(overwrite);
-              docImExHandl.setKopieOpslaan(form.getBean().getKopieOpslaan());
-              docImExHandl.setProtocollering(form.getBean().getProtocollering());
-              docImExHandl.setStandaardGeselecteerd(form.getBean().getStandaardGeselecteerd());
-              docImExHandl.setIedereenToegang(form.getBean().getIedereenToegang());
-              docImExHandl.setStillbornAllowed(form.getBean().getStillbornAllowed());
+              docImExHandl.setAlias(form1.getBean().getAlias());
+              docImExHandl.setOmschrijving(form1.getBean().getOmschrijving());
+              docImExHandl.setDocumentTypeOms(form1.getBean().getDocumentTypeOms());
+              docImExHandl.setVertrouwelijkheid(form1.getBean().getVertrouwelijkheid());
+              docImExHandl.setFormats(form1.getBean().getFormats());
+
+              //form2
+              docImExHandl.setKopieOpslaan(form2.getBean().getKopieOpslaan());
+              docImExHandl.setProtocollering(form2.getBean().getProtocollering());
+              docImExHandl.setStandaardGeselecteerd(form2.getBean().getStandaardGeselecteerd());
+              docImExHandl.setIedereenToegang(form2.getBean().getIedereenToegang());
+              docImExHandl.setStillbornAllowed(form2.getBean().getStillbornAllowed());
 
               table.getRecords().clear();
 

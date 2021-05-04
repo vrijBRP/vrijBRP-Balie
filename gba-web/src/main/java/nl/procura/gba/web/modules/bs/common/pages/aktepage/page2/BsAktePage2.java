@@ -150,7 +150,7 @@ public class BsAktePage2<T extends ZaakDossier> extends BsAktePage<T> {
     @Override
     public void setColumns() {
 
-      addColumn("Type persoon", 120);
+      addColumn("Type persoon", 140);
       addColumn("Persoon").setUseHTML(true);
 
       super.setColumns();

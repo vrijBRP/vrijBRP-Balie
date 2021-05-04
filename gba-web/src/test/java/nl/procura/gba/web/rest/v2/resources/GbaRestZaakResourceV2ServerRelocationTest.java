@@ -41,7 +41,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.base.*;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.*;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.AangifteSoort;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
@@ -193,9 +193,9 @@ public class GbaRestZaakResourceV2ServerRelocationTest {
     // then
     VerhuisAanvraag verhuizing = new VerhuisAanvraag();
     verhuizing.setZaakId(zaakId);
-    DmsDocument createdDocument = Services.getInstance().getDmsService().getDocumenten(verhuizing).getDocumenten()
+    DMSDocument createdDocument = Services.getInstance().getDmsService().getDocumentsByZaak(verhuizing).getDocuments()
         .stream()
-        .filter(d -> d.getBestandsnaam().equals(created))
+        .filter(d -> d.getContent().getFilename().equals(created))
         .findFirst()
         .orElseThrow(AssertionError::new);
     assertEquals(DocumentType.ONBEKEND.getType(), createdDocument.getDatatype());

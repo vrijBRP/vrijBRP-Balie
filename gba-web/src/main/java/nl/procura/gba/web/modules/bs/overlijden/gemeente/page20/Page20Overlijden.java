@@ -117,6 +117,8 @@ public class Page20Overlijden extends BsPageOverlijden {
 
       addComponent(form1);
       addComponent(formLijkb);
+
+      formLijkb.updateTermijnLijkbezorging();
     }
 
     super.event(event);

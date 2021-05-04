@@ -170,7 +170,7 @@ public class ToolBar extends ToolBarLayout {
   private MenuBar getGebruikerMenu() {
 
     gebruikerMenu = gebruikerMenubar.addItem("", null);
-    gebruikerMenu.setIcon(new ThemeResource("../procura2/icons/16/bullet_arrow_down.png"));
+    gebruikerMenu.setIcon(new ThemeResource("../flat/icons/16/bullet_arrow_down.png"));
     gebruikerMenu.addItem("Eigen instellingen",
         selectedItem -> getApplication().openWindow(getWindow(), new AccountWindow(),
             "wachtwoord"));
@@ -220,7 +220,7 @@ public class ToolBar extends ToolBarLayout {
     locatieMenu = locatieMenubar.addItem("", null);
 
     if (!apps.isEmpty()) {
-      locatieMenu.setIcon(new ThemeResource("../procura2/icons/16/bullet_arrow_down.png"));
+      locatieMenu.setIcon(new ThemeResource("../flat/icons/16/bullet_arrow_down.png"));
     }
 
     for (Application app : apps) {

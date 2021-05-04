@@ -19,6 +19,8 @@
 
 package nl.procura.gbaws.web.vaadin.login;
 
+import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+
 import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
 
@@ -39,7 +41,16 @@ public class GbaWsLoginValidator extends CookieLoginValidator {
       validated(GbaWsAuthenticationHandler.getUser(credentials.getUsername(), credentials.getPassword(), true));
       return null;
     } catch (ProException e) {
+      if (e.getSeverity() != INFO) {
+        e.printStackTrace();
+      }
       return new UserError(e.getMessage());
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+      return new UserError(e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new UserError("Er is een onbekende fout opgetreden.");
     }
   }
 }

@@ -19,13 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.naamskeuze.page15;
 
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
 
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsContactpersoonPage;
+import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
@@ -37,7 +37,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 public class Page15Naamskeuze extends BsContactpersoonPage<DossierNaamskeuze> {
 
   public Page15Naamskeuze() {
-    super("Naamskeuze - partner");
+    super("Naamskeuze - partner / andere ouder");
   }
 
   @Override
@@ -82,7 +82,7 @@ public class Page15Naamskeuze extends BsContactpersoonPage<DossierNaamskeuze> {
           throw new ProException(SELECT, WARNING, "De persoonslijst kan niet worden geladen", e);
         } finally {
           setDossierPersoon(partner);
-          getDossierPersoon().setDossierPersoonType(PARTNER);
+          getDossierPersoon().setDossierPersoonType(DossierPersoonType.PARTNER_ANDERE_OUDER);
         }
       }
     } finally {

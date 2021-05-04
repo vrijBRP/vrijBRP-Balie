@@ -227,10 +227,10 @@ public enum ParameterConstant implements ParameterType {
   SSL_PROXY_URL("ssl_proxy_url", "SSL Proxy (URL)",
       GROUP_ALGEMENE_INSTELLINGEN, true, false, false, ""),
 
-  BSM_INTERNAL_URL("bsm_internal_url", "Berichten Service Module (Interne URL)",
+  BSM_INTERNAL_URL("bsm_internal_url", "Taakplanner (Interne URL)",
       GROUP_BSM, true, false, false, ""),
 
-  BSM_EXTERNAL_URL("bsm_external_url", "Berichten Service Module (Externe URL)",
+  BSM_EXTERNAL_URL("bsm_external_url", "Taakplanner (Externe URL)",
       GROUP_BSM, true, false, false, ""),
 
   BSM_ZAKEN_DMS("bsm_zaken_dms", "Zaken DMS van toepassing",
@@ -391,6 +391,9 @@ public enum ParameterConstant implements ParameterType {
 
   RYB_AANPASSINGEN("ryb_wijz", "RDW aanpassingen",
       GROUP_RIJBEWIJZEN, true, false, false, ""),
+
+  RYB_ENABLED("ryb_enabled", "Rijbewijzen service actief",
+      GROUP_RIJBEWIJZEN, true, true, true, "1"),
 
   RYB_URL("ryb_url", "URL van de rijbewijzen",
       GROUP_RIJBEWIJZEN, true, false, false, ""),

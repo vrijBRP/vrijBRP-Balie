@@ -51,8 +51,7 @@ public class GbaRestDocumentGenererenHandler extends GbaRestHandler {
     super(services);
   }
 
-  protected byte[] getDocument(DocumentRecord document, String type, GbaRestDocumentPersoon persoon) {
-
+  protected byte[] getDocumentByAlias(DocumentRecord document, String type, GbaRestDocumentPersoon persoon) {
     // PL opvragen
     BasePLExt pl = getPersoonslijst(persoon.getBsn());
     List<DocumentPL> dps = convert(singletonList(pl), null);
@@ -63,8 +62,8 @@ public class GbaRestDocumentGenererenHandler extends GbaRestHandler {
     map.put(DocumentType.PL_UITTREKSEL.getDoc(), dps);
 
     persoon.getGegevens().forEach(gegeven -> map.put(gegeven.getNaam(), gegeven.getWaarde()));
-    document
-        .setPrintOpties(getServices().getPrintOptieService().getPrintOpties(getServices().getGebruiker(), document));
+    document.setPrintOpties(getServices().getPrintOptieService()
+        .getPrintOpties(getServices().getGebruiker(), document));
 
     PrintActie printActie = new PrintActie();
     printActie.setModel(map);
@@ -80,8 +79,7 @@ public class GbaRestDocumentGenererenHandler extends GbaRestHandler {
     return documentBytes;
   }
 
-  protected byte[] getDocument(DocumentRecord document, String type, GbaRestDocumentZaak zaak) {
-
+  protected byte[] getDocumentByAlias(DocumentRecord document, String type, GbaRestDocumentZaak zaak) {
     // Zaak opvragen
     ZaakArgumenten z = new ZaakArgumenten(zaak.getZaakId());
     ZakenService service = getServices().getZakenService();
@@ -108,8 +106,7 @@ public class GbaRestDocumentGenererenHandler extends GbaRestHandler {
     return documentBytes;
   }
 
-  protected DocumentRecord getDocument(long documentCode) {
-
+  protected DocumentRecord getDocumentByAlias(long documentCode) {
     DocumentType[] types = { PL_UITTREKSEL, PL_FORMULIER, PL_NATURALISATIE, PL_OPTIE, PL_ADRESONDERZOEK, ZAAK };
     for (DocumentRecord document : getServices().getDocumentService().getDocumenten(types)) {
       if (document.getCDocument().equals(documentCode)) {
@@ -121,16 +118,15 @@ public class GbaRestDocumentGenererenHandler extends GbaRestHandler {
         "Document met code " + documentCode + " niet gevonden of is niet gekoppeld aan deze gebruiker");
   }
 
-  protected DocumentRecord getDocument(String documentDmsNaam) {
-
+  protected DocumentRecord getDocumentByAlias(String alias) {
     DocumentType[] types = { PL_UITTREKSEL, PL_FORMULIER, PL_NATURALISATIE, PL_OPTIE, PL_ADRESONDERZOEK, ZAAK };
     for (DocumentRecord document : getServices().getDocumentService().getDocumenten(types)) {
-      if (astr(document.getDmsNaam()).equalsIgnoreCase(documentDmsNaam)) {
+      if (astr(document.getAlias()).equalsIgnoreCase(alias)) {
         return document;
       }
     }
 
     throw new IllegalArgumentException(
-        "Document met dms-naam " + documentDmsNaam + " niet gevonden of is niet gekoppeld aan deze gebruiker");
+        "Document met alias " + alias + " niet gevonden of is niet gekoppeld aan deze gebruiker");
   }
 }

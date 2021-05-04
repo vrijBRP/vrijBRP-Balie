@@ -19,22 +19,27 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms;
 
-import java.util.ArrayList;
-import java.util.List;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 
-public class DmsResultaat {
+public interface DMSStorage {
 
-  private List<DmsDocument> documenten = new ArrayList<>();
+  DMSResult getDocumentsByPL(BasePLExt pl);
 
-  public List<DmsDocument> getDocumenten() {
-    return documenten;
-  }
+  DMSResult getDocumentsByZaak(Zaak zaak);
 
-  public void setDocumenten(List<DmsDocument> records) {
-    this.documenten = records;
-  }
+  int countDocumentsByPL(BasePLExt pl);
 
-  public int size() {
-    return documenten.size();
-  }
+  int countDocumentByZaakId(Zaak zaak);
+
+  DMSDocument save(String folderName, DMSDocument dmsDocument);
+
+  void save(PrintActie printActie, byte[] documentBytes);
+
+  DMSDocument saveByPerson(BasePLExt pl, DMSDocument dmsDocument);
+
+  DMSDocument saveByZaak(Zaak zaak, DMSDocument dmsDocument);
+
+  void delete(DMSDocument dmsDocument);
 }

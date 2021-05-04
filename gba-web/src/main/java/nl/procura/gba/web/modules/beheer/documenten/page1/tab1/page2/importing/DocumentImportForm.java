@@ -19,7 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing;
 
-import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing.DocumentExportBean.*;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing.DocumentExportBean.FORMATS;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing.DocumentExportBean.STILLBORN_ALLOWED;
 
 import com.vaadin.ui.Field;
 
@@ -28,16 +29,16 @@ import nl.procura.vaadin.component.layout.table.TableLayout;
 
 public class DocumentImportForm extends GbaForm<DocumentExportBean> {
 
-  public DocumentImportForm() {
-
-    setOrder(KOPIE_OPSLAAN, PROTOCOLLERING, STANDAARD_GESELECTEERD, IEDEREEN_TOEGANG, STILLBORN_ALLOWED);
+  public DocumentImportForm(String... fields) {
+    setOrder(fields);
     setColumnWidths("140px", "160px", "120px", "");
     setBean(new DocumentExportBean());
   }
 
   @Override
   public void setColumn(TableLayout.Column column, Field field, Property property) {
-    if (property.is(STILLBORN_ALLOWED)) {
+
+    if (property.is(STILLBORN_ALLOWED, FORMATS)) {
       column.setColspan(3);
     }
     super.setColumn(column, field, property);

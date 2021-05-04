@@ -19,8 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.naamskeuze.page30;
 
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
 import static nl.procura.gba.web.services.bs.algemeen.functies.BsNatioUtils.heeftNederlandseNationaliteit;
 
 import java.util.List;
@@ -146,7 +145,7 @@ public class Page30Naamskeuze extends BsPageNaamskeuze {
   }
 
   private boolean isPartnerHeeftNL(DossierNaamskeuze impl) {
-    List<DossierPersoon> personen = impl.getDossier().getPersonen(PARTNER);
+    List<DossierPersoon> personen = impl.getDossier().getPersonen(PARTNER, PARTNER_ANDERE_OUDER);
     return (impl.isVoorGeboorte() && heeftNederlandseNationaliteit(personen));
   }
 

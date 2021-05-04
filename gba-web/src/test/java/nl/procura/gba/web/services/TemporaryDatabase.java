@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import nl.procura.gba.jpa.personen.utils.GbaEclipseLinkUtil;
 import nl.procura.gba.jpa.personen.utils.GbaJpaStorageWrapper;
-import nl.procura.gba.web.common.database.checks.DBCheckPost13;
+import nl.procura.gba.web.common.database.checks.DBCheckPost7;
 import nl.procura.standard.threadlocal.ThreadLocalStorage;
 
 import liquibase.Contexts;
@@ -160,7 +160,7 @@ public final class TemporaryDatabase {
     LOGGER.info("Update generator table");
     try (Connection connection = getConnection()) {
       HsqlDatabase hsqlDatabase = getHsqlDatabase(connection);
-      new DBCheckPost13(gbaJpaStorageWrapper.get().getManager(), hsqlDatabase, "");
+      new DBCheckPost7(gbaJpaStorageWrapper.get().getManager(), hsqlDatabase, "");
     } catch (SQLException e) {
       throw new IllegalStateException(e);
     }

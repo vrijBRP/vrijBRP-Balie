@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.windows.persoonslijst.navigatie;
 
+import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.ADRESONDERZOEK;
+import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.RISK_ANALYSIS;
+
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.common.ZaakType;
@@ -62,11 +65,22 @@ public class ZakenAccordionTab extends PlAccordionTab {
     addLink(ModuleIndicatie.class);
     addLink(ModuleInhouding.class);
     addLink(ModuleNaamgebruik.class);
-    addLink(ModuleOnderzoek.class);
+
+    if (application.getServices().getOnderhoudService().hasLicenseFor(ADRESONDERZOEK)) {
+      addLink(ModuleOnderzoek.class);
+    }
+
     addLink(ModuleOverlijden.class);
     addLink(ModuleReisdocument.class);
-    addLink(ModuleRijbewijs.class);
-    addLink(ModuleRiskAnalysis.class);
+
+    if (application.getServices().getRijbewijsService().isRijbewijzenServiceActive()) {
+      addLink(ModuleRijbewijs.class);
+    }
+
+    if (application.getServices().getOnderhoudService().hasLicenseFor(RISK_ANALYSIS)) {
+      addLink(ModuleRiskAnalysis.class);
+    }
+
     addLink(ModuleTmv.class);
     addLink(ModuleUittreksel.class);
     addLink(ModuleVerhuizing.class);

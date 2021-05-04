@@ -21,23 +21,36 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
+import java.util.Optional;
 
+import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.components.layouts.form.document.DocumentVertrouwelijkheidContainer;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
+import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
+import nl.procura.vaadin.component.container.ArrayListContainer;
 
 import lombok.Data;
 
 public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrouwelijkheidForm.AttachmentBean> {
 
-  private static final String VERTROUWELIJKHEID = "vertrouwelijkheid";
+  private static final String DOCUMENT_TYPE_OMSCHRIJVING = "documentTypeOmschrijving";
+  private static final String VERTROUWELIJKHEID          = "vertrouwelijkheid";
+  private ZaakType            zaakType;
 
   public ZaakBijlageVertrouwelijkheidForm() {
-    setOrder(VERTROUWELIJKHEID);
+    this(ZaakType.ONBEKEND);
+  }
+
+  public ZaakBijlageVertrouwelijkheidForm(ZaakType zaakType) {
+    this.zaakType = zaakType;
+    setOrder(DOCUMENT_TYPE_OMSCHRIJVING, VERTROUWELIJKHEID);
     setCaption("Nieuw bestand");
     setColumnWidths(WIDTH_130, "");
   }
@@ -52,6 +65,18 @@ public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrou
     super.attach();
   }
 
+  @Override
+  public void afterSetBean() {
+    Services services = getApplication().getServices();
+    DocumentTypeOmschrijvingContainer container = new DocumentTypeOmschrijvingContainer(services, zaakType);
+    getField(DOCUMENT_TYPE_OMSCHRIJVING, GbaNativeSelect.class).setContainerDataSource(container);
+  }
+
+  public Optional<DmsDocumentType> getDmsDocumentType() {
+    commit();
+    return Optional.ofNullable(getBean().getDocumentTypeOmschrijving());
+  }
+
   public DocumentVertrouwelijkheid getVertrouwelijkheid() {
     commit();
     return getBean().getVertrouwelijkheid();
@@ -61,11 +86,27 @@ public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrou
   @FormFieldFactoryBean(accessType = ElementType.FIELD)
   public class AttachmentBean implements Serializable {
 
+    @Field(customTypeClass = GbaNativeSelect.class,
+        caption = "Documenttype",
+        width = "250px")
+    @TextField(maxLength = 250)
+    private DmsDocumentType documentTypeOmschrijving;
+
     @Field(caption = "Vertrouwelijkheid",
         customTypeClass = GbaNativeSelect.class,
+        width = "250px",
         required = true)
     @Select(containerDataSource = DocumentVertrouwelijkheidContainer.class,
         nullSelectionAllowed = false)
     private DocumentVertrouwelijkheid vertrouwelijkheid;
+  }
+
+  public static class DocumentTypeOmschrijvingContainer extends ArrayListContainer {
+
+    public DocumentTypeOmschrijvingContainer(Services services, ZaakType zaakType) {
+      services.getDocumentService().getDmsDocumentTypes().stream()
+          .filter(t -> t.isZaakType(zaakType))
+          .forEach(this::addItem);
+    }
   }
 }

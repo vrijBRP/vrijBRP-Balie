@@ -66,7 +66,7 @@ public class DossierNaamskeuze extends DossNk
     super();
     setDossier(new Dossier(ZaakType.NAAMSKEUZE, this));
     getDossier().toevoegenPersoon(MOEDER);
-    getDossier().toevoegenPersoon(PARTNER);
+    getDossier().toevoegenPersoon(PARTNER_ANDERE_OUDER);
   }
 
   @Override
@@ -206,7 +206,7 @@ public class DossierNaamskeuze extends DossNk
   }
 
   public DossierPersoon getPartner() {
-    return getDossier().getPersoon(DossierPersoonFilter.filter(PARTNER));
+    return getDossier().getPersoon(DossierPersoonFilter.filter(PARTNER, PARTNER_ANDERE_OUDER));
   }
 
   @Override

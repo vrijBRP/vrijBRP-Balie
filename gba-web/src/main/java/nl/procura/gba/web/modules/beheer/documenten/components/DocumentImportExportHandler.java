@@ -52,20 +52,40 @@ import nl.procura.gba.web.modules.beheer.documenten.components.DocumentExport.Do
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing.DocumentImportOptieType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.functies.downloading.DownloadHandlerImpl;
 
+import lombok.Setter;
+
 public class DocumentImportExportHandler extends ImportExportHandler {
 
-  private final List<String>      docReports;
-  private final List<String>      templReports;
+  private final List<String> docReports;
+  private final List<String> templReports;
+
+  @Setter
   private boolean                 overwriteDocs;
+  @Setter
   private DocumentImportOptieType kopieOpslaan          = null;
+  @Setter
   private DocumentImportOptieType protocollering        = null;
+  @Setter
   private DocumentImportOptieType iedereenToegang       = null;
+  @Setter
   private DocumentImportOptieType standaardGeselecteerd = null;
+  @Setter
   private DocumentImportOptieType stillbornAllowed      = null;
+  @Setter
+  private DocumentImportOptieType alias                 = null;
+  @Setter
+  private DocumentImportOptieType omschrijving          = null;
+  @Setter
+  private DocumentImportOptieType documentTypeOms       = null;
+  @Setter
+  private DocumentImportOptieType vertrouwelijkheid     = null;
+  @Setter
+  private DocumentImportOptieType formats               = null;
 
   public DocumentImportExportHandler() {
     overwriteDocs = false;
@@ -77,9 +97,7 @@ public class DocumentImportExportHandler extends ImportExportHandler {
    * Exporteert de documenten naar een zip-bestand.
    */
   public void exportDocumenten(GbaWindow window, List<DocumentRecord> docList) {
-
     Map<String, byte[]> map = new HashMap<>();
-
     serializeDocs(docList, map);
     serializeTemplates(window, docList, map);
     exportObject(map, "documenten.zip", new DownloadHandlerImpl(window));
@@ -89,9 +107,7 @@ public class DocumentImportExportHandler extends ImportExportHandler {
    * Exporteert sjablonen als byte-array naar een zipfile genaamd 'sjablonen.zip'.
    */
   public void exportTemplates(File templDir, List<File> templList, GbaWindow window) {
-
     Map<String, byte[]> map = new HashMap<>();
-
     try {
       for (File file : templList) {
         String relPath = MiscUtils.getRelatiefPad(templDir, file);
@@ -104,46 +120,6 @@ public class DocumentImportExportHandler extends ImportExportHandler {
     ImportExportHandler.exportObject(map, "sjablonen.zip", new DownloadHandlerImpl(window));
   }
 
-  public DocumentImportOptieType getIedereenToegang() {
-    return iedereenToegang;
-  }
-
-  public void setIedereenToegang(DocumentImportOptieType iedereenToegang) {
-    this.iedereenToegang = iedereenToegang;
-  }
-
-  public DocumentImportOptieType getKopieOpslaan() {
-    return kopieOpslaan;
-  }
-
-  public void setKopieOpslaan(DocumentImportOptieType kopieOpslaan) {
-    this.kopieOpslaan = kopieOpslaan;
-  }
-
-  public DocumentImportOptieType getProtocollering() {
-    return protocollering;
-  }
-
-  public void setProtocollering(DocumentImportOptieType protocollering) {
-    this.protocollering = protocollering;
-  }
-
-  public DocumentImportOptieType getStandaardGeselecteerd() {
-    return standaardGeselecteerd;
-  }
-
-  public void setStandaardGeselecteerd(DocumentImportOptieType standaardGeselecteerd) {
-    this.standaardGeselecteerd = standaardGeselecteerd;
-  }
-
-  public DocumentImportOptieType getStillbornAllowed() {
-    return stillbornAllowed;
-  }
-
-  public void setStillbornAllowed(DocumentImportOptieType stillbornAllowed) {
-    this.stillbornAllowed = stillbornAllowed;
-  }
-
   /**
    * Importeert documenten en sjablonen vanuit een zip-bestand
    *
@@ -151,24 +127,20 @@ public class DocumentImportExportHandler extends ImportExportHandler {
    */
 
   public List<List<String>> importDocsAndTemplates(final ImportDocumentArguments args) {
-
     final List<List<String>> reportsList = new ArrayList<>();
-
     reportsList.add(docReports);
     reportsList.add(templReports);
 
     if (args.getImportFileName().endsWith("odt")) {
-
       importTemplate(args);
-    } else if (args.getImportFileName().endsWith("zip")) {
 
+    } else if (args.getImportFileName().endsWith("zip")) {
       readZip(args.getImportFile(), (zis, entry, dir, name) -> {
 
         if (name.endsWith("ser")) {
-
           importDocument(args, zis);
-        } else if (name.endsWith("odt")) {
 
+        } else if (name.endsWith("odt")) {
           importTemplate(args, zis, dir, name);
         }
       });
@@ -177,14 +149,6 @@ public class DocumentImportExportHandler extends ImportExportHandler {
     }
 
     return reportsList;
-  }
-
-  public boolean isOverwriteDocs() {
-    return overwriteDocs;
-  }
-
-  public void setOverwriteDocs(boolean overwriteDocs) {
-    this.overwriteDocs = overwriteDocs;
   }
 
   private void addDocReports(DocumentRecord document, boolean docNameExists) {
@@ -201,7 +165,6 @@ public class DocumentImportExportHandler extends ImportExportHandler {
   }
 
   private File findFile(File templateDir, File file) {
-
     for (File existingFile : FileUtils.listFiles(templateDir, new NameFileFilter(file.getName()),
         DirectoryFileFilter.DIRECTORY)) {
       return existingFile;
@@ -210,18 +173,24 @@ public class DocumentImportExportHandler extends ImportExportHandler {
     return file;
   }
 
-  private boolean get(DocumentImportOptieType type, boolean defaultWaarde) {
+  private <T> T get(DocumentImportOptieType type, boolean stored, T existingValue, T newValue) {
 
     switch (type) {
       case AAN:
-        return true;
+        return (T) Boolean.TRUE;
 
       case UIT:
-        return false;
+        return (T) Boolean.FALSE;
 
-      case OVERNEMEN:
+      case OVERSCHRIJVEN:
+        return newValue;
+
+      case INITIEEL_OVERNEMEN:
+        return stored ? existingValue : newValue;
+
+      case NIET_WIJZIGEN:
       default:
-        return defaultWaarde;
+        return existingValue;
     }
   }
 
@@ -274,9 +243,10 @@ public class DocumentImportExportHandler extends ImportExportHandler {
         document = getDocument(docName, gbaAppl);
 
         if (!overwriteDocs) {
-          docReports.add(
-              "Overgeslagen document: " + document.getDocument() + " met sjabloon: " + document.getBestand()
-                  + " en van type: " + document.getType() + ".");
+          docReports.add("Overgeslagen document: "
+              + document.getDocument() + " met sjabloon: "
+              + document.getBestand()
+              + " en van type: " + document.getType() + ".");
           continue;
         }
       }
@@ -367,7 +337,11 @@ public class DocumentImportExportHandler extends ImportExportHandler {
       d.setType(doc.getType());
       d.setMap(doc.getPad());
       d.setVervalDatum(toBigDecimal(doc.getDatumEinde().getLongDate()));
-
+      d.setAlias(doc.getAlias());
+      d.setOmschrijving(doc.getOmschrijving());
+      d.setVertrouwelijkheid(doc.getVertrouwelijkheid().getNaam());
+      d.setDocumentDmsType(doc.getDocumentDmsType());
+      d.setFormats(doc.getFormats());
       d.setKopieOpslaan(doc.isKopieOpslaan());
       d.setStandaardGeselecteerd(doc.isStandaardDocument());
       d.setProtocollering(doc.isProtocolleren());
@@ -406,21 +380,29 @@ public class DocumentImportExportHandler extends ImportExportHandler {
   }
 
   /**
-   * Zet de waarden van het document zoals die in d opgeslagen zijn.
+   * Zet de waarden van het doc zoals die in d opgeslagen zijn.
    */
-  private void setDocument(DocumentRecord document, DocumentExportEntry d) {
+  private void setDocument(DocumentRecord doc, DocumentExportEntry d) {
 
-    document.setVDocument(BigDecimal.valueOf(d.getVolgNr()));
-    document.setDocument(d.getNaam());
-    document.setType(d.getType());
-    document.setPad(d.getMap());
-    document.setBestand(d.getSjabloon());
+    doc.setVDocument(BigDecimal.valueOf(d.getVolgNr()));
+    doc.setDocument(d.getNaam());
+    doc.setType(d.getType());
+    doc.setPad(d.getMap());
+    doc.setBestand(d.getSjabloon());
 
-    document.setKopieOpslaan(get(kopieOpslaan, d.isKopieOpslaan()));
-    document.setProtocolleren(get(protocollering, d.isProtocollering()));
-    document.setStandaardDocument(get(standaardGeselecteerd, d.isStandaardGeselecteerd()));
-    document.setIedereenToegang(get(iedereenToegang, d.isIedereen()));
-    document.setStillbornAllowed(get(stillbornAllowed, d.isStillbornAllowed()));
+    doc.setAlias(get(alias, doc.isStored(), doc.getAlias(), d.getAlias()));
+    doc.setOmschrijving(get(omschrijving, doc.isStored(), doc.getOmschrijving(), d.getOmschrijving()));
+    doc.setDocumentDmsType(get(documentTypeOms, doc.isStored(), doc.getDocumentDmsType(), d.getDocumentDmsType()));
+    doc.setVertrouwelijkheid(get(vertrouwelijkheid, doc.isStored(), doc.getVertrouwelijkheid(),
+        DocumentVertrouwelijkheid.get(d.getVertrouwelijkheid())));
+    doc.setFormats(get(formats, doc.isStored(), doc.getFormats(), d.getFormats()));
+
+    doc.setKopieOpslaan(get(kopieOpslaan, doc.isStored(), doc.isKopieOpslaan(), d.isKopieOpslaan()));
+    doc.setProtocolleren(get(protocollering, doc.isStored(), doc.isProtocolleren(), d.isProtocollering()));
+    doc.setStandaardDocument(get(standaardGeselecteerd, doc.isStored(),
+        doc.isStandaardDocument(), d.isStandaardGeselecteerd()));
+    doc.setIedereenToegang(get(iedereenToegang, doc.isStored(), doc.isIedereenToegang(), d.isIedereenToegang()));
+    doc.setStillbornAllowed(get(stillbornAllowed, doc.isStored(), doc.isStillbornAllowed(), d.isStillbornAllowed()));
   }
 
   /**

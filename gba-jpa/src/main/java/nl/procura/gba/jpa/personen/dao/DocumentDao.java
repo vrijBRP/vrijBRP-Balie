@@ -28,62 +28,59 @@ import nl.procura.gba.jpa.personen.utils.GbaJpa;
 
 public class DocumentDao extends GenericDao {
 
-  public static final List<Document> findUsrDocuments(long cUsr) {
+  public static List<Document> findUsrDocuments(long cUsr) {
+    String query = "select d from Document d " +
+        "left join d.usrs u where (u.cUsr = " + cUsr + ") " +
+        "and d.cDocument > 0";
 
     EntityManager em = GbaJpa.getManager();
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("select d from Document d ");
-    sb.append("left join d.usrs u where (u.cUsr = " + cUsr + ") ");
-    sb.append("and d.cDocument > 0");
-
-    return em.createQuery(sb.toString(), Document.class).getResultList();
+    return em.createQuery(query, Document.class).getResultList();
   }
 
-  public static final List<Document> findGeneralDocuments() {
+  public static List<Document> findGeneralDocuments() {
+    String query = "select d from Document d " +
+        "where d.allAllowed > 0 " +
+        "and d.cDocument > 0";
 
     EntityManager em = GbaJpa.getManager();
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("select d from Document d ");
-    sb.append("where d.allAllowed > 0 ");
-    sb.append("and d.cDocument > 0");
-
-    return em.createQuery(sb.toString(), Document.class).getResultList();
+    return em.createQuery(query, Document.class).getResultList();
   }
 
-  public static final List<Document> findAllDocuments() {
-
-    StringBuilder sb = new StringBuilder();
-    sb.append("select d from Document d ");
-    sb.append("where d.cDocument > 0");
-
-    return GbaJpa.getManager().createQuery(sb.toString(), Document.class).getResultList();
+  public static List<Document> findAllDocuments() {
+    StringBuilder query = new StringBuilder();
+    query.append("select d from Document d ");
+    query.append("where d.cDocument > 0");
+    return GbaJpa.getManager().createQuery(query.toString(), Document.class).getResultList();
   }
 
-  public static final List<DocumentAfn> findAfnemers() {
+  public static List<DocumentAfn> findAfnemers() {
     return GbaJpa.getManager().createQuery("select d from DocumentAfn d where d.cDocumentAfn > 0",
         DocumentAfn.class).getResultList();
   }
 
-  public static final List<Stempel> findStempels() {
+  public static List<DocumentDmsType> findDmsTypes() {
+    return GbaJpa.getManager().createQuery("select d from DocumentDmsType d where d.cDocumentDmsType > 0",
+        DocumentDmsType.class).getResultList();
+  }
+
+  public static List<Stempel> findStempels() {
     return GbaJpa.getManager()
         .createQuery("select d from Stempel d where d.cStempel > 0 order by d.zIndex asc, d.cStempel asc",
             Stempel.class)
         .getResultList();
   }
 
-  public static final List<Kenmerk> findKenmerken() {
+  public static List<Kenmerk> findKenmerken() {
     return GbaJpa.getManager().createQuery("select d from Kenmerk d where d.cKenmerk > 0",
         Kenmerk.class).getResultList();
   }
 
-  public static final List<DocumentDoel> findDoelen() {
+  public static List<DocumentDoel> findDoelen() {
     return GbaJpa.getManager().createQuery("select d from DocumentDoel d where d.cDocumentDoel > 0",
         DocumentDoel.class).getResultList();
   }
 
-  public static final List<Document> findDocuments(String sql) {
+  public static List<Document> findDocuments(String sql) {
     return GbaJpa.getManager().createQuery(sql, Document.class).getResultList();
   }
 }

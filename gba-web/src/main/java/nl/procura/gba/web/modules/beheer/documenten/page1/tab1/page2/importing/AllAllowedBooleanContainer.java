@@ -17,36 +17,17 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.zaken.algemeen.dms;
+package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing;
 
-import java.io.InputStream;
+import nl.procura.vaadin.component.container.ArrayListContainer;
 
-public class DmsStream {
+public class AllAllowedBooleanContainer extends ArrayListContainer {
 
-  private String      uitvoernaam;
-  private InputStream inputStream;
-
-  public DmsStream() {
-  }
-
-  public DmsStream(String uitvoernaam, InputStream inputStream) {
-    this.uitvoernaam = uitvoernaam;
-    this.inputStream = inputStream;
-  }
-
-  public InputStream getInputStream() {
-    return inputStream;
-  }
-
-  public void setInputStream(InputStream inputStream) {
-    this.inputStream = inputStream;
-  }
-
-  public String getUitvoernaam() {
-    return uitvoernaam;
-  }
-
-  public void setUitvoernaam(String uitvoernaam) {
-    this.uitvoernaam = uitvoernaam;
+  public AllAllowedBooleanContainer() {
+    addItem(DocumentImportOptieType.INITIEEL_OVERNEMEN);
+    addItem(DocumentImportOptieType.NIET_WIJZIGEN);
+    addItem(DocumentImportOptieType.OVERSCHRIJVEN);
+    addItem(DocumentImportOptieType.AAN);
+    addItem(DocumentImportOptieType.UIT);
   }
 }

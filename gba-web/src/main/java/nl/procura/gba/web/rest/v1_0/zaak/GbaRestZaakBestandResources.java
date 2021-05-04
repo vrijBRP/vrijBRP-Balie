@@ -19,15 +19,16 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak;
 
-import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.on;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static org.hamcrest.Matchers.equalTo;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -35,6 +36,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.servlet.RequestScoped;
 
@@ -43,16 +45,14 @@ import nl.procura.gba.web.rest.v1_0.zaak.bestand.GbaRestZaakBestand;
 import nl.procura.gba.web.rest.v1_0.zaak.bestand.GbaRestZaakBestandAntwoord;
 import nl.procura.gba.web.rest.v1_0.zaak.bestand.GbaRestZaakBestandToevoegenVraag2;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsDocument;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsService;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSFileContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentenPrintenService;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 import nl.procura.standard.exceptions.ProException;
-
-import ch.lambdaj.Lambda;
-import ch.lambdaj.function.matcher.LambdaJMatcher;
 
 @RequestScoped
 @Path("v1.0/zaak/bestand")
@@ -67,16 +67,25 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
       @PathParam("zaakid") String zaakId,
       @PathParam("bestandsnaam") String bestandsnaam, InputStream is) {
 
-    DmsService dms = getServices().getDmsService();
+    DMSService dms = getServices().getDmsService();
     DocumentService documentService = getServices().getDocumentService();
     DocumentVertrouwelijkheid vertr = documentService.getStandaardVertrouwelijkheid(null, null);
 
     try {
+
       File bestand = DocumentenPrintenService.newTijdelijkBestand(bestandsnaam);
       FileUtils.copyInputStreamToFile(is, bestand);
       Zaak zaak = getMinimaleZaak(zaakId);
-      dms.save(bestand, bestandsnaam, bestandsnaam, getServices().getGebruiker().getNaam(),
-          zaak, vertr.getNaam());
+      String naam = getServices().getGebruiker().getNaam();
+
+      DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(bestand))
+          .user(naam)
+          .zaakId(zaak.getZaakId())
+          .confidentiality(vertr.getNaam())
+          .build();
+
+      dms.save(zaak, dmsDocument);
+
     } catch (IOException exception) {
       throw new ProException(WARNING, "Fout bij wegschrijven bestand", exception);
     }
@@ -90,7 +99,7 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
   @Path("/toevoegen2")
   public GbaRestZaakAntwoord documentToevoegen2(GbaRestZaakBestandToevoegenVraag2 vraag) {
 
-    DmsService dms = getServices().getDmsService();
+    DMSService dms = getServices().getDmsService();
     DocumentService documentService = getServices().getDocumentService();
     DocumentVertrouwelijkheid vertr = documentService.getStandaardVertrouwelijkheid(null, null);
 
@@ -98,8 +107,16 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
       File bestand = DocumentenPrintenService.newTijdelijkBestand(vraag.getBestandsNaam());
       IOUtils.write(vraag.getInhoud(), new FileOutputStream(bestand));
       Zaak zaak = getMinimaleZaak(vraag.getZaakId());
-      dms.save(bestand, vraag.getTitel(), vraag.getBestandsNaam(), getServices().getGebruiker().getNaam(),
-          zaak, vertr.getNaam());
+      String naam = getServices().getGebruiker().getNaam();
+
+      DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(bestand))
+          .title(vraag.getTitel())
+          .user(naam)
+          .confidentiality(vertr.getNaam())
+          .build();
+
+      dms.save(zaak, dmsDocument);
+
     } catch (IOException exception) {
       throw new ProException(WARNING, "Fout bij wegschrijven bestand", exception);
     }
@@ -124,13 +141,13 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
 
     Zaak zaak = getStandaardZaak(
         getMinimaleZaak(zaakId)); // Standaardzaak nodig voor opvragen bsn voor burgerlijke stand
-    List<DmsDocument> dmsDocumenten = getDmsDocumenten(zaak, bestandsnaam);
+    List<DMSDocument> dmsDocumenten = getDmsDocumenten(zaak, bestandsnaam);
 
     if (dmsDocumenten.isEmpty()) {
       throw new ProException(WARNING, "Bestand met naam " + bestandsnaam + " niet gevonden");
     }
 
-    for (DmsDocument bestand : dmsDocumenten) {
+    for (DMSDocument bestand : dmsDocumenten) {
       getServices().getDmsService().delete(bestand);
     }
 
@@ -152,14 +169,9 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
       throw new IllegalArgumentException("Geen bestandsnaam");
     }
 
-    Zaak zaak = getStandaardZaak(
-        getMinimaleZaak(zaakId)); // Standaardzaak nodig voor opvragen bsn voor burgerlijke stand
-    for (DmsDocument dmsDocument : getDmsDocumenten(zaak, bestandsnaam)) {
-      try {
-        return getResponse(new FileInputStream(dmsDocument.getPad()), dmsDocument.getExtensie());
-      } catch (FileNotFoundException exception) {
-        throw new ProException(WARNING, "Fout bij laden bestand", exception);
-      }
+    Zaak zaak = getStandaardZaak(getMinimaleZaak(zaakId)); // Standaardzaak nodig voor opvragen bsn voor burgerlijke stand
+    for (DMSDocument dmsDocument : getDmsDocumenten(zaak, bestandsnaam)) {
+      return getResponse(dmsDocument.getContent().getInputStream(), dmsDocument.getContent().getExtension());
     }
 
     throw new ProException(WARNING, "Bestand met naam " + bestandsnaam + " niet gevonden");
@@ -168,23 +180,21 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
   @GET
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Path("/zoeken/{zaakid}")
-  public GbaRestZaakBestandAntwoord getBestanden(
-      @PathParam("zaakid") String zaakId) {
+  public GbaRestZaakBestandAntwoord getBestanden(@PathParam("zaakid") String zaakId) {
 
     GbaRestZaakBestandAntwoord antwoord = new GbaRestZaakBestandAntwoord();
-
-    for (DmsDocument dmsDocument : getDmsDocumenten(getStandaardZaak(getMinimaleZaak(zaakId)),
-        "")) { // Standaardzaak nodig voor opvragen bsn voor burgerlijke stand
+    for (DMSDocument dmsDocument : getDmsDocumenten(getStandaardZaak(getMinimaleZaak(zaakId)), "")) {
 
       GbaRestZaakBestand bestand = new GbaRestZaakBestand();
+      bestand.setDatum(dmsDocument.getDate());
+      bestand.setTijd(dmsDocument.getTime());
+      bestand.setBestandsnaam(dmsDocument.getContent().getFilename());
+      bestand.setTitel(dmsDocument.getTitle());
       bestand.setZaakId(dmsDocument.getZaakId());
-      bestand.setTitel(dmsDocument.getTitel());
-      bestand.setBestandsnaam(dmsDocument.getBestandsnaam());
-      bestand.setGebruiker(dmsDocument.getAangemaaktDoor());
-      bestand.setDatum(dmsDocument.getDatum());
-      bestand.setTijd(dmsDocument.getTijd());
-      bestand.setDmsNaam(dmsDocument.getDmsNaam());
-      bestand.setVertrouwelijkheid(dmsDocument.getVertrouwelijkheid());
+      bestand.setGebruiker(dmsDocument.getUser());
+      bestand.setDocumentTypeOmschrijving(dmsDocument.getDocumentTypeDescription());
+      bestand.setVertrouwelijkheid(dmsDocument.getConfidentiality());
+      bestand.setAlias(dmsDocument.getAlias());
 
       antwoord.getBestanden().add(bestand);
     }
@@ -192,15 +202,11 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
     return antwoord;
   }
 
-  private List<DmsDocument> getDmsDocumenten(Zaak zaak, String bestandsnaam) {
-
-    LambdaJMatcher matcher = having(on(DmsDocument.class).getZaakId(), equalTo(zaak.getZaakId()));
-
-    // Ook zoeken op bestandsnaam
-    if (fil(bestandsnaam)) {
-      matcher = matcher.and(having(on(DmsDocument.class).getBestandsnaam(), equalTo(bestandsnaam)));
-    }
-
-    return Lambda.filter(matcher, getServices().getDmsService().getDocumenten(zaak).getDocumenten());
+  private List<DMSDocument> getDmsDocumenten(Zaak zaak, String bestandsnaam) {
+    return getServices().getDmsService().getDocumentsByZaak(zaak).getDocuments().stream()
+        .filter(d -> StringUtils.equals(d.getZaakId(), zaak.getZaakId()))
+        .filter(d -> isBlank(bestandsnaam)
+            || StringUtils.equals(d.getContent().getFilename(), bestandsnaam))
+        .collect(Collectors.toList());
   }
 }

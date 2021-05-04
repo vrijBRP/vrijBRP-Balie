@@ -50,7 +50,9 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ContactZaak;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsService;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSBytesContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.documenten.BestandType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.standard.exceptions.ProException;
@@ -323,12 +325,11 @@ public class Page1EmailPreviews extends NormalPageTemplate {
    * E-mail info opslaan als bijlage bij de zaak of persoon
    */
   private void storeAsAttachment(Email email, ArrayList<PrintRecord> printRecords) {
-
-    String id = "";
+    String subFolder = "";
     String zaakId = "";
     String datatype = "";
     String titel = "";
-    String dmsNaam = "";
+    String dmsOms = "";
 
     for (PrintRecord record : printRecords) {
 
@@ -337,28 +338,36 @@ public class Page1EmailPreviews extends NormalPageTemplate {
 
       if (zaak != null) {
         if (zaak.isStored()) {
-          id = zaak.getZaakId();
+          subFolder = zaak.getZaakId();
           zaakId = zaak.getZaakId();
+
         } else {
-          id = zaak.getBurgerServiceNummer().getStringValue();
+          subFolder = zaak.getBurgerServiceNummer().getStringValue();
         }
 
         datatype = printActie.getDocument().getType();
-        dmsNaam = printActie.getDocument().getDmsNaam();
         String documentType = printActie.getDocument().getDocumentType().getOms().toLowerCase();
+        dmsOms = printActie.getDocument().getDocumentDmsType();
         titel = "E-mail " + documentType;
       }
     }
 
-    if (fil(id)) {
-
-      DmsService dms = getServices().getDmsService();
+    if (fil(subFolder)) {
+      DMSService dms = getServices().getDmsService();
       String gebruiker = getServices().getGebruiker().getNaam();
 
       byte[] bytes = new EmailSummary(email, zaakId, gebruiker, printRecords).get().getBytes();
       String ext = BestandType.TXT.getType();
 
-      dms.save(bytes, titel, ext, gebruiker, datatype, id, zaakId, dmsNaam, "");
+      DMSDocument dmsDocument = DMSDocument.builder(DMSBytesContent.fromExtension(ext, bytes))
+          .title(titel)
+          .user(gebruiker)
+          .datatype(datatype)
+          .zaakId(subFolder)
+          .documentTypeDescription(dmsOms)
+          .build();
+
+      dms.save(subFolder, dmsDocument);
     }
   }
 }

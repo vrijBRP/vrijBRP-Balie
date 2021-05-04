@@ -19,14 +19,18 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.persooncontrole.page1;
 
+import static java.util.Collections.singletonList;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
 import static nl.procura.gba.common.MiscUtils.setClass;
+import static nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage.PageBsGerelateerdenUtils.getOntbrekendePersonen;
+import static nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage.PageBsGerelateerdenUtils.getTypePersonen;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER1;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER2;
 import static nl.procura.standard.Globalfunctions.*;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -64,19 +68,23 @@ import nl.procura.vaadin.theme.twee.Icons;
  */
 public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
 
-  private final Dossier    dossier;
-  private final Label      updateLabel = new Label("", Label.CONTENT_XML);
-  private PersoonTable     table       = null;
-  private List<SyncRecord> records     = null;
+  private final Dossier            dossier;
+  private Consumer<DossierPersoon> changeListener;
+  private final Label              updateLabel = new Label("", Label.CONTENT_XML);
+  private PersoonTable             table       = null;
+  private List<SyncRecord>         records     = null;
 
   //  private final String            fakeVoornaam   = asList ("Klaas", "Piet", "Jan").get (new Random ().nextInt (3));
   //  private final GbaDateFieldValue fakeOverlDatum = new Random ().nextInt (2) == 1 ? new GbaDateFieldValue (20170101) : null;
 
-  public BsPersoonControlePage1(Dossier dossier) {
+  public BsPersoonControlePage1(Dossier dossier, Consumer<DossierPersoon> changeListener) {
     this.dossier = dossier;
+    this.changeListener = changeListener;
 
+    setSpacing(true);
     buttonClose.addListener(this);
     buttonNext.addListener(this);
+
     H2 h2 = new H2("Controle op persoonsgegevens");
     HLayout hLayout = new HLayout().widthFull().add(h2).add(buttonNext, buttonClose);
     hLayout.setExpandRatio(h2, 1f);
@@ -84,9 +92,6 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
     hLayout.setComponentAlignment(buttonNext, Alignment.MIDDLE_RIGHT);
 
     addComponent(hLayout);
-    setInfo("De persoonsgegevens kunnen gewijzigd zijn sinds de laatste keer dat deze zaak is aangepast. "
-        + "Met deze controle kunt u de persoonsgegevens controleren. "
-        + "</br>Op dit moment kunnen alleen personen met een valide burgerservicenummer worden gecontroleerd.");
 
     checkUpdateStatus();
 
@@ -116,10 +121,11 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
+      setInfo("De persoonsgegevens kunnen gewijzigd zijn sinds de laatste keer dat deze zaak is aangepast. "
+          + "Met deze controle kunt u de persoonsgegevens controleren. "
+          + "</br>Alleen personen met een valide burgerservicenummer worden gecontroleerd.");
 
-      setSpacing(true);
       setTable(new PersoonTable());
       addComponent(getTable());
     }
@@ -170,14 +176,18 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
 
   @Override
   public void onSave() {
-
     for (SyncRecord record : getSelectedValues()) {
-      if (record.getStatus() == Status.VERSCHIL) {
+      if (Status.ONTBREEKT == record.getStatus()) {
+        record.getParentPersoon().toevoegenPersonen(singletonList(record.getHuidigePersoon()));
+        changeListener.accept(record.getHuidigePersoon());
+        record.setStatus(Status.TOEGEVOEGD);
+
+      } else if (Status.VERSCHIL == record.getStatus()) {
         DossierPersoonSynchronizer sync = record.getSynchronizer();
         if (sync != null) {
-          sync.getNieuwePersoon();
           BsPersoonUtils.kopieDossierPersoon(sync.getNieuwePersoon(), sync.getHuidigePersoon());
         }
+        changeListener.accept(sync.getNieuwePersoon());
         record.setStatus(Status.BIJGEWERKT);
       }
     }
@@ -195,34 +205,32 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
 
     // Opslaan zaak
     getServices().getZakenService().getService(dossier).save(dossier);
-
     table.init();
-
     afterBijwerken();
-
     super.onSave();
   }
 
   @Override
   public void onSearch() {
-
     for (SyncRecord record : getSelectedValues()) {
       DossierPersoon persoon = record.getHuidigePersoon();
-      if (persoon.getBurgerServiceNummer().isCorrect()) {
-        DossierPersoon nieuwePersoon = getNieuwPersoon(persoon);
-        DossierPersoonSynchronizer synchronizer = new DossierPersoonSynchronizer(persoon, nieuwePersoon);
-        record.setSynchronizer(synchronizer);
-        if (synchronizer.isPersoonGevonden()) {
-          if (synchronizer.isMatch()) {
-            record.setStatus(Status.UP_TO_DATE);
+      if (record.getStatus() != Status.ONTBREEKT) {
+        if (persoon.getBurgerServiceNummer().isCorrect()) {
+          DossierPersoon nieuwePersoon = getNieuwPersoon(persoon);
+          DossierPersoonSynchronizer synchronizer = new DossierPersoonSynchronizer(persoon, nieuwePersoon);
+          record.setSynchronizer(synchronizer);
+          if (synchronizer.isPersoonGevonden()) {
+            if (synchronizer.isMatch()) {
+              record.setStatus(Status.UP_TO_DATE);
+            } else {
+              record.setStatus(Status.VERSCHIL);
+            }
           } else {
-            record.setStatus(Status.VERSCHIL);
+            record.setStatus(Status.GEEN_PERSOON_GEVONDEN);
           }
         } else {
-          record.setStatus(Status.GEEN_PERSOON_GEVONDEN);
+          record.setStatus(Status.GEEN_BSN);
         }
-      } else {
-        record.setStatus(Status.GEEN_BSN);
       }
     }
 
@@ -230,7 +238,6 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
   }
 
   private void checkUpdateStatus() {
-
     buttonSave.setEnabled(isBijwerkenNodig());
     String msg;
     if (isGecontroleerd()) {
@@ -256,9 +263,17 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
     // Dan de personen in die relaties zijn van de personen in de zaak
     for (DossierPersoon persoon : dossier.getPersonen()) {
       for (DossierPersoon relatie : persoon.getAllePersonen()) {
-        newRecords.add(new SyncRecord(relatie, persoon));
+        newRecords.add(new SyncRecord(relatie, persoon, Status.NIET_GECONTROLEERD));
       }
     }
+
+    // Ontbrekende personen toevoegen
+    for (DossierPersoon persoon : dossier.getPersonen(PARTNER1, PARTNER2)) {
+      for (DossierPersoon ontbPersoon : getOntbrekendePersonen(getApplication().getServices(), persoon)) {
+        newRecords.add(new SyncRecord(ontbPersoon, persoon, Status.ONTBREEKT));
+      }
+    }
+
     return newRecords;
   }
 
@@ -293,18 +308,18 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
   }
 
   private Object getStatusIcon(Status status) {
-
     int icon = Icons.ICON_EMPTY;
-
     if (status != null) {
       switch (status) {
         case UP_TO_DATE:
         case BIJGEWERKT:
+        case TOEGEVOEGD:
           icon = Icons.ICON_OK;
           break;
 
         case VERSCHIL:
         case GEEN_PERSOON_GEVONDEN:
+        case ONTBREEKT:
           icon = Icons.ICON_WARN;
           break;
 
@@ -333,12 +348,18 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
       case BIJGEWERKT:
         return setClass(true, "Gegevens zijn bijgewerkt.");
 
+      case TOEGEVOEGD:
+        return setClass(true, "Persoon toegevoegd.");
+
       case VERSCHIL:
         buttonSave.setEnabled(true);
         return setClass(false, "Gegevens zijn niet up-to-date.");
 
       case GEEN_PERSOON_GEVONDEN:
         return setClass(false, "Geen persoon gevonden.");
+
+      case ONTBREEKT:
+        return setClass(false, "Persoon ontbreekt.");
 
       case NIET_GECONTROLEERD:
       default:
@@ -351,11 +372,9 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
    */
   private boolean isBijwerkenNodig() {
     if (records != null) {
-      for (SyncRecord record : records) {
-        if (Status.VERSCHIL.equals(record.getStatus())) {
-          return true;
-        }
-      }
+      return records.stream()
+          .anyMatch(record -> Status.VERSCHIL.equals(record.getStatus())
+              || record.getStatus() == Status.ONTBREEKT);
     }
     return false;
   }
@@ -365,22 +384,21 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
    */
   private boolean isGecontroleerd() {
     if (records != null) {
-      for (SyncRecord record : records) {
-        if (Status.NIET_GECONTROLEERD.equals(record.getStatus())) {
-          return false;
-        }
-      }
+      return records.stream()
+          .noneMatch(record -> Status.NIET_GECONTROLEERD.equals(record.getStatus()));
     }
     return true;
   }
 
   public enum Status {
     NIET_GECONTROLEERD,
+    ONTBREEKT,
     GEEN_BSN,
     UP_TO_DATE,
     GEEN_PERSOON_GEVONDEN,
     VERSCHIL,
-    BIJGEWERKT
+    BIJGEWERKT,
+    TOEGEVOEGD
   }
 
   public class PersoonTable extends GbaTable {
@@ -447,30 +465,40 @@ public abstract class BsPersoonControlePage1 extends ButtonPageTemplate {
 
   public class SyncRecord {
 
-    private final String               typeOmschrijving;
-    private final DossierPersoon       huidigePersoon;
-    private Status                     status = Status.NIET_GECONTROLEERD;
+    private Status               status;
+    private final DossierPersoon huidigePersoon;
+
+    private String                     typeOmschrijving;
+    private DossierPersoon             parentPersoon;
     private DossierPersoonSynchronizer synchronizer;
 
     public SyncRecord(DossierPersoon huidigePersoon) {
-      this(huidigePersoon, huidigePersoon.getDossierPersoonType().getDescr());
+      this(huidigePersoon, null, Status.NIET_GECONTROLEERD);
     }
 
-    public SyncRecord(DossierPersoon huidigePersoon, DossierPersoon parentPersoon) {
-      this(huidigePersoon,
-          parentPersoon.getDossierPersoonType().getDescr() + " - " + huidigePersoon.getDossierPersoonType().getDescr());
-    }
-
-    public SyncRecord(DossierPersoon huidigePersoon, String typeOmschrijving) {
+    public SyncRecord(DossierPersoon huidigePersoon, DossierPersoon parentPersoon, Status status) {
       this.huidigePersoon = huidigePersoon;
-      this.typeOmschrijving = typeOmschrijving;
-      if (!huidigePersoon.getBurgerServiceNummer().isCorrect()) {
-        status = Status.GEEN_BSN;
+      this.parentPersoon = parentPersoon;
+      this.status = status;
+
+      if (status == Status.NIET_GECONTROLEERD && !huidigePersoon.getBurgerServiceNummer().isCorrect()) {
+        this.status = Status.GEEN_BSN;
+      }
+
+      if (parentPersoon != null) {
+        typeOmschrijving = parentPersoon.getDossierPersoonType().getDescr()
+            + " - " + huidigePersoon.getDossierPersoonType().getDescr();
+      } else {
+        typeOmschrijving = huidigePersoon.getDossierPersoonType().getDescr();
       }
     }
 
     public DossierPersoon getHuidigePersoon() {
       return huidigePersoon;
+    }
+
+    public DossierPersoon getParentPersoon() {
+      return parentPersoon;
     }
 
     public Status getStatus() {

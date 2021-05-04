@@ -27,17 +27,19 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "zaak")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    propOrder = { "zaakId", "titel", "bestandsnaam", "gebruiker", "datum", "tijd", "dmsNaam", "vertrouwelijkheid" })
+    propOrder = { "zaakId", "titel", "bestandsnaam", "gebruiker", "datum", "tijd", "documentTypeOmschrijving",
+        "vertrouwelijkheid", "alias" })
 public class GbaRestZaakBestand {
 
-  private String zaakId            = "";
-  private String titel             = "";
-  private String bestandsnaam      = "";
-  private String gebruiker         = "";
-  private String dmsNaam           = "";
-  private String vertrouwelijkheid = "";
-  private long   datum             = 0;
-  private long   tijd              = 0;
+  private String zaakId                   = "";
+  private String titel                    = "";
+  private String bestandsnaam             = "";
+  private String gebruiker                = "";
+  private String documentTypeOmschrijving = "";
+  private String vertrouwelijkheid        = "";
+  private String alias                    = "";
+  private long   datum                    = 0;
+  private long   tijd                     = 0;
 
   public GbaRestZaakBestand() {
   }
@@ -90,12 +92,12 @@ public class GbaRestZaakBestand {
     this.gebruiker = gebruiker;
   }
 
-  public String getDmsNaam() {
-    return dmsNaam;
+  public String getDocumentTypeOmschrijving() {
+    return documentTypeOmschrijving;
   }
 
-  public void setDmsNaam(String dmsNaam) {
-    this.dmsNaam = dmsNaam;
+  public void setDocumentTypeOmschrijving(String documentTypeOmschrijving) {
+    this.documentTypeOmschrijving = documentTypeOmschrijving;
   }
 
   public String getVertrouwelijkheid() {
@@ -104,5 +106,13 @@ public class GbaRestZaakBestand {
 
   public void setVertrouwelijkheid(String vertrouwelijkheid) {
     this.vertrouwelijkheid = vertrouwelijkheid;
+  }
+
+  public String getAlias() {
+    return alias;
+  }
+
+  public void setAlias(String alias) {
+    this.alias = alias;
   }
 }

@@ -41,6 +41,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
+import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
@@ -53,8 +54,8 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
   public Tab1DocumentenPage2Form(DocumentRecord document) {
 
     setCaption("Document");
-    setOrder(CODE, VOLGNR, NAAM, SJABLOON, TYPE, MAP, VERVALDATUM, AANTAL, OMSCHRIJVING, DMSNAAM,
-        VERTROUWELIJKHEID);
+    setOrder(CODE, VOLGNR, ALIAS, NAAM, SJABLOON, TYPE, MAP, VERVALDATUM, AANTAL,
+        DOCUMENT_DMS_TYPE, VERTROUWELIJKHEID, OMSCHRIJVING);
     setColumnWidths(WIDTH_130, "");
     setReadonlyAsText(false);
 
@@ -104,7 +105,6 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
   }
 
   protected void setDocumentmapContainer() {
-
     ComboBox map = getField(Tab1DocumentenPage2Bean.MAP, ComboBox.class);
     map.setContainerDataSource(new DocumentmapContainer());
     map.setNewItemsAllowed(true);
@@ -112,7 +112,6 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
   }
 
   protected void setVertrouwelijkheidContainer() {
-
     GbaNativeSelect field = getField(Tab1DocumentenPage2Bean.VERTROUWELIJKHEID, GbaNativeSelect.class);
     field.setContainerDataSource(new DocumentVertrouwelijkheidContainer());
     field.setValue(getDefaultVertrouwelijkheid(getBean().getVertrouwelijkheid()));
@@ -120,6 +119,23 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
 
   private DocumentVertrouwelijkheid getDefaultVertrouwelijkheid(DocumentVertrouwelijkheid vertrouwelijkheid) {
     return Services.getInstance().getDocumentService().getStandaardVertrouwelijkheid(vertrouwelijkheid, null);
+  }
+
+  protected void setDocumenttypeOmschrijvingContainer() {
+    GbaComboBox field = getField(DOCUMENT_DMS_TYPE, GbaComboBox.class);
+    field.setContainerDataSource(new DocumentTypeOmschrijvingContainer(getBean().getDocumentDmsType()));
+    field.setNewItemsAllowed(true);
+    field.setValue(getBean().getDocumentDmsType());
+  }
+
+  protected class DocumentTypeOmschrijvingContainer extends ArrayListContainer {
+
+    public DocumentTypeOmschrijvingContainer(String documentDmsType) {
+      addItem(documentDmsType);
+      getApplication().getServices().getDocumentService().getDmsDocumentTypes().stream()
+          .map(DmsDocumentType::toString)
+          .forEach(this::addItem);
+    }
   }
 
   private void initFields(DocumentRecord doc) {
@@ -137,8 +153,9 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
       bean.setOmschrijving(doc.getOmschrijving());
       int aantal = doc.getAantal();
       bean.setAantal(astr(aantal > 0 && aantal <= 5 ? aantal : 1));
-      bean.setDmsNaam(doc.getDmsNaam());
+      bean.setAlias(doc.getAlias());
       bean.setVertrouwelijkheid(doc.getVertrouwelijkheid());
+      bean.setDocumentDmsType(doc.getDocumentDmsType());
     }
 
     setBean(bean);
@@ -152,6 +169,7 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
     setDocumentTypeContainer();
     setDocumentmapContainer();
     setVertrouwelijkheidContainer();
+    setDocumenttypeOmschrijvingContainer();
 
     repaint();
   }

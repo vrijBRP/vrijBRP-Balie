@@ -21,28 +21,28 @@ package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing;
 
 public enum DocumentImportOptieType {
 
-  OVERNEMEN(0, "Waarde overnemen"),
+  OVERSCHRIJVEN(0, "Altijd overschrijven"),
   AAN(1, "Altijd aanzetten"),
-  UIT(2, "Altijd uitzetten");
+  UIT(2, "Altijd uitzetten"),
+  NIET_WIJZIGEN(3, "Niet wijzigen"),
+  INITIEEL_OVERNEMEN(4, "Initieel overnemen");
 
   private long   code = 0;
   private String oms  = "";
 
   DocumentImportOptieType(long code, String oms) {
-
     setCode(code);
     setOms(oms);
   }
 
   public static DocumentImportOptieType get(long code) {
-
     for (DocumentImportOptieType var : values()) {
       if (var.getCode() == code) {
         return var;
       }
     }
 
-    return OVERNEMEN;
+    return OVERSCHRIJVEN;
   }
 
   public long getCode() {

@@ -33,7 +33,7 @@ public class RdwInfoLayout extends CustomLayout {
 
     this.message = message;
 
-    Embedded icon = new Embedded(null, new ThemeResource("../procura2/icons/16/warning.png"));
+    Embedded icon = new Embedded(null, new ThemeResource("../flat/icons/16/warning.png"));
     icon.setHeight("16px");
     addComponent(icon, "icon");
   }

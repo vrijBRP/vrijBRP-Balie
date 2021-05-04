@@ -208,18 +208,16 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
   public void updateTermijnLijkbezorging() {
 
     List<Calendar> calendars = getFormCalendars();
-
     Calendar beginTijdstip = calendars.get(0);
     Calendar eindTijdstip = calendars.get(1);
 
     if (beginTijdstip != null && eindTijdstip != null) {
-
       if (isMinimaalAantalWerkdagen(toEindeDag(beginTijdstip), toBeginDag(eindTijdstip), 6)) {
-
         setTermijnLijkbezorging(TermijnLijkbezorging.MEER_DAN_6_WERKDAGEN);
-      } else if (isMinimaalAantalUur(beginTijdstip, eindTijdstip, 36)) {
 
+      } else if (isMinimaalAantalUur(beginTijdstip, eindTijdstip, 36)) {
         setTermijnLijkbezorging(TermijnLijkbezorging.MEER_DAN_36_UUR);
+
       } else {
         setTermijnLijkbezorging(TermijnLijkbezorging.MINDER_DAN_36_UUR);
       }

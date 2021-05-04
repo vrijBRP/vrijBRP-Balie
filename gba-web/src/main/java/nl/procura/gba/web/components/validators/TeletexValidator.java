@@ -21,6 +21,7 @@ package nl.procura.gba.web.components.validators;
 
 import java.util.Collection;
 
+import com.vaadin.ui.TextField;
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Validator;
@@ -39,7 +40,7 @@ public class TeletexValidator extends AbstractStringValidator {
   }
 
   public static void add(Field field) {
-    if (field instanceof AbstractTextField) {
+    if (field instanceof TextField) {
       Collection<Validator> validators = field.getValidators();
       if (validators == null || validators.stream().noneMatch(TeletexValidator::isTeletextValidator)) {
         field.addValidator(new TeletexValidator());

@@ -32,7 +32,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 /**
- * Berichten Service Module (BSM)
+ * Taakplanner (BSM)
  */
 public class Page1Bsm extends NormalPageTemplate {
 
@@ -41,7 +41,7 @@ public class Page1Bsm extends NormalPageTemplate {
   private Page1BsmTable table         = null;
 
   public Page1Bsm() {
-    super("Berichten service module");
+    super("Taakplanner / BSM");
     setSpacing(true);
   }
 
@@ -49,11 +49,8 @@ public class Page1Bsm extends NormalPageTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
-      setInfo("", "De BSM is de planner die taken op gezette tijden uitvoert.");
-
       if (!getServices().getBsmService().isBsmParameter()) {
-        addInfo("<hr/> De <b>BSM URL</b> is niet gevuld in de parameters.");
+        setInfo("<hr/> De <b>Taakplanner URL</b> is niet gevuld in de parameters.");
       }
 
       getMainbuttons().setWidth("100%");

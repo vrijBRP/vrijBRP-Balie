@@ -46,7 +46,7 @@ public class ZaakBijlageLayout extends GbaVerticalLayout implements ZaakTabLayou
   }
 
   public String getHeader(GbaApplication application) {
-    int aantal = application.getServices().getDmsService().getAantalDocumenten(zaak);
+    int aantal = application.getServices().getDmsService().countDocumentsByZaak(zaak);
     return "Bijlagen (" + aantal + ")";
   }
 

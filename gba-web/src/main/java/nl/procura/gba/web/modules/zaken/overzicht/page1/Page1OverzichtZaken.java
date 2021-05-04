@@ -122,7 +122,11 @@ public class Page1OverzichtZaken extends ZakenPage {
 
       addZaak(new Zaak(ModuleOverlijden.class, false));
       addZaak(new Zaak(ModuleReisdocument.class, false));
-      addZaak(new Zaak(ModuleRijbewijs.class, false));
+
+      if (getServices().getRijbewijsService().isRijbewijzenServiceActive()) {
+        addZaak(new Zaak(ModuleRijbewijs.class, false));
+      }
+
       addZaak(new Zaak(ModuleTmv.class, false));
       addZaak(new Zaak(ModuleUittreksel.class, false));
       addZaak(new Zaak(ModuleVerhuizing.class, false));

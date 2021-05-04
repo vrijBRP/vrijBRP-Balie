@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import nl.procura.burgerzaken.gba.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePL;
@@ -129,11 +130,27 @@ public class PersonListRelationMutationHandler {
         .name(getName(result.getRec()))
         .municipality(relatedMun)
         .change(String.format("Categorie %s", result.getRelatedRec().getCatType().getDescr().toLowerCase()))
-        .remark(mun.equals(relatedMun) ? ""
-            : "Let op!. Gerelateerde gevonden in gemeente " + relatedMun)
+        .remark(getRemark(result, mun, relatedMun))
         .relatedPL(result.getRelatedPL())
         .relatedRecord(result.getRelatedRec())
         .build();
+  }
+
+  private static String getRemark(Result result, String mun, String relatedMun) {
+    boolean isOpgeschort = result.getRelatedPL().getPersoon().getStatus().isOpgeschort();
+    boolean isGeblokkeerd = result.getRelatedPL().getPersoon().getStatus().isBlokkering();
+
+    List<String> remark = new ArrayList<>();
+    if (!mun.equals(relatedMun)) {
+      remark.add("gerelateerde gevonden in gemeente " + relatedMun);
+    }
+    if (isOpgeschort) {
+      remark.add("de PL is opgeschort");
+    }
+    if (isGeblokkeerd) {
+      remark.add("de PL is geblokkeerd");
+    }
+    return StringUtils.capitalize(String.join(", ", remark));
   }
 
   private static String getName(BasePLRec rec) {

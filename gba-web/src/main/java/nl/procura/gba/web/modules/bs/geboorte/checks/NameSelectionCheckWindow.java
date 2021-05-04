@@ -61,7 +61,7 @@ public class NameSelectionCheckWindow extends DeclarationCheckWindow {
         TITEL.get(dossier.getVerzoekKeuzeNaamTitel()));
     derivedValue = new Bean(geslachtsnaam, voorv, titel);
 
-    Form suppliedForm = new Form("Gegevens die door burger zijn aangeleverd", suppliedValue);
+    Form suppliedForm = new Form("Gegevens die in de e-aangifte zijn aangeleverd", suppliedValue);
     Form derivedForm = new Form("Gegevens die door de applicatie zijn afgeleid", derivedValue);
 
     VLayout vLayout = new VLayout().margin(true);

@@ -19,9 +19,9 @@
 
 package nl.procura.gbaws.web.vaadin.login;
 
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.standard.exceptions.ProExceptionType.AUTHENTICATION;
 
 import java.net.ConnectException;
 
@@ -73,13 +73,10 @@ public class GbaWsAuthenticationHandler {
       try {
         response = client.getGebruiker(username);
       } catch (ClientHandlerException e) {
-
         if (e.getCause() instanceof ConnectException) {
           throw new ProException(ERROR,
               "Probleem met inloggen. Er kan geen verbinding worden gemaakt met de authenticatie server");
         }
-      } catch (RuntimeException e) {
-        throw e;
       }
 
       if (response != null) {
@@ -103,6 +100,6 @@ public class GbaWsAuthenticationHandler {
       }
     }
 
-    throw new ProRestAuthenticatieException(UNAUTHORIZED, "Foutieve inloggegevens", null);
+    throw new ProException(AUTHENTICATION, ERROR, "Foutieve inloggegevens");
   }
 }

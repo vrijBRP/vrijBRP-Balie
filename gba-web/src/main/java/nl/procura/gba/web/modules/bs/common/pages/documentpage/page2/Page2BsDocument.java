@@ -28,8 +28,10 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.ZaakBij
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.ZaakBijlageVertrouwelijkheidForm;
 import nl.procura.gba.web.modules.zaken.document.page4.DocUploader;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DmsService;
-import nl.procura.standard.Globalfunctions;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSFileContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
+import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -42,7 +44,7 @@ public class Page2BsDocument extends ButtonPageTemplate {
   private final Uploader                   docUploader = new Uploader();
   private final Dossier                    dossier;
   private final ChangeListener             listener;
-  private ZaakBijlageVertrouwelijkheidForm vertrouwelijkheidForm;
+  private ZaakBijlageVertrouwelijkheidForm form;
 
   public Page2BsDocument(Dossier dossier, ChangeListener listener) {
     this.dossier = dossier;
@@ -57,8 +59,8 @@ public class Page2BsDocument extends ButtonPageTemplate {
       addButton(buttonPrev);
       setInfo("Het bestand zal worden gekoppeld aan de zaak");
       addComponent(new ZaakBijlageUploadForm(dossier));
-      vertrouwelijkheidForm = new ZaakBijlageVertrouwelijkheidForm();
-      addComponent(vertrouwelijkheidForm);
+      form = new ZaakBijlageVertrouwelijkheidForm();
+      addComponent(form);
       addComponent(docUploader);
     }
 
@@ -74,15 +76,21 @@ public class Page2BsDocument extends ButtonPageTemplate {
 
     @Override
     public void uploadSucceeded(SucceededEvent event) {
-      DmsService dms = getApplication().getServices().getDmsService();
+      DMSService dms = getApplication().getServices().getDmsService();
 
       try {
-        String vertrouwelijkheid = Globalfunctions.astr(vertrouwelijkheidForm.getVertrouwelijkheid().getNaam());
-        dms.save(getFile(), "", getFileName(), getApplication().getServices().getGebruiker().getNaam(),
-            dossier, vertrouwelijkheid);
+        String documentDmsType = form.getDmsDocumentType().map(DmsDocumentType::toString).orElse("");
+        String vertrouwelijkheid = form.getVertrouwelijkheid().getNaam();
+        String naam = getApplication().getServices().getGebruiker().getNaam();
 
+        DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(getFile()))
+            .user(naam)
+            .documentTypeDescription(documentDmsType)
+            .confidentiality(vertrouwelijkheid)
+            .build();
+
+        dms.save(dossier, dmsDocument);
         super.uploadSucceeded(event);
-
         listener.onChange();
 
       } catch (Exception e) {

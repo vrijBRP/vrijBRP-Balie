@@ -27,6 +27,7 @@ import nl.procura.gba.web.modules.beheer.documenten.page1.tab4.Tab4DocumentenMod
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab5.Tab5DocumentenModule;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab6.Tab6DocumentenModule;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab7.Tab7DocumentenModule;
+import nl.procura.gba.web.modules.beheer.documenten.page1.tab8.Tab8DocumentenModule;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.layout.page.PageLayout;
 
@@ -45,6 +46,7 @@ public class DocumentenTab extends PageLayout {
     tabs.addTab(new Tab5DocumentenModule(), "Printopties");
     tabs.addTab(new Tab6DocumentenModule(), "Stempels");
     tabs.addTab(new Tab7DocumentenModule(), "Kenmerken");
+    tabs.addTab(new Tab8DocumentenModule(), "DMS documenttypes");
 
     addExpandComponent(tabs);
   }

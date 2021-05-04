@@ -21,11 +21,11 @@ package nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage;
 
 import static java.util.Arrays.asList;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage.PageBsGerelateerdenUtils.getTypePersonen;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
-import static nl.procura.standard.Globalfunctions.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.vaadin.ui.Button;
@@ -35,50 +35,55 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
-import nl.procura.burgerzaken.gba.core.enums.GBAElem;
-import nl.procura.diensten.gba.ple.base.BasePLRec;
-import nl.procura.diensten.gba.ple.base.BasePLSet;
-import nl.procura.diensten.gba.ple.base.BasePLValue;
-import nl.procura.diensten.gba.ple.extensions.BasePLExt;
-import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
-import nl.procura.gba.web.services.bs.algemeen.enums.SoortVerbintenis;
-import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
-import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 
 public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
 
-  private static final long VOLWASSEN_LEEFTIJD = 18;
-
-  private final GbaApplication       application;
-  private final DossierPersoon       dossierPersoon;
-  private final Dossier              dossier;
-  private final DossierPersoonType[] types;
+  private final GbaApplication application;
+  private final DossierPersoon dossierPersoon;
+  private final Dossier        dossier;
 
   private final RelatiesTableLayout relatiesLayout1;
   private final RelatiesTableLayout relatiesLayout2;
   private final RelatiesTableLayout relatiesLayout3;
 
-  public PageBsGerelateerdeLayout(GbaApplication application, Dossier dossier, DossierPersoon dossierPersoon,
-      DossierPersoonType... types) {
+  public PageBsGerelateerdeLayout(GbaApplication application, Dossier dossier,
+      DossierPersoon dossierPersoon, DossierPersoonType... types) {
 
     this.application = application;
     this.dossier = dossier;
     this.dossierPersoon = dossierPersoon;
-    this.types = types;
 
     // Laad alleen de personen als deze nog niet zijn gevuld
-    if (!isPersonen(PARTNER, EXPARTNER, OUDER, DossierPersoonType.KIND)) {
-      laadPersonen();
+    if (!isPersonen(PARTNER)) {
+      laadPersonen(dossierPersoon.getPersonen(PARTNER), PARTNER);
+      afterLaadPersonen();
+    }
+
+    // Laad alleen de personen als deze nog niet zijn gevuld
+    if (!isPersonen(EXPARTNER)) {
+      laadPersonen(dossierPersoon.getPersonen(EXPARTNER), EXPARTNER);
+      afterLaadPersonen();
+    }
+
+    // Laad alleen de personen als deze nog niet zijn gevuld
+    if (!isPersonen(OUDER)) {
+      laadPersonen(dossierPersoon.getPersonen(OUDER), OUDER);
+      afterLaadPersonen();
+    }
+
+    // Laad alleen de personen als deze nog niet zijn gevuld
+    if (!isPersonen(DossierPersoonType.KIND)) {
+      laadPersonen(dossierPersoon.getPersonen(DossierPersoonType.KIND), KIND);
       afterLaadPersonen();
     }
 
@@ -100,18 +105,14 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
   }
 
   public List<DossierPersoon> getPersonen() {
-
     List<DossierPersoon> personen = new ArrayList<>();
-
     personen.addAll(relatiesLayout1.getTable().getAllValues(DossierPersoon.class));
     personen.addAll(relatiesLayout2.getTable().getAllValues(DossierPersoon.class));
     personen.addAll(relatiesLayout3.getTable().getAllValues(DossierPersoon.class));
-
     return personen;
   }
 
   public void init() {
-
     relatiesLayout1.getTable().init();
     relatiesLayout2.getTable().init();
     relatiesLayout3.getTable().init();
@@ -121,35 +122,37 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
     return !dossierPersoon.getPersonen(types).isEmpty();
   }
 
-  public void laadPersonen() {
-    application.getServices().getDossierService().deletePersonen(dossier, dossierPersoon.getPersonen());
-    laadRelaties(types);
+  public void laadPersonen(Collection<DossierPersoon> personen, DossierPersoonType type) {
+    application.getServices().getDossierService().deletePersonen(dossier, personen);
+    laadRelaties(type);
   }
 
-  public void laadRelaties(DossierPersoonType[] types) {
-
+  public void laadRelaties(DossierPersoonType... types) {
+    Services services = application.getServices();
     if (isType(asList(types), PARTNER, EXPARTNER)) {
-      if (dossierPersoon.getPersonen(PARTNER, EXPARTNER).isEmpty()) {
-        dossierPersoon.toevoegenPersonen(getTypePersonen(dossierPersoon, HUW_GPS));
-      }
+      dossierPersoon.toevoegenPersonen(getTypePersonen(services, dossierPersoon, HUW_GPS));
     }
 
     if (isType(asList(types), OUDER)) {
-      for (DossierPersoon ouder : getTypePersonen(dossierPersoon, OUDER_1, OUDER_2)) {
-        dossierPersoon.toevoegenPersoon(ouder);
-      }
+      getTypePersonen(services, dossierPersoon, OUDER_1, OUDER_2).forEach(dossierPersoon::toevoegenPersoon);
     }
 
     if (isType(asList(types), DossierPersoonType.KIND)) {
-      if (dossierPersoon.getPersonen(DossierPersoonType.KIND).isEmpty()) {
-        dossierPersoon.toevoegenPersonen(getTypePersonen(dossierPersoon, GBACat.KINDEREN));
-      }
+      dossierPersoon.toevoegenPersonen(getTypePersonen(services, dossierPersoon, GBACat.KINDEREN));
     }
   }
 
   // Override please
   @SuppressWarnings("unused")
   public void onDossierPersoon(DossierPersoon dossierPersoon) {
+  }
+
+  @SuppressWarnings("unused")
+  public void onHerladen(DossierPersoonType[] types) {
+    for (DossierPersoonType type : types) {
+      laadPersonen(dossierPersoon.getPersonen(type), type);
+      afterLaadPersonen();
+    }
   }
 
   @SuppressWarnings("unused")
@@ -166,143 +169,6 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
   protected void afterLaadPersonen() {
   }
 
-  /**
-   * Vul persoonslijst op basis van BSN
-   */
-  private BasePLExt getPersoonslijst(BasePLRec cat) {
-
-    BasePLExt pl;
-
-    if (cat.hasElems()) {
-      BasePLValue bsn = cat.getElemVal(GBAElem.BSN);
-
-      if (fil(bsn.getVal())) {
-        pl = getPl(new BsnFieldValue(bsn.getVal()));
-
-        if (pl.getCats().size() > 0) {
-          return pl;
-        }
-      }
-      return new BasePLExt();
-    }
-
-    return null;
-  }
-
-  private BasePLExt getPl(BsnFieldValue bsn) {
-    return application.getServices().getPersonenWsService().findPL(bsn);
-  }
-
-  /**
-   * Zoek de relaties van de persoon
-   */
-  private List<DossierPersoon> getTypePersonen(DossierPersoon betreffende, GBACat... categorieen) {
-    List<DossierPersoon> personen = new ArrayList<>();
-
-    for (GBACat categorie : categorieen) {
-      if (betreffende.isIngeschreven()) {
-
-        BasePLExt pl = getPl(betreffende.getBurgerServiceNummer());
-        List<BasePLSet> sets = pl.getCat(categorie).getSets();
-
-        for (BasePLSet set : sets) {
-          DossierPersoon persoon = getTypePersoon(pl, set, categorie);
-
-          if (persoon.isVolledig() && !isVolwassenKind(persoon)) {
-            personen.add(persoon);
-          }
-        }
-      }
-    }
-
-    return personen;
-  }
-
-  private DossierPersoon getTypePersoon(BasePLExt persoonPl, BasePLSet set, GBACat gbaCat) {
-
-    DossierPersoon persoon = new DossierPersoon();
-    BasePLRec cat = set.getLatestRec();
-    BasePLExt pl = getPersoonslijst(cat);
-
-    if (pl == null) {
-      return persoon;
-    }
-
-    switch (gbaCat) {
-      case OUDER_1:
-      case OUDER_2:
-        persoon = new DossierPersoon(DossierPersoonType.OUDER);
-        break;
-
-      case HUW_GPS:
-        persoon = new DossierPersoon(isHuidigePartner(cat) ? PARTNER : EXPARTNER);
-        break;
-
-      case KINDEREN:
-        // Geen overleden kinderen tonen
-        if (pl.getOverlijding().isOverleden()) {
-          return persoon;
-        }
-
-        persoon = new DossierPersoon(DossierPersoonType.KIND);
-        break;
-
-      default:
-        break;
-    }
-
-    /*
-      Voeg de persoongegevens toe op basis van de categorie
-     */
-    if (pl.getPersoon().getBsn().getVal().isEmpty()) {
-
-      BsPersoonUtils.kopieDossierPersoon(cat, persoon);
-    } else {
-      BsPersoonUtils.kopieDossierPersoon(pl, persoon);
-    }
-
-    // Verbintenis gegevens toevoegen
-
-    if (GBACat.HUW_GPS == gbaCat) {
-
-      BasePLRec sluiting = persoonPl.getHuwelijk().getSluiting(set, "");
-      BasePLRec ontbinding = persoonPl.getHuwelijk().getOntbinding(set, "");
-
-      BasePLValue sluitDatum = sluiting.getElemVal(DATUM_VERBINTENIS);
-      BasePLValue sluitPlaats = sluiting.getElemVal(PLAATS_VERBINTENIS);
-      BasePLValue sluitLand = sluiting.getElemVal(LAND_VERBINTENIS);
-
-      BasePLValue ontbDatum = ontbinding.getElemVal(DATUM_ONTBINDING);
-      BasePLValue ontbPlaats = ontbinding.getElemVal(PLAATS_ONTBINDING);
-      BasePLValue ontbLand = ontbinding.getElemVal(LAND_ONTBINDING);
-      BasePLValue ontbReden = ontbinding.getElemVal(REDEN_ONTBINDING);
-
-      // Sluiting
-      persoon.getVerbintenis().setSoort(
-          SoortVerbintenis.get(sluiting.getElemVal(SOORT_VERBINTENIS).getVal()));
-      persoon.getVerbintenis().getSluiting().setDatum(new DateTime(sluitDatum.getVal()));
-      persoon.getVerbintenis().getSluiting().setPlaats(
-          new FieldValue(sluitPlaats.getVal(), sluitPlaats.getDescr()));
-      persoon.getVerbintenis().getSluiting().setLand(
-          new FieldValue(sluitLand.getVal(), sluitLand.getDescr()));
-
-      // Ontbinding
-      persoon.getVerbintenis().getOntbinding().setDatum(new DateTime(ontbDatum.getVal()));
-      persoon.getVerbintenis().getOntbinding().setPlaats(
-          new FieldValue(ontbPlaats.getVal(), ontbPlaats.getDescr()));
-      persoon.getVerbintenis().getOntbinding().setLand(
-          new FieldValue(ontbLand.getVal(), ontbLand.getDescr()));
-      persoon.getVerbintenis().getOntbinding().setReden(
-          new FieldValue(ontbReden.getVal(), ontbReden.getDescr()));
-    }
-
-    return persoon;
-  }
-
-  private boolean isHuidigePartner(BasePLRec cat) {
-    return emp(cat.getElemVal(GBAElem.DATUM_ONTBINDING).getVal());
-  }
-
   private boolean isType(List<DossierPersoonType> typeList, DossierPersoonType... types) {
 
     if (typeList.isEmpty()) {
@@ -316,12 +182,6 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
     }
 
     return false;
-  }
-
-  private boolean isVolwassenKind(DossierPersoon persoon) {
-    boolean isKind = persoon.getDossierPersoonType().is(DossierPersoonType.KIND);
-    boolean isVolwassen = along(persoon.getGeboorte().getLeeftijd()) >= VOLWASSEN_LEEFTIJD;
-    return isKind && isVolwassen;
   }
 
   private class ButtonType implements ClickListener {
@@ -421,8 +281,9 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
   private class RelatiesTableLayout extends OptieLayout implements ClickListener {
 
     private final DossierPersoonType[] types;
-    private final Button               buttonAdd = new Button("Toevoegen");
-    private final Button               buttonDel = new Button("Verwijderen");
+    private final Button               buttonReload = new Button("Herladen");
+    private final Button               buttonAdd    = new Button("Toevoegen");
+    private final Button               buttonDel    = new Button("Verwijderen");
     private final RelatiesTable        table;
 
     public RelatiesTableLayout(String caption, DossierPersoonType... types) {
@@ -438,13 +299,17 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
       getRight().setWidth("140px");
       getRight().setCaption("Opties");
 
+      getRight().addButton(buttonReload, this);
       getRight().addButton(buttonAdd, this);
       getRight().addButton(buttonDel, this);
     }
 
     @Override
     public void buttonClick(ClickEvent event) {
-      if (event.getButton() == buttonAdd) {
+      if (event.getButton() == buttonReload) {
+        onHerladen();
+
+      } else if (event.getButton() == buttonAdd) {
         onToevoegen();
 
       } else if (event.getButton() == buttonDel) {
@@ -456,15 +321,18 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
       return table;
     }
 
+    private void onHerladen() {
+      PageBsGerelateerdeLayout.this.onHerladen(types);
+      init();
+    }
+
     private void onToevoegen() {
 
       if (types.length > 1) {
-
         DossierTypeWindow dossierTypeWindow = new DossierTypeWindow(types) {
 
           @Override
           public void onClick(DossierPersoonType type) {
-
             PageBsGerelateerdeLayout.this.onToevoegen(type);
           }
         };
@@ -481,11 +349,8 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
 
         @Override
         protected void deleteValue(DossierPersoon persoon) {
-
           PageBsGerelateerdeLayout.this.onVerwijderen(persoon);
-
           dossierPersoon.verwijderPersoon(persoon);
-
           init();
         }
       };

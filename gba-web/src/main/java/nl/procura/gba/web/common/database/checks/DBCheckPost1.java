@@ -19,56 +19,34 @@
 
 package nl.procura.gba.web.common.database.checks;
 
-import static nl.procura.standard.Globalfunctions.toBigDecimal;
-
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
-import nl.procura.gba.jpa.personen.db.Reisdoc;
+import nl.procura.commons.liquibase.objecten.LbColumn;
+import nl.procura.commons.liquibase.objecten.LbTable;
+import nl.procura.commons.liquibase.parameters.LbSchemaParameters;
+import nl.procura.commons.liquibase.utils.LbObjectUtils;
+import nl.procura.commons.liquibase.utils.LbUpdateUtils;
 import nl.procura.gba.web.common.database.DBCheckTemplateLb;
 
 import liquibase.database.Database;
 
-/**
- * Check waarbij de ontbrekende reisdocumentsoort automatisch worden toegevoegd.
- */
 public class DBCheckPost1 extends DBCheckTemplateLb {
 
   public DBCheckPost1(EntityManager entityManager, Database database, String type) {
-    super(entityManager, database, type, "ontbrekende reisdocumenten");
+    super(entityManager, database, type, "Null waarden corrigeren met standaardwaarde");
   }
 
   @Override
   public void init() {
+    LbSchemaParameters parameters = new LbSchemaParameters();
+    parameters.setDatabase(getDatabase());
+    parameters.setExcludeTables("PROT", DATABASECHANGELOGLOCK, DATABASECHANGELOG);
 
-    add("NI", "Nederlandse identiteitskaart", 12);
-    add("PB", "Reisdocument voor vreemdelingen", 18);
-    add("PN", "Nationaal paspoort", 18);
-    add("PV", "Reisdocument voor vluchtelingen", 18);
-    add("TE", "Tweede paspoort (zakenpaspoort)", 18);
-    add("TN", "Tweede paspoort", 18);
-    add("ZN", "Nationaal paspoort met 64 bladzijden (zakenpaspoort)", 18);
-    add("PF", "Faciliteitenpaspoort", 0);
-  }
-
-  private void add(String zkarg, String reisdoc, int lt) {
-
-    TypedQuery<Reisdoc> query = getEntityManager().createQuery("select d from Reisdoc d where d.zkarg = :zkarg",
-        Reisdoc.class);
-    query.setParameter("zkarg", zkarg);
-
-    for (Reisdoc rd : query.getResultList()) {
-      rd.setReisdoc(reisdoc);
-      rd.setLtToest(toBigDecimal(lt));
-      getEntityManager().merge(rd);
-      return;
+    for (LbTable table : LbObjectUtils.getSchema(parameters).getTables()) {
+      for (LbColumn column : table.getColumns()) {
+        String msg = "ongedefinieerde waarde " + table + "." + column;
+        count(LbUpdateUtils.updateNullValues(getDatabase(), table, column), msg);
+      }
     }
-
-    Reisdoc rd = new Reisdoc();
-    rd.setZkarg(zkarg);
-    rd.setReisdoc(reisdoc);
-    rd.setLtToest(toBigDecimal(lt));
-    getEntityManager().merge(rd);
-    count(1);
   }
 }

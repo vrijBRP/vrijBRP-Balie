@@ -24,4 +24,5 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 public interface SelectListener {
 
   void select(BasePLExt pl);
+
 }

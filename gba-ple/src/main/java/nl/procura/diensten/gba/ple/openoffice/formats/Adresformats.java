@@ -79,7 +79,7 @@ public class Adresformats {
   }
 
   private String getStraatOms(String straat) {
-    return straat.equals(".") ? "puntadres" : straat;
+    return straat.equals(".") ? "Onbekend" : straat;
   }
 
   public String getAdres_pc_wpl() {

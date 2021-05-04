@@ -20,6 +20,7 @@
 package nl.procura.gbaws.db.jpa;
 
 import static nl.procura.standard.Globalfunctions.aval;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpa;
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpaEclipseLink;
@@ -41,11 +42,10 @@ public class PleJpaUtils {
 
   public static void init() {
 
-    if (!jpa.isConnected()) {
-
-      final PLEJpaEclipseLink jpaImpl = new PLEJpaEclipseLink();
-
-      jpaImpl.setDatabase(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.DB));
+    String database = ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.DB);
+    if (isNotBlank(database) && !jpa.isConnected()) {
+      PLEJpaEclipseLink jpaImpl = new PLEJpaEclipseLink();
+      jpaImpl.setDatabase(database);
       jpaImpl.setSid(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.SID));
       jpaImpl.setServer(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.SERVER));
       jpaImpl.setPort(aval(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.PORT)));

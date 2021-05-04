@@ -19,62 +19,43 @@
 
 package nl.procura.gba.web.common.database.checks;
 
-import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import java.sql.SQLException;
+import java.text.MessageFormat;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
-import nl.procura.gba.jpa.personen.db.VogDoelTab;
+import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.common.database.DBCheckTemplateLb;
+import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType;
 
 import liquibase.database.Database;
 
 /**
- * Check waarbij de ontbrekende COVOG tabellen worden toegevoegd
- * <p>
- * Doel van de aanvraag
+ * Update geannuleerde rijbewijsaanvragen
  */
 public class DBCheckPost2 extends DBCheckTemplateLb {
 
   public DBCheckPost2(EntityManager entityManager, Database database, String type) {
-    super(entityManager, database, type, "ontbrekende covog tabellen (doelen)");
+    super(entityManager, database, type, "Status van rijbewijsaanvragen corrigeren");
   }
 
   @Override
-  public void init() {
-
-    if (isOracle()) {
-      add(" ", " ", -1, -1);
-    } else {
-      add("", "", -1, -1);
-    }
-
-    add("IVB", "Integriteitsverklaring Beroepsvervoer", 20090501, 20111203);
-    add("OVG", "Overig", 20030101, -1);
-    add("VIS", "Visumaanvragen of emigratie naar niet-EU lidstaten", 20030101, 20090501);
-    add("WRE", "Werkrelatie", 20030101, -1);
+  public void init() throws SQLException {
+    updateOnjuistVerwerkt();
+    updateOnjuistGeannuleerd();
   }
 
-  private void add(String code, String oms, int dIn, int dEnd) {
+  private void updateOnjuistGeannuleerd() throws SQLException {
+    String sql = "update nrd set ind_verwerkt = {0} where ind_verwerkt != {0} and c_aanvr in (select c_aanvr from nrd_status where c_stat >= {1})";
+    long zCode = ZaakStatusType.VERWERKT.getCode();
+    long rCode = RijbewijsStatusType.RIJBEWIJS_NIET_UITGEREIKT.getCode();
+    count(update(MessageFormat.format(sql, zCode, rCode)));
+  }
 
-    TypedQuery<VogDoelTab> query = getEntityManager().createQuery("select d from VogDoelTab d", VogDoelTab.class);
-    for (VogDoelTab rd : query.getResultList()) {
-      if (astr(rd.getCVogDoelTab()).trim().equals(astr(code).trim())) {
-        rd.setOms(oms);
-        rd.setDIn(toBigDecimal(dIn));
-        rd.setDEnd(toBigDecimal(dEnd));
-        getEntityManager().merge(rd);
-        return;
-      }
-    }
-
-    VogDoelTab rd = new VogDoelTab();
-    rd.setCVogDoelTab(code);
-    rd.setOms(oms);
-    rd.setDIn(toBigDecimal(dIn));
-    rd.setDEnd(toBigDecimal(dEnd));
-    getEntityManager().merge(rd);
-    count(1);
+  private void updateOnjuistVerwerkt() throws SQLException {
+    String sql = "update nrd set ind_verwerkt = {0} where ind_verwerkt != {0} and c_aanvr in (select c_aanvr from nrd_status where c_stat = {1})";
+    long zCode = ZaakStatusType.GEANNULEERD.getCode();
+    long rCode = RijbewijsStatusType.GEANNULEERD.getCode();
+    count(update(MessageFormat.format(sql, zCode, rCode)));
   }
 }

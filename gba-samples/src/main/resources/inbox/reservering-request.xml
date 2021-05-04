@@ -1,0 +1,100 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns3:toevoegenReservering xmlns:ns3="http://inbox.brp.procura.nl/v1/huwelijksplanner">
+            <vraag>
+                <zaak>
+                    <zaaknummer>1234</zaaknummer>
+                    <datumaanvraag>20181120</datumaanvraag>
+                    <bron>Huwelijksplanner</bron>
+                    <leverancier>Gemeente Demodam</leverancier>
+                    <datumingang>20181121</datumingang>
+                </zaak>
+                <verbintenis>
+                    <verbintenissoort>HUWELIJK</verbintenissoort>
+                    <partners>
+                        <partner1>
+                            <bsn>690067707</bsn>
+                            <voornamen>Pieter Johannes</voornamen>
+                            <geslachtsnaam>Bakker</geslachtsnaam>
+                            <geslacht>M</geslacht>
+                            <geboortedatum>19700101</geboortedatum>
+                            <adres>Dorpstraat 1 1234AB Demodam</adres>
+                            <contactgegevens>
+                                <email>frits@procura.nl</email>
+                                <telefoon>072-5671353</telefoon>
+                            </contactgegevens>
+                            <naamgebruik>
+                                <huidig>
+                                    <code>E</code>
+                                    <naam>Bakker</naam>
+                                </huidig>
+                                <nieuw>
+                                    <code>E</code>
+                                    <naam>Bakker</naam>
+                                </nieuw>
+                            </naamgebruik>
+                        </partner1>
+                        <partner2>
+                            <bsn>696126667</bsn>
+                            <voornamen>Linda</voornamen>
+                            <geslachtsnaam>de Vries</geslachtsnaam>
+                            <geslacht>V</geslacht>
+                            <geboortedatum>19710202</geboortedatum>
+                            <adres>Stationstraat 8 1234AB Demodam</adres>
+                            <contactgegevens>
+                                <email>truus@bla.com</email>
+                                <telefoon>072-5671355</telefoon>
+                            </contactgegevens>
+                            <naamgebruik>
+                                <huidig>
+                                    <code>E</code>
+                                    <naam>de Vries</naam>
+                                </huidig>
+                                <nieuw>
+                                    <code>V</code>
+                                    <naam>Bakker-de Vries</naam>
+                                </nieuw>
+                            </naamgebruik>
+                        </partner2>
+                    </partners>
+                    <reservering>
+                        <pakket>all-in</pakket>
+                        <locatie>gemeentehuis</locatie>
+                        <datumverbintenis>20161112</datumverbintenis>
+                        <tijdverbintenis>910</tijdverbintenis>
+                        <ambtenaren>
+                            <ambtenaar>
+                                <voorkeur>1</voorkeur>
+                                <naam>F. Janssen</naam>
+                            </ambtenaar>
+                            <ambtenaar>
+                                <voorkeur>2</voorkeur>
+                                <naam>M. G. Terlouw</naam>
+                            </ambtenaar>
+                        </ambtenaren>
+                    </reservering>
+                    <opties>
+                        <optie>
+                            <type>BOOLEAN</type>
+                            <id>TROUWBOEKJE</id>
+                            <omschrijving>Trouwboekje</omschrijving>
+                            <waarde>true</waarde>
+                        </optie>
+                        <optie>
+                            <type>NUMMER</type>
+                            <id>MAX_PERSONEN</id>
+                            <omschrijving>Maximaal aantal personen</omschrijving>
+                            <waarde>10</waarde>
+                        </optie>
+                        <optie>
+                            <type>TEKST</type>
+                            <id>TAAL_CEREMONIE</id>
+                            <omschrijving>Taal van de ceremonie</omschrijving>
+                            <waarde>Engels</waarde>
+                        </optie>
+                    </opties>
+                </verbintenis>
+            </vraag>
+        </ns3:toevoegenReservering>
+    </soap:Body>
+</soap:Envelope>

@@ -27,6 +27,7 @@ import nl.procura.gba.web.services.beheer.bsm.BsmServiceMock;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.gba.ple.PersonenWsServiceMock;
+import nl.procura.gba.web.services.gba.tabellen.TabellenServiceMock;
 
 public class ServicesMock extends Services {
 
@@ -42,6 +43,7 @@ public class ServicesMock extends Services {
   public ServicesMock(TYPE type) {
     super(type);
     requireGbaJpaStorage();
+    TabellenServiceMock.init();
     personenWsServiceMock = new PersonenWsServiceMock(this);
     bsmServiceMock = new BsmServiceMock();
   }

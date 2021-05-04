@@ -17,28 +17,15 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.common.database.checks;
+package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing;
 
-import java.sql.SQLException;
+import nl.procura.vaadin.component.container.ArrayListContainer;
 
-import javax.persistence.EntityManager;
+public class AllAllowedStringContainer extends ArrayListContainer {
 
-import nl.procura.gba.web.common.database.DBCheckTemplateLb;
-
-import liquibase.database.Database;
-
-/**
- * Verwijder A-nummer / bsn voorraad
- */
-public class DBCheckPost9 extends DBCheckTemplateLb {
-
-  public DBCheckPost9(EntityManager entityManager, Database database, String type) {
-    super(entityManager, database, type, "Verwijderen a-nummer / bsn voorraad uit Proweb");
-  }
-
-  @Override
-  public void init() throws SQLException {
-    String sql = "delete from voorraad";
-    count(update(sql));
+  public AllAllowedStringContainer() {
+    addItem(DocumentImportOptieType.INITIEEL_OVERNEMEN);
+    addItem(DocumentImportOptieType.NIET_WIJZIGEN);
+    addItem(DocumentImportOptieType.OVERSCHRIJVEN);
   }
 }

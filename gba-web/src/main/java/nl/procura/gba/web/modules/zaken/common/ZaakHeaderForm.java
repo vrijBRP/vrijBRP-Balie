@@ -52,7 +52,7 @@ import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
-public class ZaakHeaderForm extends ReadOnlyForm {
+public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> {
 
   public static final String  SOORT          = "soort";
   public static final int     DRIE           = 3;
@@ -237,7 +237,7 @@ public class ZaakHeaderForm extends ReadOnlyForm {
 
   private String getBijlageOpmerking(Zaak zaak) {
     if (getApplication() != null) {
-      int aantalBijlagen = getApplication().getServices().getDmsService().getAantalDocumenten(zaak);
+      int aantalBijlagen = getApplication().getServices().getDmsService().countDocumentsByZaak(zaak);
       if (zaak.getType().isHeeftBijlagen() && aantalBijlagen == 0) {
         return setClass(false, "Deze zaak heeft geen bijlagen");
       }

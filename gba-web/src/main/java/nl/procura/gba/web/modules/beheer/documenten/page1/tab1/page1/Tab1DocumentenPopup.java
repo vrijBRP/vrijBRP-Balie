@@ -24,10 +24,7 @@ import java.util.List;
 import nl.procura.gba.web.components.layouts.navigation.GbaPopupButton;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.beheer.documenten.components.DocumentImportExportHandler;
-import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.AandVertrouwPage;
-import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.DocumentMapPage;
-import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.DocumentTypePage;
-import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.StillbornPage;
+import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.*;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.importing.ImportDocPage;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page3.Tab1DocumentenPage3;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page4.Tab1DocumentenPage4;
@@ -49,7 +46,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -63,7 +59,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -77,7 +72,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -87,11 +81,23 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
       }
     });
 
+    addChoice(new Choice("DMS documenttype") {
+
+      @Override
+      public void onClick() {
+        TableSelectionCheck.checkSelection(table);
+        List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
+
+        if (!isParentMapOnlySelectedRec(allSelectedDocs)) {
+          getNavigation().goToPage(new DocumentTypeOmsPage(allSelectedDocs));
+        }
+      }
+    });
+
     addChoice(new Choice("Levenloos geboren") {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -113,7 +119,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -127,7 +132,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -141,7 +145,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -155,7 +158,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 
@@ -169,7 +171,6 @@ public class Tab1DocumentenPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<DocumentRecord> allSelectedDocs = getAllSelectedDocs();
 

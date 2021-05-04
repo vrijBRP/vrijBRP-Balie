@@ -33,12 +33,11 @@ import nl.procura.gba.web.components.fields.values.MultiFieldValue;
 
 public class SimpleMultiField extends TextField implements FocusListener {
 
-  private String       newCaption = "";
-  private Container    container;
-  private List<Object> values     = new ArrayList<>();
+  private String    newCaption = "";
+  private Container container;
+  private List<?>   values     = new ArrayList<>();
 
   public SimpleMultiField() {
-
     addStyleName("multifield");
     addListener((FocusListener) this);
   }
@@ -61,11 +60,11 @@ public class SimpleMultiField extends TextField implements FocusListener {
     return SimpleMultiField.class;
   }
 
-  public List getValues() {
+  public List<?> getValues() {
     return values;
   }
 
-  public void setValues(List values) {
+  public void setValues(List<?> values) {
     setValue(new MultiFieldValue<>(values));
     this.values = values;
   }
