@@ -65,6 +65,10 @@ public class GbaConfig {
     return astr(properties.getProperty(property.getProperty()));
   }
 
+  public static String getConfigParm(String parm) {
+    return astr(properties.getProperty(parm));
+  }
+
   public static String get(GbaConfigProperty property) {
     return astr(properties.getProperty(property.getProperty()));
   }

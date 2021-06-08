@@ -62,7 +62,7 @@ public class NaamgebruikWijzigingServiceTest extends ZaakServiceTest {
     zaak.setBurgerServiceNummer(new BsnFieldValue(zaak.getBasisPersoon().getPersoon().getBsn().getVal()));
     zaak.setDatumIngang(new DateTime());
 
-    // Naamgebruikspecifiek
+    // Zaakspecifiek
     zaak.setGoedkeuringsType(GoedkeuringType.GOEDGEKEURD);
     zaak.setNaamgebruikType(new FieldValue("E"));
 

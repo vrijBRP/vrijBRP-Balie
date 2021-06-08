@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.27.0</version>
+        <version>1.27.1</version>
     </parent>
 
     <artifactId>gba-jpa</artifactId>
@@ -43,6 +43,19 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>4.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
         <!-- generate JPA metamodel with maven-compiler-plugin -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -67,6 +80,23 @@
                         <include>META-INF/**/*</include>
                     </includes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

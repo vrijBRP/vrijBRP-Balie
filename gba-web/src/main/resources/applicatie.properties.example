@@ -1,0 +1,18 @@
+#rename to applicatie.properties
+
+c_gem=0000
+s_app=
+s_gem=
+
+app_db_name=
+app_db_sid=
+app_db_server=
+app_db_port=
+app_db_username=
+app_db_password=
+
+connections.min=1
+connections.max=1
+
+loglevel=INFO
+generatetables=false

@@ -36,8 +36,6 @@ public class ParmValues {
       public static final String PW                    = "procura.db.password";
       public static final String CONNECTIONS_READ_MIN  = "procura.db.connections.read.min";
       public static final String CONNECTIONS_READ_MAX  = "procura.db.connections.read.max";
-      public static final String CONNECTIONS_WRITE_MIN = "procura.db.connections.write.min";
-      public static final String CONNECTIONS_WRITE_MAX = "procura.db.connections.write.max";
     }
   }
 

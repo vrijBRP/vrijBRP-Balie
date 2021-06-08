@@ -59,7 +59,7 @@ public class Page2BsDocument extends ButtonPageTemplate {
       addButton(buttonPrev);
       setInfo("Het bestand zal worden gekoppeld aan de zaak");
       addComponent(new ZaakBijlageUploadForm(dossier));
-      form = new ZaakBijlageVertrouwelijkheidForm();
+      form = new ZaakBijlageVertrouwelijkheidForm(dossier.getType());
       addComponent(form);
       addComponent(docUploader);
     }

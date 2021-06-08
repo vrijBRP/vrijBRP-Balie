@@ -479,6 +479,15 @@ public enum ParameterConstant implements ParameterType {
   ONDERZ_DEFAULT_AAND("onderz_default_aand", "Standaard aanduiding gegevens in onderzoek",
       GROUP_ONDERZOEK, true, false, false, ""),
 
+  ONDERZ_5_DAGEN_TERM("onderz_5_dagen_term", "Onderzoek binnen 5 dagen af te handelen",
+      GROUP_ONDERZOEK, true, false, false, ""),
+
+  ONDERZ_ANDER_ORGAAN("onderz_ander_orgaan", "Gedegen onderzoek door ander overheidsorgaan en beschikbaar?",
+      GROUP_ONDERZOEK, true, false, false, ""),
+
+  ONDERZ_REDEN_OVERSLAAN("onderz_reden_overslaan", "Voldoende reden om stap(pen) over te slaan?",
+      GROUP_ONDERZOEK, true, false, false, ""),
+
   VERHUIS_DATUM_LIMIET_TOEKOMST("verhuis_datum_limiet", "Verhuistermijn in dagen (toekomst)",
       GROUP_VERHUIZING, true, true, true, ""),
 

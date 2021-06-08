@@ -24,6 +24,7 @@ import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.*;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import java.io.File;
 import java.text.ParseException;
@@ -338,5 +339,14 @@ public class MiscUtils {
     }
     out.append("</b>");
     return out.toString();
+  }
+
+  public static String getVersion() {
+    return defaultString(new MiscUtils().getClass().getPackage().getImplementationVersion());
+  }
+
+  public static String getBuilddate() {
+    String date = GitFileParser.getProperty(GitFileParser.GIT_COMMIT_TIME);
+    return date != null ? GitFileParser.getDate(date, "dd-MM-yyyy") : "";
   }
 }

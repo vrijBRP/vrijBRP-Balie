@@ -43,6 +43,8 @@ public class DashboardOverzicht2 extends DashboardOverzicht {
     add(getTelling143());
     add(getTelling144());
     add(getTelling145());
+    add(getTelling15_1());
+    add(getTelling15_2());
   }
 
   private DashboardTelling getTelling121() {
@@ -130,5 +132,15 @@ public class DashboardOverzicht2 extends DashboardOverzicht {
     return new DashboardTelling("14.5", "Aantal risicoanalyses boven drempelwaarde en " +
         "gekoppelde zaak niet verwerkt (geweigerd / geannuleerd)",
         UnOfficialDashboardDao.getRiskAnalysis145(getPeriode()));
+  }
+
+  private DashboardTelling getTelling15_1() {
+    return new DashboardTelling("15.1", "Aantal onderzoeken binnen 10 weken verwerkt",
+        UnOfficialDashboardDao.getRiskAnalysis15_1(getPeriode()));
+  }
+
+  private DashboardTelling getTelling15_2() {
+    return new DashboardTelling("15.2", "Aantal onderzoeken in langer dan 10 weken verwerkt",
+        UnOfficialDashboardDao.getRiskAnalysis15_2(getPeriode()));
   }
 }

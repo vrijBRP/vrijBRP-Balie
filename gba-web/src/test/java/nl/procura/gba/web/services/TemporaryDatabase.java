@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import nl.procura.gba.jpa.personen.utils.GbaEclipseLinkUtil;
 import nl.procura.gba.jpa.personen.utils.GbaJpaStorageWrapper;
+import nl.procura.gba.web.application.GbaConfigMock;
 import nl.procura.gba.web.common.database.checks.DBCheckPost7;
 import nl.procura.standard.threadlocal.ThreadLocalStorage;
 
@@ -62,6 +63,7 @@ public final class TemporaryDatabase {
   }
 
   public static void ensureCleanMockDatabase() {
+    GbaConfigMock.setGbaConfig();
     TemporaryDatabase database = TemporaryDatabase.getInstance();
     database.resetDatabase();
     ThreadLocalStorage.init(database.gbaJpaStorageWrapper);
@@ -79,10 +81,10 @@ public final class TemporaryDatabase {
     LOGGER.info("Reset database");
     try (Connection connection = getConnection()) {
       getAllTableNames(connection).stream()
-          .filter(
-              tableName -> tableName.startsWith("DOSS")
-                  || tableName.startsWith("ZAAK")
-                  || "BVH_PARK".equals(tableName))
+          .filter(tableName -> tableName.startsWith("DOSS")
+              || tableName.startsWith("ZAAK")
+              || "BVH_PARK".equals(tableName)
+              || "DOC_INH".equals(tableName))
           .forEach(tableName -> deleteAllFromTable(connection, tableName));
     } catch (SQLException e) {
       throw new IllegalStateException(e);

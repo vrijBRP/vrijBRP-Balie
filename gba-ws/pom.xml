@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.27.0</version>
+        <version>1.27.1</version>
     </parent>
 
     <packaging>war</packaging>
@@ -287,39 +288,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
-                    <!-- Git plugin -->
-                    <plugin>
-                        <groupId>pl.project13.maven</groupId>
-                        <artifactId>git-commit-id-plugin</artifactId>
-                        <version>${git-commit-id-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>revision</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <offline>true</offline>
-                            <prefix>git</prefix>
-                            <dateFormat>yyyy-MM-dd HH:mm:ss z</dateFormat>
-                            <verbose>false</verbose>
-                            <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-                            <skipPoms>true</skipPoms>
-                            <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                            <generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
-                            <failOnNoGitDirectory>true</failOnNoGitDirectory>
-                            <gitDescribe>
-                                <skip>false</skip>
-                                <always>false</always>
-                                <abbrev>7</abbrev>
-                                <dirty>-dirty</dirty>
-                                <forceLongFormat>false</forceLongFormat>
-                            </gitDescribe>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -327,5 +295,39 @@
 
     <build>
         <finalName>personen-ws</finalName>
+        <plugins>
+            <!-- Git plugin -->
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${git-commit-id-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <offline>true</offline>
+                    <prefix>git</prefix>
+                    <dateFormat>yyyy-MM-dd HH:mm:ss z</dateFormat>
+                    <verbose>false</verbose>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <skipPoms>true</skipPoms>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
+                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
+                    <gitDescribe>
+                        <skip>false</skip>
+                        <always>false</always>
+                        <abbrev>7</abbrev>
+                        <dirty>-dirty</dirty>
+                        <forceLongFormat>false</forceLongFormat>
+                    </gitDescribe>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

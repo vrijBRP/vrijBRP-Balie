@@ -19,15 +19,30 @@
 
 package nl.procura.gba.jpa.personen.dao.views;
 
+import static nl.procura.gba.common.ZaakStatusType.VERWERKT;
+import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
 import static nl.procura.gba.common.ZaakType.*;
+import static nl.procura.gba.jpa.personen.db.QDoss.doss;
+import static nl.procura.gba.jpa.personen.db.QDossOnderz.dossOnderz;
+import static nl.procura.gba.jpa.personen.db.QDossRiskAnalysis.dossRiskAnalysis;
+import static nl.procura.gba.jpa.personen.db.QDossRiskAnalysisSubject.dossRiskAnalysisSubject;
+import static nl.procura.gba.jpa.personen.db.QGv.gv;
+import static nl.procura.gba.jpa.personen.db.QGvProce.gvProce;
+import static nl.procura.gba.jpa.personen.db.QIndVerwerkt.indVerwerkt1;
+import static nl.procura.gba.jpa.personen.db.QNrd.nrd;
+import static nl.procura.gba.jpa.personen.db.QNrdStatus.nrdStatus;
+import static nl.procura.gba.jpa.personen.db.QRiskProfile.riskProfile;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
 
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
-import nl.procura.gba.jpa.personen.utils.GbaJpa;
+import nl.procura.standard.ProcuraDate;
 
 public class UnOfficialDashboardDao extends DashboardDao {
 
@@ -57,15 +72,13 @@ public class UnOfficialDashboardDao extends DashboardDao {
    * Gegevensverstrekking (totaal aantal aanvragen)
    */
   public static List<ZaakKey> getGv121(DashboardPeriode periode) {
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode)))
+        .fetch();
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
-
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -73,20 +86,18 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv122(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cToek.in(GV_TK_JA)
+                .or(gv.in(JPAExpressions.select(gvProce.gv)
+                    .from(gvProce)
+                    .where(gvProce.cProcesactie
+                        .in(NU_VERSTREKKEN))))))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and (c_toek in"));
-    sql.append(add(in(GV_TK_JA)));
-    sql.append(add("or c_gv in (select c_gv from gv_proces where"));
-    sql.append(add("c_procesactie in"));
-    sql.append(add(in(NU_VERSTREKKEN)));
-    sql.append(add("))"));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -94,16 +105,14 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv123(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cGrondslag.in(GRONDSLAG_3_5)))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(add("and c_grondslag in"));
-    sql.append(add(in(GRONDSLAG_3_5)));
-    sql.append(dIn("d_in", periode));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -111,16 +120,14 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv124(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cGrondslag.in(GRONDSLAG_3_6)))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and c_grondslag in"));
-    sql.append(add(in(GRONDSLAG_3_6)));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -128,16 +135,14 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv125(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cGrondslag.in(GRONDSLAG_3_9)))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and c_grondslag in"));
-    sql.append(add(in(GRONDSLAG_3_9)));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -145,16 +150,14 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv126(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cToek.in(GV_TK_BELANG)))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and c_toek in"));
-    sql.append(add(in(GV_TK_BELANG)));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -162,20 +165,18 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv127(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cToek.in(GV_TK_BELANG))
+            .and(gv.in(JPAExpressions.select(gvProce.gv)
+                .from(gvProce)
+                .where(gvProce.cProcesactie
+                    .in(NU_VERSTREKKEN)))))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and c_toek in"));
-    sql.append(add(in(GV_TK_BELANG)));
-    sql.append(add("and c_gv in (select c_gv from gv_proces where"));
-    sql.append(add("c_procesactie in"));
-    sql.append(add(in(NU_VERSTREKKEN)));
-    sql.append(add(")"));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -183,20 +184,18 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv128(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cToek.in(GV_TK_BELANG))
+            .and(gv.in(JPAExpressions.select(gvProce.gv)
+                .from(gvProce)
+                .where(gvProce.cProcesactie
+                    .in(NIET_VERSTREKKEN)))))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and c_toek in"));
-    sql.append(add(in(GV_TK_BELANG)));
-    sql.append(add("and c_gv in (select c_gv from gv_proces where"));
-    sql.append(add("c_procesactie in"));
-    sql.append(add(in(NIET_VERSTREKKEN)));
-    sql.append(add(")"));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -204,16 +203,14 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getGv129(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(gv.zaakId)
+        .from(gv)
+        .where(gv.cGv.gt(0)
+            .and(period(gv.dIn, periode))
+            .and(gv.cToek.in(GV_TK_NEE)))
+        .fetch();
 
-    sql.append(select("gv"));
-    sql.append(add("where c_gv > 0"));
-    sql.append(dIn("d_in", periode));
-    sql.append(add("and c_toek in"));
-    sql.append(add(in(GV_TK_NEE)));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), GEGEVENSVERSTREKKING);
+    return toZaakKeys(results, GEGEVENSVERSTREKKING);
   }
 
   /**
@@ -221,17 +218,17 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getAddressInv131(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(ONDERZOEK.getCode()))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossOnderz.cDossOnderz)
+                .from(dossOnderz)
+                .where(dossOnderz.resOnderzBetrok
+                    .in(RES_ONDERZ_IMMIGRATIE)))))
+        .fetch();
 
-    sql.append(select("doss, doss_onderz"));
-    sql.append(typeDoss(ONDERZOEK.getCode()));
-    sql.append(add("and doss.c_doss = doss_onderz.c_doss_onderz", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and res_onderz_betrok in"));
-    sql.append(in(RES_ONDERZ_IMMIGRATIE));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), ONDERZOEK);
+    return toZaakKeys(results, ONDERZOEK);
   }
 
   /**
@@ -239,17 +236,17 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getAddressInv132(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(ONDERZOEK.getCode()))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossOnderz.cDossOnderz)
+                .from(dossOnderz)
+                .where(dossOnderz.resOnderzBetrok
+                    .in(RES_ONDERZ_EMIGRATIE, RES_ONDERZ_EMIGRATIE_ONB)))))
+        .fetch();
 
-    sql.append(select("doss, doss_onderz"));
-    sql.append(typeDoss(ONDERZOEK.getCode()));
-    sql.append(add("and doss.c_doss = doss_onderz.c_doss_onderz", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and res_onderz_betrok in"));
-    sql.append(in(RES_ONDERZ_EMIGRATIE, RES_ONDERZ_EMIGRATIE_ONB));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), ONDERZOEK);
+    return toZaakKeys(results, ONDERZOEK);
   }
 
   /**
@@ -257,17 +254,17 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getAddressInv133(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(ONDERZOEK.getCode()))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossOnderz.cDossOnderz)
+                .from(dossOnderz)
+                .where(dossOnderz.resOnderzBetrok
+                    .in(RES_ONDERZ_VERHUISD)))))
+        .fetch();
 
-    sql.append(select("doss, doss_onderz"));
-    sql.append(typeDoss(ONDERZOEK.getCode()));
-    sql.append(add("and doss.c_doss = doss_onderz.c_doss_onderz", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and res_onderz_betrok in"));
-    sql.append(in(RES_ONDERZ_VERHUISD));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), ONDERZOEK);
+    return toZaakKeys(results, ONDERZOEK);
   }
 
   /**
@@ -275,15 +272,15 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis141(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode()))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysis.cDossRa)
+                .from(dossRiskAnalysis))))
+        .fetch();
 
-    sql.append(select("doss, doss_ra"));
-    sql.append(typeDoss(RISK_ANALYSIS.getCode()));
-    sql.append(add("and doss.c_doss = doss_ra.c_doss_ra", periode));
-    sql.append(dIn("d_aanvr", periode));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), RISK_ANALYSIS);
+    return toZaakKeys(results, RISK_ANALYSIS);
   }
 
   /**
@@ -291,17 +288,18 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis142(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss, dossRiskAnalysis, riskProfile)
+        .where(doss.eq(dossRiskAnalysis.doss)
+            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
+            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.notIn(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+                .from(dossRiskAnalysisSubject)
+                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold)))))
+        .fetch();
 
-    sql.append(select("doss, doss_ra, rp"));
-    sql.append(typeDoss(RISK_ANALYSIS.getCode()));
-    sql.append(add("and doss.c_doss = doss_ra.c_doss_ra", periode));
-    sql.append(add("and doss_ra.c_rp = rp.c_rp", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and c_doss_ra not in (select c_doss_ra from doss_ra_subject where score > rp.threshold)"));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), RISK_ANALYSIS);
+    return toZaakKeys(results, RISK_ANALYSIS);
   }
 
   /**
@@ -309,17 +307,18 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis143(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss, dossRiskAnalysis, riskProfile)
+        .where(doss.eq(dossRiskAnalysis.doss)
+            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
+            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+                .from(dossRiskAnalysisSubject)
+                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold)))))
+        .fetch();
 
-    sql.append(select("doss, doss_ra, rp"));
-    sql.append(typeDoss(RISK_ANALYSIS.getCode()));
-    sql.append(add("and doss.c_doss = doss_ra.c_doss_ra", periode));
-    sql.append(add("and doss_ra.c_rp = rp.c_rp", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and c_doss_ra in (select c_doss_ra from doss_ra_subject where score > rp.threshold)"));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), RISK_ANALYSIS);
+    return toZaakKeys(results, RISK_ANALYSIS);
   }
 
   /**
@@ -327,21 +326,21 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis144(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss, dossRiskAnalysis, riskProfile)
+        .where(doss.eq(dossRiskAnalysis.doss)
+            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
+            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+                .from(dossRiskAnalysisSubject)
+                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold))))
+            .and(doss.zaakId.in(JPAExpressions.select(indVerwerkt1.zaakId)
+                .from(indVerwerkt1)
+                .where(indVerwerkt1.indVerwerkt.in(VERWERKT.getCode())))))
+        .fetch();
 
-    sql.append(select("doss, doss_ra, rp"));
-    sql.append(typeDoss(RISK_ANALYSIS.getCode()));
-    sql.append(add("and doss.c_doss = doss_ra.c_doss_ra", periode));
-    sql.append(add("and doss_ra.c_rp = rp.c_rp", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and c_doss_ra in (select c_doss_ra from doss_ra_subject where score > rp.threshold)"));
-    sql.append(add("and zaak_id in (select zaak_id from zaak_rel where zaak_id_rel in"));
-    sql.append(add("(select zaak_id from bvh_park where ind_verwerkt in"));
-    sql.append(in(ZaakStatusType.VERWERKT.getCode()));
-    sql.append(add("))"));
-
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), RISK_ANALYSIS);
+    return toZaakKeys(results, RISK_ANALYSIS);
   }
 
   /**
@@ -349,20 +348,64 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis145(DashboardPeriode periode) {
 
-    EntityManager em = GbaJpa.getManager();
-    StringBuilder sql = new StringBuilder();
+    List<String> results = getJpaQueryFactory().select(doss.zaakId)
+        .from(doss, dossRiskAnalysis, riskProfile)
+        .where(doss.eq(dossRiskAnalysis.doss)
+            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
+            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+            .and(period(doss.dAanvr, periode))
+            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+                .from(dossRiskAnalysisSubject)
+                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold))))
+            .and(doss.zaakId.in(JPAExpressions.select(indVerwerkt1.zaakId)
+                .from(indVerwerkt1)
+                .where(indVerwerkt1.indVerwerkt.in(
+                    ZaakStatusType.GEANNULEERD.getCode(),
+                    ZaakStatusType.GEWEIGERD.getCode())))))
+        .fetch();
 
-    sql.append(select("doss, doss_ra, rp"));
-    sql.append(typeDoss(RISK_ANALYSIS.getCode()));
-    sql.append(add("and doss.c_doss = doss_ra.c_doss_ra", periode));
-    sql.append(add("and doss_ra.c_rp = rp.c_rp", periode));
-    sql.append(dIn("d_aanvr", periode));
-    sql.append(add("and c_doss_ra in (select c_doss_ra from doss_ra_subject where score > rp.threshold)"));
-    sql.append(add("and zaak_id in (select zaak_id from zaak_rel where zaak_id_rel in"));
-    sql.append(add("(select zaak_id from bvh_park where ind_verwerkt in"));
-    sql.append(in(ZaakStatusType.GEANNULEERD.getCode(), ZaakStatusType.GEWEIGERD.getCode()));
-    sql.append(add("))"));
+    return toZaakKeys(results, RISK_ANALYSIS);
+  }
 
-    return toZaakKeys(em.createNativeQuery(sql.toString()).getResultList(), RISK_ANALYSIS);
+  /**
+   * Aantal onderzoeken binnen 10 weken verwerkt
+   */
+  public static List<ZaakKey> getRiskAnalysis15_1(DashboardPeriode periode) {
+    return toZaakKeys(getOnderzoeken(periode).entrySet().stream()
+        .filter(entry -> entry.getValue() <= 70)
+        .map(Map.Entry::getKey).collect(Collectors.toList()), ONDERZOEK);
+  }
+
+  /**
+   * Aantal onderzoeken na 10 weken verwerkt
+   */
+  public static List<ZaakKey> getRiskAnalysis15_2(DashboardPeriode periode) {
+    return toZaakKeys(getOnderzoeken(periode).entrySet().stream()
+        .filter(entry -> entry.getValue() > 70)
+        .map(Map.Entry::getKey).collect(Collectors.toList()), ONDERZOEK);
+  }
+
+  private static Map<String, Integer> getOnderzoeken(DashboardPeriode periode) {
+    List<Tuple> tuples = getJpaQueryFactory().select(doss.zaakId, dossOnderz.onderzDAanvang, indVerwerkt1.dIn)
+        .from(doss)
+        .innerJoin(indVerwerkt1)
+        .innerJoin(dossOnderz)
+        .on(doss.zaakId.eq(indVerwerkt1.zaakId))
+        .on(doss.cDoss.eq(dossOnderz.cDossOnderz))
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(ONDERZOEK.getCode()))
+            .and(period(doss.dAanvr, periode))
+            .and(indVerwerkt1.indVerwerkt.in(VERWERKT.getCode(), VERWERKT_IN_GBA.getCode())))
+        .fetch();
+
+    Map<String, Integer> groups = new HashMap<>();
+    for (Tuple tuple : tuples) {
+      String zaakId = tuple.get(doss.zaakId);
+      Date dAanv = tuple.get(dossOnderz.onderzDAanvang);
+      if (dAanv != null) {
+        BigDecimal dVerwerkt = tuple.get(indVerwerkt1.dIn);
+        groups.put(zaakId, new ProcuraDate(dAanv).diffInDays(dVerwerkt.toString()));
+      }
+    }
+    return groups;
   }
 }

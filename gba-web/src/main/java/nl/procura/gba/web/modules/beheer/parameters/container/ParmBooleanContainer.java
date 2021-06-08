@@ -29,13 +29,12 @@ public class ParmBooleanContainer extends IndexedContainer implements ProcuraCon
   public static final String OMSCHRIJVING = "Omschrijving";
 
   public ParmBooleanContainer() {
-
-    Item item;
-
     addContainerProperty(OMSCHRIJVING, String.class, "");
     removeAllItems();
-    item = addItem("1");
+
+    Item item = addItem("1");
     item.getItemProperty(OMSCHRIJVING).setValue("Ja");
+
     item = addItem("0");
     item.getItemProperty(OMSCHRIJVING).setValue("Nee");
   }

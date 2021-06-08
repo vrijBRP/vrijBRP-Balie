@@ -53,7 +53,6 @@ public class Page20OnderzoekForm2 extends GbaForm<Page20OnderzoekBean> {
     if (AanduidingOnderzoekType.ONBEKEND.equals(zaakDossier.getAanduidingGegevensOnderzoek())) {
       ParameterService parameterService = Services.getInstance().getParameterService();
       String defaultAand = parameterService.getSysteemParameter(ONDERZ_DEFAULT_AAND).getValue();
-      System.out.println("Default: " + defaultAand + " = " + AanduidingOnderzoekType.get(defaultAand));
       bean.setAanduidingGegevens(AanduidingOnderzoekType.get(defaultAand).getCode());
     }
 

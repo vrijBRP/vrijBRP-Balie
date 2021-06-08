@@ -26,10 +26,12 @@ import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.pos;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personen.dao.ParmDao;
 import nl.procura.gba.jpa.personen.dao.UsrDao;
 import nl.procura.gba.jpa.personen.db.BaseEntity;
@@ -94,8 +96,7 @@ public class ParameterService extends AbstractService {
     return parameters.stream()
         .findFirst()
         .map(p -> copy(p, Parameter.class))
-        .orElse(copy(Parm.newDefault(parameterType.getKey(),
-            parameterType.getDefaultValue()), Parameter.class));
+        .orElse(copy(getDefault(parameterType), Parameter.class));
   }
 
   /**
@@ -173,10 +174,18 @@ public class ParameterService extends AbstractService {
     for (ParameterType parameterType : ParameterConstant.values()) {
       // If the parameter does not exist in the list than add the default parameter
       if (parms.stream().noneMatch(p -> p.isParm(parameterType.getKey()))) {
-        parms.add(Parm.newDefault(parameterType.getKey(), parameterType.getDefaultValue()));
+        parms.add(getDefault(parameterType));
       }
     }
 
     return parms;
+  }
+
+  /**
+   * Returns parm from config if value in DB is empty
+   */
+  private Parm getDefault(ParameterType parameterType) {
+    String configParm = GbaConfig.getConfigParm("PARM_" + parameterType.getKey());
+    return Parm.newDefault(parameterType.getKey(), defaultIfBlank(parameterType.getDefaultValue(), configParm));
   }
 }

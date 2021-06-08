@@ -104,7 +104,7 @@ public class OnderzoekOverzichtLayout extends VerticalLayout {
       public void setCaptionAndOrder() {
         setCaption("Procesverloop");
         setColumnWidths("200px", "300px", "200px", "");
-        setOrder(START_FASE1_OP, START_FASE1_TM, REACTIE_ONTVANGEN, VERVOLGACTIES, TOELICHTING2);
+        setOrder(START_FASE1_OP, START_FASE1_TM, REACTIE_ONTVANGEN, VERVOLGACTIES, TOELICHTING2, DOORLOOPTIJD);
       }
     };
 

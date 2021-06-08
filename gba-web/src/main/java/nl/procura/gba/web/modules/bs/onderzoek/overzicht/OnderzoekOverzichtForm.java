@@ -99,6 +99,7 @@ public abstract class OnderzoekOverzichtForm extends GbaForm<OnderzoekOverzichtB
     bean.setStartFase2Tm(onderzoek.getFase2DatumEinde());
     bean.setOnderzoekTerPlaatse(toYesNo(onderzoek.getFase2OnderzoekGewenst()));
     bean.setToelichting3(onderzoek.getFase2Toelichting());
+    bean.setDoorlooptijd(onderzoek.getDoorlooptijd());
 
     bean.setBetrokkenen(onderzoek.getResultaatOnderzoekBetrokkene());
     bean.setDatumEindeOnderzoek(onderzoek.getDatumEindeOnderzoek());
@@ -113,14 +114,6 @@ public abstract class OnderzoekOverzichtForm extends GbaForm<OnderzoekOverzichtB
     bean.setResultaatToel(onderzoek.getResultaatToelichting());
 
     setBean(bean);
-  }
-
-  @Override
-  public void afterSetColumn(TableLayout.Column column, Field field, Property property) {
-    if (property.is(OnderzoekOverzichtBean.TOELICHTING2)) {
-      column.setColspan(3);
-    }
-    super.afterSetColumn(column, field, property);
   }
 
   @Override

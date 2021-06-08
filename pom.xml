@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>nl.procura.gba</groupId>
     <artifactId>gba-parent</artifactId>
-    <version>1.27.0</version>
+    <version>1.27.1</version>
     <name>Proweb GBA - Parent</name>
 
     <developers>

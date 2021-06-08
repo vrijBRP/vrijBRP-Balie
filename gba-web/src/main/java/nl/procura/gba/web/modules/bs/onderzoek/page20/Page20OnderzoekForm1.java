@@ -20,9 +20,15 @@
 package nl.procura.gba.web.modules.bs.onderzoek.page20;
 
 import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_5_DAGEN_TERM;
+import static nl.procura.standard.Globalfunctions.isTru;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 
 public abstract class Page20OnderzoekForm1 extends GbaForm<Page20OnderzoekBean> {
@@ -44,6 +50,14 @@ public abstract class Page20OnderzoekForm1 extends GbaForm<Page20OnderzoekBean> 
 
     if (zaakDossier.getDatumEindeTermijn().getLongDate() > 0) {
       bean.setAfhandelingstermijn(zaakDossier.getBinnenTermijn());
+    }
+
+    if (bean.getAfhandelingstermijn() == null) {
+      ParameterService parameterService = Services.getInstance().getParameterService();
+      String defaultAfhandelingstermijn = parameterService.getSysteemParameter(ONDERZ_5_DAGEN_TERM).getValue();
+      if (StringUtils.isNotBlank(defaultAfhandelingstermijn)) {
+        bean.setAfhandelingstermijn(isTru(defaultAfhandelingstermijn));
+      }
     }
 
     bean.setReden(zaakDossier.getRedenTermijn());

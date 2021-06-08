@@ -69,17 +69,13 @@ public class Page20Onderzoek extends BsPageOnderzoek {
 
       addComponent(form1);
       addComponent(onderzoekLayout);
-
-      if (getZaakDossier().getDatumEindeTermijn().getLongDate() > 0) {
-        setTermijn(getZaakDossier().getBinnenTermijn());
-      }
+      setTermijn(form1.getBean().getAfhandelingstermijn());
     }
 
     super.event(event);
   }
 
   private void setTermijn(Boolean binnen) {
-
     form2 = null;
     form3 = null;
     onderzoekLayout.removeAllComponents();

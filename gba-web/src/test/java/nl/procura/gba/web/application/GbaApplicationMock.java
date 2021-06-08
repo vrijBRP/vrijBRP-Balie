@@ -19,15 +19,7 @@
 
 package nl.procura.gba.web.application;
 
-import java.lang.reflect.Field;
-import java.util.Properties;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-import nl.procura.gba.config.GbaConfig;
-import nl.procura.gba.config.GbaConfigProperty;
 import nl.procura.gba.web.services.Services;
-import nl.procura.standard.security.ProwebPath;
 
 public final class GbaApplicationMock extends GbaApplication {
 
@@ -47,26 +39,12 @@ public final class GbaApplicationMock extends GbaApplication {
   }
 
   public static GbaApplication getInstance() {
-    setConfigProperties();
+    GbaConfigMock.setGbaConfig();
     return new GbaApplication();
   }
 
   public static GbaApplication getInstance(Services services) {
-    setConfigProperties();
+    GbaConfigMock.setGbaConfig();
     return new GbaApplicationMock(services);
   }
-
-  private static void setConfigProperties() {
-    Properties properties = new Properties();
-    properties.setProperty(GbaConfigProperty.GEMEENTE.getProperty(), "Municipality");
-    Field propertiesField = FieldUtils.getDeclaredField(GbaConfig.class, "properties", true);
-    try {
-      propertiesField.set(null, properties);
-    } catch (IllegalAccessException e) {
-      throw new IllegalStateException(e);
-    }
-    ProwebPath path = new ProwebPath("TestApplication").mkDirs();
-    GbaConfig.setPath(path);
-  }
-
 }

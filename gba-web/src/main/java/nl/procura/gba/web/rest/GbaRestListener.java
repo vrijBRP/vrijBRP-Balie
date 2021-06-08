@@ -36,10 +36,7 @@ import nl.procura.gba.web.rest.v1_0.gebruiker.GbaRestAuthenticatieValidator;
 import nl.procura.gba.web.rest.v1_0.persoon.GbaRestPersoonResources;
 import nl.procura.gba.web.rest.v1_0.persoon.contact.GbaRestPersoonContactgegevensResources;
 import nl.procura.gba.web.rest.v1_0.zaak.*;
-import nl.procura.gba.web.rest.v2.resources.GbaRestEventLogResourceV2Server;
-import nl.procura.gba.web.rest.v2.resources.GbaRestVerhuizingResourceV2Server;
-import nl.procura.gba.web.rest.v2.resources.GbaRestZaakDmsResourceV2Server;
-import nl.procura.gba.web.rest.v2.resources.GbaRestZaakResourceV2Server;
+import nl.procura.gba.web.rest.v2.resources.*;
 import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieValidator;
 import nl.procura.proweb.rest.guice.misc.ProRestDefaultMethodInterceptor;
 import nl.procura.proweb.rest.guice.modules.ProRestServletModule;
@@ -83,6 +80,7 @@ public class GbaRestListener extends GuiceServletContextListener {
       bind(GbaRestZaakDmsResourceV2Server.class);
       bind(GbaRestVerhuizingResourceV2Server.class);
       bind(GbaRestEventLogResourceV2Server.class);
+      bind(GbaRestInfoResource.class);
 
       Matcher<Class> matchers = Matchers.subclassesOf(GbaRestServiceResource.class);
       bindInterceptor(matchers, Matchers.annotatedWith(Path.class), new ProRestDefaultMethodInterceptor());

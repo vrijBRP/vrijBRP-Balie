@@ -37,6 +37,7 @@ import nl.procura.gba.web.modules.bs.onderzoek.BetrokkenenTable;
 import nl.procura.gba.web.modules.bs.onderzoek.BsPageOnderzoek;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres.BewonerWindow;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
+import nl.procura.gba.web.modules.bs.onderzoek.page11.Page11Onderzoek;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
@@ -158,6 +159,7 @@ public class Page10Onderzoek extends BsPageOnderzoek {
     }
 
     getParentWindow().addWindow(new BewonerWindow(adres, dossierPersoon -> {
+      dossierPersoon.setDefinitief(true);
       getZaakDossier().getDossier().toevoegenPersoon(dossierPersoon);
       successMessage("Personen zijn toegevoegd");
       table.init();
@@ -177,6 +179,12 @@ public class Page10Onderzoek extends BsPageOnderzoek {
       addColumn("Status").setUseHTML(true);
 
       super.setColumns();
+    }
+
+    @Override
+    public void onDoubleClick(Record record) {
+      getNavigation().goToPage(new Page11Onderzoek(record.getObject(DossierPersoon.class)));
+      super.onDoubleClick(record);
     }
 
     @Override

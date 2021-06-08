@@ -541,7 +541,7 @@ public class DossierPersoon extends DossPer implements DossierPersonen, DossierN
 
   public String getVerblijfstitelOmschrijving() {
     final String vbt = getVerblijfstitel().getDescription();
-    return fil(vbt) ? vbt : "Geen";
+    return fil(vbt) ? (getVerblijfstitel().getStringValue() + ": " + vbt) : "Geen";
   }
 
   public Long getVolgorde() {

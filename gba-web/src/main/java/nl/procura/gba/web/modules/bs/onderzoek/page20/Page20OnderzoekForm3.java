@@ -20,8 +20,14 @@
 package nl.procura.gba.web.modules.bs.onderzoek.page20;
 
 import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.standard.Globalfunctions.isTru;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 
 public class Page20OnderzoekForm3 extends GbaForm<Page20OnderzoekBean> {
@@ -34,10 +40,27 @@ public class Page20OnderzoekForm3 extends GbaForm<Page20OnderzoekBean> {
   }
 
   public void setBean(DossierOnderzoek zaakDossier) {
+
     Page20OnderzoekBean bean = new Page20OnderzoekBean();
     bean.setVoldoendeReden(zaakDossier.getRedenOverslaan());
     bean.setOnderzoekDoorAnderGedaan(zaakDossier.getGedegenOnderzoek());
     bean.setToelichting(zaakDossier.getToelichtingOverslaan());
+
+    ParameterService parameterService = Services.getInstance().getParameterService();
+    String defaultAfhandelingstermijn = parameterService.getSysteemParameter(ONDERZ_5_DAGEN_TERM).getValue();
+
+    if (StringUtils.isNotBlank(defaultAfhandelingstermijn) && !isTru(defaultAfhandelingstermijn)) {
+      if (bean.getOnderzoekDoorAnderGedaan() == null) {
+        String defaultAnderOrgaan = parameterService.getSysteemParameter(ONDERZ_ANDER_ORGAAN).getValue();
+        bean.setOnderzoekDoorAnderGedaan(isTru(defaultAnderOrgaan));
+      }
+
+      if (bean.getVoldoendeReden() == null) {
+        String defaultRedenOverslaan = parameterService.getSysteemParameter(ONDERZ_REDEN_OVERSLAAN).getValue();
+        bean.setVoldoendeReden(isTru(defaultRedenOverslaan));
+      }
+    }
+
     setBean(bean);
   }
 }

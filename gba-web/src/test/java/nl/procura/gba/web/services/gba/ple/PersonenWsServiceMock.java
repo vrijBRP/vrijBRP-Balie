@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.services.gba.ple;
 
+import static nl.procura.gbaws.testdata.Testdata.DataSet.DEMO;
+
 import nl.procura.diensten.gba.ple.base.PLEResult;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.arguments.PLNumber;
@@ -38,6 +40,6 @@ public class PersonenWsServiceMock extends PersonenWsService {
       throw new UnsupportedOperationException();
     }
     PLNumber number = commandArgs.getNumbers().iterator().next();
-    return Testdata.getPersonalData(number.getBsn());
+    return Testdata.getPersonData(number.getBsn(), DEMO);
   }
 }

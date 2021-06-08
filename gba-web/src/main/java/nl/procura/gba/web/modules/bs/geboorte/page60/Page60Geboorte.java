@@ -115,13 +115,15 @@ public class Page60Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
 
       addComponent(new BsStatusForm(getDossier()));
 
+      String asielMsg = "<br/><span style='color:red'>Let op!</span> Op staatlozen, vluchtelingen en vreemdelingen met een vergunning asiel (on)bepaalde tijd (code 26 of 27) is Nederlands recht van toepassing.";
+
       if (isBinnenHuwelijk()) {
-
         setInfo(
-            "Doorloop de stappen en vul in van welk land het recht moet worden toegepast. Druk op Volgende (F2) om verder te gaan.");
+            "Doorloop de stappen en vul in van welk land het recht moet worden toegepast. Druk op Volgende (F2) om verder te gaan. "
+                + asielMsg);
       } else {
-
-        setInfo("Bepaal van welk land het recht moet worden toegepast. Druk op Volgende (F2) om verder te gaan.");
+        setInfo("Bepaal van welk land het recht moet worden toegepast. Druk op Volgende (F2) om verder te gaan. "
+            + asielMsg);
       }
 
       initFormulieren();

@@ -19,19 +19,15 @@
 
 package nl.procura.gbaws.generator;
 
-import static java.util.Arrays.asList;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
 import static nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource.GBAV;
 import static nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource.PROCURA;
 import static nl.procura.gbaws.testdata.Testdata.*;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
+import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.io.IOUtils;
 
 import nl.procura.burgerzaken.gba.numbers.Anr;
 import nl.procura.burgerzaken.gba.numbers.Bsn;
@@ -43,68 +39,100 @@ import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.diensten.gba.ple.procura.arguments.PLELoginArgs;
 import nl.procura.gbaws.testdata.Testdata;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GeneratePLJsonFiles {
 
-  public static void main(String[] args) {
-    generate(TEST_BSN_101, TEST_ANR_101, GBAV);
-    generate(TEST_BSN_102, TEST_ANR_102, GBAV);
-    generate(TEST_BSN_103, TEST_ANR_103, GBAV);
-    generate(TEST_BSN_104, TEST_ANR_104, GBAV);
-    generate(TEST_BSN_1, TEST_ANR_1, PROCURA);
-    generate(TEST_BSN_2, TEST_ANR_2, PROCURA);
-    generate(TEST_BSN_3, TEST_ANR_3, PROCURA);
-    generate(TEST_BSN_4, TEST_ANR_4, PROCURA);
-    generate(TEST_BSN_5, TEST_ANR_5, PROCURA);
-    generate(TEST_BSN_10, TEST_ANR_10, PROCURA);
+  public static List<Long> getRvIGBsns() {
+    try {
+      InputStream resource = Testdata.class.getClassLoader().getResourceAsStream("rvig-test-bsn.txt");
+      return IOUtils.readLines(resource).stream().map(Long::valueOf).collect(Collectors.toList());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
-  private static void generate(Long bsn, Long anr, PLEDatasource datasource) {
-    String un = "<username>";
-    String pw = "<password>";
-    String url = "http://pc16:8088/personen-ws";
+  public static void main(String[] args) {
+    generateDemoFiles();
+    generateRvigTestFiles();
+  }
 
-    Path bsnfile = Paths.get(new Bsn(bsn) + ".json");
-    Path anrfile = Paths.get(new Anr(anr) + ".json");
-    savePersonalData(bsnfile, url, un, pw, bsn, datasource);
-    savePersonalData(anrfile, url, un, pw, bsn, datasource);
+  private static void generateDemoFiles() {
+    Credentials credentials = new Credentials("<username>", "<pw>", "<url>");
+    generate(TEST_BSN_101, TEST_ANR_101, credentials, GBAV, "demo");
+    generate(TEST_BSN_102, TEST_ANR_102, credentials, GBAV, "demo");
+    generate(TEST_BSN_103, TEST_ANR_103, credentials, GBAV, "demo");
+    generate(TEST_BSN_104, TEST_ANR_104, credentials, GBAV, "demo");
+    generate(TEST_BSN_1, TEST_ANR_1, credentials, PROCURA, "demo");
+    generate(TEST_BSN_2, TEST_ANR_2, credentials, PROCURA, "demo");
+    generate(TEST_BSN_3, TEST_ANR_3, credentials, PROCURA, "demo");
+    generate(TEST_BSN_4, TEST_ANR_4, credentials, PROCURA, "demo");
+    generate(TEST_BSN_5, TEST_ANR_5, credentials, PROCURA, "demo");
+    generate(TEST_BSN_10, TEST_ANR_10, credentials, PROCURA, "demo");
+  }
 
-    PLEResult bsnResult = Testdata.getPersonalData(bsn);
-    PLEResult anrResult = Testdata.getPersonalData(anr);
-    assert bsnResult.getBasePLs().size() > 0;
-    assert anrResult.getBasePLs().size() > 0;
+  private static void generateRvigTestFiles() {
+    Credentials credentials = new Credentials("<username>", "<pw>", "<url>");
+    getRvIGBsns().forEach(bsn -> generate(bsn, -1L, credentials, PROCURA, "rvig"));
+  }
+
+  private static void generate(Long bsn,
+      Long anr,
+      Credentials credentials,
+      PLEDatasource datasource,
+      String folderPath) {
+
+    File folder = new File(folderPath);
+    folder.mkdirs();
+
+    Bsn bsnObj = new Bsn(bsn);
+    if (bsnObj.isCorrect()) {
+      File bsnfile = new File(folder, bsnObj + ".json");
+      saveData(bsnfile, credentials, bsn, datasource);
+    }
+
+    Anr anrObj = new Anr(anr);
+    if (anrObj.isCorrect()) {
+      File anrfile = new File(folder, anrObj + ".json");
+      saveData(anrfile, credentials, anr, datasource);
+    }
   }
 
   /**
    * Save personal data (persoonslijst) of the given person in the given file.
-   * <p>   *
-   *
-   * @param file the destination file
-   * @param personWebServiceUrl the Web Service URL e.g. https://personen-demo.procura.nl/personen-ws
-   * @param username the username for the Web Service
-   * @param password the password for the Web Service
-   * @param nr the BSN or ANR for the person
    */
-  private static void savePersonalData(Path file,
-      String personWebServiceUrl,
-      String username,
-      String password,
-      Long nr,
+  private static void saveData(File file,
+      Credentials credentials,
+      Long id,
       PLEDatasource datasource) {
-    PLEArgs arguments = new PLEArgs();
-    arguments.addNummer(nr.toString());
-    arguments.setDatasource(datasource);
-    // only categories 1,5,7,8,10 until we need more for a test
-    arguments.setCategories(new HashSet<>(asList(PERSOON, HUW_GPS, NATIO, KINDEREN, INSCHR, VB, VBTITEL)));
-    PLEHTTPClient client = new PLEHTTPClient(personWebServiceUrl + "/gba");
-    PLEResult result = client.find(arguments, new PLELoginArgs(username, password));
-    try (OutputStream outputStream = Files.newOutputStream(file)) {
+
+    PLEArgs args = new PLEArgs();
+    args.addNummer(id.toString());
+    args.setDatasource(datasource);
+
+    PLEHTTPClient client = getPLEClient(credentials);
+    PLEResult result = client.find(args, new PLELoginArgs(credentials.getUsername(), credentials.getPw()));
+    assert result.getBasePLs().size() == 1;
+
+    try (OutputStream outputStream = new FileOutputStream(file)) {
       BasePLToJsonConverter.toStream(outputStream, result);
       log.info("Writing file to " + file);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  @Data
+  @AllArgsConstructor
+  private static class Credentials {
+
+    private String username, pw, url;
+  }
+
+  private static PLEHTTPClient getPLEClient(Credentials credentials) {
+    return new PLEHTTPClient(credentials.getUrl() + "/gba");
   }
 }

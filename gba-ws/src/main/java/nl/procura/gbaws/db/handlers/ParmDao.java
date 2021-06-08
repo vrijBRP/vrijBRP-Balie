@@ -19,30 +19,31 @@
 
 package nl.procura.gbaws.db.handlers;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 
+import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personenws.db.Parm;
 import nl.procura.gba.jpa.personenws.utils.GbaWsJpa;
 import nl.procura.gbaws.db.misc.ParmValues;
 import nl.procura.gbaws.db.wrappers.ParmWrapper;
 import nl.procura.gbaws.db.wrappers.ProcuraDbWrapper;
+import org.apache.commons.lang3.StringUtils;
 
 public class ParmDao implements Serializable {
 
   public static ParmWrapper getParameter(String name) {
-
     final EntityManager m = GbaWsJpa.getManager();
-
-    Parm p;
-    p = m.find(Parm.class, name);
-
-    if (p != null) {
+    Parm p = m.find(Parm.class, name);
+    if (p != null && StringUtils.isNotBlank(p.getValue())) {
       return new ParmWrapper(p.getParm(), p.getValue());
     }
 
-    return new ParmWrapper(name, "");
+    String configParm = GbaConfig.getConfigParm("PARM_" + name);
+    return new ParmWrapper(name, defaultIfBlank(configParm, ""));
   }
 
   public static boolean isParameter(String name) {

@@ -68,6 +68,7 @@ public class OnderzoekOverzichtBean implements Serializable {
   public static final String ONDERZOEK_TER_PLAATSE = "onderzoekTerPlaatse";
   public static final String UITGEVOERD_OP         = "uitgevoerdOp";
   public static final String TOELICHTING3          = "toelichting3";
+  public static final String DOORLOOPTIJD          = "doorlooptijd";
 
   //Resultaat
   public static final String BETROKKENEN           = "betrokkenen";
@@ -196,6 +197,10 @@ public class OnderzoekOverzichtBean implements Serializable {
   @Field(type = LABEL,
       caption = "Onderzoek ter plaatse gewenst?")
   private Object onderzoekTerPlaatse;
+
+  @Field(type = LABEL,
+      caption = "Doorlooptijd")
+  private Object doorlooptijd;
 
   @Field(type = LABEL,
       caption = "Uitgevoerd op")

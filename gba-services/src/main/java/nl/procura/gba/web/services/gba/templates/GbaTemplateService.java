@@ -60,7 +60,7 @@ public class GbaTemplateService extends AbstractService {
   }
 
   protected String getURL() {
-    return getParm(ZOEK_PLE_JAVA_SERVER_URL).replaceAll("/gbaws", "/gba-gbaws");
+    return getSysteemParm(ZOEK_PLE_JAVA_SERVER_URL, false);
   }
 
   protected String getUsername(ZoekProfielType type) {

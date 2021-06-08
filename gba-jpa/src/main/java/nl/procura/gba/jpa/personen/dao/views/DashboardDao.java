@@ -19,76 +19,54 @@
 
 package nl.procura.gba.jpa.personen.dao.views;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static org.apache.commons.lang3.StringUtils.split;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
+import nl.procura.gba.jpa.personen.utils.GbaJpa;
 
 public abstract class DashboardDao {
 
-  protected static String select(String table) {
-    return "select zaak_id from " + table;
+  protected static Collection<? extends BigDecimal> typeDoss(ZaakType... zaakTypes) {
+    return Arrays.stream(zaakTypes).map(zt -> BigDecimal.valueOf(zt.getCode())).collect(Collectors.toList());
   }
 
-  protected static String typeDoss(long... types) {
-    return add("where type_doss in %s", in(types));
-  }
-
-  protected static String in(long... types) {
-
-    StringBuilder s = new StringBuilder();
-    for (long type : types) {
-      s.append(astr(type));
-      s.append(", ");
+  protected static Predicate andAnyOf(boolean digitaal, StringPath field, String value) {
+    if (digitaal && StringUtils.isNotBlank(value)) {
+      return new BooleanBuilder()
+          .andAnyOf(Arrays.stream(split(value, ','))
+              .map(String::trim)
+              .map(field::like)
+              .toArray(Predicate[]::new));
     }
-
-    return add(" (%s)", trim(s.toString()));
+    return null;
   }
 
-  protected static String dIn(String date, DashboardPeriode periode) {
-    StringBuilder rsql = new StringBuilder();
-    rsql.append(" and ");
-    rsql.append(date);
-    rsql.append(" >= ");
-    rsql.append(periode.getdFrom());
-    rsql.append(" and ");
-    rsql.append(date);
-    rsql.append(" <= ");
-    rsql.append(periode.getdTo());
-    return rsql.toString();
+  protected static BooleanExpression period(NumberPath<?> field, DashboardPeriode periode) {
+    return field.goe(periode.getdFrom()).and(field.loe(periode.getdTo()));
   }
 
-  protected static String addBronnen(boolean digitaal, String bronnen) {
-    return add(digitaal, "bron", bronnen);
-  }
-
-  protected static String addLeveranciers(boolean digitaal, String leveranciers) {
-    return add(digitaal, "leverancier", leveranciers);
-  }
-
-  protected static String add(boolean digitaal, String veld, String waarden) {
-    StringBuilder sb = new StringBuilder();
-    if (digitaal && fil(waarden)) {
-      int nr = 0;
-      sb.append(add("and ("));
-      for (String l : waarden.split(",")) {
-        nr++;
-        if (nr > 1) {
-          sb.append(add("or"));
-        }
-        sb.append(add(veld + " like '%s'", l.trim()));
-      }
-      sb.append(add(")"));
-    }
-
-    return sb.toString();
-  }
-
-  protected static String add(String sql, Object... args) {
-    return " " + (args.length > 0 ? String.format(sql, args) : sql);
+  protected static JPAQueryFactory getJpaQueryFactory() {
+    EntityManager em = GbaJpa.getManager();
+    return new JPAQueryFactory(em);
   }
 
   protected static List<ZaakKey> toZaakKeys(List<String> zaakIds, ZaakType zaakType) {
@@ -100,12 +78,18 @@ public abstract class DashboardDao {
     return zaakKeys;
   }
 
+  protected static BooleanBuilder getBronEnLeverancier(StringPath bronField, StringPath levField,
+                                                       boolean digitaal, DashboardPeriode periode) {
+    return new BooleanBuilder(andAnyOf(digitaal, bronField, periode.getBronnen()))
+        .or(andAnyOf(digitaal, levField, periode.getLeveranciers()));
+  }
+
   public static class DashboardPeriode {
 
     private final String bronnen;
     private final String leveranciers;
-    private long         dFrom = -1;
-    private long         dTo   = -1;
+    private long         dFrom;
+    private long         dTo;
 
     public DashboardPeriode(long dFrom, long dTo, String bronnen, String leveranciers) {
       super();

@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.services.zaken;
 
+import java.util.UUID;
+
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
@@ -38,12 +40,18 @@ public class ZaakServiceTest {
   protected final Services services;
 
   public ZaakServiceTest() {
-    TemporaryDatabase.ensureCleanMockDatabase();
+    this(true);
+  }
+
+  public ZaakServiceTest(boolean clean) {
+    if (clean) {
+      TemporaryDatabase.ensureCleanMockDatabase();
+    }
     services = new ServicesMock();
   }
 
   protected String getNewZaakId(ZaakType zaakType) {
-    return "mock-" + zaakType.getCode() + "-12345";
+    return "mock-" + zaakType.getCode() + "-" + UUID.randomUUID();
   }
 
   protected Zaak refresh(Zaak zaak) {

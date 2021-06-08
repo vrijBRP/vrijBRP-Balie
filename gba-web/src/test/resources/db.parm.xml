@@ -969,5 +969,26 @@
             <column name="c_usr" valueNumeric="0"/>
             <column name="c_profile" valueNumeric="0"/>
         </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="572"/>
+            <column name="parm" value="dashboard_mo_bron"/>
+            <column name="value" value="MY_BRON"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="573"/>
+            <column name="parm" value="dashboard_mo_leverancier"/>
+            <column name="value" value="MY_LEV"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
+        <insert tableName="parm">
+            <column name="c_parm" valueNumeric="574"/>
+            <column name="parm" value="zaken_init_verh_binnen_wa"/>
+            <column name="value" value="0"/>
+            <column name="c_usr" valueNumeric="0"/>
+            <column name="c_profile" valueNumeric="0"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

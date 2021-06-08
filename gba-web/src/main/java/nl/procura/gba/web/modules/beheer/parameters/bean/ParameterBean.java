@@ -1023,10 +1023,10 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(RYB_ENABLED)
   @Position(order = "01")
   @Field(customTypeClass = GbaNativeSelect.class,
-          caption = "Rijbewijzen service actief",
-          width = "70px")
+      caption = "Rijbewijzen service actief",
+      width = "70px")
   @Select(containerDataSource = ParmBooleanContainer.class,
-          itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
   private String rijbewijzenEnabled = "";
 
   @ParameterAnnotation(RYB_URL)
@@ -1190,36 +1190,68 @@ public class ParameterBean implements Serializable {
 
   // Onderzoek
   @ParameterAnnotation(ONDERZ_FASE1_TERMIJN)
+  @Position(order = "1")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Termijn in dagen 1e fase",
       width = "400px")
   private String onderzoekTermijnFase1 = "";
 
   @ParameterAnnotation(ONDERZ_FASE2_TERMIJN)
+  @Position(order = "2")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Termijn in dagen 2e fase",
       width = "400px")
   private String onderzoekTermijnFase2 = "";
 
   @ParameterAnnotation(ONDERZ_EXTRA_TERMIJN)
+  @Position(order = "3")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Termijn in dagen extra aanschrijving",
       width = "400px")
   private String onderzoekTermijnExtra = "";
 
   @ParameterAnnotation(ONDERZ_VOORNEMEN_TERMIJN)
+  @Position(order = "4")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Termijn in dagen voornemen",
       width = "400px")
   private String onderzoekTermijnVoornemen = "";
 
   @ParameterAnnotation(ONDERZ_DEFAULT_AAND)
+  @Position(order = "5")
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Aanduiding gegevens in onderzoek",
       width = "400px")
   @Select(containerDataSource = AanduidingOnderzoekContainer.class,
       itemCaptionPropertyId = AanduidingOnderzoekContainer.OMSCHRIJVING)
   private String onderzoekAandGegevens = "";
+
+  @ParameterAnnotation(ONDERZ_5_DAGEN_TERM)
+  @Position(order = "6")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Binnen 5 dagen af te handelen",
+      description = "Standaardwaarde voor \"Is het onderzoek binnen 5 dagen af te handelen?\"")
+  @Select(containerDataSource = ParmEmptyBooleanContainer.class,
+      itemCaptionPropertyId = ParmEmptyBooleanContainer.OMSCHRIJVING)
+  private String afhanTerm5Dagen = "";
+
+  @ParameterAnnotation(ONDERZ_ANDER_ORGAAN)
+  @Position(order = "7")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Gedegen onderzoek ander orgaan",
+      description = "Standaardwaarde voor \"Is er gedegen onderzoek door ander overheidsorgaan en beschikbaar?\"")
+  @Select(containerDataSource = ParmEmptyBooleanContainer.class,
+      itemCaptionPropertyId = ParmEmptyBooleanContainer.OMSCHRIJVING)
+  private String onderzAnderOrgaan = "";
+
+  @ParameterAnnotation(ONDERZ_REDEN_OVERSLAAN)
+  @Position(order = "8")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Voldoende reden overslaan stappen",
+      description = "Standaardwaarde voor vraag \"Is er voldoende reden om stap(pen) over te slaan?\"")
+  @Select(containerDataSource = ParmEmptyBooleanContainer.class,
+      itemCaptionPropertyId = ParmEmptyBooleanContainer.OMSCHRIJVING)
+  private String onderzRedenOversl = "";
 
   // Verhuistermijn
   @ParameterAnnotation(VERHUIS_DATUM_LIMIET_TOEKOMST)
