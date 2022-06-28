@@ -19,9 +19,12 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page3;
 
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
 import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.*;
 
+import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonWindow;
 import nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewForm;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElems;
 import nl.procura.gba.web.modules.zaken.personmutations.page4.Page4PersonListMutations;
@@ -32,14 +35,25 @@ public class Page3PersonListMutations extends NormalPageTemplate {
 
   private final Page3PersonListMutationsLayout layout;
   private final PersonListMutation             mutation;
+  private final PersonListMutElems             elements;
 
   public Page3PersonListMutations(PersonListMutElems elements, PersonListMutation mutation) {
     super("Nieuwe mutatie toevoegen");
     this.mutation = mutation;
+    this.elements = elements;
     setHeight("800px");
 
     addButton(buttonPrev);
     addButton(buttonNext, 1f);
+
+    if (mutation.getCatType().is(OUDER_1, OUDER_2, HUW_GPS, KINDEREN)) {
+      addButton(buttonNext);
+      addButton(buttonSearch, 1f);
+      buttonSearch.setCaption("Zoek persoon");
+    } else {
+      addButton(buttonNext, 1f);
+    }
+
     addButton(buttonClose);
 
     addComponent(new Fieldset("Gegevens"));
@@ -51,6 +65,14 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   }
 
   @Override
+  protected void initPage() {
+    if (elements.isAllBlank(GBAGroup.IDNUMMERS)) {
+      onSearch();
+    }
+    super.initPage();
+  }
+
+  @Override
   public void onPreviousPage() {
     getNavigation().goBackToPreviousPage();
   }
@@ -59,6 +81,12 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   public void onNextPage() {
     getNavigation().goToPage(new Page4PersonListMutations(mutation, layout.getNewRecords()));
     super.onNextPage();
+  }
+
+  @Override
+  public void onSearch() {
+    getParentWindow().addWindow(new QuickSearchPersonWindow(layout::updatePl));
+    super.onSearch();
   }
 
   @Override

@@ -27,6 +27,7 @@ import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import nl.procura.bzconnector.app.client.VrijBRPConnectRestClient;
 import nl.procura.bzconnector.app.client.actions.listprinters.Printer;
@@ -39,30 +40,29 @@ import nl.procura.standard.exceptions.ProException;
 
 public class VrijBrpConnectClient {
 
-  VrijBRPConnectRestClient restClient;
+  private VrijBRPConnectRestClient restClient;
 
   private VrijBrpConnectClient(VrijBRPConnectRestClient restClient) {
     this.restClient = restClient;
   }
 
-  public static VrijBrpConnectClient of(ParameterService parameterService) {
-    boolean isConnectEnabled = isTru(getParm(parameterService, BZ_CONNECT_ENABLED));
-    if (!isConnectEnabled) {
-      throw new ProException(WARNING, "VrijBRP Connect is niet ingeschakeld");
+  public static Optional<VrijBrpConnectClient> of(ParameterService parameterService) {
+    if (isTru(getParm(parameterService, BZ_CONNECT_ENABLED))) {
+      return Optional.of(new VrijBrpConnectClient(VrijBRPConnectRestClient.builder()
+          .username(getParm(parameterService, BZ_CONNECT_USERNAME))
+          .password(getParm(parameterService, BZ_CONNECT_PW))
+          .url(getParm(parameterService, BZ_CONNECT_URL))
+          .timeoutInSeconds(10)
+          .build()));
     }
-    return new VrijBrpConnectClient(VrijBRPConnectRestClient.builder()
-        .username(getParm(parameterService, BZ_CONNECT_USERNAME))
-        .password(getParm(parameterService, BZ_CONNECT_PW))
-        .url(getParm(parameterService, BZ_CONNECT_URL))
-        .timeoutInSeconds(10)
-        .build());
+    return Optional.empty();
   }
 
   /**
    * Returns all the printers
    */
   public List<Printer> getPrinters() {
-    return Objects.requireNonNull(restClient.listPrinters().body()).getPrinters();
+    return restClient.listPrinters().getPrinters();
   }
 
   /**

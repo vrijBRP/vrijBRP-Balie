@@ -64,7 +64,6 @@ public class Page4PersonListMutations extends NormalPageTemplate {
     addButton(buttonPrev);
 
     ZaakStatusType initieleStatus = getServices().getZaakStatusService().getInitieleStatus(mutation);
-    System.out.println(initieleStatus);
     if (ZaakStatusType.OPGENOMEN == initieleStatus) {
       buttonNext.setCaption("Opslaan en verwerken (F2)");
       buttonSave.setCaption("Alleen opslaan (F9)");

@@ -25,7 +25,6 @@ import static nl.procura.standard.Globalfunctions.*;
 import nl.procura.diensten.gba.ple.extensions.PLResultComposite;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
-import nl.procura.diensten.gba.ple.procura.templates.custom.CustomTemplate;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.SelectListener;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page2.Page2QuickSearch;
@@ -49,7 +48,7 @@ public class Page1QuickSearch extends NormalPageTemplate {
 
     if (event.isEvent(InitPage.class)) {
       addButton(buttonSearch);
-      addButton(buttonReset);
+      addButton(buttonReset, 1f);
       addButton(buttonClose);
       addComponent(form);
     }
@@ -91,7 +90,6 @@ public class Page1QuickSearch extends NormalPageTemplate {
     args.setCat(HUW_GPS, isTru(getApplication().getServices().getGebruiker().getParameters().get(
         ParameterConstant.ZOEK_PLE_NAAMGEBRUIK).getValue()));
 
-    args.setCustomTemplate(CustomTemplate.PERSON);
     args.setDatasource(PLEDatasource.PROCURA);
     args.setMaxFindCount(aval(getApplication().getServices().getGebruiker().getParameters().get(
         ParameterConstant.ZOEK_MAX_FOUND_COUNT).getValue()));

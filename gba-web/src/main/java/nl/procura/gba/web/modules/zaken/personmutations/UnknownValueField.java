@@ -17,25 +17,22 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1;
+package nl.procura.gba.web.modules.zaken.personmutations;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.*;
+import org.apache.commons.lang3.StringUtils;
 
-import com.vaadin.ui.Field;
+import nl.procura.gba.web.components.fields.GbaTextField;
+import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
-import nl.procura.gba.web.components.layouts.form.GbaForm;
+public class UnknownValueField extends GbaTextField {
 
-public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
-
-  public Page1QuickSearchForm() {
-    setOrder(GESLACHTSNAAM, BSN, GEBOORTEDATUM, ANR);
-    setColumnWidths(WIDTH_130, "200px", "110px", "");
-    setBean(new Page1QuickSearchBean());
-  }
-
-  @Override
-  public Field newField(Field field, Property property) {
-    field.setWidth("150px");
-    return super.newField(field, property);
+  public UnknownValueField() {
+    addListener((ValueChangeListener) event -> {
+      FieldValue newValue = new FieldValue(event.getProperty().getValue());
+      String newValueValue = newValue.getValue().toString().toLowerCase();
+      if (newValueValue.equals(".") || StringUtils.containsAny(newValueValue, "onbekend", "standaardwaarde")) {
+        setValue(new FieldValue(".", "Onbekend (standaardwaarde)"));
+      }
+    });
   }
 }

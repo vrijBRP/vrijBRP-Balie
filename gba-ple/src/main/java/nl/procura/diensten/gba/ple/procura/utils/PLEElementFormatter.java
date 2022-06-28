@@ -139,7 +139,7 @@ public class PLEElementFormatter {
     }
 
     BasePLValue waarden = new BasePLValue();
-    String key = catCode + "." + elementCode + "." + input.toString();
+    String key = catCode + "." + elementCode + "." + input;
 
     if (cache.containsKey(key)) {
       return cache.get(key);
@@ -230,6 +230,7 @@ public class PLEElementFormatter {
 
       case GESLACHTSNAAM:
         diacriet(waarden, input, Diacs.NAAM, isLandelijkeTabel);
+        onbekendeWaardeOmschrijving(waarden);
         break;
 
       case REDEN_ONTBINDING:
@@ -238,10 +239,16 @@ public class PLEElementFormatter {
 
       case STRAATNAAM:
         diacriet(waarden, input, Diacs.STRAAT, isLandelijkeTabel);
+        onbekendeWaardeOmschrijving(waarden);
+        break;
+
+      case BESCHRIJVING_DOC:
+        diacriet(waarden, input, Diacs.DOC, isLandelijkeTabel);
+        onbekendeWaardeOmschrijving(waarden);
         break;
 
       case SOORT_NL_REISDOC:
-        diacriet(waarden, input, Diacs.DOC, isLandelijkeTabel);
+        diacriet(waarden, input, Diacs.REISDOC, isLandelijkeTabel);
         waarden.setVal(astr(get(input, "Zoekarg")));
         break;
 
@@ -293,6 +300,12 @@ public class PLEElementFormatter {
     return waarden;
   }
 
+  private void onbekendeWaardeOmschrijving(BasePLValue waarden) {
+    if (waarden.getVal().equals(".")) {
+      waarden.setDescr("Onbekend (standaardwaarde)");
+    }
+  }
+
   private String padl(String waarde, int i) {
     return getTemplate().padl(waarde, i);
   }
@@ -306,7 +319,7 @@ public class PLEElementFormatter {
       Method subMethod = o.getClass().getMethod(toGet(name));
       return subMethod.invoke(o);
     } catch (Exception e) {
-      log.debug("Method not found: " + o.getClass() + " = " + e.toString());
+      log.debug("Method not found: " + o.getClass() + " = " + e);
     }
 
     return null;

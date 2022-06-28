@@ -71,12 +71,14 @@ public class PrinterContainer extends ArrayListContainer {
   }
 
   private void addNetworkPrinters(Services services) {
-    VrijBrpConnectClient client = VrijBrpConnectClient.of(services.getParameterService());
-    for (Printer printer : client.getPrinters()) {
-      String label = NETWORK_PRINTER.getDescr() + ": " + printer.getName();
-      PrintOptieValue value = new PrintOptieValue(NETWORK_PRINTER, printer.getName(), label);
-      value.setNetworkPrinter(printer);
-      printers.add(value);
-    }
+    VrijBrpConnectClient.of(services.getParameterService())
+        .ifPresent(client -> {
+          for (Printer printer : client.getPrinters()) {
+            String label = NETWORK_PRINTER.getDescr() + ": " + printer.getName();
+            PrintOptieValue value = new PrintOptieValue(NETWORK_PRINTER, printer.getName(), label);
+            value.setNetworkPrinter(printer);
+            printers.add(value);
+          }
+        });
   }
 }

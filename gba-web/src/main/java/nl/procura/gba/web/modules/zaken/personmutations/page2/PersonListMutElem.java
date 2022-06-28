@@ -31,6 +31,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.vaadin.ui.AbstractField;
 
@@ -66,7 +67,6 @@ public class PersonListMutElem {
   public boolean isVisible() {
     List<GBAGroup> list = new ArrayList<>();
     if (rec.getCatType().is(GBACat.INSCHR)) {
-      //list.add(GELDIGHEID);
       list.add(OPNEMING);
     }
     list.add(GBAGroup.VERIFICATIE);
@@ -154,7 +154,14 @@ public class PersonListMutElem {
   }
 
   public boolean isChanged() {
-    return !Objects.equals(getNewValue(), getCurrentValue().getVal());
+    // Workaround voor datums die soms 0 of soms 00000000 hebben.
+    long currentNr = NumberUtils.toLong(getNewValue(), -1L);
+    long newNr = NumberUtils.toLong(getCurrentValue().getVal(), -1L);
+    if (currentNr >= 0 && newNr >= 0) {
+      return currentNr != newNr;
+    } else {
+      return !Objects.equals(getNewValue(), getCurrentValue().getVal());
+    }
   }
 
   @Override

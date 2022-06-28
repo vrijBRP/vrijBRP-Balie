@@ -90,7 +90,6 @@ public class ActionContainer extends MutationFieldContainer {
         }
 
         boolean profielActie = application.isProfielActie(ProfielActie.SELECT_PL_SUPERUSER_MUTATIONS);
-        System.out.println(profielActie);
         if (profielActie) {
           addSuperUserActions(record);
         }

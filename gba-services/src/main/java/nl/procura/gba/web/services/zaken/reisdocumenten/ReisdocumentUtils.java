@@ -217,11 +217,11 @@ public class ReisdocumentUtils {
       return false;
     }
 
-    if ((rd == VREEMDELINGEN_PASPOORT) && (!pl.getNatio().isBehandeldAlsNederlander() && !heeftVreemdelijkeVbt)) {
+    if ((rd == VREEMDELINGEN_PASPOORT) && !(pl.getNatio().isBehandeldAlsNederlander() || heeftVreemdelijkeVbt)) {
       return false;
     }
 
-    if ((rd == VLUCHTELINGEN_PASPOORT) && !pl.getNatio().isNietNederlander() && !heeftVluchtelingVbt) {
+    if ((rd == VLUCHTELINGEN_PASPOORT) && !(pl.getNatio().isNietNederlander() && heeftVluchtelingVbt)) {
       return false;
     }
 

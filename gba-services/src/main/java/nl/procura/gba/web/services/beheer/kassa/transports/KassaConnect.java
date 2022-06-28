@@ -20,15 +20,20 @@
 package nl.procura.gba.web.services.beheer.kassa.transports;
 
 import java.util.List;
+import java.util.Optional;
 
 import nl.procura.gba.web.services.beheer.connect.VrijBrpConnectClient;
 import nl.procura.gba.web.services.beheer.kassa.KassaFile;
 import nl.procura.gba.web.services.beheer.kassa.KassaParameters;
+import nl.procura.standard.exceptions.ProException;
+
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 public class KassaConnect {
 
   public void send(KassaParameters parameters, List<KassaFile> bestanden) {
-    VrijBrpConnectClient client = VrijBrpConnectClient.of(parameters.getParameterService());
+    VrijBrpConnectClient client = VrijBrpConnectClient.of(parameters.getParameterService())
+        .orElseThrow(() -> new ProException(WARNING, "VrijBRP Connect is niet ingeschakeld"));
     bestanden.forEach(client::sendToKassa);
   }
 }

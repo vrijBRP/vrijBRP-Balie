@@ -32,6 +32,8 @@ import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.standard.exceptions.ProExceptionType;
 
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+
 /**
  * This printer connects to the VrijBRP Connect application
  */
@@ -42,7 +44,8 @@ public class ConnectPrinter extends AbstractPrinter {
 
   public ConnectPrinter(PrintOptie printOptie, Services services) throws ProException {
     super(printOptie, services.getGebruiker());
-    client = VrijBrpConnectClient.of(services.getParameterService());
+    client = VrijBrpConnectClient.of(services.getParameterService())
+        .orElseThrow(() -> new ProException(WARNING, "VrijBRP Connect is niet ingeschakeld"));
     printer = client.getPrinter(printOptie.getPrintoptie());
   }
 

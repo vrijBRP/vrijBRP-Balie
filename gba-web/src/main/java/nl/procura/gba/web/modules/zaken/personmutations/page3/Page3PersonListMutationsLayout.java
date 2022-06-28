@@ -36,6 +36,7 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.validator.AbstractStringValidator;
 import com.vaadin.ui.*;
 
+import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
@@ -45,16 +46,17 @@ import nl.procura.burgerzaken.gba.core.validators.NumVal;
 import nl.procura.burgerzaken.gba.core.validators.Val;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.common.validators.GbaDatumValidator;
 import nl.procura.gba.web.components.containers.TabelContainer;
-import nl.procura.gba.web.components.fields.*;
+import nl.procura.gba.web.components.fields.DateReference;
+import nl.procura.gba.web.components.fields.GbaTextField;
+import nl.procura.gba.web.components.fields.IndicatieOnjuistField;
+import nl.procura.gba.web.components.fields.UpperCaseField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
-import nl.procura.gba.web.modules.zaken.personmutations.AbstractPersonMutationsTable;
-import nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBox;
-import nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType;
-import nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsChecks;
+import nl.procura.gba.web.modules.zaken.personmutations.*;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElem;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElems;
 import nl.procura.gba.web.services.Services;
@@ -62,7 +64,6 @@ import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.exceptions.ProException;
-import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.*;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -133,8 +134,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       FieldValue gem = (FieldValue) gemeente.getField().getValue();
       int plaatsCode = aval((gem != null) ? gem.getValue() : gemeente.getElem().getValue().getVal());
       boolean isGemeente = Services.getInstance().getGebruiker().isGemeente(plaatsCode);
-      AbstractField field = isGemeente ? getDefaultComponent(straat)
-          : getUnknownValueField(straat.getCurrentValue().getVal());
+      AbstractField field = isGemeente ? getDefaultComponent(straat) : new UnknownValueField();
       straat.setField(setFieldStyle(field));
       setDefaultValues(straat);
       setEditableFieldProperties(field, straat);
@@ -182,7 +182,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       field = new PostalcodeField();
 
     } else if (pleE.getElem() == GBAElem.GESLACHTSNAAM) {
-      field = getUnknownValueField(mutElem.getCurrentValue().getVal());
+      field = new UnknownValueField();
 
     } else if (pleE.getElem() == GBAElem.AAND_GEG_IN_ONDERZ) {
       field = new IndicatieOnjuistField(mutElem.getCat());
@@ -270,16 +270,6 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     return field;
   }
 
-  private GbaComboBox getUnknownValueField(String initialValue) {
-    GbaComboBox field = new GbaComboBox();
-    ArrayListContainer container = new ArrayListContainer();
-    container.addItem(new FieldValue("Onbekend (standaardwaarde)"));
-    container.addItem(new FieldValue(initialValue));
-    field.setContainerDataSource(container);
-    field.setNewItemsAllowed(true);
-    return field;
-  }
-
   private AbstractField setEditableFieldProperties(AbstractField field, PersonListMutElem mutElem) {
     field.setImmediate(true);
     field.addValidator(PersonListMutationsChecks.getValidator(mutElem, list));
@@ -355,6 +345,27 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
         .setValue(mutationRecord.getDefaultValue()
             .map(Supplier::get)
             .orElse(new FieldValue(val.getVal(), val.getDescr())));
+  }
+
+  public void updatePl(BasePLExt pl) {
+    updateElement(pl, GBAElem.ANR);
+    updateElement(pl, GBAElem.BSN);
+    updateElement(pl, GBAElem.VOORNAMEN);
+    updateElement(pl, GBAElem.TITEL_PREDIKAAT);
+    updateElement(pl, GBAElem.VOORV_GESLACHTSNAAM);
+    updateElement(pl, GBAElem.GESLACHTSNAAM);
+    updateElement(pl, GBAElem.GEBOORTEDATUM);
+    updateElement(pl, GBAElem.GEBOORTELAND);
+    updateElement(pl, GBAElem.GEBOORTEPLAATS);
+    updateElement(pl, GBAElem.GESLACHTSAAND);
+  }
+
+  private void updateElement(BasePLExt pl, GBAElem gbaElem) {
+    list.getElem(gbaElem)
+        .ifPresent(element -> {
+          BasePLValue val = pl.getCat(GBACat.PERSOON).getCurrentRec().getElem(gbaElem).getValue();
+          element.getField().setValue(new FieldValue(val.getVal(), val.getDescr()));
+        });
   }
 
   public class ComboChangeListener implements ValueChangeListener {
