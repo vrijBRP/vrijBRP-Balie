@@ -32,6 +32,7 @@ public enum ZaakContactpersoonType {
   MEEVERHUIZER("Meeverhuizer"),
   BETROKKENE_ONDERZOEK("Betrokkene bij onderzoek"),
   INSCHRIJVER("Inschrijver"),
+  CONTACTPERSOON("Correspondentie contactpersoon"),
   ONBEKEND("Onbekend");
 
   private String descr;

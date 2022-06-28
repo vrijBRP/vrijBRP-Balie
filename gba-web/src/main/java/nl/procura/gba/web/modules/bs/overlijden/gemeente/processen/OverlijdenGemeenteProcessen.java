@@ -50,11 +50,11 @@ public class OverlijdenGemeenteProcessen extends BsProcessen {
 
     addProces("Aangever", Page1Overlijden.class);
     addProces("Aangifte", Page20Overlijden.class);
-    addProces("Correspondentie", Page80Overlijden.class);
     addProces("Overledene", Page30Overlijden.class);
     addProces("Gerelateerden", Page40Overlijden.class);
     addProces("Overzicht", Page50Overlijden.class);
     addProces("Aktenummer", Page60Overlijden.class);
+    addProces("Correspondentie", Page80Overlijden.class);
     addProces("Afdrukken", Page70Overlijden.class);
   }
 
@@ -71,11 +71,11 @@ public class OverlijdenGemeenteProcessen extends BsProcessen {
 
       statussen.add(Page1Overlijden.class, isAangever ? COMPLETE : EMPTY);
       statussen.add(Page20Overlijden.class, isAangever ? COMPLETE : EMPTY);
-      statussen.add(Page80Overlijden.class, verzoekInd ? (aangifteVolledig ? COMPLETE : EMPTY) : DISABLED);
       statussen.add(Page30Overlijden.class, aangifteVolledig ? COMPLETE : EMPTY);
       statussen.add(Page40Overlijden.class, isOverledene ? COMPLETE : EMPTY);
       statussen.add(Page50Overlijden.class, isOverledene ? COMPLETE : EMPTY);
       statussen.add(Page60Overlijden.class, dossier.isAktesCorrect() ? COMPLETE : EMPTY);
+      statussen.add(Page80Overlijden.class, verzoekInd ? (aangifteVolledig ? COMPLETE : EMPTY) : DISABLED);
     }
 
     return statussen;

@@ -51,11 +51,11 @@ public class LijkvindingProcessen extends BsProcessen {
     super(gbaApplication);
 
     addProces("Aangifte", Page20Lijkvinding.class);
-    addProces("Correspondentie", Page80Lijkvinding.class);
     addProces("Overledene", Page30Lijkvinding.class);
     addProces("Gerelateerden", Page40Lijkvinding.class);
     addProces("Overzicht", Page50Lijkvinding.class);
     addProces("Aktenummer", Page60Lijkvinding.class);
+    addProces("Correspondentie", Page80Lijkvinding.class);
     addProces("Afdrukken", Page70Lijkvinding.class);
   }
 

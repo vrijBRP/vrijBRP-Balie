@@ -38,6 +38,7 @@ import nl.procura.gba.web.modules.beheer.parameters.ModuleParameters;
 import nl.procura.gba.web.modules.beheer.profielen.ModuleProfielen;
 import nl.procura.gba.web.modules.beheer.protocollering.ModuleProtocollering;
 import nl.procura.gba.web.modules.beheer.sms.ModuleSms;
+import nl.procura.gba.web.modules.beheer.verkiezing.ModuleVerkiezing;
 import nl.procura.gba.web.modules.tabellen.belanghebbende.ModuleBelanghebbende;
 import nl.procura.gba.web.modules.tabellen.huwelijksambtenaar.ModuleHuwelijkAmbtenaar;
 import nl.procura.gba.web.modules.tabellen.huwelijkslocatie.ModuleHuwelijkLocatie;
@@ -101,6 +102,7 @@ public class BeheerNavigation extends VerticalLayout {
       addLink(ModuleLogbestanden.class);
       addLink(ModuleEmail.class);
       addLink(ModuleSms.class);
+      addLink(ModuleVerkiezing.class);
     }
   }
 

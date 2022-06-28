@@ -22,12 +22,20 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.identificatie.
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.identificatie.page2.Page2ZaakIdentificatieBean.EXTERN_ID;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.identificatie.page2.Page2ZaakIdentificatieBean.TYPE;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Field;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatie;
+import nl.procura.vaadin.component.dialog.ConfirmDialog;
+import nl.procura.vaadin.component.layout.table.TableLayout;
+import org.apache.commons.lang3.StringUtils;
 
 public class Page2ZaakIdentificatieForm extends GbaForm<Page2ZaakIdentificatieBean> {
 
-  public Page2ZaakIdentificatieForm(ZaakIdentificatie id) {
+  private boolean zakenDmsAan;
+
+  public Page2ZaakIdentificatieForm(boolean zaakDmsAan, ZaakIdentificatie id) {
+    this.zakenDmsAan = zaakDmsAan;
     setCaption("Zaakidentificatie");
     setOrder(TYPE, EXTERN_ID);
     setColumnWidths("70px", "");
@@ -37,5 +45,34 @@ public class Page2ZaakIdentificatieForm extends GbaForm<Page2ZaakIdentificatieBe
     bean.setExternId(id.getExternId());
 
     setBean(bean);
+  }
+
+  @Override
+  public void afterSetColumn(TableLayout.Column column, Field field, Property property) {
+    if (property.is(EXTERN_ID)) {
+      if (zakenDmsAan) {
+        column.addComponent(new Button("Nieuw zaak-id opvragen", (Button.ClickListener) clickEvent -> {
+          Object value = field.getValue();
+          if (value != null && StringUtils.isNotBlank(value.toString())) {
+            ConfirmDialog confirmDialog = new ConfirmDialog("Wilt u het huidige zaak-id overschrijven?") {
+
+              @Override
+              public void buttonYes() {
+                updateField(field);
+                super.buttonYes();
+              }
+            };
+            getApplication().getParentWindow().addWindow(confirmDialog);
+          } else {
+            updateField(field);
+          }
+        }));
+      }
+    }
+    super.afterSetColumn(column, field, property);
+  }
+
+  private void updateField(Field field) {
+    field.setValue(getApplication().getServices().getZaakDmsService().genereerZaakId().getExternId());
   }
 }

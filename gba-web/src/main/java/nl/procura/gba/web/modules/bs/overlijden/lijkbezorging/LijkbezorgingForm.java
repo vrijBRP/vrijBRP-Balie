@@ -39,7 +39,6 @@ import nl.procura.gba.web.services.bs.algemeen.enums.OntvangenDocument;
 import nl.procura.gba.web.services.bs.algemeen.enums.TermijnLijkbezorging;
 import nl.procura.gba.web.services.bs.algemeen.enums.WijzeLijkbezorging;
 import nl.procura.gba.web.services.bs.overlijden.DossierOverlijdenLijkbezorging;
-import nl.procura.vaadin.component.field.ProNativeSelect;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.TimeFieldValue;
 
@@ -59,18 +58,14 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
 
   @Override
   public void setBean(Object bean) {
-
     super.setBean(bean);
-
     addListener(getField(WIJZE_LIJKBEZORGING));
     addListener(getField(TERMIJN_LIJKBEZORGING));
     addListener(getField(BUITEN_BENELUX));
     addListener(getField(DATUM_LIJKBEZORGING));
     addListener(getField(TIJD_LIJKBEZORGING));
 
-    toonVeldenWijzeLijkbezorging();
-    toonVeldenTermijnLijkbezorging();
-    toonVeldenBuitenBenelux();
+    updateWijzeLijkbezorging();
   }
 
   /**
@@ -93,90 +88,13 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
   }
 
   public void setCaptionAndOrder() {
-
     setCaption("Lijkbezorging");
     setOrder(WIJZE_LIJKBEZORGING, DATUM_LIJKBEZORGING, TIJD_LIJKBEZORGING, PLAATS_ONTLEDING, BUITEN_BENELUX,
         DOODSOORZAAK, LAND_BESTEMMING, PLAATS_BESTEMMING, VIA, VERVOERMIDDEL, TERMIJN_LIJKBEZORGING,
         ONTVANGEN_DOCUMENT_LIJKBEZORGING);
   }
 
-  public void toonVeldenBuitenBenelux() {
-
-    Field veld = getField(BUITEN_BENELUX);
-
-    if (veld != null) {
-      boolean buitenBenelux = (Boolean) veld.getValue();
-      getField(LAND_BESTEMMING).setVisible(buitenBenelux);
-      getField(PLAATS_BESTEMMING).setVisible(buitenBenelux);
-      getField(VIA).setVisible(buitenBenelux);
-      getField(DOODSOORZAAK).setVisible(buitenBenelux);
-      getField(VERVOERMIDDEL).setVisible(buitenBenelux);
-
-      ProNativeSelect termijn = getField(TERMIJN_LIJKBEZORGING, ProNativeSelect.class);
-      ProNativeSelect document = getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING, ProNativeSelect.class);
-
-      termijn.setVisible(!buitenBenelux);
-      document.setVisible(!buitenBenelux && !document.getContainerDataSource().getItemIds().isEmpty());
-    }
-
-    repaint();
-  }
-
-  public void toonVeldenTermijnLijkbezorging() {
-
-    Field veld = getField(TERMIJN_LIJKBEZORGING);
-
-    if (veld != null) {
-      TermijnLijkbezorging fv = (TermijnLijkbezorging) veld.getValue();
-
-      if (fv != null) {
-        GbaNativeSelect select = (GbaNativeSelect) getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING);
-        select.setDataSource(new OntvangenDocumentContainer(fv));
-        select.setVisible(select.getContainerDataSource().size() > 0);
-        select.setValue(zaakDossier.getOntvangenDocumentLijkbezorging());
-      }
-    }
-
-    repaint();
-  }
-
-  public void toonVeldenWijzeLijkbezorging() {
-
-    Field veld = getField(WIJZE_LIJKBEZORGING);
-
-    if (veld != null) {
-      WijzeLijkbezorging fv = (WijzeLijkbezorging) veld.getValue();
-
-      if (fv != null) {
-        if (fv == WijzeLijkbezorging.ONTLEDING) {
-          // Datum
-          getField(DATUM_LIJKBEZORGING).setValue(null);
-          getField(DATUM_LIJKBEZORGING).setVisible(false);
-
-          // Tijd
-          getField(TIJD_LIJKBEZORGING).setValue(null);
-          getField(TIJD_LIJKBEZORGING).setVisible(false);
-
-          // Termijn
-          getField(TERMIJN_LIJKBEZORGING).setValue(TermijnLijkbezorging.ONBEKEND);
-          getField(TERMIJN_LIJKBEZORGING).setVisible(false);
-
-          getField(PLAATS_ONTLEDING).setVisible(true);
-        } else {
-          getField(DATUM_LIJKBEZORGING).setVisible(true);
-          getField(TIJD_LIJKBEZORGING).setVisible(true);
-          getField(TERMIJN_LIJKBEZORGING).setVisible(true);
-          getField(PLAATS_ONTLEDING).setVisible(false);
-          getField(PLAATS_ONTLEDING).setValue(null);
-        }
-      }
-    }
-
-    repaint();
-  }
-
   public void update() {
-
     LijkbezorgingBean bean = new LijkbezorgingBean();
 
     // Lijkbezorging
@@ -202,30 +120,7 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
     setBean(bean);
   }
 
-  /**
-   * Bepaal of de termijn binnen of na 36 uur is
-   */
-  public void updateTermijnLijkbezorging() {
-
-    List<Calendar> calendars = getFormCalendars();
-    Calendar beginTijdstip = calendars.get(0);
-    Calendar eindTijdstip = calendars.get(1);
-
-    if (beginTijdstip != null && eindTijdstip != null) {
-      if (isMinimaalAantalWerkdagen(toEindeDag(beginTijdstip), toBeginDag(eindTijdstip), 6)) {
-        setTermijnLijkbezorging(TermijnLijkbezorging.MEER_DAN_6_WERKDAGEN);
-
-      } else if (isMinimaalAantalUur(beginTijdstip, eindTijdstip, 36)) {
-        setTermijnLijkbezorging(TermijnLijkbezorging.MEER_DAN_36_UUR);
-
-      } else {
-        setTermijnLijkbezorging(TermijnLijkbezorging.MINDER_DAN_36_UUR);
-      }
-    }
-  }
-
   public void updateZaakDossier(DossierOverlijdenLijkbezorging zaakDossier) {
-
     zaakDossier.setWijzeLijkBezorging(getBean().getWijzeLijkBezorging());
     zaakDossier.setDatumLijkbezorging(new DateTime(getBean().getDatumLijkbezorging()));
     zaakDossier.setTijdLijkbezorging(
@@ -248,6 +143,7 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
       zaakDossier.setDoodsoorzaak(getBean().getDoodsoorzaak());
       zaakDossier.setTermijnLijkbezorging(TermijnLijkbezorging.ONBEKEND);
       zaakDossier.setOntvangenDocumentLijkbezorging(OntvangenDocument.ONBEKEND);
+
     } else {
       zaakDossier.setLandBestemming(new FieldValue());
       zaakDossier.setPlaatsBestemming("");
@@ -257,21 +153,105 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
     }
   }
 
-  // Override please
-  protected void onDatumWijziging() {
+  private boolean isBegraven() {
+    return WijzeLijkbezorging.BEGRAVING_CREMATIE.equals(getField(WIJZE_LIJKBEZORGING).getValue());
+  }
+
+  private boolean isBuitenBenelux() {
+    return (boolean) getField(BUITEN_BENELUX).getValue();
+  }
+
+  private TermijnLijkbezorging getTermijn() {
+    return (TermijnLijkbezorging) getField(TERMIJN_LIJKBEZORGING).getValue();
+  }
+
+  private void updateWijzeLijkbezorging() {
+    if (isBegraven()) {
+      getField(PLAATS_ONTLEDING).setVisible(false);
+      getField(PLAATS_ONTLEDING).setValue(null);
+      getField(DATUM_LIJKBEZORGING).setVisible(true);
+      getField(TIJD_LIJKBEZORGING).setVisible(true);
+      getField(TERMIJN_LIJKBEZORGING).setVisible(true);
+
+    } else {
+      getField(PLAATS_ONTLEDING).setVisible(true);
+      getField(DATUM_LIJKBEZORGING).setValue(null);
+      getField(DATUM_LIJKBEZORGING).setVisible(false);
+      getField(TIJD_LIJKBEZORGING).setValue(null);
+      getField(TIJD_LIJKBEZORGING).setVisible(false);
+      getField(TERMIJN_LIJKBEZORGING).setValue(TermijnLijkbezorging.ONBEKEND);
+      getField(TERMIJN_LIJKBEZORGING).setVisible(false);
+      getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING).setValue(OntvangenDocument.ONBEKEND);
+      getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING).setVisible(false);
+    }
+
+    setBuitenBenelux();
+    repaint();
+  }
+
+  private void setBuitenBenelux() {
+    boolean buitenBenelux = isBuitenBenelux();
+    getField(LAND_BESTEMMING).setVisible(buitenBenelux);
+    getField(PLAATS_BESTEMMING).setVisible(buitenBenelux);
+    getField(VIA).setVisible(buitenBenelux);
+    getField(DOODSOORZAAK).setVisible(buitenBenelux);
+    getField(VERVOERMIDDEL).setVisible(buitenBenelux);
+    onDatumsWijziging();
+    repaint();
+  }
+
+  /**
+   * Bepaal of de termijn binnen of na 36 uur is
+   */
+  public void onDatumsWijziging() {
+    getField(TERMIJN_LIJKBEZORGING).setVisible(false);
+    getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING).setVisible(false);
+
+    List<Calendar> calendars = getFormCalendars();
+    if (calendars.size() > 0) {
+      Calendar beginTijdstip = calendars.get(0);
+      Calendar eindTijdstip = calendars.get(1);
+
+      if (beginTijdstip != null && eindTijdstip != null) {
+        if (isMinimaalAantalWerkdagen(toEindeDag(beginTijdstip), toBeginDag(eindTijdstip), 6)) {
+          setTermijnLijkbezorging(TermijnLijkbezorging.MEER_DAN_6_WERKDAGEN);
+
+        } else if (isMinimaalAantalUur(beginTijdstip, eindTijdstip, 36)) {
+          setTermijnLijkbezorging(TermijnLijkbezorging.MEER_DAN_36_UUR);
+
+        } else {
+          setTermijnLijkbezorging(TermijnLijkbezorging.MINDER_DAN_36_UUR);
+        }
+      }
+    }
+    repaint();
+  }
+
+  private void setTermijnLijkbezorging(TermijnLijkbezorging termijnLijkbezorging) {
+    getField(TERMIJN_LIJKBEZORGING).setVisible(isBegraven() && !isBuitenBenelux());
+    getField(TERMIJN_LIJKBEZORGING).setValue(termijnLijkbezorging);
+    updateVeldDocumentOntvangen();
+  }
+
+  private void updateVeldDocumentOntvangen() {
+    if (isBegraven() && !isBuitenBenelux() && getTermijn() != null) {
+      GbaNativeSelect select = (GbaNativeSelect) getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING);
+      select.setDataSource(new OntvangenDocumentContainer(getTermijn()));
+      select.setVisible(select.getContainerDataSource().size() > 0);
+      select.setValue(zaakDossier.getOntvangenDocumentLijkbezorging());
+    }
+    repaint();
   }
 
   private void addListener(Field field) {
-
     if (field != null) {
       field.addListener((ValueChangeListener) event -> {
         if (event.getProperty() == getField(WIJZE_LIJKBEZORGING)) {
-          toonVeldenWijzeLijkbezorging();
-        } else if (event.getProperty() == getField(TERMIJN_LIJKBEZORGING)) {
-          toonVeldenTermijnLijkbezorging();
+          updateWijzeLijkbezorging();
         } else if (event.getProperty() == getField(BUITEN_BENELUX)) {
-          toonVeldenBuitenBenelux();
-          updateTermijnLijkbezorging();
+          setBuitenBenelux();
+        } else if (event.getProperty() == getField(TERMIJN_LIJKBEZORGING)) {
+          updateVeldDocumentOntvangen();
         } else {
           onDatumWijziging();
         }
@@ -279,12 +259,7 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
     }
   }
 
-  private void setTermijnLijkbezorging(TermijnLijkbezorging termijnLijkbezorging) {
-
-    if (!termijnLijkbezorging.equals(getField(TERMIJN_LIJKBEZORGING).getValue())) {
-      getField(TERMIJN_LIJKBEZORGING).setValue(termijnLijkbezorging);
-      getBean().setTermijnLijkbezorging(termijnLijkbezorging);
-      toonVeldenTermijnLijkbezorging();
-    }
+  // Override please
+  protected void onDatumWijziging() {
   }
 }

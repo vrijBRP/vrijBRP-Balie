@@ -143,5 +143,9 @@
         <class>nl.procura.gba.jpa.personen.db.DossNk</class>
         <class>nl.procura.gba.jpa.personen.db.ZaakConf</class>
         <class>nl.procura.gba.jpa.personen.db.ZakenView</class>
+        <class>nl.procura.gba.jpa.personen.db.KiesrVerk</class>
+        <class>nl.procura.gba.jpa.personen.db.KiesrStem</class>
+        <class>nl.procura.gba.jpa.personen.db.KiesrWijz</class>
+        <class>nl.procura.gba.jpa.personen.db.KiesrVerkInfo</class>
     </persistence-unit>
 </persistence>

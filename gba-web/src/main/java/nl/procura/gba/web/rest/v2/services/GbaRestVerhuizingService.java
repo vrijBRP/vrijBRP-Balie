@@ -244,7 +244,7 @@ public class GbaRestVerhuizingService extends GbaRestAbstractService {
       GbaRestHervestiging restVerh = new GbaRestHervestiging();
       restVerh.setNieuwAdres(toBinnenlandsAdres(zaak.getNieuwAdres()));
       restVerh.setDatum(hervestiging.getDatumHervestiging().getIntDate());
-      restVerh.setDuur(toEnum(GbaRestVerhuisduurType.values(), hervestiging.getDuur()));
+      restVerh.setDuur(hervestiging.getDuur().toLowerCase().contains("korter") ? KORTER : LANGER);
       restVerh.setLand(toTableRecord(hervestiging.getLand()));
       restVerh.setRechtsfeiten(hervestiging.getRechtsfeiten());
       return restVerh;

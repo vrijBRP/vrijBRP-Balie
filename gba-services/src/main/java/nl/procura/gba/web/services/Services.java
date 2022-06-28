@@ -51,6 +51,7 @@ import nl.procura.gba.web.services.beheer.profiel.ProfielExtrasService;
 import nl.procura.gba.web.services.beheer.profiel.ProfielService;
 import nl.procura.gba.web.services.beheer.raas.RaasService;
 import nl.procura.gba.web.services.beheer.sms.SmsService;
+import nl.procura.gba.web.services.beheer.verkiezing.KiezersregisterService;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
 import nl.procura.gba.web.services.bs.algemeen.akte.AkteService;
 import nl.procura.gba.web.services.bs.erkenning.ErkenningService;
@@ -205,6 +206,7 @@ public class Services {
     add(BelanghebbendeService.class);
     add(InboxService.class);
     add(SmsService.class);
+    add(KiezersregisterService.class);
     add(BagService.class);
     add(RaasService.class);
     add(OnderzoekService.class);
@@ -335,6 +337,10 @@ public class Services {
 
   public SmsService getSmsService() {
     return get(SmsService.class);
+  }
+
+  public KiezersregisterService getKiezersregisterService() {
+    return get(KiezersregisterService.class);
   }
 
   public BagService getGeoService() {

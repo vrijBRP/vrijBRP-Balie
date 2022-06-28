@@ -26,6 +26,7 @@ public class ActieDescr {
   public static final String BEHEER_DMS                      = "(Beheer) dms";
   public static final String BEHEER_EMAIL                    = "(Beheer) e-mail";
   public static final String BEHEER_SMS                      = "(Beheer) sms";
+  public static final String BEHEER_VERKIEZING               = "(Beheer) verkiezing";
   public static final String BEHEER_GEBRUIKERS               = "(Beheer) gebruikers";
   public static final String BEHEER_ONDERHOUD                = "(Beheer) onderhoud";
   public static final String BEHEER_PROFIELEN                = "(Beheer) profielen";
@@ -72,6 +73,7 @@ public class ActieDescr {
   public static final String ZAAK_GPK                        = "(Zaak) gpk";
   public static final String ZAAK_CORRESPONDENTIE            = "(Zaak) correspondentie";
   public static final String ZAAK_NAAMGEBRUIK                = "(Zaak) naamgebruik";
+  public static final String ZAAK_KIEZERSREGISTER            = "(Zaak) kiezersregister";
   public static final String ZAAK_UITTREKSEL                 = "(Zaak) uittreksel";
   public static final String ZAAK_INDICATIE                  = "(Zaak) indicatie";
   public static final String ZAAK_REISDOCUMENT               = "(Zaak) reisdocument";

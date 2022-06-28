@@ -30,7 +30,7 @@ public enum GbaRestRedenVerplichtOfBevoegdType implements GbaRestEnum<String> {
   GEBOORTE_IN_MIJN_WONING("W", "Geboorte in mijn woning"),
   GEBOORTE_IN_MIJN_INSTELLING("I", "Geboorte in mijn instelling"),
   MOEDER("M", "Moeder"),
-  BURGEMEESTER("M", "Burgemeester"),
+  BURGEMEESTER("X", "Burgemeester"),
   KENNISDRAGER("K", "Kennisdrager"),
   ONBEKEND("", "Onbekend");
 

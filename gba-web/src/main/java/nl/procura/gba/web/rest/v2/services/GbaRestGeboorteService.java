@@ -143,13 +143,7 @@ public class GbaRestGeboorteService extends GbaRestAbstractService {
     if (aangifte != null) {
       GbaRestRedenVerplichtOfBevoegdType redenVerplicht = aangifte.getRedenVerplichtOfBevoegd();
       if (redenVerplicht != null) {
-        switch (redenVerplicht) {
-          case VADER:
-            geboorte.setRedenVerplichtBevoegd(RedenVerplicht.VADER);
-            break;
-          default:
-            throw new ProException("Onbekende waarde: reden verplicht / bevoegd " + redenVerplicht);
-        }
+        geboorte.setRedenVerplichtBevoegd(RedenVerplicht.get(aangifte.getRedenVerplichtOfBevoegd().getCode()));
       }
     }
 

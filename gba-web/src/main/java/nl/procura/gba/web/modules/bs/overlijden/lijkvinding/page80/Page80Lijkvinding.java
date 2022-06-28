@@ -27,8 +27,6 @@ import nl.procura.gba.web.modules.bs.overlijden.correspondentie.CorrespondentieB
 import nl.procura.gba.web.modules.bs.overlijden.correspondentie.CorrespondentieForm;
 import nl.procura.gba.web.modules.bs.overlijden.correspondentie.UittrekselTable;
 import nl.procura.gba.web.modules.bs.overlijden.lijkvinding.BsPageLijkvinding;
-import nl.procura.gba.web.modules.bs.overlijden.lijkvinding.page20.Page20Lijkvinding;
-import nl.procura.gba.web.modules.bs.overlijden.lijkvinding.page30.Page30Lijkvinding;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -85,12 +83,12 @@ public class Page80Lijkvinding extends BsPageLijkvinding {
   }
 
   @Override
-  public void onNextPage() {
-    getNavigation().goToPage(Page30Lijkvinding.class);
+  public void onPreviousPage() {
+    goToPreviousProces();
   }
 
   @Override
-  public void onPreviousPage() {
-    getNavigation().goBackToPage(Page20Lijkvinding.class);
+  public void onNextPage() {
+    goToNextProces();
   }
 }

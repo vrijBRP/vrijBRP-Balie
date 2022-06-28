@@ -19,32 +19,51 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person;
 
+import com.vaadin.ui.VerticalLayout;
+
 import nl.procura.gba.web.components.layouts.ModuleTemplate;
+import nl.procura.gba.web.components.layouts.tabsheet.GbaTabsheet;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearch;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page3.Page3QuickSearch;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+import nl.procura.validation.Anummer;
 
 public class QuickSearchPersonWindow extends GbaModalWindow {
 
-  private final SelectListener snelZoekListener;
+  private final Anummer        anummer;
+  private final SelectListener selectListener;
 
-  private MainModuleContainer mainModule = null;
+  public QuickSearchPersonWindow(SelectListener selectListener) {
+    this(null, selectListener);
+  }
 
-  public QuickSearchPersonWindow(SelectListener snelZoekListener) {
+  public QuickSearchPersonWindow(Anummer anummer, SelectListener selectListener) {
     super("Zoek personen (Druk op escape om te sluiten)", "700px");
-    this.snelZoekListener = snelZoekListener;
+    this.anummer = anummer;
+    this.selectListener = selectListener;
   }
 
   @Override
   public void attach() {
-
     super.attach();
 
-    if (mainModule == null) {
-      mainModule = new MainModuleContainer();
-      addComponent(mainModule);
+    if (anummer != null && anummer.isCorrect()) {
+      GbaTabsheet tabSheet = new GbaTabsheet();
+      tabSheet.setSizeFull();
+      tabSheet.setNoBorderTop();
+      tabSheet.addTab(new Module(), "Zoeken");
+      tabSheet.addTab(new Page3QuickSearch(anummer, selectListener), "Gerelateerden");
+      setContent(tabSheet);
+
+    } else {
+      MainModuleContainer mainModule = new MainModuleContainer();
+      VerticalLayout v = new VerticalLayout();
+      v.setMargin(false);
+      v.addComponent(mainModule);
+      setContent(v);
       mainModule.getNavigation().addPage(new Module());
     }
   }
@@ -58,9 +77,8 @@ public class QuickSearchPersonWindow extends GbaModalWindow {
     @Override
     public void event(PageEvent event) {
       super.event(event);
-
       if (event.isEvent(InitPage.class)) {
-        getPages().getNavigation().goToPage(new Page1QuickSearch(snelZoekListener));
+        getPages().getNavigation().goToPage(new Page1QuickSearch(selectListener));
       }
     }
   }

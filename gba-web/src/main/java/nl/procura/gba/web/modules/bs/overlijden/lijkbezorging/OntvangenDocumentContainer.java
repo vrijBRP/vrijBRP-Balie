@@ -28,9 +28,7 @@ import nl.procura.gba.web.services.bs.algemeen.enums.TermijnLijkbezorging;
 public class OntvangenDocumentContainer extends GbaContainer {
 
   public OntvangenDocumentContainer(TermijnLijkbezorging termijnLijkbezorging) {
-
     removeAllItems();
-
     switch (termijnLijkbezorging) {
       case MEER_DAN_36_UUR:
         break;

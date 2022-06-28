@@ -60,6 +60,7 @@ import nl.procura.gba.web.modules.zaken.sms.ModuleSms;
 import nl.procura.gba.web.modules.zaken.tmv.ModuleTmv;
 import nl.procura.gba.web.modules.zaken.uittreksel.ModuleUittreksel;
 import nl.procura.gba.web.modules.zaken.verhuizing.ModuleVerhuizing;
+import nl.procura.gba.web.modules.zaken.verkiezing.ModuleVerkiezing;
 import nl.procura.gba.web.modules.zaken.vog.ModuleVog;
 import nl.procura.gba.web.modules.zaken.woningkaart.ModuleWoningkaart;
 import nl.procura.gba.web.services.AbstractService;
@@ -135,6 +136,7 @@ public class Page1OverzichtZaken extends ZakenPage {
       addZaak(new Zaak(ModuleProtocol.class, true));
       addZaak(new Zaak(ModuleWoningkaart.class, true));
       addZaak(new Zaak(ModuleSms.class, true));
+      addZaak(new Zaak(ModuleVerkiezing.class, true));
 
       for (Element<Zaak> element : matrix.getElements()) {
         Zaak zaak = element.getObject();

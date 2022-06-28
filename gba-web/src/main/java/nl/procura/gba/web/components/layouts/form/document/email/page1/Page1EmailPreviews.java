@@ -223,11 +223,9 @@ public class Page1EmailPreviews extends NormalPageTemplate {
         ZaakContact contact = zaakContactService.getContact(contactZaak);
 
         for (ZaakContactpersoon persoon : contact.getPersonen()) {
-
           String functie = persoon.getType().getDescr();
           String naam = persoon.getNaam();
           String email = persoon.getGegeven(EMAIL);
-
           emailAdressen.add(new EmailAddress(EmailAddressType.TO, functie, naam, email));
         }
       }

@@ -92,6 +92,7 @@ public class LijkbezorgingBean implements Serializable {
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Buiten Benelux",
+      width = "76px",
       required = true)
   @Select(containerDataSource = NLBooleanContainer.class,
       itemCaptionPropertyId = NLBooleanContainer.JA_NEE,
@@ -100,6 +101,7 @@ public class LijkbezorgingBean implements Serializable {
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Termijn van lijkbezorging",
+      width = "350px",
       required = true)
   @Select(containerDataSource = TermijnLijkbezorgingContainer.class,
       nullSelectionAllowed = false)
@@ -107,7 +109,9 @@ public class LijkbezorgingBean implements Serializable {
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Ontvangen document",
+      width = "350px",
       required = true)
+  @Select(nullSelectionAllowed = false)
   private OntvangenDocument ontvangenDocumentLijkbezorging = OntvangenDocument.ONBEKEND;
 
   @Field(customTypeClass = GbaComboBox.class,

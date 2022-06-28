@@ -22,6 +22,7 @@ package nl.procura.gba.web.windows.persoonslijst.navigatie;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.modules.zaken.protocol.ModuleProtocol;
 import nl.procura.gba.web.modules.zaken.sms.ModuleSms;
+import nl.procura.gba.web.modules.zaken.verkiezing.ModuleVerkiezing;
 import nl.procura.gba.web.modules.zaken.woningkaart.ModuleWoningkaart;
 
 public class ZakenOptiesAccordionTab extends PlAccordionTab {
@@ -34,5 +35,6 @@ public class ZakenOptiesAccordionTab extends PlAccordionTab {
     addLink(ModuleProtocol.class);
     addLink(ModuleWoningkaart.class);
     addLink(ModuleSms.class);
+    addLink(ModuleVerkiezing.class);
   }
 }

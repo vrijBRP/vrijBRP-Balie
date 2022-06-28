@@ -24,6 +24,9 @@ import nl.procura.diensten.gba.ple.procura.templates.PLETemplateProcura;
 import nl.procura.diensten.gba.ple.procura.templates.PersonsTemplate;
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEArgsConverter;
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpaManager;
+import org.eclipse.persistence.exceptions.DatabaseException;
+
+import java.sql.SQLRecoverableException;
 
 public class PLE extends PLETemplateProcura {
 
@@ -46,21 +49,13 @@ public class PLE extends PLETemplateProcura {
       PersonsTemplate tPersonen = new PersonsTemplate();
       tPersonen.init(this);
       tPersonen.parse();
-    } catch (RuntimeException e) {
-      throw e;
     } catch (Exception e) {
       handleNoConnection(e);
     }
   }
 
   private void handleNoConnection(Exception e) {
-    if ((e != null) && (e.getStackTrace() != null) && (e.getStackTrace().length > 0)) {
-      if (e.getStackTrace()[0].getMethodName().equalsIgnoreCase("acquireConnection")) {
-        throw new RuntimeException(
-            "Er kan geen verbinding worden gemaakt met de database. Probeer het nogmaals!.", e);
-      }
-    }
-
-    throw new RuntimeException(e);
+    e.printStackTrace();
+    throw new RuntimeException("Er kan geen verbinding worden gemaakt met de database. Probeer het nogmaals.", e);
   }
 }

@@ -27,8 +27,6 @@ import nl.procura.gba.web.modules.bs.overlijden.correspondentie.CorrespondentieB
 import nl.procura.gba.web.modules.bs.overlijden.correspondentie.CorrespondentieForm;
 import nl.procura.gba.web.modules.bs.overlijden.correspondentie.UittrekselTable;
 import nl.procura.gba.web.modules.bs.overlijden.gemeente.BsPageOverlijden;
-import nl.procura.gba.web.modules.bs.overlijden.gemeente.page20.Page20Overlijden;
-import nl.procura.gba.web.modules.bs.overlijden.gemeente.page30.Page30Overlijden;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -84,12 +82,12 @@ public class Page80Overlijden extends BsPageOverlijden {
   }
 
   @Override
-  public void onNextPage() {
-    getNavigation().goToPage(Page30Overlijden.class);
+  public void onPreviousPage() {
+    goToPreviousProces();
   }
 
   @Override
-  public void onPreviousPage() {
-    getNavigation().goBackToPage(Page20Overlijden.class);
+  public void onNextPage() {
+    goToNextProces();
   }
 }

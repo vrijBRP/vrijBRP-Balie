@@ -50,7 +50,7 @@ public class Page2ZaakIdentificatieBean implements Serializable {
       caption = "Zaak-id",
       required = true,
       width = "200px")
-  @TextField(maxLength = 35,
+  @TextField(maxLength = 40,
       nullRepresentation = "")
   private String externId = "";
 }

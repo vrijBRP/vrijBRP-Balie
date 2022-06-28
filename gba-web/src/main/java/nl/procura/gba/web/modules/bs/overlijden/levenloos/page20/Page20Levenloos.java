@@ -79,7 +79,7 @@ public class Page20Levenloos extends Page20Geboorte<DossierLevenloos> {
 
         @Override
         protected void onDatumWijziging() {
-          updateTermijnLijkbezorging();
+          onDatumsWijziging();
         }
       };
 

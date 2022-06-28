@@ -40,10 +40,10 @@ public abstract class DeclarationCheckWindow extends GbaModalWindow {
     if (isShowIcon()) {
       msg = "Deze controle is van toepassing op online aangiftes";
       if (isMatchValues()) {
-        msg += "<hr>De gegevens komen overeen";
+        msg += "<hr>De belangrijkste persoonsgegevens komen overeen";
       } else {
         type = WARNING;
-        msg += "<hr>De gegevens zijn verschillend";
+        msg += "<hr>De belangrijkste persoonsgegevens zijn verschillend";
       }
     } else {
       msg = "Deze controle is alleen van toepassing op online aangiftes";

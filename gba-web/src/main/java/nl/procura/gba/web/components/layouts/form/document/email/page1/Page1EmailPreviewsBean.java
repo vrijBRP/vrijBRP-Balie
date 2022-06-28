@@ -38,7 +38,9 @@ public class Page1EmailPreviewsBean implements Serializable {
   public static final String SJABLOON  = "sjabloon";
   public static final String ONDERWERP = "onderwerp";
 
-  @Field(customTypeClass = ProNativeSelect.class, caption = "E-mail sjabloon")
+  @Field(customTypeClass = ProNativeSelect.class,
+      caption = "E-mail sjabloon",
+      width = "300px")
   @Select(itemCaptionPropertyId = EmailTemplateContainer.OMSCHRIJVING)
   private EmailTemplate sjabloon = null;
 

@@ -24,10 +24,7 @@ import static nl.procura.gba.web.components.containers.Container.PLAATS;
 import static nl.procura.gba.web.modules.bs.overlijden.lijkvinding.page20.Page20LijkvindingBean.*;
 import static nl.procura.standard.Globalfunctions.along;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import com.vaadin.ui.Field;
 
@@ -218,12 +215,15 @@ public class Page20Lijkvinding extends BsPageLijkvinding {
 
     @Override
     public List<Calendar> getFormCalendars() {
-      return asList(form2.getAanvangTermijnTijdstip(), formLijkb.getEindeTermijnTijdstip());
+      if (form2 != null && formLijkb != null) {
+        return asList(form2.getAanvangTermijnTijdstip(), formLijkb.getEindeTermijnTijdstip());
+      }
+      return new ArrayList<>();
     }
 
     @Override
     protected void onDatumWijziging() {
-      updateTermijnLijkbezorging();
+      onDatumsWijziging();
     }
   }
 }

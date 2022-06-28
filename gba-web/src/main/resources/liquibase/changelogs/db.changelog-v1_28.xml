@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="Procura" id="v1_28_1">
+        <createTable remarks="Kiezersregister verkiezingen" tableName="kiesr_verk">
+            <column name="c_kiesr_verk" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="kiesr_verk_pk"/>
+            </column>
+            <column name="c_gem" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="s_gem" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="afk_verk" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="s_verk" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_verk" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_kand" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ind_kiezerspas" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ind_briefstem" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="aant_volm" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_2">
+        <createTable remarks="Kiezersregister stempassen" tableName="kiesr_stem">
+            <column name="c_kiesr_stem" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="kiesr_stem_pk"/>
+            </column>
+            <column name="c_kiesr_verk" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vnr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="anr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pas_nr" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="anr_volmacht" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="vnr_vervanging" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_geb" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="geslacht" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voorn" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="naam" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="straat" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_l" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hnr_t" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pc" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wpl" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="ind_toev" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="aand" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="d_aand" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="t_aand" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_3">
+        <createTable tableName="kiesr_wijz">
+            <column name="c_kiesr_wijz" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="kiesr_wijz_pk"/>
+            </column>
+            <column name="c_usr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actietype" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_kiesr_stem" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="d_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="-1" name="t_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opm" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_4">
+        <createTable remarks="Kiezersregister stemblokken" tableName="kiesr_verk_info">
+            <column name="c_kiesr_verk_info" type="numeric">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="kiesr_verk_info_pk"/>
+            </column>
+            <column name="naam" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inhoud" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_kiesr_verk" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_5">
+        <createIndex indexName="kiesr_stem_anr_idx" tableName="kiesr_stem">
+            <column name="anr"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_6">
+        <createIndex indexName="kiesr_stem_anr_volmacht_idx" tableName="kiesr_stem">
+            <column defaultValueNumeric="-1" name="anr_volmacht"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_7">
+        <createIndex indexName="kiesr_stem_c_kiesr_verk_idx" tableName="kiesr_stem">
+            <column name="c_kiesr_verk"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_8">
+        <addUniqueConstraint columnNames="c_kiesr_verk, pas_nr"
+                             constraintName="kiesr_stem_pasnr"
+                             tableName="kiesr_stem"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_9">
+        <addUniqueConstraint columnNames="vnr, c_kiesr_verk"
+                             constraintName="kiesr_stem_vnr"
+                             tableName="kiesr_stem"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_10">
+        <addForeignKeyConstraint baseColumnNames="c_kiesr_stem"
+                                 baseTableName="kiesr_wijz"
+                                 constraintName="kiesr_wijz_kiesr_stem_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_kiesr_stem"
+                                 referencedTableName="kiesr_stem"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_11">
+        <createIndex indexName="kiesr_wijz_c_kiesr_stem_idx" tableName="kiesr_wijz">
+            <column name="c_kiesr_stem"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_12">
+        <addForeignKeyConstraint baseColumnNames="c_kiesr_verk"
+                                 baseTableName="kiesr_verk_info"
+                                 constraintName="kiesr_verk_info_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_kiesr_verk"
+                                 referencedTableName="kiesr_verk"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_13">
+        <addForeignKeyConstraint baseColumnNames="c_kiesr_verk"
+                                 baseTableName="kiesr_stem"
+                                 constraintName="kiesr_stem_kiesr_verk_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_kiesr_verk"
+                                 referencedTableName="kiesr_verk"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_14">
+        <addForeignKeyConstraint baseColumnNames="c_usr"
+                                 baseTableName="kiesr_wijz"
+                                 constraintName="kiesr_wijz_usr_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_15">
+        <createIndex indexName="kiesr_verk_info_c_kiesr_verk_idx"
+                     tableName="kiesr_verk_info">
+            <column name="c_kiesr_verk"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

@@ -67,6 +67,9 @@ public abstract class OverlijdenService extends AbstractZaakContactService<Dossi
     DossierOverlijden overlijden = (DossierOverlijden) zaak.getZaakDossier();
     ZaakContact contact = new ZaakContact();
     contact.add(getServices().getDossierService().getContactPersoon(AANGEVER, overlijden.getAangever()));
+    if (overlijden.getVerzoek().isVerzoekInd()) {
+      contact.add(overlijden.getVerzoek().getContactpersoon());
+    }
     return contact;
   }
 

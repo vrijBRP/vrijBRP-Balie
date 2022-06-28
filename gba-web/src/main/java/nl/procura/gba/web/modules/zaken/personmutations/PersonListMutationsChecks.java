@@ -207,6 +207,14 @@ public class PersonListMutationsChecks {
       }
     }
 
+    if (elem.getGroup().is(ADRES)) {
+      if (elem.getElemType().is(OPENB_RUIMTE, WPL_NAAM, ID_VERBLIJFPLAATS, IDCODE_NUMMERAAND)) {
+        if (!elems.isAllBlank(OPENB_RUIMTE, WPL_NAAM, ID_VERBLIJFPLAATS, IDCODE_NUMMERAAND)) {
+          return Optional.of("Als één 'BAG velden' is gevuld dan zijn ze alle 4 verplicht");
+        }
+      }
+    }
+
     if (elem.getGroup().is(EMIGRATIE)) {
       if (!elems.isAllBlank(ADRES_BUITENL_1, ADRES_BUITENL_2, ADRES_BUITENL_3)) {
         if (elem.getElemType().is(ADRES_BUITENL_2)) {

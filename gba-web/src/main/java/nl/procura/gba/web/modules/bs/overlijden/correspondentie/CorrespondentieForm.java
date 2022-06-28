@@ -74,11 +74,11 @@ public class CorrespondentieForm extends GbaForm<CorrespondentieBean> {
     getAllFields().forEach(f -> f.setRequired(false));
 
     if (type == CommunicatieType.EMAIL) {
-      getFields(ORGANISATIE, AFDELING, NAAM, EMAIL)
+      getFields(ORGANISATIE, NAAM, EMAIL)
           .forEach(f -> f.setRequired(true));
 
     } else if (type == CommunicatieType.POST) {
-      getFields(ORGANISATIE, AFDELING, NAAM, STRAAT, POSTCODE, PLAATS)
+      getFields(ORGANISATIE, NAAM, STRAAT, POSTCODE, PLAATS)
           .forEach(f -> f.setRequired(true));
     }
     repaint();

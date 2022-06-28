@@ -19,9 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.overlijden.checks;
 
-import static nl.procura.gba.web.common.tables.GbaTables.*;
 import static nl.procura.vaadin.annotation.field.Field.FieldType.LABEL;
-import static org.apache.commons.lang3.math.NumberUtils.isDigits;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
@@ -36,21 +34,16 @@ import nl.procura.gba.web.services.bs.overlijden.DossierOverlijdenVerzoek;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
-import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.VLayout;
-import nl.procura.vaadin.component.layout.table.TableLayout;
 
 import lombok.Data;
 
 public class DeceasedInfoCheckWindow extends DeclarationCheckWindow {
 
-  private static final String VOORN           = "voorn";
-  private static final String GESLACHTSNAAM   = "geslachtsnaam";
-  private static final String VOORV           = "voorv";
-  private static final String TP              = "titel";
-  private static final String GEBOORTE_DATUM  = "geboortedatum";
-  private static final String GEBOORTE_PLAATS = "geboorteplaats";
-  private static final String GEBOORTE_LAND   = "geboorteland";
+  private static final String VOORN          = "voorn";
+  private static final String GESLACHTSNAAM  = "geslachtsnaam";
+  private static final String VOORV          = "voorv";
+  private static final String GEBOORTE_DATUM = "geboortedatum";
 
   private final DossierOverlijdenVerzoek verzoek;
   private final Bean                     suppliedValue;
@@ -58,32 +51,20 @@ public class DeceasedInfoCheckWindow extends DeclarationCheckWindow {
 
   public DeceasedInfoCheckWindow(DossierOverlijdenVerzoek verzoek, DossierPersoon persoon) {
     this.verzoek = verzoek;
-
-    setWidth("800px");
+    setWidth("900px");
     setCaption("Aangifte controle (Druk op Escape om te sluiten)");
-
-    String pGeb = verzoek.getGeboorteplaats();
-    FieldValue geboorteplaats = isDigits(pGeb)
-        ? PLAATS.get(pGeb)
-        : new FieldValue(pGeb);
 
     suppliedValue = new Bean(
         verzoek.getVoorn(),
         verzoek.getGeslNaam(),
         verzoek.getVoorv(),
-        TITEL.get(verzoek.getTitel()),
-        verzoek.getGeboortedatum(),
-        geboorteplaats,
-        LAND.get(verzoek.getGeboorteland()));
+        verzoek.getGeboortedatum());
 
     derivedValue = new Bean(
         persoon.getVoornaam(),
         persoon.getGeslachtsnaam(),
         persoon.getVoorvoegsel(),
-        persoon.getTitel(),
-        persoon.getDatumGeboorte().toInt(),
-        persoon.getGeboorteplaats(),
-        persoon.getGeboorteland());
+        persoon.getDatumGeboorte().toInt());
 
     Form suppliedForm = new Form("Gegevens die in de e-aangifte zijn aangeleverd", suppliedValue);
     Form derivedForm = new Form("Gegevens die door de applicatie zijn afgeleid", derivedValue);
@@ -111,46 +92,28 @@ public class DeceasedInfoCheckWindow extends DeclarationCheckWindow {
 
     @Field(type = LABEL,
         caption = "Voornamen")
-    private String voorn = "";
+    private String voorn;
 
     @Field(type = LABEL,
         caption = "Geslachtsnaam")
-    private String geslachtsnaam = "";
+    private String geslachtsnaam;
 
     @Field(type = LABEL,
         caption = "Voorvoegsel")
-    private String voorv = "";
-
-    @Field(type = LABEL,
-        caption = "Titel/predikaat")
-    private String titel;
+    private String voorv;
 
     @Field(type = LABEL,
         caption = "Geboortedatum")
     private String geboortedatum;
 
-    @Field(type = LABEL,
-        caption = "Geboorteplaats")
-    private String geboorteplaats;
-
-    @Field(type = LABEL,
-        caption = "Geboorteland")
-    private String geboorteland;
-
     public Bean(String voornamen,
         String geslachtsnaam,
         String voorv,
-        FieldValue titel,
-        Integer geboortedatum,
-        FieldValue geboorteplaats,
-        FieldValue geboorteland) {
+        Integer geboortedatum) {
       this.voorn = voornamen;
       this.geslachtsnaam = geslachtsnaam;
       this.voorv = voorv;
-      this.titel = titel.toString();
       this.geboortedatum = new ProcuraDate(geboortedatum).getFormatDate();
-      this.geboorteplaats = geboorteplaats.toString();
-      this.geboorteland = geboorteland.toString();
     }
 
     @Override
@@ -165,10 +128,7 @@ public class DeceasedInfoCheckWindow extends DeclarationCheckWindow {
           .append(geslachtsnaam, bean.getGeslachtsnaam())
           .append(voorn, bean.getVoorn())
           .append(voorv, bean.getVoorv())
-          .append(titel, bean.getTitel())
           .append(geboortedatum, bean.getGeboortedatum())
-          .append(geboorteplaats, bean.getGeboorteplaats())
-          .append(geboorteland, bean.getGeboorteland())
           .build();
     }
 
@@ -178,10 +138,7 @@ public class DeceasedInfoCheckWindow extends DeclarationCheckWindow {
           .append(geslachtsnaam)
           .append(voorn)
           .append(voorv)
-          .append(titel)
           .append(geboortedatum)
-          .append(geboorteplaats)
-          .append(geboorteland)
           .build();
     }
   }
@@ -191,18 +148,9 @@ public class DeceasedInfoCheckWindow extends DeclarationCheckWindow {
     public Form(String caption, Bean bean) {
       setCaption(caption);
       setReadonlyAsText(true);
-      setColumnWidths("150px", "200px", "150px", "");
-      setOrder(VOORN, GEBOORTE_DATUM, GESLACHTSNAAM, GEBOORTE_PLAATS, VOORV, GEBOORTE_LAND, TP);
+      setColumnWidths("130px", "300px", "130px", "");
+      setOrder(VOORN, GEBOORTE_DATUM, GESLACHTSNAAM, VOORV);
       setBean(bean);
     }
-
-    @Override
-    public void setColumn(TableLayout.Column column, com.vaadin.ui.Field field, Property property) {
-      if (property.is(TP)) {
-        column.setColspan(3);
-      }
-      super.setColumn(column, field, property);
-    }
   }
-
 }

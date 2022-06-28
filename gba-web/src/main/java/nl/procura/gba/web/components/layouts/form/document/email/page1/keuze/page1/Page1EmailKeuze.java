@@ -81,11 +81,8 @@ public class Page1EmailKeuze extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
       form = new Form(emailAdres);
-
       addExpandComponent(form);
     }
 
@@ -235,8 +232,8 @@ public class Page1EmailKeuze extends NormalPageTemplate {
       List<EmailAddress> adressen = new ArrayList<>();
       Gebruiker gebruiker = Page1EmailKeuze.this.getServices().getGebruiker();
       if (fil(gebruiker.getEmail())) {
-        adressen.add(
-            new EmailAddress(EmailAddressType.TO, "Gebruiker", gebruiker.getNaam(), gebruiker.getEmail()));
+        adressen.add(new EmailAddress(EmailAddressType.TO, "Gebruiker",
+            gebruiker.getNaam(), gebruiker.getEmail()));
       }
 
       return adressen;

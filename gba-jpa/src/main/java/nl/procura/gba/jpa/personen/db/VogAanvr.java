@@ -29,7 +29,7 @@ import org.eclipse.persistence.annotations.BatchFetchType;
 
 @Entity
 @Table(name = "vog_aanvr")
-public class VogAanvr extends BaseEntity {
+public class VogAanvr extends BaseEntity<Long> {
 
   private static final long serialVersionUID = 1L;
 
@@ -265,7 +265,7 @@ public class VogAanvr extends BaseEntity {
   }
 
   @Override
-  public Object getUniqueKey() {
+  public Long getUniqueKey() {
     return getCVogAanvr();
   }
 

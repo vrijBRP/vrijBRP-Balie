@@ -19,12 +19,19 @@
 
 package nl.procura.gba.web.services.bs.overlijden;
 
+import static java.util.Collections.singletonList;
+import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.CONTACTPERSOON;
+import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.EMAIL;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 import nl.procura.gba.common.UniqueList;
 import nl.procura.gba.jpa.personen.db.DossCorrDest;
 import nl.procura.gba.jpa.personen.db.DossOverlUitt;
+import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
+import nl.procura.gba.web.services.zaken.contact.Contactgegeven;
+import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
 
 public class DossierOverlijdenVerzoek {
 
@@ -121,5 +128,16 @@ public class DossierOverlijdenVerzoek {
       correspondentie = dossierOverlijden.getDossCorrDest();
     }
     return correspondentie;
+  }
+
+  public ZaakContactpersoon getContactpersoon() {
+    DossCorrDest correspondentie = getCorrespondentie();
+    String naam = correspondentie.getNaam();
+    ZaakContactpersoon contactpersoon = new ZaakContactpersoon(CONTACTPERSOON, naam);
+    PlContactgegeven gegeven = new PlContactgegeven();
+    gegeven.setContactgegeven(new Contactgegeven(EMAIL));
+    gegeven.setAant(correspondentie.getEmail());
+    contactpersoon.setContactgegevens(singletonList(gegeven));
+    return contactpersoon;
   }
 }

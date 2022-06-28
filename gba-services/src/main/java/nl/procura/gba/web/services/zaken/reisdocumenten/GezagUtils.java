@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
 import static nl.procura.standard.Globalfunctions.*;
@@ -102,7 +104,7 @@ public class GezagUtils {
         boolean partnerVrouw = Geslacht.VROUW.getAfkorting().equalsIgnoreCase(
             partnerPl.getPersoon().getGeslacht().getVal());
 
-        Verbintenis verbintenis = getVerbintenis(constateringen, kindPl, ouderNr, isOuderVrouw, ouderPl,
+        Verbintenis verbintenis = getVerbintenis(kindPl, ouderNr, ouderPl,
             partnerPl);
 
         String ouderType = ouderNr == 1 ? "ouder 2" : "ouder 1";
@@ -138,7 +140,6 @@ public class GezagUtils {
         }
 
         if (verbintenis.isNooitVerbintenisGeweest()) {
-
           if (heeftMomenteelVerbintenis(ouderPl)) {
             String huidigeNaamPartner = getPartner(ouderPl);
             constateringen.getPersoon().add("is huidige partner van " + huidigeNaamPartner);
@@ -223,7 +224,6 @@ public class GezagUtils {
   }
 
   private static int getOuderNr(BasePLExt kindPl, BasePLExt ouderPl) {
-
     String ouderanr = ouderPl.getPersoon().getAnr().getVal();
     String ouderAnr1 = kindPl.getOuders().getOuder(1).getAnr().getVal();
     String ouderAnr2 = kindPl.getOuders().getOuder(2).getAnr().getVal();
@@ -243,16 +243,8 @@ public class GezagUtils {
     return pl != null && pl.getCat(GBACat.PERSOON).hasSets();
   }
 
-  /**
-   * @param constateringen
-   * @param ouderNr
-   * @param isOuderVrouw
-   * @param ouder1Pl
-   * @param partnerPl
-   * @return
-   */
-  private static Verbintenis getVerbintenis(ToestemmingConstateringen constateringen, BasePLExt kindPl,
-      int ouderNr, boolean isOuderVrouw, BasePLExt ouder1Pl,
+  private static Verbintenis getVerbintenis(BasePLExt kindPl,
+      int ouderNr, BasePLExt ouder1Pl,
       BasePLExt partnerPl) {
 
     long datumGeboorte = kindPl.getCat(GBACat.PERSOON).getLatestRec().getElemVal(
@@ -263,29 +255,27 @@ public class GezagUtils {
     long datumVerbintenis = -1;
     long datumOntbinding = -1;
     String naamPartner = "";
-
-    String anummerPartner = kindPl.getLatestRec(
-        ouderNr == 2 ? GBACat.OUDER_1 : GBACat.OUDER_2).getElemVal(
-            GBAElem.ANR)
-        .getVal();
+    String anummerPartner = kindPl.getLatestRec(ouderNr == 2 ? OUDER_1 : OUDER_2)
+        .getElemVal(GBAElem.ANR).getVal();
 
     if (isPersoonInBrp(partnerPl)) {
       naamPartner = " (" + partnerPl.getPersoon().getNaam().getNaamNaamgebruikGeslachtsnaamVoornaamAanschrijf() + ")";
     }
 
-    for (BasePLSet set1 : ouder1Pl.getCat(GBACat.HUW_GPS).getSets()) {
+    SET_LOOP: for (BasePLSet set1 : ouder1Pl.getCat(GBACat.HUW_GPS).getSets()) {
       if (isSprakeVanVerbintenis(set1, anummerPartner)) {
         for (BasePLRec r1 : set1.getRecs()) {
           if (datumVerbintenis < 0) {
-            datumVerbintenis = r1.getElemVal(
-                GBAElem.DATUM_VERBINTENIS).toLong();
+            datumVerbintenis = r1.getElemVal(GBAElem.DATUM_VERBINTENIS).toLong();
           }
           if (datumOntbinding < 0) {
-            datumOntbinding = r1.getElemVal(
-                GBAElem.DATUM_ONTBINDING).toLong();
+            datumOntbinding = r1.getElemVal(GBAElem.DATUM_ONTBINDING).toLong();
           }
           if (emp(naamPartner)) {
             naamPartner = " (" + new Naam(r1).getNaamNaamgebruikGeslachtsnaamVoornaamAanschrijf() + ")";
+          }
+          if (datumVerbintenis >= 0 && datumOntbinding < 0) { // Huidige verbintenis is het belangrijkst
+            break SET_LOOP;
           }
         }
       }
@@ -295,34 +285,27 @@ public class GezagUtils {
 
     if (datumVerbintenis >= 0 && datumOntbinding < 0) { // Ze zijn momenteel gehuwd
       verbintenis.setMomenteelZekerVerbintenis(true);
-    }
 
-    if (datumVerbintenis >= 0 && datumOntbinding < datumGeboorte) { // Verbintenis is ontbonden
+    } else if (datumVerbintenis >= 0 && datumOntbinding < datumGeboorte) { // Verbintenis is ontbonden
       verbintenis.setVerbintenisOntbondenVoorGeboorte(true);
-    }
 
-    if (datumVerbintenis >= 0 && datumOntbinding > datumGeboorte) { // Was sprake van partnerschap, maar ontbonden
+    } else if (datumVerbintenis >= 0 && datumOntbinding > datumGeboorte) { // Was sprake van partnerschap, maar ontbonden
       verbintenis.setVerbintenisOntbondenNaGeboorte(true);
-    }
 
-    if (datumVerbintenis == 0 && datumOntbinding == 0) {
+    } else if (datumVerbintenis == 0 && datumOntbinding == 0) {
       verbintenis.setMomenteelMisschienVerbintenis(true);
-    }
 
-    if (datumVerbintenis < 0 && datumOntbinding < 0) {
+    } else if (datumVerbintenis < 0 && datumOntbinding < 0) {
       verbintenis.setNooitVerbintenisGeweest(true);
     }
 
     return verbintenis;
   }
 
-  private static boolean isSprakeVanVerbintenis(BasePLSet set1, String anr) {
-    for (BasePLRec r1 : set1.getRecs()) {
-      if (r1.getElemVal(GBAElem.ANR).getVal().equals(anr)) {
-        return true;
-      }
-    }
-    return false;
+  private static boolean isSprakeVanVerbintenis(BasePLSet set, String anr) {
+    return set.getRecs().stream()
+        .anyMatch(r1 -> r1.getElemVal(GBAElem.ANR)
+            .getVal().equals(anr));
   }
 
   @Data

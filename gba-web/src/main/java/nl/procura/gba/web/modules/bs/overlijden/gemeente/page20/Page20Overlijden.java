@@ -24,6 +24,7 @@ import static nl.procura.gba.web.components.containers.Container.PLAATS;
 import static nl.procura.gba.web.modules.bs.overlijden.gemeente.page20.Page20OverlijdenBean.*;
 import static nl.procura.standard.Globalfunctions.along;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -91,7 +92,7 @@ public class Page20Overlijden extends BsPageOverlijden {
 
         @Override
         protected void onDatumWijziging() {
-          formLijkb.updateTermijnLijkbezorging();
+          formLijkb.onDatumsWijziging();
         }
       };
 
@@ -99,12 +100,15 @@ public class Page20Overlijden extends BsPageOverlijden {
 
         @Override
         public List<Calendar> getFormCalendars() {
-          return asList(form1.getOverlijdenTijdstip(), formLijkb.getEindeTermijnTijdstip());
+          if (form1 != null && formLijkb != null) {
+            return asList(form1.getOverlijdenTijdstip(), formLijkb.getEindeTermijnTijdstip());
+          }
+          return new ArrayList<>();
         }
 
         @Override
         protected void onDatumWijziging() {
-          updateTermijnLijkbezorging();
+          onDatumsWijziging();
         }
       };
 
@@ -118,7 +122,7 @@ public class Page20Overlijden extends BsPageOverlijden {
       addComponent(form1);
       addComponent(formLijkb);
 
-      formLijkb.updateTermijnLijkbezorging();
+      formLijkb.onDatumsWijziging();
     }
 
     super.event(event);
@@ -137,27 +141,44 @@ public class Page20Overlijden extends BsPageOverlijden {
   private void checkDatumVelden() {
 
     List<Calendar> calendars = formLijkb.getFormCalendars();
-
-    // Datum overlijden niet in toekomst!
-    if (calendars.get(0) != null) {
-      if (calendars.get(0).after(new GregorianCalendar())) {
-        throw new ProException(ProExceptionSeverity.WARNING,
-            "Het tijdstip van overlijden kan niet in de toekomst liggen");
-      }
-
-      // Datum overlijden niet later dan datum lijkbezorging!
-      if (calendars.get(1) != null) {
-        if (calendars.get(0).after(calendars.get(1))) {
+    if (calendars.size() > 0) {
+      // Datum overlijden niet in toekomst!
+      if (calendars.get(0) != null) {
+        if (calendars.get(0).after(new GregorianCalendar())) {
           throw new ProException(ProExceptionSeverity.WARNING,
-              "Het tijdstip van lijkbezorging kan niet eerder plaatsvinden dan het tijdstip van overlijden");
+              "Het tijdstip van overlijden kan niet in de toekomst liggen");
         }
 
-        if (new GregorianCalendar().after(calendars.get(1))) {
-          throw new ProException(ProExceptionSeverity.WARNING,
-              "Het tijdstip van lijkbezorging kan niet in het verleden liggen");
+        // Datum overlijden niet later dan datum lijkbezorging!
+        Calendar timeLijkbezorging = calendars.get(1);
+        if (timeLijkbezorging != null) {
+          if (calendars.get(0).after(timeLijkbezorging)) {
+            throw new ProException(ProExceptionSeverity.WARNING,
+                "Het tijdstip van lijkbezorging kan niet eerder plaatsvinden dan het tijdstip van overlijden");
+          }
+
+          GregorianCalendar now = now(timeLijkbezorging);
+          if (now.after(timeLijkbezorging)) {
+            throw new ProException(ProExceptionSeverity.WARNING,
+                "Het tijdstip van lijkbezorging kan niet in het verleden liggen");
+          }
         }
       }
     }
+  }
+
+  /**
+   * Houdt geen rekening met tijd als tijd in vergelijkende calendar ook ontbreekt
+   */
+  private GregorianCalendar now(Calendar dateTime) {
+    GregorianCalendar now = new GregorianCalendar();
+    if (dateTime.get(Calendar.HOUR_OF_DAY) == 0) {
+      now.set(Calendar.HOUR_OF_DAY, 0);
+      now.set(Calendar.MINUTE, 0);
+      now.set(Calendar.SECOND, 0);
+      now.set(Calendar.MILLISECOND, 0);
+    }
+    return now;
   }
 
   private FieldValue getPlaats() {

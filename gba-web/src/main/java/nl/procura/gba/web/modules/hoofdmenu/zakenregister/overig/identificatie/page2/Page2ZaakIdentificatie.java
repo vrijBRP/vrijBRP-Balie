@@ -51,7 +51,8 @@ public abstract class Page2ZaakIdentificatie extends NormalPageTemplate {
       addButton(buttonPrev);
       addButton(buttonSave);
 
-      form = new Page2ZaakIdentificatieForm(id);
+      boolean zaakDmsAan = getServices().getZaakDmsService().isZakenDsmAan();
+      form = new Page2ZaakIdentificatieForm(zaakDmsAan, id);
 
       addComponent(form);
     }

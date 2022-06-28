@@ -68,12 +68,14 @@ public enum DocumentType {
   REGISTRATION("eerste_registratie", "data", "Eerste inschrijving"),
   ZAAK("zaak", "zaak", "Zaak (algemeen)"),
   RISK_ANALYSE("risico_analyse", "data", "Risicoanalyse"),
+  STEMPAS("stempas", "data", "Stempas"),
+  ROS("ros", "data", "Register ongeldige stempassen (ROS)"),
   ONBEKEND("onbekend", "onbekend", "Onbekend");
 
-  private int    order;
-  private String type;
-  private String doc;
-  private String oms;
+  private final int    order;
+  private final String type;
+  private final String doc;
+  private final String oms;
 
   DocumentType(int order, String type, String doc, String oms) {
     this.order = order;
