@@ -58,9 +58,9 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.account.AccountWindow;
 import nl.procura.gba.web.windows.home.HomeWindow;
-import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.theme.LoginValidatable;
 import nl.procura.vaadin.theme.twee.layout.ToolBarLayout;
+import nl.vrijbrp.hub.client.HubContext;
 
 public class ToolBar extends ToolBarLayout {
 
@@ -100,15 +100,15 @@ public class ToolBar extends ToolBarLayout {
       right.addComponent(getLocatieMenu());
       right.addComponent(getSeparator());
       right.addComponent(getGebruikerMenu());
-      right.addComponent(getLogoutButton());
 
       if (isTestOmgeving()) {
         Label testLabel = getTestLabel();
-        right.addComponent(getSeparator());
         right.addComponent(testLabel);
+        right.addComponent(getSeparator());
         right.setComponentAlignment(testLabel, Alignment.MIDDLE_CENTER);
       }
 
+      right.addComponent(getLogoutButton());
       setExpandRatio(left, 1);
     }
 
@@ -162,13 +162,11 @@ public class ToolBar extends ToolBarLayout {
   }
 
   protected boolean isTestOmgeving() {
-
     ParameterService parameters = getApplication().getServices().getParameterService();
     return isTru(parameters.getGebruikerParameters(Gebruiker.getDefault()).get(TEST_OMGEVING).getValue());
   }
 
   private MenuBar getGebruikerMenu() {
-
     gebruikerMenu = gebruikerMenubar.addItem("", null);
     gebruikerMenu.setIcon(new ThemeResource("../flat/icons/16/bullet_arrow_down.png"));
     gebruikerMenu.addItem("Eigen instellingen",
@@ -184,7 +182,6 @@ public class ToolBar extends ToolBarLayout {
     }
 
     MenuItem handleidingItem = null;
-
     if (handleidingen.size() > 1) {
       handleidingItem = gebruikerMenu.addItem("Handleiding", null);
     } else if (handleidingen.size() > 0) {
@@ -209,14 +206,11 @@ public class ToolBar extends ToolBarLayout {
     });
 
     gebruikerMenubar.addStyleName("right-separator");
-
     return gebruikerMenubar;
   }
 
   private MenuBar getLocatieMenu() {
-
     List<Application> apps = getApplication().getServices().getOnderhoudService().getActiveApps(false);
-
     locatieMenu = locatieMenubar.addItem("", null);
 
     if (!apps.isEmpty()) {
@@ -253,9 +247,10 @@ public class ToolBar extends ToolBarLayout {
   }
 
   private Button getLogoutButton() {
-    Button b = new NativeButton("", e -> openLogoutWindow());
-    b.setIcon(new ThemeResource(GbaWebTheme.ICOON_18.UITLOGGEN));
-    return b;
+    Button button = new NativeButton("", e -> logout());
+    button.setIcon(new ThemeResource(GbaWebTheme.ICOON_18.UITLOGGEN));
+    button.setWidth("100px");
+    return button;
   }
 
   private HorizontalLayout getMeldingenButton1() {
@@ -324,7 +319,6 @@ public class ToolBar extends ToolBarLayout {
   }
 
   private Label getTestLabel() {
-
     Label label = new Label("Testomgeving");
     label.setStyleName("test-warning");
     label.setDescription("Dit is de testomgeving van deze applicatie");
@@ -333,19 +327,12 @@ public class ToolBar extends ToolBarLayout {
     return label;
   }
 
-  private void openLogoutWindow() {
-
-    ConfirmDialog confirmDialog = new ConfirmDialog("Weet u zeker dat u wilt uitloggen?") {
-
-      @Override
-      public void buttonYes() {
-
-        ((LoginValidatable) ((GbaApplication) getApplication()).getLoginWindow()).getLoginValidator()
-            .deleteCredentials();
-        getApplication().close();
-      }
-    };
-    getWindow().addWindow(confirmDialog);
+  private void logout() {
+    HubContext.instance().logout().requestReturnToHub();
+    GbaApplication application = getApplication();
+    LoginValidatable loginWindow = (LoginValidatable) application.getLoginWindow();
+    loginWindow.getLoginValidator().deleteCredentials();
+    getApplication().close();
   }
 
   /**

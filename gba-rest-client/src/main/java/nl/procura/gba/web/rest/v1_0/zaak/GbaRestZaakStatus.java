@@ -34,7 +34,7 @@ public enum GbaRestZaakStatus {
   DOCUMENT_ONTVANGEN(7, 6, false, "Doc. ontvangen"),
   GEWEIGERD(8, 7, true, "Geweigerd"),
   VERWERKT(2, 8, true, "Verwerkt"),
-  VERWERKT_IN_GBA(3, 9, true, "Verwerkt in PROBEV"),
+  VERWERKT_IN_GBA(3, 9, true, "Verwerkt"),
   GEANNULEERD(4, 10, true, "Geannuleerd"),
   ONBEKEND(99, 11, true, "Onbekend");
 

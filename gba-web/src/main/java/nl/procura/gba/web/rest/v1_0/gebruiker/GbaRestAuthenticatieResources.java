@@ -160,6 +160,8 @@ public class GbaRestAuthenticatieResources extends GbaRestServiceResource implem
       gebruiker = getServices().getGebruikerService().getGebruikerByCode(vraag.getCode(), true);
     } else if (fil(vraag.getGebruikersnaam())) {
       gebruiker = getServices().getGebruikerService().getGebruikerByNaam(vraag.getGebruikersnaam(), true);
+    } else if (fil(vraag.getEmail())) {
+      gebruiker = getServices().getGebruikerService().getGebruikerByEmail(vraag.getEmail());
     }
 
     if (gebruiker != null && gebruiker.isStored()) {

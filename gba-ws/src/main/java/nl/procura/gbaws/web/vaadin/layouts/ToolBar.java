@@ -24,12 +24,11 @@ import com.vaadin.ui.*;
 
 import nl.procura.gbaws.web.vaadin.application.GbaWsApplication;
 import nl.procura.gbaws.web.vaadin.login.GbaWsCredentials;
-import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.theme.LoginValidatable;
 import nl.procura.vaadin.theme.twee.ProcuraTweeTheme;
 import nl.procura.vaadin.theme.twee.layout.ToolBarLayout;
+import nl.vrijbrp.hub.client.HubContext;
 
-@SuppressWarnings("serial")
 public class ToolBar extends ToolBarLayout {
 
   private final Label            gebruikerLabel = new Label();
@@ -54,58 +53,36 @@ public class ToolBar extends ToolBarLayout {
   }
 
   private Component getGebruikerLabel() {
+    gebruikerLabel.addStyleName("right-separator");
     return gebruikerLabel;
   }
 
   protected Label getLogo() {
-
-    Label logo_label = new Label("vrijBRP | Balie | webservice persoonsgegevens");
-    logo_label.setStyleName("toolbar-logo");
-
-    return logo_label;
+    Label logo = new Label("vrijBRP | Balie | webservice persoonsgegevens");
+    logo.setStyleName("toolbar-logo");
+    return logo;
   }
 
   private Button getLogoutButton() {
-
-    Button b = new NativeButton("", (Button.ClickListener) event -> openLogoutWindow());
-
-    b.setIcon(new ThemeResource(ProcuraTweeTheme.ICOON_18.UITLOGGEN));
-    b.addStyleName("borderless");
-
-    return b;
+    Button button = new NativeButton("", (Button.ClickListener) event -> openLogoutWindow());
+    button.setIcon(new ThemeResource(ProcuraTweeTheme.ICOON_18.UITLOGGEN));
+    button.addStyleName("borderless");
+    button.setWidth("100px");
+    return button;
   }
 
   private void openLogoutWindow() {
-
-    getWindow().addWindow(new ConfirmDialog("Weet u zeker dat u wilt uitloggen?") {
-
-      @Override
-      public void buttonYes() {
-
-        ((LoginValidatable) ((GbaWsApplication) getApplication()).getLoginWindow()).getLoginValidator()
-            .deleteCredentials();
-        getApplication().close();
-      }
-    });
+    HubContext.instance().logout().requestReturnToHub();
+    GbaWsApplication application = (GbaWsApplication) getApplication();
+    LoginValidatable loginWindow = (LoginValidatable) application.getLoginWindow();
+    loginWindow.getLoginValidator().deleteCredentials();
+    getApplication().close();
   }
 
   @Override
   public void attach() {
-
     super.attach();
-
     GbaWsCredentials creds = (GbaWsCredentials) getApplication().getUser();
-
-    gebruikerLabel.setValue("Gebruiker: " + creds.getFullname());
-
-    GbaWsApplication application = (GbaWsApplication) getApplication();
-
-    if (application.getParameterMap().get("embedded") != null) {
-
-      right.removeComponent(logoutButton);
-    } else {
-
-      gebruikerLabel.addStyleName("right-separator");
-    }
+    gebruikerLabel.setValue(creds.getFullname());
   }
 }

@@ -46,7 +46,7 @@ public class Page20OmzettingBean1 implements Serializable {
 
   @Field(type = FieldType.TEXT_AREA,
       caption = "Toelichting")
-  @TextArea(rows = 5,
+  @TextArea(rows = 10,
       columns = 50)
   private String toelichtingCeremonie = "";
 

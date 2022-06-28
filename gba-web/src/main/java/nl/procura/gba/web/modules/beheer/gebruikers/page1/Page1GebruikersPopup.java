@@ -28,6 +28,7 @@ import nl.procura.gba.web.modules.beheer.gebruikers.email.page1.Page1SendEmail;
 import nl.procura.gba.web.modules.beheer.gebruikers.page10.Page10Gebruikers;
 import nl.procura.gba.web.modules.beheer.gebruikers.page11.Page11Gebruikers;
 import nl.procura.gba.web.modules.beheer.gebruikers.page12.Page12Gebruikers;
+import nl.procura.gba.web.modules.beheer.gebruikers.page13.Page13Gebruikers;
 import nl.procura.gba.web.modules.beheer.gebruikers.page7.Page7Gebruikers;
 import nl.procura.gba.web.modules.beheer.gebruikers.page8.Page8Gebruikers;
 import nl.procura.gba.web.modules.beheer.gebruikers.page9.Page9Gebruikers;
@@ -89,7 +90,6 @@ public class Page1GebruikersPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         TableSelectionCheck.checkSelection(table);
         List<Gebruiker> allSelectedUsers = getAllSelectedUsers();
 
@@ -103,7 +103,6 @@ public class Page1GebruikersPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         getNavigation().goToPage(new Page11Gebruikers());
       }
     });
@@ -112,7 +111,6 @@ public class Page1GebruikersPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         getNavigation().goToPage(new Page12Gebruikers());
       }
     });
@@ -121,10 +119,19 @@ public class Page1GebruikersPopup extends GbaPopupButton {
 
       @Override
       public void onClick() {
-
         List<Gebruiker> gebruikers = table.getApplication().getServices().getGebruikerService().setInformatie(
             getAllSelectedUsers());
         getNavigation().goToPage(new Page1SendEmail(Verzending.getVerzendingen(gebruikers)));
+      }
+    });
+
+    addChoice(new Choice("Wachtwoord resetten") {
+
+      @Override
+      public void onClick() {
+        TableSelectionCheck.checkSelection(table);
+        List<Gebruiker> allSelectedUsers = getAllSelectedUsers();
+        getNavigation().goToPage(new Page13Gebruikers(allSelectedUsers));
       }
     });
   }

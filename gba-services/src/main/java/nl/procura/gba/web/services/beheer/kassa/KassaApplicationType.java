@@ -25,6 +25,7 @@ public enum KassaApplicationType {
 
   GKAS("jcc", "G-KAS (JCC)"),
   KEY2BETALEN("centric", "Key2Betalen (Centric)"),
+  PIV4ALL("piv4all", "PIV4All (Centric)"),
   ONBEKEND("", "Onbekend");
 
   private String code;

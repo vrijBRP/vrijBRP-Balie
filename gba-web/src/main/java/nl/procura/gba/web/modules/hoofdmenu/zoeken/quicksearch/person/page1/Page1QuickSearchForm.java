@@ -20,22 +20,51 @@
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1;
 
 import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.*;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.*;
+import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 
 import com.vaadin.ui.Field;
 
+import nl.procura.gba.web.components.fields.BagSuggestionBox;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.services.Services;
+import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
+import nl.procura.vaadin.component.layout.table.TableLayout;
 
 public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
 
   public Page1QuickSearchForm() {
-    setOrder(GESLACHTSNAAM, BSN, GEBOORTEDATUM, ANR);
+    setOrder(F_BSN, F_GESLACHTSNAAM, F_ANR, F_GEBOORTEDATUM, F_POSTCODE, F_HNR, F_ADRES);
     setColumnWidths(WIDTH_130, "200px", "110px", "");
     setBean(new Page1QuickSearchBean());
   }
 
   @Override
-  public Field newField(Field field, Property property) {
-    field.setWidth("150px");
-    return super.newField(field, property);
+  public void setColumn(TableLayout.Column column, Field field, Property property) {
+    if (property.is(F_ADRES)) {
+      column.setColspan(3);
+    }
+    super.setColumn(column, field, property);
+  }
+
+  @Override
+  public void afterSetBean() {
+    super.afterSetBean();
+    BagSuggestionBox suggestionBox = getField(F_ADRES, BagSuggestionBox.class);
+    if (suggestionBox != null) {
+      if (Services.getInstance().getGeoService().isGeoServiceActive()) {
+        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+            .setRequestListener(value -> new LocationServerRequest()
+                .setRequestorName("BRP-suggestionbox")
+                .setServiceType(SUGGEST)
+                .setOffset(0).setRows(10)
+                .search(TYPE, "adres")
+                .search(value)
+                .filters(WEERGAVENAAM, ADRESSEERBAAR_OBJECT_ID,
+                    POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
+      } else {
+        suggestionBox.setVisible(false);
+      }
+    }
   }
 }

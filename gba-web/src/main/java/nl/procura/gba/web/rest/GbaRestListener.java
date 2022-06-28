@@ -80,6 +80,7 @@ public class GbaRestListener extends GuiceServletContextListener {
       bind(GbaRestZaakDmsResourceV2Server.class);
       bind(GbaRestVerhuizingResourceV2Server.class);
       bind(GbaRestEventLogResourceV2Server.class);
+      bind(GbaRestGebruikerResourceV2Server.class);
       bind(GbaRestInfoResource.class);
 
       Matcher<Class> matchers = Matchers.subclassesOf(GbaRestServiceResource.class);

@@ -46,7 +46,7 @@ public class Page3PersonListMutations extends NormalPageTemplate {
     addButton(buttonPrev);
     addButton(buttonNext, 1f);
 
-    if (mutation.getCatType().is(OUDER_1, OUDER_2, HUW_GPS, KINDEREN)) {
+    if (isRelativeMutation(mutation)) {
       addButton(buttonNext);
       addButton(buttonSearch, 1f);
       buttonSearch.setCaption("Zoek persoon");
@@ -66,7 +66,7 @@ public class Page3PersonListMutations extends NormalPageTemplate {
 
   @Override
   protected void initPage() {
-    if (elements.isAllBlank(GBAGroup.IDNUMMERS)) {
+    if (isRelativeMutation(mutation) && elements.isAllBlank(GBAGroup.IDNUMMERS)) {
       onSearch();
     }
     super.initPage();
@@ -92,5 +92,9 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   @Override
   public void onClose() {
     getWindow().closeWindow();
+  }
+
+  private boolean isRelativeMutation(PersonListMutation mutation) {
+    return mutation.getCatType().is(OUDER_1, OUDER_2, HUW_GPS, KINDEREN);
   }
 }

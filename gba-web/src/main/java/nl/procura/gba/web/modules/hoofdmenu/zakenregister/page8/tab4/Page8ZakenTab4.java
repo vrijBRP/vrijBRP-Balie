@@ -46,13 +46,12 @@ public class Page8ZakenTab4 extends Page8ZakenAfdrukTab {
       addButton(buttonRefresh);
 
       toevoegenBegeleidendeBrieven(DocumentKenmerkType.POST);
-
       addComponent(getForm());
 
       setInfo("Alle uittreksels die in de applicatie op <b>opgenomen</b> of <b>in behandeling</b> staan.");
 
       setTable(new Table1());
-      addComponent(getTable());
+      addExpandComponent(getTable());
     }
 
     super.event(event);

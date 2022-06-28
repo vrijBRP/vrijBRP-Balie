@@ -39,5 +39,8 @@ public class KassaApplicationTypeContainer extends IndexedContainer implements P
 
     item = addItem(KassaApplicationType.KEY2BETALEN.getCode());
     item.getItemProperty(OMSCHRIJVING).setValue(KassaApplicationType.KEY2BETALEN.getOms());
+
+    item = addItem(KassaApplicationType.PIV4ALL.getCode());
+    item.getItemProperty(OMSCHRIJVING).setValue(KassaApplicationType.PIV4ALL.getOms());
   }
 }

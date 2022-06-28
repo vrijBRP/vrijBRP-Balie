@@ -21,6 +21,7 @@ package nl.procura.gbaws.requests.wk;
 
 import java.io.OutputStream;
 
+import nl.procura.gbaws.requests.RequestCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +37,8 @@ public class WkRequestHandlerHTTP extends RequestHandlerHTTP {
 
   private BaseWKBuilder builder = new BaseWKBuilder();
 
-  public WkRequestHandlerHTTP(String username, String password, OutputStream outputStream, String clientCommand) {
-    super(username, password, null, outputStream, clientCommand);
+  public WkRequestHandlerHTTP(RequestCredentials credentials, OutputStream outputStream, String clientCommand) {
+    super(credentials, null, outputStream, clientCommand);
   }
 
   @Override

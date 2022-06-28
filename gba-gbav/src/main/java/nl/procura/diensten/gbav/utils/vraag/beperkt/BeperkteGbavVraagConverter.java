@@ -22,7 +22,6 @@ package nl.procura.diensten.gbav.utils.vraag.beperkt;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.fil;
 
-import java.util.Iterator;
 import java.util.List;
 
 import nl.bprbzk.gba.lrdplus.version1.ArrayOfXsdInt;
@@ -121,13 +120,8 @@ public class BeperkteGbavVraagConverter {
   }
 
   private static void addCat(Vraag2 vraag, GbavAutorisatie autorisatie, GBACat categorie, boolean historie) {
-
-    Iterator<Integer> it = autorisatie.getElements(categorie.getCode()).iterator();
-
-    while (it.hasNext()) {
-      Integer element = it.next();
+    for (Integer element : autorisatie.getElements(categorie.getCode())) {
       vraag.getMasker().getItem().add(Integer.valueOf(formatElementKey(categorie.getCode(), element)));
-
       if (historie && autorisatie.getElements(categorie.getCode() + 50).contains(element)) {
         vraag.getMasker().getItem().add(Integer.valueOf(formatElementKey(categorie.getCode() + 50, element)));
       }
@@ -140,8 +134,13 @@ public class BeperkteGbavVraagConverter {
     if (fil(content)) {
       autorisatie.checkElement(categorie.getCode(), element.getCode());
       vraag.getParameters().getItem().add(
-          new Zoekparameter(aval(formatElementKey(categorie.getCode(), element.getCode())), content));
+          new Zoekparameter(aval(formatElementKey(categorie.getCode(), element.getCode())),
+              replaceWildcard(content)));
     }
+  }
+
+  private static String replaceWildcard(String content) {
+    return content.replaceAll("%", "*");
   }
 
   private static void addParameter(Vraag2 vraag, GbavAutorisatie autorisatie, GBACat categorie,

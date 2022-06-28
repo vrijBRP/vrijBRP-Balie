@@ -24,11 +24,12 @@ import static nl.procura.standard.Globalfunctions.*;
 
 import nl.procura.diensten.gba.ple.extensions.PLResultComposite;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
-import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.SelectListener;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page2.Page2QuickSearch;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
+import nl.procura.gba.web.services.interfaces.address.Address;
+import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.window.Message;
@@ -51,6 +52,10 @@ public class Page1QuickSearch extends NormalPageTemplate {
       addButton(buttonReset, 1f);
       addButton(buttonClose);
       addComponent(form);
+
+    } else if (event.isEvent(AfterReturn.class)) {
+      getWindow().setWidth("700px");
+      getWindow().center();
     }
 
     super.event(event);
@@ -83,6 +88,15 @@ public class Page1QuickSearch extends NormalPageTemplate {
     args.addNummer(b.getAnr().getStringValue());
     args.setGeboortedatum(b.getGeboortedatum().getStringValue());
     args.setGeslachtsnaam(astr(b.getGeslachtsnaam()));
+    args.setPostcode(astr(b.getPostcode()));
+    args.setHuisnummer(b.getHnr());
+
+    Address adres = b.getAdres();
+    if (adres != null) {
+      args.setPostcode(adres.getPostalCode());
+      args.setHuisnummer(adres.getHnr());
+      args.setHuisletter(adres.getHnrL());
+    }
 
     args.setShowHistory(false);
     args.setShowArchives(false);
@@ -90,9 +104,9 @@ public class Page1QuickSearch extends NormalPageTemplate {
     args.setCat(HUW_GPS, isTru(getApplication().getServices().getGebruiker().getParameters().get(
         ParameterConstant.ZOEK_PLE_NAAMGEBRUIK).getValue()));
 
-    args.setDatasource(PLEDatasource.PROCURA);
-    args.setMaxFindCount(aval(getApplication().getServices().getGebruiker().getParameters().get(
-        ParameterConstant.ZOEK_MAX_FOUND_COUNT).getValue()));
+    int maxFindCount = aval(getApplication().getServices().getGebruiker().getParameters()
+        .get(ParameterConstant.ZOEK_MAX_FOUND_COUNT).getValue());
+    args.setMaxFindCount(maxFindCount);
 
     PLResultComposite result = getApplication().getServices().getPersonenWsService().getPersoonslijsten(args,
         false);

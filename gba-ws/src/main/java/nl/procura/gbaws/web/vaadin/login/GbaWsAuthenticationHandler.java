@@ -39,29 +39,42 @@ import nl.procura.proweb.rest.v1_0.Rol;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruikerAntwoord;
 import nl.procura.standard.exceptions.ProException;
+import nl.vrijbrp.hub.client.HubContext;
 
 public class GbaWsAuthenticationHandler {
 
-  public static GbaWsCredentials getUser(String username, String password, boolean useProwebAuthentication)
+  public static GbaWsCredentials getUserByUsernameAndEmail(String username, String email) {
+    GbaWsCredentials credentials = new GbaWsCredentials();
+    UsrWrapper gebruiker = UsrDao.getUserByUsernames(username, email);
+    if (gebruiker != null) {
+      credentials.setUsername(gebruiker.getGebruikersNaam());
+      credentials.setFullname(gebruiker.getVolledigeNaam());
+      credentials.setAdmin(gebruiker.isAdmin());
+      return credentials;
+    }
+    return null;
+  }
+
+  public static GbaWsCredentials getUserByCredentials(String username, String password, boolean useProwebAuthentication)
       throws ProRestAuthenticatieException {
 
-    final UsrWrapper gebruiker = UsrDao.getUser(username, password);
-
-    GbaWsCredentials gbaWsCredentials = new GbaWsCredentials();
+    final UsrWrapper gebruiker = UsrDao.getUserByCredentials(username, password);
+    GbaWsCredentials credentials = new GbaWsCredentials();
 
     if (gebruiker != null) {
-
-      gbaWsCredentials.setUsername(gebruiker.getGebruikersNaam());
-      gbaWsCredentials.setFullname(gebruiker.getVolledigeNaam());
-      gbaWsCredentials.setAdmin(gebruiker.isAdmin());
-
-      return gbaWsCredentials;
+      credentials.setUsername(gebruiker.getGebruikersNaam());
+      credentials.setFullname(gebruiker.getVolledigeNaam());
+      credentials.setAdmin(gebruiker.isAdmin());
+      return credentials;
     }
 
+    return getProwebCredentials(username, password, useProwebAuthentication, credentials);
+  }
+
+  private static GbaWsCredentials getProwebCredentials(String username, String password,
+      boolean useProwebAuthentication, GbaWsCredentials credentials) {
     String prowebAuthentication = GbaConfig.get(GbaConfigProperty.PROWEB_AUTHENTICATION);
-
     if (useProwebAuthentication && fil(prowebAuthentication)) {
-
       ProRestClient client = new ProRestClient();
       client.setUrl(prowebAuthentication);
       client.setApplicatie("Personen-ws");
@@ -82,24 +95,25 @@ public class GbaWsAuthenticationHandler {
       if (response != null) {
         if (response.getStatus() == Status.OK.getStatusCode()) {
           ProRestGebruiker restUser = response.getEntity(ProRestGebruikerAntwoord.class).getGebruiker();
-
           if (fil(restUser.getGebruikersnaam())) {
             if (!restUser.getRollen().contains(Rol.BEHEERDER)) {
               throw new ProException(ERROR, "Alleen toegankelijk voor beheerders");
             }
-
-            gbaWsCredentials.setUsername(restUser.getGebruikersnaam());
-            gbaWsCredentials.setFullname(restUser.getNaam());
-            gbaWsCredentials.setAdmin(true);
-
-            return gbaWsCredentials;
+            credentials.setUsername(restUser.getGebruikersnaam());
+            credentials.setFullname(restUser.getNaam());
+            credentials.setAdmin(true);
+            return credentials;
           } else if (response.getStatus() != Status.UNAUTHORIZED.getStatusCode()) {
             throw new ProException(ERROR, response.getStatusInfo().getReasonPhrase());
           }
         }
       }
     }
+    return null;
+  }
 
-    throw new ProException(AUTHENTICATION, ERROR, "Foutieve inloggegevens");
+  public static ProException getLogoutException() {
+    HubContext.instance().logout();
+    return new ProException(AUTHENTICATION, ERROR, "Foutieve inloggegevens");
   }
 }

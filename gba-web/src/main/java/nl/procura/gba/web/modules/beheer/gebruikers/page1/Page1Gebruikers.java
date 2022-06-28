@@ -287,8 +287,9 @@ public class Page1Gebruikers extends NormalPageTemplate {
 
         addColumn("", 20).setClassType(Embedded.class);
         addColumn("ID", 40);
-        addColumn("Naam", 350).setUseHTML(true);
-        addColumn("Gebruiker");
+        addColumn("Naam").setUseHTML(true);
+        addColumn("Gebruikersnaam", 200);
+        addColumn("E-mail", 200);
         addColumn("App. beheerder", 100);
       }
 
@@ -299,8 +300,7 @@ public class Page1Gebruikers extends NormalPageTemplate {
             directoryLayout.getRecordStatus(), false);
 
         for (Gebruiker gebruiker : gebruikers) {
-          getServices().getGebruikerService().setWachtwoordVerloop(
-              gebruiker); // Controleren of wachtwoord kan verlopen
+          getServices().getGebruikerService().setWachtwoordVerloop(gebruiker); // Controleren of wachtwoord kan verlopen
         }
 
         TabelToonType toonType = (TabelToonType) directoryLayout.getMapListField().getValue();
@@ -315,7 +315,7 @@ public class Page1Gebruikers extends NormalPageTemplate {
   }
 
   private void toonGebruikers(List<Gebruiker> list) {
-
+    getServices().getGebruikerService().setInformatie(list);
     for (Gebruiker gebruiker : list) {
 
       Record r = table.addRecord(gebruiker);
@@ -344,6 +344,7 @@ public class Page1Gebruikers extends NormalPageTemplate {
       r.addValue(gebruiker.getCUsr());
       r.addValue(gebruiker.getNaam() + errors);
       r.addValue(gebruiker.getGebruikersnaam());
+      r.addValue(gebruiker.getEmail());
       r.addValue(gebruiker.isAdministrator() ? "Ja" : "Nee");
     }
   }

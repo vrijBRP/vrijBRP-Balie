@@ -40,6 +40,7 @@ import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.kassa.gkas.GKasFile;
 import nl.procura.gba.web.services.beheer.kassa.key2betalen.Key2BetalenFile;
+import nl.procura.gba.web.services.beheer.kassa.piv4all.PIV4AllFile;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
@@ -267,6 +268,10 @@ public class KassaService extends AbstractService implements ZaakNumbers {
 
       case KEY2BETALEN:
         new KassaSender(parameters).send(Key2BetalenFile.of(parameters, aanvragen));
+        break;
+
+      case PIV4ALL:
+        new KassaSender(parameters).send(PIV4AllFile.of(parameters, aanvragen));
         break;
 
       default:

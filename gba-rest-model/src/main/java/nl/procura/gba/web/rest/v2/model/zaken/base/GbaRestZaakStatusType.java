@@ -31,7 +31,7 @@ public enum GbaRestZaakStatusType implements GbaRestEnum<Integer> {
   DOCUMENT_ONTVANGEN(7, "Doc. ontvangen", 6, false),
   GEWEIGERD(8, "Geweigerd", 7, true),
   VERWERKT(2, "Verwerkt", 8, true),
-  VERWERKT_IN_GBA(3, "Verwerkt in PROBEV", 9, true),
+  VERWERKT_IN_GBA(3, "Verwerkt", 9, true),
   GEANNULEERD(4, "Geannuleerd", 10, true),
   ONBEKEND(99, "Onbekend", 11, true);
 

@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.Terminal;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Window;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -51,6 +52,7 @@ import nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieType;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
+import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.gba.web.windows.persoonslijst.PersoonslijstWindow;
@@ -63,6 +65,7 @@ import nl.procura.vaadin.theme.ProcuraApplication;
 import nl.procura.vaadin.theme.ProcuraWindow;
 import nl.procura.vaadin.theme.twee.window.LoginWindow3;
 import nl.procura.validation.Bsn;
+import nl.vrijbrp.hub.client.HubContext;
 
 public class GbaApplication extends ProcuraApplication {
 
@@ -87,6 +90,17 @@ public class GbaApplication extends ProcuraApplication {
     lw.setFooterLayout(new GbaWebLoginFooterLayout());
     lw.setLoginValidator(new GBALoginValidator(this));
     lw.getLoginPanel().setRememberMe(isRememberMe());
+    lw.getLoginPanel().setPortalButtonSupplier(() -> {
+      if (HubContext.instance().enabled()) {
+        Button portalButton = new Button("Portaal");
+        portalButton.setStyleName(GbaWebTheme.BUTTON_DEFAULT);
+        portalButton.addListener((Button.ClickListener) clickEvent -> {
+          getParentWindow().open(new ExternalResource(HubContext.instance().url()));
+        });
+        return portalButton;
+      }
+      return null;
+    });
 
     setLoginWindow(lw);
   }

@@ -20,6 +20,7 @@
 package nl.procura.gbaws.db.handlers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,27 +41,30 @@ public class UsrDao extends GenericDao {
   private static final Logger          LOGGER           = LoggerFactory.getLogger(UsrDao.class);
   private static final PasswordEncoder PASSWORD_ENCODER = new DelegatingPasswordEncoder(1);
 
-  public static UsrWrapper getGebruiker(String username) {
-    for (final UsrWrapper g : getUsers()) {
-      if (g.getGebruikersNaam().equals(username)) {
-        return g;
-      }
-    }
-    return null;
+  public static UsrWrapper getUserByCredentials(String username) {
+    return getUserByName(username)
+        .map(UsrWrapper::new)
+        .orElse(null);
   }
 
-  public static UsrWrapper getUser(String username, String password) {
+  public static UsrWrapper getUserByUsernames(String username, String email) {
+    return getUserByName(username, email)
+        .map(UsrWrapper::new)
+        .orElse(null);
+  }
+
+  public static UsrWrapper getUserByCredentials(String username, String password) {
     return getUserByName(username)
         .filter(u -> PASSWORD_ENCODER.matches(password, u.getPw()))
         .map(UsrWrapper::new)
         .orElse(null);
   }
 
-  private static Optional<Usr> getUserByName(String username) {
+  public static Optional<Usr> getUserByName(String... usernames) {
     return GbaWsJpa.getManager().createQuery("select g from Usr g" +
-        " where g.usr = :usr" +
+        " where g.usr in :usrs" +
         " order by g.usr", Usr.class)
-        .setParameter("usr", username)
+        .setParameter("usrs", Arrays.asList(usernames))
         .getResultList()
         .stream()
         .findFirst();
@@ -68,14 +72,10 @@ public class UsrDao extends GenericDao {
 
   @SuppressWarnings("unchecked")
   public static List<UsrWrapper> getUsers() {
-
     final List<UsrWrapper> l = new ArrayList<>();
-
     try {
-
       final Query q = GbaWsJpa.getManager().createQuery("select g from Usr g order by g.usr");
       final List<Usr> list = q.getResultList();
-
       for (final Usr usr : list) {
         l.add(new UsrWrapper(usr));
       }

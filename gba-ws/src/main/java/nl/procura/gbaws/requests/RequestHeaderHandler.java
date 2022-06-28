@@ -23,59 +23,46 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import nl.procura.gbaws.db.handlers.UsrDao;
+import nl.procura.gbaws.db.wrappers.UsrWrapper;
 import nl.procura.standard.security.Base64;
+import nl.vrijbrp.hub.client.HubContext;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RequestHeaderHandler {
 
-  private final static Logger LOGGER = LoggerFactory.getLogger(RequestHeaderHandler.class);
-
-  private Credentials credentials = new Credentials();
+  private RequestCredentials credentials = new RequestCredentials();
 
   public RequestHeaderHandler(HttpServletRequest request) {
 
     try {
+      UsrWrapper userWrapper = HubContext.instance().authentication()
+          .map(auth -> UsrDao.getUserByUsernames(auth.username(),
+              auth.email()))
+          .orElse(null);
 
-      final String authorization = request.getHeader("authorization");
-      final String[] usernamepassword = new String(Base64.decode(authorization.split("Basic")[1].trim())).split(
-          ":");
+      if (userWrapper != null) {
+        credentials.setUser(userWrapper);
 
-      credentials.setUsername(usernamepassword[0]);
-      credentials.setPassword(usernamepassword[1]);
+      } else {
+        final String authorization = request.getHeader("authorization");
+        byte[] usernamePassword = Base64.decode(authorization.split("Basic")[1].trim());
+        final String[] usernamepassword = new String(usernamePassword).split(":");
+        credentials.setUsername(usernamepassword[0]);
+        credentials.setPassword(usernamepassword[1]);
+      }
     } catch (final IOException e) {
-      LOGGER.debug(e.toString());
+      log.debug(e.toString());
     }
   }
 
-  public Credentials getCredentials() {
+  public RequestCredentials getCredentials() {
     return credentials;
   }
 
-  public void setCredentials(Credentials credentials) {
+  public void setCredentials(RequestCredentials credentials) {
     this.credentials = credentials;
-  }
-
-  public final class Credentials {
-
-    private String password = "";
-    private String username = "";
-
-    public String getPassword() {
-      return password;
-    }
-
-    public void setPassword(String password) {
-      this.password = password;
-    }
-
-    public String getUsername() {
-      return username;
-    }
-
-    public void setUsername(String username) {
-      this.username = username;
-    }
   }
 }

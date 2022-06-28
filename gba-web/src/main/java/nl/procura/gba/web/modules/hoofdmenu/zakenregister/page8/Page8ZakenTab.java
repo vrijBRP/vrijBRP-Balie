@@ -70,13 +70,11 @@ public class Page8ZakenTab extends GbaPageTemplate {
         tabs.addTab(new Page8ZakenTab3(), "", null);
 
         reload();
-
         addExpandComponent(tabs);
+
       } else {
-
         reload();
-
-        addComponent(new Page8ZakenTab4());
+        addExpandComponent(new Page8ZakenTab4());
       }
     }
 

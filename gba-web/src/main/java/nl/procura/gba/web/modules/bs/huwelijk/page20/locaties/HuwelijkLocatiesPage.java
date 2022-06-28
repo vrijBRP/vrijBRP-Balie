@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.bs.huwelijk.page20.locaties;
 import nl.procura.gba.web.components.fields.GeldigheidField;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
+import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.modules.bs.huwelijk.page20.Page20HuwelijkForm1;
 import nl.procura.gba.web.services.gba.basistabellen.huwelijkslocatie.HuwelijksLocatie;
 import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
@@ -47,9 +48,11 @@ public class HuwelijkLocatiesPage extends ButtonPageTemplate {
         table1.init();
       }
     };
+    GbaIndexedTableFilterLayout filter = new GbaIndexedTableFilterLayout(table1);
 
     addButton(buttonClose);
     getButtonLayout().add(h2, getButtonLayout().getComponentIndex(buttonClose));
+    getButtonLayout().add(filter, getButtonLayout().getComponentIndex(buttonClose));
     getButtonLayout().add(geldigheidField, getButtonLayout().getComponentIndex(buttonClose));
     getButtonLayout().expand(h2, 1f).widthFull();
 
@@ -60,13 +63,9 @@ public class HuwelijkLocatiesPage extends ButtonPageTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       setSpacing(true);
-
       setInfo("Selecteer een huwelijkslocatie");
-
-      setTable1(new Table1());
-
+      setTable1(table1);
       addComponent(getTable1());
     }
 

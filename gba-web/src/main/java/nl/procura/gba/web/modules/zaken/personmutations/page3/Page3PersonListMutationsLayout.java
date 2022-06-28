@@ -49,6 +49,7 @@ import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.common.validators.GbaDatumValidator;
+import nl.procura.gba.web.components.containers.AutoriteitReisdocumentContainer;
 import nl.procura.gba.web.components.containers.TabelContainer;
 import nl.procura.gba.web.components.fields.DateReference;
 import nl.procura.gba.web.components.fields.GbaTextField;
@@ -191,7 +192,12 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       field = new UpperCaseField();
 
     } else if (pleE.getElem() == GBAElem.AUTORIT_VAN_AFGIFTE_NL_REISDOC) {
+      ProComboBox select = new ProComboBox();
+      select.setContainerDataSource(new AutoriteitReisdocumentContainer());
+      select.setItemCaptionPropertyId(TabelContainer.OMSCHRIJVING);
+      select.setFilteringMode(AbstractSelect.Filtering.FILTERINGMODE_CONTAINS);
       mutElem.setDefaultValue(() -> new FieldValue(mutElem.getCurrentValue().getVal()));
+      field = select;
 
     } else if (tabel != GBATable.ONBEKEND) {
       TabelContainer container = new TabelContainer(tabel, false, true);
@@ -234,6 +240,8 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     if (!mutElem.isChangeble()) {
       field.setReadOnly(true);
     }
+
+    field.setDescription(pleE.getElem().getDescr());
 
     if (mutElem.getAction().is(CORRECT_CATEGORY)) {
       if (GBAElem.REDEN_EINDE_NATIO.is(pleE.getElem())) {

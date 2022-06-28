@@ -19,33 +19,12 @@
 
 package nl.procura.gbaws.web.vaadin.login;
 
+import lombok.Data;
+
+@Data
 public class GbaWsCredentials {
 
   private String  username = "";
   private String  fullname = "";
   private boolean admin    = false;
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getFullname() {
-    return fullname;
-  }
-
-  public void setFullname(String fullname) {
-    this.fullname = fullname;
-  }
-
-  public boolean isAdmin() {
-    return admin;
-  }
-
-  public void setAdmin(boolean admin) {
-    this.admin = admin;
-  }
 }

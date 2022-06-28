@@ -23,6 +23,9 @@ import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.vrijbrp.hub.client.HubAuthConstants.ROLE_VRIJBRP_BALIE;
+
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,6 +49,8 @@ import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.functies.UserAgentInfo;
 import nl.procura.vaadin.theme.Credentials;
 import nl.procura.vaadin.theme.twee.login.CookieLoginValidator;
+import nl.vrijbrp.hub.client.HubAuth;
+import nl.vrijbrp.hub.client.HubContext;
 
 public class GBALoginValidator extends CookieLoginValidator {
 
@@ -68,42 +73,35 @@ public class GBALoginValidator extends CookieLoginValidator {
 
   @Override
   public Credentials loadCredentials() {
-
     if (checkLink()) {
       return null;
     }
-
-    String ticket = astr(application.getParameterMap().get(OnderhoudService.TICKET));
-    if (fil(ticket)) {
-      ticketGebruiker = TicketMap.getGebruikerByMd5(ticket, getApplication().getSession().getId());
-      if (ticketGebruiker != null) {
-        return new Credentials(ticketGebruiker.getGebruikersnaam(), "");
-      }
-    }
-
-    // Normale inlogprocedure
-    return super.loadCredentials();
+    Credentials credentials = super.loadCredentials();
+    return getCredentialsFromHub().orElse(getTicketCredentials().orElse(credentials));
   }
 
   @Override
   public ErrorMessage validate(Credentials credentials) {
-
-    GebruikerService gebruikers = getApplication().getServices().getGebruikerService();
-
+    GebruikerService gebruikerService = getApplication().getServices().getGebruikerService();
     try {
-      HttpServletRequest request = getApplication().getHttpRequest();
-      String remoteAddress = request.getRemoteAddr().trim();
+      Gebruiker gebruiker = getCredentialsFromHub()
+          .map(creds -> gebruikerService.getGebruikerByEmail(creds.getUsername()))
+          .orElse(null);
 
-      Gebruiker gebruiker;
-      if (ticketGebruiker != null) {
-        gebruiker = gebruikers.getGebruikerByNaam(ticketGebruiker.getGebruikersnaam(), false);
-      } else {
-        gebruiker = gebruikers.getGebruikerByCredentials(getBrowser(), remoteAddress, credentials, false);
+      if (gebruiker == null) {
+        HttpServletRequest request = getApplication().getHttpRequest();
+        String remoteAddress = request.getRemoteAddr().trim();
+        if (ticketGebruiker != null) {
+          gebruiker = gebruikerService.getGebruikerByNaam(ticketGebruiker.getGebruikersnaam(), false);
+        } else {
+          gebruiker = gebruikerService.getGebruikerByCredentials(getBrowser(), remoteAddress, credentials, false);
+        }
       }
 
       if (gebruiker != null) {
         if (gebruiker.isWachtwoordVerlopen()) {
-          wijzigWachtwoord(new PasswordExpired(gebruiker, null, gebruikers, null));
+          HubContext.instance().logout();
+          wijzigWachtwoord(new PasswordExpired(gebruiker, null, gebruikerService, null));
         } else {
           validated(gebruiker);
         }
@@ -113,9 +111,11 @@ public class GBALoginValidator extends CookieLoginValidator {
         e.printStackTrace();
       }
       return new UserError(e.getMessage());
+
     } catch (IllegalArgumentException e) {
       e.printStackTrace();
       return new UserError(e.getMessage());
+
     } catch (Exception e) {
       e.printStackTrace();
       return new UserError("Er is een onbekende fout opgetreden.");
@@ -124,25 +124,33 @@ public class GBALoginValidator extends CookieLoginValidator {
     return null;
   }
 
-  private boolean checkLink() {
+  private Optional<Credentials> getTicketCredentials() {
+    String ticket = astr(application.getParameterMap().get(OnderhoudService.TICKET));
+    if (fil(ticket)) {
+      ticketGebruiker = TicketMap.getGebruikerByMd5(ticket, getApplication().getSession().getId());
+      if (ticketGebruiker != null) {
+        return Optional.of(new Credentials(ticketGebruiker.getGebruikersnaam(), ""));
+      }
+    }
+    return Optional.empty();
+  }
 
+  private boolean checkLink() {
     LinkService links = getApplication().getServices().getLinkService();
     GebruikerService gebruikers = getApplication().getServices().getGebruikerService();
-
     String linkId = astr(getApplication().getParameterMap().get("link"));
 
     if (fil(linkId)) {
-
       PersonenLink link = links.getById(linkId);
 
       if (link == null) {
-
         Throwable exception = new ProException(WARNING, "Deze link bestaat niet (meer).");
         getApplication().handleException(getApplication().getLoginWindow(), exception);
-      } else if (link.isVerlopen()) {
 
+      } else if (link.isVerlopen()) {
         Throwable exception = new ProException(WARNING, "Deze link is verlopen.");
         getApplication().handleException(getApplication().getLoginWindow(), exception);
+
       } else if (link.getLinkType() == PersonenLinkType.WACHTWOORD_RESET) {
         Gebruiker gebruiker = gebruikers.getGebruikerByNaam(
             link.getProperty(PersonenLinkProperty.GEBRUIKER.getCode()), false);
@@ -169,5 +177,21 @@ public class GBALoginValidator extends CookieLoginValidator {
 
   private void wijzigWachtwoord(PasswordExpired passwordExpired) {
     getApplication().getLoginWindow().addWindow(new PasswordExpiredWindow(passwordExpired));
+  }
+
+  private Optional<Credentials> getCredentialsFromHub() {
+    return HubContext.instance()
+        .returnToHubIfRequested()
+        .loginOnHubIfDefault()
+        .authentication()
+        .filter(auth -> auth.hasRole(ROLE_VRIJBRP_BALIE))
+        .map(HubCredentials::new);
+  }
+
+  public static class HubCredentials extends Credentials {
+
+    public HubCredentials(HubAuth hubAuth) {
+      super(hubAuth.email(), "");
+    }
   }
 }

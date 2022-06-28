@@ -60,14 +60,11 @@ public class TemplateWindow extends ApplicationWindow implements FragmentChanged
     TemplateAccordionTab navigatie = VaadinUtils.getChild(getWindow(), TemplateAccordionTab.class);
 
     if (fil(fragment)) {
-
       AccordionLink link = navigatie.getLink(fragment);
 
       if (link == null) {
-
         new Message(getWindow(), "Info", "Module: " + fragment + " niet gevonden.", Message.TYPE_ERROR_MESSAGE);
       } else {
-
         link.select();
       }
     }
@@ -75,12 +72,11 @@ public class TemplateWindow extends ApplicationWindow implements FragmentChanged
 
   @Override
   public void event(WindowEvent event) {
-
     if (event instanceof WindowInit) {
-
       TemplateAccordionTab navigatie = VaadinUtils.getChild(getWindow(), TemplateAccordionTab.class);
-
-      navigatie.getAllLinks().get(0).select();
+      if (!navigatie.getAllLinks().isEmpty()) {
+        navigatie.getAllLinks().get(0).select();
+      }
     }
   }
 

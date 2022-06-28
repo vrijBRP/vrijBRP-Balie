@@ -22,11 +22,11 @@ package nl.procura.gba.web.modules.hoofdmenu.bsm.page1;
 import java.text.MessageFormat;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
-import nl.procura.gba.web.components.layouts.window.EmbeddedSiteWindow;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -37,7 +37,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 public class Page1Bsm extends NormalPageTemplate {
 
   private final Button  buttonRefresh = new Button("Ververs de pagina (F5)");
-  private final Button  buttonBsm     = new Button("Naar de BSM (F2)");
+  private final Button  buttonBsm     = new Button("Naar de Taakplanner (F2)");
   private Page1BsmTable table         = null;
 
   public Page1Bsm() {
@@ -78,15 +78,11 @@ public class Page1Bsm extends NormalPageTemplate {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     if (isKeyCode(button, keyCode, KeyCode.F2, buttonBsm)) {
-
       String url = getServices().getBsmService().getBsmExternalUrl();
       String ticket = getServices().getBsmService().getBsmTicket();
-      String vUrl = MessageFormat.format("{0}?embedded&ticket={1}", url, ticket);
-
-      getApplication().getParentWindow(getWindow()).addWindow(
-          new EmbeddedSiteWindow("Klik rechts om dit scherm te sluiten", vUrl));
+      String vUrl = MessageFormat.format("{0}?ticket={1}", url, ticket);
+      getApplication().getParentWindow().open(new ExternalResource(vUrl), "BSM", false);
     }
 
     if (isKeyCode(button, keyCode, KeyCode.F5, buttonRefresh)) {

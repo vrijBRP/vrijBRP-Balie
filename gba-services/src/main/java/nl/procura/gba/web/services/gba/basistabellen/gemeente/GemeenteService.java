@@ -111,21 +111,18 @@ public class GemeenteService extends AbstractService {
    * Geeft alle records in kennisbank.csv terug
    */
   public List<Gemeente> getRecords() {
-
     List<Gemeente> records = new ArrayList<>();
 
     try {
       try (CSVReader reader = new CSVReader(new FileReader(getBestand()))) {
         for (String[] line : reader.readAll()) {
-          Gemeente r = new Gemeente();
-
-          r.setCbscode(toBigDecimal(line[0]));
-          r.setGemeente(line[1]);
-          r.setAdres(line[2]);
-          r.setPc(line[3]);
-          r.setPlaats(line[4]);
-
-          records.add(r);
+          Gemeente gemeente = new Gemeente();
+          gemeente.setCbscode(toBigDecimal(line[0]));
+          gemeente.setGemeente(line[1]);
+          gemeente.setAdres(line[2]);
+          gemeente.setPc(line[3]);
+          gemeente.setPlaats(line[4]);
+          records.add(gemeente);
         }
       }
     } catch (IOException e) {

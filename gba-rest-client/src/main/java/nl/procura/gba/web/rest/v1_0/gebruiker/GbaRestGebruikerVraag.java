@@ -26,11 +26,12 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "vraag")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "code", "gebruikersnaam" })
+@XmlType(propOrder = { "code", "gebruikersnaam", "email" })
 public class GbaRestGebruikerVraag {
 
   private Long   code;
   private String gebruikersnaam;
+  private String email;
 
   public Long getCode() {
     return code;
@@ -46,5 +47,13 @@ public class GbaRestGebruikerVraag {
 
   public void setGebruikersnaam(String gebruikersnaam) {
     this.gebruikersnaam = gebruikersnaam;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 }

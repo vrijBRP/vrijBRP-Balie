@@ -136,7 +136,7 @@ public class ObjectStoreDMSStorage extends AbstractDmsStorage {
   }
 
   private String getCollection() {
-    return "balie-bestanden";
+    return "vrijbrp-documents";
   }
 
   private DMSDocument toDmsDocument(StorageObject object) {

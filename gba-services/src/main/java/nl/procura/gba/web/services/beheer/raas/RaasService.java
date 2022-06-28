@@ -60,6 +60,10 @@ public class RaasService extends AbstractService {
     return isTru(getServices().getParameterService().getSysteemParameter(ParameterConstant.RAAS_ENABLED).getValue());
   }
 
+  public int getRaasCode() {
+    return Math.max(getServices().getGebruiker().getLocatie().getCodeRaas().intValue(), 0); // default 0
+  }
+
   @ThrowException("Fout bij wijzigen RAAS aanvraag")
   public List<ResponseMessage> updateAanvraag(UpdateAanvraagRequest request) {
     return getRaasClient().getAanvraag().update(request).getMessages();

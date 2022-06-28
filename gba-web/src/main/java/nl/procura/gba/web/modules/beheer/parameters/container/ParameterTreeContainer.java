@@ -105,6 +105,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_KASSA, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_PROBEV, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_PROCURA, GROUP_OVERIG, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_PORTAAL, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_SYSTEM, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_PROTOCOLLERING, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_VOORRAAD, GROUP_OVERIG, false, DatabaseParameterLayout.class);

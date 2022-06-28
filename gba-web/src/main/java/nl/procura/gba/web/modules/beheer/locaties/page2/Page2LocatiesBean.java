@@ -80,12 +80,12 @@ public class Page2LocatiesBean implements Serializable {
   private String IPadressen = "";
 
   @Field(customTypeClass = NumberField.class,
-      caption = "Ras code",
+      caption = "Ras-id (rijbewijzen)",
       required = true)
   private BigDecimal rasCode = toBigDecimal(0);
 
   @Field(customTypeClass = NumberField.class,
-      caption = "Raas code",
+      caption = "RAAS-id (reisdocumenten)",
       required = true)
   private BigDecimal raasCode = toBigDecimal(0);
 

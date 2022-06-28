@@ -21,8 +21,7 @@ package nl.procura.gba.web.modules.zaken.reisdocument.overzicht;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtBean3.*;
-import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.*;
 
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
@@ -38,7 +37,7 @@ public class ReisdocumentOverzichtLayoutForm3 extends ReadOnlyForm<ReisdocumentO
 
     this.aanvraag = aanvraag;
     setCaption("Huidige status reisdocument en aanvraag");
-    setOrder(DOCUMENT, AFLEVERING, AFSLUITING);
+    setOrder(DOCUMENT, AFLEVERING, AFSLUITING, CODE_RAAS);
     setColumnWidths(WIDTH_130, "");
 
     updateBean();
@@ -74,6 +73,7 @@ public class ReisdocumentOverzichtLayoutForm3 extends ReadOnlyForm<ReisdocumentO
       afsluiting += ", afgesloten op " + status.getDatumTijdAfsluiting();
     }
 
+    b.setCodeRaas(astr(aanvraag.getCodeRaas()));
     b.setAflevering(aflevering);
     b.setAfsluiting(afsluiting);
     b.setSignalering(isSprakeVanSignalering()

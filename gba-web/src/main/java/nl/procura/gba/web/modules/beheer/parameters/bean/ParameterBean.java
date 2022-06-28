@@ -1473,6 +1473,15 @@ public class ParameterBean implements Serializable {
       itemCaptionPropertyId = KassaVerstuurTypeContainer.OMSCHRIJVING)
   private String kassaSendType = "";
 
+  // Portaal
+  @ParameterAnnotation(PORTAAL_ROLLEN)
+  @Position(order = "1")
+  @Field(type = FieldType.TEXT_AREA,
+      caption = "Rollen in het Portaal",
+      width = "300px")
+  @TextArea(rows = 10)
+  private String portaalRollen = "";
+
   // PLE Naamgebruik
   @ParameterAnnotation(ZOEK_PLE_NAAMGEBRUIK)
   @Position(order = "7")

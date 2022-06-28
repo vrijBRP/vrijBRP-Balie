@@ -40,6 +40,7 @@ public enum ParameterGroup {
   GROUP_EMAIL("E-mail"),
   GROUP_SMS("SMS"),
   GROUP_GEO("Geo / BAG"),
+  GROUP_PORTAAL("Portaal"),
   GROUP_RAAS("RAAS"),
   GROUP_SYSTEM("Systeem"),
   GROUP_GPK("GPK"),

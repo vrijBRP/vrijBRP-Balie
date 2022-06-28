@@ -168,6 +168,7 @@ public class ZaakUtils {
             soort.append(emigratieAdres);
             break;
 
+
           default:
             break;
         }

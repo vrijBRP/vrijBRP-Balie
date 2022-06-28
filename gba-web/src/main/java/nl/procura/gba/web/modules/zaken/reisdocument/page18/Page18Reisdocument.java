@@ -75,7 +75,7 @@ public class Page18Reisdocument extends ReisdocumentAanvraagPage {
     getAanvraag().setBurgerServiceNummer(new BsnFieldValue(getPl().getPersoon().getBsn().getVal()));
     getAanvraag().setDatumTijdInvoer(new DateTime());
     getAanvraag().setIngevoerdDoor(new UsrFieldValue(getApplication().getServices().getGebruiker()));
-    getAanvraag().setCodeRaas(0);
+    getAanvraag().setCodeRaas(getServices().getRaasService().getRaasCode());
 
     ReisdocumentService service = getApplication().getServices().getReisdocumentService();
     service.save(getAanvraag());

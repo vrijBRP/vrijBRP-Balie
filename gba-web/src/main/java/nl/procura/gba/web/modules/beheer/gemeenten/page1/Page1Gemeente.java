@@ -51,18 +51,13 @@ public class Page1Gemeente extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
       addComponent(new Fieldset("Uploaden van bestand", uploader));
-
       table = new Table();
-
       addExpandComponent(table);
-
       getButtonLayout().addComponent(new GbaIndexedTableFilterLayout(table));
-    } else if (event.isEvent(AfterReturn.class)) {
 
+    } else if (event.isEvent(AfterReturn.class)) {
       table.init();
     }
 
@@ -76,7 +71,6 @@ public class Page1Gemeente extends NormalPageTemplate {
 
       @Override
       public void deleteValue(Gemeente gemeente) {
-
         getServices().getGemeenteService().delete(gemeente);
       }
     };
@@ -84,17 +78,13 @@ public class Page1Gemeente extends NormalPageTemplate {
 
   @Override
   public void onNew() {
-
     getNavigation().goToPage(new Page2Gemeente(new Gemeente()));
-
     super.onNew();
   }
 
   @Override
   public void onNextPage() {
-
     getNavigation().goToPage(Page3HuwelijkLocaties.class);
-
     super.onNextPage();
   }
 
@@ -102,9 +92,7 @@ public class Page1Gemeente extends NormalPageTemplate {
 
     @Override
     public void onDoubleClick(Record record) {
-
       getNavigation().goToPage(new Page2Gemeente((Gemeente) record.getObject()));
-
       super.onDoubleClick(record);
     }
 
@@ -123,16 +111,13 @@ public class Page1Gemeente extends NormalPageTemplate {
 
     @Override
     public void setRecords() {
-
       for (Gemeente g : getServices().getGemeenteService().getGemeenten()) {
-
-        Record r = addRecord(g);
-
-        r.addValue(g.getGemeente());
-        r.addValue(g.getCbscode());
-        r.addValue(g.getAdres());
-        r.addValue(g.getPostcode());
-        r.addValue(g.getPlaats());
+        Record record = addRecord(g);
+        record.addValue(g.getGemeente());
+        record.addValue(g.getCbscode());
+        record.addValue(g.getAdres());
+        record.addValue(g.getPostcode());
+        record.addValue(g.getPlaats());
       }
 
       super.setRecords();
@@ -145,18 +130,13 @@ public class Page1Gemeente extends NormalPageTemplate {
 
     @Override
     public void uploadSucceeded(final SucceededEvent event) {
-
       if (!getFileName().toLowerCase().endsWith(CSV)) {
-
         addMessage("Het is geen CSV bestand", Icons.ICON_ERROR);
       } else {
-
         try {
           getServices().getGemeenteService().update(getFile());
-
           table.init();
         } catch (ProException e) {
-
           addMessage(e.getMessage(), Icons.ICON_ERROR);
         }
 

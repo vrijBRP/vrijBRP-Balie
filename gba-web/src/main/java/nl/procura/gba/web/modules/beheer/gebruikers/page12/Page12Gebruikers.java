@@ -62,10 +62,10 @@ public class Page12Gebruikers extends NormalPageTemplate {
           + "Dit houdt in dat ze een unieke naam en e-mailadres moeten hebben. Verder zouden ze gekoppeld moeten zijn aan een profiel");
 
       table = new Table();
-      addComponent(table);
+      addExpandComponent(table);
       getButtonLayout().addComponent(new GbaIndexedTableFilterLayout(table));
-    } else if (event.isEvent(AfterReturn.class)) {
 
+    } else if (event.isEvent(AfterReturn.class)) {
       table.init();
     }
 

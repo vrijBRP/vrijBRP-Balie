@@ -33,7 +33,7 @@ public class QuickSearchPersonWindow extends GbaModalWindow {
   private MainModuleContainer mainModule = null;
 
   public QuickSearchPersonWindow(SelectListener snelZoekListener) {
-    super("Zoek personen (Druk op escape om te sluiten)", "1000px");
+    super("Zoek personen (Druk op escape om te sluiten)", "700px");
     this.snelZoekListener = snelZoekListener;
   }
 

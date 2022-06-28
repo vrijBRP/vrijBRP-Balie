@@ -32,6 +32,7 @@ import nl.procura.diensten.gba.ple.base.converters.ple.BasePLToPleConverter;
 import nl.procura.diensten.gba.ple.base.converters.yaml.BasisPLToYamlConverter;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.utils.PLECommandLineUtils;
+import nl.procura.gbaws.requests.RequestCredentials;
 import nl.procura.gbaws.requests.RequestHandlerHTTP;
 import nl.procura.gbaws.web.servlets.RequestException;
 
@@ -42,8 +43,8 @@ public class GbaRequestHandlerHTTP extends RequestHandlerHTTP {
   private PleReturnType returnType = PleReturnType.JAVA;
   private BasePLBuilder builder    = new BasePLBuilder();
 
-  public GbaRequestHandlerHTTP(String username, String password, OutputStream outputStream, String clientCommand) {
-    super(username, password, null, outputStream, clientCommand);
+  public GbaRequestHandlerHTTP(RequestCredentials credentials, OutputStream outputStream, String clientCommand) {
+    super(credentials, null, outputStream, clientCommand);
   }
 
   @Override

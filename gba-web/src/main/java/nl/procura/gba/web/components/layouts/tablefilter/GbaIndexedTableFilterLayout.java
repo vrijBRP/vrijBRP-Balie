@@ -45,11 +45,10 @@ public class GbaIndexedTableFilterLayout extends IndexedTableFilterLayout {
     this(table, spreadsheets, null);
   }
 
-  public GbaIndexedTableFilterLayout(GbaTable table, List<? extends Spreadsheet> spreadsheets,
+  public GbaIndexedTableFilterLayout(GbaTable table,
+      List<? extends Spreadsheet> spreadsheets,
       NativeSelect sortField) {
-
     super(table);
-
     if (sortField != null) {
       addComponent(sortField);
     }

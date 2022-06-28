@@ -162,11 +162,10 @@ public class Page20Huwelijk extends BsPage<DossierHuwelijk> {
         ol.getLeft().addComponent(form2);
         ol.getLeft().addComponent(form3);
 
-        ol.getRight().addButton(buttonAgenda, this);
-        ol.getRight().addButton(buttonBevestiging, this);
-
-        ol.getRight().setWidth("150px");
-        ol.getRight().setCaption("Opties");
+        //        ol.getRight().addButton(buttonAgenda, this);
+        //        ol.getRight().addButton(buttonBevestiging, this);
+        //        ol.getRight().setWidth("150px");
+        //        ol.getRight().setCaption("Opties");
 
         addComponent(ol);
       }

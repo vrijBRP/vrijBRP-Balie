@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nl.procura.gbaws.requests.RequestCredentials;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,15 +53,14 @@ public class GbaWsServlet extends HttpServlet {
     try {
 
       final RequestHeaderHandler headerhandler = new RequestHeaderHandler(request);
-      final String u = headerhandler.getCredentials().getUsername();
-      final String p = headerhandler.getCredentials().getPassword();
-      final String c = getLine(request);
+      RequestCredentials credentials = headerhandler.getCredentials();
+      final String command = getLine(request);
       final ServletOutputStream os = response.getOutputStream();
 
-      if (c.contains("-ple")) {
-        new GbaRequestHandlerHTTP(u, p, os, c);
-      } else if (c.contains("-wk")) {
-        new WkRequestHandlerHTTP(u, p, os, c);
+      if (command.contains("-ple")) {
+        new GbaRequestHandlerHTTP(credentials, os, command);
+      } else if (command.contains("-wk")) {
+        new WkRequestHandlerHTTP(credentials, os, command);
       }
     } catch (final RuntimeException e) {
       LOGGER.debug(e.toString());

@@ -22,7 +22,7 @@ package nl.procura.gbaws.requests.gba;
 import nl.procura.diensten.gba.ple.base.BasePLBuilder;
 import nl.procura.diensten.gba.ple.base.PLEMessage;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
-import nl.procura.gbaws.db.wrappers.UsrWrapper;
+import nl.procura.gbaws.requests.RequestCredentials;
 import nl.procura.gbaws.requests.RequestHandler;
 import nl.procura.gbaws.web.servlets.RequestException;
 
@@ -31,14 +31,14 @@ public class GbaRequestHandlerWS extends RequestHandler {
   private final PLEArgs args;
   private BasePLBuilder builder = new BasePLBuilder();
 
-  public GbaRequestHandlerWS(UsrWrapper usr, PLEArgs args) {
-    super(usr);
+  public GbaRequestHandlerWS(RequestCredentials credentials, PLEArgs args) {
+    super(credentials);
     this.args = args;
     execute();
   }
 
   public GbaRequestHandlerWS(String username, String password, PLEArgs args) {
-    super(username, password);
+    super(new RequestCredentials(username, password));
     this.args = args;
     execute();
   }

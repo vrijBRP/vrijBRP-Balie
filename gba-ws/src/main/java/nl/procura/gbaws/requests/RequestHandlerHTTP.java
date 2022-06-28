@@ -28,15 +28,12 @@ public class RequestHandlerHTTP extends RequestHandler {
   private final OutputStream outputStream;
   private String             clientCommand;
 
-  public RequestHandlerHTTP(String username, String password,
-      InputStream inputStream, OutputStream outputStream, String clientCommand) {
-
-    super(username, password);
-
+  public RequestHandlerHTTP(RequestCredentials credentials, InputStream inputStream,
+      OutputStream outputStream, String clientCommand) {
+    super(credentials);
     this.inputStream = inputStream;
     this.outputStream = outputStream;
     this.clientCommand = clientCommand;
-
     execute();
   }
 

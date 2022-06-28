@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.beheer.kassa;
 
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
@@ -37,6 +38,8 @@ import lombok.Getter;
 
 public class KassaParameters {
 
+  @Getter
+  private final String        gebruikerId;
   @Getter
   private final String        locatie;
   @Getter
@@ -57,6 +60,7 @@ public class KassaParameters {
   public KassaParameters(Services services) {
     this.services = services;
     locatie = services.getGebruiker().getLocatie().getLocatie();
+    gebruikerId = astr(services.getGebruiker().getCUsr());
     kassaLocatieId = services.getGebruiker().getLocatie().getGkasId();
     kassaId = getParm(KASSA_ID, false);
     type = KassaSendType.get(getParm(KASSA_SEND_TYPE, true));

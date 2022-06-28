@@ -80,6 +80,7 @@ public class Page1Locaties extends NormalPageTemplate {
           addColumn("Type", 100);
           addColumn("Locatie", 150);
           addColumn("Omschrijving");
+          addColumn("RAAS-id", 100);
           addColumn("kassa-id", 100);
           addColumn("&nbsp;", 15).setClassType(Embedded.class);
           addColumn("IP-adres (sen)", 200).setUseHTML(true);
@@ -102,6 +103,7 @@ public class Page1Locaties extends NormalPageTemplate {
             r.addValue(loc.getLocatieType());
             r.addValue(loc.getLocatie());
             r.addValue(loc.getOmschrijving());
+            r.addValue(loc.getCodeRaas());
             r.addValue(loc.getGkasId());
 
             if (getServices().getLocatieService().isCorrect(loc)) {

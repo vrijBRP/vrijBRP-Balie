@@ -77,7 +77,7 @@ public class Page1LocatieKeuze extends NormalPageTemplate {
       }
     };
 
-    addComponent(table);
+    addExpandComponent(table);
   }
 
   @Override

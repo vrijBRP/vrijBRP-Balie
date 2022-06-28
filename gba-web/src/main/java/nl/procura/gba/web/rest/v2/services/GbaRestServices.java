@@ -33,6 +33,7 @@ public class GbaRestServices {
   private final GbaRestErkenningService   erkenningService;
   private final GbaRestHuwelijkService    huwelijkService;
   private final GbaRestOverlijdenService  overlijdenService;
+  private final GbaRestGebruikerService   gebruikerService;
 
   public GbaRestServices(Services services) {
     dossierService = new GbaRestDossierService(this, services);
@@ -45,6 +46,7 @@ public class GbaRestServices {
     geboorteService = new GbaRestGeboorteService(this, services);
     huwelijkService = new GbaRestHuwelijkService(this, services);
     overlijdenService = new GbaRestOverlijdenService(this, services);
+    gebruikerService = new GbaRestGebruikerService(this, services);
   }
 
   public GbaRestVerhuizingService getVerhuizingService() {
@@ -85,5 +87,9 @@ public class GbaRestServices {
 
   public GbaRestOverlijdenService getOverlijdenService() {
     return overlijdenService;
+  }
+
+  public GbaRestGebruikerService getGebruikerService() {
+    return gebruikerService;
   }
 }

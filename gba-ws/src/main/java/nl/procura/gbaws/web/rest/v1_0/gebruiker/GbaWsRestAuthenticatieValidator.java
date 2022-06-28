@@ -19,20 +19,31 @@
 
 package nl.procura.gbaws.web.rest.v1_0.gebruiker;
 
+import static java.util.Optional.ofNullable;
+import static nl.procura.gbaws.web.vaadin.login.GbaWsAuthenticationHandler.getUserByCredentials;
+import static nl.procura.gbaws.web.vaadin.login.GbaWsAuthenticationHandler.getUserByUsernameAndEmail;
+
+import java.util.Optional;
+
 import nl.procura.gbaws.web.vaadin.login.GbaWsAuthenticationHandler;
 import nl.procura.gbaws.web.vaadin.login.GbaWsCredentials;
 import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieValidator;
 import nl.procura.proweb.rest.v1_0.Rol;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruikerAntwoord;
+import nl.vrijbrp.hub.client.HubAuth;
+import nl.vrijbrp.hub.client.HubContext;
 
 public class GbaWsRestAuthenticatieValidator implements ProRestAuthenticatieValidator {
 
   @Override
   public ProRestGebruikerAntwoord getGebruiker(String application, String username, String password) {
-
     ProRestGebruikerAntwoord antwoord = new ProRestGebruikerAntwoord();
-    GbaWsCredentials user = GbaWsAuthenticationHandler.getUser(username, password, false);
+    Optional<HubAuth> authentication = HubContext.instance().authentication();
+    GbaWsCredentials user = ofNullable(authentication
+        .map(auth -> getUserByUsernameAndEmail(auth.username(), auth.email()))
+        .orElseGet(() -> getUserByCredentials(username, password, false)))
+            .orElseThrow(GbaWsAuthenticationHandler::getLogoutException);
 
     ProRestGebruiker restGebruiker = new ProRestGebruiker();
     restGebruiker.setGebruikersnaam(user.getUsername());
@@ -44,7 +55,6 @@ public class GbaWsRestAuthenticatieValidator implements ProRestAuthenticatieVali
     }
 
     antwoord.setGebruiker(restGebruiker);
-
     return antwoord;
   }
 }

@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.27.4</version>
+        <version>1.27.6</version>
     </parent>
 
     <packaging>war</packaging>
@@ -216,6 +216,11 @@
             <artifactId>hsqldb</artifactId>
             <version>2.4.1</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.vrijbrp.hub</groupId>
+            <artifactId>client</artifactId>
         </dependency>
     </dependencies>
 

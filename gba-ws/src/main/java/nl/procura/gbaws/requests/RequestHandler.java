@@ -34,28 +34,18 @@ public abstract class RequestHandler {
 
   private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(RequestHandler.class);
 
-  private final Logger logger = new Logger();
-  private String       username;
-  private String       password;
-  private UsrWrapper   gebruiker;
+  private final Logger       logger = new Logger();
+  private RequestCredentials credentials;
 
-  public RequestHandler(UsrWrapper gebruiker) {
-    this.gebruiker = gebruiker;
-  }
-
-  public RequestHandler(String username, String password) {
-    this.username = username;
-    this.password = password;
+  public RequestHandler(RequestCredentials credentials) {
+    this.credentials = credentials;
   }
 
   public void execute() {
-
     try {
       logger.chapter("Zoekactie");
-      logger.item("Gebruikersnaam", username);
-      LOG.debug(username + ": " + password);
-
-      checkLogin(username, password);
+      logger.item("Gebruikersnaam", credentials.getUser());
+      checkLogin(credentials);
       find();
 
     } catch (final IllegalStateException e) {
@@ -84,7 +74,7 @@ public abstract class RequestHandler {
   }
 
   public UsrWrapper getGebruiker() {
-    return gebruiker;
+    return credentials.getUser();
   }
 
   protected void handleException(Throwable t) {
@@ -103,8 +93,8 @@ public abstract class RequestHandler {
 
     try {
 
-      if (getGebruiker() != null) {
-        requestWrapper.setGebruiker(getGebruiker());
+      if (credentials.getUser() != null) {
+        requestWrapper.setGebruiker(credentials.getUser());
       }
 
       final ProcuraDate date = new ProcuraDate();
@@ -122,21 +112,25 @@ public abstract class RequestHandler {
 
   protected abstract void find();
 
-  private void checkLogin(String username, String password) {
+  private void checkLogin(RequestCredentials credentials) {
 
-    if (gebruiker == null) {
+    UsrWrapper user = credentials.getUser();
+    String username = credentials.getUsername();
+    String password = credentials.getPassword();
 
+    if (user == null) {
       if (emp(username) && emp(password)) {
         throw new RequestException(1001, "Geen gebruikersnaam/wachtwoord");
       }
 
-      gebruiker = UsrDao.getUser(username, password);
+      user = UsrDao.getUserByCredentials(username, password);
+      credentials.setUser(user);
 
-      if (getGebruiker() == null) {
+      if (user == null) {
         throw new RequestException(1002, "Gebruikersnaam/wachtwoord incorrect");
       }
 
-      if (!getGebruiker().isProfiel()) {
+      if (!user.isProfiel()) {
         throw new RequestException(1003, "Gebruiker heeft geen profiel. Incomplete configuratie.");
       }
     }

@@ -287,7 +287,7 @@ public class PrintMultiLayout extends GbaVerticalLayout {
       } else {
 
         printActie.setPrintOptie((PrintOptie) record.getUitvoer().getValue());
-        service.print(printActie, !isTabelAdded(), downloadHandler);
+        service.print(printActie, true, downloadHandler);
       }
 
       // Functie voor na het printen

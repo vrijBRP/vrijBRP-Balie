@@ -22,6 +22,7 @@ package nl.procura.gbaws.requests.wk;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKBuilder;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKMessage;
 import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
+import nl.procura.gbaws.requests.RequestCredentials;
 import nl.procura.gbaws.requests.RequestHandler;
 import nl.procura.gbaws.web.servlets.RequestException;
 
@@ -31,7 +32,7 @@ public class WkRequestHandlerWS extends RequestHandler {
   private ZoekArgumenten args;
 
   public WkRequestHandlerWS(String username, String password, ZoekArgumenten a) {
-    super(username, password);
+    super(new RequestCredentials(username, password));
     setArgs(a);
   }
 

@@ -21,6 +21,8 @@ package nl.procura.gba.web.services.beheer.gebruiker;
 
 import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.*;
+import static nl.procura.gba.jpa.personen.dao.UsrDao.findByEmail;
+import static nl.procura.gba.jpa.personen.dao.UsrDao.findByName;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.BEEINDIGD;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.NOG_NIET_ACTUEEL;
 import static nl.procura.standard.Globalfunctions.*;
@@ -124,7 +126,9 @@ public class GebruikerService extends AbstractService {
     Gebruiker gebruiker = null;
 
     try {
-      for (Usr u : UsrDao.findByName(credentials.getUsername())) {
+      List<Usr> users = new ArrayList<>(findByName(credentials.getUsername()));
+      users.addAll(findByEmail(credentials.getUsername()));
+      for (Usr u : users) {
         Gebruiker g = copy(u, Gebruiker.class);
         laadAttributen(g);
         gebruiker = g;
@@ -190,7 +194,7 @@ public class GebruikerService extends AbstractService {
     }
 
     // Zoek de gebruiker
-    for (Usr u : UsrDao.findByName(gebruikersnaam)) {
+    for (Usr u : findByName(gebruikersnaam)) {
       Gebruiker gebruiker = laadAttributen(copy(u, Gebruiker.class));
       cache.put(gebruikersnaam, gebruiker);
       return gebruiker;
@@ -252,9 +256,15 @@ public class GebruikerService extends AbstractService {
   }
 
   @ThrowException(USER_NOT_FOUND_ERROR)
+  public Gebruiker getGebruikerByEmail(String gebruikersnaam) {
+    List<Gebruiker> gebruikers = getGebruikersByEmail(gebruikersnaam);
+    return gebruikers.size() == 1 ? gebruikers.get(0) : null;
+  }
+
+  @ThrowException(USER_NOT_FOUND_ERROR)
   public List<Gebruiker> getGebruikersByEmail(String email) {
     List<Gebruiker> gebruikers = new ArrayList<>();
-    for (Usr u : UsrDao.findByEmail(email)) {
+    for (Usr u : findByEmail(email)) {
       gebruikers.add(laadAttributen(copy(u, Gebruiker.class)));
     }
 
@@ -454,7 +464,7 @@ public class GebruikerService extends AbstractService {
   @Transactional
   @ThrowException("Fout bij bijwerken wachtwoord")
   public void syncChangeLocalPassword(String username, long date, long time, String password, boolean resetPw) {
-    List<Usr> usrs = UsrDao.findByName(username);
+    List<Usr> usrs = findByName(username);
     for (Usr u : usrs) {
       Gebruiker gebruiker = copy(u, Gebruiker.class);
       gebruiker.setGeblokkeerd(false);
@@ -476,7 +486,7 @@ public class GebruikerService extends AbstractService {
   @ThrowException("Fout bij toevoegen gebruiker")
   public void syncAddLocalUser(String username, String name, boolean admin,
       boolean block, long dateStart, long dateEnd) {
-    List<Usr> usrs = UsrDao.findByName(username);
+    List<Usr> usrs = findByName(username);
     Gebruiker gebruiker = new Gebruiker();
     if (!usrs.isEmpty()) {
       gebruiker = copy(usrs.get(0), Gebruiker.class);
@@ -494,7 +504,7 @@ public class GebruikerService extends AbstractService {
   @Transactional
   @ThrowException("Fout bij toevoegen gebruiker")
   public void syncRemoveLocalUser(String username) {
-    List<Usr> usrs = UsrDao.findByName(username);
+    List<Usr> usrs = findByName(username);
     if (!usrs.isEmpty()) {
       Gebruiker gebruiker = copy(usrs.get(0), Gebruiker.class);
       removeEntity(gebruiker);
@@ -590,7 +600,7 @@ public class GebruikerService extends AbstractService {
 
   private boolean isUniekeEmail(Gebruiker gebruiker, String email) {
     if (fil(email)) {
-      return UsrDao.findByEmail(email).stream()
+      return findByEmail(email).stream()
           .allMatch(usr -> usr.getCUsr()
               .equals(gebruiker.getCUsr()));
     }

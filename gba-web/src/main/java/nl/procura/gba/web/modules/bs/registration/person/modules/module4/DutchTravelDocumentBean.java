@@ -64,7 +64,7 @@ public class DutchTravelDocumentBean {
       caption = "Nummer",
       width = "100px",
       required = true)
-  @TextField(maxLength = 9)
+  @TextField(maxLength = 9, nullRepresentation = "")
   private String number;
 
   @Field(customTypeClass = ProDateField.class,

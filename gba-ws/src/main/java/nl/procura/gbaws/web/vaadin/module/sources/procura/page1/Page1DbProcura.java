@@ -45,6 +45,7 @@ public class Page1DbProcura extends ModuleDbPage {
   private Page1DbProcuraForm form1;
   private Page1DbProcuraForm form2;
   private Page1DbProcuraForm form3;
+  private Page1DbProcuraForm form4;
 
   public Page1DbProcura() {
   }
@@ -61,6 +62,7 @@ public class Page1DbProcura extends ModuleDbPage {
       form1 = new Page1DbProcuraForm("Standaard", DATABASE, SID, SERVER, PORT);
       form2 = new Page1DbProcuraForm("Handmatig invullen", TNS_ADMIN_DIR, CUSTOM_URL, CUSTOM_DRIVER);
       form3 = new Page1DbProcuraForm("Overige eigenschappen", USERNAME, PW, MIN_CONN, MAX_CONN);
+      form4 = new Page1DbProcuraForm("Exporteren", PERSON_ID);
 
       Page1DbProcuraBean bean = new Page1DbProcuraBean();
       ProcuraDbWrapper procuraDb = ParmDao.getProcuraDb();
@@ -80,12 +82,14 @@ public class Page1DbProcura extends ModuleDbPage {
       form1.setBean(bean);
       form2.setBean(bean);
       form3.setBean(bean);
+      form4.setBean(bean);
       addComponent(form1);
       addComponent(new InfoLayout("", "Hieronder kan zelf een URL of driver worden ingevuld als " +
           "bovenstaande variabelen niet voldoende zijn. <br/>" +
           "Oracle TNS admin map verwijst naar de map waarin tnsnames.ora zich moet bevinden."));
       addComponent(form2);
       addComponent(form3);
+      addComponent(form4);
     }
 
     super.event(event);

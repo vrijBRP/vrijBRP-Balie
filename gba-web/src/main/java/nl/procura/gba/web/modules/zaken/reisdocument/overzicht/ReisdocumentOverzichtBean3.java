@@ -33,6 +33,7 @@ public class ReisdocumentOverzichtBean3 implements Serializable {
   public static final String SIGNALERING = "signalering";
   public static final String AFLEVERING  = "aflevering";
   public static final String AFSLUITING  = "afsluiting";
+  public static final String CODE_RAAS   = "codeRaas";
 
   public static final String AFLEVERING2 = "aflevering2";
   public static final String AFSLUITING2 = "afsluiting2";
@@ -52,6 +53,10 @@ public class ReisdocumentOverzichtBean3 implements Serializable {
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Afsluiting")
   private String afsluiting = "";
+
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Code raas")
+  private String codeRaas = "";
 
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Aflevering")
@@ -107,5 +112,13 @@ public class ReisdocumentOverzichtBean3 implements Serializable {
 
   public void setAfsluiting2(String afsluiting2) {
     this.afsluiting2 = afsluiting2;
+  }
+
+  public String getCodeRaas() {
+    return codeRaas;
+  }
+
+  public void setCodeRaas(String codeRaas) {
+    this.codeRaas = codeRaas;
   }
 }

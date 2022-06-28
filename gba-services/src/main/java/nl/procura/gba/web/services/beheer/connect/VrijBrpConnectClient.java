@@ -52,7 +52,7 @@ public class VrijBrpConnectClient {
           .username(getParm(parameterService, BZ_CONNECT_USERNAME))
           .password(getParm(parameterService, BZ_CONNECT_PW))
           .url(getParm(parameterService, BZ_CONNECT_URL))
-          .timeoutInSeconds(10)
+          .timeoutInSeconds(30)
           .build()));
     }
     return Optional.empty();

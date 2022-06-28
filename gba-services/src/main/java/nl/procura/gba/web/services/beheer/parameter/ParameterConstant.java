@@ -568,6 +568,9 @@ public enum ParameterConstant implements ParameterType {
   KASSA_SEND_TYPE("kassa_send_type", "Versturen via",
       GROUP_KASSA, true, false, false, ""),
 
+  PORTAAL_ROLLEN("portaal_rollen", "Rollen in VrijBRP Portaal",
+      GROUP_PORTAAL, true, true, true, ""),
+
   ZOEK_PLE_NAAMGEBRUIK("zoek_ple_naamgebruik", "PL gegevens naar naamgebruik",
       GROUP_ZOEKEN_ALGEMEEN, true, true, true, ""),
 
@@ -590,7 +593,7 @@ public enum ParameterConstant implements ParameterType {
       GROUP_EMAIL, true, false, false, ""),
 
   PROBEV_GEBR_CODE("probev_gebr_code", "PROBEV gebruiker code",
-      GROUP_PROBEV, false, false, true, ""),
+      GROUP_PROBEV, true, false, true, ""),
 
   SMS_ENABLED("SMS_enabled", "SMS service actief",
       GROUP_SMS, true, true, true, ""),

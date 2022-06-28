@@ -24,6 +24,8 @@ import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
 import static nl.procura.gba.web.rest.v2.converters.GbaRestBaseTypeConverter.toBsn;
 import static nl.procura.gba.web.rest.v2.converters.GbaRestBaseTypeConverter.toTableRecord;
 import static nl.procura.gba.web.rest.v2.model.base.GbaRestEnum.toEnum;
+import static nl.procura.gba.web.rest.v2.model.zaken.verhuizing.GbaRestVerhuisduurType.KORTER;
+import static nl.procura.gba.web.rest.v2.model.zaken.verhuizing.GbaRestVerhuisduurType.LANGER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -258,7 +260,7 @@ public class GbaRestVerhuizingService extends GbaRestAbstractService {
       restVerh.setAdres2(emigratie.getAdres2());
       restVerh.setAdres3(emigratie.getAdres3());
       restVerh.setDatumVertrek(emigratie.getDatumVertrek().getIntDate());
-      restVerh.setDuur(toEnum(GbaRestVerhuisduurType.values(), emigratie.getDuur()));
+      restVerh.setDuur(emigratie.getDuur().toLowerCase().contains("korter") ? KORTER : LANGER);
       restVerh.setLand(toTableRecord(emigratie.getLand()));
       return restVerh;
     }

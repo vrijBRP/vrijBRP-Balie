@@ -30,7 +30,6 @@ public class Gemeente extends Gem implements Comparable<Gemeente> {
   public Gemeente() {
     setCbscode(new BigDecimal(-1L));
     setAdres("");
-    setCGem(-1L);
     setGemeente("");
     setPc("");
     setPlaats("");

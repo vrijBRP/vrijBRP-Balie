@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>nl.procura.gba</groupId>
     <artifactId>gba-parent</artifactId>
-    <version>1.27.4</version>
+    <version>1.27.6</version>
     <name>Proweb GBA - Parent</name>
 
     <developers>
@@ -82,7 +82,7 @@
         <commons-net.version>3.2</commons-net.version>
         <wss4j.version>1.6.9</wss4j.version>
         <jaxws-rt.version>2.2.10</jaxws-rt.version>
-        <vaadin-componenten.version>3.0.1</vaadin-componenten.version>
+        <vaadin-componenten.version>3.0.2</vaadin-componenten.version>
         <vaadin-visualizations.version>1.1.2</vaadin-visualizations.version>
         <vaadin-ckeditor.version>1.8.2</vaadin-ckeditor.version>
         <vaadin-clipboard.version>0.5.0</vaadin-clipboard.version>
@@ -98,7 +98,7 @@
         <xalan.version>2.7.2</xalan.version>
         <xml-apis.version>1.4.01</xml-apis.version>
         <proweb-admin-license.version>1.1.0</proweb-admin-license.version>
-        <vrijbrp-connect.version>1.0.8</vrijbrp-connect.version>
+        <vrijbrp-connect.version>1.1.0</vrijbrp-connect.version>
         <dependency-analysis.version>1.0</dependency-analysis.version>
         <objectstore.version>1.0.1</objectstore.version>
         <okhttp.version>4.9.0</okhttp.version>
@@ -122,13 +122,14 @@
         <micro.rest.version>2.2.3</micro.rest.version>
         <brp-inbox.version>1.2.2</brp-inbox.version>
         <sms-micro.version>1.2.0</sms-micro.version>
-        <raas-micro.version>1.1.0</raas-micro.version>
+        <raas-micro.version>1.3.1</raas-micro.version>
         <geo-micro.version>1.0.0</geo-micro.version>
 
         <gba.commons.version>1.0.8</gba.commons.version>
         <probev.jpa.version>1.0.5</probev.jpa.version>
         <hibernate.jpamodelgen.version>5.4.1.Final</hibernate.jpamodelgen.version>
         <vrs-services-api.version>0.9.4</vrs-services-api.version>
+        <hub.version>1.0.0</hub.version>
     </properties>
 
     <modules>
@@ -318,30 +319,41 @@
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>nl.procura.proweb-rest</groupId>
                 <artifactId>proweb-rest-shared</artifactId>
                 <version>1.0.0</version>
             </dependency>
+
             <dependency>
                 <groupId>nl.procura.gba</groupId>
                 <artifactId>probev-jpa</artifactId>
                 <version>${probev.jpa.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jpamodelgen</artifactId>
                 <version>${hibernate.jpamodelgen.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
                 <version>1</version>
             </dependency>
+
             <dependency>
                 <groupId>nl.procura.burgerzaken</groupId>
                 <artifactId>vrs-services-api</artifactId>
                 <version>${vrs-services-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>nl.vrijbrp.hub</groupId>
+                <artifactId>client</artifactId>
+                <version>${hub.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -35,6 +35,7 @@ import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gbaws.db.handlers.UsrDao;
 import nl.procura.gbaws.db.wrappers.UsrWrapper;
+import nl.procura.gbaws.requests.RequestCredentials;
 import nl.procura.gbaws.requests.gba.GbaRequestHandlerWS;
 import nl.procura.gbaws.web.rest.GbaWsRestDienstenbusResource;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
@@ -90,8 +91,9 @@ public class GbaWsRestPersonListsResources extends GbaWsRestDienstenbusResource 
       args.setGemeentedeel(request.getResidence());
       args.setGemeente(request.getMunicipality());
 
-      UsrWrapper usr = UsrDao.getGebruiker(loggedInUser.getGebruikersnaam());
-      BasePLBuilder builder = new GbaRequestHandlerWS(usr, args).getBuilder();
+      UsrWrapper usr = UsrDao.getUserByCredentials(loggedInUser.getGebruikersnaam());
+      RequestCredentials credentials = new RequestCredentials(usr);
+      BasePLBuilder builder = new GbaRequestHandlerWS(credentials, args).getBuilder();
       response = BasePLToGbaWsConverter.toGbaWsPersonListResponse(builder.getResult());
 
     } catch (RuntimeException e) {

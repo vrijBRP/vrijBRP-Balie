@@ -49,6 +49,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentenPrintenService;
+import nl.procura.standard.ProcuraDate;
 
 public class GbaRestDmsService {
 
@@ -120,11 +121,14 @@ public class GbaRestDmsService {
     DocumentVertrouwelijkheid vertrouwelijkheid = documentService
         .getStandaardVertrouwelijkheid(VERTROUWELIJKHEID_MAP.get(document.getVertrouwelijkheid()), ONBEKEND);
 
+    ProcuraDate date = new ProcuraDate();
     return DMSDocument.builder()
         .content(DMSFileContent.from(bestand))
         .title(defaultIfBlank(document.getTitel(), bestandsnaam))
         .confidentiality(vertrouwelijkheid.getNaam())
         .user(services.getGebruiker().getNaam())
+        .date(Long.parseLong(date.getSystemDate()))
+        .time(Long.parseLong(date.getSystemTime()))
         .datatype(DocumentType.ONBEKEND.getType())
         .build();
   }

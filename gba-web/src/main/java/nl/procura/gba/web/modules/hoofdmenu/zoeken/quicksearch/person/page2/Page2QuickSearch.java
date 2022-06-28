@@ -47,6 +47,9 @@ public class Page2QuickSearch extends NormalPageTemplate {
       addButton(buttonPrev);
       addButton(buttonClose);
 
+      getWindow().setWidth("1200px");
+      getWindow().center();
+
       setInfo("Selecteer een persoon. Pijltjetoetsen en enter kunnen hierbij gebruikt worden.");
       setResult(result);
 

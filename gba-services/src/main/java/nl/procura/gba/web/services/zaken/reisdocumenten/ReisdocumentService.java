@@ -157,6 +157,7 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
       ZaakContactpersoon persoon = new ZaakContactpersoon(AANGEVER, basisPersoon);
       persoon.setContactgegevens(getServices().getContactgegevensService().getContactgegevens(zaak));
       zaakContact.add(persoon);
+
     }
 
     return zaakContact;
