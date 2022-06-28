@@ -256,12 +256,14 @@ public class GbaRestGeboorteService extends GbaRestAbstractService {
   private List<GbaRestKind> toGbaRestKinderen(Dossier zaak) {
     List<GbaRestKind> restKinderen = new ArrayList<>();
     for (DossierPersoon persoon : zaak.getPersonen(KIND)) {
-      GbaRestKind restKind = new GbaRestKind();
-      restKind.setVoornamen(persoon.getVoornaam());
-      restKind.setGeslacht(toEnum(GbaRestGeslacht.values(), persoon.getGeslacht().getAfkorting()));
-      restKind.setGeboortedatum(persoon.getDatumGeboorte().toInt());
-      restKind.setGeboortetijd(persoon.getTijdGeboorte().getIntTime());
-      restKinderen.add(restKind);
+      if (persoon.isVolledig()) {
+        GbaRestKind restKind = new GbaRestKind();
+        restKind.setVoornamen(persoon.getVoornaam());
+        restKind.setGeslacht(toEnum(GbaRestGeslacht.values(), persoon.getGeslacht().getAfkorting()));
+        restKind.setGeboortedatum(persoon.getDatumGeboorte().toInt());
+        restKind.setGeboortetijd(persoon.getTijdGeboorte().getIntTime());
+        restKinderen.add(restKind);
+      }
     }
     return restKinderen;
   }

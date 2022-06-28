@@ -490,15 +490,24 @@ public class ParameterBean implements Serializable {
       width = "400px")
   private String sslProxyUrl = "";
 
+  @ParameterAnnotation(BSM_ENABLED)
+  @Position(order = "1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Taakplanner inschakelen",
+      width = "400px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String bsmEnabled = "";
+
   @ParameterAnnotation(BSM_INTERNAL_URL)
-  @Position(order = "9a")
+  @Position(order = "2")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Taakplanner (Interne URL)",
       width = "400px")
   private String bsmInternalUrl = "";
 
   @ParameterAnnotation(BSM_EXTERNAL_URL)
-  @Position(order = "9a")
+  @Position(order = "3")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Taakplanner (Externe URL)",
       width = "400px")
@@ -650,7 +659,7 @@ public class ParameterBean implements Serializable {
   private String documentDmsType = "";
 
   // Document Object Storage
-  @ParameterAnnotation(DOC_OBJECT_STORAGE_ENABLE)
+  @ParameterAnnotation(DOC_OBJECT_STORAGE_ENABLED)
   @Position(order = "50")
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Bestanden database actief",

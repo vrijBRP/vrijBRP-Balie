@@ -40,7 +40,10 @@ public class Page20OnderzoekBean implements Serializable {
   public static final String AFHANDELINGSTERMIJN         = "afhandelingstermijn";
   public static final String REDEN                       = "reden";
   public static final String DATUM_AANVANG_ONDERZOEK     = "datumAanvangOnderzoek";
-  public static final String AANDUIDING_GEGEVENS         = "aanduidingGegevens";
+  public static final String AANDUIDING_GEG_ONDERZOEK    = "aanduidingGegevensOnderzoek";
+  public static final String DEELRESULTAAT               = "deelresultaat";
+  public static final String DATUM_AANVANG_DEELRESULTAAT = "datumAanvangDeelresultaat";
+  public static final String AAND_GEG_DEELRESULTAAT      = "aanduidingGegevensDeelresultaat";
   public static final String ONDERZOEK_DOOR_ANDER_GEDAAN = "onderzoekDoorAnderGedaan";
   public static final String VOLDOENDE_REDEN             = "voldoendeReden";
   public static final String TOELICHTING                 = "toelichting";
@@ -65,7 +68,7 @@ public class Page20OnderzoekBean implements Serializable {
 
   @Field(customTypeClass = ProTextArea.class,
       caption = "Reden",
-      width = "250px")
+      width = "350px")
   @TextArea(maxLength = 250,
       rows = 3,
       nullRepresentation = "")
@@ -80,10 +83,33 @@ public class Page20OnderzoekBean implements Serializable {
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Aanduiding gegevens in onderzoek",
       required = true,
-      width = "250px")
+      width = "350px")
   @Select(containerDataSource = AanduidingOnderzoekContainer.class,
       itemCaptionPropertyId = AanduidingOnderzoekContainer.OMSCHRIJVING)
-  private String aanduidingGegevens;
+  private String aanduidingGegevensOnderzoek;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Deelresultaat vastleggen?",
+      required = true)
+  @Select(containerDataSource = NLBooleanContainer.class,
+      itemCaptionPropertyId = NLBooleanContainer.JA_NEE,
+      nullSelectionAllowed = false)
+  @Immediate
+  private Boolean deelresultaat = false;
+
+  @Field(customTypeClass = ProDateField.class,
+      caption = "Datum aanvang deelresultaat",
+      width = "97px",
+      required = true)
+  private Date datumAanvangDeelresultaat = null;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Aanduiding deelresultaat",
+      required = true,
+      width = "350px")
+  @Select(containerDataSource = AanduidingDeelresultaatContainer.class,
+      itemCaptionPropertyId = AanduidingDeelresultaatContainer.OMSCHRIJVING)
+  private String aanduidingGegevensDeelresultaat;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Gedegen onderzoek door ander overheidsorgaan gedaan en beschikbaar?",
@@ -101,7 +127,7 @@ public class Page20OnderzoekBean implements Serializable {
 
   @Field(customTypeClass = ProTextArea.class,
       caption = "Toelichting",
-      width = "250px")
+      width = "350px")
   @TextArea(maxLength = 250,
       rows = 3,
       nullRepresentation = "")

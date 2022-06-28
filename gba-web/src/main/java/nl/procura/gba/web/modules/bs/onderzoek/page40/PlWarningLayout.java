@@ -40,14 +40,14 @@ public abstract class PlWarningLayout extends VerticalLayout {
 
   private final HLayout hLayout = new HLayout();
   private long          aantal  = 0;
-  private final String  MSG     = "<br>Druk op de knop <b>In onderzoekstelling</b> voor meer informatie.";
+  private final String  MSG     = "<br>Druk op de knop <b>Onderzoek / deelresultaat</b> voor meer informatie.";
 
   public PlWarningLayout(DossierOnderzoek zaakDossier, boolean resultaat) {
 
     this.zaakDossier = zaakDossier;
     this.resultaat = resultaat;
     setSpacing(true);
-    addComponent(new Fieldset("Persoonslijsten in onderzoek"));
+    addComponent(new Fieldset("Persoonslijsten in onderzoek of met een deelresultaat"));
     addComponent(hLayout.align(Alignment.MIDDLE_LEFT)
         .add(new Button("Herladen", e -> reload(true)))
         .addExpandComponent(warningLayout)
@@ -62,11 +62,11 @@ public abstract class PlWarningLayout extends VerticalLayout {
     InfoLayout newLayout = new InfoLayout("", "");
 
     if (aantal == 1) {
-      warn(newLayout, "Er staat een persoonslijst in onderzoek. ");
+      warn(newLayout, "Eén persoonslijst heeft een onderzoek of deelresultaat");
     } else if (aantal > 0) {
-      warn(newLayout, format("Er staan %d persoonslijsten in onderzoek. ", aantal));
+      warn(newLayout, format("%d persoonslijsten hebben een onderzoek of deelresultaat. ", aantal));
     } else {
-      info(newLayout, "Er staan op dit moment geen persoonslijsten in onderzoek. ");
+      info(newLayout, "Geen persoonslijsten hebben momenteel een onderzoek of deelresultaat. ");
     }
 
     hLayout.replaceComponent(warningLayout, newLayout);

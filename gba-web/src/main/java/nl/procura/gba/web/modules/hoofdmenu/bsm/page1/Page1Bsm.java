@@ -49,8 +49,8 @@ public class Page1Bsm extends NormalPageTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-      if (!getServices().getBsmService().isBsmParameter()) {
-        setInfo("<hr/> De <b>Taakplanner URL</b> is niet gevuld in de parameters.");
+      if (!getServices().getBsmService().isBsmEnabled()) {
+        setInfo("<hr/>De taakplanner is niet ingeschakeld.");
       }
 
       getMainbuttons().setWidth("100%");
@@ -66,10 +66,9 @@ public class Page1Bsm extends NormalPageTemplate {
       }
 
       table = new Page1BsmTable();
-
       addExpandComponent(table);
-    } else if (event.isEvent(AfterReturn.class)) {
 
+    } else if (event.isEvent(AfterReturn.class)) {
       table.init();
     }
 

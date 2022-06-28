@@ -333,7 +333,9 @@ public class GbaRestHuwelijkService extends GbaRestAbstractService {
 
   private GbaRestHuwelijkPlanning toGbaRestPlanning(DossierHuwelijk huw) {
     GbaRestHuwelijkPlanning restVerb = new GbaRestHuwelijkPlanning();
-    restVerb.setSoort(toEnum(GbaRestHuwelijkVerbintenisType.values(), huw.getSoortVerbintenis().getCode()));
+    if (StringUtils.isNotBlank(huw.getSoortVerbintenis().getCode())) {
+      restVerb.setSoort(toEnum(GbaRestHuwelijkVerbintenisType.values(), huw.getSoortVerbintenis().getCode()));
+    }
     restVerb.setToelichting(huw.getToelichtingVerbintenis());
     restVerb.setDatumVerbintenis(huw.getDatumVerbintenis().getIntDate());
     restVerb.setTijdVerbintenis(huw.getTijdVerbintenis().getIntTime());
@@ -401,6 +403,7 @@ public class GbaRestHuwelijkService extends GbaRestAbstractService {
     }
     if (!huwelijk.getGetuigen().isEmpty()) {
       huwelijk.getGetuigen().stream()
+          .filter(DossierPersoon::isVolledig)
           .map(getuige -> new GbaRestHuwelijkGetuige(getRestDossierService().getRestPersoon(getuige)))
           .forEach(restHuw::addEigenGetuige);
     }

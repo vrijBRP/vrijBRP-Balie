@@ -53,6 +53,8 @@ import nl.procura.gba.web.services.gba.basistabellen.gemeente.GemeenteService;
 import nl.procura.gba.web.services.zaken.algemeen.*;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.java.reflection.ReflectionUtil;
+import nl.procura.standard.exceptions.ProException;
+import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
 public class OnderzoekService extends AbstractZaakContactService<Dossier> implements ZaakService<Dossier> {
@@ -186,9 +188,12 @@ public class OnderzoekService extends AbstractZaakContactService<Dossier> implem
   }
 
   /**
-   * Verwerk de aanduiding op de persoonslijst
+   * Verwerk het onderzoek op de persoonslijst
    */
   public void setInOnderzoek(DossierOnderzoek zaakDossier, BsnFieldValue burgerServiceNummer) {
+    if (StringUtils.isBlank(zaakDossier.getAanduidingGegevensOnderzoek().getCode())) {
+      throw new ProException(ProExceptionSeverity.INFO, "Leg eerst een onderzoeksaanduiding vast bij de zaak");
+    }
     UsrFieldValue ingevoerdDoor = zaakDossier.getDossier().getIngevoerdDoor();
     VerwerkOnderzoekVraagRestElement vraag = new VerwerkOnderzoekVraagRestElement();
     vraag.setToevoegen(true);
@@ -196,6 +201,24 @@ public class OnderzoekService extends AbstractZaakContactService<Dossier> implem
     vraag.setBsn(burgerServiceNummer.getStringValue());
     vraag.setAanduiding(zaakDossier.getAanduidingGegevensOnderzoek().getCode());
     vraag.setDatum(zaakDossier.getDatumAanvangOnderzoek().getStringDate());
+    VerwerkOnderzoekAntwoordRestElement antwoord = new VerwerkOnderzoekAntwoordRestElement();
+    getServices().getBsmService().bsmQuery(BSM_ONDERZOEK_PROCESSOR_ID, vraag, antwoord);
+  }
+
+  /**
+   * Verwerk het deelresultaat op de persoonslijst
+   */
+  public void setDeelresultaat(DossierOnderzoek zaakDossier, BsnFieldValue burgerServiceNummer) {
+    if (StringUtils.isBlank(zaakDossier.getAanduidingGegevensDeelresultaat().getCode())) {
+      throw new ProException(ProExceptionSeverity.WARNING, "Leg eerst een deelresultaat vast bij de zaak");
+    }
+    UsrFieldValue ingevoerdDoor = zaakDossier.getDossier().getIngevoerdDoor();
+    VerwerkOnderzoekVraagRestElement vraag = new VerwerkOnderzoekVraagRestElement();
+    vraag.setToevoegen(true);
+    vraag.setIngevoerdDoor(ingevoerdDoor.getStringValue(), ingevoerdDoor.getDescription());
+    vraag.setBsn(burgerServiceNummer.getStringValue());
+    vraag.setAanduiding(zaakDossier.getAanduidingGegevensDeelresultaat().getCode());
+    vraag.setDatum(zaakDossier.getDatumAanvangDeelresultaat().getStringDate());
     VerwerkOnderzoekAntwoordRestElement antwoord = new VerwerkOnderzoekAntwoordRestElement();
     getServices().getBsmService().bsmQuery(BSM_ONDERZOEK_PROCESSOR_ID, vraag, antwoord);
   }

@@ -41,20 +41,27 @@ import nl.procura.vaadin.theme.twee.ProcuraTheme;
 
 public class OnderzoekStellingPage extends NormalPageTemplate {
 
-  private final Table table;
+  enum Actie {
+    ONDERZOEK,
+    DEELRESULTAAT,
+    VERWIJDER
+  }
 
-  private final Button           buttonReload       = new Button("Herladen");
-  private final Button           buttonInOnderzoek  = new Button("Zet in onderzoek");
-  private final Button           buttonUitOnderzoek = new Button("Haal uit onderzoek");
+  private final Table            table;
+  private final Button           buttonReload  = new Button("Herladen");
+  private final Button           buttonOnderz  = new Button("Zet in onderzoek");
+  private final Button           buttonDeelres = new Button("Zet deelresultaat");
+  private final Button           buttonUit     = new Button("Verwijder aanduiding");
   private final DossierOnderzoek zaakDossier;
 
   public OnderzoekStellingPage(DossierOnderzoek zaakDossier) {
     this.zaakDossier = zaakDossier;
     table = new Table();
 
-    buttonInOnderzoek.setEnabled(zaakDossier.isOnderzoekGestart());
-    addButton(buttonInOnderzoek);
-    addButton(buttonUitOnderzoek);
+    buttonOnderz.setEnabled(zaakDossier.isOnderzoekGestart());
+    addButton(buttonOnderz);
+    addButton(buttonDeelres);
+    addButton(buttonUit);
     addButton(buttonReload, 1f);
     addButton(buttonClose);
   }
@@ -80,24 +87,28 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
 
     if (buttonReload.equals(button)) {
       reload();
-    } else if (buttonInOnderzoek.equals(button)) {
-      verwerk(true);
-    } else if (buttonUitOnderzoek.equals(button)) {
-      verwerk(false);
+    } else if (buttonOnderz.equals(button)) {
+      verwerk(Actie.ONDERZOEK);
+    } else if (buttonDeelres.equals(button)) {
+      verwerk(Actie.DEELRESULTAAT);
+    } else if (buttonUit.equals(button)) {
+      verwerk(Actie.VERWIJDER);
     }
 
     super.handleEvent(button, keyCode);
   }
 
-  private void verwerk(boolean inOnderzoek) {
+  private void verwerk(Actie actie) {
     List<DossierPersoon> personen = table.getSelectedValues(DossierPersoon.class);
     if (personen.isEmpty()) {
       throw new ProException("Geen personen geselecteerd.");
     }
     OnderzoekService onderzoekService = getServices().getOnderzoekService();
     personen.forEach(dossierPersoon -> {
-      if (inOnderzoek) {
+      if (actie == Actie.ONDERZOEK) {
         onderzoekService.setInOnderzoek(zaakDossier, dossierPersoon.getBurgerServiceNummer());
+      } else if (actie == Actie.DEELRESULTAAT) {
+        onderzoekService.setDeelresultaat(zaakDossier, dossierPersoon.getBurgerServiceNummer());
       } else {
         onderzoekService.haalUitOnderzoek(zaakDossier, dossierPersoon.getBurgerServiceNummer());
       }
@@ -146,7 +157,7 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
 
       addColumn("Nr.", 50);
       addColumn("Naam");
-      addColumn("Aanduiding op persoonslijst", 450).setUseHTML(true);
+      addColumn("Aanduiding op persoonslijst", 550).setUseHTML(true);
 
       super.setColumns();
     }
@@ -166,6 +177,5 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
 
       super.setRecords();
     }
-
   }
 }

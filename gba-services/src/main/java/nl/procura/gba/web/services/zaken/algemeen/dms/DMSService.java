@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLED;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid.ONBEKEND;
 import static nl.procura.standard.Globalfunctions.isTru;
 
@@ -121,7 +121,7 @@ public class DMSService extends AbstractService {
   }
 
   private DMSStorage getStorageService() {
-    if (isTru(getSysteemParm(DOC_OBJECT_STORAGE_ENABLE, false))) {
+    if (isTru(getSysteemParm(DOC_OBJECT_STORAGE_ENABLED, false))) {
       return new DmsCombinedStorage(getServices(), getLocalStore(), getObjectStore());
     } else {
       return getLocalStore();

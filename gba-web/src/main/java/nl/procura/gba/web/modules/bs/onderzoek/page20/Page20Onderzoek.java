@@ -40,6 +40,7 @@ public class Page20Onderzoek extends BsPageOnderzoek {
   private Page20OnderzoekForm1 form1;
   private Page20OnderzoekForm2 form2;
   private Page20OnderzoekForm3 form3;
+  private Page20OnderzoekForm4 form4;
   private final VLayout        onderzoekLayout = new VLayout();
 
   public Page20Onderzoek() {
@@ -82,8 +83,10 @@ public class Page20Onderzoek extends BsPageOnderzoek {
 
     if (binnen != null && !binnen) {
       form2 = new Page20OnderzoekForm2(getZaakDossier());
+      form4 = new Page20OnderzoekForm4(getZaakDossier());
       form3 = new Page20OnderzoekForm3(binnen, getZaakDossier());
       onderzoekLayout.addComponent(form2);
+      onderzoekLayout.addComponent(form4);
       onderzoekLayout.addComponent(form3);
     }
   }
@@ -107,8 +110,8 @@ public class Page20Onderzoek extends BsPageOnderzoek {
       if (form2 != null) {
         form2.commit();
         getZaakDossier().setDatumAanvangOnderzoek(new DateTime(form2.getBean().getDatumAanvangOnderzoek()));
-        getZaakDossier()
-            .setAanduidingGegevensOnderzoek(AanduidingOnderzoekType.get(form2.getBean().getAanduidingGegevens()));
+        getZaakDossier().setAanduidingGegevensOnderzoek(AanduidingOnderzoekType.get(form2.getBean()
+            .getAanduidingGegevensOnderzoek()));
       }
 
       if (form3 != null) {
@@ -118,8 +121,19 @@ public class Page20Onderzoek extends BsPageOnderzoek {
         getZaakDossier().setToelichtingOverslaan(form3.getBean().getToelichting());
       }
 
-      getServices().getOnderzoekService().save(getDossier());
+      if (form4 != null) {
+        form4.commit();
+        if (form4.getBean().getDeelresultaat()) {
+          getZaakDossier().setDatumAanvangDeelresultaat(new DateTime(form4.getBean().getDatumAanvangDeelresultaat()));
+          getZaakDossier().setAanduidingGegevensDeelresultaat(AanduidingOnderzoekType.ONBEKEND.get(form4.getBean()
+              .getAanduidingGegevensDeelresultaat()));
+        } else {
+          getZaakDossier().setDatumAanvangDeelresultaat(null);
+          getZaakDossier().setAanduidingGegevensDeelresultaat(AanduidingOnderzoekType.ONBEKEND);
+        }
+      }
 
+      getServices().getOnderzoekService().save(getDossier());
       return true;
     }
 

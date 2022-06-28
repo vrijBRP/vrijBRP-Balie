@@ -31,7 +31,7 @@ public enum ZaakStatusType {
   INBEHANDELING(1, 5, false, "In behandeling"),
   DOCUMENT_ONTVANGEN(7, 6, false, "Doc. ontvangen"),
   GEWEIGERD(8, 7, true, "Geweigerd"),
-  VERWERKT_IN_GBA(3, 9, true, "Verwerkt"),
+  VERWERKT_IN_GBA(3, 9, true, "Verwerkt op de PL"),
   VERWERKT(2, 8, true, "Verwerkt", VERWERKT_IN_GBA),
   GEANNULEERD(4, 10, true, "Geannuleerd"),
   VERWIJDERD(9, 11, true, "Verwijderd"),

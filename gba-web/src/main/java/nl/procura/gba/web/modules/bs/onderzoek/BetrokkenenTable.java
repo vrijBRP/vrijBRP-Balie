@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.bs.onderzoek;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.standard.Globalfunctions.*;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class BetrokkenenTable extends GbaTable {
   }
 
   private String getAanduiding(BasePLExt pl) {
-    String out = "Niet in onderzoek";
+    String out = "Niet in onderzoek / geen deelresultaat";
     BasePLRec record = pl.getCat(GBACat.VB).getLatestRec();
     if (record.hasElems()) {
 
@@ -73,12 +74,17 @@ public class BetrokkenenTable extends GbaTable {
       String aandEnd = record.getElemVal(GBAElem.DATUM_EINDE_ONDERZ).getVal();
 
       if (StringUtils.isNotBlank(aand) && emp(aandEnd)) {
-        out = "<b>In onderzoek: " + AanduidingOnderzoekType.get(aand).getOms() + " per " + date2str(aandIn) +
-            "</b>";
+        AanduidingOnderzoekType type = AanduidingOnderzoekType.get(aand);
+        out = MessageFormat.format("{0}{1} per {2}",
+            type.isDeelresultaat() ? "Deelresultaat " : "Onderzoek ",
+            type.getOms(), date2str(aandIn));
       }
 
       if (StringUtils.isNotBlank(aand) && pos(aandEnd)) {
-        out = "Onderzoek beëindigd per " + date2str(aandEnd);
+        AanduidingOnderzoekType type = AanduidingOnderzoekType.get(aand);
+        out = MessageFormat.format("{0}{1} beëindigd per {2}",
+            type.isDeelresultaat() ? "Deelresultaat " : "Onderzoek ",
+            type.getOms(), date2str(aandIn));
       }
     }
 

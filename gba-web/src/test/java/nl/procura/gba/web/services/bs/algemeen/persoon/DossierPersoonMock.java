@@ -27,6 +27,7 @@ import java.time.temporal.ChronoUnit;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
+import nl.procura.gba.web.services.gba.functies.Geslacht;
 
 public final class DossierPersoonMock {
 
@@ -37,6 +38,7 @@ public final class DossierPersoonMock {
     DossierPersoon person = personWithAge(1);
     person.setVoornaam("Child");
     person.setGeslachtsnaam("Familyname");
+    person.setGeslacht(Geslacht.VROUW);
 
     return person;
   }
@@ -45,7 +47,7 @@ public final class DossierPersoonMock {
     DossierPersoon person = personWithAge(24);
     person.setVoornaam(firstName);
     person.setGeslachtsnaam("Familyname");
-
+    person.setGeslacht(Geslacht.MAN);
     return person;
   }
 

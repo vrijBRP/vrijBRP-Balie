@@ -21,8 +21,8 @@ package nl.procura.gba.web.services.beheer.bsm;
 
 import static java.text.MessageFormat.format;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.BSM;
-import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ENABLED;
+import static nl.procura.standard.Globalfunctions.*;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
@@ -74,7 +74,7 @@ public class BsmService extends AbstractService implements ServiceControle {
         .getProfielen()
         .isProfielActie(ProfielActie.SELECT_HOOFD_BSM);
 
-    if (isBsmInProfiel && !isBsmCorrect()) {
+    if (isBsmEnabled() && isBsmInProfiel && !isBsmCorrect()) {
       String melding = "Er is iets aan de hand met de taakplanner (BSM).";
       getServices().getMeldingService().add(new BsmMelding(melding));
     }
@@ -119,9 +119,7 @@ public class BsmService extends AbstractService implements ServiceControle {
   }
 
   public BsmRestClient getBsmClient(boolean autenticeer) {
-
     BsmRestClient client = new BsmRestClient(getBsmInternalUrl(), "BSM");
-
     Gebruiker gebruiker = getServices().getGebruiker();
     getServices().getGebruikerService().getCurrentPassword(gebruiker)
         .filter(password -> autenticeer)
@@ -174,7 +172,7 @@ public class BsmService extends AbstractService implements ServiceControle {
 
   public List<BsmRestTaakLog> getBsmTaakLog(String sessie) {
 
-    if (isBsmParameter()) {
+    if (isBsmEnabled()) {
 
       BsmRestClientResponse<BsmRestTaakLogZoekenAntwoord> antwoord;
 
@@ -194,7 +192,7 @@ public class BsmService extends AbstractService implements ServiceControle {
 
   public List<BsmRestTaak> getBsmTaken() {
 
-    if (isBsmParameter()) {
+    if (isBsmEnabled()) {
       BsmRestClientResponse<BsmRestTaakZoekenAntwoord> antwoord;
 
       try {
@@ -214,8 +212,7 @@ public class BsmService extends AbstractService implements ServiceControle {
   }
 
   public boolean isBsmCorrect() {
-
-    if (isBsmParameter()) {
+    if (isBsmEnabled()) {
       try {
         for (BsmRestTaak taak : getBsmTaken()) {
           if (taak.getStatus() == BsmRestTaakStatus.ONDERBROKEN) {
@@ -230,12 +227,11 @@ public class BsmService extends AbstractService implements ServiceControle {
     }
 
     getServices().getMeldingService().delete(BSM);
-
     return true;
   }
 
-  public boolean isBsmParameter() {
-    return fil(getParm(ParameterConstant.BSM_INTERNAL_URL));
+  public boolean isBsmEnabled() {
+    return isTru(getSysteemParm(BSM_ENABLED, false)) && fil(getParm(ParameterConstant.BSM_INTERNAL_URL));
   }
 
   @Override
@@ -284,7 +280,7 @@ public class BsmService extends AbstractService implements ServiceControle {
 
   public String uitvoeren(BsmRestTaakVraag vraag) {
 
-    if (isBsmParameter()) {
+    if (isBsmEnabled()) {
       BsmRestClientResponse<BsmRestTaakUitvoerenAntwoord> antwoord;
 
       try {

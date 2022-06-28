@@ -56,6 +56,7 @@ public class GbaRestDossierService extends GbaRestAbstractService {
     return zaak.getPersonen(persoonType)
         .stream()
         .findFirst()
+        .filter(DossierPersoon::isVolledig)
         .map(this::toRestPersoon)
         .orElse(null);
   }

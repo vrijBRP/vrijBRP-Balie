@@ -19,43 +19,33 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page20;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.AANDUIDING_GEG_ONDERZOEK;
-import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.DATUM_AANVANG_ONDERZOEK;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_DEFAULT_AAND;
+import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.*;
 
 import java.util.Date;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.components.validators.DatumVolgordeValidator;
-import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.onderzoek.enums.AanduidingOnderzoekType;
 import nl.procura.vaadin.component.field.ProDateField;
 
-public class Page20OnderzoekForm2 extends GbaForm<Page20OnderzoekBean> {
+public class Page20OnderzoekForm4 extends GbaForm<Page20OnderzoekBean> {
 
   private final DossierOnderzoek zaakDossier;
 
-  public Page20OnderzoekForm2(DossierOnderzoek zaakDossier) {
+  public Page20OnderzoekForm4(DossierOnderzoek zaakDossier) {
     this.zaakDossier = zaakDossier;
-    setCaption("Start onderzoek");
+    setCaption("Deelresultaat");
     setColumnWidths("450px", "");
-    setOrder(DATUM_AANVANG_ONDERZOEK, AANDUIDING_GEG_ONDERZOEK);
+    setOrder(DEELRESULTAAT, DATUM_AANVANG_DEELRESULTAAT, AAND_GEG_DEELRESULTAAT);
     setBean(zaakDossier);
   }
 
   public void setBean(DossierOnderzoek zaakDossier) {
     Page20OnderzoekBean bean = new Page20OnderzoekBean();
-    bean.setDatumAanvangOnderzoek(zaakDossier.getDatumAanvangOnderzoek().getDate());
-    bean.setAanduidingGegevensOnderzoek(zaakDossier.getAanduidingGegevensOnderzoek().getCode());
-
-    if (AanduidingOnderzoekType.ONBEKEND.equals(zaakDossier.getAanduidingGegevensOnderzoek())) {
-      ParameterService parameterService = Services.getInstance().getParameterService();
-      String defaultAand = parameterService.getSysteemParameter(ONDERZ_DEFAULT_AAND).getValue();
-      bean.setAanduidingGegevensOnderzoek(AanduidingOnderzoekType.get(defaultAand).getCode());
-    }
-
+    bean.setDeelresultaat(zaakDossier.getAanduidingGegevensDeelresultaat() != AanduidingOnderzoekType.ONBEKEND);
+    bean.setDatumAanvangDeelresultaat(zaakDossier.getDatumAanvangDeelresultaat().getDate());
+    bean.setAanduidingGegevensDeelresultaat(zaakDossier.getAanduidingGegevensDeelresultaat().getCode());
     setBean(bean);
   }
 
@@ -63,9 +53,22 @@ public class Page20OnderzoekForm2 extends GbaForm<Page20OnderzoekBean> {
   public void afterSetBean() {
     super.afterSetBean();
     Date datumOntvangst = zaakDossier.getDatumOntvangstMelding().getDate();
-    ProDateField datumAanvangOnderzoek = getField(DATUM_AANVANG_ONDERZOEK, ProDateField.class);
-    datumAanvangOnderzoek.addValidator(
-        new DatumVolgordeValidator("Datum ontvangst melding", () -> datumOntvangst, "Datum aanvang onderzoek",
-            () -> (Date) datumAanvangOnderzoek.getValue()));
+    ProDateField datumAanvangDeelresultaat = getField(DATUM_AANVANG_DEELRESULTAAT, ProDateField.class);
+    datumAanvangDeelresultaat.addValidator(
+        new DatumVolgordeValidator("Datum ontvangst melding", () -> datumOntvangst,
+            "Datum aanvang deelresultaat", () -> (Date) datumAanvangDeelresultaat.getValue()));
+
+    onChangeDeelresultaat(AanduidingOnderzoekType.ONBEKEND != zaakDossier.getAanduidingGegevensDeelresultaat());
+    getField(DEELRESULTAAT).addListener((ValueChangeListener) event -> {
+      onChangeDeelresultaat((Boolean) event.getProperty().getValue());
+      repaint();
+    });
+
+    repaint();
+  }
+
+  private void onChangeDeelresultaat(boolean isAandGeg) {
+    getField(DATUM_AANVANG_DEELRESULTAAT).setVisible(isAandGeg);
+    getField(AAND_GEG_DEELRESULTAAT).setVisible(isAandGeg);
   }
 }

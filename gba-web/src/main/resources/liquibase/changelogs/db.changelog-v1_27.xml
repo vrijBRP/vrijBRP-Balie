@@ -21,7 +21,10 @@
 
     <changeSet author="Procura" id="v1_27_3">
         <sql>
-            <![CDATA[update document set document_dms_type = dms_naam]]>
+            <![CDATA[
+            update document
+            set document_dms_type = dms_naam
+            ]]>
         </sql>
     </changeSet>
 
@@ -425,7 +428,11 @@
 
     <changeSet author="Procura" id="v1_27_12">
         <sql>
-            <![CDATA[delete from terugm_tmv where c_terugmelding not in (select c_terugmelding from terugmelding)]]>
+            <![CDATA[
+            delete
+            from terugm_tmv
+            where c_terugmelding not in (select c_terugmelding from terugmelding)
+            ]]>
         </sql>
     </changeSet>
 
@@ -612,7 +619,11 @@
 
     <changeSet author="Procura" id="v1_27_24">
         <sql>
-            <![CDATA[delete from document_kenmerk where c_kenmerk not in (select c_kenmerk from kenmerk)]]>
+            <![CDATA[
+            delete
+            from document_kenmerk
+            where c_kenmerk not in (select c_kenmerk from kenmerk)
+            ]]>
         </sql>
     </changeSet>
 
@@ -887,5 +898,14 @@
                                  onUpdate="NO ACTION"
                                  referencedColumnNames="c_field"
                                  referencedTableName="field"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_43">
+        <addColumn tableName="doss_onderz">
+            <column name="deelres_d_aanvang" type="numeric" defaultValue="-1"/>
+        </addColumn>
+        <addColumn tableName="doss_onderz">
+            <column name="deelres_aand_geg" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

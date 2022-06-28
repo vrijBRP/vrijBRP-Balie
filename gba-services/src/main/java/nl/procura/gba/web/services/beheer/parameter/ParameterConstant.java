@@ -227,13 +227,16 @@ public enum ParameterConstant implements ParameterType {
   SSL_PROXY_URL("ssl_proxy_url", "SSL Proxy (URL)",
       GROUP_ALGEMENE_INSTELLINGEN, true, false, false, ""),
 
+  BSM_ENABLED("bsm_enabled", "Taakplanner inschakelen",
+      GROUP_BSM, true, false, false, "1"),
+
   BSM_INTERNAL_URL("bsm_internal_url", "Taakplanner (Interne URL)",
       GROUP_BSM, true, false, false, ""),
 
   BSM_EXTERNAL_URL("bsm_external_url", "Taakplanner (Externe URL)",
       GROUP_BSM, true, false, false, ""),
 
-  BSM_ZAKEN_DMS("bsm_zaken_dms", "Zaken DMS van toepassing",
+  BSM_ZAKEN_DMS("bsm_zaken_dms", "Zaken DMS inschakelen",
       GROUP_ZAKEN_DMS, true, false, false, "0"),
 
   BSM_ZAKEN_DMS_ZAAKTYPE("bsm_zaken_dms_zaaktype", "Zaken DMS Zaak-id type",
@@ -278,7 +281,7 @@ public enum ParameterConstant implements ParameterType {
   DOC_CONFIDENTIALITY("doc_confidentiality", "Standaard mate van vertrouwelijkheid",
       GROUP_DOCUMENTEN, true, false, false, ""),
 
-  DOC_OBJECT_STORAGE_ENABLE("doc_object_storage_enabled", "VrijBRP ObjectStore actief",
+  DOC_OBJECT_STORAGE_ENABLED("doc_object_storage_enabled", "VrijBRP ObjectStore inschakelen",
       GROUP_DOCUMENTEN, true, false, false, ""),
 
   DOC_OBJECT_STORAGE_URL("doc_object_storage_url", "VrijBRP ObjectStore endpoint",
@@ -403,7 +406,7 @@ public enum ParameterConstant implements ParameterType {
   RYB_AANPASSINGEN("ryb_wijz", "RDW aanpassingen",
       GROUP_RIJBEWIJZEN, true, false, false, ""),
 
-  RYB_ENABLED("ryb_enabled", "Rijbewijzen service actief",
+  RYB_ENABLED("ryb_enabled", "Rijbewijzen service inschakelen",
       GROUP_RIJBEWIJZEN, true, true, true, "1"),
 
   RYB_URL("ryb_url", "URL van de rijbewijzen",
@@ -595,7 +598,7 @@ public enum ParameterConstant implements ParameterType {
   PROBEV_GEBR_CODE("probev_gebr_code", "PROBEV gebruiker code",
       GROUP_PROBEV, true, false, true, ""),
 
-  SMS_ENABLED("SMS_enabled", "SMS service actief",
+  SMS_ENABLED("SMS_enabled", "SMS service inschakelen",
       GROUP_SMS, true, true, true, ""),
 
   SMS_ENDPOINT("SMS_endpoint", "SMS service endpoint",
@@ -607,7 +610,7 @@ public enum ParameterConstant implements ParameterType {
   SMS_PW("SMS_password", "SMS wachtwoord",
       GROUP_SMS, true, false, false, ""),
 
-  GEO_ENABLED("Geo_enabled", "Geo / BAG service actief",
+  GEO_ENABLED("Geo_enabled", "Geo / BAG service inschakelen",
       GROUP_GEO, true, true, true, ""),
 
   GEO_ENDPOINT("Geo_endpoint", "Geo / BAG service endpoint",
@@ -619,7 +622,7 @@ public enum ParameterConstant implements ParameterType {
   RAAS_ENDPOINT("RAAS_endpoint", "RAAS service endpoint",
       GROUP_RAAS, true, false, false, ""),
 
-  RAAS_ENABLED("RAAS_enabled", "RAAS service actief",
+  RAAS_ENABLED("RAAS_enabled", "RAAS service inschakelen",
       GROUP_RAAS, true, true, true, ""),
 
   RAAS_IDENT_BEWIJS("RAAS_ident_bewijs", "Omschrijving bewijsstukken identiteit",

@@ -27,12 +27,12 @@ import nl.procura.gba.web.components.containers.GbaContainer;
 import nl.procura.gba.web.services.bs.onderzoek.enums.AanduidingOnderzoekType;
 import nl.procura.vaadin.component.container.ProcuraContainer;
 
-public class AanduidingOnderzoekContainer extends GbaContainer implements ProcuraContainer {
+public class AanduidingDeelresultaatContainer extends GbaContainer implements ProcuraContainer {
 
-  public AanduidingOnderzoekContainer() {
+  public AanduidingDeelresultaatContainer() {
     addContainerProperty(OMSCHRIJVING, String.class, "");
     Arrays.stream(AanduidingOnderzoekType.values())
-        .filter(type -> !type.isDeelresultaat())
+        .filter(AanduidingOnderzoekType::isDeelresultaat)
         .forEach(aand -> {
           Item item = addItem(aand.getCode());
           item.getItemProperty(OMSCHRIJVING).setValue(aand.getOms());

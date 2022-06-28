@@ -40,6 +40,7 @@ import nl.procura.gba.web.modules.bs.common.pages.zoekpage.BsZoekWindow;
 import nl.procura.gba.web.modules.bs.onderzoek.BsPageOnderzoek;
 import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresLayout;
 import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.types.AanleidingAdres;
+import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType;
 import nl.procura.gba.web.services.bs.onderzoek.enums.VermoedAdresType;
@@ -213,6 +214,13 @@ public class Page1Onderzoek extends BsPageOnderzoek {
       getZaakDossier().setAanleidingBuitenl3("");
       getZaakDossier().setAanleidingLand(new FieldValue());
       getZaakDossier().setVermoedelijkeGemeentePostbus(new Gemeente());
+
+      boolean aangever = getZaakDossier().getDossier()
+          .getPersonen(DossierPersoonType.AANGEVER)
+          .stream().anyMatch(DossierPersoon::isVolledig);
+      if (BURGER.equals(bean1.getBron()) && !aangever) {
+        throw new ProException(WARNING, "Geen burger (aangever) geselecteerd");
+      }
 
       if (form2 != null) {
         form2.commit();

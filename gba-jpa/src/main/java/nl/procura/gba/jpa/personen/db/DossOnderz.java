@@ -156,6 +156,13 @@ public class DossOnderz extends BaseEntity {
   @Column(name = "onderz_aand_geg")
   private String onderzAandGeg;
 
+  @Column(name = "deelres_d_aanvang")
+  @Convert(converter = BigDecimalDateConverter.class)
+  private Date deelresDAanvang;
+
+  @Column(name = "deelres_aand_geg")
+  private String deelresAandGeg;
+
   @Column(name = "oversl_gedeg_onderzoek")
   @Convert(converter = BigDecimalBooleanConverter.class)
   private Boolean onderzGedegOnderzoek;
@@ -931,5 +938,21 @@ public class DossOnderz extends BaseEntity {
 
   public void setResAantPers(BigDecimal resAantPers) {
     this.resAantPers = resAantPers;
+  }
+
+  public Date getDeelresDAanvang() {
+    return deelresDAanvang;
+  }
+
+  public void setDeelresDAanvang(Date deelresDAanvang) {
+    this.deelresDAanvang = deelresDAanvang;
+  }
+
+  public String getDeelresAandGeg() {
+    return deelresAandGeg;
+  }
+
+  public void setDeelresAandGeg(String deelresAandGeg) {
+    this.deelresAandGeg = deelresAandGeg;
   }
 }

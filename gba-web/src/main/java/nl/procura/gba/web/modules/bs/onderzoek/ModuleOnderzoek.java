@@ -78,7 +78,7 @@ public class ModuleOnderzoek extends BsModule {
     layout.addComponent(buttonAanschr);
 
     //In onderzoekstelling
-    buttonOnderzoek = new Button("In onderzoekstelling");
+    buttonOnderzoek = new Button("Onderzoek / deelresultaat");
     buttonOnderzoek.setWidth("100%");
     buttonOnderzoek.addListener((Button.ClickListener) event -> {
       getApplication().getParentWindow()
@@ -89,7 +89,6 @@ public class ModuleOnderzoek extends BsModule {
 
   @Override
   public void checkButtons() {
-
     DossierOnderzoek dossierOnderzoek = (DossierOnderzoek) dossier.getZaakDossier();
     buttonOnderzoek.setEnabled(!dossierOnderzoek.getBetrokkenen().isEmpty());
     buttonAanschr.setEnabled(!dossierOnderzoek.getBetrokkenen().isEmpty());

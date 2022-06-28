@@ -28,7 +28,7 @@ public class OnderzoekStellingWindow extends GbaModalWindow {
   private final DossierOnderzoek zaakDossier;
 
   public OnderzoekStellingWindow(DossierOnderzoek zaakDossier) {
-    super("In onderzoekstelling van personen (Escape om te sluiten)", "1000px");
+    super("In onderzoekstelling / deelresultaat van personen (Escape om te sluiten)", "1000px");
     this.zaakDossier = zaakDossier;
     setHeight("400px");
   }

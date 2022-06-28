@@ -36,6 +36,9 @@ public interface GbaRestEnum<T> {
           return targetValue;
         }
       }
+      if ("".equals(sourceValue.trim())) {
+        return null;
+      }
       throw new IllegalArgumentException("Unknown value: " + sourceValue);
     }
     return null;

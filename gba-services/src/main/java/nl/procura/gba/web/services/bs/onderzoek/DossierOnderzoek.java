@@ -19,7 +19,6 @@
 
 package nl.procura.gba.web.services.bs.onderzoek;
 
-import static nl.procura.gba.common.ZaakStatusType.*;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AANGEVER;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_OVERIG;
 import static nl.procura.standard.Globalfunctions.aval;
@@ -27,11 +26,9 @@ import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.UniqueList;
-import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.db.DossOnderz;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
@@ -310,6 +307,22 @@ public class DossierOnderzoek extends DossOnderz implements ZaakDossier {
 
   public void setAanduidingGegevensOnderzoek(AanduidingOnderzoekType aanduiding) {
     super.setOnderzAandGeg(aanduiding.getCode());
+  }
+
+  public DateTime getDatumAanvangDeelresultaat() {
+    return new DateTime(super.getDeelresDAanvang());
+  }
+
+  public void setDatumAanvangDeelresultaat(DateTime datum) {
+    super.setDeelresDAanvang(datum != null ? datum.getDate() : null);
+  }
+
+  public AanduidingOnderzoekType getAanduidingGegevensDeelresultaat() {
+    return AanduidingOnderzoekType.get(super.getDeelresAandGeg());
+  }
+
+  public void setAanduidingGegevensDeelresultaat(AanduidingOnderzoekType aanduiding) {
+    super.setDeelresAandGeg(aanduiding.getCode());
   }
 
   public Boolean getGedegenOnderzoek() {
