@@ -1102,36 +1102,43 @@ public class ParameterBean implements Serializable {
   @TextArea(rows = 5)
   private String reisdocumentToelSignalering = "";
 
-  @ParameterAnnotation(VRS_SERVICE_URL)
-  @Position(order = "04")
-  @Field(type = FieldType.TEXT_FIELD,
-      caption = "URL van VRS services application API",
-      width = "400px")
-  private String reisdocumentVrsUrl = "";
-
   @ParameterAnnotation(VRS_START_DATE)
-  @Position(order = "05")
+  @Position(order = "04")
   @Field(customTypeClass = DatumVeld.class,
       caption = "Ingangsdatum VRS",
       width = "80px")
   private String reisdocumentVrsStartDate = "";
 
-  @ParameterAnnotation(VRS_SERVICE_TIMEOUT)
+  @ParameterAnnotation(VRS_SERVICE_URL)
+  @Position(order = "05")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "URL van VRS API",
+      width = "400px")
+  private String reisdocumentVrsUrl = "";
+
+  @ParameterAnnotation(VRS_IDP_SERVICE_URL)
   @Position(order = "06")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "URL van VRS Token API",
+      width = "400px")
+  private String reisdocumentVrsTokenUrl = "";
+
+  @ParameterAnnotation(VRS_SERVICE_TIMEOUT)
+  @Position(order = "07")
   @Field(customTypeClass = NumberField.class,
       caption = "VRS timeout",
       width = "80px")
   private String reisdocumentVrsTimeout = "";
 
   @ParameterAnnotation(VRS_CLIENT_ID)
-  @Position(order = "06")
+  @Position(order = "08")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS client-id",
       width = "400px")
   private String reisdocumentVrsClientId = "";
 
   @ParameterAnnotation(VRS_CLIENT_SECRET)
-  @Position(order = "07")
+  @Position(order = "09")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS client secret",
       width = "400px")
@@ -1139,18 +1146,25 @@ public class ParameterBean implements Serializable {
   private String reisdocumentVrsClientSecret = "";
 
   @ParameterAnnotation(VRS_CLIENT_SCOPE)
-  @Position(order = "08")
+  @Position(order = "10")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS scope",
       width = "400px")
   private String reisdocumentVrsScope = "";
 
   @ParameterAnnotation(VRS_CLIENT_RESOURCE_SERVER)
-  @Position(order = "09")
+  @Position(order = "11")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS resource server",
       width = "400px")
   private String reisdocumentVrsResourceServer = "";
+
+  @ParameterAnnotation(VRS_INSTANTIE_CODE)
+  @Position(order = "12")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "VRS instantie-code",
+      width = "400px")
+  private String reisdocumentVrsInstantiecode = "";
 
   // Terugmelding beheer
   @ParameterAnnotation(TERUGMBEHEER)

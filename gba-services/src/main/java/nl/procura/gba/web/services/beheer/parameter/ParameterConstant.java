@@ -432,6 +432,9 @@ public enum ParameterConstant implements ParameterType {
   VRS_SERVICE_URL("reisd_vrs_url", "URL van VRS services application API",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
+  VRS_IDP_SERVICE_URL("reisd_vrs_idp_url", "URL van VRS services IDP API",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
+
   VRS_SERVICE_TIMEOUT("reisd_vrs_timeout", "Timeout in seconden van VRS services application API",
       GROUP_REISDOCUMENTEN, true, false, false, "10"),
 
@@ -448,6 +451,9 @@ public enum ParameterConstant implements ParameterType {
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
   VRS_CLIENT_RESOURCE_SERVER("reisd_vrs_client_resource_server", "VRS resource server",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
+
+  VRS_INSTANTIE_CODE("reisd_vrs_instantie_code", "VRS instantie-code",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
   TERUGMBEHEER("terugmbeheer", "Beheerder van de terugmeldingen",

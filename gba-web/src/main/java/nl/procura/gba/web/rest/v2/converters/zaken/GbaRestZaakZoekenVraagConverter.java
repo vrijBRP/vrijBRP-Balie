@@ -70,6 +70,8 @@ public final class GbaRestZaakZoekenVraagConverter {
         Anummer anr = new Anummer(vraag.getPersoonId());
         if (anr.isCorrect()) {
           za.setNummer(anr.getAnummer());
+        } else {
+          throw new IllegalArgumentException("Incorrecte BSN of a-nummer ingegeven.");
         }
       }
     }

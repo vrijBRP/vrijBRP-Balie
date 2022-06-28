@@ -24,9 +24,11 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 
 import java.time.Duration;
 import java.util.Optional;
-import java.util.function.Supplier;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.burgerzaken.vrsclient.api.SignaleringControllerApi;
+import nl.procura.burgerzaken.vrsclient.api.SignaleringRequest;
 import nl.procura.burgerzaken.vrsclient.api.TokenApi;
 import nl.procura.burgerzaken.vrsclient.api.model.TokenRequest;
 import nl.procura.burgerzaken.vrsclient.model.SignaleringRequestBSN;
@@ -45,42 +47,18 @@ public class VrsService {
     this.parameterService = parameterService;
   }
 
-  public SignaleringControllerApi getApi() {
-    String url = parameterService.getProxyUrl(VRS_SERVICE_URL, true);
-    long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
-    VrsClient vrsClient = new VrsClient(url, Duration.ofSeconds(timeout));
-    return new SignaleringControllerApi(vrsClient, getTokenSupplier());
-  }
-
-  public Supplier<String> getTokenSupplier() {
-    return () -> {
-      long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
-      String issuerUri = getApi().getIDPIssuerResponse().getIssuerUri();
-      String url = parameterService.getProxyUrl(issuerUri, true);
-      VrsClient vrsClient = new VrsClient(url, Duration.ofSeconds(timeout));
-
-      TokenRequest tokenRequest = new TokenRequest();
-      tokenRequest.setClientId(parameterService.getSysteemParm(VRS_CLIENT_ID, true));
-      tokenRequest.setClientSecret(parameterService.getSysteemParm(VRS_CLIENT_SECRET, true));
-      tokenRequest.setScope(parameterService.getSysteemParm(VRS_CLIENT_SCOPE, true));
-      tokenRequest.setResourceServer(parameterService.getSysteemParm(VRS_CLIENT_RESOURCE_SERVER, true));
-
-      return new TokenApi(vrsClient).getTokenResponse(tokenRequest).getAccess_token();
-    };
-  }
-
-  public boolean isEnabled() {
-    ProcuraDate date = new ProcuraDate(parameterService.getSysteemParameter(VRS_START_DATE).getValue());
-    return date.isExpired();
-  }
-
   public Optional<SignaleringResult> checkSignalering(Aanvraagnummer aanvraagnummer, String bsn) {
     Bsn bsnValidation = new Bsn(bsn);
     SignaleringControllerApi api = getApi();
-    SignaleringRequestBSN srBSN = new SignaleringRequestBSN();
-    srBSN.setAanvraagnummer(aanvraagnummer.getNummer());
-    srBSN.setBsn(bsnValidation.getDefaultBsn());
-    SignaleringResponse response = api.signaleringsRequestBSN(srBSN);
+    SignaleringRequest request = new SignaleringRequest();
+    request.bsn(new SignaleringRequestBSN()
+        .aanvraagnummer(aanvraagnummer.getNummer())
+        .bsn(bsnValidation.getDefaultBsn()))
+        .accessToken(getAccessToken())
+        .pseudoniem(parameterService.getServices().getGebruiker().getGebruikersnaam())
+        .instantieCode(parameterService.getSysteemParm(VRS_INSTANTIE_CODE, true));
+
+    SignaleringResponse response = api.signaleringsRequest(request);
     if (response.getResultaatCode() == SignaleringResponse.ResultaatCodeEnum.NO_HIT) {
       return Optional.empty();
     }
@@ -89,5 +67,32 @@ public class VrsService {
     ofNullable(response.getSignaleringInformatie()).ifPresent(si -> builder.signaleringen(si.getSignaleringen()));
     ofNullable(response.getMededelingRvIG()).ifPresent(builder::note);
     return Optional.of(builder.build());
+  }
+
+  public boolean isEnabled() {
+    return new ProcuraDate(parameterService.getSysteemParameter(VRS_START_DATE).getValue()).isExpired();
+  }
+
+  public SignaleringControllerApi getApi() {
+    String url = parameterService.getProxyUrl(VRS_SERVICE_URL, true);
+    long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
+    VrsClient vrsClient = new VrsClient(url, Duration.ofSeconds(timeout));
+    return new SignaleringControllerApi(vrsClient);
+  }
+
+  private String getAccessToken() {
+    long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
+    String customIssuerUri = parameterService.getSysteemParm(VRS_IDP_SERVICE_URL, true);
+    String tokenUrl = StringUtils.defaultString(customIssuerUri, getApi().getIDPIssuerResponse().getIssuerUri());
+    String proxyTokenUrl = parameterService.getProxyUrl(tokenUrl, true);
+    VrsClient vrsClient = new VrsClient(proxyTokenUrl, Duration.ofSeconds(timeout));
+
+    TokenRequest tokenRequest = new TokenRequest()
+        .clientId(parameterService.getSysteemParm(VRS_CLIENT_ID, true))
+        .clientSecret(parameterService.getSysteemParm(VRS_CLIENT_SECRET, true))
+        .scope(parameterService.getSysteemParm(VRS_CLIENT_SCOPE, true))
+        .resourceServer(parameterService.getSysteemParm(VRS_CLIENT_RESOURCE_SERVER, true));
+
+    return new TokenApi(vrsClient).getTokenResponse(tokenRequest).getAccess_token();
   }
 }

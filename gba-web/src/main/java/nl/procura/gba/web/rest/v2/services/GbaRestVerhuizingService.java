@@ -287,7 +287,7 @@ public class GbaRestVerhuizingService extends GbaRestAbstractService {
 
   private GbaRestAangever getAangever(VerhuisAanvraag zaak) {
     VerhuisAangever aangever = zaak.getAangever();
-    if (aangever != null) {
+    if (aangever != null && aangever.getBurgerServiceNummer().isCorrect()) {
       GbaRestAangever restAang = new GbaRestAangever();
       restAang.setBsn(toBsn(aangever.getBurgerServiceNummer()));
       restAang.setContactgegevens(getRestServices().getContactService().toGbaRestContactgegevens(restAang));
