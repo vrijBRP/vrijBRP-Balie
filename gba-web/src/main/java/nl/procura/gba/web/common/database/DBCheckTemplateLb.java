@@ -22,17 +22,12 @@ package nl.procura.gba.web.common.database;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pad_right;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import nl.procura.commons.liquibase.utils.LbConnectionUtils;
 
 import liquibase.database.Database;
 
@@ -45,14 +40,17 @@ public abstract class DBCheckTemplateLb {
   private final EntityManager entityManager;
   private final Database      database;
   private final String        type;
+  private final String        oms;
   private int                 count  = 0;
 
   public DBCheckTemplateLb(EntityManager entityManager, Database database, String type, String oms) {
-
     this.entityManager = entityManager;
     this.database = database;
     this.type = type;
+    this.oms = oms;
+  }
 
+  public void execute() {
     long startTime = System.currentTimeMillis();
     try {
       entityManager.getTransaction().begin();
@@ -92,28 +90,10 @@ public abstract class DBCheckTemplateLb {
   public abstract void init() throws SQLException;
 
   protected int count(String sql) throws SQLException {
-    Connection connection = LbConnectionUtils.getNativeSqlConnection(getDatabase());
-    try (Statement st = connection.createStatement()) {
-      try (ResultSet rs = st.executeQuery(sql)) {
-        if (rs.next()) {
-          return rs.getInt(1);
-        }
-        return 0;
-      }
-    }
+    return ((Long) getEntityManager().createNativeQuery(sql).getSingleResult()).intValue();
   }
 
-  protected boolean isOracle() {
-    return "oracle".equalsIgnoreCase(getDatabase().getDatabaseProductName());
-  }
-
-  protected int update(String sql) throws SQLException {
-    try (Statement st = LbConnectionUtils.getNativeSqlConnection(getDatabase()).createStatement()) {
-      return st.executeUpdate(sql);
-    }
-  }
-
-  protected int nativeUpdate(String sql) {
+  protected int update(String sql) {
     return getEntityManager().createNativeQuery(sql).executeUpdate();
   }
 

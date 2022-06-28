@@ -40,8 +40,8 @@ public class Page2PersonListMutationsForm extends GbaForm<Page2PersonListMutatio
   private Page2PersonListMutationsNavLayout setNav;
   private Page2PersonListMutationsNavLayout recNav;
   private Page2PersonListMutationsNavLayout actNav;
-  private BasePLExt                         pl;
-  private Page2PersonListMutationsLayout    layout;
+  private final BasePLExt                      pl;
+  private final Page2PersonListMutationsLayout layout;
 
   public Page2PersonListMutationsForm(BasePLExt pl, Page2PersonListMutationsLayout layout) {
     this.pl = pl;
@@ -170,7 +170,7 @@ public class Page2PersonListMutationsForm extends GbaForm<Page2PersonListMutatio
     ContainerItem<BasePLRec> rec = getRecValue();
 
     if (cat != null && rec != null) {
-      ActionContainer container = new ActionContainer(pl, cat, set, rec);
+      ActionContainer container = new ActionContainer(getApplication(), pl, cat, set, rec);
       getActField().setContainerDataSource(container);
       actNav.update(container.size());
       recNav.setCurrent(rec);

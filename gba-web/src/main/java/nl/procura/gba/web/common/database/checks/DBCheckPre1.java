@@ -54,7 +54,7 @@ public class DBCheckPre1 extends DBCheckTemplateLb {
     }
   }
 
-  private void updateTable(LbTable table) throws SQLException {
+  private void updateTable(LbTable table) {
     for (LbColumn column : table.getColumns()) {
 
       if (column.isPrimaryKey()) {
@@ -74,8 +74,7 @@ public class DBCheckPre1 extends DBCheckTemplateLb {
     }
   }
 
-  private void updateLocation(String table) throws SQLException {
-
+  private void updateLocation(String table) {
     String sql = String.format("update %s" +
         " set c_location = 0" +
         " where c_location is null or c_location not in (select c_location from location)",
@@ -83,8 +82,7 @@ public class DBCheckPre1 extends DBCheckTemplateLb {
     count(update(sql), "NULL waarde: " + table + ".c_location");
   }
 
-  private void updateUser(String table) throws SQLException {
-
+  private void updateUser(String table) {
     String sql = String.format("update %s" +
         " set c_usr = 0" +
         " where c_usr is null or c_usr not in (select c_usr from usr)",

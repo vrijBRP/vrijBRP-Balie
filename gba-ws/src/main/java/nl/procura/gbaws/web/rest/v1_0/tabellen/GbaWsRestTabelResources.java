@@ -44,10 +44,9 @@ public class GbaWsRestTabelResources extends GbaWsRestDienstenbusResource {
   @Path("/tabellen")
   public GbaWsRestTabellenAntwoord getTabel(GbaWsRestTabellenVraag vraag) {
     GbaWsRestTabellenAntwoord antwoord = new GbaWsRestTabellenAntwoord();
-    for (LandTable table : LandTabDao.getTables(vraag.getCodes())) {
+    for (LandTable table : LandTabDao.getTables(vraag.getCodes(), "")) {
       antwoord.getTabellen().add(get(table, vraag.isHistorie()));
     }
-
     return antwoord;
   }
 

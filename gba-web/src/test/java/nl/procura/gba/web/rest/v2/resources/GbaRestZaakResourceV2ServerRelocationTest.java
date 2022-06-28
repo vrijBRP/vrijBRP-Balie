@@ -47,6 +47,7 @@ import nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.gbaws.testdata.Testdata;
+import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
 public class GbaRestZaakResourceV2ServerRelocationTest {
 
@@ -192,7 +193,9 @@ public class GbaRestZaakResourceV2ServerRelocationTest {
         .getBestandsnaam();
     // then
     VerhuisAanvraag verhuizing = new VerhuisAanvraag();
+    verhuizing.setBurgerServiceNummer(new BsnFieldValue(BSN_INGESCHREVENE));
     verhuizing.setZaakId(zaakId);
+
     DMSDocument createdDocument = Services.getInstance().getDmsService().getDocumentsByZaak(verhuizing).getDocuments()
         .stream()
         .filter(d -> d.getContent().getFilename().equals(created))

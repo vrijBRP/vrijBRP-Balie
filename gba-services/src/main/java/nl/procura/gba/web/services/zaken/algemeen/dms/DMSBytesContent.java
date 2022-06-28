@@ -64,7 +64,7 @@ public class DMSBytesContent implements DMSContent {
 
   @Override
   public String getExtension() {
-    return FilenameUtils.getExtension(getExtension());
+    return FilenameUtils.getExtension(getFilename());
   }
 
   @Override

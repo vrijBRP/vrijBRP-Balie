@@ -23,49 +23,20 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 
+import lombok.Data;
+
+@Data
 public class KassaProductAanvraag {
 
-  private KassaProduct  kassaProduct = new KassaProduct();
-  private DateTime      tijdstip     = new DateTime();
-  private UsrFieldValue gebruiker    = new UsrFieldValue();
-  private BasePLExt     pl           = new BasePLExt();
+  private KassaProduct  kassaProduct;
+  private DateTime      tijdstip;
+  private UsrFieldValue gebruiker;
+  private BasePLExt     pl;
 
   public KassaProductAanvraag(KassaProduct kassaProduct, BasePLExt pl, UsrFieldValue gebruiker) {
-
-    setKassaProduct(kassaProduct);
-    setPl(pl);
-    setGebruiker(gebruiker);
-  }
-
-  public UsrFieldValue getGebruiker() {
-    return gebruiker;
-  }
-
-  public void setGebruiker(UsrFieldValue gebruiker) {
-    this.gebruiker = gebruiker;
-  }
-
-  public KassaProduct getKassaProduct() {
-    return kassaProduct;
-  }
-
-  public void setKassaProduct(KassaProduct kassaProduct) {
     this.kassaProduct = kassaProduct;
-  }
-
-  public BasePLExt getPl() {
-    return pl;
-  }
-
-  public void setPl(BasePLExt pl) {
     this.pl = pl;
-  }
-
-  public DateTime getTijdstip() {
-    return tijdstip;
-  }
-
-  public void setTijdstip(DateTime tijdstip) {
-    this.tijdstip = tijdstip;
+    this.gebruiker = gebruiker;
+    this.tijdstip = new DateTime();
   }
 }

@@ -118,13 +118,9 @@ public class Tab3AdresResultPage extends Tab3Page {
   }
 
   private void selectRow(BaseWKExt wk) {
-
     try {
-
       if (wk != null) {
-
         WKResultWrapper result = getApplication().getServices().getPersonenWsService().getAdres(wk);
-
         if (result.getBasisWkWrappers().size() > 0) {
           getNavigation().goToPage(new Tab3PlResultPage(this, result));
         } else {

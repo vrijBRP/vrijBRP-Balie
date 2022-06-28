@@ -26,9 +26,6 @@ import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import java.math.BigDecimal;
 import java.util.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.jpa.personen.dao.KassaDao;
@@ -41,11 +38,8 @@ import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
-import nl.procura.gba.web.services.beheer.kassa.gkas.KassaBestandGKas;
-import nl.procura.gba.web.services.beheer.kassa.gkas.KassaParameters;
-import nl.procura.gba.web.services.beheer.kassa.gkas.KassaVerzenderGKas;
-import nl.procura.gba.web.services.beheer.kassa.key2betalen.KassaBestandKey2Betalen;
-import nl.procura.gba.web.services.beheer.kassa.key2betalen.KassaVerzenderKey2Betalen;
+import nl.procura.gba.web.services.beheer.kassa.gkas.GKasFile;
+import nl.procura.gba.web.services.beheer.kassa.key2betalen.Key2BetalenFile;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
@@ -54,10 +48,11 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SoortReisdocument;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class KassaService extends AbstractService implements ZaakNumbers {
 
-  private final static Logger              LOGGER                 = LoggerFactory.getLogger(
-      KassaService.class.getName());
   private final List<KassaProductAanvraag> productenInWinkelwagen = new ArrayList<>();
 
   public KassaService() {
@@ -259,34 +254,26 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   }
 
   public boolean verstuur() {
-
-    KassaLeverancierType kassaLeverancier = KassaLeverancierType.get(
+    KassaApplicationType kassaLeverancier = KassaApplicationType.get(
         getParm(ParameterConstant.KASSA_TYPE, true));
 
-    KassaParameters parameters = new KassaParameters();
-    parameters.setLocatie(getServices().getGebruiker().getLocatie().getLocatie());
-    parameters.setKassaId(getParm(ParameterConstant.KASSA_ID));
-    parameters.setType(KassaVerstuurType.get(getParm(ParameterConstant.KASSA_SEND_TYPE, true)));
-    parameters.setFtpUrl(getParm(ParameterConstant.KASSA_FTP_URL));
-    parameters.setFtpUsername(getParm(ParameterConstant.KASSA_FTP_USERNAME));
-    parameters.setFtpPassword(getParm(ParameterConstant.KASSA_FTP_PW));
-    parameters.setFilename(getParm(ParameterConstant.KASSA_FILENAME));
-    parameters.setKassaLocatieId(getServices().getGebruiker().getLocatie().getGkasId());
-
+    KassaParameters parameters = new KassaParameters(getServices());
     List<KassaProductAanvraag> aanvragen = getServices().getKassaService().getProductenInWinkelwagen();
 
     switch (kassaLeverancier) {
-      case JCC:
-        List<String> bestanden = new KassaBestandGKas(parameters).getBestanden(aanvragen);
-        return new KassaVerzenderGKas(parameters).verstuur(bestanden);
+      case GKAS:
+        new KassaSender(parameters).send(GKasFile.of(parameters, aanvragen));
+        break;
 
-      case CENTRIC:
-        bestanden = new KassaBestandKey2Betalen(parameters).getBestanden(aanvragen);
-        return new KassaVerzenderKey2Betalen(parameters).verstuur(bestanden);
+      case KEY2BETALEN:
+        new KassaSender(parameters).send(Key2BetalenFile.of(parameters, aanvragen));
+        break;
 
       default:
         return false;
     }
+
+    return true;
   }
 
   /**
@@ -324,7 +311,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
     }
 
     Set<KassaProduct> bundels = new LinkedHashSet();
-    for (Set<KassaProduct> set : Combinations.getCombinationsFor(producten)) {
+    for (Set<KassaProduct> set : KassaCombinations.getCombinationsFor(producten)) {
       for (KassaProduct kassa : getKassaProducten()) {
         if (kassa.isKassaBundel() && kassa.heeftAlleGekoppeldeProducten(new ArrayList(set))) {
           bundels.add(kassa);
@@ -345,7 +332,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
     for (KassaProduct kassaProduct : kassaProducten) {
       kassaProduct = getKassaProduct(kassaProduct);
       if (!kassaProduct.isStored()) {
-        LOGGER.error("Kassa product komt niet voor: " + kassaProduct.getKassaType());
+        log.error("Kassa product komt niet voor: " + kassaProduct.getKassaType());
         kassaProduct.setKassa("++");
         getServices().getKassaService().save(kassaProduct);
       }
@@ -412,7 +399,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
     return kassa;
   }
 
-  public class KassaProductComparator implements Comparator<KassaProductAanvraag> {
+  public static class KassaProductComparator implements Comparator<KassaProductAanvraag> {
 
     private final boolean newFirst;
 

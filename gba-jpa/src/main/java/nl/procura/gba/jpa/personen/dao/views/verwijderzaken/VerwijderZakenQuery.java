@@ -17,39 +17,31 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.zaken.algemeen.dms;
+package nl.procura.gba.jpa.personen.dao.views.verwijderzaken;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public enum DMSType {
+import lombok.Getter;
 
-  PERSONEN("personen", "Opslaan in Procura Burgerzaken (oude manier)"),
-  STORAGE("storage", "Opslaan in Procura document service (nieuwe manier)");
+@Getter
+public class VerwijderZakenQuery {
 
-  private final String code;
-  private final String description;
+  private final StringBuilder       sql        = new StringBuilder();
+  private final Map<String, Object> parameters = new HashMap<>();
 
-  DMSType(String code, String description) {
-    this.code = code;
-    this.description = description;
+  public VerwijderZakenQuery sql(String sql) {
+    this.sql.append(sql);
+    return this;
   }
 
-  public static DMSType valueOfCode(String code) {
-    return Arrays.stream(DMSType.values())
-        .filter(value -> value.code.equals(code))
-        .findFirst().orElse(PERSONEN);
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public String getDescription() {
-    return description;
+  public VerwijderZakenQuery param(String key, Object val) {
+    parameters.put(key, val);
+    return this;
   }
 
   @Override
   public String toString() {
-    return description;
+    return "SQL: " + sql + " Parameters: " + parameters;
   }
 }

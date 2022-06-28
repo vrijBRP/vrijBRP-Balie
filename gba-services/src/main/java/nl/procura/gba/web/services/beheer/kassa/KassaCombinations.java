@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * Geeft setjes terug met alle mogelijke combinaties van een list
  */
-public class Combinations {
+public class KassaCombinations {
 
   public static <T> List<Set<T>> getCombinationsFor(List<T> group) {
     List<Set<T>> list = new ArrayList<>();

@@ -24,10 +24,12 @@ import static nl.procura.standard.Globalfunctions.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import nl.procura.burgerzaken.gba.StringUtils;
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.gba.jpa.personenws.db.Landtab;
 import nl.procura.gba.jpa.personenws.db.LandtabElement;
@@ -39,33 +41,32 @@ import nl.procura.standard.ProcuraDate;
 
 public class LandTabDao implements Serializable {
 
-  public static List<LandTable> getTables(List<Integer> tableCodes) {
-
-    final List<LandTable> l = new ArrayList<>();
+  public static List<LandTable> getTables(List<Integer> tableCodes, String description) {
     final EntityManager m = GbaWsJpa.getManager();
-    final TypedQuery<Landtab> q = m.createQuery("select l from Landtab l where l.cTable in :codes", Landtab.class);
-    q.setParameter("codes", tableCodes);
-    final List<Landtab> list = q.getResultList();
-
-    for (final Landtab r : list) {
-      l.add(get(r));
+    String sql = "select l from Landtab l where l.cTable > 0";
+    if (!tableCodes.isEmpty()) {
+      sql += " and l.cTable in :codes";
+    }
+    if (StringUtils.isNotBlank(description)) {
+      sql += " and l.cTable = :codeByDescription";
     }
 
-    return l;
+    final TypedQuery<Landtab> q = m.createQuery(sql, Landtab.class);
+    if (!tableCodes.isEmpty()) {
+      q.setParameter("codes", tableCodes);
+    }
+    if (StringUtils.isNotBlank(description)) {
+      LandTabType type = LandTabType.getByDescription(description);
+      q.setParameter("codeByDescription", type != null ? type.getCode() : -1);
+    }
+    final List<Landtab> list = q.getResultList();
+    return list.stream()
+        .map(LandTabDao::get)
+        .collect(Collectors.toList());
   }
 
   public static List<LandTable> getTables() {
-
-    final List<LandTable> l = new ArrayList<>();
-    final EntityManager m = GbaWsJpa.getManager();
-    final TypedQuery<Landtab> q = m.createQuery("select l from Landtab l", Landtab.class);
-    final List<Landtab> list = q.getResultList();
-
-    for (final Landtab r : list) {
-      l.add(get(r));
-    }
-
-    return l;
+    return getTables(new ArrayList<>(), null);
   }
 
   private static LandTable get(Landtab r) {
@@ -79,38 +80,27 @@ public class LandTabDao implements Serializable {
     }
   }
 
-  public static String getTableDescription(int tableCode) {
-
-    final EntityManager m = GbaWsJpa.getManager();
-    final Landtab tab = m.find(Landtab.class, tableCode);
-    return tab == null ? "" : getTabelDescription(tab.getCTable());
-  }
-
   public static List<LandTableElement> getAllElements(int tableCode) {
-
-    final ArrayList<LandTableElement> l = new ArrayList<>();
-    final EntityManager m = GbaWsJpa.getManager();
+    ArrayList<LandTableElement> l = new ArrayList<>();
+    EntityManager m = GbaWsJpa.getManager();
 
     if (pos(tableCode)) {
-
-      final Landtab t = m.find(Landtab.class, tableCode);
-      for (final LandtabElement r : t.getLandtabElementCollection()) {
+      Landtab t = m.find(Landtab.class, tableCode);
+      for (LandtabElement r : t.getLandtabElementCollection()) {
         l.add(new LandTableElement(r.getCElement(), "Onbekend"));
       }
     }
-
     return l;
   }
 
   public static List<LandTableRecord> getAllRecords(int tableCode, boolean history) {
-
-    final List<LandTableRecord> l = new ArrayList<>();
+    List<LandTableRecord> l = new ArrayList<>();
 
     if (pos(tableCode)) {
-      final EntityManager m = GbaWsJpa.getManager();
-      final Landtab t = m.find(Landtab.class, tableCode);
+      EntityManager m = GbaWsJpa.getManager();
+      Landtab t = m.find(Landtab.class, tableCode);
 
-      for (final LandtabRecord r : t.getLandtabRecordCollection()) {
+      for (LandtabRecord r : t.getLandtabRecordCollection()) {
         if (history || !(pos(r.getDEnd()) && new ProcuraDate(astr(r.getDEnd())).isExpired())) {
           l.add(new LandTableRecord(r.getLandtabRecordPK().getCRecord(), format(r), r.getDIn(), r.getDEnd(),
               r.getAttr()));
@@ -188,7 +178,7 @@ public class LandTabDao implements Serializable {
     public String getElementsAsString() {
 
       StringBuilder sb = new StringBuilder();
-      for (final LandTableElement element : getAllElements(getCode())) {
+      for (LandTableElement element : getAllElements(getCode())) {
         sb.append(element.getCode());
         sb.append(", ");
       }

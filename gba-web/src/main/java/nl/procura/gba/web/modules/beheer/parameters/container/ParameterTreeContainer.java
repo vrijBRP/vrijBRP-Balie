@@ -96,9 +96,8 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_ZOEKEN_PROFIEL_GBAV_PLUS, GROUP_ZOEKEN, false, ZoekenProfielParametersLayout.class);
 
     // Overige
-    addTreeItem(GROUP_PRINT, GROUP_OVERIG, true, DatabaseParameterLayout.class);
-    addTreeItem(GROUP_OPENOFFICE, GROUP_PRINT, false, DatabaseParameterLayout.class);
-    addTreeItem(GROUP_NETWORKPRINT, GROUP_PRINT, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_PRINT, GROUP_OVERIG, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_CONNECT, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_CONTACT, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_DOCUMENTEN, GROUP_OVERIG, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_EMAIL, GROUP_OVERIG, false, EmailParameterLayout.class);
@@ -154,9 +153,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
   /**
    * De categorie heeft een (gebruiker) parameter.
    */
-  private boolean hasParameter(Class<?> beanClass, ParameterGroup category, boolean showUser,
-      boolean showProfile) {
-
+  private boolean hasParameter(Class<?> beanClass, ParameterGroup category, boolean showUser, boolean showProfile) {
     Collection<?> propertyIds = BeanAnnotationUtil.getPropertyIdsForAnnotatedFields(beanClass);
     for (Object propertyId : propertyIds) {
       if (propertyId instanceof String) {

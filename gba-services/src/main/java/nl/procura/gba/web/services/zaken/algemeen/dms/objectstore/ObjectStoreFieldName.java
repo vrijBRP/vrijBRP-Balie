@@ -17,51 +17,40 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.kassa;
+package nl.procura.gba.web.services.zaken.algemeen.dms.objectstore;
 
-import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import java.util.Arrays;
 
-public enum KassaVerstuurType {
+public enum ObjectStoreFieldName {
 
-  LOKAAL("0", "Lokaal"),
-  FTP("1", "FTP");
+  ALIAS("alias"),
+  TITLE("title"),
+  USER("user"),
+  DATA_TYPE("dataType"),
+  CUSTOMER_ID("customerId"),
+  DOSSIER_ID("dossierId"),
+  DOCUMENT_TYPE_DESCRIPTION("documentTypeDescription"),
+  CONFIDENTIALITY("confidentiality");
 
-  private String code;
-  private String oms;
+  private final String code;
 
-  KassaVerstuurType(String code, String oms) {
+  ObjectStoreFieldName(String code) {
     this.code = code;
-    this.oms = oms;
   }
 
-  public static KassaVerstuurType get(String code) {
-    for (KassaVerstuurType type : values()) {
-      if (equalsIgnoreCase(type.getCode(), code)) {
-        return type;
-      }
-    }
-
-    return LOKAAL;
+  public static ObjectStoreFieldName valueOfCode(String code) {
+    return Arrays.stream(ObjectStoreFieldName.values())
+        .filter(value -> value.code.equals(code))
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("Onbekende veld: " + code));
   }
 
   public String getCode() {
     return code;
   }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getOms() {
-    return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
-  }
-
   @Override
   public String toString() {
-    return getOms();
+    return code;
   }
 }

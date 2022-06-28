@@ -278,6 +278,18 @@ public enum ParameterConstant implements ParameterType {
   DOC_CONFIDENTIALITY("doc_confidentiality", "Standaard mate van vertrouwelijkheid",
       GROUP_DOCUMENTEN, true, false, false, ""),
 
+  DOC_OBJECT_STORAGE_ENABLE("doc_object_storage_enabled", "VrijBRP ObjectStore actief",
+      GROUP_DOCUMENTEN, true, false, false, ""),
+
+  DOC_OBJECT_STORAGE_URL("doc_object_storage_url", "VrijBRP ObjectStore endpoint",
+      GROUP_DOCUMENTEN, true, false, false, ""),
+
+  DOC_OBJECT_STORAGE_USERNAME("doc_object_storage_username", "VrijBRP ObjectStore gebruikersnaam",
+      GROUP_DOCUMENTEN, true, false, false, ""),
+
+  DOC_OBJECT_STORAGE_PW("doc_object_storage_pw", "VrijBRP ObjectStore wachtwoord",
+      GROUP_DOCUMENTEN, true, false, false, ""),
+
   GEMEENTE_CODES("gemeente_codes", "Gemeentecode(s)",
       GROUP_ALGEMENE_INSTELLINGEN, true, false, false, ""),
 
@@ -314,7 +326,7 @@ public enum ParameterConstant implements ParameterType {
   INLOGOPMERKING("inlogopmerking", "Inlogopmerking",
       GROUP_ALGEMENE_INSTELLINGEN, true, false, false, ""),
 
-  KASSA_CLEAR_LIST("kassa_clear_file", "Kassalijst opschonen na versturen naar de kassa",
+  KASSA_CLEAR_LIST("kassa_clear_file", "Kassalijst opschonen na betaling",
       GROUP_KASSA, true, true, true, ""),
 
   KASSA_FTP_PW("kassa_ftp_password", "Kassa FTP wachtwoord",
@@ -344,26 +356,25 @@ public enum ParameterConstant implements ParameterType {
   MIDOFFICE_DASHBOARD_LEVERANCIERS("dashboard_mo_leverancier", "Midoffice leveranciers (dashboard)",
       GROUP_MIDOFFICE, true, false, false, ""),
 
-  OPENOFFICE_HOSTNAME("openoffice_hostname", "OpenOffice Host", GROUP_OPENOFFICE, true, false, false, ""),
+  OPENOFFICE_HOSTNAME("openoffice_hostname", "OpenOffice Host", GROUP_PRINT, true, false, false, ""),
 
-  OPENOFFICE_PORT("openoffice_port", "OpenOffice Poort", GROUP_OPENOFFICE, true, false, false, ""),
+  OPENOFFICE_PORT("openoffice_port", "OpenOffice Poort", GROUP_PRINT, true, false, false, ""),
 
-  OPENOFFICE_CONVERT("openoffice_convert", "OpenOffice installatie", GROUP_OPENOFFICE, true, false, false, ""),
+  OPENOFFICE_CONVERT("openoffice_convert", "OpenOffice installatie", GROUP_PRINT, true, false, false, ""),
 
-  BZ_CONNECT_ENABLED("bz_connect_enabled", "Print connector - van toepassing", GROUP_NETWORKPRINT, true, false, false,
+  BZ_CONNECT_PRINTING_ENABLED("bz_connect_printing_enabled", "Connect inschakelen voor printen", GROUP_PRINT, true,
+      false, false, ""),
+
+  BZ_CONNECT_ENABLED("bz_connect_enabled", "Connect inschakelen", GROUP_CONNECT, true, false, false,
       "0"),
 
-  BZ_CONNECT_PKK("bz_connect_pkk", "Print connector - certificaat", GROUP_NETWORKPRINT, true, false, false, ""),
+  BZ_CONNECT_URL("bz_connect_url", "Connect - url", GROUP_CONNECT, true, false, false, ""),
 
-  BZ_CONNECT_PASSPHRASE("bz_connect_passphrase", "Print connector - wachtwoord", GROUP_NETWORKPRINT, true, false, false,
+  BZ_CONNECT_USERNAME("bz_connect_username", "Connect - gebruikersnaam", GROUP_CONNECT, true, false, false,
       ""),
 
-  BZ_CONNECT_USERNAME("bz_connect_username", "Print connector - gebruikersnaam", GROUP_NETWORKPRINT, true, false, false,
+  BZ_CONNECT_PW("bz_connect_pw", "Connect - wachtwoord", GROUP_CONNECT, true, false, false,
       ""),
-
-  BZ_CONNECT_HOST("bz_connect_host", "Print connector - server", GROUP_NETWORKPRINT, true, false, false, ""),
-
-  BZ_CONNECT_PORT("bz_connect_port", "Print connector - poort", GROUP_NETWORKPRINT, true, false, false, "8000"),
 
   GEBR_PPD("c_ppd", "PPD code",
       GROUP_ALGEMENE_INSTELLINGEN, false, true, true, ""),
@@ -422,10 +433,22 @@ public enum ParameterConstant implements ParameterType {
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
   VRS_SERVICE_TIMEOUT("reisd_vrs_timeout", "Timeout in seconden van VRS services application API",
-      GROUP_REISDOCUMENTEN, false, false, false, "10"),
+      GROUP_REISDOCUMENTEN, true, false, false, "10"),
 
   VRS_START_DATE("reisd_vrs_start_date", "Ingangsdatum VRS",
-      GROUP_REISDOCUMENTEN, true, false, false, "20210101"),
+      GROUP_REISDOCUMENTEN, true, false, false, "20230101"),
+
+  VRS_CLIENT_ID("reisd_vrs_client_id", "VRS client-ID",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
+
+  VRS_CLIENT_SECRET("reisd_vrs_client_secret", "VRS client-secret",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
+
+  VRS_CLIENT_SCOPE("reisd_vrs_client_scope", "VRS scope",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
+
+  VRS_CLIENT_RESOURCE_SERVER("reisd_vrs_client_resource_server", "VRS resource server",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
 
   TERUGMBEHEER("terugmbeheer", "Beheerder van de terugmeldingen",
       GROUP_TERUGMELDINGEN, false, true, true, ""),

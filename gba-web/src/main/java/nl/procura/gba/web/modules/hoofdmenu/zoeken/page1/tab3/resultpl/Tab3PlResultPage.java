@@ -20,6 +20,8 @@
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab3.resultpl;
 
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
+import static nl.procura.gba.web.common.misc.java.PartitionUtil.partition;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_NAAMGEBRUIK;
 import static nl.procura.standard.Globalfunctions.*;
 
 import java.util.ArrayList;
@@ -27,8 +29,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.github.wolfie.refresher.Refresher;
-import com.github.wolfie.refresher.Refresher.RefreshListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -42,15 +42,15 @@ import nl.procura.diensten.gba.wk.baseWK.BaseWKPerson;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKValue;
 import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
 import nl.procura.diensten.gba.wk.extensions.WKResultWrapper;
-import nl.procura.gba.web.common.misc.java.PartitionUtil;
-import nl.procura.gba.web.components.layouts.table.overlays.WaitTableOverlay;
 import nl.procura.gba.web.components.layouts.tablefilter.export.ExportButton;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab3.Tab3Page;
 import nl.procura.gba.web.modules.zaken.woningkaart.page1.Page1WoningkaartTable;
 import nl.procura.gba.web.modules.zaken.woningkaart.page1.WoningkaartPersonenLayout;
 import nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectWindow;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
-import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
+import nl.procura.gba.web.services.beheer.profiel.Profielen;
+import nl.procura.gba.web.services.beheer.profiel.veld.ProfielVeld;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -58,17 +58,13 @@ import nl.procura.vaadin.functies.VaadinUtils;
 
 public class Tab3PlResultPage extends Tab3Page {
 
-  private final static int SET_SIZE         = 250;
+  private final static int SET_SIZE         = 20;
   private final Button     objectInfoButton = new Button("Objectinformatie (F3)");
 
   private final Label           adresIndicatie = new Label();
-  private final Refresher       refresher      = new Refresher();
-  private final List<BasePLExt> personen       = new ArrayList<>();
   private Page1WoningkaartTable table          = null;
-  private WaitTableOverlay      waitOverlay    = null;
-  private WKResultWrapper       result;
   private BaseWKExt             wk             = null;
-  private int                   totalSize      = 0;
+  private WKResultWrapper       result;
 
   public Tab3PlResultPage(Tab3Page parentPage, WKResultWrapper newResult) {
 
@@ -89,7 +85,6 @@ public class Tab3PlResultPage extends Tab3Page {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       addForm();
 
       table = new Page1WoningkaartTable() {
@@ -103,11 +98,8 @@ public class Tab3PlResultPage extends Tab3Page {
         public void setRecords() {
 
           try {
-
             adresIndicatie.setVisible(false);
-
             if (result.getBasisWkWrappers().size() > 0) {
-
               parseResult(result);
             }
           } catch (Exception e) {
@@ -122,18 +114,8 @@ public class Tab3PlResultPage extends Tab3Page {
       getButtonLayout().setComponentAlignment(adresIndicatie, Alignment.MIDDLE_CENTER);
 
       BaseWKExt wk = result.getBasisWkWrappers().get(0);
-
       addComponent(new WoningkaartPersonenLayout().set(wk));
-
-      waitOverlay = new WaitTableOverlay(table);
-
       addExpandComponent(table);
-      addComponent(waitOverlay);
-
-      refresher.addListener(new DatabaseListener());
-      refresher.setRefreshInterval(500);
-
-      addComponent(refresher);
     }
 
     super.event(event);
@@ -157,7 +139,6 @@ public class Tab3PlResultPage extends Tab3Page {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     if ((button == objectInfoButton) || (objectInfoButton.isEnabled() && (keyCode == KeyCode.F3))) {
       getParentWindow().addWindow(new WoningObjectWindow(new ProcuraInhabitantsAddress(getWk())));
     }
@@ -167,73 +148,72 @@ public class Tab3PlResultPage extends Tab3Page {
 
   @Override
   public void onEnter() {
-
     if (table.getRecord() != null) {
       selectRecord((BaseWKPerson) table.getRecord().getObject());
     }
   }
 
-  private List<BasePLExt> getPersoonslijsten(List<BaseWKPerson> personen) {
+  private void parseResult(WKResultWrapper result) {
+    objectInfoButton.setEnabled(true);
 
+    Services services = getApplication().getServices();
+    Profielen profielen = services.getGebruiker().getProfielen();
+    boolean isGeheimToegestaan = profielen.isProfielVeld(ProfielVeld.PL_VERSTREKKINGSBEPERKING);
+    boolean zoekNaamgebruik = isTru(services.getGebruiker().getParameters().get(ZOEK_PLE_NAAMGEBRUIK).getValue());
+
+    for (BaseWKExt wk : result.getBasisWkWrappers()) {
+      setWk(wk);
+      setAdresIndicatie(wk);
+
+      List<BasePLExt> persoonslijsten = new ArrayList<>();
+      partition(wk.getBasisWk().getPersonen(), SET_SIZE).stream()
+          .map(partition -> getPersoonslijsten(partition,
+              persoonslijsten.size(),
+              zoekNaamgebruik))
+          .forEach(persoonslijsten::addAll);
+
+      table.addToTable(wk.getBasisWk().getPersonen(), persoonslijsten, isGeheimToegestaan);
+      setGeheimMelding();
+      return;
+    }
+  }
+
+  private List<BasePLExt> getPersoonslijsten(List<BaseWKPerson> personen, int total, boolean zoekNaamgebruik) {
     if (pos(personen.size())) {
       PLEArgs args = new PLEArgs();
-
       for (BaseWKPerson p : personen) {
-        String anr = p.getAnummer().getCode();
-        String bsn = p.getBsn().getCode();
-        args.addNummer(pos(anr) ? anr : bsn);
+        if (!pos(p.getDatum_vertrek().getValue()) || total < 100) {
+          String anr = p.getAnummer().getCode();
+          String bsn = p.getBsn().getCode();
+          args.addNummer(pos(anr) ? anr : bsn);
+        }
       }
 
       args.setCustomTemplate(CustomTemplate.WK);
       args.setDatasource(PLEDatasource.PROCURA);
       args.setShowHistory(false);
       args.setShowArchives(false);
-      args.addCat(PERSOON, VB, INSCHR, VERW);
-      args.setCat(HUW_GPS, isTru(getApplication().getServices().getGebruiker().getParameters().get(
-          ParameterConstant.ZOEK_PLE_NAAMGEBRUIK).getValue()));
+      args.addCat(PERSOON, INSCHR, VERW);
+      args.setCat(HUW_GPS, zoekNaamgebruik);
 
       if (args.getNumbers().size() > 0) {
-        return getApplication().getServices().getPersonenWsService().getPersoonslijsten(args,
-            false).getBasisPLWrappers();
+        return getApplication().getServices()
+            .getPersonenWsService()
+            .getPersoonslijsten(args, false)
+            .getBasisPLWrappers();
       }
     }
 
     return new ArrayList<>();
   }
 
-  private void parseResult(WKResultWrapper result) {
-
-    objectInfoButton.setEnabled(true);
-
-    for (BaseWKExt wk : result.getBasisWkWrappers()) {
-
-      setWk(wk);
-
-      setAdresIndicatie(wk);
-
-      if (wk.getBasisWk().getPersonen().size() < SET_SIZE) {
-
-        table.addToTable(wk.getBasisWk().getPersonen(), getPersoonslijsten(wk.getBasisWk().getPersonen()));
-
-        setGeheimMelding();
-      } else {
-
-        new BackgroundThread().start();
-      }
-
-      return;
-    }
-  }
-
   private void selectRecord(BaseWKPerson pl) {
-
     String nr = pl.getAnummer().getCode();
     nr = fil(nr) ? nr : pl.getBsn().getCode();
     getApplication().goToPl(getWindow(), "", PLEDatasource.STANDAARD, nr);
   }
 
   private void setAdresIndicatie(BaseWKExt wk) {
-
     BaseWKValue ind = wk.getBasisWk().getAdres_indicatie();
 
     if (pos(ind.getCode())) {
@@ -245,53 +225,9 @@ public class Tab3PlResultPage extends Tab3Page {
   }
 
   private void setGeheimMelding() {
-
     String melding = table.getGeheimMelding();
-
     if (fil(melding)) {
-
       VaadinUtils.getChild(this, WoningkaartPersonenLayout.class).append(melding);
-    }
-  }
-
-  public class BackgroundThread extends Thread {
-
-    @Override
-    public void run() {
-
-      totalSize = wk.getBasisWk().getPersonen().size();
-
-      try {
-
-        waitOverlay.setVisible(true);
-
-        waitOverlay.setText("Lijst wordt geladen ... ");
-
-        for (List<BaseWKPerson> partition : PartitionUtil.partition(wk.getBasisWk().getPersonen(),
-            SET_SIZE)) {
-
-          personen.addAll(getPersoonslijsten(partition));
-        }
-
-        table.addToTable(wk.getBasisWk().getPersonen(), personen);
-
-        waitOverlay.setVisible(false);
-
-        refresher.setEnabled(false);
-      } catch (Exception e) {
-        getApplication().handleException(getWindow(), e);
-      }
-    }
-  }
-
-  public class DatabaseListener implements RefreshListener {
-
-    @Override
-    public void refresh(com.github.wolfie.refresher.Refresher source) {
-
-      double perc = (100.00 / totalSize) * personen.size();
-
-      waitOverlay.setText("Lijst wordt geladen ... <b>" + ((int) perc) + "%</b>");
     }
   }
 }

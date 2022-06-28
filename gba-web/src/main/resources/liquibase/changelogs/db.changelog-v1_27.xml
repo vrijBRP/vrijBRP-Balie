@@ -24,4 +24,868 @@
             <![CDATA[update document set document_dms_type = dms_naam]]>
         </sql>
     </changeSet>
+
+    <changeSet author="Procura" id="v1_27_4">
+        <modifyDataType tableName="pl_mut" columnName="zaak_id" newDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_5">
+        <renameColumn tableName="pl_mut" oldColumnName="set" newColumnName="set_id"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_6">
+        <createView viewName="zaken_view">
+            <![CDATA[
+            SELECT uitt_aanvr.zaak_id,
+                'uittreksel' AS zaak_type,
+                'uitt_aanvr' AS tabel,
+                uitt_aanvr.ind_verwerkt,
+                uitt_aanvr.d_aanvr AS d_invoer,
+                uitt_aanvr.d_aanvr AS d_ingang
+               FROM uitt_aanvr,
+                document
+              WHERE uitt_aanvr.c_document = document.c_document AND document.document_type = 'pl'
+              GROUP BY uitt_aanvr.zaak_id, uitt_aanvr.ind_verwerkt, uitt_aanvr.d_aanvr
+            UNION
+             SELECT uitt_aanvr.zaak_id,
+                'formulier' AS zaak_type,
+                'uitt_aanvr' AS tabel,
+                uitt_aanvr.ind_verwerkt,
+                uitt_aanvr.d_aanvr AS d_invoer,
+                uitt_aanvr.d_aanvr AS d_ingang
+               FROM uitt_aanvr,
+                document
+              WHERE uitt_aanvr.c_document = document.c_document AND document.document_type <> 'pl'
+              GROUP BY uitt_aanvr.zaak_id, uitt_aanvr.ind_verwerkt, uitt_aanvr.d_aanvr
+            UNION
+             SELECT geheimhouding.zaak_id,
+                'verstrekkingsbeperking' AS zaak_type,
+                'geheimhouding' AS tabel,
+                geheimhouding.ind_verwerkt,
+                geheimhouding.d_in AS d_invoer,
+                geheimhouding.d_wijz AS d_ingang
+               FROM geheimhouding
+              GROUP BY geheimhouding.zaak_id, geheimhouding.ind_verwerkt, geheimhouding.d_in, geheimhouding.d_wijz
+            UNION
+             SELECT naamgebruik.zaak_id,
+                'naamgebruik' AS zaak_type,
+                'naamgebruik' AS tabel,
+                naamgebruik.ind_verwerkt,
+                naamgebruik.d_in AS d_invoer,
+                naamgebruik.d_wijz AS d_ingang
+               FROM naamgebruik
+              GROUP BY naamgebruik.zaak_id, naamgebruik.ind_verwerkt, naamgebruik.d_in, naamgebruik.d_wijz
+            UNION
+             SELECT bvh_park.zaak_id,
+                'binnenverhuizing' AS zaak_type,
+                'bvh_park' AS tabel,
+                bvh_park.ind_verwerkt,
+                bvh_park.d_opn AS d_invoer,
+                bvh_park.d_aanv AS d_ingang
+               FROM bvh_park
+              WHERE bvh_park.verhuis_type = 1
+              GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+            UNION
+             SELECT bvh_park.zaak_id,
+                'buitenverhuizing' AS zaak_type,
+                'bvh_park' AS tabel,
+                bvh_park.ind_verwerkt,
+                bvh_park.d_opn AS d_invoer,
+                bvh_park.d_aanv AS d_ingang
+               FROM bvh_park
+              WHERE bvh_park.verhuis_type = 2
+              GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+            UNION
+             SELECT bvh_park.zaak_id,
+                'emigratie' AS zaak_type,
+                'bvh_park' AS tabel,
+                bvh_park.ind_verwerkt,
+                bvh_park.d_opn AS d_invoer,
+                bvh_park.d_aanv AS d_ingang
+               FROM bvh_park
+              WHERE bvh_park.verhuis_type = 3
+              GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+            UNION
+             SELECT bvh_park.zaak_id,
+                'hervestiging' AS zaak_type,
+                'bvh_park' AS tabel,
+                bvh_park.ind_verwerkt,
+                bvh_park.d_opn AS d_invoer,
+                bvh_park.d_aanv AS d_ingang
+               FROM bvh_park
+              WHERE bvh_park.verhuis_type = 4
+              GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+            UNION
+             SELECT vog_aanvr.zaak_id,
+                'vog' AS zaak_type,
+                'vog_aanvr' AS tabel,
+                vog_aanvr.ind_verwerkt,
+                vog_aanvr.d_aanvr AS d_invoer,
+                vog_aanvr.d_aanvr AS d_ingang
+               FROM vog_aanvr
+              GROUP BY vog_aanvr.zaak_id, vog_aanvr.ind_verwerkt, vog_aanvr.d_aanvr
+            UNION
+             SELECT gpk.zaak_id,
+                'gpk' AS zaak_type,
+                'gpk' AS tabel,
+                gpk.ind_verwerkt,
+                gpk.d_aanvr AS d_invoer,
+                gpk.d_aanvr AS d_ingang
+               FROM gpk
+              GROUP BY gpk.zaak_id, gpk.ind_verwerkt, gpk.d_aanvr
+            UNION
+             SELECT rdm01.zaak_id,
+                'reisdocument' AS zaak_type,
+                'rdm01' AS tabel,
+                rdm01.ind_verwerkt,
+                rdm01.d_aanvr AS d_invoer,
+                rdm01.d_aanvr AS d_ingang
+               FROM rdm01
+              GROUP BY rdm01.zaak_id, rdm01.ind_verwerkt, rdm01.d_aanvr
+            UNION
+             SELECT doc_inh.zaak_id,
+                'inhouding_vermissing' AS zaak_type,
+                'doc_inh' AS tabel,
+                doc_inh.ind_verwerkt,
+                doc_inh.d_inneming AS d_invoer,
+                doc_inh.d_inneming AS d_ingang
+               FROM doc_inh
+              GROUP BY doc_inh.zaak_id, doc_inh.ind_verwerkt, doc_inh.d_inneming
+            UNION
+             SELECT nrd.zaak_id,
+                'rijbewijs' AS zaak_type,
+                'nrd' AS tabel,
+                nrd.ind_verwerkt,
+                nrd.d_aanvr AS d_invoer,
+                nrd.d_aanvr AS d_ingang
+               FROM nrd
+              GROUP BY nrd.zaak_id, nrd.ind_verwerkt, nrd.d_aanvr
+            UNION
+             SELECT terugmelding.zaak_id,
+                'terugmelding' AS zaak_type,
+                'terugmelding' AS tabel,
+                terugmelding.ind_verwerkt,
+                terugmelding.d_in AS d_invoer,
+                terugmelding.d_in AS d_ingang
+               FROM terugmelding
+              GROUP BY terugmelding.zaak_id, terugmelding.ind_verwerkt, terugmelding.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'geboorte' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 100
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'erkenning' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 200
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'huw_gps' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 300
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'naamskeuze' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 400
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'overlijden_in_gemeente' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 500
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'lijkvinding' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 600
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'overlijden_in_buitenland' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 700
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'levenloos_geboren_kind' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 800
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT indicatie.zaak_id,
+                'indicatie' AS zaak_type,
+                'indicatie' AS tabel,
+                indicatie.ind_verwerkt,
+                indicatie.d_in AS d_invoer,
+                indicatie.d_in AS d_ingang
+               FROM indicatie
+              GROUP BY indicatie.zaak_id, indicatie.ind_verwerkt, indicatie.d_in
+            UNION
+             SELECT correspondentie.zaak_id,
+                'correspondentie' AS zaak_type,
+                'correspondentie' AS tabel,
+                correspondentie.ind_verwerkt,
+                correspondentie.d_in AS d_invoer,
+                correspondentie.d_in AS d_ingang
+               FROM correspondentie
+              GROUP BY correspondentie.zaak_id, correspondentie.ind_verwerkt, correspondentie.d_in
+            UNION
+             SELECT gv.zaak_id,
+                'gegevensverstrekking' AS zaak_type,
+                'gv' AS tabel,
+                gv.ind_verwerkt,
+                gv.d_in AS d_invoer,
+                gv.d_wijz AS d_ingang
+               FROM gv
+              GROUP BY gv.zaak_id, gv.ind_verwerkt, gv.d_in, gv.d_wijz
+            UNION
+             SELECT doss.zaak_id,
+                'omzetting_gps' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 1300
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'ontbinding_huwelijk_gps' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 1400
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT inbox.zaak_id,
+                'inbox' AS zaak_type,
+                'inbox' AS tabel,
+                inbox.ind_verwerkt,
+                inbox.d_invoer,
+                inbox.d_invoer AS d_ingang
+               FROM inbox
+              GROUP BY inbox.zaak_id, inbox.ind_verwerkt, inbox.d_invoer
+            UNION
+             SELECT doss.zaak_id,
+                'onderzoek' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 1600
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'eerste_inschrijving' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 1700
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT doss.zaak_id,
+                'risicoanalyse' AS zaak_type,
+                'doss' AS tabel,
+                doss.ind_verwerkt,
+                doss.d_aanvr AS d_invoer,
+                doss.d_in AS d_ingang
+               FROM doss
+              WHERE doss.type_doss = 1800
+              GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+            UNION
+             SELECT pl_mut.zaak_id,
+                'pl_mutatie' AS zaak_type,
+                'pl_mut' AS tabel,
+                pl_mut.ind_verwerkt,
+                pl_mut.d_in AS d_invoer,
+                pl_mut.d_in AS d_ingang
+               FROM pl_mut
+              GROUP BY pl_mut.zaak_id, pl_mut.ind_verwerkt, pl_mut.d_in;
+            ]]>
+        </createView>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_7">
+        <dropForeignKeyConstraint baseTableName="vog_func_asp"
+                                  constraintName="vog_func_asp_c_vog_aanvr_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="vog_func_asp"
+                                 constraintName="vog_func_asp_c_vog_aanvr_fkey"
+                                 baseColumnNames="c_vog_aanvr"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_vog_aanvr"
+                                 referencedTableName="vog_aanvr"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_8">
+        <dropForeignKeyConstraint baseTableName="rdm02"
+                                  constraintName="rdm02_rdm01_id_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="rdm02"
+                                 constraintName="rdm02_rdm01_id_fkey"
+                                 baseColumnNames="rdm01_id"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="rdm01_id"
+                                 referencedTableName="rdm01"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_9">
+        <dropForeignKeyConstraint baseTableName="terugm_detail"
+                                  constraintName="tm_detail_terugm_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="terugm_detail"
+                                 constraintName="tm_detail_terugm_fkey"
+                                 baseColumnNames="c_terugmelding"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding"
+                                 referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_10">
+        <dropForeignKeyConstraint baseTableName="terugm_reactie"
+                                  constraintName="tm_reactie_tm_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="terugm_reactie"
+                                 constraintName="tm_reactie_tm_fkey"
+                                 baseColumnNames="c_terugmelding"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding"
+                                 referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_11">
+        <dropForeignKeyConstraint baseTableName="terugm_tmv_rel"
+                                  constraintName="tm_tmv_rel_tm_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="terugm_tmv_rel"
+                                 constraintName="tm_tmv_rel_tm_fkey"
+                                 baseColumnNames="c_terugmelding"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding"
+                                 referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_12">
+        <sql>
+            <![CDATA[delete from terugm_tmv where c_terugmelding not in (select c_terugmelding from terugmelding)]]>
+        </sql>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_13">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="tm_tmv_tm_fkey"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="terugm_tmv"
+                                 constraintName="tm_tmv_tm_fkey"
+                                 baseColumnNames="c_terugmelding"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_terugmelding"
+                                 referencedTableName="terugmelding"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_14">
+        <dropForeignKeyConstraint baseTableName="nrd_status"
+                                  constraintName="nrd_status_c_aanvr_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="nrd_status"
+                                 constraintName="nrd_status_c_aanvr_fkey"
+                                 baseColumnNames="c_aanvr"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aanvr"
+                                 referencedTableName="nrd"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_15">
+        <dropForeignKeyConstraint baseTableName="document_stempel"
+                                  constraintName="doc_stem_c_doc_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="document_stempel"
+                                 constraintName="doc_stem_c_doc_fkey"
+                                 baseColumnNames="c_document"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_16">
+        <dropForeignKeyConstraint baseTableName="document_stempel"
+                                  constraintName="doc_stem_c_stem_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="document_stempel"
+                                 constraintName="doc_stem_c_stem_fkey"
+                                 baseColumnNames="c_stempel"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_stempel"
+                                 referencedTableName="stempel"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_17">
+        <dropForeignKeyConstraint baseTableName="document_usr"
+                                  constraintName="document_usr_c_document_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="document_usr"
+                                 constraintName="document_usr_c_document_fkey"
+                                 baseColumnNames="c_document"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+
+        <dropForeignKeyConstraint baseTableName="document_usr"
+                                  constraintName="document_usr_c_usr_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="document_usr"
+                                 constraintName="document_usr_c_usr_fkey"
+                                 baseColumnNames="c_usr"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_18">
+        <dropForeignKeyConstraint baseTableName="printoptie_document"
+                                  constraintName="print_doc_doc_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="printoptie_document"
+                                 constraintName="print_doc_doc_fkey"
+                                 baseColumnNames="c_document"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_19">
+        <dropForeignKeyConstraint baseTableName="printoptie_document"
+                                  constraintName="print_doc_print_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="printoptie_document"
+                                 constraintName="print_doc_print_fkey"
+                                 baseColumnNames="c_printoptie"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_printoptie"
+                                 referencedTableName="printoptie"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_20">
+        <dropForeignKeyConstraint baseTableName="koppelenum_document"
+                                  constraintName="enum_doc_doc_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="koppelenum_document"
+                                 constraintName="enum_doc_doc_fkey"
+                                 baseColumnNames="c_document"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_21">
+        <dropForeignKeyConstraint baseTableName="koppelenum_document"
+                                  constraintName="enum_doc_enum_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="koppelenum_document"
+                                 constraintName="enum_doc_enum_fkey"
+                                 baseColumnNames="c_koppelenum"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_koppelenum"
+                                 referencedTableName="koppelenum"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_22">
+        <dropForeignKeyConstraint baseTableName="aant3"
+                                  constraintName="aant3_c_aantek3_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="aant3"
+                                 constraintName="aant3_c_aantek3_fkey"
+                                 baseColumnNames="c_aantek3"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aantek3"
+                                 referencedTableName="aantek3"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_23">
+        <dropForeignKeyConstraint baseTableName="aantekening_hist"
+                                  constraintName="aant_hist_c_aant_ind_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="aantekening_hist"
+                                 constraintName="aant_hist_c_aant_ind_fkey"
+                                 baseColumnNames="c_aantekening_ind"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aantekening_ind"
+                                 referencedTableName="aantekening_ind"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_24">
+        <sql>
+            <![CDATA[delete from document_kenmerk where c_kenmerk not in (select c_kenmerk from kenmerk)]]>
+        </sql>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_25">
+        <dropForeignKeyConstraint baseTableName="document_kenmerk"
+                                  constraintName="doc_kenmerk_c_doc_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="document_kenmerk"
+                                 constraintName="doc_kenmerk_c_doc_fkey"
+                                 baseColumnNames="c_document"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_26">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="doc_kenmerk_c_kenm_fkey"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="document_kenmerk"
+                                 constraintName="doc_kenmerk_c_kenm_fkey"
+                                 baseColumnNames="c_kenmerk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_kenmerk"
+                                 referencedTableName="kenmerk"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_27">
+        <dropForeignKeyConstraint baseTableName="printoptie_location"
+                                  constraintName="print_loc_loc_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="printoptie_location"
+                                 constraintName="print_loc_loc_fkey"
+                                 baseColumnNames="c_location"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_location"
+                                 referencedTableName="location"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_28">
+        <dropForeignKeyConstraint baseTableName="printoptie_location"
+                                  constraintName="print_loc_print_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="printoptie_location"
+                                 constraintName="print_loc_print_fkey"
+                                 baseColumnNames="c_printoptie"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_printoptie"
+                                 referencedTableName="printoptie"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_29">
+        <dropForeignKeyConstraint baseTableName="profile_aantekening_ind"
+                                  constraintName="prof_aant_ind_prof_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_aantekening_ind"
+                                 constraintName="prof_aant_ind_prof_fkey"
+                                 baseColumnNames="c_profile"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_30">
+        <dropForeignKeyConstraint baseTableName="profile_zaak_conf"
+                                  constraintName="prof_aant_zaak_conf_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_zaak_conf"
+                                 constraintName="prof_aant_zaak_conf_fkey"
+                                 baseColumnNames="c_zaak_conf"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_zaak_conf"
+                                 referencedTableName="zaak_conf"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_31">
+        <dropForeignKeyConstraint baseTableName="profile_zaak_conf"
+                                  constraintName="prof_zaak_conf_prof_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_zaak_conf"
+                                 constraintName="prof_zaak_conf_prof_fkey"
+                                 baseColumnNames="c_profile"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_32">
+        <dropForeignKeyConstraint baseTableName="profile_gba_category"
+                                  constraintName="prof_gba_cat_prof_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_gba_category"
+                                 constraintName="prof_gba_cat_prof_fkey"
+                                 baseColumnNames="c_profile"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_33">
+        <dropForeignKeyConstraint baseTableName="profile_gba_element"
+                                  constraintName="prof_gba_elem_prof_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_gba_element"
+                                 constraintName="prof_gba_elem_prof_fkey"
+                                 baseColumnNames="c_profile"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_34">
+        <dropForeignKeyConstraint baseTableName="profile_action"
+                                  constraintName="profile_action_c_profile_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_action"
+                                 constraintName="profile_action_c_profile_fkey"
+                                 baseColumnNames="c_profile"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_35">
+        <dropForeignKeyConstraint baseTableName="profile_field"
+                                  constraintName="profile_field_c_profile_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_field"
+                                 constraintName="profile_field_c_profile_fkey"
+                                 baseColumnNames="c_profile"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_profile"
+                                 referencedTableName="profile"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_36">
+        <dropForeignKeyConstraint baseTableName="doss"
+                                  constraintName="doss_c_usr_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="doss"
+                                 constraintName="doss_c_usr_fkey"
+                                 baseColumnNames="c_usr"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_37">
+        <dropForeignKeyConstraint baseTableName="kassa"
+                                  constraintName="kassa_c_document_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="kassa"
+                                 constraintName="kassa_c_document_fkey"
+                                 baseColumnNames="c_document"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_document"
+                                 referencedTableName="document"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_38">
+        <dropForeignKeyConstraint baseTableName="profile_aantekening_ind"
+                                  constraintName="prof_aant_aant_ind_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_aantekening_ind"
+                                 constraintName="prof_aant_aant_ind_fkey"
+                                 baseColumnNames="c_aantekening_ind"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_aantekening_ind"
+                                 referencedTableName="aantekening_ind"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_39">
+        <dropForeignKeyConstraint baseTableName="profile_gba_element"
+                                  constraintName="prof_gba_elem_gba_elem_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_gba_element"
+                                 constraintName="prof_gba_elem_gba_elem_fkey"
+                                 baseColumnNames="c_gba_element"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_gba_element"
+                                 referencedTableName="gba_element"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_40">
+        <dropForeignKeyConstraint baseTableName="profile_gba_category"
+                                  constraintName="prof_gba_gba_cat_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_gba_category"
+                                 constraintName="prof_gba_gba_cat_fkey"
+                                 baseColumnNames="c_gba_category"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_gba_category"
+                                 referencedTableName="gba_category"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_41">
+        <dropForeignKeyConstraint baseTableName="profile_action"
+                                  constraintName="profile_action_c_action_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_action"
+                                 constraintName="profile_action_c_action_fkey"
+                                 baseColumnNames="c_action"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_action"
+                                 referencedTableName="action"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_27_42">
+        <dropForeignKeyConstraint baseTableName="profile_field"
+                                  constraintName="profile_field_c_field_fkey"/>
+
+        <addForeignKeyConstraint baseTableName="profile_field"
+                                 constraintName="profile_field_c_field_fkey"
+                                 baseColumnNames="c_field"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_field"
+                                 referencedTableName="field"/>
+    </changeSet>
 </databaseChangeLog>

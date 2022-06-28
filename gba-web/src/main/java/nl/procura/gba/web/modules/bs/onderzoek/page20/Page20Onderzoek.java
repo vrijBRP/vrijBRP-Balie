@@ -82,7 +82,7 @@ public class Page20Onderzoek extends BsPageOnderzoek {
 
     if (binnen != null && !binnen) {
       form2 = new Page20OnderzoekForm2(getZaakDossier());
-      form3 = new Page20OnderzoekForm3(getZaakDossier());
+      form3 = new Page20OnderzoekForm3(binnen, getZaakDossier());
       onderzoekLayout.addComponent(form2);
       onderzoekLayout.addComponent(form3);
     }

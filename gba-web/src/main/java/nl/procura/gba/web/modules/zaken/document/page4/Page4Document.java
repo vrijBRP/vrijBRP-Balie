@@ -50,7 +50,8 @@ public class Page4Document extends DocumentenPage {
       DMSService dms = getApplication().getServices().getDmsService();
       try {
         String gebruiker = getApplication().getServices().getGebruiker().getNaam();
-        DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(getFile()))
+        DMSDocument dmsDocument = DMSDocument.builder()
+            .content(DMSFileContent.from(getFile()))
             .user(gebruiker)
             .documentTypeDescription(form.getDmsDocumentType().map(DmsDocumentType::toString).orElse(""))
             .confidentiality(form.getVertrouwelijkheid().getNaam())

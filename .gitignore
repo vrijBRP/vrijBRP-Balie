@@ -2,6 +2,7 @@
 ###################
 *.class
 rebel.xml
+rebel-remote.xml
 log4j.xml
 log4j.properties
 

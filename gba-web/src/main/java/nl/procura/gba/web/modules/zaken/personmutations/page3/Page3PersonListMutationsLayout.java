@@ -48,10 +48,7 @@ import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.common.validators.GbaDatumValidator;
 import nl.procura.gba.web.components.containers.TabelContainer;
-import nl.procura.gba.web.components.fields.DateReference;
-import nl.procura.gba.web.components.fields.GbaComboBox;
-import nl.procura.gba.web.components.fields.GbaTextField;
-import nl.procura.gba.web.components.fields.IndicatieOnjuistField;
+import nl.procura.gba.web.components.fields.*;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.modules.zaken.personmutations.AbstractPersonMutationsTable;
@@ -190,6 +187,9 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     } else if (pleE.getElem() == GBAElem.AAND_GEG_IN_ONDERZ) {
       field = new IndicatieOnjuistField(mutElem.getCat());
 
+    } else if (pleE.getElem().is(GBAElem.AKTENR, GBAElem.NR_NL_REISDOC)) {
+      field = new UpperCaseField();
+
     } else if (pleE.getElem() == GBAElem.AUTORIT_VAN_AFGIFTE_NL_REISDOC) {
       mutElem.setDefaultValue(() -> new FieldValue(mutElem.getCurrentValue().getVal()));
 
@@ -257,10 +257,6 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       } else {
         mutElem.setDefaultValue(FieldValue::new);
       }
-    }
-
-    if (pleE.getElem().is(GBAElem.AKTENR, GBAElem.NR_NL_REISDOC)) {
-      field.addStyleName("uppercase");
     }
 
     if (GBAElem.DATUM_VAN_OPNEMING.is(pleE.getElem())) {

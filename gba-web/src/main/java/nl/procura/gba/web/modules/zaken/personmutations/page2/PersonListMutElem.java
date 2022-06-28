@@ -66,7 +66,7 @@ public class PersonListMutElem {
   public boolean isVisible() {
     List<GBAGroup> list = new ArrayList<>();
     if (rec.getCatType().is(GBACat.INSCHR)) {
-      list.add(GELDIGHEID);
+      //list.add(GELDIGHEID);
       list.add(OPNEMING);
     }
     list.add(GBAGroup.VERIFICATIE);
@@ -76,6 +76,10 @@ public class PersonListMutElem {
   }
 
   public boolean isChangeble() {
+    if (action.is(SUPER_CHANGE)) {
+      return true;
+    }
+
     if (action.is(CORRECT_CATEGORY)) {
       return false;
     }
@@ -85,10 +89,8 @@ public class PersonListMutElem {
     } else if (!action.is(ADD_HISTORIC, SUPER_CHANGE) && GBAElem.IND_ONJUIST == type.getElem()) {
       return false;
 
-    } else if (GBAElem.DATUM_VAN_OPNEMING == type.getElem()) {
-      return false;
-    }
-    return true;
+    } else
+      return GBAElem.DATUM_VAN_OPNEMING != type.getElem();
   }
 
   public boolean isRequiredGroup() {

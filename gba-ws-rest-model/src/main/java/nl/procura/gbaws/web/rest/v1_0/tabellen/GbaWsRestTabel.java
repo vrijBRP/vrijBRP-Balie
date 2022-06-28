@@ -26,36 +26,36 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "tabel")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "code", "omschrijving", "records" })
+@XmlType(propOrder = {"code", "omschrijving", "records"})
 public class GbaWsRestTabel {
 
-  private int    code         = -1;
-  private String omschrijving = "";
+    private int code = -1;
+    private String omschrijving = "";
 
-  @XmlElement(name = "records")
-  private List<GbaWsRestTabelRecord> records = new ArrayList<>();
+    @XmlElement(name = "records")
+    private List<GbaWsRestTabelRecord> records = new ArrayList<>();
 
-  public int getCode() {
-    return code;
-  }
+    public int getCode() {
+        return code;
+    }
 
-  public void setCode(int code) {
-    this.code = code;
-  }
+    public void setCode(int code) {
+        this.code = code;
+    }
 
-  public String getOmschrijving() {
-    return omschrijving;
-  }
+    public String getOmschrijving() {
+        return omschrijving;
+    }
 
-  public void setOmschrijving(String omschrijving) {
-    this.omschrijving = omschrijving;
-  }
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
+    }
 
-  public List<GbaWsRestTabelRecord> getRecords() {
-    return records;
-  }
+    public List<GbaWsRestTabelRecord> getRecords() {
+        return records;
+    }
 
-  public void setRecords(List<GbaWsRestTabelRecord> records) {
-    this.records = records;
-  }
+    public void setRecords(List<GbaWsRestTabelRecord> records) {
+        this.records = records;
+    }
 }

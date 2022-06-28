@@ -27,40 +27,33 @@ import java.util.List;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKPerson;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.gba.web.services.beheer.profiel.Profielen;
-import nl.procura.gba.web.services.beheer.profiel.veld.ProfielVeld;
 
 public class Page1WoningkaartTable extends GbaTable {
 
   private int geheimAantal = 0;
 
-  public void addToTable(List<BaseWKPerson> personen, List<BasePLExt> plLijst) {
+  public void addToTable(List<BaseWKPerson> personen, List<BasePLExt> plLijst, boolean isGeheimToegestaan) {
 
     int i = 0;
-
-    Profielen profielen = getApplication().getServices().getGebruiker().getProfielen();
-    boolean isGeheimToegestaan = profielen.isProfielVeld(ProfielVeld.PL_VERSTREKKINGSBEPERKING);
-
     for (BaseWKPerson wkPersoon : personen) {
-
       String dIn = wkPersoon.getDatum_ingang().getDescr();
       String dEnd = wkPersoon.getDatum_vertrek().getDescr();
 
       String naam = setClass(false,
-          "Persoon met a-nummer: " + wkPersoon.getAnummer().getDescr() + " niet gevonden");
+          "Persoon met a-nummer: "
+              + wkPersoon.getAnummer().getDescr()
+              + " niet gezocht of gevonden");
 
       if (pos(wkPersoon.getBsn().getValue())) {
-        naam = setClass(false, "Persoon met bsn: " + wkPersoon.getBsn().getDescr() + " niet gevonden");
+        naam = setClass(false, "Persoon met bsn: "
+            + wkPersoon.getBsn().getDescr()
+            + " niet gezocht of gevonden");
       }
 
       String geslacht = "";
-
       boolean skip = false;
-
       for (BasePLExt pl : plLijst) {
-
         if (pl.getPersoon().isNr(wkPersoon.getAnummer().getCode(), wkPersoon.getBsn().getCode())) {
-
           if (!isGeheimToegestaan && pl.getPersoon().getStatus().isGeheim()) {
             geheimAantal++;
             skip = true;
@@ -95,11 +88,9 @@ public class Page1WoningkaartTable extends GbaTable {
     StringBuilder melding = new StringBuilder();
 
     if (geheimAantal > 0) {
-
       melding.append("<br/>");
 
       if (geheimAantal > 1) {
-
         melding.append(
             "<b>" + geheimAantal + "</b> personen worden echter niet getoond vanwege een verstrekkingsbeperking.");
       } else if (geheimAantal > 0) {

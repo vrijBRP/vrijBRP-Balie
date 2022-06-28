@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSFileContent;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSStorageType;
 import nl.procura.standard.ProcuraDate;
 
 import lombok.Data;
@@ -67,7 +68,9 @@ public class IndexLine {
   }
 
   public DMSDocument toDmsDocument(File file) {
-    return DMSDocument.builder(DMSFileContent.from(file))
+    return DMSDocument.builder()
+        .storage(DMSStorageType.DEFAULT)
+        .content(DMSFileContent.from(file))
         .title(getTitle())
         .user(getUser())
         .datatype(getDataType())

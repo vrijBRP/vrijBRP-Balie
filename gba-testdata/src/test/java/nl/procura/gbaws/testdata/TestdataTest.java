@@ -19,33 +19,28 @@
 
 package nl.procura.gbaws.testdata;
 
-import static nl.procura.gbaws.testdata.Testdata.getPersonData;
-import static nl.procura.gbaws.testdata.Testdata.getPersonDataAsBytes;
-import static nl.procura.gbaws.testdata.Testdata.DataSet.DEMO;
+import static nl.procura.gbaws.testdata.Testdata.*;
+import static nl.procura.gbaws.testdata.Testdata.DataSet.GBAV;
 import static nl.procura.gbaws.testdata.Testdata.DataSet.RVIG;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import nl.procura.gbaws.generator.GeneratePLJsonFiles;
-
 public class TestdataTest {
 
   @Test
-  public void mustFindAllJsonFilesFromDemo() throws IllegalAccessException {
-    for (Field field : Testdata.class.getFields()) {
-      long nr = Long.parseLong(String.valueOf(field.get(null)));
-      Assert.assertEquals(1, getPersonData(nr, DEMO).getBasePLs().size());
-    }
+  public void mustFindAllJsonFilesFromRvigFile() {
+    List<Long> numbers = new ArrayList<>(getRvIGBsns()).subList(0, 5);
+    Assert.assertEquals(5, getPersonData(numbers, RVIG).getBasePLs().size());
   }
 
   @Test
-  public void mustFindAllJsonFilesFromRvigFile() {
-    List<Long> numbers = GeneratePLJsonFiles.getRvIGBsns();
-    Assert.assertEquals(436, getPersonData(numbers, RVIG).getBasePLs().size());
+  public void mustFindAllJsonFilesFromGbavFile() {
+    List<Long> numbers = new ArrayList<>(getGbaVBsns()).subList(0, 5);
+    Assert.assertEquals(5, getPersonData(numbers, GBAV).getBasePLs().size());
   }
 
   @Test
@@ -57,6 +52,15 @@ public class TestdataTest {
   public void mustNotFindSpecificFileFromRvigFile() {
     try {
       getPersonDataAsBytes(1234L, RVIG);
+    } catch (IllegalStateException e) {
+      Assert.assertEquals("Personal data of 1234 has not been found", e.getMessage());
+    }
+  }
+
+  @Test
+  public void mustSupportDiacritics() {
+    try {
+      Assert.assertTrue(new String(getPersonDataAsBytes(999990032L, GBAV)).contains("Bilgiç"));
     } catch (IllegalStateException e) {
       Assert.assertEquals("Personal data of 1234 has not been found", e.getMessage());
     }

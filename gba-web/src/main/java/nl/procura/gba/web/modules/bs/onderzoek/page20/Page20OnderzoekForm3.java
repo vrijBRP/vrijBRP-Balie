@@ -20,7 +20,8 @@
 package nl.procura.gba.web.modules.bs.onderzoek.page20;
 
 import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.*;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_ANDER_ORGAAN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_REDEN_OVERSLAAN;
 import static nl.procura.standard.Globalfunctions.isTru;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,32 +33,33 @@ import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 
 public class Page20OnderzoekForm3 extends GbaForm<Page20OnderzoekBean> {
 
-  public Page20OnderzoekForm3(DossierOnderzoek zaakDossier) {
+  public Page20OnderzoekForm3(boolean binnenTermijn, DossierOnderzoek zaakDossier) {
     setCaption("Kunnen onderdelen van het onderzoek worden overgeslagen?");
     setColumnWidths("450px", "");
     setOrder(ONDERZOEK_DOOR_ANDER_GEDAAN, VOLDOENDE_REDEN, TOELICHTING);
-    setBean(zaakDossier);
+    setBean(binnenTermijn, zaakDossier);
   }
 
-  public void setBean(DossierOnderzoek zaakDossier) {
-
+  public void setBean(boolean binnenTermijn, DossierOnderzoek zaakDossier) {
     Page20OnderzoekBean bean = new Page20OnderzoekBean();
     bean.setVoldoendeReden(zaakDossier.getRedenOverslaan());
     bean.setOnderzoekDoorAnderGedaan(zaakDossier.getGedegenOnderzoek());
     bean.setToelichting(zaakDossier.getToelichtingOverslaan());
 
     ParameterService parameterService = Services.getInstance().getParameterService();
-    String defaultAfhandelingstermijn = parameterService.getSysteemParameter(ONDERZ_5_DAGEN_TERM).getValue();
-
-    if (StringUtils.isNotBlank(defaultAfhandelingstermijn) && !isTru(defaultAfhandelingstermijn)) {
+    if (!binnenTermijn) {
       if (bean.getOnderzoekDoorAnderGedaan() == null) {
         String defaultAnderOrgaan = parameterService.getSysteemParameter(ONDERZ_ANDER_ORGAAN).getValue();
-        bean.setOnderzoekDoorAnderGedaan(isTru(defaultAnderOrgaan));
+        if (StringUtils.isNotBlank(defaultAnderOrgaan)) {
+          bean.setOnderzoekDoorAnderGedaan(isTru(defaultAnderOrgaan));
+        }
       }
 
       if (bean.getVoldoendeReden() == null) {
         String defaultRedenOverslaan = parameterService.getSysteemParameter(ONDERZ_REDEN_OVERSLAAN).getValue();
-        bean.setVoldoendeReden(isTru(defaultRedenOverslaan));
+        if (StringUtils.isNotBlank(defaultRedenOverslaan)) {
+          bean.setVoldoendeReden(isTru(defaultRedenOverslaan));
+        }
       }
     }
 

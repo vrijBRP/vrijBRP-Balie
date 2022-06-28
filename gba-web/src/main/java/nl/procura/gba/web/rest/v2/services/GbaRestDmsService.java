@@ -120,7 +120,8 @@ public class GbaRestDmsService {
     DocumentVertrouwelijkheid vertrouwelijkheid = documentService
         .getStandaardVertrouwelijkheid(VERTROUWELIJKHEID_MAP.get(document.getVertrouwelijkheid()), ONBEKEND);
 
-    return DMSDocument.builder(DMSFileContent.from(bestand))
+    return DMSDocument.builder()
+        .content(DMSFileContent.from(bestand))
         .title(defaultIfBlank(document.getTitel(), bestandsnaam))
         .confidentiality(vertrouwelijkheid.getNaam())
         .user(services.getGebruiker().getNaam())

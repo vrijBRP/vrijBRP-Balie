@@ -22,22 +22,23 @@ package nl.procura.gba.web.modules.beheer.parameters.container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 
-import nl.procura.gba.web.services.beheer.kassa.KassaVerstuurType;
+import nl.procura.gba.web.services.beheer.kassa.KassaSendType;
 import nl.procura.vaadin.component.container.ProcuraContainer;
 
 public class KassaVerstuurTypeContainer extends IndexedContainer implements ProcuraContainer {
 
   public KassaVerstuurTypeContainer() {
 
-    Item item;
-
     addContainerProperty(OMSCHRIJVING, String.class, "");
     removeAllItems();
 
-    item = addItem(KassaVerstuurType.LOKAAL.getCode());
-    item.getItemProperty(OMSCHRIJVING).setValue(KassaVerstuurType.LOKAAL.getOms());
+    Item item = addItem(KassaSendType.LOKAAL.getCode());
+    item.getItemProperty(OMSCHRIJVING).setValue(KassaSendType.LOKAAL.getOms());
 
-    item = addItem(KassaVerstuurType.FTP.getCode());
-    item.getItemProperty(OMSCHRIJVING).setValue(KassaVerstuurType.FTP.getOms());
+    item = addItem(KassaSendType.FTP.getCode());
+    item.getItemProperty(OMSCHRIJVING).setValue(KassaSendType.FTP.getOms());
+
+    item = addItem(KassaSendType.CONNECT.getCode());
+    item.getItemProperty(OMSCHRIJVING).setValue(KassaSendType.CONNECT.getOms());
   }
 }

@@ -22,6 +22,7 @@ package nl.procura.gba.web.services.beheer.parameter;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.*;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
 import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
 
 import java.io.IOException;
@@ -33,6 +34,8 @@ import javax.net.ssl.SSLHandshakeException;
 
 import org.apache.commons.net.ftp.FTPClient;
 
+import nl.procura.bzconnector.app.client.VrijBRPConnectRestClient;
+import nl.procura.gba.web.services.beheer.kassa.KassaSendType;
 import nl.procura.standard.exceptions.ProException;
 
 public class DefaultParameterValidator implements ParameterValidator {
@@ -42,7 +45,9 @@ public class DefaultParameterValidator implements ParameterValidator {
   private static final int  LOGGED_IN = 230;
 
   @Override
-  public void validate(ParameterType parameterType, long cUsr, Map<ParameterType, String> map,
+  public void validate(
+      ParameterType parameterType,
+      long cUsr, Map<ParameterType, String> map,
       ParameterService parameters) {
 
     // Algemeen
@@ -77,13 +82,34 @@ public class DefaultParameterValidator implements ParameterValidator {
     // RDW
     checkURL(parameterType, RYB_URL, map, parameters);
 
-    // Kassa
-    if (KASSA_FTP_URL.equals(parameterType)) {
-      String url = map.get(KASSA_FTP_URL);
-      String username = map.get(KASSA_FTP_USERNAME);
-      String password = map.get(KASSA_FTP_PW);
+    // Kassa using FTP
+    if (KASSA_SEND_TYPE.equals(parameterType)) {
+      String type = map.get(KASSA_SEND_TYPE);
+      if (KassaSendType.FTP == KassaSendType.get(type)) {
+        String url = map.get(KASSA_FTP_URL);
+        String username = map.get(KASSA_FTP_USERNAME);
+        String password = map.get(KASSA_FTP_PW);
+        checkFtp(url, username, password);
+      }
 
-      checkFtp(url, username, password);
+      // Kassa using vrijBRP Connect
+      if (KassaSendType.CONNECT == KassaSendType.get(type)) {
+        boolean connectEnabled = isTru(parameters.getParm(BZ_CONNECT_ENABLED));
+        String url = parameters.getParm(BZ_CONNECT_URL);
+        String username = parameters.getParm(BZ_CONNECT_USERNAME);
+        String password = parameters.getParm(BZ_CONNECT_PW);
+        checkConnect(connectEnabled, url, username, password);
+      }
+    }
+
+    // VrijBRP Connect
+    if (BZ_CONNECT_ENABLED.equals(parameterType)) {
+      if (isTru(map.get(BZ_CONNECT_ENABLED))) {
+        String url = map.get(BZ_CONNECT_URL);
+        String username = map.get(BZ_CONNECT_USERNAME);
+        String password = map.get(BZ_CONNECT_PW);
+        checkConnect(true, url, username, password);
+      }
     }
 
     // Protocollering
@@ -98,25 +124,39 @@ public class DefaultParameterValidator implements ParameterValidator {
    * Controleer of toegang tot de FTP werkt.
    */
   private void checkFtp(String url, String username, String password) {
-
-    if (fil(url)) {
-
-      FTPClient ftp = new FTPClient();
-
-      try {
-        ftp.connect(url);
-        ftp.login(username, password);
-
-        if (ftp.getReplyCode() != LOGGED_IN) {
-          throw new RuntimeException(ftp.getReplyString());
-        }
-      } catch (Exception e) {
-        throw new ProException(ENTRY, "Er kan geen verbinding worden gemaakt met: " + url.trim() + ".", e);
-      } finally {
-        try {
-          ftp.disconnect();
-        } catch (IOException ignored) {}
+    FTPClient ftp = new FTPClient();
+    try {
+      ftp.connect(url);
+      ftp.login(username, password);
+      if (ftp.getReplyCode() != LOGGED_IN) {
+        throw new RuntimeException(ftp.getReplyString());
       }
+    } catch (Exception e) {
+      throw new ProException(ENTRY, "Er kan geen verbinding worden gemaakt met: " + url.trim() + ".", e);
+    } finally {
+      try {
+        ftp.disconnect();
+      } catch (IOException ignored) {}
+    }
+  }
+
+  /**
+   * Controleer of toegang tot vrijBRP Connect service werkt.
+   */
+  private void checkConnect(boolean enabled, String url, String username, String password) {
+    if (!enabled) {
+      throw new ProException(CONFIG, "VrijBRP Connect is niet ingeschakeld");
+    }
+    try {
+      VrijBRPConnectRestClient.builder()
+          .username(username)
+          .password(password)
+          .url(url)
+          .timeoutInSeconds(10)
+          .build()
+          .listPrinters();
+    } catch (Exception e) {
+      throw new ProException(ENTRY, "Er kan geen verbinding worden gemaakt met: " + url.trim() + ".", e);
     }
   }
 
@@ -124,7 +164,6 @@ public class DefaultParameterValidator implements ParameterValidator {
    * Controleer of de URL kan worden benaderd.
    */
   private void checkURL(String url) {
-
     if (fil(url)) {
       try {
         URLConnection conn = new URL(url).openConnection();
@@ -140,8 +179,7 @@ public class DefaultParameterValidator implements ParameterValidator {
     }
   }
 
-  private void checkURL(ParameterType parameterType, ParameterType eqParameter,
-      Map<ParameterType, String> map) {
+  private void checkURL(ParameterType parameterType, ParameterType eqParameter, Map<ParameterType, String> map) {
     checkURL(parameterType, eqParameter, map, null);
   }
 

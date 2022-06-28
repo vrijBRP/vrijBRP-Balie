@@ -30,9 +30,6 @@ public class UpperCaseField extends GbaTextField {
   @Override
   public Object getValue() {
     Object value = super.getValue();
-    if (value instanceof String) {
-      return ((String) value).toUpperCase(Locale.getDefault());
-    }
-    return "";
+    return value != null ? value.toString().toUpperCase(Locale.getDefault()) : null;
   }
 }

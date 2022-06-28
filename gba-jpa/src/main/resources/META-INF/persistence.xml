@@ -142,5 +142,6 @@
         <class>nl.procura.gba.jpa.personen.db.DossCorrDest</class>
         <class>nl.procura.gba.jpa.personen.db.DossNk</class>
         <class>nl.procura.gba.jpa.personen.db.ZaakConf</class>
+        <class>nl.procura.gba.jpa.personen.db.ZakenView</class>
     </persistence-unit>
 </persistence>

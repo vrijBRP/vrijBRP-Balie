@@ -65,7 +65,6 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
   private Page10ReisdocumentForm2 form2            = null;
 
   public Page10Reisdocument(ReisdocumentAanvraag aanvraag) {
-
     super("Reisdocument: nieuw", aanvraag);
 
     addButton(buttonPrev);

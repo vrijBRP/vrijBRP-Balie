@@ -24,7 +24,7 @@ import static nl.procura.standard.Globalfunctions.astr;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 
-import nl.procura.gba.web.services.zaken.algemeen.dms.DMSType;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSStorageType;
 import nl.procura.vaadin.component.container.ProcuraContainer;
 
 public class DmsTypeContainer extends IndexedContainer implements ProcuraContainer {
@@ -36,7 +36,7 @@ public class DmsTypeContainer extends IndexedContainer implements ProcuraContain
     removeAllItems();
 
     Item item;
-    for (DMSType type : DMSType.values()) {
+    for (DMSStorageType type : DMSStorageType.values()) {
       item = addItem(astr(type.getCode()));
       item.getItemProperty(OMSCHRIJVING).setValue(type.getDescription());
     }

@@ -22,22 +22,22 @@ package nl.procura.gba.web.modules.beheer.parameters.container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 
-import nl.procura.gba.web.services.beheer.kassa.KassaLeverancierType;
+import nl.procura.gba.web.services.beheer.kassa.KassaApplicationType;
 import nl.procura.vaadin.component.container.ProcuraContainer;
 
-public class KassaLeverancierContainer extends IndexedContainer implements ProcuraContainer {
+public class KassaApplicationTypeContainer extends IndexedContainer implements ProcuraContainer {
 
-  public KassaLeverancierContainer() {
+  public KassaApplicationTypeContainer() {
 
     Item item;
 
     addContainerProperty(OMSCHRIJVING, String.class, "");
     removeAllItems();
 
-    item = addItem(KassaLeverancierType.JCC.getCode());
-    item.getItemProperty(OMSCHRIJVING).setValue(KassaLeverancierType.JCC.getOms());
+    item = addItem(KassaApplicationType.GKAS.getCode());
+    item.getItemProperty(OMSCHRIJVING).setValue(KassaApplicationType.GKAS.getOms());
 
-    item = addItem(KassaLeverancierType.CENTRIC.getCode());
-    item.getItemProperty(OMSCHRIJVING).setValue(KassaLeverancierType.CENTRIC.getOms());
+    item = addItem(KassaApplicationType.KEY2BETALEN.getCode());
+    item.getItemProperty(OMSCHRIJVING).setValue(KassaApplicationType.KEY2BETALEN.getOms());
   }
 }

@@ -17,52 +17,39 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.kassa;
+package nl.procura.gba.web.services.zaken.algemeen.dms;
 
-import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import java.util.Arrays;
 
-public enum KassaLeverancierType {
+public enum DMSStorageType {
 
-  JCC("jcc", "G-KAS (JCC)"),
-  CENTRIC("centric", "Key2Betalen (Centric)"),
-  ONBEKEND("", "Onbekend");
+  DEFAULT("default", "Documenten folder"),
+  OBJECTSTORE("objectstore", "Database");
 
-  private String code;
-  private String oms;
+  private final String code;
+  private final String description;
 
-  KassaLeverancierType(String code, String oms) {
+  DMSStorageType(String code, String description) {
     this.code = code;
-    this.oms = oms;
+    this.description = description;
   }
 
-  public static KassaLeverancierType get(String code) {
-    for (KassaLeverancierType type : values()) {
-      if (equalsIgnoreCase(type.getCode(), code)) {
-        return type;
-      }
-    }
-
-    return ONBEKEND;
+  public static DMSStorageType valueOfCode(String code) {
+    return Arrays.stream(DMSStorageType.values())
+        .filter(value -> value.code.equals(code))
+        .findFirst().orElse(DEFAULT);
   }
 
   public String getCode() {
     return code;
   }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getOms() {
-    return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
+  public String getDescription() {
+    return description;
   }
 
   @Override
   public String toString() {
-    return getOms();
+    return description;
   }
 }

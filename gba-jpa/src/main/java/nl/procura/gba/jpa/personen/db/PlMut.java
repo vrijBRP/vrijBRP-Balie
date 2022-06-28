@@ -74,7 +74,7 @@ public class PlMut extends BaseEntity<Long> {
       precision = 131089)
   private BigDecimal cat;
 
-  @Column(name = "set",
+  @Column(name = "set_id",
       nullable = false,
       precision = 131089)
   private BigDecimal set;

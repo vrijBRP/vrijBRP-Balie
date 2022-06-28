@@ -24,35 +24,49 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 
 import java.time.Duration;
 import java.util.Optional;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.function.Supplier;
 
 import nl.procura.burgerzaken.vrsclient.api.SignaleringControllerApi;
+import nl.procura.burgerzaken.vrsclient.api.TokenApi;
+import nl.procura.burgerzaken.vrsclient.api.model.TokenRequest;
 import nl.procura.burgerzaken.vrsclient.model.SignaleringRequestBSN;
 import nl.procura.burgerzaken.vrsclient.model.SignaleringResponse;
-import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Aanvraagnummer;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.validation.Bsn;
 
-@Singleton
 public class VrsService {
 
   private final ParameterService parameterService;
 
-  @Inject
   public VrsService(ParameterService parameterService) {
     this.parameterService = parameterService;
   }
 
   public SignaleringControllerApi getApi() {
-    String url = parameterService.getSysteemParameter(VRS_SERVICE_URL).getValue();
-    long timeout = Long.parseLong(parameterService.getSysteemParameter(VRS_SERVICE_TIMEOUT).getValue());
+    String url = parameterService.getProxyUrl(VRS_SERVICE_URL, true);
+    long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
     VrsClient vrsClient = new VrsClient(url, Duration.ofSeconds(timeout));
-    return new SignaleringControllerApi(vrsClient);
+    return new SignaleringControllerApi(vrsClient, getTokenSupplier());
+  }
+
+  public Supplier<String> getTokenSupplier() {
+    return () -> {
+      long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
+      String issuerUri = getApi().getIDPIssuerResponse().getIssuerUri();
+      String url = parameterService.getProxyUrl(issuerUri, true);
+      VrsClient vrsClient = new VrsClient(url, Duration.ofSeconds(timeout));
+
+      TokenRequest tokenRequest = new TokenRequest();
+      tokenRequest.setClientId(parameterService.getSysteemParm(VRS_CLIENT_ID, true));
+      tokenRequest.setClientSecret(parameterService.getSysteemParm(VRS_CLIENT_SECRET, true));
+      tokenRequest.setScope(parameterService.getSysteemParm(VRS_CLIENT_SCOPE, true));
+      tokenRequest.setResourceServer(parameterService.getSysteemParm(VRS_CLIENT_RESOURCE_SERVER, true));
+
+      return new TokenApi(vrsClient).getTokenResponse(tokenRequest).getAccess_token();
+    };
   }
 
   public boolean isEnabled() {
@@ -60,7 +74,6 @@ public class VrsService {
     return date.isExpired();
   }
 
-  @ThrowException("Fout bij uitvoeren van van de signaleringscontrole van het RVIG")
   public Optional<SignaleringResult> checkSignalering(Aanvraagnummer aanvraagnummer, String bsn) {
     Bsn bsnValidation = new Bsn(bsn);
     SignaleringControllerApi api = getApi();

@@ -119,8 +119,11 @@ public abstract class AbstractService implements Serializable {
   }
 
   public String getProxyUrl(ParameterType parameterType, boolean required) {
-    String proxyUrl = getSysteemParm(SSL_PROXY_URL, true) + "/proxy?url=";
-    return proxyUrl + getSysteemParm(parameterType, required);
+    return getProxyUrl(getSysteemParm(parameterType, required), true);
+  }
+
+  public String getProxyUrl(String url, boolean required) {
+    return getSysteemParm(SSL_PROXY_URL, required) + "/proxy?url=" + url;
   }
 
   public Services getServices() {

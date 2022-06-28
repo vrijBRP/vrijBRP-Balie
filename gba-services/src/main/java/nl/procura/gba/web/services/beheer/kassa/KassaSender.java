@@ -17,24 +17,23 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.kassa.key2betalen;
+package nl.procura.gba.web.services.beheer.kassa;
 
-import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
 
 import java.util.List;
 
-import nl.procura.gba.web.services.beheer.kassa.KassaLeverancierType;
-import nl.procura.gba.web.services.beheer.kassa.KassaLokaal;
-import nl.procura.gba.web.services.beheer.kassa.gkas.KassaParameters;
+import nl.procura.gba.web.services.beheer.kassa.transports.KassaConnect;
+import nl.procura.gba.web.services.beheer.kassa.transports.KassaFtp;
+import nl.procura.gba.web.services.beheer.kassa.transports.KassaLocal;
 import nl.procura.standard.exceptions.ProException;
 
-public class KassaVerzenderKey2Betalen {
+public class KassaSender {
 
   private KassaParameters parameters;
 
-  public KassaVerzenderKey2Betalen(KassaParameters parameters) {
+  public KassaSender(KassaParameters parameters) {
     this.parameters = parameters;
   }
 
@@ -46,12 +45,7 @@ public class KassaVerzenderKey2Betalen {
     this.parameters = parameters;
   }
 
-  public boolean verstuur(List<String> bestanden) {
-
-    if (emp(getParameters().getFilename())) {
-      throw new ProException(CONFIG, WARNING, "Geen uitvoerbestand voor de kassakoppeling gedefinieërd.");
-    }
-
+  public void send(List<KassaFile> bestanden) {
     if (bestanden.size() == 0) {
       throw new ProException(CONFIG, WARNING, "Geen uitvoer voor de kassakoppeling gedefinieërd.");
     }
@@ -59,11 +53,13 @@ public class KassaVerzenderKey2Betalen {
     switch (getParameters().getType()) {
       case LOKAAL:
       default:
-        return new KassaLokaal().verstuur(KassaLeverancierType.CENTRIC, parameters, bestanden);
-
+        new KassaLocal().send(parameters, bestanden);
+        break;
       case FTP:
-        throw new ProException(WARNING,
-            "Versturen van bestand naar de kassa is niet mogelijk via FTP bij deze kassasoort.");
+        new KassaFtp().send(parameters, bestanden);
+        break;
+      case CONNECT:
+        new KassaConnect().send(parameters, bestanden);
     }
   }
 }

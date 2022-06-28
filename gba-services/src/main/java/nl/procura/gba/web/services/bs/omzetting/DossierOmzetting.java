@@ -211,8 +211,8 @@ public class DossierOmzetting extends DossOmzet
     final boolean vrouw1 = Geslacht.VROUW.equals(getPartner1().getGeslacht());
     final boolean vrouw2 = Geslacht.VROUW.equals(getPartner2().getGeslacht());
 
-    addDocumentNationaliteit(list, "eerst genoemde " + (vrouw1 ? "echtgenote" : "echtgenoot"), getPartner1());
-    addDocumentNationaliteit(list, "laatst genoemde " + (vrouw2 ? "echtgenote" : "echtgenoot"), getPartner2());
+    addDocumentNationaliteit(list, "eerstgenoemde " + (vrouw1 ? "echtgenote" : "echtgenoot"), getPartner1());
+    addDocumentNationaliteit(list, "laatstgenoemde " + (vrouw2 ? "echtgenote" : "echtgenoot"), getPartner2());
 
     return list;
   }

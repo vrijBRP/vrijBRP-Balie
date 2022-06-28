@@ -19,14 +19,21 @@
 
 package nl.procura.gba.web.services;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+
+import javax.persistence.Table;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType;
+import nl.procura.gba.jpa.personen.db.*;
 import nl.procura.gba.jpa.personen.utils.GbaEclipseLinkUtil;
 import nl.procura.gba.jpa.personen.utils.GbaJpaStorageWrapper;
 import nl.procura.gba.web.application.GbaConfigMock;
@@ -36,6 +43,7 @@ import nl.procura.standard.threadlocal.ThreadLocalStorage;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
+import liquibase.changelog.ChangeSet;
 import liquibase.database.Database;
 import liquibase.database.core.HsqlDatabase;
 import liquibase.database.jvm.HsqlConnection;
@@ -65,7 +73,7 @@ public final class TemporaryDatabase {
   public static void ensureCleanMockDatabase() {
     GbaConfigMock.setGbaConfig();
     TemporaryDatabase database = TemporaryDatabase.getInstance();
-    database.resetDatabase();
+    resetDatabase();
     ThreadLocalStorage.init(database.gbaJpaStorageWrapper);
   }
 
@@ -77,40 +85,30 @@ public final class TemporaryDatabase {
     return new GbaJpaStorageWrapper(properties);
   }
 
-  public void resetDatabase() {
+  public static void resetDatabase() {
     LOGGER.info("Reset database");
     try (Connection connection = getConnection()) {
-      getAllTableNames(connection).stream()
-          .filter(tableName -> tableName.startsWith("DOSS")
-              || tableName.startsWith("ZAAK")
-              || "BVH_PARK".equals(tableName)
-              || "DOC_INH".equals(tableName))
-          .forEach(tableName -> deleteAllFromTable(connection, tableName));
+      deleteAllFromTable(connection, getTableName(DossAkte.class));
+      deleteAllFromTable(connection, getTableName(ZaakId.class));
+      deleteAllFromTable(connection, getTableName(ZaakAttr.class));
+      deleteAllFromTable(connection, getTableName(ZaakRel.class));
+      Arrays.asList(VerwijderZaakType.values())
+          .forEach(type -> deleteAllFromTable(connection,
+              getTableName(type.getEntity())));
     } catch (SQLException e) {
       throw new IllegalStateException(e);
     }
   }
 
-  private static List<String> getAllTableNames(Connection connection) {
-    ArrayList<String> tableNames = new ArrayList<>();
-    try {
-      try (ResultSet resultSet = connection.getMetaData().getTables(null, null, null, null)) {
-        while (resultSet.next()) {
-          tableNames.add(resultSet.getString("TABLE_NAME"));
-        }
-      }
-    } catch (SQLException e) {
-      throw new IllegalStateException(e);
-    }
-
-    return tableNames;
+  private static String getTableName(Class<? extends BaseEntity> cl) {
+    return cl.getAnnotation(Table.class).name();
   }
 
   // suppress SQL injection warning as the table name comes from the database itself
   @SuppressWarnings("squid:S2077")
   private static void deleteAllFromTable(Connection connection, String tableName) {
     try (Statement statement = connection.createStatement()) {
-      statement.execute("DELETE FROM " + tableName);
+      statement.execute("delete from " + tableName);
     } catch (SQLException e) {
       throw new IllegalStateException(e);
     }
@@ -151,6 +149,7 @@ public final class TemporaryDatabase {
       // add initial data
       updateDatabase(hsqlDatabase, "db.serial.xml");
       updateDatabase(hsqlDatabase, "db.usr.xml");
+      updateDatabase(hsqlDatabase, "db.location.xml");
       updateDatabase(hsqlDatabase, "db.profile.xml");
       updateDatabase(hsqlDatabase, "db.parm.xml");
     } catch (SQLException e) {
@@ -168,15 +167,24 @@ public final class TemporaryDatabase {
     }
   }
 
-  private static HsqlDatabase getHsqlDatabase(Connection connection) {
+  public static HsqlDatabase getHsqlDatabase(Connection connection) {
     HsqlConnection hsqlConnection = new HsqlConnection(connection);
     HsqlDatabase hsqlDatabase = new HsqlDatabase();
     hsqlDatabase.setConnection(hsqlConnection);
     return hsqlDatabase;
   }
 
-  private static Connection getConnection() throws SQLException {
+  public static Connection getConnection() throws SQLException {
     return DriverManager.getConnection("jdbc:hsqldb:mem:tests", "SA", "");
+  }
+
+  public static List<ChangeSet> getChangeSets(Database hsqlDatabase, String changeLogFile) {
+    try {
+      Liquibase liquibase = new Liquibase(changeLogFile, new ClassLoaderResourceAccessor(), hsqlDatabase);
+      return liquibase.getDatabaseChangeLog().getChangeSets();
+    } catch (LiquibaseException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   private void updateDatabase(Database hsqlDatabase, String changeLogFile) {

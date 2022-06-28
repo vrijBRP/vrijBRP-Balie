@@ -24,8 +24,11 @@ import static java.util.Collections.singletonList;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -41,7 +44,8 @@ public class Testdata {
 
   public enum DataSet {
     DEMO,
-    RVIG
+    RVIG,
+    GBAV
   }
 
   // BSN's Procura
@@ -111,12 +115,29 @@ public class Testdata {
     return list;
   }
 
+  public static Set<Long> getRvIGBsns() {
+    return getBsnsFromFile("rvig-test-bsn.txt");
+  }
+
+  public static Set<Long> getGbaVBsns() {
+    return getBsnsFromFile("gbav-test-bsn.txt");
+  }
+
+  private static Set<Long> getBsnsFromFile(String fileName) {
+    try {
+      InputStream resource = Testdata.class.getClassLoader().getResourceAsStream(fileName);
+      return IOUtils.readLines(resource).stream().map(Long::valueOf).collect(Collectors.toSet());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   private static byte[] getEntry(DataSet dataSet, long number) throws IOException {
     String bsn = String.format("%09d", number);
     String anr = String.format("%10d", number);
     InputStream resource = Testdata.class.getClassLoader().getResourceAsStream("gba-test-people.zip");
     assert resource != null;
-    ZipInputStream zipInputStream = new ZipInputStream(resource);
+    ZipInputStream zipInputStream = new ZipInputStream(resource, StandardCharsets.UTF_8);
     ZipEntry nextEntry;
     while ((nextEntry = zipInputStream.getNextEntry()) != null) {
       boolean isBsn = nextEntry.getName().equals(dataSet.name().toLowerCase() + "/" + bsn + ".json");

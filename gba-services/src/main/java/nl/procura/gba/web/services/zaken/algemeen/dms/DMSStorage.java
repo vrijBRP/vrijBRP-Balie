@@ -21,7 +21,6 @@ package nl.procura.gba.web.services.zaken.algemeen.dms;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 
 public interface DMSStorage {
 
@@ -31,15 +30,9 @@ public interface DMSStorage {
 
   int countDocumentsByPL(BasePLExt pl);
 
-  int countDocumentByZaakId(Zaak zaak);
+  int countDocumentByZaak(Zaak zaak);
 
-  DMSDocument save(String folderName, DMSDocument dmsDocument);
-
-  void save(PrintActie printActie, byte[] documentBytes);
-
-  DMSDocument saveByPerson(BasePLExt pl, DMSDocument dmsDocument);
-
-  DMSDocument saveByZaak(Zaak zaak, DMSDocument dmsDocument);
+  DMSDocument save(DMSDocument dmsDocument);
 
   void delete(DMSDocument dmsDocument);
 }

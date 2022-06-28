@@ -74,7 +74,7 @@ public class ParameterBean implements Serializable {
   @Position(order = "1")
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Aanvullend zoekprofiel",
-      description = "Welk zoekprofiel is van toepassing?.")
+      description = "Welk zoekprofiel inschakelen?.")
   private String zoekProfiel = "";
 
   // PLE Url
@@ -507,7 +507,7 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(BSM_ZAKEN_DMS)
   @Position(order = "1")
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Zaken DMS van toepassing",
+      caption = "Zaken DMS inschakelen",
       width = "400px")
   @Select(containerDataSource = ParmBooleanContainer.class,
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
@@ -617,18 +617,6 @@ public class ParameterBean implements Serializable {
   @Position(order = "20")
   private String documentenTemplatePath = "";
 
-  // Documenten Verwijderen
-  @ParameterAnnotation(DOC_DMS_TYPE)
-  @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Type documentenopslag",
-      description = "De manier waarop de documenten worden opgeslagen",
-      width = "300px")
-  @Position(order = "30")
-  @Select(containerDataSource = DmsTypeContainer.class,
-      itemCaptionPropertyId = DmsTypeContainer.OMSCHRIJVING)
-  @Immediate
-  private String documentDmsType = "";
-
   // Documenten Output Path
   @ParameterAnnotation(DOC_OUTPUT_PAD)
   @Field(type = FieldType.TEXT_FIELD,
@@ -648,6 +636,50 @@ public class ParameterBean implements Serializable {
       itemCaptionPropertyId = DocumentVertrouwelijkheidParameterContainer.OMSCHRIJVING)
   @Immediate
   private String documentConf = "";
+
+  // Documenten Verwijderen
+  @ParameterAnnotation(DOC_DMS_TYPE)
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Opslag locatie",
+      description = "De plek waarop de bestanden worden opgeslagen",
+      width = "300px")
+  @Position(order = "42")
+  @Select(containerDataSource = DmsTypeContainer.class,
+      itemCaptionPropertyId = DmsTypeContainer.OMSCHRIJVING)
+  @Immediate
+  private String documentDmsType = "";
+
+  // Document Object Storage
+  @ParameterAnnotation(DOC_OBJECT_STORAGE_ENABLE)
+  @Position(order = "50")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Bestanden database actief",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String documentObjStorageEnabled = "";
+
+  @ParameterAnnotation(DOC_OBJECT_STORAGE_URL)
+  @Position(order = "51")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Bestanden database endpoint",
+      width = "400px")
+  private String documentObjStorageUrl = "";
+
+  @ParameterAnnotation(DOC_OBJECT_STORAGE_USERNAME)
+  @Position(order = "52")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Bestanden database gebruikersnaam",
+      width = "200px")
+  private String documentObjStorageUsername = "";
+
+  @ParameterAnnotation(DOC_OBJECT_STORAGE_PW)
+  @Position(order = "53")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Bestanden database wachtwoord",
+      width = "200px")
+  @TextField(secret = true)
+  private String documentObjStoragePw = "";
 
   // Gemeentecodes
   @ParameterAnnotation(GEMEENTE_CODES)
@@ -770,7 +802,7 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(KASSA_CLEAR_LIST)
   @Position(order = "7")
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Kassalijst opschonen na versturen naar de kassa")
+      caption = "Kassalijst opschonen na verzending")
   @Select(containerDataSource = KassalijstOpschonenContainer.class,
       itemCaptionPropertyId = KassalijstOpschonenContainer.OMSCHRIJVING)
   private String kassaClearList = "";
@@ -881,59 +913,48 @@ public class ParameterBean implements Serializable {
       itemCaptionPropertyId = OpenOfficeContainer.OMSCHRIJVING)
   private String openOfficeInstallatie = "remote";
 
-  // Testomgeving
+  @ParameterAnnotation(BZ_CONNECT_PRINTING_ENABLED)
+  @Position(order = "4")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "VrijBRP Connect inschakelen voor printen",
+      description = "VrijBRP Connect inschakelen voor printen")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String bzPrintConnectEnabled = "";
+
+  // VrijBRP Connect
   @ParameterAnnotation(BZ_CONNECT_ENABLED)
   @Position(order = "1")
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Van toepassing",
-      description = "Is dit de testomgeving.")
+      caption = "Inschakelen",
+      description = "Inschakelen.")
   @Select(containerDataSource = ParmBooleanContainer.class,
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
   private String bzConnectEnabled = "";
 
-  @ParameterAnnotation(BZ_CONNECT_HOST)
+  @ParameterAnnotation(BZ_CONNECT_URL)
   @Position(order = "2")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "Server",
-      description = "De server waarop de netwerkprinter service draait")
+      caption = "URL van de service",
+      description = "Het endpoint waarop de service draait")
   @TextField
   private String bzConnectHost;
 
-  @ParameterAnnotation(BZ_CONNECT_PORT)
-  @Position(order = "3")
-  @Field(type = FieldType.TEXT_FIELD,
-      caption = "Poort",
-      description = "De poort waarop de netwerkprinter service draait",
-      validators = { GetalValidator.class },
-      width = "60px")
-  @TextField(maxLength = 5)
-  private String bzConnectPort = "";
-
-  // Netwerkprinter
-  @ParameterAnnotation(BZ_CONNECT_PKK)
-  @Position(order = "4")
-  @Field(type = FieldType.TEXT_FIELD,
-      caption = "Certificaat",
-      description = "Het certificaat waarmee deze applicatie zich identificeert",
-      width = "500px")
-  @TextField
-  private String bzConnectPkk;
-
-  @ParameterAnnotation(BZ_CONNECT_PASSPHRASE)
-  @Position(order = "5")
-  @Field(type = FieldType.TEXT_FIELD,
-      caption = "Certificaat wachtwoord",
-      description = "Het wachtwoord van het certificaat")
-  @TextField(secret = true)
-  private String bzConnectPassphrase;
-
   @ParameterAnnotation(BZ_CONNECT_USERNAME)
-  @Position(order = "6")
+  @Position(order = "3")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Gebruikersnaam",
       description = "De gebruikersnaam waarmee deze applicatie zich identificeert")
   @TextField
   private String bzConnectUsername;
+
+  @ParameterAnnotation(BZ_CONNECT_PW)
+  @Position(order = "4")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Wachtwoord",
+      description = "Het wachtwoord waarmee deze applicatie zich identificeert")
+  @TextField(secret = true)
+  private String bzConnectPw;
 
   // PPD code
   @ParameterAnnotation(GEBR_PPD)
@@ -1094,6 +1115,42 @@ public class ParameterBean implements Serializable {
       caption = "Ingangsdatum VRS",
       width = "80px")
   private String reisdocumentVrsStartDate = "";
+
+  @ParameterAnnotation(VRS_SERVICE_TIMEOUT)
+  @Position(order = "06")
+  @Field(customTypeClass = NumberField.class,
+      caption = "VRS timeout",
+      width = "80px")
+  private String reisdocumentVrsTimeout = "";
+
+  @ParameterAnnotation(VRS_CLIENT_ID)
+  @Position(order = "06")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "VRS client-id",
+      width = "400px")
+  private String reisdocumentVrsClientId = "";
+
+  @ParameterAnnotation(VRS_CLIENT_SECRET)
+  @Position(order = "07")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "VRS client secret",
+      width = "400px")
+  @TextField(secret = true)
+  private String reisdocumentVrsClientSecret = "";
+
+  @ParameterAnnotation(VRS_CLIENT_SCOPE)
+  @Position(order = "08")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "VRS scope",
+      width = "400px")
+  private String reisdocumentVrsScope = "";
+
+  @ParameterAnnotation(VRS_CLIENT_RESOURCE_SERVER)
+  @Position(order = "09")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "VRS resource server",
+      width = "400px")
+  private String reisdocumentVrsResourceServer = "";
 
   // Terugmelding beheer
   @ParameterAnnotation(TERUGMBEHEER)
@@ -1389,8 +1446,8 @@ public class ParameterBean implements Serializable {
   @Position(order = "1")
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Kassatype")
-  @Select(containerDataSource = KassaLeverancierContainer.class,
-      itemCaptionPropertyId = KassaLeverancierContainer.OMSCHRIJVING)
+  @Select(containerDataSource = KassaApplicationTypeContainer.class,
+      itemCaptionPropertyId = KassaApplicationTypeContainer.OMSCHRIJVING)
   private String kassaType = "";
 
   // Kassa Send Type

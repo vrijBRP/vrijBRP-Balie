@@ -30,11 +30,15 @@ import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
+import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 
 public class ActionContainer extends MutationFieldContainer {
 
-  public ActionContainer(BasePLExt pl,
+  public ActionContainer(
+      GbaApplication application,
+      BasePLExt pl,
       ContainerItem<GBACat> cat,
       ContainerItem<BasePLSet> set,
       ContainerItem<BasePLRec> record) {
@@ -85,9 +89,11 @@ public class ActionContainer extends MutationFieldContainer {
           addOperationType(CORRECT_CATEGORY);
         }
 
-        // Add superuser action
-        // TODO Add support for super user actions
-        // addSuperUserActions(record);
+        boolean profielActie = application.isProfielActie(ProfielActie.SELECT_PL_SUPERUSER_MUTATIONS);
+        System.out.println(profielActie);
+        if (profielActie) {
+          addSuperUserActions(record);
+        }
       }
     }
   }

@@ -78,7 +78,9 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
       Zaak zaak = getMinimaleZaak(zaakId);
       String naam = getServices().getGebruiker().getNaam();
 
-      DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(bestand))
+      DMSDocument dmsDocument = DMSDocument
+          .builder()
+          .content(DMSFileContent.from(bestand))
           .user(naam)
           .zaakId(zaak.getZaakId())
           .confidentiality(vertr.getNaam())
@@ -109,7 +111,8 @@ public class GbaRestZaakBestandResources extends GbaRestServiceResource {
       Zaak zaak = getMinimaleZaak(vraag.getZaakId());
       String naam = getServices().getGebruiker().getNaam();
 
-      DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(bestand))
+      DMSDocument dmsDocument = DMSDocument.builder()
+          .content(DMSFileContent.from(bestand))
           .title(vraag.getTitel())
           .user(naam)
           .confidentiality(vertr.getNaam())

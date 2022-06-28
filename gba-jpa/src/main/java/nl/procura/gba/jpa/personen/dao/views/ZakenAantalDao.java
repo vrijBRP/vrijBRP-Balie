@@ -50,7 +50,6 @@ public class ZakenAantalDao {
   public static final long C_HUW            = ZaakType.HUWELIJK_GPS_GEMEENTE.getCode();
   public static final long C_OMZET          = ZaakType.OMZETTING_GPS.getCode();
   public static final long C_ONTB           = ZaakType.ONTBINDING_GEMEENTE.getCode();
-  public static final long C_NAAM           = ZaakType.NAAMGEBRUIK.getCode();
   public static final long C_OVERL_GEMEENTE = ZaakType.OVERLIJDEN_IN_GEMEENTE.getCode();
   public static final long C_LIJKV          = ZaakType.LIJKVINDING.getCode();
   public static final long C_OVERL_BL       = ZaakType.OVERLIJDEN_IN_BUITENLAND.getCode();
@@ -92,7 +91,6 @@ public class ZakenAantalDao {
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_HUW, C_HUW));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_OMZET, C_OMZET));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_ONTB, C_ONTB));
-    sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_NAAM, C_NAAM));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_OVERL_GEMEENTE, C_OVERL_GEMEENTE));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_LIJKV, C_LIJKV));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_OVERL_BL, C_OVERL_BL));

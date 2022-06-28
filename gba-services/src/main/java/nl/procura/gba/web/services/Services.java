@@ -76,6 +76,7 @@ import nl.procura.gba.web.services.gba.tabellen.TabellenService;
 import nl.procura.gba.web.services.gba.verificatievraag.VerificatievraagService;
 import nl.procura.gba.web.services.inbox.InboxService;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
+import nl.procura.gba.web.services.zaken.algemeen.ZakenVerwijderService;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.AantekeningService;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutService;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
@@ -121,8 +122,8 @@ public class Services {
   private final static Logger         LOGGER    = LoggerFactory.getLogger(Services.class.getName());
   private final List<AbstractService> services  = new ArrayList<>();
   private Gebruiker                   gebruiker = null;
-  private Injector                    injector;
-  private TYPE                        type;
+  private final Injector              injector;
+  private final TYPE                  type;
 
   public Services(TYPE type) {
 
@@ -196,6 +197,7 @@ public class Services {
     add(NaamskeuzeService.class);
     add(LevenloosService.class);
     add(ZakenService.class);
+    add(ZakenVerwijderService.class);
     add(ZakenregisterService.class);
     add(EmailService.class);
     add(LinkService.class);
@@ -585,6 +587,10 @@ public class Services {
 
   public ZakenService getZakenService() {
     return get(ZakenService.class);
+  }
+
+  public ZakenVerwijderService getZakenVerwijderService() {
+    return get(ZakenVerwijderService.class);
   }
 
   public void init() {

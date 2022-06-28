@@ -59,7 +59,7 @@ public class PersonListMutationsChecks {
 
   public static Optional<String> getRequiredError(PersonListMutElem elem, PersonListMutElems elems) {
     Optional<String> req = Optional.empty();
-    if (!elem.getElemType().isNational()) {
+    if (!elem.getElemType().isNational() || elem.getAction().isSuperuser()) {
       return Optional.empty();
     }
 
@@ -241,7 +241,7 @@ public class PersonListMutationsChecks {
   }
 
   public static Optional<String> getValueError(PersonListMutElem elem, PersonListMutElems elems) {
-    if (!elem.getElemType().isNational()) {
+    if (!elem.getElemType().isNational() || elem.getAction().isSuperuser()) {
       return Optional.empty();
     }
 

@@ -17,7 +17,7 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.kassa.gkas;
+package nl.procura.gba.web.services.beheer.kassa.transports;
 
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
@@ -38,84 +38,88 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.procura.gba.web.services.beheer.kassa.KassaFile;
+import nl.procura.gba.web.services.beheer.kassa.KassaParameters;
 import nl.procura.standard.exceptions.ProException;
 
-public class KassaFtpGkas {
+public class KassaFtp {
 
-  private final static Logger LOGGER = LoggerFactory.getLogger(KassaFtpGkas.class.getName());
+  private final static Logger LOGGER = LoggerFactory.getLogger(KassaFtp.class.getName());
   private final FTPClient     ftp    = new FTPClient();
 
-  public boolean verstuur(KassaParameters parameters, List<String> bestanden) {
-    boolean error = false;
+  public void send(KassaParameters parameters, List<KassaFile> bestanden) {
     try {
-      int i = 1;
-      while (!ftp.isConnected() && (i <= 5)) {
-        try {
-          ftp.connect(parameters.getFtpUrl());
-        } catch (Exception e) {
-          i++;
-          LOGGER.info("Attempt: " + i);
-          if (i > 5) {
-            throw e;
-          }
-        }
-      }
-
-      for (String bestand : bestanden) {
+      connect(parameters);
+      for (KassaFile bestand : bestanden) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ftp.login(parameters.getFtpUsername(), parameters.getFtpPassword());
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(bos)));
 
         int reply = ftp.getReplyCode();
-
         boolean negative = FTPReply.isNegativePermanent(reply) || FTPReply.isNegativeTransient(reply);
 
         if (negative) {
           throw new ProException(CONFIG, WARNING,
-              "Kan niet inloggen op de FTP server t.b.v. de kassa koppeling. <hr/><p>" + ftp.getReplyString() + "</p>");
+              "Kan niet inloggen op de FTP server t.b.v. de kassa koppeling. <hr/><p>"
+                  + ftp.getReplyString() + "</p>");
         }
 
         ftp.setFileType(FTP.BINARY_FILE_TYPE);
-        checkFTPPath(parameters.getParameterFileName());
-        ftp.deleteFile(parameters.getParameterFileName());
+        checkFTPPath(bestand.getFilename());
+        ftp.deleteFile(bestand.getFilename());
 
-        if (!ftp.storeFile(parameters.getParameterFileName(), new ByteArrayInputStream(bestand.getBytes()))) {
+        if (!ftp.storeFile(bestand.getFilename(), new ByteArrayInputStream(bestand.getContent().getBytes()))) {
           throw new ProException(CONFIG, WARNING,
-              "Het kassa bestand kon niet worden verstuurd. " + getMessage(bos));
+              "Het kassa bestand kon niet worden verstuurd. "
+                  + getMessage(bos));
         }
       }
     } catch (ProException e) {
       throw e;
     } catch (Exception e) {
-
       throw new ProException(CONFIG, WARNING,
-          "Het kassa bestand kon niet worden verstuurd vanwege een onbekende fout. <br/>Probeer het nogmaals.",
+          "Het kassa bestand kon niet worden verstuurd vanwege een onbekende fout. " +
+              "<br/>Probeer het nogmaals.",
           e);
     } finally {
+      disconnect();
+    }
+  }
 
-      try {
-        ftp.disconnect();
-      } catch (IOException e) {
-        LOGGER.debug(e.getMessage());
-      }
-
-      try {
-        if (ftp.isConnected()) {
-          ftp.disconnect();
-        }
-      } catch (IOException e) {
-        LOGGER.debug(e.getMessage());
-      }
+  private void disconnect() {
+    try {
+      ftp.disconnect();
+    } catch (IOException e) {
+      LOGGER.debug(e.getMessage());
     }
 
-    return !error;
+    try {
+      if (ftp.isConnected()) {
+        ftp.disconnect();
+      }
+    } catch (IOException e) {
+      LOGGER.debug(e.getMessage());
+    }
+  }
+
+  private void connect(KassaParameters parameters) throws IOException {
+    int i = 1;
+    while (!ftp.isConnected()) {
+      try {
+        ftp.connect(parameters.getFtpUrl());
+      } catch (Exception e) {
+        i++;
+        LOGGER.info("Attempt: " + i);
+        if (i > 5) {
+          throw e;
+        }
+      }
+    }
+    ftp.login(parameters.getFtpUsername(), parameters.getFtpPassword());
   }
 
   private void checkFTPPath(String path) throws IOException {
-
     String s = path.replaceAll("\\\\", "/");
     Matcher m = Pattern.compile("/").matcher(s);
-
     while (m.find()) {
       String ftpDir = s.substring(0, m.end());
       if (ftp.getStatus(ftpDir) == null) {
@@ -125,7 +129,6 @@ public class KassaFtpGkas {
   }
 
   private String getMessage(ByteArrayOutputStream bos) {
-
     try {
       bos.flush();
     } catch (IOException e) {
@@ -134,6 +137,6 @@ public class KassaFtpGkas {
       IOUtils.closeQuietly(bos);
     }
 
-    return new String(bos.toByteArray());
+    return bos.toString();
   }
 }

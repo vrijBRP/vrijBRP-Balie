@@ -24,10 +24,6 @@ import static nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource.PROCUR
 import static nl.procura.gbaws.testdata.Testdata.*;
 
 import java.io.*;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.io.IOUtils;
 
 import nl.procura.burgerzaken.gba.numbers.Anr;
 import nl.procura.burgerzaken.gba.numbers.Bsn;
@@ -37,7 +33,6 @@ import nl.procura.diensten.gba.ple.client.PLEHTTPClient;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.diensten.gba.ple.procura.arguments.PLELoginArgs;
-import nl.procura.gbaws.testdata.Testdata;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,18 +41,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GeneratePLJsonFiles {
 
-  public static List<Long> getRvIGBsns() {
-    try {
-      InputStream resource = Testdata.class.getClassLoader().getResourceAsStream("rvig-test-bsn.txt");
-      return IOUtils.readLines(resource).stream().map(Long::valueOf).collect(Collectors.toList());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public static void main(String[] args) {
     generateDemoFiles();
     generateRvigTestFiles();
+    generateGbavTestFiles();
   }
 
   private static void generateDemoFiles() {
@@ -77,6 +64,11 @@ public class GeneratePLJsonFiles {
   private static void generateRvigTestFiles() {
     Credentials credentials = new Credentials("<username>", "<pw>", "<url>");
     getRvIGBsns().forEach(bsn -> generate(bsn, -1L, credentials, PROCURA, "rvig"));
+  }
+
+  private static void generateGbavTestFiles() {
+    Credentials credentials = new Credentials("<username>", "<pw>", "<url>");
+    getGbaVBsns().forEach(bsn -> generate(bsn, -1L, credentials, GBAV, "gbav"));
   }
 
   private static void generate(Long bsn,

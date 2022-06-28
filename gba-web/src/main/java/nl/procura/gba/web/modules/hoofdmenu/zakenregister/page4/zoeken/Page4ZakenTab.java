@@ -25,6 +25,7 @@ import nl.procura.gba.web.components.layouts.ModuleTemplate;
 import nl.procura.gba.web.components.layouts.page.GbaPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.dashboard.page1.Page1Dashboard;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.selecties.Page4SelectiesZaken1;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.verwijderen.page1.Page1Verwijderen;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -57,6 +58,11 @@ public class Page4ZakenTab extends GbaPageTemplate {
 
       TabSheet.Tab tab3 = tabs.addTab(ModuleDashboard.class, "Dashboard", null);
 
+      TabSheet.Tab tab4 = null;
+      if (getApplication().isProfielActie(ProfielActie.SELECT_VERLOPEN_ZAKEN)) {
+        tab4 = tabs.addTab(ModuleOpschonen.class, "Zaken verwijderen", null);
+      }
+
       String tab = String.valueOf(getApplication().getParameterMap().get("tab"));
       if ("zoeken".equalsIgnoreCase(tab)) {
         tabs.setSelectedTab(tab1);
@@ -66,6 +72,10 @@ public class Page4ZakenTab extends GbaPageTemplate {
       }
       if ("dashboard".equalsIgnoreCase(tab)) {
         tabs.setSelectedTab(tab3);
+      }
+
+      if ("opschonen".equalsIgnoreCase(tab)) {
+        tabs.setSelectedTab(tab4);
       }
 
       addExpandComponent(tabs);
@@ -94,6 +104,18 @@ public class Page4ZakenTab extends GbaPageTemplate {
 
       if (event.isEvent(InitPage.class)) {
         getPages().getNavigation().goToPage(Page4SelectiesZaken1.class);
+      }
+    }
+  }
+
+  public static class ModuleOpschonen extends ModuleTemplate {
+
+    @Override
+    public void event(PageEvent event) {
+      super.event(event);
+
+      if (event.isEvent(InitPage.class)) {
+        getPages().getNavigation().goToPage(Page1Verwijderen.class);
       }
     }
   }

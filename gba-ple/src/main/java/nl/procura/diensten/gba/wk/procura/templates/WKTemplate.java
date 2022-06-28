@@ -106,9 +106,7 @@ public class WKTemplate extends WKTemplateProcura {
   }
 
   public void fillPersonen(Vbo object) {
-
     BaseWK basiswk = getBuilder().getCurrentWK();
-
     WKSearchWKPersonsTemplate zoekTemplate = new WKSearchWKPersonsTemplate();
     zoekTemplate.setEntityManager(getEntityManager());
     zoekTemplate.setBuilder(getBuilder());
@@ -116,15 +114,14 @@ public class WKTemplate extends WKTemplateProcura {
     zoekTemplate.parse();
 
     for (VboKrt vboKrt : zoekTemplate.getPersons()) {
-
       BaseWKPerson persoon = new BaseWKPerson();
-
       String anr = anr(vboKrt.getId().getA1(), vboKrt.getId().getA2(), vboKrt.getId().getA3());
 
-      persoon.getAnummer().setCode(anr).setDescr(getAnrFormat(anr));
+      persoon.getAnummer()
+          .setCode(anr)
+          .setDescr(getAnrFormat(anr));
 
       if (getZoekArgumenten().isExtra_pl_gegevens()) {
-
         WKSearchPersonTemplate inwZoekTemplate = new WKSearchPersonTemplate();
         inwZoekTemplate.setEntityManager(getEntityManager());
         inwZoekTemplate.setBuilder(getBuilder());
@@ -133,8 +130,10 @@ public class WKTemplate extends WKTemplateProcura {
         inwZoekTemplate.setA3((int) vboKrt.getId().getA3());
         inwZoekTemplate.parse();
 
-        persoon.getBsn().setCode(inwZoekTemplate.getBsn()).setValue(
-            padl(persoon.getBsn().getCode(), 9)).setDescr(getFormatBsn(inwZoekTemplate.getBsn()));
+        persoon.getBsn()
+            .setCode(inwZoekTemplate.getBsn())
+            .setValue(padl(persoon.getBsn().getCode(), 9))
+            .setDescr(getFormatBsn(inwZoekTemplate.getBsn()));
       }
 
       VboKrtPK krt = vboKrt.getId();
@@ -150,9 +149,7 @@ public class WKTemplate extends WKTemplateProcura {
   }
 
   private BaseWKValue getDate(Integer code) {
-
     BaseWKValue waarde = new BaseWKValue();
-
     waarde.setCode(astr(code));
 
     if (code == 0) {

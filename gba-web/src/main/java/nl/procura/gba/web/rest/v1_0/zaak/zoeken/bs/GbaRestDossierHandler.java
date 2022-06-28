@@ -243,6 +243,7 @@ public class GbaRestDossierHandler extends GbaRestElementHandler {
       case PARTNER:
       case PARTNER1:
       case PARTNER2:
+      case PARTNER_ANDERE_OUDER:
         value = PARTNER;
         break;
       case VADER_DUO_MOEDER:

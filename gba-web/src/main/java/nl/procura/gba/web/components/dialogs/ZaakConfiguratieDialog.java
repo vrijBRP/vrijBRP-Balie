@@ -38,6 +38,7 @@ import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.zaakconfiguraties.ZaakConfiguratie;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Field;
@@ -90,6 +91,8 @@ public class ZaakConfiguratieDialog {
           .spacing(true)
           .margin(true)
           .add(button("Nieuwe zaak", () -> {
+            zaak.setBron(ZaakUtils.PROWEB_PERSONEN);
+            zaak.setLeverancier(ZaakUtils.PROCURA);
             closeMainDialog();
             onContinue.run();
           }));
@@ -97,12 +100,6 @@ public class ZaakConfiguratieDialog {
       configuraties
           .stream()
           .map(configuratie -> button(configuratie.getZaakConf(), () -> {
-            if (isNotBlank(configuratie.getBron())) {
-              zaak.setBron(configuratie.getBron());
-            }
-            if (isNotBlank(configuratie.getLeverancier())) {
-              zaak.setLeverancier(configuratie.getLeverancier());
-            }
             if (configuratie.isOptions()) {
               application.getParentWindow().addWindow(new OptionsDialog(configuratie));
             } else {
@@ -148,7 +145,7 @@ public class ZaakConfiguratieDialog {
         form.setOrder(fields.toArray(new String[0]));
         Button button = button("Opslaan", () -> {
           form.commit();
-          addZaaksysteemID(zaak, services, form.getBean().getZaakID());
+          addZaaksysteemID(zaak, configuratie, services, form.getBean().getZaakID());
           closeOptionsDialog();
           closeMainDialog();
           onContinue.run();
@@ -197,7 +194,13 @@ public class ZaakConfiguratieDialog {
       }
     }
 
-    private void addZaaksysteemID(Zaak zaak, Services services, String zaaksysteemId) {
+    private void addZaaksysteemID(Zaak zaak, ZaakConfiguratie configuratie, Services services, String zaaksysteemId) {
+      if (isNotBlank(configuratie.getBron())) {
+        zaak.setBron(configuratie.getBron());
+      }
+      if (isNotBlank(configuratie.getLeverancier())) {
+        zaak.setLeverancier(configuratie.getLeverancier());
+      }
       services.getZaakDmsService().setZaaksysteemId(zaak, zaaksysteemId);
     }
 

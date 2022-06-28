@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.inject.Inject;
-
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -68,9 +66,6 @@ import nl.procura.raas.rest.domain.aanvraag.FindAanvraagRequest;
 
 public class ReisdocumentService extends AbstractZaakContactService<ReisdocumentAanvraag>
     implements ZaakService<ReisdocumentAanvraag>, ControleerbareService {
-
-  @Inject
-  private VrsService vrsService;
 
   public ReisdocumentService() {
     super("Reisdocumenten", ZaakType.REISDOCUMENT);
@@ -294,9 +289,7 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
   @Transactional
   @ThrowException("Fout bij het verwijderen")
   public void delete(ReisdocumentAanvraag zaak) {
-
     if (fil(zaak.getAanvraagnummer().getNummer())) {
-
       ConditionalMap map = new ConditionalMap();
       map.put(Rdm01Dao.ZAAK_ID, zaak.getAanvraagnummer().getNummer());
       map.put(Rdm01Dao.MAX_CORRECT_RESULTS, 1);
@@ -309,6 +302,7 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
   }
 
   public Optional<SignaleringResult> signalering(Aanvraagnummer aanvraagnummer, BasePLExt pl) {
+    VrsService vrsService = new VrsService(getServices().getParameterService());
     if (vrsService.isEnabled()) {
       return vrsService.checkSignalering(aanvraagnummer, pl.getPersoon().getBsn().getDescr());
     } else {
@@ -329,7 +323,6 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
   }
 
   private ConditionalMap getArgumentenToMap(ZaakArgumenten zaakArgumenten) {
-
     ConditionalMap map = getAlgemeneArgumentenToMap(zaakArgumenten);
     if (!zaakArgumenten.isAll()) {
       if (zaakArgumenten instanceof ReisdocumentZaakArgumenten) {

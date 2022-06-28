@@ -59,13 +59,14 @@ public class InboxBijlageProcessor extends CaseProcessor {
 
     DMSService dms = getServices().getDmsService();
 
-    DMSDocument dmsDocument = DMSDocument.builder(DMSBytesContent.fromFilename(filename, bytes))
+    DMSDocument dmsDocument = DMSDocument.builder()
+        .content(DMSBytesContent.fromFilename(filename, bytes))
         .user("Via e-loket")
         .datatype(DocumentType.ONBEKEND.getType())
         .zaakId(relatieZaakId)
         .build();
 
-    dms.save(relatieZaakId, dmsDocument);
+    dms.save(dmsDocument);
     addZaakRelatie(relatieZaakId, inboxRecord, zaakType);
 
     String statusMessage = "Bijlage toegevoegd aan de huwelijkszaak";

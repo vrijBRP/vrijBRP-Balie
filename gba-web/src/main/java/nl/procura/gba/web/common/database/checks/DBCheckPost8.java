@@ -43,6 +43,13 @@ public class DBCheckPost8 extends DBCheckTemplateLb {
     super(entityManager, database, type, "Parametertabel opschonen");
   }
 
+  @Override
+  public void init() {
+    count(update(deleteUnusedParameters()));
+    count(update(deleteNotUserParameters()));
+    count(update(deleteNotProfileParameters()));
+  }
+
   private static String deleteNotUserParameters() {
     return String.format("delete from parm where c_usr > 0 and parm in (%s)", join(getNotUserParameters()));
   }
@@ -85,12 +92,5 @@ public class DBCheckPost8 extends DBCheckTemplateLb {
 
   private static String join(List<String> parameters) {
     return StringUtils.join(parameters, ',');
-  }
-
-  @Override
-  public void init() {
-    count(nativeUpdate(deleteUnusedParameters()));
-    count(nativeUpdate(deleteNotUserParameters()));
-    count(nativeUpdate(deleteNotProfileParameters()));
   }
 }

@@ -75,8 +75,8 @@ import nl.procura.gba.web.services.zaken.documenten.PDFBoxUtils;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
 import nl.procura.gba.web.services.zaken.documenten.printen.printers.CommandPrinter;
+import nl.procura.gba.web.services.zaken.documenten.printen.printers.ConnectPrinter;
 import nl.procura.gba.web.services.zaken.documenten.printen.printers.LocalPrinter;
-import nl.procura.gba.web.services.zaken.documenten.printen.printers.NetworkPrinter;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.gba.web.services.zaken.documenten.stempel.DocumentStempel;
 import nl.procura.gba.web.services.zaken.documenten.stempel.stempels.OsaraQrZaakStempel;
@@ -167,7 +167,6 @@ public class DocumentenPrintenService extends AbstractService {
   @ThrowException(type = PRINT,
       value = "Fout bij het afdrukken van het document")
   public void print(PrintActie printActie, boolean asDownload, DownloadHandler downloadHandler) {
-
     byte[] documentBytes = samenvoegenEnConverteren(printActie);
     getServices().getDmsService().save(printActie, documentBytes);
 
@@ -183,7 +182,7 @@ public class DocumentenPrintenService extends AbstractService {
         break;
 
       case NETWORK_PRINTER:
-        new NetworkPrinter(printActie.getPrintOptie(), getServices())
+        new ConnectPrinter(printActie.getPrintOptie(), getServices())
             .print(documentBytes);
         break;
 

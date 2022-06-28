@@ -36,24 +36,28 @@ import com.sun.jersey.api.json.JSONJAXBContext;
 
 import nl.procura.gbaws.web.rest.v2.personlists.GbaWsPersonListRequest;
 import nl.procura.gbaws.web.rest.v2.personlists.GbaWsPersonListResponse;
+import nl.procura.gbaws.web.rest.v2.tables.GbaWsRestTablesRequest;
+import nl.procura.gbaws.web.rest.v2.tables.GbaWsRestTablesResponse;
 
 @Provider
 @Singleton
 @Produces(MediaType.APPLICATION_JSON)
 public class GbaWsRestJsonJaxbContextResolver implements ContextResolver<JAXBContext> {
 
-  private final JAXBContext   context;
-  private final Set<Class<?>> types = newHashSet(
-      GbaWsPersonListRequest.class,
-      GbaWsPersonListResponse.class);
+    private final JAXBContext context;
+    private final Set<Class<?>> types = newHashSet(
+            GbaWsPersonListRequest.class,
+            GbaWsPersonListResponse.class,
+            GbaWsRestTablesRequest.class,
+            GbaWsRestTablesResponse.class);
 
-  public GbaWsRestJsonJaxbContextResolver() throws JAXBException {
-    this.context = new JSONJAXBContext(JSONConfiguration.natural().build(),
-        types.toArray(new Class[0]));
-  }
+    public GbaWsRestJsonJaxbContextResolver() throws JAXBException {
+        this.context = new JSONJAXBContext(JSONConfiguration.natural().build(),
+                types.toArray(new Class[0]));
+    }
 
-  @Override
-  public JAXBContext getContext(Class<?> objectType) {
-    return (types.contains(objectType)) ? context : null;
-  }
+    @Override
+    public JAXBContext getContext(Class<?> objectType) {
+        return (types.contains(objectType)) ? context : null;
+    }
 }

@@ -19,41 +19,31 @@
 
 package nl.procura.gba.web.services.zaken.documenten.printen.printers;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-
 import java.util.List;
 import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 
-import nl.procura.bzconnector.app.client.BzAppClient;
-import nl.procura.bzconnector.app.client.actions.ActionResponse;
-import nl.procura.bzconnector.app.client.actions.StatusType;
 import nl.procura.bzconnector.app.client.actions.listprinters.Printer;
 import nl.procura.bzconnector.app.client.actions.print.*;
 import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.zaken.documenten.printen.NetworkPrinterUtils;
+import nl.procura.gba.web.services.beheer.connect.VrijBrpConnectClient;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.standard.exceptions.ProExceptionType;
 
 /**
- * This printer connects to the Burgerzaken Connect © application
+ * This printer connects to the VrijBRP Connect application
  */
-public class NetworkPrinter extends AbstractPrinter {
+public class ConnectPrinter extends AbstractPrinter {
 
-  private final BzAppClient client;
-  private final Printer     printer;
+  private final VrijBrpConnectClient client;
+  private final Printer              printer;
 
-  public NetworkPrinter(PrintOptie printOptie, Services services)
-      throws ProException {
+  public ConnectPrinter(PrintOptie printOptie, Services services) throws ProException {
     super(printOptie, services.getGebruiker());
-
-    client = NetworkPrinterUtils.getClient(services.getParameterService()).orElseThrow(
-        () -> new ProException(WARNING, "Controleer de parameters voor het gebruik van de netwerkprinters"));
-
-    printer = NetworkPrinterUtils.getPrinter(client, printOptie.getPrintoptie()).orElseThrow(
-        () -> new ProException(WARNING, "De printer {0} kan niet worden gevonden", printOptie.getPrintoptie()));
+    client = VrijBrpConnectClient.of(services.getParameterService());
+    printer = client.getPrinter(printOptie.getPrintoptie());
   }
 
   public PrintChromacity getColor() throws ProException {
@@ -76,20 +66,18 @@ public class NetworkPrinter extends AbstractPrinter {
 
   @Override
   public void printStream(byte[] documentBytes) throws ProException {
-    PrintRequest printAction = new PrintRequest("test.pdf", documentBytes);
-    printAction.setPrinter(printer.getName());
-    printAction.setMedia(getMedia().toString().trim());
-    printAction.setChromacity(getColor());
-    printAction.setSides(PrintSide.ONE_SIDED);
-    printAction.setOrientation(PrintOrientation.PORTRAIT);
+    PrintRequest request = new PrintRequest("test.pdf", documentBytes);
+    request.setPrinter(printer.getName());
+    request.setMedia(getMedia().toString().trim());
+    request.setChromacity(getColor());
+    request.setSides(PrintSide.ONE_SIDED);
+    request.setOrientation(PrintOrientation.PORTRAIT);
 
-    BzAppClient.BzAppSession session = client.newSession();
-    session.print(printAction, response -> {
-      ActionResponse actionResponse = (ActionResponse) response;
-      if (StatusType.ERROR == actionResponse.getStatus()) {
-        throw new ProException(actionResponse.getMsg());
-      }
-    });
+    try {
+      client.print(request);
+    } catch (RuntimeException e) {
+      throw new ProException(e.getMessage());
+    }
   }
 
   private <T> T getOrElse(List<T> list, Predicate<T> filter, String message) {

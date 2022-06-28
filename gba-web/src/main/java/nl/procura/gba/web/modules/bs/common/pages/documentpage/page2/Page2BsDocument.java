@@ -83,7 +83,8 @@ public class Page2BsDocument extends ButtonPageTemplate {
         String vertrouwelijkheid = form.getVertrouwelijkheid().getNaam();
         String naam = getApplication().getServices().getGebruiker().getNaam();
 
-        DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(getFile()))
+        DMSDocument dmsDocument = DMSDocument.builder()
+            .content(DMSFileContent.from(getFile()))
             .user(naam)
             .documentTypeDescription(documentDmsType)
             .confidentiality(vertrouwelijkheid)

@@ -34,6 +34,7 @@ import nl.procura.gbaws.web.rest.v1_0.procura.database.GbaWsRestProcuraDatabaseR
 import nl.procura.gbaws.web.rest.v1_0.tabellen.GbaWsRestTabelResources;
 import nl.procura.gbaws.web.rest.v2.GbaWsRestInfoResource;
 import nl.procura.gbaws.web.rest.v2.personlists.GbaWsRestPersonListsResources;
+import nl.procura.gbaws.web.rest.v2.tables.GbaWsRestTablesResources;
 import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieValidator;
 import nl.procura.proweb.rest.guice.misc.ProRestDefaultMethodInterceptor;
 import nl.procura.proweb.rest.guice.modules.ProRestServletModule;
@@ -64,6 +65,7 @@ public class GbaWsRestListener extends GuiceServletContextListener {
       // v2.0
       bind(GbaWsRestPersonListsResources.class);
       bind(GbaWsRestInfoResource.class);
+      bind(GbaWsRestTablesResources.class);
 
       Matcher<Class> matchers = Matchers.subclassesOf(GbaWsRestDienstenbusResource.class);
       bindInterceptor(matchers, Matchers.annotatedWith(Path.class), new ProRestDefaultMethodInterceptor());

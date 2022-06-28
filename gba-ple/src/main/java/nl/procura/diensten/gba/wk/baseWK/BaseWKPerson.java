@@ -24,6 +24,9 @@ import java.io.Serializable;
 
 import nl.procura.burgerzaken.gba.NumberUtils;
 
+import lombok.Data;
+
+@Data
 public class BaseWKPerson implements Serializable {
 
   private static final long serialVersionUID = 2962748643597331037L;
@@ -35,62 +38,6 @@ public class BaseWKPerson implements Serializable {
   private BaseWKValue gezin_code    = new BaseWKValue();
   private BaseWKValue volg_code     = new BaseWKValue();
   private BaseWKValue datum_geboren = new BaseWKValue();
-
-  public BaseWKValue getAnummer() {
-    return anummer;
-  }
-
-  public void setAnummer(BaseWKValue anummer) {
-    this.anummer = anummer;
-  }
-
-  public BaseWKValue getBsn() {
-    return bsn;
-  }
-
-  public void setBsn(BaseWKValue bsn) {
-    this.bsn = bsn;
-  }
-
-  public BaseWKValue getDatum_ingang() {
-    return datum_ingang;
-  }
-
-  public void setDatum_ingang(BaseWKValue datum_ingang) {
-    this.datum_ingang = datum_ingang;
-  }
-
-  public BaseWKValue getDatum_vertrek() {
-    return datum_vertrek;
-  }
-
-  public void setDatum_vertrek(BaseWKValue datum_vertrek) {
-    this.datum_vertrek = datum_vertrek;
-  }
-
-  public BaseWKValue getGezin_code() {
-    return gezin_code;
-  }
-
-  public void setGezin_code(BaseWKValue gezin_code) {
-    this.gezin_code = gezin_code;
-  }
-
-  public BaseWKValue getVolg_code() {
-    return volg_code;
-  }
-
-  public void setVolg_code(BaseWKValue volg_code) {
-    this.volg_code = volg_code;
-  }
-
-  public BaseWKValue getDatum_geboren() {
-    return datum_geboren;
-  }
-
-  public void setDatum_geboren(BaseWKValue datum_geboren) {
-    this.datum_geboren = datum_geboren;
-  }
 
   @Transient
   public boolean isCurrentResident() {

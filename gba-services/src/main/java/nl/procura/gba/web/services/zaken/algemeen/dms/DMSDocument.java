@@ -24,15 +24,17 @@ import com.google.common.collect.ComparisonChain;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "bestandsnaam")
 @Builder(builderMethodName = "hiddenBuilder")
 public class DMSDocument implements Comparable<DMSDocument> {
 
   @Default
   private DMSContent content                 = null;
+  @Default
+  private String     uuid                    = "";
+  @Default
+  private String     customerId              = "";
   @Default
   private long       date                    = -1;
   @Default
@@ -51,9 +53,11 @@ public class DMSDocument implements Comparable<DMSDocument> {
   private String     documentTypeDescription = "";
   @Default
   private String     confidentiality         = "";
+  @Default
+  private DMSStorageType storage                 = DMSStorageType.DEFAULT;
 
-  public static DMSDocumentBuilder builder(DMSContent content) {
-    return hiddenBuilder().content(content);
+  public static DMSDocumentBuilder builder() {
+    return hiddenBuilder();
   }
 
   @Override

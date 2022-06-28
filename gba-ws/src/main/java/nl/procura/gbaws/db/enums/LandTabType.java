@@ -20,6 +20,7 @@
 package nl.procura.gbaws.db.enums;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
@@ -59,6 +60,13 @@ public enum LandTabType {
     }
 
     return ONBEKEND;
+  }
+
+  public static LandTabType getByDescription(String description) {
+    return Arrays.stream(values())
+        .filter(so -> so.getDescr().equalsIgnoreCase(description))
+        .findFirst().orElse(ONBEKEND);
+
   }
 
   public List<GBAElem> getElements() {

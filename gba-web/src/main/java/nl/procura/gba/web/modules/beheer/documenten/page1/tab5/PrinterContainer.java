@@ -27,17 +27,16 @@ import java.util.Optional;
 
 import javax.print.PrintService;
 
-import nl.procura.bzconnector.app.client.BzAppClient;
 import nl.procura.bzconnector.app.client.actions.listprinters.Printer;
 import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.beheer.connect.VrijBrpConnectClient;
 import nl.procura.gba.web.services.zaken.documenten.printen.LocalPrinterUtils;
-import nl.procura.gba.web.services.zaken.documenten.printen.NetworkPrinterUtils;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptieType;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 
 public class PrinterContainer extends ArrayListContainer {
 
-  private List<PrintOptieValue> printers = new ArrayList<>();
+  private final List<PrintOptieValue> printers = new ArrayList<>();
 
   public PrinterContainer() {
     printers.add(new PrintOptieValue(COMMAND, COMMAND.getCode(), COMMAND.getDescr()));
@@ -72,14 +71,12 @@ public class PrinterContainer extends ArrayListContainer {
   }
 
   private void addNetworkPrinters(Services services) {
-    Optional<BzAppClient> client = NetworkPrinterUtils.getClient(services.getParameterService());
-    if (client.isPresent()) {
-      for (Printer printer : NetworkPrinterUtils.getPrinters(client.get())) {
-        String label = NETWORK_PRINTER.getDescr() + ": " + printer.getName();
-        PrintOptieValue value = new PrintOptieValue(NETWORK_PRINTER, printer.getName(), label);
-        value.setNetworkPrinter(printer);
-        printers.add(value);
-      }
+    VrijBrpConnectClient client = VrijBrpConnectClient.of(services.getParameterService());
+    for (Printer printer : client.getPrinters()) {
+      String label = NETWORK_PRINTER.getDescr() + ": " + printer.getName();
+      PrintOptieValue value = new PrintOptieValue(NETWORK_PRINTER, printer.getName(), label);
+      value.setNetworkPrinter(printer);
+      printers.add(value);
     }
   }
 }

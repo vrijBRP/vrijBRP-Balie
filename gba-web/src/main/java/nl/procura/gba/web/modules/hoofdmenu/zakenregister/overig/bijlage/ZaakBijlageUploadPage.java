@@ -84,7 +84,8 @@ public class ZaakBijlageUploadPage extends NormalPageTemplate {
         String documentDmsType = form.getDmsDocumentType().map(DmsDocumentType::toString).orElse("");
         String vertrouwelijkheid = form.getVertrouwelijkheid().getNaam();
 
-        DMSDocument dmsDocument = DMSDocument.builder(DMSFileContent.from(getFile()))
+        DMSDocument dmsDocument = DMSDocument.builder()
+            .content(DMSFileContent.from(getFile()))
             .title(getFileName())
             .user(naam)
             .zaakId(zaak.getZaakId())

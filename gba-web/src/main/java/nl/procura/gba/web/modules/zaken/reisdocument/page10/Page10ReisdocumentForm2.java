@@ -64,9 +64,7 @@ public class Page10ReisdocumentForm2 extends ReadOnlyForm<Page10ReisdocumentBean
   }
 
   public void checkSignalering() {
-
     String s = isSprakeVanSignalering() ? setClass("red", "Ja") : setClass("green", "Nee");
-
     getBean().setSignalering(s);
   }
 
@@ -80,8 +78,9 @@ public class Page10ReisdocumentForm2 extends ReadOnlyForm<Page10ReisdocumentBean
 
   public void recheckDocumenten() {
 
-    String isNogDoc = moetNogDocumentInleveren() ? setClass("red", "Ja, nog " + db.getInTeLeverenDocumenten(
-        pl).size()) : "";
+    String isNogDoc = moetNogDocumentInleveren()
+        ? setClass("red", "Ja, nog " + db.getInTeLeverenDocumenten(pl).size())
+        : "";
     getBean().setNogDocInleveren(fil(isNogDoc) ? isNogDoc : setClass("green", "Nee"));
   }
 

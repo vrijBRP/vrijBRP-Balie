@@ -63,8 +63,10 @@ public abstract class DocumentenTabel extends GbaTable {
       previewFile.setProperty("Zaak-id", dmsDocument.getZaakId());
       previewFile.setProperty("Opgeslagen op", dmsDocument.getContent().getLocation());
       previewFile.setProperty("Documenttype", dmsDocument.getDocumentTypeDescription());
-      previewFile.setProperty("Vertrouwelijkheid", DocumentVertrouwelijkheid.get(dmsDocument.getConfidentiality())
+      previewFile.setProperty("Vertrouwelijkheid", DocumentVertrouwelijkheid.get(dmsDocument
+          .getConfidentiality())
           .getOmschrijving());
+      previewFile.setProperty("Opslaglocatie", dmsDocument.getStorage().toString());
 
       FilePreviewWindow.preview(getApplication().getParentWindow(), previewFile);
 

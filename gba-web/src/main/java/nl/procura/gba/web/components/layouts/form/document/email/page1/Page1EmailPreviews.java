@@ -359,7 +359,8 @@ public class Page1EmailPreviews extends NormalPageTemplate {
       byte[] bytes = new EmailSummary(email, zaakId, gebruiker, printRecords).get().getBytes();
       String ext = BestandType.TXT.getType();
 
-      DMSDocument dmsDocument = DMSDocument.builder(DMSBytesContent.fromExtension(ext, bytes))
+      DMSDocument dmsDocument = DMSDocument.builder()
+          .content(DMSBytesContent.fromExtension(ext, bytes))
           .title(titel)
           .user(gebruiker)
           .datatype(datatype)
@@ -367,7 +368,7 @@ public class Page1EmailPreviews extends NormalPageTemplate {
           .documentTypeDescription(dmsOms)
           .build();
 
-      dms.save(subFolder, dmsDocument);
+      dms.save(dmsDocument);
     }
   }
 }

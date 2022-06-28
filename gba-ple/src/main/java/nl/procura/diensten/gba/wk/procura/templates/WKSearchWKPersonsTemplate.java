@@ -40,7 +40,6 @@ public class WKSearchWKPersonsTemplate extends WKTemplateProcura {
 
   @SuppressWarnings("unchecked")
   private List<VboKrt> getBewon() {
-
     setSql("select b from VboKrt b where b.cVbo = :c_vbo");
     addProp("c_vbo", getObject().getId().getCVbo());
 

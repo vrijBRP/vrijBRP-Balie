@@ -173,11 +173,11 @@ public class DossierHuwelijk extends DossHuw implements ZaakDossier, DossierNaam
     boolean vrouw2 = Geslacht.VROUW.equals(getPartner2().getGeslacht());
 
     if (getSoortVerbintenis() == SoortVerbintenis.GPS) {
-      addDocumentNationaliteit(list, "eerst genoemde partner", getPartner1());
-      addDocumentNationaliteit(list, "laatst genoemde partner", getPartner2());
+      addDocumentNationaliteit(list, "eerstgenoemde partner", getPartner1());
+      addDocumentNationaliteit(list, "laatstgenoemde partner", getPartner2());
     } else {
-      addDocumentNationaliteit(list, "eerst genoemde " + (vrouw1 ? "echtgenote" : "echtgenoot"), getPartner1());
-      addDocumentNationaliteit(list, "laatst genoemde " + (vrouw2 ? "echtgenote" : "echtgenoot"), getPartner2());
+      addDocumentNationaliteit(list, "eerstgenoemde " + (vrouw1 ? "echtgenote" : "echtgenoot"), getPartner1());
+      addDocumentNationaliteit(list, "laatstgenoemde " + (vrouw2 ? "echtgenote" : "echtgenoot"), getPartner2());
     }
 
     return list;

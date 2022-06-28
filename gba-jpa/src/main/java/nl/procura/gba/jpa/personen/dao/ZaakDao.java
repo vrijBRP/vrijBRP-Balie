@@ -74,21 +74,23 @@ public class ZaakDao extends GenericDao {
   protected static void getMutDate(List<Predicate> where, Root table, CriteriaQuery query, CriteriaBuilder builder,
       ConditionalMap map) {
 
-    Subquery<IndVerwerkt> indVerwerktQuery = query.subquery(IndVerwerkt.class);
-    Root indVerwerkt = query.from(IndVerwerkt.class);
+    if (map.containsKey(D_MUT_VANAF) || map.containsKey(D_MUT_TM)) {
+      Subquery<IndVerwerkt> indVerwerktQuery = query.subquery(IndVerwerkt.class);
+      Root indVerwerkt = query.from(IndVerwerkt.class);
 
-    indVerwerktQuery.select(indVerwerkt.get(ZAAK_ID));
-    List<Predicate> preds = new ArrayList();
-    if (map.containsKey(D_MUT_VANAF)) {
-      preds.add(builder.ge(indVerwerkt.get(IndicatieVerwerktDao.D_IN), along(map.get(D_MUT_VANAF))));
+      indVerwerktQuery.select(indVerwerkt.get(ZAAK_ID));
+      List<Predicate> preds = new ArrayList();
+      if (map.containsKey(D_MUT_VANAF)) {
+        preds.add(builder.ge(indVerwerkt.get(IndicatieVerwerktDao.D_IN), along(map.get(D_MUT_VANAF))));
+      }
+
+      if (map.containsKey(D_MUT_TM)) {
+        preds.add(builder.le(indVerwerkt.get(IndicatieVerwerktDao.D_IN), along(map.get(D_MUT_TM))));
+      }
+
+      indVerwerktQuery.where(preds.toArray(new Predicate[preds.size()]));
+      where.add(builder.in(table.get(ZAAK_ID)).value(indVerwerktQuery));
     }
-
-    if (map.containsKey(D_MUT_TM)) {
-      preds.add(builder.le(indVerwerkt.get(IndicatieVerwerktDao.D_IN), along(map.get(D_MUT_TM))));
-    }
-
-    indVerwerktQuery.where(preds.toArray(new Predicate[preds.size()]));
-    where.add(builder.in(table.get(ZAAK_ID)).value(indVerwerktQuery));
   }
 
   protected static void getProfile(String cUsr, List<Predicate> where, Root table, CriteriaBuilder builder,
@@ -103,7 +105,6 @@ public class ZaakDao extends GenericDao {
       ConditionalMap map) {
 
     if (map.containsKey(ATTRIBUTEN)) {
-
       Subquery<ZaakAttr> zaakAttrQuery = q.subquery(ZaakAttr.class);
       Root zaakAttr = q.from(ZaakAttr.class);
       zaakAttrQuery.select(zaakAttr.get(ID).get(ZAAK_ID));
@@ -112,7 +113,6 @@ public class ZaakDao extends GenericDao {
     }
 
     if (map.containsKey(ONTB_ATTRIBUTEN)) {
-
       Subquery<ZaakAttr> zaakAttrQuery = q.subquery(ZaakAttr.class);
       Root zaakAttr = q.from(ZaakAttr.class);
       zaakAttrQuery.select(zaakAttr.get(ID).get(ZAAK_ID));
@@ -160,7 +160,7 @@ public class ZaakDao extends GenericDao {
   }
 
   @SuppressWarnings("unchecked")
-  protected static final Predicate getStatussen(Root table, ConditionalMap map) {
+  protected static Predicate getStatussen(Root table, ConditionalMap map) {
     return table.get(IND_VERWERKT).in((ArrayList<Long>) map.get(IND_VERWERKT));
   }
 
@@ -201,7 +201,7 @@ public class ZaakDao extends GenericDao {
   }
 
   @SuppressWarnings("unchecked")
-  protected static final Predicate getNegeerStatussen(Root table, ConditionalMap map) {
+  protected static Predicate getNegeerStatussen(Root table, ConditionalMap map) {
     return table.get(IND_VERWERKT).in((ArrayList<Long>) map.get(NIET_IND_VERWERKT));
   }
 

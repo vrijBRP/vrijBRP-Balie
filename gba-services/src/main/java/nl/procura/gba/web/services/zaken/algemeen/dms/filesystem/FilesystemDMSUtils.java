@@ -30,7 +30,10 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -44,6 +47,30 @@ import nl.procura.standard.exceptions.ProException;
 public class FilesystemDMSUtils {
 
   public FilesystemDMSUtils() {
+  }
+
+  public static int countFilesInFolder(File folder) {
+    int count = 0;
+    if (folder.exists() && folder.isDirectory()) {
+      try {
+        Path dir = FileSystems.getDefault().getPath(folder.getPath());
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
+          for (Path path : directoryStream) {
+            if (path.toFile().exists()) {
+              if (isValidFile(path.toFile())) {
+                count++;
+              }
+            } else {
+              count += countFilesInFolder(path.toFile());
+            }
+          }
+        }
+      } catch (IOException e) {
+        throw new ProException("Fout bij inlezen bestanden", e);
+      }
+    }
+
+    return count;
   }
 
   public static int countFilesByZaakId(File folder, String zaakId) {
@@ -61,35 +88,8 @@ public class FilesystemDMSUtils {
     return count;
   }
 
-  public static int countFilesInFolder(File folder) {
-    int count = 0;
-    if (folder.exists() && folder.isDirectory()) {
-      try {
-        Path dir = FileSystems.getDefault().getPath(folder.getPath());
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dir)) {
-          for (Path path : directoryStream) {
-            if (path.toFile().exists()) {
-              if (!equalsIgnoreCase(IndexFile.INDEX, path.getFileName().toString())) {
-                count++;
-              }
-            } else {
-              count += countFilesInFolder(path.toFile());
-            }
-          }
-        }
-      } catch (IOException e) {
-        throw new ProException("Fout bij inlezen bestanden", e);
-      }
-    }
-
-    return count;
-  }
-
-  public static void getFilesByZaakId(File folder,
-      List<DMSDocument> dmsDocuments,
-      HashSet<String> filterMap,
-      String zaakId) {
-
+  public static List<DMSDocument> getFilesByZaakId(File folder, String zaakId) {
+    List<DMSDocument> dmsDocuments = new ArrayList<>();
     if (folder.exists() && folder.isDirectory()) {
 
       IndexFile indexFile = new IndexFile(folder);
@@ -97,12 +97,10 @@ public class FilesystemDMSUtils {
 
       for (IndexLine row : rowsByZaakId) {
         File file = new File(folder, row.getFileName());
-
         if (file.isFile()) {
           IndexLine indexLine = indexFile.toIndexRow(file);
-          DMSDocument dmsDocument = indexLine.toDmsDocument(file);
-          if (isRequestedFile(indexLine, file, filterMap)) {
-            dmsDocuments.add(dmsDocument);
+          if (isValidFile(file)) {
+            dmsDocuments.add(indexLine.toDmsDocument(file));
           }
         }
       }
@@ -110,12 +108,11 @@ public class FilesystemDMSUtils {
       cleanupIndex(folder, indexFile);
       Collections.sort(dmsDocuments);
     }
+    return dmsDocuments;
   }
 
-  public static void getFilesByFolder(File folder,
-      List<DMSDocument> bestanden,
-      HashSet<String> filterMap) {
-
+  public static List<DMSDocument> getFilesByFolder(File folder) {
+    List<DMSDocument> dmsDocuments = new ArrayList<>();
     if (folder.exists() && folder.isDirectory()) {
       try {
         IndexFile indexFile = new IndexFile(folder);
@@ -126,25 +123,21 @@ public class FilesystemDMSUtils {
             File file = path.toFile();
             if (file.exists()) {
               IndexLine indexLine = indexFile.toIndexRow(file);
-              DMSDocument dmsDocument = indexLine.toDmsDocument(file);
-
-              if (isRequestedFile(indexLine, file, filterMap)) {
-                bestanden.add(dmsDocument);
+              if (isValidFile(path.toFile())) {
+                dmsDocuments.add(indexLine.toDmsDocument(file));
               }
-
             } else {
-              getFilesByZaakId(path.toFile(), bestanden, filterMap, null);
+              dmsDocuments.addAll(getFilesByZaakId(path.toFile(), null));
             }
           }
         }
 
         cleanupIndex(folder, indexFile);
-        Collections.sort(bestanden);
-
       } catch (IOException e) {
         throw new ProException("Fout bij inlezen bestanden", e);
       }
     }
+    return dmsDocuments;
   }
 
   public static DMSDocument save(File subFolder, DMSDocument dmsDocument) {
@@ -158,7 +151,9 @@ public class FilesystemDMSUtils {
   public static File normalizeFolder(File folder, String subFolderName) {
     File pad = normalizeFolder(new File(folder, subFolderName));
     if (!pad.exists()) {
-      pad.mkdirs();
+      if (!pad.mkdirs()) {
+        throw new ProException("Kan map niet aanmaken op de hardeschijf");
+      }
     }
 
     return pad;
@@ -196,7 +191,7 @@ public class FilesystemDMSUtils {
         throw new RuntimeException(e);
       }
     } else {
-      throw new RuntimeException("Unknown type of DMSContent");
+      throw new ProException("Onbekende type inhoud");
     }
   }
 
@@ -219,11 +214,8 @@ public class FilesystemDMSUtils {
     return sb.toString();
   }
 
-  private static boolean isRequestedFile(IndexLine indexLine, File bestand, HashSet<String> filterMap) {
-    if (eq(IndexFile.INDEX, bestand.getName())) {
-      return false;
-    }
-    return (filterMap == null) || filterMap.contains(indexLine.getDataType());
+  private static boolean isValidFile(File bestand) {
+    return !eq(IndexFile.INDEX, bestand.getName());
   }
 
   private static synchronized void cleanupIndex(File folder, IndexFile indexFile) {
@@ -248,7 +240,9 @@ public class FilesystemDMSUtils {
     try {
       File indexfile = new File(map, IndexFile.INDEX);
       if (!append && rows.size() == 0) {
-        indexfile.delete();
+        if (!indexfile.delete()) {
+          throw new ProException("Kan index bestand niet verwijderen");
+        }
         return;
       }
 

@@ -77,8 +77,17 @@ public class Page3PersonListValidationErrorsLayout extends VLayout {
 
   public void addActionTypeMessages() {
     getSuspendedMessage().ifPresent(this::addInfo);
-    getDuplicateRecordMessage().ifPresent(this::addInfo);
-    if (actionType.is(ADD_SET, UPDATE_SET, CORRECT_CURRENT_GENERAL, ADD_HISTORIC, CORRECT_HISTORIC_GENERAL)) {
+
+    if (actionType.is(SUPER_CHANGE)) {
+      if (isNotChanged(elems, personListMutElem -> true)) {
+        addError("Er dient minimaal één gegeven te worden gewijzigd.");
+      }
+    } else {
+      getDuplicateRecordMessage().ifPresent(this::addInfo);
+    }
+
+    if (actionType.is(ADD_SET, UPDATE_SET, CORRECT_CURRENT_GENERAL, ADD_HISTORIC,
+        CORRECT_HISTORIC_GENERAL)) {
       if (isNotChanged(elems, PersonListMutElem::isGeneralField)) {
         addError("Er dient minimaal één algemeen gegeven te worden gewijzigd.");
       }

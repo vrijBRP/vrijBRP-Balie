@@ -28,36 +28,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.services.beheer.kassa.KassaApplicationType;
+import nl.procura.gba.web.services.beheer.kassa.KassaFile;
+import nl.procura.gba.web.services.beheer.kassa.KassaParameters;
 import nl.procura.gba.web.services.beheer.kassa.KassaProductAanvraag;
-import nl.procura.gba.web.services.beheer.kassa.gkas.KassaParameters;
 import nl.procura.standard.exceptions.ProException;
 
-/**
- * Stelt kassa bericht samen
- */
-public class KassaBestandKey2Betalen {
+public class Key2BetalenFile implements KassaFile {
 
+  private final int             nr;
   private final KassaParameters parameters;
-  private StringBuilder         sb = null;
+  private final StringBuilder   content = new StringBuilder();
 
-  public KassaBestandKey2Betalen(KassaParameters parameters) {
+  private Key2BetalenFile(KassaParameters parameters, int nr) {
     this.parameters = parameters;
+    this.nr = nr;
   }
 
-  public List<String> getBestanden(List<KassaProductAanvraag> aanvragen) {
-
-    List<String> bestanden = new ArrayList<>();
-
+  public static List<KassaFile> of(KassaParameters parameters, List<KassaProductAanvraag> aanvragen) {
     if (aanvragen.isEmpty()) {
       throw new ProException(SELECT, WARNING, "Er zijn geen producten geselecteerd.");
     }
 
+    int nr = 0;
+    List<KassaFile> bestanden = new ArrayList<>();
     for (KassaProductAanvraag aanvraag : aanvragen) {
-
-      sb = new StringBuilder();
+      Key2BetalenFile bestand = new Key2BetalenFile(parameters, ++nr);
 
       BasePLExt pl = aanvraag.getPl();
-
       String anr = pl.getPersoon().getAnr().getVal();
       String naw1 = pl.getPersoon().getNaam().getNaamNaamgebruikEersteVoornaam();
       String naw2 = pl.getVerblijfplaats().getAdres().getAdres();
@@ -68,22 +66,43 @@ public class KassaBestandKey2Betalen {
             "Kan geen kassa bestand maken. Het ID of de NAW-gegevens zijn niet ingevuld.");
       }
 
-      add(parameters.getKassaId());
-      add("A" + pad_right(aanvraag.getKassaProduct().getKassa(), " ", 10) + "+");
-      add("N" + naw1);
-      add("S" + naw2);
-      add("P" + naw3);
-      add("E");
-      add(anr);
-      sb.append("\u001a");
-
-      bestanden.add(sb.toString());
+      bestand.append(parameters.getKassaId());
+      bestand.append("A" + pad_right(aanvraag.getKassaProduct().getKassa(), " ", 10) + "+");
+      bestand.append("N" + naw1);
+      bestand.append("S" + naw2);
+      bestand.append("P" + naw3);
+      bestand.append("E");
+      bestand.append(anr);
+      bestand.content.append("\u001a");
+      bestanden.add(bestand);
     }
 
     return bestanden;
   }
 
-  private void add(String line) {
-    sb.append(line + "\r\n");
+  @Override
+  public String getContent() {
+    return content.toString();
+  }
+
+  @Override
+  public KassaApplicationType getKassaApplicationType() {
+    return KassaApplicationType.KEY2BETALEN;
+  }
+
+  @Override
+  public String getFilename() {
+    return String.format("%s-%s-%d.001",
+        parameters.getFilename(),
+        parameters.getKassaLocatieId(), nr);
+  }
+
+  @Override
+  public int getNr() {
+    return nr;
+  }
+
+  private void append(String line) {
+    content.append(line).append("\r\n");
   }
 }
