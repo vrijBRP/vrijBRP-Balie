@@ -47,10 +47,10 @@ import nl.procura.vaadin.component.layout.tabsheet.LazyTabsheet.LazyTab;
 
 public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
 
-  protected final Button buttonAanpassen = new Button("Aanpassen zaak");
-  protected final Button buttonDoc       = new Button("Document afdrukken");
-  protected final Button buttonFiat      = new Button("Fiatteren");
-  protected final Button buttonVerwerken = new Button("Nu verwerken");
+  protected final ZaakAanpassenButton buttonAanpassen = new ZaakAanpassenButton();
+  protected final Button              buttonDoc       = new Button("Document afdrukken");
+  protected final Button              buttonFiat      = new Button("Fiatteren");
+  protected final Button              buttonVerwerken = new Button("Nu verwerken");
 
   private ZaakTabsheet<T> tabsheet = null;
 
@@ -102,15 +102,8 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
   public void handleEvent(Button button, int keyCode) {
 
     if (button == buttonAanpassen) {
-      ZaakStatusType maxStatus = ZaakStatusType.get(
-          along(getApplication().getParmValue(ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN)));
-      if (!getZaak().getStatus().isMaximaal(maxStatus)) {
-        throw new ProException(ProExceptionSeverity.INFO,
-            "Alleen zaken met maximale status <b>{0}</b> kunnen worden gewijzigd",
-            maxStatus.getOms());
-      }
+      buttonAanpassen.onClick(getZaak(), this::goToZaak);
 
-      goToZaak();
     } else if (button == buttonDoc) {
       goToDocument();
 

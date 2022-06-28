@@ -112,6 +112,8 @@ public class ActieDescr {
   public static final String PL_LOKALE_AFNEMER_INDICATIES    = "(Persoonslijst) lokale afnemer indicaties";
   public static final String PL_ONDERZOEKSGEGEVENS           = "(Persoonslijst) onderzoeksgegevens";
   public static final String PL_MUTATIONS                    = "(Persoonslijst) mutaties";
+  public static final String PL_MUTATIONS_GOEDKEUREN         = "(Persoonslijst) mutaties goedkeuren";
   public static final String PL_SUPER_USER_MUTATIONS         = "(Persoonslijst) superuser mutaties";
   public static final String VERLOPEN_ZAKEN                  = "Verlopen zaken";
+  public static final String ZAAK_BEHANDELAARS               = "Zaakbehandelaars";
 }

@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.components.containers;
 
-import nl.procura.burgerzaken.gba.core.enums.GBATable;
+import nl.procura.gba.web.common.tables.GbaTables;
 
 public class WoonplaatsContainer extends TabelContainer {
 
@@ -28,6 +28,6 @@ public class WoonplaatsContainer extends TabelContainer {
   }
 
   public WoonplaatsContainer(boolean isCurrent) {
-    super(GBATable.WOONPLAATS, isCurrent);
+    super(GbaTables.WOONPLAATS, isCurrent, false);
   }
 }

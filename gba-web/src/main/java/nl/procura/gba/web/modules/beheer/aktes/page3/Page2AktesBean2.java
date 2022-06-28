@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.beheer.aktes.page3;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
+import java.util.Date;
 
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort;
@@ -30,6 +31,7 @@ import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.NumberField;
+import nl.procura.vaadin.component.field.ProDateField;
 
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class Page2AktesBean2 implements Serializable {
@@ -39,6 +41,7 @@ public class Page2AktesBean2 implements Serializable {
   public static final String OMSCHRIJVING = "omschrijving";
   public static final String MIN          = "min";
   public static final String MAX          = "max";
+  public static final String EINDDATUM    = "einddatum";
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Registersoort",
@@ -71,6 +74,11 @@ public class Page2AktesBean2 implements Serializable {
       width = "50px")
   @TextField(maxLength = 4)
   private String max = "";
+
+  @Field(customTypeClass = ProDateField.class,
+      caption = "Einddatum",
+      width = "100px")
+  private Date einddatum = null;
 
   public String getCode() {
     return code;
@@ -110,5 +118,13 @@ public class Page2AktesBean2 implements Serializable {
 
   public void setSoort(DossierAkteRegistersoort soort) {
     this.soort = soort;
+  }
+
+  public Date getEinddatum() {
+    return einddatum;
+  }
+
+  public void setEinddatum(Date einddatum) {
+    this.einddatum = einddatum;
   }
 }

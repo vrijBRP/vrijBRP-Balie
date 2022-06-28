@@ -329,7 +329,7 @@ public class OnderhoudService extends AbstractService {
    */
   public Application getApp(App app, boolean check) {
     GebruikerService gebruikerService = getServices().getGebruikerService();
-    Gebruiker gebruiker = gebruikerService.getGebruikerByNaam(app.getUsername(), false);
+    Gebruiker gebruiker = gebruikerService.getGebruikerByNaam(app.getUsername());
     Application application = new Application(app);
 
     if (gebruiker != null) {

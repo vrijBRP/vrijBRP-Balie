@@ -75,7 +75,7 @@ public class ZaakDmsService extends AbstractService {
   /**
    * Zaaksysteem id opvragen bij de BSM
    */
-  @ThrowException("Het is niet mogelijk om de zaakstatus op te vragen")
+  @ThrowException("Het is niet mogelijk om een zaaksysteem-id op te vragen")
   public ZaakIdentificatie genereerZaakId() {
     if (!isZakenDsmAan()) {
       throw new ProException("De zaaksysteem koppeling is niet ingesteld");
@@ -93,7 +93,7 @@ public class ZaakDmsService extends AbstractService {
   /**
    * Opvragen zaken DMS
    */
-  @ThrowException("Het is niet mogelijk om de zaakstatus op te vragen")
+  @ThrowException("Het is niet mogelijk om de zaakdetails op te vragen")
   public GeefZaakDetailsAntwoordRestElement getZaakDetails(Zaak zaak) {
     GeefZaakDetailsAntwoordRestElement antwoord = new GeefZaakDetailsAntwoordRestElement();
     if (isZakenDsmAan(zaak)) {
@@ -102,7 +102,7 @@ public class ZaakDmsService extends AbstractService {
     return antwoord;
   }
 
-  @ThrowException("Het is niet mogelijk om de zaakstatus op te vragen")
+  @ThrowException("Het is niet mogelijk om zaakdetails op te vragen")
   public GeefZaakDetailsAntwoordRestElement getZaakDetails(String zaakId) {
     GeefZaakDetailsAntwoordRestElement antwoord = new GeefZaakDetailsAntwoordRestElement();
     GeefZaakDetailsVraagRestElement vraag = new GeefZaakDetailsVraagRestElement();
@@ -113,7 +113,7 @@ public class ZaakDmsService extends AbstractService {
     return antwoord;
   }
 
-  @ThrowException("Het is niet mogelijk om de zaakstatus op te vragen")
+  @ThrowException("Het is niet mogelijk om een zaakdocument op te vragen")
   public GeefZaakDocumentLezenAntwoordRestElement getZaakDocument(String documentIdentificatie) {
 
     GeefZaakDocumentLezenAntwoordRestElement antwoord = new GeefZaakDocumentLezenAntwoordRestElement();
@@ -127,7 +127,7 @@ public class ZaakDmsService extends AbstractService {
     return antwoord;
   }
 
-  @ThrowException("Het is niet mogelijk om de zaakstatus op te vragen")
+  @ThrowException("Het is niet mogelijk om de zaakdocumenten op te vragen")
   public GeefLijstZaakDocumentenAntwoordRestElement getZaakDocumenten(Zaak zaak) {
 
     GeefLijstZaakDocumentenAntwoordRestElement antwoord = new GeefLijstZaakDocumentenAntwoordRestElement();
@@ -147,7 +147,7 @@ public class ZaakDmsService extends AbstractService {
   /**
    * Opvragen zaken DMS
    */
-  @ThrowException("Het is niet mogelijk om de zaakstatus op te vragen")
+  @ThrowException("Het is niet mogelijk om de zaakstatussen op te vragen")
   public GeefZaakStatusAntwoordRestElement getZaakStatussen(Zaak zaak) {
 
     GeefZaakStatusAntwoordRestElement antwoord = new GeefZaakStatusAntwoordRestElement();

@@ -31,7 +31,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
  */
 public class RuleAddresses {
 
-  private List<RuleAddress> addresses = new ArrayList<>();
+  private final List<RuleAddress> addresses = new ArrayList<>();
 
   public RuleAddresses sortDescending() {
     addresses.sort(new RuleAddressesComparator(true));
@@ -56,7 +56,7 @@ public class RuleAddresses {
    */
   private class RuleAddressesComparator implements Comparator<RuleAddress> {
 
-    private boolean descending; // New To Old (defaults to TRUE)
+    private final boolean descending; // New To Old (defaults to TRUE)
 
     public RuleAddressesComparator(boolean descending) {
       this.descending = descending;

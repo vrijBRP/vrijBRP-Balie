@@ -30,6 +30,7 @@ import com.vaadin.ui.Tree;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page1.Page1ZaakAttribuut;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.behandelaar.page1.Page1ZaakBehandelaar;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.identificatie.page1.Page1ZaakIdentificatie;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.relatie.page1.Page1ZaakRelatie;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.tree.ZaakTableContainer;
@@ -46,6 +47,7 @@ public abstract class ZaakOverigeTree extends Tree {
   private final Page1ZaakIdentificatie pageIdentificatie;
   private final Page1ZaakRelatie       pageRelatie;
   private final Page1ZaakAttribuut     pageAttribuut;
+  private final Page1ZaakBehandelaar   pageBehandelaar;
   private final ZaakOverigeContainer   container;
 
   public ZaakOverigeTree(Zaak zaak) {
@@ -63,6 +65,7 @@ public abstract class ZaakOverigeTree extends Tree {
     pageIdentificatie = getPageIdentificatie();
     pageRelatie = getPageRelatie();
     pageAttribuut = getPageAttribuut();
+    pageBehandelaar = getPageBehandelaar();
     container = new ZaakOverigeContainer();
 
     setContainerDataSource(container);
@@ -84,6 +87,17 @@ public abstract class ZaakOverigeTree extends Tree {
   public Page1ZaakAttribuut getPageAttribuut() {
 
     return new Page1ZaakAttribuut(zaak) {
+
+      @Override
+      public void onReload() {
+        ZaakOverigeTree.this.onReload();
+      }
+    };
+  }
+
+  public Page1ZaakBehandelaar getPageBehandelaar() {
+
+    return new Page1ZaakBehandelaar(zaak) {
 
       @Override
       public void onReload() {
@@ -152,6 +166,10 @@ public abstract class ZaakOverigeTree extends Tree {
 
             case ZaakOverigeContainer.RELATIES:
               selecteerModule(new Module(pageRelatie));
+              break;
+
+            case ZaakOverigeContainer.BEHANDELAARS:
+              selecteerModule(new Module(pageBehandelaar));
               break;
 
             default:

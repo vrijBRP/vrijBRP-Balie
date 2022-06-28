@@ -65,7 +65,7 @@ public class GbaRestZaakAttribuutResources extends GbaRestServiceResource {
   public GbaRestZaakAntwoord verwijderen(GbaRestZaakAttribuutVerwijderenVraag vraag) {
 
     ZaakAttribuutService attributen = getServices().getZaakAttribuutService();
-    AttribuutHistorie historie = attributen.getAttributen(vraag.getZaakId(), vraag.getAttribuut());
+    AttribuutHistorie historie = attributen.getZaakAttributen(vraag.getZaakId(), vraag.getAttribuut());
 
     for (ZaakAttribuut attribuut : historie.getAttributen()) {
       attributen.delete(attribuut);

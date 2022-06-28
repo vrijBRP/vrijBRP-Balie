@@ -305,10 +305,7 @@ public class DossDao extends ZaakDao {
       where.add(builder.lessThan(table.get(C_DOSS), 0));
     }
 
-    getMutDate(where, table, query, builder, map);
-    getUsr(ZaakDao.USR, where, table, builder, map);
-    getProfile(ZaakDao.USR, where, table, builder, map);
-    getAttribute(query, where, table, builder, map);
+    getAttributes(USR, query, where, table, builder, map);
 
     if (queryListener != null) {
       queryListener.addToQuery(query, table, where, builder);

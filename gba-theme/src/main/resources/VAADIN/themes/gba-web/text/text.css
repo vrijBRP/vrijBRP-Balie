@@ -24,9 +24,10 @@
 }
 	
 .logbestand .nr {
-	text-align: right;
-	padding-right: 10px;
-	color: #BBBBBB;
+    text-align: right;
+    width: 20px;
+    padding-right: 10px;
+    color: #BBBBBB;
 }
 
 .v-readonly.border {

@@ -66,7 +66,7 @@ public class Cat5HuwTemplate extends PLETemplateProcura<AbstractHuw> {
     addElem(AKTENR, huw.getAktenr());
     addElem(GEMEENTE_DOC, huw.getGOntl());
     addElem(DATUM_DOC, huw.getDOntl());
-    addElem(BESCHRIJVING_DOC, huw.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, huw.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, huw.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, huw.getDBezwIn());

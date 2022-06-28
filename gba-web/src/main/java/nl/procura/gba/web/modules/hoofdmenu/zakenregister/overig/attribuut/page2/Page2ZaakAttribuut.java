@@ -34,7 +34,6 @@ public abstract class Page2ZaakAttribuut extends NormalPageTemplate {
   private Page2ZaakAttribuutForm form;
 
   public Page2ZaakAttribuut(ZaakAttribuut attribuut) {
-
     this.attribuut = attribuut;
 
     setSpacing(true);
@@ -46,9 +45,7 @@ public abstract class Page2ZaakAttribuut extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
       form = new Page2ZaakAttribuutForm(attribuut);
       addComponent(form);
     }
@@ -63,7 +60,6 @@ public abstract class Page2ZaakAttribuut extends NormalPageTemplate {
 
   @Override
   public void onSave() {
-
     form.commit();
 
     ZaakAttribuutType type = form.getBean().getType();
@@ -74,6 +70,8 @@ public abstract class Page2ZaakAttribuut extends NormalPageTemplate {
     } else {
       attribuut.setAttribuut(type.getCode());
     }
+
+    attribuut.setWaarde(form.getBean().getWaarde());
 
     getServices().getZaakAttribuutService().save(attribuut);
 

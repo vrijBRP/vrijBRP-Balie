@@ -19,23 +19,20 @@
 
 package nl.procura.gba.web.rest.v2.services;
 
+import com.google.inject.Inject;
+
 import nl.procura.gba.web.services.Services;
 
 public abstract class GbaRestAbstractService {
 
-  private final GbaRestServices restServices;
-  private final Services        services;
-
-  public GbaRestAbstractService(GbaRestServices restServices, Services services) {
-    this.restServices = restServices;
-    this.services = services;
-  }
+  @Inject
+  private GbaRestServices restServices;
 
   public GbaRestServices getRestServices() {
     return restServices;
   }
 
   public Services getServices() {
-    return services;
+    return restServices.getServices();
   }
 }

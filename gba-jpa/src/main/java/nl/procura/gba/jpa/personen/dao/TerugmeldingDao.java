@@ -136,10 +136,7 @@ public class TerugmeldingDao extends ZaakDao {
       where.add(builder.lessThan(table.get(C_TERUGMELDING), 0));
     }
 
-    getMutDate(where, table, query, builder, map);
-    getUsr(USR_TOEV, where, table, builder, map);
-    getProfile(USR_TOEV, where, table, builder, map);
-    getAttribute(query, where, table, builder, map);
+    getAttributes(USR_TOEV, query, where, table, builder, map);
 
     query.where(where.toArray(new Predicate[where.size()]));
   }

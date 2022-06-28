@@ -31,7 +31,6 @@ import nl.procura.gba.web.rest.v2.GbaRestGebruikerResourceV2;
 import nl.procura.gba.web.rest.v2.model.base.GbaRestAntwoord;
 import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestGebruikerVraag;
 import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestGebruikerZoekenAntwoord;
-import nl.procura.gba.web.rest.v2.services.GbaRestServices;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 
 @RequestScoped
@@ -48,7 +47,7 @@ public class GbaRestGebruikerResourceV2Server extends GbaRestServiceResource imp
       GbaRestGebruikerVraag request = new GbaRestGebruikerVraag();
       request.setGebruikersnaam(getServices().getGebruiker().getGebruikersnaam());
       request.setEmail(getServices().getGebruiker().getEmail());
-      return new GbaRestAntwoord<>(new GbaRestServices(getServices())
+      return new GbaRestAntwoord<>(getGbaRestServices()
           .getGebruikerService()
           .getGebruiker(request));
     });
@@ -60,7 +59,7 @@ public class GbaRestGebruikerResourceV2Server extends GbaRestServiceResource imp
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
   public GbaRestAntwoord<GbaRestGebruikerZoekenAntwoord> getGebruiker(GbaRestGebruikerVraag request) {
-    return tryCall(() -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+    return tryCall(() -> new GbaRestAntwoord<>(getGbaRestServices()
         .getGebruikerService()
         .getGebruiker(request)));
 

@@ -33,7 +33,6 @@ public class MultiFieldValue<T> {
   }
 
   public MultiFieldValue(List<T> values) {
-
     setValues(values);
   }
 
@@ -47,13 +46,9 @@ public class MultiFieldValue<T> {
 
   @Override
   public String toString() {
-
     StringBuilder sb = new StringBuilder();
-
     if (values.size() > 0) {
-
       for (Object value : values) {
-
         sb.append(astr(value));
         sb.append(", ");
       }

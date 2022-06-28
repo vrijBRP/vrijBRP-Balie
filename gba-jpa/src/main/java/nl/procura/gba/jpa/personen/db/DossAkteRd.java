@@ -20,8 +20,11 @@
 package nl.procura.gba.jpa.personen.db;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.*;
+
+import nl.procura.gba.jpa.personen.converters.BigDecimalDateConverter;
 
 @Entity
 @Table(name = "doss_akte_rd")
@@ -52,6 +55,10 @@ public class DossAkteRd extends nl.procura.gba.jpa.personen.db.BaseEntity {
 
   @Column(precision = 131089)
   private BigDecimal min;
+
+  @Column(name = "d_end")
+  @Convert(converter = BigDecimalDateConverter.class)
+  private Date dEnd;
 
   @Column()
   private String oms;
@@ -123,4 +130,11 @@ public class DossAkteRd extends nl.procura.gba.jpa.personen.db.BaseEntity {
     this.registerdeel = registerdeel;
   }
 
+  public Date getdEnd() {
+    return dEnd;
+  }
+
+  public void setdEnd(Date dEnd) {
+    this.dEnd = dEnd;
+  }
 }

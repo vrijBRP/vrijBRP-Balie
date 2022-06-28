@@ -185,14 +185,13 @@ public class Page11Rijbewijs extends RijbewijsPage {
     long cgebplaats = along(g.getAutorcgebpl());
     String sgebplaats = g.getGebplbuitenl();
 
-    if ((cgebplaats > 0) && (cgebplaats <= 2000)) {
+    if ((cgebplaats > 0) && (cgebplaats <= 1999)) {
       sgebplaats = plaatsen.get(astr(cgebplaats)).getDescription();
     }
 
     put(8, 2, sgebplaats);
 
-    if (pos(g.getAutorcgebpl()) && (aval(g.getAutorcgebpl()) > 2000)) {
-
+    if (pos(g.getAutorcgebpl()) && (aval(g.getAutorcgebpl()) > 1999)) {
       put(9, 2, landen.get(g.getAutorcgebpl().toString()).getDescription());
     } else {
       put(9, 2, "Nederland");

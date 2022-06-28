@@ -55,7 +55,7 @@ public class Cat9KindTemplate extends PLETemplateProcura<AbstractAfst> {
 
     addElem(GEMEENTE_DOC, kind.getGOntl());
     addElem(DATUM_DOC, kind.getDOntl());
-    addElem(BESCHRIJVING_DOC, kind.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, kind.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, kind.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, kind.getDBezwIn());

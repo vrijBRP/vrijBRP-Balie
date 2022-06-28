@@ -86,7 +86,7 @@ public class Page1ProtocolleringBean implements Serializable {
   private DateFieldValue tm = null;
 
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Grouperen op",
+      caption = "Groeperen op",
       width = "220px")
   @Select(nullSelectionAllowed = false,
       containerDataSource = ProtocolleringGroepContainer.class)

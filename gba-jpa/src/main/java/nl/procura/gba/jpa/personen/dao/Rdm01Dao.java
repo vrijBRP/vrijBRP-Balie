@@ -162,10 +162,7 @@ public class Rdm01Dao extends ZaakDao {
       where.add(builder.lessThan(table.get(D_AANVR), 0));
     }
 
-    getMutDate(where, table, query, builder, map);
-    getUsr(USR1, where, table, builder, map);
-    getProfile(USR1, where, table, builder, map);
-    getAttribute(query, where, table, builder, map);
+    getAttributes(USR1, query, where, table, builder, map);
 
     query.where(where.toArray(new Predicate[where.size()]));
   }

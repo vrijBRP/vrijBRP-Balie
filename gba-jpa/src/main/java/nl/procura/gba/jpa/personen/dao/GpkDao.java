@@ -126,10 +126,7 @@ public class GpkDao extends ZaakDao {
       where.add(builder.lessThan(table.get(C_GPK), 0));
     }
 
-    getMutDate(where, table, query, builder, map);
-    getUsr(ZaakDao.USR, where, table, builder, map);
-    getProfile(ZaakDao.USR, where, table, builder, map);
-    getAttribute(query, where, table, builder, map);
+    getAttributes(USR, query, where, table, builder, map);
 
     query.where(where.toArray(new Predicate[where.size()]));
   }

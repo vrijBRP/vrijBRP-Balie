@@ -22,12 +22,11 @@ package nl.procura.gba.web.services.zaken.algemeen.identificatie;
 public enum ZaakIdType {
 
   ZAAKSYSTEEM(1, "ZAAKSYSTEEM", "Zaaksysteem"),
-  GEMEENTE(2, "GEMEENTE", "Gemeente"),
   PROWEB_PERSONEN(3, "PROWEB-PERSONEN", "Proweb Personen"),
   ONBEKEND(4, "", "Onbekend");
 
   private final String oms;
-  private int          order;
+  private final int    order;
   private String       code;
 
   ZaakIdType(int prioriteit, String code, String oms) {

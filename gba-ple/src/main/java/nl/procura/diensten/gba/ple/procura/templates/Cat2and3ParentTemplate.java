@@ -62,7 +62,7 @@ public class Cat2and3ParentTemplate extends PLETemplateProcura<AbstractParent> {
 
     addElem(GEMEENTE_DOC, ouder.getGOntl());
     addElem(DATUM_DOC, ouder.getDOntl());
-    addElem(BESCHRIJVING_DOC, ouder.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, ouder.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, ouder.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, ouder.getDBezwIn());

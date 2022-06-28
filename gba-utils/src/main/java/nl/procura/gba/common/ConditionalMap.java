@@ -42,34 +42,39 @@ public class ConditionalMap extends HashMap<String, Object> {
     putString(key, value);
   }
 
-  public void putLong(String key, long value) {
+  public ConditionalMap putLong(String key, long value) {
     if (value > 0) {
       put(key, value);
     }
+    return this;
   }
 
-  public void putList(String key, List value) {
+  public ConditionalMap putList(String key, List value) {
     if (!value.isEmpty()) {
       put(key, value);
     }
+    return this;
   }
 
-  public void putSet(String key, Set value) {
+  public ConditionalMap putSet(String key, Set value) {
     if (!value.isEmpty()) {
       put(key, value);
     }
+    return this;
   }
 
-  public void putString(String key, String value) {
+  public ConditionalMap putString(String key, String value) {
     if (fil(value)) {
       put(key, value);
     }
+    return this;
   }
 
-  public void putPosString(String key, String value) {
+  public ConditionalMap putPosString(String key, String value) {
     if (pos(value)) {
       put(key, value);
     }
+    return this;
   }
 
   public boolean containsKeys(String... keys) {
@@ -89,8 +94,7 @@ public class ConditionalMap extends HashMap<String, Object> {
 
   @Override
   public Object get(Object key) {
-
-    if (size() == 0) {
+    if (isEmpty()) {
       throw new ProException(PROGRAMMING, ERROR, "Geen argumenten meegegeven voor deze actie");
     }
 

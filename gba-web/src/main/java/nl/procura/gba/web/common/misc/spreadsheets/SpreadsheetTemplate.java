@@ -29,9 +29,9 @@ import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 public class SpreadsheetTemplate implements Spreadsheet {
 
   private final List<String> record = new ArrayList<>();
-  private List<String[]>     data   = new ArrayList<>();
-  private String             name;
-  private UitvoerformaatType type;
+  private final List<String[]>     data   = new ArrayList<>();
+  private final String             name;
+  private final UitvoerformaatType type;
 
   public SpreadsheetTemplate(String name, UitvoerformaatType type) {
     this.name = name;
@@ -57,26 +57,14 @@ public class SpreadsheetTemplate implements Spreadsheet {
     return data;
   }
 
-  public void setData(List<String[]> data) {
-    this.data = data;
-  }
-
   @Override
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   @Override
   public UitvoerformaatType getType() {
     return type;
-  }
-
-  public void setType(UitvoerformaatType type) {
-    this.type = type;
   }
 
   public void store() {

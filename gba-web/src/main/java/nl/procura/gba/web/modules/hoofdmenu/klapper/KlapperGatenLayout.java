@@ -37,7 +37,9 @@ public class KlapperGatenLayout extends InfoLayout {
   private final List<DossierAkte> volgorde;
   private List<DossierAkte>       gaten;
 
-  public KlapperGatenLayout(List<DossierAkte> aktes, KlapperZoekargumenten zoekargumenten, boolean checkGaten,
+  public KlapperGatenLayout(List<DossierAkte> aktes,
+      KlapperZoekargumenten zoekargumenten,
+      boolean checkGaten,
       boolean checkVolgorde) {
 
     this.aktes = aktes;
@@ -45,14 +47,14 @@ public class KlapperGatenLayout extends InfoLayout {
     gaten = KlapperUtils.getGaten(aktes);
     volgorde = KlapperUtils.getVerkeerdeVolgorde(aktes);
 
-    String periodes = zoekargumenten.heeftPeriodes() ? format(" over de periode %s",
-        zoekargumenten.getPeriodes()) : "";
+    String periodes = zoekargumenten.heeftPeriodes()
+        ? format(" over de periode %s", zoekargumenten.getPeriodes())
+        : "";
 
     int aantalGaten = gaten.size();
     int aantalVolgorde = volgorde.size();
 
     StringBuilder message = new StringBuilder();
-
     if (checkGaten && aantalGaten > 0) {
       if (aantalGaten == 1) {
         message.append(String.format(
@@ -78,6 +80,11 @@ public class KlapperGatenLayout extends InfoLayout {
             String.format("Er staan %d aktes in de verkeerde volgorde%s. Deze zijn in rood aangegeven.",
                 aantalVolgorde, periodes));
       }
+    }
+
+    if (zoekargumenten.getJaar() <= 0 && aktes.size() == 5000) {
+      message
+          .append("<hr><b>Het aantal zoekresultaten is beperkt tot 5000 omdat er geen 'periode' is geselecteerd.</b>");
     }
 
     setMessage(message.toString());

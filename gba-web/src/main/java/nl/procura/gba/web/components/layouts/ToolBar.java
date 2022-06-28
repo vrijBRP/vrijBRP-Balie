@@ -25,6 +25,7 @@ import static nl.procura.standard.Globalfunctions.*;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.account.AccountWindow;
 import nl.procura.gba.web.windows.home.HomeWindow;
+import nl.procura.standard.Resource;
+import nl.procura.vaadin.functies.downloading.StreamDownloader;
 import nl.procura.vaadin.theme.LoginValidatable;
 import nl.procura.vaadin.theme.twee.layout.ToolBarLayout;
 import nl.vrijbrp.hub.client.HubContext;
@@ -196,8 +199,11 @@ public class ToolBar extends ToolBarLayout {
     if (handleidingItem != null) {
       for (Manual manual : handleidingen) {
         handleidingItem.addItem((handleidingen.size() == 1 ? "Handleiding" : manual.title()),
-            item -> getWindow().open(new ExternalResource(
-                getApplication().getExternalURL("rest/v1.0/bestand/zoeken/" + manual.fileName()))));
+            item -> {
+              InputStream manualStream = Resource.getAsInputStream(manual.fileName());
+              StreamDownloader.download(manualStream, getApplication().getParentWindow(),
+                  manual.fileName(), true);
+            });
       }
     }
 

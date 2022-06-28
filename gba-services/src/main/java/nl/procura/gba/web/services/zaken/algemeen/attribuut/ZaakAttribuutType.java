@@ -23,18 +23,21 @@ import java.util.Arrays;
 
 public enum ZaakAttribuutType {
 
-  MIJN_OVERHEID_WEL("mijn-overheid-wel", "Wel abonnee van mijn-overheid"),
-  MIJN_OVERHEID_NIET("mijn-overheid-niet", "Geen abonnee van mijn-overheid"),
-  WACHT_OP_RISICOANALYSE("wacht-op-risicoanalyse", "Wacht op risicoanalyse"),
-  FOUT_BIJ_VERWERKING("fout-bij-verwerking", "Fout bij verwerking"),
-  ANDERS("", "Anders");
+  MIJN_OVERHEID_WEL("mijn-overheid-wel", "Wel abonnee van mijn-overheid", false),
+  MIJN_OVERHEID_NIET("mijn-overheid-niet", "Geen abonnee van mijn-overheid", false),
+  WACHT_OP_RISICOANALYSE("wacht-op-risicoanalyse", "Wacht op risicoanalyse", false),
+  FOUT_BIJ_VERWERKING("fout-bij-verwerking", "Fout bij verwerking", false),
+  FAVORIET("favoriet", "Favoriete zaak", true),
+  ANDERS("", "Anders", false);
 
-  private final String code;
-  private final String oms;
+  private final String  code;
+  private final String  oms;
+  private final boolean user;
 
-  ZaakAttribuutType(String code, String oms) {
+  ZaakAttribuutType(String code, String oms, boolean user) {
     this.code = code;
     this.oms = oms;
+    this.user = user;
   }
 
   public static ZaakAttribuutType get(String code) {
@@ -55,6 +58,10 @@ public enum ZaakAttribuutType {
 
   public String getOms() {
     return oms;
+  }
+
+  public boolean isUser() {
+    return user;
   }
 
   public boolean is(ZaakAttribuutType type) {

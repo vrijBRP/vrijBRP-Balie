@@ -32,7 +32,6 @@ import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestGebruiker;
 import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestGebruikerVraag;
 import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestGebruikerZoekenAntwoord;
 import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestParameter;
-import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.parameter.Parameter;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
@@ -43,19 +42,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GbaRestGebruikerService extends GbaRestAbstractService {
 
-  public GbaRestGebruikerService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
-
   public GbaRestGebruikerZoekenAntwoord getGebruiker(GbaRestGebruikerVraag vraag) {
     GbaRestGebruikerZoekenAntwoord antwoord = new GbaRestGebruikerZoekenAntwoord();
 
     List<Gebruiker> gebruikerList = new ArrayList<>();
-    if (StringUtils.isNotBlank(vraag.getEmail())) {
-      gebruikerList.addAll(getServices().getGebruikerService().getGebruikersByEmail(vraag.getEmail()));
-    } else {
-      gebruikerList.add(getServices().getGebruikerService().getGebruikerByNaam(vraag.getGebruikersnaam(), false));
-    }
+    String gebruikersnaam = StringUtils.defaultIfBlank(vraag.getGebruikersnaam(), vraag.getEmail());
+    gebruikerList.add(getServices().getGebruikerService().getGebruikerByNaam(gebruikersnaam));
 
     for (Gebruiker gebruiker : gebruikerList.stream()
         .filter(Objects::nonNull)

@@ -289,6 +289,11 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
           za.setCodeGebruiker(along(bUitgebreid.getGebruiker().getValue()));
         }
 
+        // Behandelaar
+        if (bUitgebreid.getBehandelaar() != null && pos(bUitgebreid.getBehandelaar().getValue())) {
+          za.setCodeBehandelaar(along(bUitgebreid.getBehandelaar().getValue()));
+        }
+
         // Profielen
         if (bUitgebreid.getProfiel() != null && pos(bUitgebreid.getProfiel().getValue())) {
           za.setCodeProfiel(along(bUitgebreid.getProfiel().getValue()));

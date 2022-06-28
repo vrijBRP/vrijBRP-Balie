@@ -38,7 +38,7 @@ public class AddressConverter {
     a.setHnrT(v.getAddress().getHnrT());
     a.setPc(new FieldValue(v.getAddress().getPostalCode()));
     a.setStraat(new FieldValue(v.getAddress().getStreet()));
-    a.setWoonplaats(new FieldValue(v.getAddress().getResidenceCode(), v.getAddress().getResidenceName()));
+    a.setWoonplaats(new FieldValue(v.getAddress().getResidenceName()));
     a.setGemeente(new FieldValue(v.getAddress().getMunicipalityCode(), v.getAddress().getMunicipalityName()));
   }
 }

@@ -36,37 +36,39 @@ import nl.procura.validation.Bsn;
 
 public class ZaakArgumenten {
 
-  private boolean       all           = false;
-  private long          cUsr          = 0;
-  private long          anr           = 0;
-  private long          bsn           = 0;
-  private long          dInvoerVanaf  = -1;
-  private long          dInvoerTm     = -1;
-  private long          dMutatieVanaf = -1;
-  private long          dMutatieTm    = -1;
-  private long          dIngangVanaf  = -1;
-  private long          dIngangTm     = -1;
-  private long          dAfhaalVanaf  = -1;
-  private long          dAfhaalTm     = -1;
-  private long          dTerm         = 0;
-  private int           max           = 0;
-  private String        akteVolgnr    = "";
-  private ZaakSortering sortering     = ZaakSortering.DATUM_INGANG_OUD_NIEUW; // De oudste als eerste verwerken
+  private boolean       all               = false;
+  private boolean       zonderBehandelaar = false;
+  private long          anr               = 0;
+  private long          bsn               = 0;
+  private long          dInvoerVanaf      = -1;
+  private long          dInvoerTm         = -1;
+  private long          dMutatieVanaf     = -1;
+  private long          dMutatieTm        = -1;
+  private long          dIngangVanaf      = -1;
+  private long          dIngangTm         = -1;
+  private long          dAfhaalVanaf      = -1;
+  private long          dAfhaalTm         = -1;
+  private long          dTerm             = 0;
+  private int           max               = 0;
+  private String        akteVolgnr        = "";
+  private ZaakSortering sortering         = ZaakSortering.DATUM_INGANG_OUD_NIEUW; // De oudste als eerste verwerken
 
-  private ZaakIdType    zaakIdType      = ZaakIdType.ONBEKEND;
-  private Set<ZaakKey>  zaakKeys        = new HashSet<>();
-  private Set<ZaakType> typen           = new HashSet<>();
-  private HashSet       statussen       = new HashSet<>();
-  private HashSet       negeerStatussen = new HashSet<>();
+  private ZaakIdType          zaakIdType      = ZaakIdType.ONBEKEND;
+  private Set<ZaakKey>        zaakKeys        = new HashSet<>();
+  private Set<ZaakType>       typen           = new HashSet<>();
+  private Set<ZaakStatusType> statussen       = new HashSet<>();
+  private Set<ZaakStatusType> negeerStatussen = new HashSet<>();
 
   private List<String> bronnen               = new ArrayList<>();
   private List<String> leveranciers          = new ArrayList<>();
   private List<String> attributen            = new ArrayList<>();
   private List<String> ontbrekendeAttributen = new ArrayList<>();
 
-  private QueryListener listener      = null;
-  private long          codeGebruiker = 0;
-  private long          codeProfiel   = 0;
+  private QueryListener listener              = null;
+  private long          codeGebruiker         = 0;
+  private long          codeGebruikerFavoriet = 0;
+  private long          codeBehandelaar       = 0;
+  private long          codeProfiel           = 0;
 
   public ZaakArgumenten() {
   }
@@ -85,7 +87,7 @@ public class ZaakArgumenten {
     addTypen(typen);
   }
 
-  public ZaakArgumenten(Collection zaakKeys) {
+  public ZaakArgumenten(Collection<ZaakKey> zaakKeys) {
     getZaakKeys().addAll(zaakKeys);
   }
 
@@ -100,7 +102,7 @@ public class ZaakArgumenten {
   public ZaakArgumenten(ZaakArgumenten z) {
 
     all = z.isAll();
-    cUsr = z.getcUsr();
+    zonderBehandelaar = z.isZonderBehandelaar();
     anr = z.getAnr();
     bsn = z.getBsn();
     zaakIdType = z.getZaakIdType();
@@ -119,17 +121,20 @@ public class ZaakArgumenten {
     akteVolgnr = z.getAkteVolgnr();
     listener = z.getListener();
     codeGebruiker = z.getCodeGebruiker();
+    codeBehandelaar = z.getCodeBehandelaar();
+    codeGebruikerFavoriet = z.getCodeGebruikerFavoriet();
     codeProfiel = z.getCodeProfiel();
 
-    zaakKeys = new HashSet(z.getZaakKeys());
-    typen = new HashSet(z.getTypen());
-    statussen = new HashSet(z.getStatussen());
-    negeerStatussen = new HashSet(z.getNegeerStatussen());
+    zaakKeys = new HashSet<>(z.getZaakKeys());
+    typen = new HashSet<>(z.getTypen());
+    statussen = new HashSet<>(z.getStatussen());
+    negeerStatussen = new HashSet<>(z.getNegeerStatussen());
 
-    attributen = new ArrayList(z.getAttributen());
-    ontbrekendeAttributen = new ArrayList(z.getOntbrekendeAttributen());
-    bronnen = new ArrayList(z.getBronnen());
-    leveranciers = new ArrayList(z.getLeveranciers());
+    attributen = new ArrayList<>(z.getAttributen());
+    ontbrekendeAttributen = new ArrayList<>(z.getOntbrekendeAttributen());
+    bronnen = new ArrayList<>(z.getBronnen());
+    leveranciers = new ArrayList<>(z.getLeveranciers());
+    sortering = z.getSortering();
   }
 
   public ZaakArgumenten(ZaakArgumenten z, ZaakType type) {
@@ -234,6 +239,24 @@ public class ZaakArgumenten {
 
   public ZaakArgumenten setCodeGebruiker(long codeGebruiker) {
     this.codeGebruiker = codeGebruiker;
+    return this;
+  }
+
+  public long getCodeGebruikerFavoriet() {
+    return codeGebruikerFavoriet;
+  }
+
+  public ZaakArgumenten setCodeGebruikerFavoriet(long codeGebruikerFavoriet) {
+    this.codeGebruikerFavoriet = codeGebruikerFavoriet;
+    return this;
+  }
+
+  public long getCodeBehandelaar() {
+    return codeBehandelaar;
+  }
+
+  public ZaakArgumenten setCodeBehandelaar(long codeBehandelaar) {
+    this.codeBehandelaar = codeBehandelaar;
     return this;
   }
 
@@ -406,9 +429,7 @@ public class ZaakArgumenten {
   }
 
   public ZaakArgumenten setZaakIds(Set<String> zaakIds) {
-    for (String zaakId : zaakIds) {
-      addZaakKey(new ZaakKey(zaakId));
-    }
+    zaakIds.stream().map(ZaakKey::new).forEach(this::addZaakKey);
     return this;
   }
 
@@ -452,9 +473,17 @@ public class ZaakArgumenten {
     return this;
   }
 
-  public boolean isCorrect() {
+  public boolean isZonderBehandelaar() {
+    return zonderBehandelaar;
+  }
 
-    return isAll() || getZaakKeys().size() > 0 || pos(getAnr()) || pos(getBsn()) || pos(getcUsr()) ||
+  public ZaakArgumenten setZonderBehandelaar(boolean zonderBehandelaar) {
+    this.zonderBehandelaar = zonderBehandelaar;
+    return this;
+  }
+
+  public boolean isCorrect() {
+    return isAll() || getZaakKeys().size() > 0 || pos(getAnr()) || pos(getBsn()) ||
         pos(getdInvoerVanaf()) || pos(getdInvoerTm()) || pos(getDAfhaalVanaf()) || pos(getDAfhaalTm()) ||
         pos(getdMutatieVanaf()) || pos(getdMutatieTm()) || pos(getdIngangVanaf()) || pos(getdIngangTm()) ||
         fil(getAkteVolgnr()) || ((getStatussen() != null) && (getStatussen().size() > 0)) ||
@@ -467,7 +496,6 @@ public class ZaakArgumenten {
   }
 
   public ZaakArgumenten setNummer(String... nrs) {
-
     // Is er minimaal één anr of bsn gevuld?
     boolean filledNrs = false;
     for (String nr : nrs) {
@@ -497,15 +525,6 @@ public class ZaakArgumenten {
       // Hack om te zorgen dat er geen zoekresultaten terug worden gegeven.
       setZaakKey(new ZaakKey("Geen a-nummer / BSN"));
     }
-    return this;
-  }
-
-  private long getcUsr() {
-    return cUsr;
-  }
-
-  public ZaakArgumenten setcUsr(long cUsr) {
-    this.cUsr = cUsr;
     return this;
   }
 

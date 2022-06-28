@@ -57,7 +57,7 @@ public abstract class Page3KlapperForm1 extends Page3KlapperForm<Page3KlapperBea
 
     setColumnWidths(WIDTH_130, "");
     setCaption("Klapper");
-    setOrder(DATUM, SOORT, INVOERTYPE, DEEL, VNR);
+    setOrder(DATUM, SOORT, INVOERTYPE, DEEL, VNR, OPM);
 
     resetButton.setWidth("100px");
     checkButton.setWidth("100px");
@@ -68,6 +68,7 @@ public abstract class Page3KlapperForm1 extends Page3KlapperForm<Page3KlapperBea
     bean.setSoort(dossierAkte.getAkteRegistersoort());
     bean.setDeel(getDeel(dossierAkte));
     bean.setVnr(astr(dossierAkte.getVnr()));
+    bean.setOpm(astr(dossierAkte.getOpm()));
 
     if (!muteerbaar) { // Voorloopnullen toevoegen
       bean.setVnr(pad_left(bean.getVnr(), "0", 4));

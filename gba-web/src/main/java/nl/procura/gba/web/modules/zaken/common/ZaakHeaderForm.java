@@ -23,6 +23,7 @@ import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.common.ZaakType.REISDOCUMENT;
 import static nl.procura.gba.common.ZaakType.RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie.SELECT_ZAAKBEHANDELAARS;
 import static nl.procura.standard.Globalfunctions.*;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakFavButton;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.locatie.Locatie;
 import nl.procura.gba.web.services.beheer.sms.SmsService;
@@ -68,6 +70,7 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
   private static final String AANGEVER       = "aangever";
   private static final String IDENTIFICATIE  = "identificatie";
   private static final String AFHAAL_LOCATIE = "afhaalLocatie";
+  private static final String BEHANDELAAR    = "behandelaar";
   private static final String OPMERKINGEN    = "opmerkingen";
   private static final String COMMENTAAR     = "commentaar";
   private static final String GOEDKEURING    = "goedkeuring";
@@ -97,12 +100,12 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
         case VIER:
           order.addAll(
               asList(ZAAKTYPE, STATUS, INGEVOERD, BRON, INGANG, LEVERANCIER, AANGEVER, ID, IDENTIFICATIE,
-                  AFHAAL_LOCATIE, OPMERKINGEN, GOEDKEURING, COMMENTAAR));
+                  BEHANDELAAR, OPMERKINGEN, GOEDKEURING, COMMENTAAR));
           widths.addAll(asList("90px", "", "90px", "230px"));
           break;
 
         default: // Alleen voor uitreiken reisdocumenten
-          order.addAll(asList(ZAAKTYPE, ID, STATUS, INGEVOERD, INGANG, BRON, IDENTIFICATIE, AFHAAL_LOCATIE,
+          order.addAll(asList(ZAAKTYPE, ID, STATUS, INGEVOERD, INGANG, BRON, IDENTIFICATIE, BEHANDELAAR,
               LEVERANCIER));
           widths.addAll(asList("90px", "", "80px", "170px", "80px", "140px"));
           break;
@@ -139,8 +142,20 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     super.setColumn(column, field, property);
   }
 
-  public void updateBean() {
+  @Override
+  public void afterSetColumn(Column column, com.vaadin.ui.Field field, Property property) {
+    super.afterSetColumn(column, field, property);
 
+    if (property.is(BEHANDELAAR) && getApplication().isProfielActie(SELECT_ZAAKBEHANDELAARS)) {
+      column.addComponent(new BehandelaarButton(zaak, getApplication().getServices(), this::updateBean));
+    }
+
+    if (property.is(ZAAKTYPE)) {
+      column.addComponent(new ZaakFavButton(zaak, getApplication().getServices()));
+    }
+  }
+
+  public void updateBean() {
     ZaakHeaderBean b = new ZaakHeaderBean();
 
     String soort = (fil(zaak.getSoort()) ? " (" + zaak.getSoort() + ")" : "");
@@ -153,7 +168,9 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
 
     String datumTijdInvoer = zaak.getDatumTijdInvoer().toString() + gebr;
     String datumIngang = pos(
-        zaak.getDatumIngang().getLongDate()) ? zaak.getDatumIngang().toString() : "Onbekende datum";
+        zaak.getDatumIngang().getLongDate())
+            ? zaak.getDatumIngang().toString()
+            : "Onbekende datum";
 
     b.setZaaktype(zaak.getType().getOms() + soort);
     b.setStatus(ZaakUtils.getStatus(zaak.getStatus()));
@@ -193,11 +210,14 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
       b.setGoedkeuring(((GoedkeuringZaak) zaak).getGoedkeuringsType().getOms());
     }
 
+    b.setBehandelaar(zaak.getZaakHistorie().getBehandelaarHistorie().getBehandelaar()
+        .map(beh -> beh.getBehandelaar().getDescription())
+        .orElse("Geen"));
+
     setBean(b);
   }
 
   private String getAangever() {
-
     BsnFieldValue bsn = zaak.getBurgerServiceNummer();
     AnrFieldValue anr = zaak.getAnummer();
 
@@ -325,6 +345,9 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     @Field(caption = "Afhaallocatie")
     private String afhaalLocatie = "";
 
+    @Field(caption = "Behandelaar")
+    private String behandelaar = "";
+
     @Field(caption = "Opmerkingen")
     private String opmerkingen = "";
 
@@ -432,6 +455,14 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
 
     public void setZaaktype(String zaaktype) {
       this.zaaktype = zaaktype;
+    }
+
+    public String getBehandelaar() {
+      return behandelaar;
+    }
+
+    public void setBehandelaar(String behandelaar) {
+      this.behandelaar = behandelaar;
     }
   }
 }

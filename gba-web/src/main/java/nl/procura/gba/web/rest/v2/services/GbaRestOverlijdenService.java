@@ -51,7 +51,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.overlijden.gemeente.GbaRestOverlij
 import nl.procura.gba.web.rest.v2.model.zaken.overlijden.lijkvinding.GbaRestLijkvinding;
 import nl.procura.gba.web.rest.v2.model.zaken.overlijden.lijkvinding.GbaRestLijkvindingAangifte;
 import nl.procura.gba.web.rest.v2.model.zaken.overlijden.lijkvinding.GbaRestSchriftelijkeAangeverType;
-import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
 import nl.procura.gba.web.services.bs.algemeen.enums.CommunicatieType;
@@ -76,10 +76,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GbaRestOverlijdenService extends GbaRestAbstractService {
 
-  public GbaRestOverlijdenService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
-
+  @Transactional
   public Zaak addOverlijden(GbaRestZaak restZaak) {
     Dossier dossier;
     ZaakType zaakType = ZaakType.get(restZaak.getAlgemeen().getType().getCode());
@@ -105,6 +102,7 @@ public class GbaRestOverlijdenService extends GbaRestAbstractService {
     return dossier;
   }
 
+  @Transactional
   public void updateOverlijdenInGemeente(GbaRestZaak restZaak, Dossier dossier) {
     Validate.notNull(restZaak.getOverlijden(), "Element zaak is niet gezet");
     GbaRestOverlijdenInGemeente rest = restZaak.getOverlijden().getOverlijdenInGemeente();
@@ -125,6 +123,7 @@ public class GbaRestOverlijdenService extends GbaRestAbstractService {
     updateZaakDossier(dossier);
   }
 
+  @Transactional
   public void updateLijkvinding(GbaRestZaak restZaak, Dossier dossier) {
     Validate.notNull(restZaak.getOverlijden(), "Element overlijden is niet gezet");
     GbaRestLijkvinding rest = restZaak.getOverlijden().getLijkvinding();

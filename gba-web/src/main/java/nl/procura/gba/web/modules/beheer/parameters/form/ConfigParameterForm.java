@@ -47,8 +47,9 @@ public class ConfigParameterForm extends GbaForm<ConfiguratieBean> {
 
   @Override
   public void afterSetBean() {
-    getSnelkeuze()
-        .addListener((ValueChangeListener) event -> onChangeDatabase((DatabaseConfig) event.getProperty().getValue()));
+    getSnelkeuze().addListener((ValueChangeListener) event -> {
+      onChangeDatabase((DatabaseConfig) event.getProperty().getValue());
+    });
   }
 
   public void checkConnection() {

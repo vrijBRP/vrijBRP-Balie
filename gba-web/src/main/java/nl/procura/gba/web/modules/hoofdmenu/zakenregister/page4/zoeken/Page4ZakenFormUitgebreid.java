@@ -48,8 +48,8 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
   public Page4ZakenFormUitgebreid() {
 
     setCaption("Overig");
-    setOrder(ZAAKTYPES, ZAAKSTATUSSEN, GEBRUIKER, PROFIEL, INDICATIE);
-    setColumnWidths(WIDTH_130, "");
+    setOrder(ZAAKTYPES, GEBRUIKER, ZAAKSTATUSSEN, BEHANDELAAR, PROFIEL, INDICATIE);
+    setColumnWidths(WIDTH_130, "200px", WIDTH_130, "");
   }
 
   @Override
@@ -82,22 +82,19 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
   }
 
   private void addGebruikerContainer() {
-
-    GbaNativeSelect field = getField(GEBRUIKER, GbaNativeSelect.class);
-
-    if (field != null) {
+    GbaNativeSelect field1 = getField(GEBRUIKER, GbaNativeSelect.class);
+    GbaNativeSelect field2 = getField(BEHANDELAAR, GbaNativeSelect.class);
+    if (field1 != null) {
       if (gebruikerContainer == null) {
         gebruikerContainer = new GebruikerContainer(getServices().getGebruikerService().getGebruikers(false));
       }
-
-      field.setContainerDataSource(gebruikerContainer);
+      field1.setContainerDataSource(gebruikerContainer);
+      field2.setContainerDataSource(gebruikerContainer);
     }
   }
 
   private void addProfielContainer() {
-
     GbaNativeSelect field = getField(PROFIEL, GbaNativeSelect.class);
-
     if (field != null) {
       if (profielContainer == null) {
         profielContainer = new ProfielContainer(getServices().getProfielService().getProfielen());

@@ -20,18 +20,21 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page1;
 
 import static nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.PersonListRelationMutationHandler.getExisting;
+import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie.SELECT_PL_MUTATIONS_GOEDKEUREN;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.ui.Button;
 
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.personmutations.WindowPersonListRelationMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.page5.Page5PersonListMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.PersonListRelationMutation;
+import nl.procura.gba.web.modules.zaken.personmutationsindex.WindowMutationsIndex;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
@@ -41,15 +44,17 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class Page1PersonListMutations extends NormalPageTemplate {
 
-  private final Button                     buttonMutations = new Button("Openstaande mutaties");
-  private Page1PersonListMutationsTable    table           = null;
-  private List<PersonListRelationMutation> mutations       = new ArrayList<>();
+  private final Button                     buttonMutations     = new Button("Zaken gerelateerden");
+  private final Button                     buttonMutationIndex = new Button("Mutatie overzicht");
+  private Page1PersonListMutationsTable    table               = null;
+  private List<PersonListRelationMutation> mutations           = new ArrayList<>();
 
   public Page1PersonListMutations() {
     setSpacing(true);
     addButton(buttonNew);
     addButton(buttonDel);
-    addButton(buttonMutations, 1f);
+    addButton(buttonMutations);
+    addButton(buttonMutationIndex, 1f);
     addButton(buttonClose);
   }
 
@@ -73,8 +78,8 @@ public class Page1PersonListMutations extends NormalPageTemplate {
       PersonenWsService service = getServices().getPersonenWsService();
       String anr = service.getHuidige().getPersoon().getAnr().getVal();
       mutations = getExisting(anr, service::getPersoonslijst);
-
-      buttonMutations.setCaption("Openstaande mutaties (" + mutations.size() + ")");
+      buttonMutations.setCaption("Zaken gerelateerden (" + mutations.size() + ")");
+      buttonMutationIndex.setVisible(getApplication().isProfielActie(SELECT_PL_MUTATIONS_GOEDKEUREN));
 
     } else if (event.isEvent(AfterReturn.class)) {
       table.init();
@@ -87,6 +92,10 @@ public class Page1PersonListMutations extends NormalPageTemplate {
   public void handleEvent(Button button, int keyCode) {
     if (button == buttonMutations) {
       getParentWindow().addWindow(new WindowPersonListRelationMutations(mutations));
+    }
+    if (button == buttonMutationIndex) {
+      BasePLExt pl = getServices().getPersonenWsService().getHuidige();
+      getParentWindow().addWindow(new WindowMutationsIndex(pl));
     }
     super.handleEvent(button, keyCode);
   }

@@ -39,7 +39,7 @@ import nl.procura.validation.Postcode;
 
 public class RiskAnalysisRuleUtils {
 
-  private Services services;
+  private final Services services;
 
   public RiskAnalysisRuleUtils(Services services) {
     this.services = services;

@@ -34,6 +34,7 @@ import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.ContainerItem;
 import nl.procura.gba.web.modules.zaken.personmutations.page3.Page3PersonListMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.page4.Page4PersonListMutations;
+import nl.procura.gba.web.modules.zaken.personmutations.page7.Page7PersonListMutations;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
@@ -52,7 +53,8 @@ public class Page2PersonListMutations extends NormalPageTemplate {
   @Override
   protected void initPage() {
     addButton(buttonPrev);
-    addButton(buttonNext, 1f);
+    addButton(buttonNext);
+    addButton(buttonPrint, 1f);
     addButton(buttonClose);
 
     layout = new Page2PersonListMutationsLayout();
@@ -69,11 +71,15 @@ public class Page2PersonListMutations extends NormalPageTemplate {
    * Gets of new instanceof of PL
    */
   private BasePLExt getNewPL() {
-    PersonenWsService personenWsService = getApplication().getServices().getPersonenWsService();
-    personenWsService.getOpslag().clear();
-    BasePLExt pl = personenWsService.getPersoonslijst(personenWsService.getHuidige());
+    BasePLExt pl = getPL();
     clearCommitmentValues(pl);
     return pl;
+  }
+
+  private BasePLExt getPL() {
+    PersonenWsService personenWsService = getApplication().getServices().getPersonenWsService();
+    personenWsService.getOpslag().clear();
+    return personenWsService.getPersoonslijst(personenWsService.getHuidige());
   }
 
   /**
@@ -157,6 +163,17 @@ public class Page2PersonListMutations extends NormalPageTemplate {
   @Override
   public void onClose() {
     getWindow().closeWindow();
+  }
+
+  @Override
+  public void onPrint() {
+    getNavigation().goToPage(new Page7PersonListMutations(toPrintData()));
+  }
+
+  private PersonListPrintData toPrintData() {
+    form.commit();
+    BasePLSet set = form.getSetValue().getItem();
+    return new PersonListPrintData(getPL(), set);
   }
 
   public Page2PersonListMutationsLayout getLayout() {

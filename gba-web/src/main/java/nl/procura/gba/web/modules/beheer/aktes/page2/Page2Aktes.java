@@ -30,6 +30,7 @@ import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.beheer.aktes.page3.Page3Aktes;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteCategorie;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteDeel;
+import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -167,6 +168,7 @@ public class Page2Aktes extends NormalPageTemplate {
       addColumn("Omschrijving");
       addColumn("Min.", 40);
       addColumn("Max.", 40);
+      addColumn("Einddatum", 100);
 
       super.setColumns();
     }
@@ -185,6 +187,7 @@ public class Page2Aktes extends NormalPageTemplate {
         r.addValue(deel.getOmschrijving());
         r.addValue(deel.getMin());
         r.addValue(deel.getMax());
+        r.addValue(deel.getdEnd() != null ? new ProcuraDate(deel.getdEnd()).getFormatDate() : null);
       }
 
       super.setRecords();

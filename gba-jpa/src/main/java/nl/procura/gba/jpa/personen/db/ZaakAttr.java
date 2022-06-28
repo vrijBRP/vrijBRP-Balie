@@ -32,8 +32,11 @@ public class ZaakAttr extends BaseEntity {
   @EmbeddedId
   private ZaakAttrPK id;
 
-  @Column()
+  @Column
   private String oms;
+
+  @Column
+  private String waarde;
 
   public ZaakAttr() {
   }
@@ -53,5 +56,13 @@ public class ZaakAttr extends BaseEntity {
 
   public void setOms(String oms) {
     this.oms = oms;
+  }
+
+  public String getWaarde() {
+    return waarde;
+  }
+
+  public void setWaarde(String waarde) {
+    this.waarde = waarde;
   }
 }

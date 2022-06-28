@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.beheer.parameters.form;
 
+import static nl.procura.commons.elements.codegeneration.GenerateReflectionUtils.getNewInstanceof;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
@@ -39,6 +40,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.parameter.ParameterType;
 import nl.procura.gba.web.services.beheer.parameter.ParameterValidator;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
+import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterValueConverter;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Immediate;
@@ -88,9 +90,7 @@ public class DatabaseParameterForm extends GbaForm<ParameterBean> {
   }
 
   public void save(long cUsr, long cProfile) {
-
     commit();
-
     validateAndSaveParameters(cUsr, cProfile);
   }
 
@@ -136,9 +136,7 @@ public class DatabaseParameterForm extends GbaForm<ParameterBean> {
   }
 
   private Collection<?> getFilteredOrderFromAnnotations(Class<?> beanClass) {
-
     Collection<?> propertyIds = getOrderFromAnnotations(beanClass);
-
     List<String> result = new ArrayList<>();
 
     for (Object propertyId : propertyIds) {
@@ -162,12 +160,18 @@ public class DatabaseParameterForm extends GbaForm<ParameterBean> {
   }
 
   private Collection<?> getOrderFromAnnotations(Class<?> beanClass) {
-
     List<Object> propertyIds = BeanAnnotationUtil.getPropertyIdsForAnnotatedFields(beanClass);
-
     propertyIds.sort(new PositionComparator(beanClass));
-
     return propertyIds;
+  }
+
+  private ParameterValueConverter getParameterValueConverter(String id) {
+    try {
+      Field field = getBean().getClass().getDeclaredField(id);
+      return field.getAnnotation(ParameterValueConverter.class);
+    } catch (SecurityException | NoSuchFieldException e) {
+      throw new ProException(PROGRAMMING, ERROR, "Fout bij opvragen annotatie", e);
+    }
   }
 
   private ParameterAnnotation getParameterAnnotation(String id) {
@@ -207,20 +211,24 @@ public class DatabaseParameterForm extends GbaForm<ParameterBean> {
     ParameterValidator parameterValidator = getParameterValidator();
 
     Map<ParameterType, String> map = new HashMap<>();
-
     for (Object fieldId : getItemPropertyIds()) {
       ParameterType type = getParameterAnnotation(astr(fieldId)).value();
-      String value = astr(getField(fieldId).getValue());
-      map.put(type, value);
+      ParameterValueConverter converter = getParameterValueConverter(astr(fieldId));
+      Object value = getField(fieldId).getValue();
+      if (converter != null) {
+        map.put(type, astr(getNewInstanceof(converter.toDB()).apply(value)));
+      } else {
+        map.put(type, astr(value));
+      }
     }
 
-    for (final Entry<ParameterType, String> entry : map.entrySet()) {
+    for (
 
+    final Entry<ParameterType, String> entry : map.entrySet()) {
       final ParameterType type = entry.getKey();
       final String val = entry.getValue();
 
       if (parameterValidator != null) {
-
         String warning = "";
         String cause = "";
 

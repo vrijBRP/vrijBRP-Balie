@@ -88,6 +88,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_ZAKEN, GROUP_DIENSTEN, true, DatabaseParameterLayout.class);
     addTreeItem(GROUP_ZAKEN_ALGEMEEN, GROUP_ZAKEN, false, ZakenStatusParametersLayout.class);
     addTreeItem(GROUP_ZAKEN_STATUS, GROUP_ZAKEN, false, ZakenStatusParametersLayout.class);
+    addTreeItem(GROUP_ZAKEN_BEHANDELEN, GROUP_ZAKEN, false, ZakenBehandelingParametersLayout.class);
     addTreeItem(GROUP_ZAKEN_DMS, GROUP_ZAKEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_ZAKEN_DMS_TYPES, GROUP_ZAKEN, false, ZakenDmsParametersLayout.class);
     addTreeItem(GROUP_ZOEKEN, GROUP_DIENSTEN, true, DatabaseParameterLayout.class);

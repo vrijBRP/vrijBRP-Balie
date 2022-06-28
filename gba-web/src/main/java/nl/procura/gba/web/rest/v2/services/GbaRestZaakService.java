@@ -37,7 +37,6 @@ import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.rest.v2.model.zaken.*;
 import nl.procura.gba.web.rest.v2.model.zaken.base.*;
-import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.zaken.algemeen.*;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuut;
@@ -50,10 +49,6 @@ import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.standard.exceptions.ProException;
 
 public class GbaRestZaakService extends GbaRestAbstractService {
-
-  public GbaRestZaakService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
 
   public GbaRestZaak getByZaakId(String zaakId) {
     return toGbaRestCompleteZaak(getZaakByZaakId(zaakId));

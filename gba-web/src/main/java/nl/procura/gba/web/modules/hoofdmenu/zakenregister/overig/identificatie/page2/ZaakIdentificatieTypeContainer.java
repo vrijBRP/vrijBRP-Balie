@@ -25,7 +25,6 @@ import nl.procura.vaadin.component.container.ArrayListContainer;
 public class ZaakIdentificatieTypeContainer extends ArrayListContainer {
 
   public ZaakIdentificatieTypeContainer() {
-    addItem(ZaakIdType.GEMEENTE);
     addItem(ZaakIdType.ZAAKSYSTEEM);
   }
 }

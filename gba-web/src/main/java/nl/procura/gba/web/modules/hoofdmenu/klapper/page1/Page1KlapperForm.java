@@ -22,7 +22,6 @@ package nl.procura.gba.web.modules.hoofdmenu.klapper.page1;
 import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.*;
 import static nl.procura.standard.Globalfunctions.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.vaadin.event.FieldEvents.TextChangeListener;
@@ -31,6 +30,7 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 
 import nl.procura.gba.web.application.GbaApplication;
+import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.beheer.aktes.page3.AkteRegistersoortContainer;
@@ -49,10 +49,11 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
   public Page1KlapperForm(GbaApplication application) {
     this.application = application;
 
-    setColumnWidths("80px", "200px", "90px", "300px", "130px", "");
+    setColumnWidths("80px", "200px", "130px", "200px", "140px", "");
     setCaption("Zoeken");
 
-    setOrder(JAAR_VAN, JAAR_TM, SOORT, BSN, VOLGORDE, DEEL, GESLACHTSNAAM, DATUM, NUMMER, INVOERTYPE);
+    setOrder(JAAR, SOORT, GESLACHTSNAAM, VOLGORDE, DEEL, VOORNAMEN,
+        DATUM_AKTE, DATUM_FEIT, NUMMER, GEBOORTEDATUM, INVOERTYPE, OPMERKING, BSN);
     setBean(new Page1KlapperBean());
   }
 
@@ -68,7 +69,8 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
     getDeelVeld().setDataSource(new DeelContainer(getSoort()));
     getDeelVeld().addListener((ValueChangeListener) this);
 
-    getDatumVeld().addListener((ValueChangeListener) this);
+    getDatumAkteVeld().addListener((ValueChangeListener) this);
+    getDatumFeitVeld().addListener((ValueChangeListener) this);
 
     getNummerVeld().setTextChangeEventMode(TextChangeEventMode.LAZY);
     getNummerVeld().setTextChangeTimeout(200);
@@ -80,16 +82,15 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
       update(za);
     });
 
-    getJaarVanVeld().setDataSource(new JaarContainer(application));
-    getJaarVanVeld().addListener((ValueChangeListener) this);
-    getJaarVanVeld().setValue(toBigDecimal(new ProcuraDate().getYear()));
-
-    getJaarTmVeld().setDataSource(new JaarContainer(application));
-    getJaarTmVeld().addListener((ValueChangeListener) this);
-    getJaarTmVeld().setValue(toBigDecimal(new ProcuraDate().getYear()));
+    getJaarVeld().setDataSource(new JaarContainer(application));
+    getJaarVeld().addListener((ValueChangeListener) this);
+    getJaarVeld().setValue(toBigDecimal(new ProcuraDate().getYear()));
 
     getBsnVeld().addListener((ValueChangeListener) this);
     getGeslachtsnaamVeld().addListener((ValueChangeListener) this);
+    getVoornamenVeld().addListener((ValueChangeListener) this);
+    getGeboorteDatumVeld().addListener((ValueChangeListener) this);
+    getOpmerkingVeld().addListener((ValueChangeListener) this);
 
     getVolgordeVeld().setDataSource(new VolgordeTypeContainer());
     getVolgordeVeld().addListener((ValueChangeListener) this);
@@ -108,12 +109,20 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
     return getField(BSN, BsnField.class);
   }
 
-  public long getDatum() {
-    return along(new ProcuraDate(astr(getDatumVeld().getValue())).getSystemDate());
+  public long getDatumFeit() {
+    return along(new ProcuraDate(astr(getDatumFeitVeld().getValue())).getSystemDate());
   }
 
-  public DatumVeld getDatumVeld() {
-    return getField(DATUM, DatumVeld.class);
+  public DatumVeld getDatumFeitVeld() {
+    return getField(DATUM_FEIT, DatumVeld.class);
+  }
+
+  public long getDatumAkte() {
+    return along(new ProcuraDate(astr(getDatumAkteVeld().getValue())).getSystemDate());
+  }
+
+  public DatumVeld getDatumAkteVeld() {
+    return getField(DATUM_AKTE, DatumVeld.class);
   }
 
   public DossierAkteDeel getDeel() {
@@ -132,6 +141,30 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
     return getField(GESLACHTSNAAM, TextField.class);
   }
 
+  public String getVoornamen() {
+    return astr(getVoornamenVeld().getValue());
+  }
+
+  public TextField getVoornamenVeld() {
+    return getField(VOORNAMEN, TextField.class);
+  }
+
+  public long getGeboorteDatum() {
+    return along(new ProcuraDate(astr(getGeboorteDatumVeld().getValue())).getSystemDate());
+  }
+
+  public GbaDateField getGeboorteDatumVeld() {
+    return getField(GEBOORTEDATUM, GbaDateField.class);
+  }
+
+  public String getOpmerking() {
+    return astr(getField(OPMERKING).getValue());
+  }
+
+  public TextField getOpmerkingVeld() {
+    return getField(OPMERKING, TextField.class);
+  }
+
   public DossierAkteInvoerType getInvoerType() {
     return (DossierAkteInvoerType) getInvoerVeld().getValue();
   }
@@ -140,20 +173,12 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
     return getField(INVOERTYPE, GbaNativeSelect.class);
   }
 
-  public long getJaarTm() {
-    return along(getJaarTmVeld().getValue());
+  public long getJaar() {
+    return along(getJaarVeld().getValue());
   }
 
-  public GbaNativeSelect getJaarTmVeld() {
-    return getField(JAAR_TM, GbaNativeSelect.class);
-  }
-
-  public long getJaarVan() {
-    return along(getJaarVanVeld().getValue());
-  }
-
-  public GbaNativeSelect getJaarVanVeld() {
-    return getField(JAAR_VAN, GbaNativeSelect.class);
+  public GbaNativeSelect getJaarVeld() {
+    return getField(JAAR, GbaNativeSelect.class);
   }
 
   public long getNummer() {
@@ -186,11 +211,9 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
 
   @Override
   public void setColumn(Column column, Field field, Property property) {
-
-    if (property.is(JAAR_TM)) {
+    if (property.is(DATUM_FEIT)) {
       column.setAppend(true);
     }
-
     super.setColumn(column, field, property);
   }
 
@@ -204,25 +227,25 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
     }
 
     update(getZoekargumenten());
-
     super.valueChange(event);
   }
 
   private KlapperZoekargumenten getZoekargumenten() {
-
     KlapperZoekargumenten za = new KlapperZoekargumenten();
-
-    za.setJaarVan(getJaarVan());
-    za.setJaarTm(getJaarTm());
-    za.setDatum(getDatum());
+    za.setJaar(getJaar());
+    za.setDatumAkte(getDatumAkte());
+    za.setDatumFeit(getDatumFeit());
     za.setInvoerType(getInvoerType());
     za.getSoorten().add(getSoort());
     za.setDeel(getDeel());
     za.setNummer(getNummer());
     za.setGeslachtsnaam(getGeslachtsnaam());
+    za.setVoornamen(getVoornamen());
+    za.setGeboortedatum(getGeboorteDatum());
+    za.setOpmerking(getOpmerking());
     za.setBsn(getBsn());
     za.setVolgorde(getVolgorde());
-
+    za.setLimit(pos(getJaar()) ? -1 : 5000);
     return za;
   }
 
@@ -238,9 +261,7 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
   public class DeelContainer extends ArrayListContainer {
 
     public DeelContainer(DossierAkteRegistersoort soort) {
-
       if (soort != null) {
-
         AkteService aktes = application.getServices().getAkteService();
         List<DossierAkteDeel> registerDelen = aktes.getAkteRegisterDelen(soort.getCode());
 
@@ -254,9 +275,7 @@ public abstract class Page1KlapperForm extends GbaForm<Page1KlapperBean> {
   public class JaarContainer extends ArrayListContainer {
 
     public JaarContainer(GbaApplication application) {
-      for (BigDecimal jaar : application.getServices().getAkteService().getJaren()) {
-        addItem(jaar);
-      }
+      application.getServices().getAkteService().getJaren().forEach(this::addItem);
     }
   }
 

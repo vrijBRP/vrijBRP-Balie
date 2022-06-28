@@ -75,9 +75,9 @@ public class Page1WoningkaartTable extends GbaTable {
       r.addValue(i);
       r.addValue(dIn);
       r.addValue(dEnd);
-      r.addValue(naam);
       r.addValue(geslacht);
       r.addValue(wkPersoon.getDatum_geboren().getDescr());
+      r.addValue(naam);
     }
 
     reloadRecords();
@@ -110,9 +110,9 @@ public class Page1WoningkaartTable extends GbaTable {
     addColumn("Nr.", 50);
     addColumn("Datum ingang", 90);
     addColumn("Datum einde", 90);
-    addColumn("Persoon").setUseHTML(true);
     addColumn("Geslacht", 90);
     addColumn("Geboren", 90);
+    addColumn("Naam").setUseHTML(true);
 
     super.setColumns();
   }

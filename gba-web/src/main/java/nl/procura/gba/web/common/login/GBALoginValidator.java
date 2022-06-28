@@ -82,19 +82,22 @@ public class GBALoginValidator extends CookieLoginValidator {
 
   @Override
   public ErrorMessage validate(Credentials credentials) {
+    HttpServletRequest request = getApplication().getHttpRequest();
+    String remoteAddress = request.getRemoteAddr().trim();
     GebruikerService gebruikerService = getApplication().getServices().getGebruikerService();
     try {
       Gebruiker gebruiker = getCredentialsFromHub()
-          .map(creds -> gebruikerService.getGebruikerByEmail(creds.getUsername()))
+          .map(creds -> gebruikerService.getGebruikerByNaam(creds.getUsername()))
+          .map(g -> gebruikerService.addToLog("SSO Portaal",
+              remoteAddress, credentials, g))
           .orElse(null);
 
       if (gebruiker == null) {
-        HttpServletRequest request = getApplication().getHttpRequest();
-        String remoteAddress = request.getRemoteAddr().trim();
         if (ticketGebruiker != null) {
-          gebruiker = gebruikerService.getGebruikerByNaam(ticketGebruiker.getGebruikersnaam(), false);
+          gebruiker = gebruikerService.getGebruikerByNaam(ticketGebruiker.getGebruikersnaam());
         } else {
-          gebruiker = gebruikerService.getGebruikerByCredentials(getBrowser(), remoteAddress, credentials, false);
+          gebruiker = gebruikerService.getGebruikerByCredentials(getBrowser(),
+              remoteAddress, credentials, false);
         }
       }
 
@@ -152,8 +155,7 @@ public class GBALoginValidator extends CookieLoginValidator {
         getApplication().handleException(getApplication().getLoginWindow(), exception);
 
       } else if (link.getLinkType() == PersonenLinkType.WACHTWOORD_RESET) {
-        Gebruiker gebruiker = gebruikers.getGebruikerByNaam(
-            link.getProperty(PersonenLinkProperty.GEBRUIKER.getCode()), false);
+        Gebruiker gebruiker = gebruikers.getGebruikerByNaam(link.getProperty(PersonenLinkProperty.GEBRUIKER.getCode()));
 
         if (gebruiker != null) {
           wijzigWachtwoord(new PasswordExpired(gebruiker, link, gebruikers, links));

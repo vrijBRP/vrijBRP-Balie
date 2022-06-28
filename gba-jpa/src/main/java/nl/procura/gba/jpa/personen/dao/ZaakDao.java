@@ -20,17 +20,19 @@
 package nl.procura.gba.jpa.personen.dao;
 
 import static nl.procura.standard.Globalfunctions.*;
+import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 import java.util.*;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
 
+import nl.procura.gba.jpa.personen.db.ZaakUsr_;
+import org.apache.commons.lang3.BooleanUtils;
+
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakType;
-import nl.procura.gba.jpa.personen.db.IndVerwerkt;
-import nl.procura.gba.jpa.personen.db.ZaakAttr;
-import nl.procura.gba.jpa.personen.db.ZaakId;
+import nl.procura.gba.jpa.personen.db.*;
 import nl.procura.gba.jpa.personen.utils.CriteriaWrapper;
 import nl.procura.gba.jpa.personen.utils.GbaDaoUtils;
 
@@ -43,6 +45,8 @@ public class ZaakDao extends GenericDao {
   public static final String  NIET_IND_VERWERKT = "NietIndVerwerkt";
   public static final String  USR               = "usr";
   public static final String  C_USR             = "cUsr";
+  public static final String  C_USR_TOEK        = "usrToek";
+  public static final String  C_USR_FAV         = "usrFav";
   public static final String  C_PROFILE         = "cProfile";
   public static final String  PROFILES          = "profiles";
   public static final String  BRONNEN           = "bronnen";
@@ -50,6 +54,7 @@ public class ZaakDao extends GenericDao {
   public static final String  LEVERANCIERS      = "leveranciers";
   public static final String  D_END_TERMIJN     = "dEndTermijn";
   public static final String  ATTRIBUTEN        = "attributen";
+  public static final String  NIEUWE_ZAAK       = "nieuweZaak";
   public static final String  ONTB_ATTRIBUTEN   = "ontbAttributen";
   public static final String  ID                = "id";
   public static final String  D_INVOER_VANAF    = "dInvoerFrom";
@@ -63,15 +68,22 @@ public class ZaakDao extends GenericDao {
   private static final String ZAAK_ATTR         = "zaakAttr";
   private static final String BRON              = "bron";
 
-  protected static void getUsr(String cUsr, List<Predicate> where, Root table, CriteriaBuilder builder,
+  protected static void getAttributes(
+      String cUsr, CriteriaQuery<?> query,
+      List<Predicate> where,
+      Root table,
+      CriteriaBuilder builder,
       ConditionalMap map) {
-
-    if (map.containsKey(C_USR)) {
-      where.add(builder.equal(table.get(cUsr).get(C_USR), map.get(C_USR)));
-    }
+    getMutDate(where, table, query, builder, map);
+    getUsr(cUsr, where, table, builder, map);
+    getProfile(cUsr, where, table, builder, map);
+    getAttribute(query, where, table, builder, map);
+    getZaakIdType(query, where, table, builder, map);
+    getBron(where, table, builder, map);
+    getLeveranciers(where, table, builder, map);
   }
 
-  protected static void getMutDate(List<Predicate> where, Root table, CriteriaQuery query, CriteriaBuilder builder,
+  private static void getMutDate(List<Predicate> where, Root table, CriteriaQuery query, CriteriaBuilder builder,
       ConditionalMap map) {
 
     if (map.containsKey(D_MUT_VANAF) || map.containsKey(D_MUT_TM)) {
@@ -93,7 +105,15 @@ public class ZaakDao extends GenericDao {
     }
   }
 
-  protected static void getProfile(String cUsr, List<Predicate> where, Root table, CriteriaBuilder builder,
+  private static void getUsr(String cUsr, List<Predicate> where, Root table, CriteriaBuilder builder,
+      ConditionalMap map) {
+
+    if (map.containsKey(C_USR)) {
+      where.add(builder.equal(table.get(cUsr).get(C_USR), map.get(C_USR)));
+    }
+  }
+
+  private static void getProfile(String cUsr, List<Predicate> where, Root table, CriteriaBuilder builder,
       ConditionalMap map) {
 
     if (map.containsKey(C_PROFILE)) {
@@ -101,7 +121,7 @@ public class ZaakDao extends GenericDao {
     }
   }
 
-  protected static void getAttribute(CriteriaQuery<?> q, List<Predicate> w, Root table, CriteriaBuilder builder,
+  private static void getAttribute(CriteriaQuery<?> q, List<Predicate> w, Root table, CriteriaBuilder builder,
       ConditionalMap map) {
 
     if (map.containsKey(ATTRIBUTEN)) {
@@ -120,9 +140,39 @@ public class ZaakDao extends GenericDao {
       w.add(builder.in(table.get(ZAAK_ID)).value(zaakAttrQuery).not());
     }
 
-    getBron(w, table, builder, map);
-    getLeveranciers(w, table, builder, map);
-    getZaakIdType(q, w, table, builder, map);
+    if (BooleanUtils.toBoolean(astr(map.get(NIEUWE_ZAAK)))) {
+      Subquery<ZaakUsr> zaakUsrSubquery = q.subquery(ZaakUsr.class);
+      Root zaakUsr = q.from(ZaakUsr.class);
+      zaakUsrSubquery.select(zaakUsr.get(ZAAK_ID));
+      w.add(builder.in(table.get(ZAAK_ID)).value(zaakUsrSubquery).not());
+    }
+
+    if (map.containsKey(C_USR_FAV)) {
+      Subquery<ZaakAttr> zaakAttrQuery = q.subquery(ZaakAttr.class);
+      Root zaakAttr = q.from(ZaakAttr.class);
+      zaakAttrQuery.select(zaakAttr.get(ID).get(ZAAK_ID));
+      zaakAttrQuery.where(builder.and(
+          builder.like(zaakAttr.get(ID).get(ZAAK_ATTR), "favoriet"),
+          builder.equal(zaakAttr.get(ID).get(C_USR), toLong(map.get(C_USR_FAV).toString()))));
+      w.add(builder.in(table.get(ZAAK_ID)).value(zaakAttrQuery));
+    }
+
+    if (map.containsKey(C_USR_TOEK)) {
+      Root zaakUsr = q.from(ZaakUsr.class);
+      Subquery<ZaakUsr> maxSubquery = q.subquery(ZaakUsr.class);
+      Root zaakUsrMax = q.from(ZaakUsr.class);
+      maxSubquery.select(builder.max(zaakUsrMax.get(ID)));
+      maxSubquery.where(builder.equal(zaakUsrMax.get(ZAAK_ID), zaakUsr.get(ZAAK_ID)));
+
+      Subquery<ZaakUsr> subquery = q.subquery(ZaakUsr.class);
+      subquery.select(zaakUsr.get(ZAAK_ID))
+          .where(builder.and(
+              zaakUsr.get(ZaakUsr_.USR_TOEK).get(C_USR)
+                  .in(toLong(map.get(C_USR_TOEK).toString()))),
+              builder.in(zaakUsr.get(ID)).value(maxSubquery));
+
+      w.add(builder.in(table.get(ZAAK_ID)).value(subquery));
+    }
   }
 
   protected static void getBron(List<Predicate> where, Root table, CriteriaBuilder builder, ConditionalMap map) {

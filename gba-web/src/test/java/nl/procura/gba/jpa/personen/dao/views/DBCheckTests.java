@@ -242,6 +242,7 @@ public class DBCheckTests {
     ZaakAttrPK pk = new ZaakAttrPK();
     pk.setZaakAttr(attr);
     pk.setZaakId(zaakId);
+    pk.setcUsr(0L);
     zaakAttr.setId(pk);
     zaakAttr.setOms(oms);
     em.persist(zaakAttr);

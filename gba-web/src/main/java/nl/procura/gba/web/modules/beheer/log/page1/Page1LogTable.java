@@ -38,9 +38,9 @@ public class Page1LogTable extends GbaTable {
 
     addColumn("Nr.", 50);
     addColumn("Datum/tijd", 150);
-    addColumn("Inlognaam", 110);
+    addColumn("Inlognaam", 200);
     addColumn("Gebruiker").setUseHTML(true);
-    addColumn("Applicatie", 120);
+    addColumn("Applicatie", 200);
     addColumn("IP-adres", 190);
 
     super.setColumns();

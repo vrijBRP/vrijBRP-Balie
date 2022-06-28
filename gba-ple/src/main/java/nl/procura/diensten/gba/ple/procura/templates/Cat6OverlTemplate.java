@@ -42,7 +42,7 @@ public class Cat6OverlTemplate extends PLETemplateProcura {
 
     addElem(GEMEENTE_DOC, overl.getGOntl());
     addElem(DATUM_DOC, overl.getDOntl());
-    addElem(BESCHRIJVING_DOC, overl.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, overl.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, overl.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, overl.getDBezwIn());

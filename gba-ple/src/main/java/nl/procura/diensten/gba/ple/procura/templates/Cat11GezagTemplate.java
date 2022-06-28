@@ -38,7 +38,7 @@ public class Cat11GezagTemplate extends PLETemplateProcura<AbstractGezag> {
 
     addElem(GEMEENTE_DOC, gezag.getGOntl());
     addElem(DATUM_DOC, gezag.getDOntl());
-    addElem(BESCHRIJVING_DOC, gezag.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, gezag.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, gezag.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, gezag.getDBezwIn());

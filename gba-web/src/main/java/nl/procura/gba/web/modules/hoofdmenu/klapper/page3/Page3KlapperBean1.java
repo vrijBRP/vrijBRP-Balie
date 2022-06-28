@@ -42,6 +42,7 @@ public class Page3KlapperBean1 implements Serializable {
   public static final String SOORT      = "soort";
   public static final String DEEL       = "deel";
   public static final String VNR        = "vnr";
+  public static final String OPM        = "opm";
 
   @Field(customTypeClass = GbaNativeSelect.class,
       required = true,
@@ -77,6 +78,11 @@ public class Page3KlapperBean1 implements Serializable {
       width = "80px")
   @TextField(maxLength = 4)
   private String vnr = "";
+
+  @Field(type = Field.FieldType.LABEL,
+      caption = "Opmerking",
+      width = "300px")
+  private String opm = "";
 
   public GbaDateFieldValue getDatum() {
     return datum;
@@ -116,5 +122,13 @@ public class Page3KlapperBean1 implements Serializable {
 
   public void setVnr(String vnr) {
     this.vnr = vnr;
+  }
+
+  public String getOpm() {
+    return opm;
+  }
+
+  public void setOpm(String opm) {
+    this.opm = opm;
   }
 }

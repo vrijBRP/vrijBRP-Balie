@@ -96,6 +96,10 @@ public final class TabellenServiceMock {
     tables.add(dutchTravelDocAuthorities);
 
     // tables with empty records so they won't be retrieved from an external service
+    TabelResultaat woonplaatsen = new TabelResultaat(GBATable.WOONPLAATS.getTableCode(), GBATable.WOONPLAATS.getDescr());
+    woonplaatsen.getRecords().add(new TabelRecord());
+    tables.add(woonplaatsen);
+
     TabelResultaat streets = new TabelResultaat(GBATable.STRAAT.getTableCode(), GBATable.STRAAT.getDescr());
     streets.getRecords().add(new TabelRecord());
     tables.add(streets);

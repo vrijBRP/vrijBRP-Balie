@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>nl.procura.gba</groupId>
     <artifactId>gba-parent</artifactId>
-    <version>1.28.1</version>
+    <version>1.29</version>
     <name>Proweb GBA - Parent</name>
 
     <developers>
@@ -43,14 +43,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javax.version>1.3</javax.version>
         <procura.commons.version>0.18.0</procura.commons.version>
-        <postgres.version>42.2.2</postgres.version>
+        <postgres.version>42.3.6</postgres.version>
         <oracle.version>19.3.0.0</oracle.version>
         <logging.version>1.0</logging.version>
         <jasypt.version>1.9.3</jasypt.version>
         <lambdaj.version>2.4</lambdaj.version>
         <guava.version>21.0</guava.version>
         <soap-utils.version>1.0.0</soap-utils.version>
-        <eclipselink.version>2.5.1</eclipselink.version>
+        <eclipselink.version>2.7.9</eclipselink.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <reflections.version>0.9.11</reflections.version>
         <lombok.version>1.18.12</lombok.version>
@@ -59,11 +59,11 @@
         <org.jvnet.jaxb2_commons.version>3.0</org.jvnet.jaxb2_commons.version>
         <pdfbox.version>2.0.20</pdfbox.version>
         <ootools.version>1.3.1</ootools.version>
-        <bsm.version>3.0.0</bsm.version>
-        <gba.bsm.version>1.11.2</gba.bsm.version>
+        <bsm.version>3.0.2</bsm.version>
+        <gba.bsm.version>1.11.11</gba.bsm.version>
         <javaee-web-api.version>6.0</javaee-web-api.version>
         <proweb-rest.version>1.0.0</proweb-rest.version>
-        <guice.version>4.1.0</guice.version>
+        <guice.version>5.1.0</guice.version>
         <quartz.version>2.2.1</quartz.version>
         <servlet.version>2.5</servlet.version>
         <validation-api.version>1.0.0.GA</validation-api.version>
@@ -122,7 +122,7 @@
         <micro.rest.version>2.2.3</micro.rest.version>
         <brp-inbox.version>1.2.2</brp-inbox.version>
         <sms-micro.version>1.2.0</sms-micro.version>
-        <raas-micro.version>1.3.1</raas-micro.version>
+        <raas-micro.version>1.3.2</raas-micro.version>
         <geo-micro.version>1.0.0</geo-micro.version>
 
         <gba.commons.version>1.0.9</gba.commons.version>

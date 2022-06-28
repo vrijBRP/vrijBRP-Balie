@@ -21,8 +21,11 @@ package nl.procura.gba.web.modules.hoofdmenu.klapper.page1;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
+import java.math.BigDecimal;
 
+import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
+import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteDeel;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort;
@@ -31,6 +34,7 @@ import nl.procura.vaadin.annotation.field.*;
 import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
+import nl.procura.vaadin.component.field.ProTextField;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 
@@ -41,40 +45,44 @@ import lombok.Data;
 public class Page1KlapperBean implements Serializable {
 
   public static final String INVOERTYPE    = "invoerType";
-  public static final String DATUM         = "datum";
-  public static final String JAAR_VAN      = "jaarVan";
-  public static final String JAAR_TM       = "jaarTm";
+  public static final String DATUM_FEIT    = "datumFeit";
+  public static final String DATUM_AKTE    = "datumAkte";
+  public static final String JAAR          = "jaar";
   public static final String SOORT         = "soort";
   public static final String DEEL          = "deel";
   public static final String NUMMER        = "nummer";
   public static final String BSN           = "bsn";
   public static final String GESLACHTSNAAM = "geslachtsnaam";
+  public static final String VOORNAMEN     = "voornamen";
+  public static final String GEBOORTEDATUM = "geboortedatum";
   public static final String VOLGORDE      = "volgorde";
+  public static final String OPMERKING     = "opmerking";
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Type",
-      width = "150px")
+      width = "170px")
   @Immediate
   private DossierAkteInvoerType invoerType = null;
 
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Periode t/m",
-      width = "87px")
-  @Select(nullSelectionAllowed = false)
+      caption = "Periode",
+      width = "170px")
   @Immediate
-  private long jaarVan = 0;
-
-  @Field(customTypeClass = GbaNativeSelect.class,
-      width = "87px")
-  @Select(nullSelectionAllowed = false)
-  @Immediate
-  private long jaarTm = 0;
+  private BigDecimal jaar;
 
   @Field(customTypeClass = DatumVeld.class,
-      caption = "Datum",
-      width = "180px")
+      caption = "Datums",
+      width = "80px")
   @Immediate
-  private DateFieldValue datum = null;
+  @InputPrompt(text = "Feit")
+  private DateFieldValue datumFeit = null;
+
+  @Field(customTypeClass = DatumVeld.class,
+      caption = "Datums",
+      width = "85px")
+  @Immediate
+  @InputPrompt(text = "Akte")
+  private DateFieldValue datumAkte = null;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Registersoort",
@@ -97,21 +105,40 @@ public class Page1KlapperBean implements Serializable {
 
   @Field(customTypeClass = BsnField.class,
       caption = "Burgerservicenummer",
-      required = true,
-      width = "150px")
+      width = "170px")
   @Immediate
   private BsnFieldValue bsn = null;
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = ProTextField.class,
       caption = "Geslachtsnaam",
-      required = true,
-      width = "150px")
+      width = "170px")
   @Immediate
-  private BsnFieldValue geslachtsnaam = null;
+  @TextField(nullRepresentation = "")
+  private String geslachtsnaam = null;
+
+  @Field(customTypeClass = ProTextField.class,
+      caption = "Voornamen",
+      width = "170px")
+  @Immediate
+  @TextField(nullRepresentation = "")
+  private String voornamen = null;
+
+  @Field(customTypeClass = GbaDateField.class,
+      caption = "Geboortedatum",
+      width = "170px")
+  @Immediate
+  private GbaDateFieldValue geboortedatum = null;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Volgorde",
-      width = "180px")
+      width = "170px")
   @Immediate
   private KlapperVolgordeType volgorde = KlapperVolgordeType.DATUM_OPLOPEND;
+
+  @Field(customTypeClass = ProTextField.class,
+      caption = "Opmerking",
+      width = "170px")
+  @Immediate
+  @TextField(nullRepresentation = "")
+  private String opmerking = null;
 }

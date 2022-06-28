@@ -28,17 +28,12 @@ import org.apache.commons.lang3.StringUtils;
 import nl.procura.gba.web.rest.v2.model.base.HeeftContactgegevens;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.GbaRestContactgegevens;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.GbaRestTelefoonBuitenland;
-import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
 import nl.procura.sms.rest.DutchPhoneNumberParser;
 import nl.procura.validation.Bsn;
 
 public class GbaRestContactService extends GbaRestAbstractService {
-
-  public GbaRestContactService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
 
   public void setContactGegevens(HeeftContactgegevens aangever) {
     Bsn bsn = new Bsn(aangever.getBsn().toString());

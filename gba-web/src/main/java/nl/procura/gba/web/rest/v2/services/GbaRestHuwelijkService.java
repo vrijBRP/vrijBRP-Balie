@@ -39,7 +39,7 @@ import nl.procura.gba.web.modules.bs.huwelijk.processen.HuwelijkProcessen;
 import nl.procura.gba.web.rest.v2.model.base.HeeftContactgegevens;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
 import nl.procura.gba.web.rest.v2.model.zaken.huwelijk.*;
-import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
 import nl.procura.gba.web.services.bs.algemeen.enums.SoortVerbintenis;
@@ -64,10 +64,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GbaRestHuwelijkService extends GbaRestAbstractService {
 
-  public GbaRestHuwelijkService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
-
+  @Transactional
   public Zaak addHuwelijk(GbaRestZaak restZaak) {
     Dossier dossier = (Dossier) getHuwelijkService().getNewZaak();
     getRestServices().getZaakService().addGenericZaak(restZaak, dossier);
@@ -80,6 +77,7 @@ public class GbaRestHuwelijkService extends GbaRestAbstractService {
     return dossier;
   }
 
+  @Transactional
   public Zaak updateHuwelijk(GbaRestZaak restZaak, Dossier dossier) {
     DossierHuwelijk huwelijk = (DossierHuwelijk) dossier.getZaakDossier();
     GbaRestHuwelijk restHuwelijk = restZaak.getHuwelijk();

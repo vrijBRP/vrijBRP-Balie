@@ -20,14 +20,9 @@
 package nl.procura.gba.web.rest.v2.services;
 
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakId;
-import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatie;
 
 public class GbaRestZaaksysteemService extends GbaRestAbstractService {
-
-  public GbaRestZaaksysteemService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
 
   public GbaRestZaakId genereerZaakId() {
     ZaakIdentificatie zaakId = getServices().getZaakDmsService().genereerZaakId();

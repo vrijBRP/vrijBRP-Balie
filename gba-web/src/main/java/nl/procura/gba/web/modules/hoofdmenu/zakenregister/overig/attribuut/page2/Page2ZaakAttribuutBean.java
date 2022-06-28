@@ -38,6 +38,7 @@ public class Page2ZaakAttribuutBean implements Serializable {
 
   public static final String TYPE      = "type";
   public static final String ATTRIBUUT = "attribuut";
+  public static final String WAARDE    = "waarde";
 
   @Field(customTypeClass = ProNativeSelect.class,
       caption = "Attribuut",
@@ -54,4 +55,11 @@ public class Page2ZaakAttribuutBean implements Serializable {
   @TextField(maxLength = 50,
       nullRepresentation = "")
   private String attribuut = "";
+
+  @Field(customTypeClass = GbaTextField.class,
+      caption = "Waarde",
+      width = "400px")
+  @TextField(maxLength = 50,
+      nullRepresentation = "")
+  private String waarde = "";
 }

@@ -250,4 +250,123 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet author="Procura" id="v1_28_17">
+        <comment>Add field opm (opmerking) to doss_akte</comment>
+        <addColumn tableName="doss_akte">
+            <column name="opm" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_18" dbms="postgresql">
+        <comment>Add unaccent extension</comment>
+        <sql>create extension if not exists unaccent</sql>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_19">
+        <comment>Add joined akte id</comment>
+        <addColumn tableName="doss_akte">
+            <column name="akte_groep_id" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_20">
+        <comment>Enddate akte_rd</comment>
+        <addColumn tableName="doss_akte_rd">
+            <column name="d_end" type="numeric" defaultValue="-1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_21">
+        <comment>Add value to zaak_attr</comment>
+        <addColumn tableName="zaak_attr">
+            <column name="waarde" type="VARCHAR(255)" defaultValue=""/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_22">
+        <comment>zaak_usr</comment>
+        <createTable remarks="Zaak/gebruiker" tableName="zaak_usr">
+            <column name="c_zaak_usr" type="numeric">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="zaak_usr_pk"/>
+            </column>
+            <column name="zaak_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_usr" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="c_usr_toek" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="d_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="t_in" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opm" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_23">
+        <createIndex indexName="zaak_usr_zaak_id_idx" tableName="zaak_usr">
+            <column name="zaak_id"/>
+        </createIndex>
+        <createIndex indexName="zaak_usr_c_usr_toek_idx" tableName="zaak_usr">
+            <column name="c_usr_toek"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_24">
+        <comment>Add bron,leverancier to pl_mut</comment>
+        <addColumn tableName="pl_mut">
+            <column name="bron" type="VARCHAR(255)" defaultValue="PROWEB Personen"/>
+            <column name="leverancier" type="VARCHAR(255)" defaultValue="PROCURA"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_25">
+        <comment>Add c_usr to zaak_attr</comment>
+        <addColumn tableName="zaak_attr">
+            <column name="c_usr" type="numeric" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_26">
+        <dropPrimaryKey tableName="zaak_attr" constraintName="zaak_attr_pkey"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_27">
+        <addPrimaryKey tableName="zaak_attr" columnNames="zaak_attr, zaak_id, c_usr" constraintName="zaak_attr_pkey"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_28">
+        <addForeignKeyConstraint baseColumnNames="c_usr"
+                                 baseTableName="zaak_attr"
+                                 constraintName="zaak_attr_usr_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="c_usr"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet author="Procura" id="v1_28_29" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from vog_prof_tab where vog_prof_tab = '97'
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            insert into vog_prof_tab (c_vog_prof_tab, vog_prof_tab, oms, d_in, d_end)
+            values ((select max(c_vog_prof_tab)+1 from vog_prof_tab), '97',
+                    'Beveiliging burgerluchtvaart / Civil aviation security', 20220201, -1)
+        </sql>
+    </changeSet>
 </databaseChangeLog>

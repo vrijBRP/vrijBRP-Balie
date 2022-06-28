@@ -41,6 +41,7 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
 
   protected final Button       buttonPrev   = new Button("Vorige (F1)");
   protected final Button       buttonNext   = new Button("Volgende (F2)");
+  protected final Button       buttonPrint  = new Button("Afdrukken (F3)");
   protected final Button       buttonSearch = new Button("Zoeken (Enter)");
   protected final Button       buttonReset  = new Button("Reset (F7)");
   protected final Button       buttonClose  = new Button("Sluiten (Esc)");
@@ -162,6 +163,8 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
       onNew();
     } else if (isKeyCode(button, keyCode, F3, buttonSearch)) {
       onSearch();
+    } else if (isKeyCode(button, keyCode, F3, buttonPrint)) {
+      onPrint();
     } else if (isKeyCode(button, keyCode, F9, buttonSave)) {
       onSave();
     } else if (isKeyCode(button, keyCode, F8, buttonDel)) {
@@ -200,6 +203,9 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
   }
 
   public void onSearch() {
+  }
+
+  public void onPrint(){
   }
 
   public void removeButton(Component... cs) {

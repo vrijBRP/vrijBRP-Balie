@@ -19,8 +19,14 @@
 
 package nl.procura.gba.common;
 
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static org.apache.commons.lang3.StringUtils.split;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum ZaakType {
 
@@ -87,13 +93,15 @@ public enum ZaakType {
     return types;
   }
 
+  public static List<ZaakType> getByCodes(String value) {
+    return Arrays.stream(split(astr(value), ","))
+        .map(val -> ZaakType.get(along(val)))
+        .filter(zt -> !zt.is(ONBEKEND))
+        .collect(Collectors.toList());
+  }
+
   public boolean is(ZaakType... zaakTypen) {
-    for (ZaakType type : zaakTypen) {
-      if (getCode() == type.getCode()) {
-        return true;
-      }
-    }
-    return false;
+    return Arrays.stream(zaakTypen).anyMatch(type -> getCode() == type.getCode());
   }
 
   @Override

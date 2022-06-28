@@ -19,138 +19,23 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page13;
 
-import java.util.ArrayList;
-import java.util.List;
+import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FOUT_BIJ_VERWERKING;
 
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-
-import nl.procura.gba.jpa.personen.dao.ZaakKey;
-import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
-import nl.procura.gba.web.components.layouts.tablefilter.sort.ZaakSortField;
-import nl.procura.gba.web.components.listeners.FieldChangeListener;
-import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterPage;
-import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page2.Page2ZakenOpties;
-import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page2.Page2ZakenTable;
-import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page3.Page3Zaken;
-import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.ZaakAttribuutPage;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
-import nl.procura.gba.web.services.zaken.algemeen.ZaakSortering;
-import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
-import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
-import nl.procura.gba.web.windows.home.navigatie.ZakenregisterAccordionTab;
-import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
-import nl.procura.vaadin.component.layout.page.pageEvents.LoadPage;
-import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.vaadin.functies.VaadinUtils;
+import nl.procura.vaadin.component.layout.info.InfoLayout;
 
-public class Page13Zaken extends ZakenregisterPage<Zaak> {
-
-  private final Button buttonReload = new Button("Herladen (F5)");
-
-  private Table            table         = null;
-  private Page2ZakenOpties opties        = null;
-  private List<ZaakKey>    zaakIds       = new ArrayList<>();
-  private ZaakSortering    zaakSortering = ZaakSortering.DATUM_INGANG_NIEUW_OUD;
+public class Page13Zaken extends ZaakAttribuutPage {
 
   public Page13Zaken() {
-    super(null, "Zakenregister - problemen");
-    setSpacing(true);
-    setHeight("450px");
+    super("Zakenregister - problemen",
+        new InfoLayout("", "Zaken met de indicatie 'fout bij verwerking'"));
   }
 
   @Override
-  public void event(PageEvent event) {
-
-    if (event.isEvent(InitPage.class)) {
-
-      table = new Table();
-      setInfo("", "Zaken met de indicatie 'fout bij verwerking'");
-      addExpandComponent(table);
-
-      buttonReload.addListener(this);
-      getMainbuttons().addComponent(buttonReload);
-
-      ZaakSortField sortField = new ZaakSortField();
-      sortField.addListener(new FieldChangeListener<ZaakSortering>() {
-
-        @Override
-        public void onChange(ZaakSortering value) {
-          Page13Zaken.this.zaakSortering = value;
-          onSearch();
-        }
-      });
-
-      Page13Zaken.this.zaakSortering = sortField.getValue();
-
-      GbaIndexedTableFilterLayout filterLayout = new GbaIndexedTableFilterLayout(table, sortField);
-      getMainbuttons().addComponent(filterLayout, 1);
-
-    } else if (event.isEvent(LoadPage.class)) {
-      onSearch();
-    }
-
-    opties = VaadinUtils.addOrReplaceComponent(getMainbuttons(), new Page2ZakenOpties(table));
-    getMainbuttons().setComponentAlignment(opties, Alignment.MIDDLE_LEFT);
-
-    super.event(event);
-  }
-
-  @Override
-  public void handleEvent(Button button, int keyCode) {
-
-    if (isKeyCode(button, keyCode, KeyCode.F5, buttonReload)) {
-      onSearch();
-    } else if (keyCode == KeyCode.F8) {
-      opties.delete();
-    }
-
-    super.handleEvent(button, keyCode);
-  }
-
-  @Override
-  public void onNextPage() {
-    VaadinUtils.getParent(table, ZakenregisterPage.class).getNavigation().goToPage(new Page3Zaken(table));
-    super.onNextPage();
-  }
-
-  @Override
-  public void onSearch() {
+  protected ZaakArgumenten getZaakArgumenten() {
     ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
-    zaakArgumenten.addAttributen(ZaakAttribuutType.FOUT_BIJ_VERWERKING.getCode());
-    zaakIds = getApplication().getServices().getZakenService().getZaakKeys(zaakArgumenten);
-    table.setSortering(zaakSortering);
-    table.init();
-    VaadinUtils.getChild(getWindow(), ZakenregisterAccordionTab.class).recountTree();
-    super.onSearch();
-  }
-
-  public class Table extends Page2ZakenTable {
-
-    private Table() {
-      setHeight("100%");
-    }
-
-    @Override
-    public void setRecords() {
-      for (ZaakKey zaakId : zaakIds) {
-        addRecord(zaakId).addValues(9);
-      }
-      super.setRecords();
-    }
-
-    @Override
-    protected void loadZaak(int nr, Record record, Zaak zaak) {
-      record.getValues().get(0).setValue(nr);
-      record.getValues().get(1).setValue(ZaakUtils.getTypeEnOmschrijving(zaak));
-      record.getValues().get(2).setValue(getIngevoerdDoor(zaak));
-      record.getValues().get(3).setValue(ZaakUtils.getIngevoerdDoorGebruiker(zaak));
-      record.getValues().get(4).setValue(getIngevoerdDoorProfielen(zaak));
-      record.getValues().get(5).setValue(zaak.getBron());
-      record.getValues().get(6).setValue(zaak.getLeverancier());
-      record.getValues().get(7).setValue(zaak.getDatumIngang());
-      record.getValues().get(8).setValue(zaak.getDatumTijdInvoer());
-    }
+    zaakArgumenten.addAttributen(FOUT_BIJ_VERWERKING.getCode());
+    return zaakArgumenten;
   }
 }

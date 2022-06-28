@@ -29,17 +29,23 @@ public enum UitvoerformaatType {
   PDF(OODocumentFormats.PDF, "pdf", "PDF"),
   ODT(OODocumentFormats.ODT, "odt", "OpenOffice"),
   DOC(OODocumentFormats.DOC, "doc", "MS Word"),
-  XLS(OODocumentFormats.XLS, "xls", "Excel"),
-  CSV(OODocumentFormats.CSV, "csv", "Comma separated values"),
+  CSV(OODocumentFormats.CSV, "csv", "Normale CSV", ','),
+  CSV_SEMICOLON(OODocumentFormats.CSV, "csv", "Excel CSV", ';'),
   DEF("def", "def", "Default");
 
-  private String id;
-  private String type;
-  private String oms;
+  private final String id;
+  private final String type;
+  private final String oms;
+  private final char   separator;
 
   UitvoerformaatType(String id, String type, String oms) {
+    this(id, type, oms, ',');
+  }
+
+  UitvoerformaatType(String id, String type, String oms, char separator) {
     this.id = id;
     this.type = type;
+    this.separator = separator;
     this.oms = oms;
   }
 
@@ -54,12 +60,16 @@ public enum UitvoerformaatType {
     return id;
   }
 
-  public String getType() {
+  public String getExt() {
     return type;
   }
 
   public String getOms() {
     return oms;
+  }
+
+  public char getSeparator() {
+    return separator;
   }
 
   @Override

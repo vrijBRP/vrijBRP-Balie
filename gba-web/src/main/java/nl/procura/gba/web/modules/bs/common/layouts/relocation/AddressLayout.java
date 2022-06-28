@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import nl.procura.vaadin.component.field.ProComboBox;
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Validator;
@@ -94,7 +95,7 @@ public class AddressLayout extends VLayout {
       this.address.setHouseNumberT(address.getHnrT());
       this.address.setHouseNumberA(new FieldValue(address.getHnrA()));
       this.address.setPostalCode(new FieldValue(address.getPostalCode()));
-      this.address.setResidence(new FieldValue(address.getResidenceCode(), address.getResidenceName()));
+      this.address.setResidence(new FieldValue(address.getResidenceName()));
       this.address.setMunicipality(new FieldValue(address.getMunicipalityCode(), address.getMunicipalityName()));
 
       MunicipalAddressBean addressBean = addressForm.getBean();
@@ -314,7 +315,8 @@ public class AddressLayout extends VLayout {
       addressForm.getField(F_HOUSE_NUMBER_T).setValue(address.getHnrT());
       addressForm.getField(F_HOUSE_NUMBER_A).setValue(new FieldValue(address.getHnrA()));
       addressForm.getField(F_POSTAL_CODE).setValue(new FieldValue(address.getPostalCode()));
-      addressForm.getField(F_RESIDENCE).setValue(new FieldValue(address.getResidenceCode()));
+      addressForm.getField(F_RESIDENCE).setValue(new FieldValue(address.getResidenceName()));
+
     }
   }
 

@@ -108,10 +108,8 @@ public class Page40Geboorte<T extends DossierGeboorte> extends BsPersoonPage<T> 
         try {
           if (!vader.isVolledig()) {
             GezinssituatieType gezin = getZaakDossier().getGezinssituatie();
-
             if (gezin != null) {
               if (gezin.is(BINNEN_HETERO_HUWELIJK)) {
-
                 BasePLRec partnerRecord = getPartnerRecord(getZaakDossier().getMoeder());
                 BasePLExt partner = getPartner(partnerRecord);
 
@@ -125,7 +123,7 @@ public class Page40Geboorte<T extends DossierGeboorte> extends BsPersoonPage<T> 
               } else if (gezin.is(BUITEN_HUWELIJK, BINNEN_HOMO_HUWELIJK)) {
                 if (getZaakDossier().getVragen().heeftErkenningVoorGeboorte()) {
                   DossierErkenning erkenning = getZaakDossier().getErkenningVoorGeboorte();
-                  BsPersoonUtils.kopieDossierPersoon(erkenning.getErkenner(), vader);
+                  BsPersoonUtils.kopieDossierPersoonFromDatabase(erkenning.getErkenner(), vader);
                 }
               }
             }

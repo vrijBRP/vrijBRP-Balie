@@ -69,7 +69,7 @@ public class Cat12ReisdTemplate extends PLETemplateProcura<AbstractReisd> {
 
     addElem(GEMEENTE_DOC, reisd.getGOntl());
     addElem(DATUM_DOC, reisd.getDOntl());
-    addElem(BESCHRIJVING_DOC, reisd.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, reisd.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, reisd.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, reisd.getDBezwIn());

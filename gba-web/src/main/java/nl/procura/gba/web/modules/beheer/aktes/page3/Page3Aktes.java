@@ -93,6 +93,7 @@ public class Page3Aktes extends NormalPageTemplate {
     deel.setOmschrijving(bean.getOmschrijving());
     deel.setMin(toBigDecimal(bean.getMin()));
     deel.setMax(toBigDecimal(bean.getMax()));
+    deel.setdEnd(bean.getEinddatum());
 
     getServices().getAkteService().saveRegisterDeel(deel);
 

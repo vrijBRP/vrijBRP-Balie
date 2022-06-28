@@ -33,9 +33,6 @@ public class ZaakIdentificatieTypeParameterContainer extends IndexedContainer im
     addContainerProperty(OMSCHRIJVING, String.class, "");
     removeAllItems();
 
-    item = addItem(ZaakIdType.GEMEENTE.getCode());
-    item.getItemProperty(OMSCHRIJVING).setValue(ZaakIdType.GEMEENTE.getOms());
-
     item = addItem(ZaakIdType.ZAAKSYSTEEM.getCode());
     item.getItemProperty(OMSCHRIJVING).setValue(ZaakIdType.ZAAKSYSTEEM.getOms());
   }

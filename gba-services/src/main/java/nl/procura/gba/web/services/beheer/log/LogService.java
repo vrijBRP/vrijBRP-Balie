@@ -38,7 +38,6 @@ import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.standard.Globalfunctions;
-import nl.procura.vaadin.theme.Credentials;
 
 public class LogService extends AbstractService {
 
@@ -46,12 +45,11 @@ public class LogService extends AbstractService {
     super("Log");
   }
 
-  public void addLoginAttempt(String userAgent, String remoteAddress, Credentials credentials, Gebruiker gebruiker) {
-
+  public void addLoginAttempt(String userAgent, String remoteAddress, String username, Gebruiker gebruiker) {
     if (!ignoreLogin(gebruiker)) {
       InLogpoging log = new InLogpoging();
       log.setDatumTijd(new DateTime());
-      log.setUsr(credentials.getUsername());
+      log.setUsr(gebruiker != null ? gebruiker.getGebruikersnaam() : username);
       log.setUsrBean(findEntity(Usr.class, (gebruiker != null ? gebruiker.getCUsr() : 0L)));
       log.setBlok(BigDecimal.valueOf(gebruiker != null && gebruiker.isGeblokkeerd() ? 1 : 0));
       log.setIp(remoteAddress);

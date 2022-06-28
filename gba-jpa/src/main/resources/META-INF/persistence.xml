@@ -106,6 +106,7 @@
         <class>nl.procura.gba.jpa.personen.db.ZaakIdPK</class>
         <class>nl.procura.gba.jpa.personen.db.ZaakAttr</class>
         <class>nl.procura.gba.jpa.personen.db.ZaakAttrPK</class>
+        <class>nl.procura.gba.jpa.personen.db.ZaakUsr</class>
         <class>nl.procura.gba.jpa.personen.db.Stempel</class>
         <class>nl.procura.gba.jpa.personen.db.Kenmerk</class>
         <class>nl.procura.gba.jpa.personen.db.ZaakRel</class>

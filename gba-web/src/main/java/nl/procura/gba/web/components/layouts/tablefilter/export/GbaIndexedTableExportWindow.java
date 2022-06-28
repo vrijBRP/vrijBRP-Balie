@@ -71,13 +71,12 @@ public class GbaIndexedTableExportWindow extends ModalWindow {
 
       Spreadsheet spreadsheet = record.getObject(Spreadsheet.class);
       UitvoerformaatType type = spreadsheet.getType();
-
       spreadsheet.compose();
 
       DocumentService documenten = getApplication().getServices().getDocumentService();
-      byte[] bytes = documenten.converteerXls(spreadsheet.getData(), type);
+      byte[] bytes = documenten.convertSpreadsheet(spreadsheet.getData(), type);
       DownloadHandlerImpl downloadHandler = new DownloadHandlerImpl(getWindow().getParent());
-      downloadHandler.download(new ByteArrayInputStream(bytes), "tabel." + type.getType(), true);
+      downloadHandler.download(new ByteArrayInputStream(bytes), "tabel." + type.getExt(), true);
 
       ((ModalWindow) getWindow()).closeWindow();
     }
@@ -96,16 +95,14 @@ public class GbaIndexedTableExportWindow extends ModalWindow {
 
       List<Spreadsheet> spList = new ArrayList<>();
 
-      spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.XLS));
+      spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.CSV_SEMICOLON));
       spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.CSV));
-
       spList.addAll(spreadsheets);
 
       for (Spreadsheet spreadsheet : spList) {
-
         Record record = addRecord(spreadsheet);
-        record.addValue(TableImage.getByBestandType(BestandType.getType(spreadsheet.getType().getType())));
-        record.addValue(spreadsheet.getName() + " (" + spreadsheet.getType().getType() + ")");
+        record.addValue(TableImage.getByBestandType(BestandType.getType(spreadsheet.getType().getExt())));
+        record.addValue(spreadsheet.getName() + " (" + spreadsheet.getType().getOms() + ")");
       }
 
       super.setRecords();

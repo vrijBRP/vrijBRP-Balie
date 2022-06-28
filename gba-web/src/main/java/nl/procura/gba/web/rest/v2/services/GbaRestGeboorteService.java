@@ -44,7 +44,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.*;
 import nl.procura.gba.web.rest.v2.model.zaken.base.persoon.GbaRestPersoon;
 import nl.procura.gba.web.rest.v2.model.zaken.erkenning.GbaRestErkenningsType;
 import nl.procura.gba.web.rest.v2.model.zaken.geboorte.*;
-import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
@@ -68,8 +68,39 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GbaRestGeboorteService extends GbaRestAbstractService {
 
-  public GbaRestGeboorteService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
+  @Transactional
+  public Zaak addGeboorte(GbaRestZaak restZaak) {
+    GeboorteService service = getServices().getGeboorteService();
+    Dossier dossier = (Dossier) service.getNewZaak();
+    DossierGeboorte geboorte = (DossierGeboorte) dossier.getZaakDossier();
+    getRestServices().getZaakService().addGenericZaak(restZaak, dossier);
+
+    GbaRestGeboorte restGeboorte = restZaak.getGeboorte();
+    setPersoon(restGeboorte.getAangever(), geboorte.getAangever());
+    setPersoon(restGeboorte.getMoeder(), geboorte.getMoeder());
+    setPersoon(restGeboorte.getVaderOfDuoMoeder(), geboorte.getVader());
+    getRestServices().getContactService().setContactGegevens(restGeboorte.getAangever());
+    setKinderen(restGeboorte.getKinderen(), geboorte);
+    setAangifte(restGeboorte, geboorte);
+    setVerzoek(restGeboorte, geboorte);
+    dossier.reset();
+
+    ZaakCommentaren commentaar = dossier.getCommentaren();
+    commentaar.verwijderen().toevoegenWarn(GeboorteProcessen
+        .getProcesStatussen(dossier)
+        .getMessages());
+
+    // Save
+    DossierService dossierService = getServices().getDossierService();
+    dossierService.saveDossier(dossier);
+    dossierService.saveZaakDossier(geboorte);
+    service.save(dossier);
+
+    getRestServices()
+        .getZaakService()
+        .addZaakIds(restZaak, dossier);
+
+    return dossier;
   }
 
   public static GbaRestNamenrecht toGbaRestGeboorteNamenrecht(DossierNamenrecht geboorte) {
@@ -184,40 +215,6 @@ public class GbaRestGeboorteService extends GbaRestAbstractService {
       geboorte.setVerzoekKeuzeNaamVoorv(restVerzoek.getVoorvoegsel());
       geboorte.setVerzoekKeuzeNaamTitel(restVerzoek.getTitelPredikaat());
     }
-  }
-
-  public Zaak addGeboorte(GbaRestZaak restZaak) {
-    GeboorteService service = getServices().getGeboorteService();
-    Dossier dossier = (Dossier) service.getNewZaak();
-    DossierGeboorte geboorte = (DossierGeboorte) dossier.getZaakDossier();
-    getRestServices().getZaakService().addGenericZaak(restZaak, dossier);
-
-    GbaRestGeboorte restGeboorte = restZaak.getGeboorte();
-    setPersoon(restGeboorte.getAangever(), geboorte.getAangever());
-    setPersoon(restGeboorte.getMoeder(), geboorte.getMoeder());
-    setPersoon(restGeboorte.getVaderOfDuoMoeder(), geboorte.getVader());
-    getRestServices().getContactService().setContactGegevens(restGeboorte.getAangever());
-    setKinderen(restGeboorte.getKinderen(), geboorte);
-    setAangifte(restGeboorte, geboorte);
-    setVerzoek(restGeboorte, geboorte);
-    dossier.reset();
-
-    ZaakCommentaren commentaar = dossier.getCommentaren();
-    commentaar.verwijderen().toevoegenWarn(GeboorteProcessen
-        .getProcesStatussen(dossier)
-        .getMessages());
-
-    // Save
-    DossierService dossierService = getServices().getDossierService();
-    dossierService.saveDossier(dossier);
-    dossierService.saveZaakDossier(geboorte);
-    service.save(dossier);
-
-    getRestServices()
-        .getZaakService()
-        .addZaakIds(restZaak, dossier);
-
-    return dossier;
   }
 
   public GbaRestGeboorte toGbaRestGeboorte(Dossier zaak) {

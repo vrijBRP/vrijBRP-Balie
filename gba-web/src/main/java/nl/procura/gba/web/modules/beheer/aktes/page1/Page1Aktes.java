@@ -24,7 +24,6 @@ import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.modules.beheer.aktes.page2.Page2Aktes;
-import nl.procura.gba.web.modules.tabellen.huwelijkslocatie.page3.Page3HuwelijkLocaties;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteCategorie;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -75,33 +74,20 @@ public class Page1Aktes extends NormalPageTemplate {
 
   @Override
   public void onNew() {
-
     getNavigation().goToPage(new Page2Aktes(new DossierAkteCategorie()));
-
     super.onNew();
-  }
-
-  @Override
-  public void onNextPage() {
-
-    getNavigation().goToPage(Page3HuwelijkLocaties.class);
-
-    super.onNextPage();
   }
 
   public class Table1 extends GbaTable {
 
     @Override
     public void onDoubleClick(Record record) {
-
       getNavigation().goToPage(new Page2Aktes((DossierAkteCategorie) record.getObject()));
-
       super.onDoubleClick(record);
     }
 
     @Override
     public void setColumns() {
-
       setSelectable(true);
       setMultiSelect(true);
 
@@ -111,11 +97,8 @@ public class Page1Aktes extends NormalPageTemplate {
 
     @Override
     public void setRecords() {
-
       for (DossierAkteCategorie l : getServices().getAkteService().getAkteRegisterCategorieen()) {
-
         Record r = addRecord(l);
-
         r.addValue(l.getCode());
         r.addValue(l.getCategorie());
       }

@@ -22,8 +22,11 @@ package nl.procura.gba.web.modules.bs.common.pages.zoekpage;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.BagSuggestionBox;
 import nl.procura.gba.web.components.fields.GbaDateField;
+import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
+import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
@@ -38,11 +41,14 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class BsZoekBean implements Serializable {
 
-  public static final String TYPE          = "type";
-  public static final String BSN           = "bsn";
-  public static final String GEBOORTEDATUM = "geboortedatum";
-  public static final String HNR           = "hnr";
-  public static final String POSTCODE      = "postcode";
+  public static final String F_TYPE = "type";
+  public static final String F_BSN = "bsn";
+  public static final String F_GEBOORTEDATUM = "geboortedatum";
+  public static final String F_HNR = "hnr";
+  public static final String F_POSTCODE = "postcode";
+  public static final String F_GESLACHTSNAAM = "geslachtsnaam";
+  public static final String F_VOORNAMEN = "voornamen";
+  public static final String F_ADRES = "adres";
 
   @Field(type = FieldType.LABEL,
       caption = "Betreft",
@@ -73,4 +79,20 @@ public class BsZoekBean implements Serializable {
       width = "95px",
       description = "Hnr.")
   private String hnr = "";
+
+  @Field(customTypeClass = GbaTextField.class,
+      caption = "Geslachtsnaam",
+      width = "150px")
+  private String geslachtsnaam = "";
+
+  @Field(customTypeClass = GbaTextField.class,
+      caption = "Voornamen",
+      width = "150px")
+  private String voornamen = "";
+
+  @Field(customTypeClass = BagSuggestionBox.class,
+      caption = "BAG-adres",
+      description = "Adres",
+      width = "482px")
+  private Address adres = null;
 }

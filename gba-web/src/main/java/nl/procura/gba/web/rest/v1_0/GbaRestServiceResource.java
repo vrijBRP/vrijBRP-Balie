@@ -42,6 +42,7 @@ import com.google.inject.Inject;
 
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.GbaRestZaakZoekenHandler;
 import nl.procura.gba.web.rest.v2.model.base.GbaRestAntwoord;
+import nl.procura.gba.web.rest.v2.services.GbaRestServices;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.Services.TYPE;
 import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
@@ -55,6 +56,8 @@ public class GbaRestServiceResource {
   private static final Logger LOGGER   = LoggerFactory.getLogger(GbaRestServiceResource.class);
   private static final int    ZERO     = 0;
   private static final int    ONE      = 1;
+  @Inject
+  private GbaRestServices     gbaRestServices;
   @Inject
   protected ProRestGebruiker  loggedInUser;
   private Services            services = null;
@@ -73,7 +76,7 @@ public class GbaRestServiceResource {
     if (fil(loggedInUser.getGebruikersnaam()) && services == null) {
       setServices(new Services(TYPE.REST));
       GebruikerService gebruikers = services.getGebruikerService();
-      services.setGebruiker(gebruikers.getGebruikerByNaam(loggedInUser.getGebruikersnaam(), true));
+      services.setGebruiker(gebruikers.getGebruikerByNaamWithCache(loggedInUser.getGebruikersnaam()));
       services.init();
     }
 
@@ -109,6 +112,10 @@ public class GbaRestServiceResource {
       default:
         throw new ProException(ERROR, format("Meer dan één zaak gevonden met zaak-id %s", zaakId));
     }
+  }
+
+  protected GbaRestServices getGbaRestServices() {
+    return gbaRestServices.setServices(getServices());
   }
 
   public static <T> GbaRestAntwoord<T> tryCall(Callable<GbaRestAntwoord<T>> callable) {

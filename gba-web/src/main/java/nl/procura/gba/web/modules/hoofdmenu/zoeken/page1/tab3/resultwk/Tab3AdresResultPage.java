@@ -66,9 +66,9 @@ public class Tab3AdresResultPage extends Tab3Page {
           setSelectFirst(true);
 
           addColumn("Nr.", 50);
-          addColumn("Adres");
           addColumn("G.v.b.", 80);
           addColumn("Woningsoort", 150);
+          addColumn("Adres");
 
           super.setColumns();
         }
@@ -83,9 +83,9 @@ public class Tab3AdresResultPage extends Tab3Page {
             i++;
             Record r = addRecord(wk);
             r.addValue(astr(i));
-            r.addValue(wk.getAdres());
             r.addValue(wk.isGeschikvoorBewoning() ? "Ja" : "Nee");
             r.addValue(wk.getBasisWk().getWoning().getDescr());
+            r.addValue(wk.getAdres());
           }
         }
       };

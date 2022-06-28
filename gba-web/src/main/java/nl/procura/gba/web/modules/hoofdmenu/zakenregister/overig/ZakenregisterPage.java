@@ -22,8 +22,6 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig;
 import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
 import static nl.procura.gba.common.ZaakStatusType.WACHTKAMER;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN;
-import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 
@@ -32,12 +30,12 @@ import java.util.List;
 import com.vaadin.ui.Button;
 
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
-import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.klapper.windows.KlapperInzageWindow;
 import nl.procura.gba.web.modules.hoofdmenu.klapper.windows.KlapperOverzichtWindow;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.status.ZaakStatusUpdater;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenTab;
+import nl.procura.gba.web.modules.zaken.common.ZaakAanpassenButton;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
@@ -47,13 +45,13 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class ZakenregisterPage<T extends Zaak> extends NormalPageTemplate {
 
-  protected final Button             buttonAanpassen = new Button("Aanpassen zaak");
-  protected final Button             buttonDoc       = new Button("Document afdrukken");
-  protected final ZaakPersonenButton buttonPersonen  = new ZaakPersonenButton();
-  protected final Button             buttonFiat      = new Button("Fiatteren");
-  protected final Button             buttonVerwerken = new Button("Nu verwerken");
-  protected final Button             buttonKlappers  = new Button("Klappers");
-  private Zaak                       zaak;
+  protected final ZaakAanpassenButton buttonAanpassen = new ZaakAanpassenButton();
+  protected final Button              buttonDoc       = new Button("Document afdrukken");
+  protected final ZaakPersonenButton  buttonPersonen  = new ZaakPersonenButton();
+  protected final Button              buttonFiat      = new Button("Fiatteren");
+  protected final Button              buttonVerwerken = new Button("Nu verwerken");
+  protected final Button              buttonKlappers  = new Button("Klappers");
+  private Zaak                        zaak;
 
   public ZakenregisterPage(T zaak, String title) {
     super(title);
@@ -74,16 +72,8 @@ public class ZakenregisterPage<T extends Zaak> extends NormalPageTemplate {
   public void handleEvent(Button button, int keyCode) {
 
     if (button == buttonAanpassen) {
+      buttonAanpassen.onClick(zaak, this::goToZaak);
 
-      ZaakStatusType maxStatus = ZaakStatusType.get(
-          along(getApplication().getParmValue(ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN)));
-      if (!zaak.getStatus().isMaximaal(maxStatus)) {
-        throw new ProException(ProExceptionSeverity.INFO,
-            "Alleen zaken met maximale status <b>{0}</b> kunnen worden gewijzigd",
-            maxStatus.getOms());
-      }
-
-      goToZaak();
     } else if (button == buttonPersonen) {
       getWindow().addWindow(new ZaakPersonenMultiWindow(getZoekpersoonTypes()) {
 

@@ -84,6 +84,7 @@ public class Page1QuickSearch extends NormalPageTemplate {
     Page1QuickSearchBean b = form.getBean();
 
     PLEArgs args = new PLEArgs();
+    args.setMaxFindCount(50);
     args.addNummer(b.getBsn().getStringValue());
     args.addNummer(b.getAnr().getStringValue());
     args.setGeboortedatum(b.getGeboortedatum().getStringValue());
@@ -96,6 +97,7 @@ public class Page1QuickSearch extends NormalPageTemplate {
       args.setPostcode(adres.getPostalCode());
       args.setHuisnummer(adres.getHnr());
       args.setHuisletter(adres.getHnrL());
+      args.setHuisnummertoevoeging(adres.getHnrT());
     }
 
     args.setShowHistory(false);

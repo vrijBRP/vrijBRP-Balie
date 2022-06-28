@@ -50,7 +50,20 @@ public abstract class Page1ZaakAttribuut extends NormalPageTemplate {
 
       setInfo("Zaakattributen", "Extra gegevens die aan de zaak kunnen worden toegekend");
 
-      table = new Page1ZaakAttribuutTable(zaak);
+      table = new Page1ZaakAttribuutTable(zaak) {
+
+        @Override
+        public void onDoubleClick(Record record) {
+          getNavigation().addPage(new Page2ZaakAttribuut(record.getObject(ZaakAttribuut.class)) {
+
+            @Override
+            public void onReload() {
+              Page1ZaakAttribuut.this.onReload();
+            }
+          });
+          super.onDoubleClick(record);
+        }
+      };
       addComponent(table);
 
     } else if (event.isEvent(AfterBackwardReturn.class)) {

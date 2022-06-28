@@ -39,29 +39,27 @@ public class Page1ZaakAttribuutTable extends GbaTable {
 
   @Override
   public void setColumns() {
-
     setSelectable(true);
     setMultiSelect(true);
     addStyleName(GbaWebTheme.TABLE.NEWLINE_WRAP);
 
     addColumn("Nr", 30);
-    addColumn("Attribuut");
+    addColumn("Attribuut", 200);
+    addColumn("Waarde");
 
     super.setColumns();
   }
 
   @Override
   public void setRecords() {
-
-    AttribuutHistorie lijst = getApplication().getServices().getZaakAttribuutService().getAttributen(zaak);
+    AttribuutHistorie lijst = getApplication().getServices().getZaakAttribuutService().getZaakAttribuutHistorie(zaak);
 
     if (lijst.exists()) {
-
       for (ZaakAttribuut attribuut : lijst.getAttributen()) {
-
         Record r = addRecord(attribuut);
         r.addValue(getRecords().size());
         r.addValue(ZaakAttribuutType.getOms(attribuut.getAttribuut()));
+        r.addValue(attribuut.getWaarde());
       }
     }
 

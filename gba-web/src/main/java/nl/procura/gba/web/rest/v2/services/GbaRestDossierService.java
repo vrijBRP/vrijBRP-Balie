@@ -37,7 +37,6 @@ import nl.procura.gba.web.rest.v2.model.zaken.base.natio.GbaRestNationaliteit;
 import nl.procura.gba.web.rest.v2.model.zaken.base.persoon.GbaRestPersoon;
 import nl.procura.gba.web.rest.v2.model.zaken.base.persoon.GbaRestPersoonAdres;
 import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestBurgerlijkeStaatType;
-import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
@@ -47,10 +46,6 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class GbaRestDossierService extends GbaRestAbstractService {
-
-  public GbaRestDossierService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
 
   public GbaRestPersoon getRestPersoon(Dossier zaak, DossierPersoonType persoonType) {
     return zaak.getPersonen(persoonType)

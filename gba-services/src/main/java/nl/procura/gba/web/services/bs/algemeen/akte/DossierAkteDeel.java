@@ -24,6 +24,7 @@ import static nl.procura.standard.Globalfunctions.*;
 import nl.procura.gba.jpa.personen.db.DossAkteRd;
 import nl.procura.gba.jpa.personen.db.DossAkteRdCat;
 import nl.procura.java.reflection.ReflectionUtil;
+import nl.procura.standard.ProcuraDate;
 
 public class DossierAkteDeel extends DossAkteRd {
 
@@ -34,6 +35,7 @@ public class DossierAkteDeel extends DossAkteRd {
     setOms("");
     setMin(toBigDecimal(1));
     setMax(toBigDecimal(9999));
+    setdEnd(null);
   }
 
   public DossierAkteDeel(DossierAkteCategorie categorie) {
@@ -77,8 +79,22 @@ public class DossierAkteDeel extends DossAkteRd {
     setRegistersoort(toBigDecimal(soort.getCode()));
   }
 
+  public boolean isNotExpired() {
+    return !isExpired();
+  }
+
+  public boolean isExpired() {
+    return getdEnd() != null && new ProcuraDate(getdEnd()).isExpired();
+  }
+
   @Override
   public String toString() {
-    return getOmschrijving() + " (" + getDossAkteRdCat().getDossAkteRdCat() + ")";
+    return new StringBuilder()
+        .append(getOmschrijving())
+        .append(" (")
+        .append(getDossAkteRdCat().getDossAkteRdCat())
+        .append(isExpired() ? " / beëindigd" : "")
+        .append(")")
+        .toString();
   }
 }

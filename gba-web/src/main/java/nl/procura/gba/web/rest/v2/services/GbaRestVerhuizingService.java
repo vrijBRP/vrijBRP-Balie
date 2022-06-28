@@ -38,7 +38,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestTabelWaarde;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.*;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.inwoning.GbaRestInwoningVraag;
-import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.AangifteSoort;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.verhuizing.*;
@@ -51,11 +51,8 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class GbaRestVerhuizingService extends GbaRestAbstractService {
 
-  public GbaRestVerhuizingService(GbaRestServices restServices, Services services) {
-    super(restServices, services);
-  }
-
-  public Zaak addVerhuizing(GbaRestZaak restZaak) {
+  @Transactional
+  Zaak addVerhuizing(GbaRestZaak restZaak) {
     VerhuizingService service = getServices().getVerhuizingService();
     VerhuisAanvraag va = (VerhuisAanvraag) service.getNewZaak();
     getRestServices().getZaakService().addGenericZaak(restZaak, va);
@@ -162,6 +159,7 @@ public class GbaRestVerhuizingService extends GbaRestAbstractService {
     return va;
   }
 
+  @Transactional
   public void updateInwoning(GbaRestInwoningVraag request) {
     VerhuisAanvraag verh = getRestServices()
         .getZaakService()

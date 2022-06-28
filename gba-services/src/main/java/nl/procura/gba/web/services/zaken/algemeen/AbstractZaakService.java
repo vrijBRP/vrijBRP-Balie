@@ -108,7 +108,8 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
       zaak.setIdentificatie(getIdentificatie(zaak));
       historie.setStatusHistorie(getServices().getZaakStatusService().getStatusHistorie(zaak));
       historie.setAantekeningHistorie(getServices().getAantekeningService().getZaakAantekeningen(zaak));
-      historie.setAttribuutHistorie(getServices().getZaakAttribuutService().getAttributen(zaak));
+      historie.setAttribuutHistorie(getServices().getZaakAttribuutService().getZaakAttribuutHistorie(zaak));
+      historie.setBehandelaarHistorie(getServices().getZaakAttribuutService().getZaakBehandelaarHistorie(zaak));
       historie.setIdentificaties(getServices().getZaakIdentificatieService().getIdentificaties(zaak));
       historie.setRelaties(getServices().getZaakRelatieService().getGerelateerdeZaakRelaties(zaak));
     }
@@ -131,14 +132,10 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
       getZaakAttributen().delete(zaak);
       getZaakRelaties().delete(zaak);
 
-      log.info(new StringBuilder().append("Zaak: ")
-          .append(zaak.getType().getOms())
-          .append(" - ")
-          .append(zaak.getZaakId())
-          .append(" verwijderd door gebruiker ")
-          .append(getServices().getGebruiker().getGebruikersnaam())
-          .append(".")
-          .toString());
+      log.info(String.format("Zaak: %s - %s verwijderd door gebruiker %s.",
+          zaak.getType().getOms(),
+          zaak.getZaakId(),
+          getServices().getGebruiker().getGebruikersnaam()));
     }
 
     callListeners(ServiceEvent.CHANGE);
@@ -158,6 +155,7 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
     if (!zaakArgumenten.isAll()) {
       map.putSet(ZaakDao.ZAAK_ID, zaakArgumenten.getZaakIds());
       map.putString(ZaakDao.ZAAK_ID_TYPE, zaakArgumenten.getZaakIdType().getCode());
+      map.putString(ZaakDao.NIEUWE_ZAAK, Boolean.valueOf(zaakArgumenten.isZonderBehandelaar()).toString());
 
       map.putPosString(ZaakDao.BSN, astr(zaakArgumenten.getBsn()));
       map.putPosString(ZaakDao.ANR, astr(zaakArgumenten.getAnr()));
@@ -178,6 +176,8 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
       map.putList(ZaakDao.NIET_IND_VERWERKT, zaakArgumenten.getNegeerStatusCodes());
 
       map.putLong(ZaakDao.C_USR, zaakArgumenten.getCodeGebruiker());
+      map.putLong(ZaakDao.C_USR_TOEK, zaakArgumenten.getCodeBehandelaar());
+      map.putLong(ZaakDao.C_USR_FAV, zaakArgumenten.getCodeGebruikerFavoriet());
       map.putLong(ZaakDao.C_PROFILE, zaakArgumenten.getCodeProfiel());
       map.putLong(ZaakDao.D_END_TERMIJN, zaakArgumenten.getdEndTerm());
       map.putLong(ZaakDao.MAX_RESULTS, zaakArgumenten.getMax());

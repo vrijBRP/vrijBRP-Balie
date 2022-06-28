@@ -22,8 +22,6 @@ package nl.procura.gba.web.modules.bs.common.pages.aktepage.page2;
 import static nl.procura.gba.web.modules.bs.common.pages.aktepage.page2.BsAktePageBean.*;
 import static nl.procura.standard.Globalfunctions.*;
 
-import java.util.List;
-
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
 
@@ -181,14 +179,12 @@ public class BsAktePageForm extends GbaForm<BsAktePageBean> {
   private class DeelContainer extends ArrayListContainer {
 
     public DeelContainer() {
-
       AkteService aktes = application.getServices().getAkteService();
-      List<DossierAkteDeel> registerDelen = aktes.getAkteRegisterDelen(
-          DossierAkteRegistersoort.get(dossier).getCode());
-
-      if (registerDelen != null) {
-        addItems(registerDelen);
-      }
+      long registerSoort = DossierAkteRegistersoort.get(dossier).getCode();
+      aktes.getAkteRegisterDelen(registerSoort)
+          .stream()
+          .filter(DossierAkteDeel::isNotExpired)
+          .forEach(this::addItem);
     }
   }
 }

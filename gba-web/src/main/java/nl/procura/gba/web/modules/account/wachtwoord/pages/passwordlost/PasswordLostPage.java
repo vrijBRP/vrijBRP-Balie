@@ -22,13 +22,14 @@ package nl.procura.gba.web.modules.account.wachtwoord.pages.passwordlost;
 import static nl.procura.gba.web.modules.account.wachtwoord.pages.passwordlost.PasswordLostBean.EMAIL;
 import static nl.procura.standard.Globalfunctions.astr;
 
-import java.util.List;
+import java.util.Optional;
 
 import com.vaadin.ui.Alignment;
 
 import nl.procura.gba.web.common.misc.email.Verzending;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
+import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.window.Message;
@@ -48,15 +49,13 @@ public class PasswordLostPage extends ButtonPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
       form = new PasswordLostForm() {
 
         @Override
-        protected List<Gebruiker> getGebruikers() {
-          return getApplication().getServices().getGebruikerService().getGebruikersByEmail(
-              astr(getField(EMAIL).getValue()));
+        protected Optional<Gebruiker> findGebruiker() {
+          GebruikerService gebruikerService = getApplication().getServices().getGebruikerService();
+          return Optional.ofNullable(gebruikerService.getGebruikerByNaam(astr(getField(EMAIL).getValue())));
         }
       };
 

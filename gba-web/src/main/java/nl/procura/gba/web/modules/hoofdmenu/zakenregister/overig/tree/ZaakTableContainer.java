@@ -22,6 +22,8 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.tree;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
 import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
 import static nl.procura.gba.common.ZaakType.*;
+import static nl.procura.gba.web.services.zaken.algemeen.ZaakArgumentenBuilder.*;
+import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FOUT_BIJ_VERWERKING;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_UITTREKSEL;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.VERHUIZING_AANGIFTE;
 import static nl.procura.standard.Globalfunctions.astr;
@@ -40,6 +42,9 @@ import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.SubModuleZaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page12.Page12Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page13.Page13Zaken;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page14.Page14Zaken;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page15.Page15Zaken;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page16.Page16Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page160.Page160Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page5.Page5Module;
@@ -59,23 +64,27 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
 
   public static final String LEAF_CLASS = "Waarde";
 
-  public static final String  STATUS     = "Statussen";
-  public static final String  OPTIES     = "Opties";
-  public static final String  ZOEKEN     = "Zoeken";
-  public static final String  PROBLEMEN  = "Problemen";
-  public static final String  BULKACTIES = "Bulkacties";
-  public static final String  ZAAK       = "Zaken";
-  public static final String  HUWELIJK   = "Huwelijk / GPS";
-  public static final String  OVERLIJDEN = "Overlijden";
-  public static final String  AANTAL     = "Aantal";
-  private static final String INITOPEN   = "initOpen";
+  public static final String  STATUS             = "Statussen";
+  public static final String  FILTER             = "Filter";
+  public static final String  ZOEKEN             = "Zoeken";
+  public static final String  MIJN_ZAKEN         = "Mijn";
+  public static final String  ZONDER_BEHANDELAAR = "Zonder behandelaar";
+  public static final String  FAVORIETEN         = "Favorieten";
+  public static final String  PROBLEMEN          = "Problemen";
+  public static final String  BULKACTIES         = "Bulkacties";
+  public static final String  ZAAK               = "Zaken";
+  public static final String  HUWELIJK           = "Huwelijk / GPS";
+  public static final String  OVERLIJDEN         = "Overlijden";
+  public static final String  AANTAL             = "Aantal";
+  private static final String INITOPEN           = "initOpen";
 
-  private static final String        BULK_RIJBEWIJS = "Rijbewijzen";
-  private static final String        BULK_TMV       = "Terugmeldingen";
-  private static final String        BULK_UITT      = "Uittreksels";
-  private static final String        BULK_CORR      = "Correspondentie";
-  private static final String        BULK_CONTROLE  = "Controles";
-  private final List<ZaakAantalItem> zaakItems      = new ArrayList<>();
+  private static final String BULK_RIJBEWIJS = "Rijbewijzen";
+  private static final String BULK_TMV       = "Terugmeldingen";
+  private static final String BULK_UITT      = "Uittreksels";
+  private static final String BULK_CORR      = "Correspondentie";
+  private static final String BULK_CONTROLE  = "Controles";
+
+  private final List<ZaakAantalItem> zaakItems = new ArrayList<>();
   private Services                   serviceContainer;
 
   public ZaakTableContainer(Services serviceContainer) {
@@ -91,8 +100,14 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
 
     // Items toevoegen
     addTreeItem(ZOEKEN, false, true, Page4Module.class);
-    addTreeItem(OPTIES, false, true, Page160Module.class);
+    addTreeItem(MIJN_ZAKEN, false, true, Page15Zaken.class);
+
+    if (getServiceContainer().getZaakAttribuutService().isZakenBehandelenEnable()) {
+      addTreeItem(ZONDER_BEHANDELAAR, false, true, Page14Zaken.class);
+    }
+    addTreeItem(FAVORIETEN, false, true, Page16Zaken.class);
     addTreeItem(PROBLEMEN, false, true, Page13Zaken.class);
+    addTreeItem(FILTER, false, true, Page160Module.class);
     addTreeItem(STATUS, true, true, HorizontalLayout.class);
     addTreeItem(BULKACTIES, true, false, HorizontalLayout.class);
     addTreeItem(ZAAK, true, true, HorizontalLayout.class);
@@ -161,8 +176,13 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
 
     ZakenregisterService zakenregister = getServiceContainer().getZakenregisterService();
 
-    // Problemen
-    getItem(PROBLEMEN).getItemProperty(AANTAL).setValue(getAantalProblemen());
+    getItem(MIJN_ZAKEN).getItemProperty(AANTAL).setValue(getAantalMijnZaken());
+    getItem(FAVORIETEN).getItemProperty(AANTAL).setValue(getAantalFavorieteZaken());
+    getItem(PROBLEMEN).getItemProperty(AANTAL).setValue(getAantalMetAttribuut(FOUT_BIJ_VERWERKING));
+
+    if (getServiceContainer().getZaakAttribuutService().isZakenBehandelenEnable()) {
+      getItem(ZONDER_BEHANDELAAR).getItemProperty(AANTAL).setValue(getAantalNieuweZaken());
+    }
 
     // Bulk acties
     for (ZaakAantalItem zi : getItems(ZaakAantalItem.class)) {
@@ -210,9 +230,25 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     setAantalOmschrijving(ZAAK);
   }
 
-  private long getAantalProblemen() {
+  private long getAantalFavorieteZaken() {
+    ZaakArgumenten zaakArgumenten = favorieteZaken(getServiceContainer());
+    return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
+  }
+
+  private long getAantalMijnZaken() {
+    ZaakArgumenten zaakArgumenten = mijnZaken(getServiceContainer());
+    return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
+  }
+
+  private long getAantalNieuweZaken() {
+    ZaakArgumenten zaakArgumenten = nieuweZaken(getServiceContainer());
+    return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
+  }
+
+  private long getAantalMetAttribuut(ZaakAttribuutType type) {
     ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
-    zaakArgumenten.addAttributen(ZaakAttribuutType.FOUT_BIJ_VERWERKING.getCode());
+    zaakArgumenten.addAttributen(type.getCode());
+    zaakArgumenten.getNegeerStatussen().addAll(ZaakStatusType.getMetEindStatus());
     return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
   }
 

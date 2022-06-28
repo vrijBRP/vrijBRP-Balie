@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.beheer.parameters.bean;
 
+import static nl.procura.commons.elements.codegeneration.GenerateReflectionUtils.getNewInstanceof;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.astr;
 
@@ -29,11 +30,16 @@ import java.util.List;
 
 import nl.procura.gba.jpa.personen.db.Parm;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
+import nl.procura.gba.web.components.fields.SimpleMultiField;
+import nl.procura.gba.web.components.fields.values.MultiFieldValue;
 import nl.procura.gba.web.modules.beheer.parameters.container.*;
+import nl.procura.gba.web.modules.beheer.parameters.layout.ZakenBehandelingParametersLayout.toDatabaseConverter;
+import nl.procura.gba.web.modules.beheer.parameters.layout.ZakenBehandelingParametersLayout.toFieldConverter;
 import nl.procura.gba.web.modules.bs.onderzoek.page20.AanduidingOnderzoekContainer;
 import nl.procura.gba.web.services.beheer.parameter.ParameterType;
 import nl.procura.gba.web.services.beheer.parameter.Parameters;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
+import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterValueConverter;
 import nl.procura.vaadin.annotation.field.*;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.layout.FormBean;
@@ -41,6 +47,7 @@ import nl.procura.vaadin.annotation.layout.Position;
 import nl.procura.vaadin.annotation.layout.Position.Direction;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
+import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.validator.GetalValidator;
 
 import lombok.AllArgsConstructor;
@@ -458,6 +465,28 @@ public class ParameterBean implements Serializable {
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Naamgebruik")
   private String dmsNaamgebruik = "";
+
+  // Nieuwe zaken
+  @ParameterAnnotation(ZAKEN_NIEUW_BRONNEN)
+  @Position(order = "Bronnen")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Bronnen")
+  private String nieuweZakenBronnen = "";
+
+  @ParameterAnnotation(ZAKEN_NIEUW_LEVERANCIERS)
+  @Position(order = "Leveranciers")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Leveranciers")
+  private String nieuweZakenLeveranciers = "";
+
+  @ParameterValueConverter(
+      toField = toFieldConverter.class,
+      toDB = toDatabaseConverter.class)
+  @ParameterAnnotation(ZAKEN_NIEUW_ZAAKTYPES)
+  @Position(order = "Zaaktypes")
+  @Field(customTypeClass = SimpleMultiField.class,
+      caption = "Zaaktypes")
+  private MultiFieldValue<FieldValue> nieuweZakenTypes = new MultiFieldValue<>();
 
   // COVOG ID Code
   @ParameterAnnotation(COVOG_ID_CODE)
@@ -1658,7 +1687,8 @@ public class ParameterBean implements Serializable {
       ParameterAnnotation parmAnn = field.getAnnotation(ParameterAnnotation.class);
       Field fieldAnn = field.getAnnotation(Field.class);
       if (parmAnn != null && fieldAnn != null) {
-        ParameterBeanField b = new ParameterBeanField(field, fieldAnn, parmAnn.value());
+        ParameterValueConverter converter = field.getAnnotation(ParameterValueConverter.class);
+        ParameterBeanField b = new ParameterBeanField(field, fieldAnn, parmAnn.value(), converter);
         if (filter.is(b)) {
           list.add(b);
         }
@@ -1672,7 +1702,12 @@ public class ParameterBean implements Serializable {
    */
   public void setFieldValues(Parameters parameters, long cUsr, long cProfile) throws IllegalAccessException {
     for (ParameterBeanField field : getFields((b) -> true)) {
-      field.getField().set(this, astr(getValueFromParameter(parameters, field.getType(), cUsr, cProfile)));
+      String value = astr(getValueFromParameter(parameters, field.getType(), cUsr, cProfile));
+      if (field.getConverter() != null) {
+        field.getField().set(this, getNewInstanceof(field.getConverter().toField()).apply(value));
+      } else {
+        field.getField().set(this, value);
+      }
     }
   }
 
@@ -1702,6 +1737,7 @@ public class ParameterBean implements Serializable {
     private java.lang.reflect.Field field;
     private Field                   fieldAnn;
     private ParameterType           type;
+    private ParameterValueConverter converter;
 
     public boolean isType(ParameterType type) {
       return this.type == type;
@@ -1709,6 +1745,10 @@ public class ParameterBean implements Serializable {
 
     public boolean isFieldName(Object id) {
       return field.getName().equals(id);
+    }
+
+    public ParameterValueConverter getConverter() {
+      return converter;
     }
   }
 }

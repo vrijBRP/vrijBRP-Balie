@@ -40,7 +40,6 @@ import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
 import nl.procura.gba.web.services.zaken.algemeen.GenericZaak;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakHistorie;
-import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
@@ -49,9 +48,7 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class PersonListMutation extends PlMut implements Zaak {
 
-  private final GenericZaak zaak        = new GenericZaak();
-  private String            bron        = ZaakUtils.PROWEB_PERSONEN;
-  private String            leverancier = ZaakUtils.PROCURA;
+  private final GenericZaak zaak = new GenericZaak();
 
   public PersonListMutation() {
     setUsr(new Usr(BaseEntity.DEFAULT));
@@ -159,7 +156,7 @@ public class PersonListMutation extends PlMut implements Zaak {
 
   public void setCat(GBACat cat) {
     setCat(BigDecimal.valueOf(cat.getCode()));
-    setDescrCat(cat.getCode() + ": " + cat.toString());
+    setDescrCat(cat.getCode() + ": " + cat);
   }
 
   public void setSet(BasePLSet set) {
@@ -206,25 +203,5 @@ public class PersonListMutation extends PlMut implements Zaak {
   @Override
   public ZaakHistorie getZaakHistorie() {
     return zaak.getZaakHistorie();
-  }
-
-  @Override
-  public String getLeverancier() {
-    return leverancier;
-  }
-
-  @Override
-  public void setLeverancier(String leverancier) {
-    this.leverancier = leverancier;
-  }
-
-  @Override
-  public String getBron() {
-    return bron;
-  }
-
-  @Override
-  public void setBron(String bron) {
-    this.bron = bron;
   }
 }

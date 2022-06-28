@@ -97,7 +97,7 @@ public class PLEElementFormatter {
       waarden.setCode(astr(code));
       String omschrijving = getDiac().merge(input, diacType);
 
-      if (diacType.equals(Diacs.PLAATS) && (aval(code) > 2000)) {
+      if (diacType.equals(Diacs.PLAATS) && (aval(code) > 1999)) {
         waarden.setVal(omschrijving);
       } else {
         waarden.setVal(astr(isLandelijk ? code : omschrijving));

@@ -223,17 +223,14 @@ public class Page1Gebruikers extends NormalPageTemplate {
 
   private boolean isParentMapOnlySelectedRecord(List<Gebruiker> allSelectedUsers) {
 
-    boolean onlyParentMap = false;
-    if (allSelectedUsers.isEmpty()) {
-      onlyParentMap = true;
-    }
+    boolean onlyParentMap = allSelectedUsers.isEmpty();
 
     return onlyParentMap;
   }
 
   private void setDirectoryLayout() {
 
-    GebruikerSpreadSheet spreadsheetXls = new GebruikerSpreadSheet(UitvoerformaatType.XLS);
+    GebruikerSpreadSheet spreadsheetXls = new GebruikerSpreadSheet(UitvoerformaatType.CSV_SEMICOLON);
 
     directoryLayout = new DirectoryLayout(table, asList(spreadsheetXls)) {
 

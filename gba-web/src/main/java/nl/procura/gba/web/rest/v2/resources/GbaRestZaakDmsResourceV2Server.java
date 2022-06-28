@@ -32,7 +32,6 @@ import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
 import nl.procura.gba.web.rest.v2.GbaRestZaakDmsResourceV2;
 import nl.procura.gba.web.rest.v2.model.base.GbaRestAntwoord;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakId;
-import nl.procura.gba.web.rest.v2.services.GbaRestServices;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 
 @RequestScoped
@@ -48,7 +47,7 @@ public class GbaRestZaakDmsResourceV2Server
   @Path(GENEREER_ZAAK_ID_URI)
   public GbaRestAntwoord<GbaRestZaakId> genereerZaakId() {
     return tryCall(
-        () -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+        () -> new GbaRestAntwoord<>(getGbaRestServices()
             .getZaakDmsService()
             .genereerZaakId()));
   }

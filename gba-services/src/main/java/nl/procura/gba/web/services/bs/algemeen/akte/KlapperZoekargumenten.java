@@ -19,7 +19,6 @@
 
 package nl.procura.gba.web.services.bs.algemeen.akte;
 
-import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.HashSet;
@@ -29,16 +28,21 @@ public class KlapperZoekargumenten {
 
   private long                          datumVanaf    = 0;
   private long                          datumTm       = 0;
-  private long                          jaarVan       = -1;
-  private long                          jaarTm        = -1;
-  private long                          datum         = -1;
+  private long                          jaar          = -1;
+  private long                          datumAkte     = -1;
+  private long                          datumFeit     = -1;
   private long                          nummer        = -1;
   private DossierAkteInvoerType         invoerType    = null;
   private Set<DossierAkteRegistersoort> soorten       = new HashSet<>();
   private DossierAkteDeel               deel          = null;
   private long                          bsn           = -1;
   private String                        geslachtsnaam = "";
+  private String                        voornamen     = "";
+  private long                          geboortedatum = -1;
+  private String                        opmerking     = "";
+  private String                        akteGroepId   = "";
   private KlapperVolgordeType           volgorde      = KlapperVolgordeType.DATUM_OPLOPEND;
+  private long                          limit         = -1;
 
   public long getBsn() {
     return bsn;
@@ -48,12 +52,20 @@ public class KlapperZoekargumenten {
     this.bsn = bsn;
   }
 
-  public long getDatum() {
-    return datum;
+  public long getDatumAkte() {
+    return datumAkte;
   }
 
-  public void setDatum(long datum) {
-    this.datum = datum;
+  public void setDatumAkte(long datumAkte) {
+    this.datumAkte = datumAkte;
+  }
+
+  public long getDatumFeit() {
+    return datumFeit;
+  }
+
+  public void setDatumFeit(long datumFeit) {
+    this.datumFeit = datumFeit;
   }
 
   public long getDatumTm() {
@@ -88,6 +100,22 @@ public class KlapperZoekargumenten {
     this.geslachtsnaam = geslachtsnaam;
   }
 
+  public String getVoornamen() {
+    return voornamen;
+  }
+
+  public void setVoornamen(String voornamen) {
+    this.voornamen = voornamen;
+  }
+
+  public long getGeboortedatum() {
+    return geboortedatum;
+  }
+
+  public void setGeboortedatum(long geboortedatum) {
+    this.geboortedatum = geboortedatum;
+  }
+
   public DossierAkteInvoerType getInvoerType() {
     return invoerType;
   }
@@ -96,20 +124,12 @@ public class KlapperZoekargumenten {
     this.invoerType = invoerType;
   }
 
-  public long getJaarTm() {
-    return jaarTm;
+  public long getJaar() {
+    return jaar;
   }
 
-  public void setJaarTm(long jaarTm) {
-    this.jaarTm = jaarTm;
-  }
-
-  public long getJaarVan() {
-    return jaarVan;
-  }
-
-  public void setJaarVan(long jaarVan) {
-    this.jaarVan = jaarVan;
+  public void setJaar(long jaar) {
+    this.jaar = jaar;
   }
 
   public long getNummer() {
@@ -121,11 +141,7 @@ public class KlapperZoekargumenten {
   }
 
   public String getPeriodes() {
-
-    long va = getJaarVan();
-    long tm = getJaarTm();
-
-    return va == tm ? astr(va) : (va + " - " + tm);
+    return "" + getJaar();
   }
 
   public Set<DossierAkteRegistersoort> getSoorten() {
@@ -145,6 +161,30 @@ public class KlapperZoekargumenten {
   }
 
   public boolean heeftPeriodes() {
-    return pos(getJaarVan()) || pos(getJaarTm());
+    return pos(getJaar());
+  }
+
+  public String getOpmerking() {
+    return opmerking;
+  }
+
+  public void setOpmerking(String opmerking) {
+    this.opmerking = opmerking;
+  }
+
+  public long getLimit() {
+    return limit;
+  }
+
+  public void setLimit(long limit) {
+    this.limit = limit;
+  }
+
+  public String getAkteGroepId() {
+    return akteGroepId;
+  }
+
+  public void setAkteGroepId(String akteGroepId) {
+    this.akteGroepId = akteGroepId;
   }
 }

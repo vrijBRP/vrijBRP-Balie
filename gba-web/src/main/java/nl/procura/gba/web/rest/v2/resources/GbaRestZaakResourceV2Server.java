@@ -38,7 +38,6 @@ import nl.procura.gba.web.rest.v2.model.base.GbaRestAntwoord;
 import nl.procura.gba.web.rest.v2.model.zaken.*;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakDocument;
-import nl.procura.gba.web.rest.v2.services.GbaRestServices;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 import nl.procura.standard.exceptions.ProException;
@@ -57,7 +56,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(GET_ZAAK_BY_ZAAK_ID_URI)
   public GbaRestAntwoord<GbaRestZaak> getZaakByZaakId(@PathParam("zaakId") String zaakId) {
     return tryCall(
-        () -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+        () -> new GbaRestAntwoord<>(getGbaRestServices()
             .getZaakService()
             .getByZaakId(zaakId)));
   }
@@ -68,7 +67,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(GET_DOCUMENTS_BY_ZAAK_ID_URI)
   public GbaRestAntwoord<GbaRestZaakDocumentenZoekenAntwoord> getDocumentsByZaakId(@PathParam("zaakId") String zaakId) {
     return tryCall(
-        () -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+        () -> new GbaRestAntwoord<>(getGbaRestServices()
             .getDmsService()
             .getDocumentsByZaakId(zaakId)));
   }
@@ -80,7 +79,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(FIND_ZAAK_URI)
   public GbaRestAntwoord<GbaRestZaakZoekenAntwoord> findZaken(GbaRestZaakZoekenVraag request) {
     return tryCall(
-        () -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+        () -> new GbaRestAntwoord<>(getGbaRestServices()
             .getZaakService()
             .search(request)));
   }
@@ -92,7 +91,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(ADD_ZAAK_URI)
   public GbaRestAntwoord<GbaRestZaak> addZaak(GbaRestZaakToevoegenVraag request) {
     return tryCall(
-        () -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+        () -> new GbaRestAntwoord<>(getGbaRestServices()
             .getZaakService()
             .addZaak(request)));
   }
@@ -104,7 +103,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(UPDATE_ZAAK_URI)
   public GbaRestAntwoord<GbaRestZaak> updateZaak(GbaRestZaakUpdateVraag request) {
     return tryCall(
-        () -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+        () -> new GbaRestAntwoord<>(getGbaRestServices()
             .getZaakService()
             .updateZaak(request)));
   }
@@ -115,7 +114,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(DELETE_ZAAK_BY_ZAAK_ID_URI)
   public GbaRestAntwoord<?> deleteZaakByZaakId(@PathParam("zaakId") String zaakId) {
     return tryCall(() -> {
-      new GbaRestServices(getServices())
+      getGbaRestServices()
           .getZaakService()
           .deleteByZaakId(zaakId);
       return new GbaRestAntwoord<>();
@@ -129,7 +128,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(UPDATE_ZAAK_STATUS_URI)
   public GbaRestAntwoord<?> updateZaakStatus(GbaRestZaakStatusUpdateVraag request) {
     return tryCall(() -> {
-      new GbaRestServices(getServices())
+      getGbaRestServices()
           .getZaakService()
           .updateZaakStatus(request);
       return new GbaRestAntwoord<>();
@@ -145,7 +144,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
       @PathParam("id") String documentId) {
     Response.ResponseBuilder builder;
     try {
-      DMSContent dmsStream = new GbaRestServices(getServices())
+      DMSContent dmsStream = getGbaRestServices()
           .getDmsService()
           .getDocumentByZaakId(zaakId, documentId);
       if (dmsStream != null) {
@@ -172,7 +171,7 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
   @Path(BASE_DOCUMENTS_URI)
   public GbaRestAntwoord<GbaRestZaakDocument> addDocument(@PathParam("zaakId") String zaakId,
       GbaRestZaakDocumentToevoegenVraag request) {
-    return tryCall(() -> new GbaRestAntwoord<>(new GbaRestServices(getServices())
+    return tryCall(() -> new GbaRestAntwoord<>(getGbaRestServices()
         .getDmsService()
         .addDocument(zaakId, request)));
   }

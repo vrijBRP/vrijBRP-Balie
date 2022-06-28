@@ -39,19 +39,16 @@ import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakDocumentToevoegenVraag;
 import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakDocumentenZoekenAntwoord;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakDocument;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakDocumentVertrouwelijkheid;
-import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSFileContent;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
-import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentenPrintenService;
 import nl.procura.standard.ProcuraDate;
 
-public class GbaRestDmsService {
+public class GbaRestDmsService extends GbaRestAbstractService {
 
   private static final BiMap<GbaRestZaakDocumentVertrouwelijkheid, DocumentVertrouwelijkheid> VERTROUWELIJKHEID_MAP = HashBiMap
       .create();
@@ -63,22 +60,10 @@ public class GbaRestDmsService {
     }
   }
 
-  private final DMSService         dmsService;
-  private final DocumentService    documentService;
-  private final Services           services;
-  private final GbaRestZaakService zaakService;
-
-  public GbaRestDmsService(Services services, GbaRestZaakService zaakService) {
-    this.services = services;
-    this.zaakService = zaakService;
-    this.dmsService = services.getDmsService();
-    this.documentService = services.getDocumentService();
-  }
-
   public GbaRestZaakDocumentenZoekenAntwoord getDocumentsByZaakId(String zaakId) {
     GbaRestZaakDocumentenZoekenAntwoord antwoord = new GbaRestZaakDocumentenZoekenAntwoord();
-    Zaak zaak = zaakService.getZaakByZaakId(zaakId);
-    List<DMSDocument> docs = dmsService.getDocumentsByZaak(zaak).getDocuments();
+    Zaak zaak = getRestServices().getZaakService().getZaakByZaakId(zaakId);
+    List<DMSDocument> docs = getServices().getDmsService().getDocumentsByZaak(zaak).getDocuments();
     if (docs != null && !docs.isEmpty()) {
       List<GbaRestZaakDocument> documenten = new ArrayList<>();
       for (DMSDocument doc : docs) {
@@ -90,8 +75,8 @@ public class GbaRestDmsService {
   }
 
   public DMSContent getDocumentByZaakId(String zaakId, String id) {
-    Zaak zaak = zaakService.getZaakByZaakId(zaakId);
-    List<DMSDocument> docs = dmsService.getDocumentsByZaak(zaak).getDocuments();
+    Zaak zaak = getRestServices().getZaakService().getZaakByZaakId(zaakId);
+    List<DMSDocument> docs = getServices().getDmsService().getDocumentsByZaak(zaak).getDocuments();
     for (DMSDocument doc : docs) {
       if (Objects.equals(id, documentId(doc))) {
         return doc.getContent();
@@ -101,11 +86,11 @@ public class GbaRestDmsService {
   }
 
   public GbaRestZaakDocument addDocument(String zaakId, GbaRestZaakDocumentToevoegenVraag request) throws IOException {
-    Zaak zaak = zaakService.getZaakByZaakId(zaakId);
+    Zaak zaak = getRestServices().getZaakService().getZaakByZaakId(zaakId);
     File bestand = DocumentenPrintenService.newTijdelijkBestand(request.getDocument().getBestandsnaam());
     IOUtils.write(request.getInhoud(), new FileOutputStream(bestand));
     DMSDocument dmsDocument = toDmsDocument(request.getDocument(), bestand);
-    DMSDocument document = dmsService.save(zaak, dmsDocument);
+    DMSDocument document = getServices().getDmsService().save(zaak, dmsDocument);
     return toGbaRestZaakDocument(document);
   }
 
@@ -118,7 +103,7 @@ public class GbaRestDmsService {
       throw new IllegalArgumentException("document bestandsnaam is verplicht");
     }
 
-    DocumentVertrouwelijkheid vertrouwelijkheid = documentService
+    DocumentVertrouwelijkheid vertrouwelijkheid = getServices().getDocumentService()
         .getStandaardVertrouwelijkheid(VERTROUWELIJKHEID_MAP.get(document.getVertrouwelijkheid()), ONBEKEND);
 
     ProcuraDate date = new ProcuraDate();
@@ -126,7 +111,7 @@ public class GbaRestDmsService {
         .content(DMSFileContent.from(bestand))
         .title(defaultIfBlank(document.getTitel(), bestandsnaam))
         .confidentiality(vertrouwelijkheid.getNaam())
-        .user(services.getGebruiker().getNaam())
+        .user(getServices().getGebruiker().getNaam())
         .date(Long.parseLong(date.getSystemDate()))
         .time(Long.parseLong(date.getSystemTime()))
         .datatype(DocumentType.ONBEKEND.getType())

@@ -39,43 +39,57 @@ import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.jpa.personen.db.DossAkte;
 import nl.procura.gba.jpa.personen.db.DossAkteRd;
 import nl.procura.gba.jpa.personen.db.DossAkteRdCat;
+import nl.procura.gba.jpa.personen.db.DossAkte_;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.exceptions.ProException;
 
 public class DossAkteDao extends ZaakDao {
 
-  public static final String C_DOSS_AKTE = "cDossAkte";
-  public static final String VNR         = "vnr";
-  public static final String DEEL        = "registerdeel";
-  public static final String SOORT       = "registersoort";
-  public static final String INVOER_TYPE = "invType";
-  public static final String DATUM       = "dIn";
-  public static final String JAAR        = "jaar";
-  public static final String JAAR_TM     = "jaar_tm";
-  public static final String JAAR_VAN    = "jaar_van";
-  public static final String NAAM        = "naam";
+  public static final String C_DOSS_AKTE   = "cDossAkte";
+  public static final String VNR           = "vnr";
+  public static final String DEEL          = "registerdeel";
+  public static final String SOORT         = "registersoort";
+  public static final String INVOER_TYPE   = "invType";
+  public static final String DATUM_FEIT    = "dFeit";
+  public static final String DATUM_AKTE    = "dIn";
+  public static final String JAAR          = "jaar";
+  public static final String NAAM          = "naam";
+  public static final String VOORN         = "voorn";
+  public static final String GEBOORTEDATUM = "gebooortedatum";
+  public static final String OPMERKING     = "opmerking";
+  public static final String LIMIT         = "limit";
+  public static final String GROEP_ID      = "groepId";
 
   private static long getJaar(long datum) {
     return along(new ProcuraDate(astr(datum)).getYear());
   }
 
-  public static final List<DossAkte> find(ConditionalMap map) {
+  public static Long findCount(ConditionalMap map) {
+    EntityManager em = GbaJpa.getManager();
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Long> cq = builder.createQuery(Long.class);
+    Root<DossAkte> table = cq.from(DossAkte.class);
+    cq = cq.select(builder.count(table.get(DossAkte_.cDossAkte)));
+    find(builder, cq, table, map);
+    return em.createQuery(cq).getSingleResult();
+  }
 
+  public static List<DossAkte> find(ConditionalMap map) {
     EntityManager em = GbaJpa.getManager();
     CriteriaBuilder builder = em.getCriteriaBuilder();
     CriteriaQuery<DossAkte> cq = builder.createQuery(DossAkte.class);
     Root<DossAkte> table = cq.from(DossAkte.class);
-
     find(builder, cq, table, map);
-
-    return em.createQuery(cq).getResultList();
+    TypedQuery<DossAkte> query = em.createQuery(cq);
+    if (map.containsKey(LIMIT) && pos(map.get(LIMIT))) {
+      query = query.setMaxResults(aval(map.get(LIMIT)));
+    }
+    return query.getResultList();
   }
 
   private static void find(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> table, ConditionalMap map) {
-
     List<Predicate> where = new ArrayList<>();
-
     where.add(builder.greaterThan(table.get(C_DOSS_AKTE), 0));
     where.add(builder.greaterThan(table.get(JAAR), 0));
     where.add(builder.greaterThan(table.get(VNR), 0));
@@ -84,10 +98,13 @@ public class DossAkteDao extends ZaakDao {
       where.add(builder.equal(table.get(INVOER_TYPE), map.get(INVOER_TYPE)));
     }
 
-    if (map.containsKey(DATUM)) {
-      where.add(builder.equal(table.get(DATUM), map.get(DATUM)));
+    if (map.containsKey(DATUM_FEIT)) {
+      where.add(builder.equal(table.get(DATUM_FEIT), map.get(DATUM_FEIT)));
     }
 
+    if (map.containsKey(DATUM_AKTE)) {
+      where.add(builder.equal(table.get(DATUM_AKTE), map.get(DATUM_AKTE)));
+    }
     if (map.containsKey(SOORT)) {
       where.add(table.get(SOORT).in((List<Long>) map.get(SOORT)));
     }
@@ -107,32 +124,55 @@ public class DossAkteDao extends ZaakDao {
     }
 
     if (map.containsKey(NAAM)) {
-      Predicate bsn1 = builder.equal(table.get("geslachtsnaam"), map.get(NAAM));
-      Predicate bsn2 = builder.equal(table.get("pGeslachtsnaam"), map.get(NAAM));
-      where.add(builder.or(bsn1, bsn2));
+      Predicate naam1 = builder.like(builder.lower(table.get(DossAkte_.GESLACHTSNAAM)), getWildcard(map.get(NAAM)));
+      Predicate naam2 = builder.like(builder.lower(table.get(DossAkte_.P_GESLACHTSNAAM)), getWildcard(map.get(NAAM)));
+      where.add(builder.or(naam1, naam2));
     }
 
-    if (map.containsKey(JAAR_VAN)) {
-      where.add(builder.and(builder.ge(table.<Long> get(JAAR), along(map.get(JAAR_VAN)))));
+    if (map.containsKey(VOORN)) {
+      Predicate naam1 = builder.like(builder.lower(builder.function("unaccent",
+          String.class, table.get(DossAkte_.VOORN))),
+          getWildcard(map.get(VOORN)));
+      Predicate naam2 = builder.like(builder.lower(builder.function("unaccent",
+          String.class, table.get(DossAkte_.P_VOORN))),
+          getWildcard(map.get(VOORN)));
+      where.add(builder.or(naam1, naam2));
     }
 
-    if (map.containsKey(JAAR_TM)) {
-      where.add(builder.and(builder.le(table.<Long> get(JAAR), along(map.get(JAAR_TM)))));
+    if (map.containsKey(OPMERKING)) {
+      where.add(builder.and(builder.like(builder.lower(table.get(DossAkte_.OPM)), getWildcard(map.get(OPMERKING)))));
+    }
+
+    if (map.containsKey(GEBOORTEDATUM)) {
+      Predicate date1 = builder.equal(table.get(DossAkte_.D_GEB), along(map.get(GEBOORTEDATUM)));
+      Predicate date2 = builder.equal(table.get(DossAkte_.P_DGEB), along(map.get(GEBOORTEDATUM)));
+      where.add(builder.or(date1, date2));
+    }
+
+    if (map.containsKey(JAAR)) {
+      where.add(builder.and(builder.equal(table.<Long> get(JAAR), along(map.get(JAAR)))));
     }
 
     if (map.containsKey(D_INVOER_VANAF)) {
-      where.add(builder.and(builder.ge(table.<Long> get(DATUM), along(map.get(D_INVOER_VANAF)))));
+      where.add(builder.and(builder.ge(table.<Long> get(DATUM_FEIT), along(map.get(D_INVOER_VANAF)))));
     }
 
     if (map.containsKey(D_INVOER_TM)) {
-      where.add(builder.and(builder.le(table.<Long> get(DATUM), along(map.get(D_INVOER_TM)))));
+      where.add(builder.and(builder.le(table.<Long> get(DATUM_FEIT), along(map.get(D_INVOER_TM)))));
+    }
+
+    if (map.containsKey(GROEP_ID)) {
+      where.add(builder.and(builder.like(table.get(DossAkte_.AKTE_GROEP_ID), astr(map.get(GROEP_ID)))));
     }
 
     query.where(where.toArray(new Predicate[where.size()]));
   }
 
-  public static boolean exists(long cDoss, long datum, long registersoort, String registerdeel, long vnr) {
+  private static String getWildcard(Object type) {
+    return "%" + type.toString().toLowerCase() + "%";
+  }
 
+  public static boolean exists(long cDoss, long datum, long registersoort, String registerdeel, long vnr) {
     StringBuilder sql = new StringBuilder();
     sql.append("select count (a) from DossAkte a ");
     sql.append("where a.jaar          = :jaar ");
@@ -142,7 +182,6 @@ public class DossAkteDao extends ZaakDao {
     sql.append("  and a.cDossAkte    != :cDoss");
 
     Query q = GenericDao.createQuery(sql.toString());
-
     q.setParameter("jaar", getJaar(datum));
     q.setParameter("registersoort", registersoort);
     q.setParameter("registerdeel", registerdeel);
@@ -344,7 +383,7 @@ public class DossAkteDao extends ZaakDao {
     StringBuilder sql = new StringBuilder();
     sql.append("select distinct (a.jaar) from DossAkte a ");
     sql.append("where a.jaar > 0 ");
-    sql.append("order by a.jaar asc ");
+    sql.append("order by a.jaar desc ");
 
     return GenericDao.createQuery(sql.toString(), BigDecimal.class).getResultList();
   }

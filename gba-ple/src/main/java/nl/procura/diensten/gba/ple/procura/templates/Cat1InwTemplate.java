@@ -77,10 +77,7 @@ public class Cat1InwTemplate extends PLETemplateProcura<AbstractInw> {
 
     addElem(GEMEENTE_DOC, inw.getGOntl());
     addElem(DATUM_DOC, inw.getDOntl());
-
-    if (inw.getDocOntl() != null) {
-      addElem(BESCHRIJVING_DOC, inw.getDocOntl().getDoc());
-    }
+    addElem(BESCHRIJVING_DOC, inw.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, inw.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, inw.getDBezwIn());

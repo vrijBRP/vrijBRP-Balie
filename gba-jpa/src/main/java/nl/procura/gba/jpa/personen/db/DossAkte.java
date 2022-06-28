@@ -123,6 +123,12 @@ public class DossAkte extends BaseEntity {
       precision = 131089)
   private BigDecimal pDGeb;
 
+  @Column(name = "opm")
+  private String opm;
+
+  @Column(name = "akte_groep_id")
+  private String akteGroepId;
+
   @ManyToOne
   @BatchFetch(BatchFetchType.IN)
   @JoinColumn(name = "c_doss",
@@ -317,5 +323,21 @@ public class DossAkte extends BaseEntity {
 
   public void setPDGeb(BigDecimal pDGeb) {
     this.pDGeb = pDGeb;
+  }
+
+  public String getOpm() {
+    return opm;
+  }
+
+  public void setOpm(String opm) {
+    this.opm = opm;
+  }
+
+  public String getAkteGroepId() {
+    return akteGroepId;
+  }
+
+  public void setAkteGroepId(String akteGroupId) {
+    this.akteGroepId = akteGroupId;
   }
 }

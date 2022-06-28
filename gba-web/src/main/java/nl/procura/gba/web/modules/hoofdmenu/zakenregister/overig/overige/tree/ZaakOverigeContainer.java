@@ -32,6 +32,7 @@ public class ZaakOverigeContainer extends HierarchicalContainer implements Procu
   public static final String IDENTIFICATIES = "Identificaties";
   public static final String ATTRIBUTEN     = "Attributen";
   public static final String RELATIES       = "Relaties";
+  public static final String BEHANDELAARS   = "Behandelaars";
   public static final String AANTAL         = "Aantal";
 
   public ZaakOverigeContainer() {
@@ -45,6 +46,7 @@ public class ZaakOverigeContainer extends HierarchicalContainer implements Procu
     addTreeItem(IDENTIFICATIES);
     addTreeItem(ATTRIBUTEN);
     addTreeItem(RELATIES);
+    addTreeItem(BEHANDELAARS);
   }
 
   private Item addTreeItem(Object itemId) {

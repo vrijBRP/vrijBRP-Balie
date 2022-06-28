@@ -68,7 +68,7 @@ public class ServicesMock extends Services {
 
   private Optional<Gebruiker> retrieveMockUser() {
     return Optional.ofNullable(
-        getGebruikerService().getGebruikerByNaam("mock", false));
+        getGebruikerService().getGebruikerByNaam("mock"));
   }
 
   private Gebruiker createMockUser() {

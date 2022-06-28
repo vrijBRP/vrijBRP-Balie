@@ -19,10 +19,14 @@
 
 package nl.procura.gba.web.rest;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 import javax.ws.rs.Path;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -37,6 +41,10 @@ import nl.procura.gba.web.rest.v1_0.persoon.GbaRestPersoonResources;
 import nl.procura.gba.web.rest.v1_0.persoon.contact.GbaRestPersoonContactgegevensResources;
 import nl.procura.gba.web.rest.v1_0.zaak.*;
 import nl.procura.gba.web.rest.v2.resources.*;
+import nl.procura.gba.web.rest.v2.services.GbaRestAbstractService;
+import nl.procura.gba.web.rest.v2.services.GbaRestServices;
+import nl.procura.gba.web.services.aop.Transactional;
+import nl.procura.gba.web.services.methodinterception.TransactionInterceptor;
 import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieValidator;
 import nl.procura.proweb.rest.guice.misc.ProRestDefaultMethodInterceptor;
 import nl.procura.proweb.rest.guice.modules.ProRestServletModule;
@@ -83,11 +91,30 @@ public class GbaRestListener extends GuiceServletContextListener {
       bind(GbaRestGebruikerResourceV2Server.class);
       bind(GbaRestInfoResource.class);
 
-      Matcher<Class> matchers = Matchers.subclassesOf(GbaRestServiceResource.class);
-      bindInterceptor(matchers, Matchers.annotatedWith(Path.class), new ProRestDefaultMethodInterceptor());
+      bind(GbaRestServices.class);
+
+      Matcher<Class> resourceMatcher = Matchers.subclassesOf(GbaRestServiceResource.class);
+      bindInterceptor(resourceMatcher, Matchers.annotatedWith(Path.class), new ProRestDefaultMethodInterceptor());
+
+      Matcher<Class> serviceMatcher = Matchers.subclassesOf(GbaRestAbstractService.class);
+      bindInterceptor(serviceMatcher, getMatcher(Transactional.class), new TransactionInterceptor());
 
       // serve
       serve("/rest/*").with(GuiceContainer.class);
+    }
+
+    /**
+     * Returns a non-synthetic matcher for an annotation method
+     */
+    private Matcher<Method> getMatcher(Class<? extends Annotation> annotation) {
+      AbstractMatcher<Method> nonSyntheticMatcher = new AbstractMatcher<Method>() {
+
+        @Override
+        public boolean matches(Method t) {
+          return !t.isSynthetic() && t.isAnnotationPresent(annotation);
+        }
+      };
+      return nonSyntheticMatcher;
     }
   }
 }

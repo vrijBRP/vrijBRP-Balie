@@ -28,26 +28,20 @@ import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteDeel;
 public class Page2AktesForm2 extends GbaForm<Page2AktesBean2> {
 
   public Page2AktesForm2(DossierAkteDeel deel) {
-
     setCaption("Akte registerdelen");
-
-    setOrder(SOORT, CODE, OMSCHRIJVING, MIN, MAX);
-
+    setOrder(SOORT, CODE, OMSCHRIJVING, MIN, MAX, EINDDATUM);
     setColumnWidths(WIDTH_130, "");
-
     setAkteDeel(deel);
   }
 
   public void setAkteDeel(DossierAkteDeel deel) {
-
     Page2AktesBean2 bean = new Page2AktesBean2();
-
     bean.setSoort(deel.getRegisterSoort());
     bean.setCode(deel.getRegisterdeel());
     bean.setMin(astr(deel.getMin()));
     bean.setMax(astr(deel.getMax()));
     bean.setOmschrijving(deel.getOmschrijving());
-
+    bean.setEinddatum(deel.getdEnd());
     setBean(bean);
   }
 }

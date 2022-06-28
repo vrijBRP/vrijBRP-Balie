@@ -113,15 +113,13 @@ public class DocumentenPrintenService extends AbstractService {
 
   @ThrowException(type = DOCUMENTS,
       value = "Fout bij het converteren van een Excel bestand")
-  public byte[] converteerXls(List<String[]> lines, UitvoerformaatType uitvoerFormaat) {
-
+  public byte[] convertSpreadsheet(List<String[]> lines, UitvoerformaatType format) {
     ByteArrayOutputStream csvOs = new ByteArrayOutputStream();
-
     CSVWriter csv;
 
     try {
-      csv = new CSVWriter(new OutputStreamWriter(csvOs, StandardCharsets.UTF_8), ',', '"');
-
+      OutputStreamWriter writer = new OutputStreamWriter(csvOs, StandardCharsets.UTF_8);
+      csv = new CSVWriter(writer, format.getSeparator(), '"');
       for (String[] line : lines) {
         csv.writeNext(line);
       }
@@ -132,7 +130,7 @@ public class DocumentenPrintenService extends AbstractService {
         IOUtils.closeQuietly(csv);
       }
 
-      return converteer(UitvoerformaatType.CSV, uitvoerFormaat, csvOs.toByteArray());
+      return converteer(UitvoerformaatType.CSV, format, csvOs.toByteArray());
     } catch (IOException e) {
       throw new ProException("Fout bij maken spreadsheet", e);
     } finally {
@@ -187,7 +185,7 @@ public class DocumentenPrintenService extends AbstractService {
         break;
 
       case MIJN_OVERHEID: // Stuur naar de BSM toe
-        String ext = printActie.getPrintOptie().getUitvoerformaatType().getType();
+        String ext = printActie.getPrintOptie().getUitvoerformaatType().getExt();
         String bestandsnaam = genereerBestandsnaam(printActie);
         String bsmId = printActie.getPrintOptie().getBsmId();
         String berichttype = printActie.getPrintOptie().getMoBerichttype();
@@ -308,13 +306,12 @@ public class DocumentenPrintenService extends AbstractService {
   }
 
   private byte[] converteer(UitvoerformaatType invoerFormaat, UitvoerformaatType uitvoerFormaat, byte[] inBytes) {
-
     ByteArrayOutputStream os = null;
     ByteArrayInputStream is = null;
     byte[] outBytes;
 
     try {
-      if (invoerFormaat == uitvoerFormaat) {
+      if (invoerFormaat.getId().equals(uitvoerFormaat.getId())) {
         outBytes = inBytes;
       } else {
         if (!OOTools.canConnect(getConnectionHost(), getConnectionPort())) {
@@ -375,7 +372,7 @@ public class DocumentenPrintenService extends AbstractService {
   }
 
   private String genereerBestandsnaam(PrintActie printActie) {
-    return "document-" + new Date().getTime() + "." + printActie.getPrintOptie().getUitvoerformaatType().getType();
+    return "document-" + new Date().getTime() + "." + printActie.getPrintOptie().getUitvoerformaatType().getExt();
   }
 
   private List<File> getSjabloonBestanden(File map) {

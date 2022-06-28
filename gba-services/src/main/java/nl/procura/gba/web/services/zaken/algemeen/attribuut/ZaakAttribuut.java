@@ -25,13 +25,16 @@ import nl.procura.gba.jpa.personen.db.ZaakAttrPK;
 public class ZaakAttribuut extends ZaakAttr {
 
   public ZaakAttribuut() {
-    setId(new ZaakAttrPK());
+    ZaakAttrPK id = new ZaakAttrPK();
+    id.setcUsr(0L);
+    setId(id);
   }
 
   public ZaakAttribuut(String zaakId, ZaakAttribuutType type) {
     ZaakAttrPK id = new ZaakAttrPK();
     id.setZaakId(zaakId);
     id.setZaakAttr(type.getCode());
+    id.setcUsr(0L);
     setId(id);
     setOms(type.getOms());
   }
@@ -42,6 +45,10 @@ public class ZaakAttribuut extends ZaakAttr {
 
   public void setAttribuut(String attribuut) {
     getId().setZaakAttr(attribuut);
+  }
+
+  public void setCodeGebruiker(long codeGebruiker) {
+    getId().setcUsr(codeGebruiker);
   }
 
   public String getZaakId() {

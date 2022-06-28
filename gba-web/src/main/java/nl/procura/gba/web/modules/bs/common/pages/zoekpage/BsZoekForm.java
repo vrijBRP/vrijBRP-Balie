@@ -20,6 +20,8 @@
 package nl.procura.gba.web.modules.bs.common.pages.zoekpage;
 
 import static nl.procura.gba.web.modules.bs.common.pages.zoekpage.BsZoekBean.*;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.*;
+import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
@@ -27,8 +29,12 @@ import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.Field;
 
+import nl.procura.gba.web.components.fields.BagSuggestionBox;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
+import nl.procura.gba.web.services.interfaces.address.Address;
+import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
@@ -39,8 +45,8 @@ public class BsZoekForm extends GbaForm<BsZoekBean> {
   public BsZoekForm(DossierPersoon dossierPersoon) {
     this.dossierPersoon = dossierPersoon;
 
-    setOrder(TYPE, BSN, GEBOORTEDATUM, POSTCODE, HNR);
-    setColumnWidths(WIDTH_130, "");
+    setOrder(F_TYPE, F_BSN, F_GESLACHTSNAAM, F_GEBOORTEDATUM, F_VOORNAMEN, F_POSTCODE, F_HNR, F_ADRES);
+    setColumnWidths(WIDTH_130, "250px", WIDTH_130, "");
     setBean(getNewBean());
   }
 
@@ -50,13 +56,15 @@ public class BsZoekForm extends GbaForm<BsZoekBean> {
     super.commit();
 
     BsZoekBean b = getBean();
-
     String a1 = b.getBsn();
     String a2 = b.getGeboortedatum().getStringValue();
     String a3 = b.getPostcode();
     String a4 = b.getHnr();
+    String a5 = b.getGeslachtsnaam();
+    String a6 = b.getVoornamen();
+    Address a7 = b.getAdres();
 
-    if (emp(a1) && emp(a2) && emp(a3) && emp(a4)) {
+    if (emp(a1) && emp(a2) && emp(a3) && emp(a4) && emp(a5) && emp(a6) && a7 == null) {
       throw new ProException(SELECT, WARNING, "Geef een zoekargument in.");
 
     } else if ((emp(a3) && !emp(a4)) || (!emp(a3) && emp(a4))) {
@@ -67,7 +75,7 @@ public class BsZoekForm extends GbaForm<BsZoekBean> {
   @Override
   public void setBean(Object bean) {
     super.setBean(bean);
-    getField(BSN).focus();
+    getField(F_BSN).focus();
   }
 
   @Override
@@ -79,10 +87,34 @@ public class BsZoekForm extends GbaForm<BsZoekBean> {
 
   @Override
   public void setColumn(Column column, Field field, Property property) {
-    if (property.is(HNR)) {
+    if (property.is(F_TYPE)) {
+      column.setColspan(3);
+    }
+    if (property.is(F_HNR)) {
       column.setAppend(true);
     }
 
     super.setColumn(column, field, property);
+  }
+
+  @Override
+  public void afterSetBean() {
+    super.afterSetBean();
+    BagSuggestionBox suggestionBox = getField(BsZoekBean.F_ADRES, BagSuggestionBox.class);
+    if (suggestionBox != null) {
+      if (Services.getInstance().getGeoService().isGeoServiceActive()) {
+        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+            .setRequestListener(value -> new LocationServerRequest()
+                .setRequestorName("BRP-suggestionbox")
+                .setServiceType(SUGGEST)
+                .setOffset(0).setRows(10)
+                .search(TYPE, "adres")
+                .search(value)
+                .filters(WEERGAVENAAM, ADRESSEERBAAR_OBJECT_ID,
+                    POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
+      } else {
+        suggestionBox.setVisible(false);
+      }
+    }
   }
 }

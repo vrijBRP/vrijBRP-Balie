@@ -33,7 +33,6 @@ import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
 import nl.procura.gba.web.rest.v2.GbaRestVerhuizingResourceV2;
 import nl.procura.gba.web.rest.v2.model.base.GbaRestAntwoord;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.inwoning.GbaRestInwoningVraag;
-import nl.procura.gba.web.rest.v2.services.GbaRestServices;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 
 @RequestScoped
@@ -49,7 +48,7 @@ public class GbaRestVerhuizingResourceV2Server extends GbaRestServiceResource im
   public GbaRestAntwoord<?> updateInwoning(GbaRestInwoningVraag request) {
     return tryCall(
         () -> {
-          new GbaRestServices(getServices())
+          getGbaRestServices()
               .getVerhuizingService()
               .updateInwoning(request);
           return new GbaRestAntwoord<>();

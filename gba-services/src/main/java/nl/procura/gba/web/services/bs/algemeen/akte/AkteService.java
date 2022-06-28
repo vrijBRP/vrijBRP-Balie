@@ -361,12 +361,17 @@ public class AkteService extends AbstractService implements ControleerbareServic
     ConditionalMap map = new ConditionalMap();
     map.putLong(DossAkteDao.D_INVOER_VANAF, zoekArgumenten.getDatumVanaf());
     map.putLong(DossAkteDao.D_INVOER_TM, zoekArgumenten.getDatumTm());
-    map.putLong(DossAkteDao.JAAR_VAN, zoekArgumenten.getJaarVan());
-    map.putLong(DossAkteDao.JAAR_TM, zoekArgumenten.getJaarTm());
-    map.putLong(DossAkteDao.DATUM, zoekArgumenten.getDatum());
+    map.putLong(DossAkteDao.JAAR, zoekArgumenten.getJaar());
+    map.putLong(DossAkteDao.DATUM_FEIT, zoekArgumenten.getDatumFeit());
+    map.putLong(DossAkteDao.DATUM_AKTE, zoekArgumenten.getDatumAkte());
     map.putLong(DossAkteDao.VNR, zoekArgumenten.getNummer());
     map.putLong(DossAkteDao.BSN, zoekArgumenten.getBsn());
     map.putString(DossAkteDao.NAAM, zoekArgumenten.getGeslachtsnaam());
+    map.putString(DossAkteDao.VOORN, zoekArgumenten.getVoornamen());
+    map.putLong(DossAkteDao.GEBOORTEDATUM, zoekArgumenten.getGeboortedatum());
+    map.putString(DossAkteDao.OPMERKING, zoekArgumenten.getOpmerking());
+    map.putLong(DossAkteDao.LIMIT, zoekArgumenten.getLimit());
+    map.putString(DossAkteDao.GROEP_ID, zoekArgumenten.getAkteGroepId());
 
     if (zoekArgumenten.getSoorten().size() > 0) {
       map.putList(DossAkteDao.SOORT, getSoortSet(zoekArgumenten.getSoorten()));

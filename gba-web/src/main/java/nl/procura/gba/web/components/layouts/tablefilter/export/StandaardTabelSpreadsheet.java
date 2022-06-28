@@ -34,21 +34,15 @@ public class StandaardTabelSpreadsheet extends SpreadsheetTemplate {
   private final IndexedTable table;
 
   public StandaardTabelSpreadsheet(IndexedTable table, String caption, UitvoerformaatType uitvoerformaat) {
-
     super(caption, uitvoerformaat);
-
     this.table = table;
   }
 
   @Override
   public void compose() {
-
     Container container = table.getContainerDataSource();
-
     for (Column column : table.getColumns()) {
-
       if (column.getClassType() == null) {
-
         add(column.getCaption());
       }
     }
@@ -56,18 +50,12 @@ public class StandaardTabelSpreadsheet extends SpreadsheetTemplate {
     store();
 
     for (Object itemId : container.getItemIds()) {
-
       for (Column column : table.getColumns()) {
-
         if (column.getClassType() == null) {
-
           Object waarde = container.getItem(itemId).getItemProperty(column.getId()).getValue();
-
           if (waarde instanceof Component) {
-
             add("");
           } else {
-
             add(astr(waarde));
           }
         }

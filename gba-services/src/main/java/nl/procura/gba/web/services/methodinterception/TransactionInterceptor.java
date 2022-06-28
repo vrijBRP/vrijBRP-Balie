@@ -40,16 +40,12 @@ public class TransactionInterceptor extends ServiceMethodInterceptor {
 
   @Override
   public Object invoke(MethodInvocation in) throws Throwable {
-
     beginTransaction(in);
     Object result;
-
     try {
-
       result = in.proceed();
       commitOrRollback(in, true);
     } catch (RuntimeException e) {
-
       commitOrRollback(in, false);
       throw e;
     }
@@ -61,34 +57,23 @@ public class TransactionInterceptor extends ServiceMethodInterceptor {
    * Begin een transactie
    */
   private void beginTransaction(MethodInvocation in) {
-
     Transactional ann = getAnnotation(in, Transactional.class);
-
     if (ann != null) {
-
       if (getMethod() == null) {
-
         setMethod(in.getMethod());
-
         GbaJpa.getManager().getTransaction().begin();
       }
     }
   }
 
   private void commitOrRollback(MethodInvocation in, boolean doCommit) {
-
     Transactional ann = getAnnotation(in, Transactional.class);
-
     if (ann != null) {
-
       if (getMethod() == in.getMethod()) {
-
         try {
-
           EntityManager manager = GbaJpa.getManager();
 
           if (doCommit || ann.commitWithException()) {
-
             manager.getTransaction().commit();
             manager.clear();
 

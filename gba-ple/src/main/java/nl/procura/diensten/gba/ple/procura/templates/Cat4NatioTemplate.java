@@ -42,7 +42,7 @@ public class Cat4NatioTemplate extends PLETemplateProcura<AbstractNat> {
 
     addElem(GEMEENTE_DOC, nat.getGOntl());
     addElem(DATUM_DOC, nat.getDOntl());
-    addElem(BESCHRIJVING_DOC, nat.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, nat.getDocOntl());
 
     addElem(AAND_GEG_IN_ONDERZ, nat.getIndBezw());
     addElem(DATUM_INGANG_ONDERZ, nat.getDBezwIn());

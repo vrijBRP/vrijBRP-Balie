@@ -33,6 +33,7 @@ public enum ParameterGroup {
   GROUP_ALGEMENE_INSTELLINGEN("Algemene Instellingen"),
   GROUP_ZAKEN("Zaken"),
   GROUP_ZAKEN_ALGEMEEN("Zaken algemeen", "Algemeen"),
+  GROUP_ZAKEN_BEHANDELEN("Behandelen"),
   GROUP_ZAKEN_STATUS("Initiële statussen"),
   GROUP_COVOG("COVOG"),
   GROUP_DOCUMENTEN("Documenten"),

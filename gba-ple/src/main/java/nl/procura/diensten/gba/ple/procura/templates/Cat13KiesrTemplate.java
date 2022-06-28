@@ -42,7 +42,7 @@ public class Cat13KiesrTemplate extends PLETemplateProcura<AbstractKiesr> {
 
     addElem(GEMEENTE_DOC, kiesr.getGOntl());
     addElem(DATUM_DOC, kiesr.getDOntl());
-    addElem(BESCHRIJVING_DOC, kiesr.getDocOntl().getDoc());
+    addElem(BESCHRIJVING_DOC, kiesr.getDocOntl());
 
     addElem(INGANGSDAT_GELDIG, kiesr.getId().getDGeld());
     addElem(VOLGCODE_GELDIG, kiesr.getId().getVGeld());

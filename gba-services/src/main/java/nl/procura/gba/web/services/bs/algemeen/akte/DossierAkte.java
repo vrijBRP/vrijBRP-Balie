@@ -63,6 +63,8 @@ public class DossierAkte extends DossAkte implements Comparable<DossierAkte>, Da
     setpVoorv("");
     setpGeslachtsnaam("");
     setpGeslacht("");
+    setOpm("");
+    setAkteGroepId("");
   }
 
   public DossierAkte(DateTime datum) {

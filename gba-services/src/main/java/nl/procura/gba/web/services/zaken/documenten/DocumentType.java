@@ -70,6 +70,7 @@ public enum DocumentType {
   RISK_ANALYSE("risico_analyse", "data", "Risicoanalyse"),
   STEMPAS("stempas", "data", "Stempas"),
   ROS("ros", "data", "Register ongeldige stempassen (ROS)"),
+  PL_CATEGORIE("pl_categorie", "data", "Persoonslijst categorie"),
   ONBEKEND("onbekend", "onbekend", "Onbekend");
 
   private final int    order;

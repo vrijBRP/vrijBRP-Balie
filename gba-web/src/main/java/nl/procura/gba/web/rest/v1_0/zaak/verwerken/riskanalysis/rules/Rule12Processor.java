@@ -168,8 +168,8 @@ public class Rule12Processor extends AbstractRuleProcessor {
     public long      daysUntilExp;
     public boolean   expiredInPeriod;
     public boolean   expired;
-    private String   DATE_FORMAT1 = "yyyyMMdd";
-    private String   DATE_FORMAT2 = "dd-MM-yyyy";
+    private final String DATE_FORMAT1 = "yyyyMMdd";
+    private final String DATE_FORMAT2 = "dd-MM-yyyy";
 
     public Date(String sDate, int days) {
       this.stringValue = sDate;

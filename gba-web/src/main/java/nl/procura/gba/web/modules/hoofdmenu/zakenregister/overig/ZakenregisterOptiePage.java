@@ -34,6 +34,8 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.layout.tabsheet.LazyTabsheet.LazyTab;
 import nl.procura.vaadin.functies.VaadinUtils;
 
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.ZakenregisterUtils.getZakenregisterAccordionTab;
+
 public class ZakenregisterOptiePage<T extends Zaak> extends ZakenregisterPage<T> {
 
   private ZaakTabsheet<T> tabsheet = null;
@@ -62,7 +64,7 @@ public class ZakenregisterOptiePage<T extends Zaak> extends ZakenregisterPage<T>
 
         @Override
         protected void reloadTree() {
-          VaadinUtils.getChild(getWindow(), ZakenregisterAccordionTab.class).recountTree();
+          getZakenregisterAccordionTab(getWindow()).ifPresent(ZakenregisterAccordionTab::recountTree);
         }
       };
 

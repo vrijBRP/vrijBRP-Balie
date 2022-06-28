@@ -67,7 +67,6 @@ public class Page1Klapper extends PageKlapperTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       addButton(buttonSearch);
       addButton(buttonNew);
       addButton(buttonDel);
@@ -79,9 +78,7 @@ public class Page1Klapper extends PageKlapperTemplate {
 
         @Override
         public void update(KlapperZoekargumenten za) {
-
           zoekargumenten = za;
-
           if (table != null) {
             table.init();
           }
@@ -93,8 +90,8 @@ public class Page1Klapper extends PageKlapperTemplate {
       getButtonLayout().addComponent(new GbaIndexedTableFilterLayout(table));
       addComponent(form);
       addExpandComponent(table);
-    } else if (event.isEvent(AfterReturn.class)) {
 
+    } else if (event.isEvent(AfterReturn.class)) {
       table.init();
     }
 
@@ -110,8 +107,8 @@ public class Page1Klapper extends PageKlapperTemplate {
       form.reset();
     } else if (button == buttonPrint) {
       if (zoekargumenten.getVolgorde().isAfdrukbaar()) {
-        Page4Klapper page = new Page4Klapper(KlapperUtils.appenderen(aanvragen, zoekargumenten.getVolgorde()),
-            zoekargumenten);
+        List<DossierAkte> aktes = KlapperUtils.appenderen(aanvragen, zoekargumenten.getVolgorde());
+        Page4Klapper page = new Page4Klapper(aktes, zoekargumenten);
         getNavigation().goToPage(page);
       } else {
         throw new ProException(INFO, "Er kan alleen worden afgedrukt met een <b>oplopende</b> volgorde.");
@@ -139,16 +136,13 @@ public class Page1Klapper extends PageKlapperTemplate {
   }
 
   @Override
-  public void onEnter() {
-
-    if (table.getRecord() != null) {
-      selectRecord(table.getRecord());
-    }
+  public void onNew() {
+    getNavigation().goToPage(new Page3Klapper(new DossierAkte(new DateTime()), true));
   }
 
   @Override
-  public void onNew() {
-    getNavigation().goToPage(new Page3Klapper(new DossierAkte(new DateTime()), true));
+  public void onEnter() {
+    onSearch();
   }
 
   @Override
@@ -157,9 +151,7 @@ public class Page1Klapper extends PageKlapperTemplate {
   }
 
   private void selectRecord(Record record) {
-
     DossierAkte dossierAkte = record.getObject(DossierAkte.class);
-
     getNavigation().goToPage(new Page3Klapper(dossierAkte, false));
   }
 
@@ -184,13 +176,15 @@ public class Page1Klapper extends PageKlapperTemplate {
       setMultiSelect(true);
 
       addColumn("&nbsp;", 20).setClassType(Embedded.class);
-      addColumn("Nr", 30);
+      addColumn("Nr", 40);
       addColumn("Datum akte", 130);
       addColumn("Akte", 100);
+      addColumn("Datum feit", 130);
       addColumn("Invoertype", 110);
-      addColumn("Soort");
+      addColumn("Soort", 190);
       addColumn("Persoon");
       addColumn("Eventuele 2e persoon");
+      addColumn("Opmerking", 180);
 
       super.setColumns();
     }
@@ -199,7 +193,6 @@ public class Page1Klapper extends PageKlapperTemplate {
     public void setRecords() {
 
       aanvragen.clear();
-
       aanvragen.addAll(getServices().getAkteService().getAktes(zoekargumenten));
 
       if (gatenLayout != null) {
@@ -207,29 +200,27 @@ public class Page1Klapper extends PageKlapperTemplate {
       }
 
       gatenLayout = new KlapperGatenLayout(aanvragen, zoekargumenten, true, true);
-
       addComponent(gatenLayout, getComponentIndex(table));
 
       boolean isOp = form.isOplopend();
-
       int nr = isOp ? 1 : aanvragen.size();
 
       for (DossierAkte akte : aanvragen) {
-
         Record r = addRecord(akte);
-
         String styleName = gatenLayout.isVerkeerdeVolgorde(akte) ? "red" : "";
 
         r.addValue(getIcon(akte));
         r.addValue(nr).setStyleName(styleName);
         r.addValue(akte.getDatumIngang()).setStyleName(styleName);
         r.addValue(akte.getAkte()).setStyleName(styleName);
+        r.addValue(akte.getDatumFeit()).setStyleName(styleName);
         r.addValue(akte.getInvoerType()).setStyleName(styleName);
         r.addValue(akte.getAkteRegistersoort()).setStyleName(styleName);
         r.addValue(akte.getAktePersoon().getNaam().getNaam_naamgebruik_eerste_voornaam())
             .setStyleName(styleName);
         r.addValue(akte.getAktePartner().getNaam().getNaam_naamgebruik_eerste_voornaam())
             .setStyleName(styleName);
+        r.addValue(akte.getOpm()).setStyleName(styleName);
 
         nr = isOp ? (nr + 1) : (nr - 1);
       }

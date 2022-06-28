@@ -24,6 +24,7 @@ import java.util.List;
 
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.AantekeningHistorie;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.AttribuutHistorie;
+import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakBehandelaarHistorie;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificaties;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelaties;
 
@@ -31,12 +32,13 @@ import ch.lambdaj.Lambda;
 
 public class ZaakHistorie {
 
-  private List<String>        wijzigingen         = new ArrayList<>();
-  private ZaakRelaties        relaties            = new ZaakRelaties();
-  private ZaakIdentificaties  identificaties      = new ZaakIdentificaties();
-  private AttribuutHistorie   attribuutHistorie   = new AttribuutHistorie();
-  private AantekeningHistorie aantekeningHistorie = new AantekeningHistorie();
-  private ZaakStatusHistorie  statusHistorie      = new ZaakStatusHistorie();
+  private List<String>            wijzigingen         = new ArrayList<>();
+  private ZaakRelaties            relaties            = new ZaakRelaties();
+  private ZaakIdentificaties      identificaties      = new ZaakIdentificaties();
+  private AttribuutHistorie       attribuutHistorie   = new AttribuutHistorie();
+  private ZaakBehandelaarHistorie behandelaarHistorie = new ZaakBehandelaarHistorie();
+  private AantekeningHistorie     aantekeningHistorie = new AantekeningHistorie();
+  private ZaakStatusHistorie      statusHistorie      = new ZaakStatusHistorie();
 
   public void addWijziging(String wijziging) {
     wijzigingen.add(wijziging);
@@ -56,6 +58,14 @@ public class ZaakHistorie {
 
   public void setAttribuutHistorie(AttribuutHistorie attribuutHistorie) {
     this.attribuutHistorie = attribuutHistorie;
+  }
+
+  public ZaakBehandelaarHistorie getBehandelaarHistorie() {
+    return behandelaarHistorie;
+  }
+
+  public void setBehandelaarHistorie(ZaakBehandelaarHistorie behandelaarHistorie) {
+    this.behandelaarHistorie = behandelaarHistorie;
   }
 
   public ZaakIdentificaties getIdentificaties() {

@@ -107,6 +107,12 @@ public class PlMut extends BaseEntity<Long> {
       nullable = false)
   private BigDecimal action;
 
+  @Column(name = "bron")
+  private String bron;
+
+  @Column(name = "leverancier")
+  private String leverancier;
+
   @ManyToOne
   @BatchFetch(BatchFetchType.IN)
   @JoinColumn(name = "c_usr")
@@ -269,5 +275,21 @@ public class PlMut extends BaseEntity<Long> {
 
   public void setPlMutRecs(List<PlMutRec> plMutRecs) {
     this.plMutRecs = plMutRecs;
+  }
+
+  public String getBron() {
+    return bron;
+  }
+
+  public void setBron(String bron) {
+    this.bron = bron;
+  }
+
+  public String getLeverancier() {
+    return leverancier;
+  }
+
+  public void setLeverancier(String leverancier) {
+    this.leverancier = leverancier;
   }
 }

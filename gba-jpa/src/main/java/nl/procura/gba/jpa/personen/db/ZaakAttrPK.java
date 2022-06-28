@@ -42,6 +42,11 @@ public class ZaakAttrPK implements Serializable {
       nullable = false)
   private String zaakAttr;
 
+  @Column(name = "c_usr",
+      unique = true,
+      nullable = false)
+  private long cUsr;
+
   public ZaakAttrPK() {
   }
 
@@ -59,5 +64,13 @@ public class ZaakAttrPK implements Serializable {
 
   public void setZaakAttr(String zaakAttr) {
     this.zaakAttr = zaakAttr;
+  }
+
+  public long getcUsr() {
+    return cUsr;
+  }
+
+  public void setcUsr(long cUsr) {
+    this.cUsr = cUsr;
   }
 }

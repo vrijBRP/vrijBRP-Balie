@@ -82,14 +82,10 @@ public class GebruikerService extends AbstractService {
   }
 
   public void checkEmail(Gebruiker gebruiker, String email) {
-
     if (!isUniekeEmail(gebruiker, email)) {
-      StringBuilder msg = new StringBuilder();
-      msg.append("Het ingevoerde e-mailadres komt reeds voor bij gebruiker ");
-      msg.append(gebruiker.getGebruikersnaam());
-      msg.append(".<br/> Voer een uniek e-mailadres in a.u.b.");
-
-      throw new ProException(ENTRY, WARNING, msg.toString());
+      throw new ProException(ENTRY, WARNING,
+          "Het ingevoerde e-mailadres komt reeds voor bij een andere gebruiker." +
+              "<br/>Voer een uniek e-mailadres in.");
     }
   }
 
@@ -100,24 +96,26 @@ public class GebruikerService extends AbstractService {
 
   @ThrowException(USER_NOT_FOUND_ERROR)
   public Gebruiker getGebruikerByCode(long code, boolean isAttributen) {
-
     Usr u = findEntity(Usr.class, code);
-
     if (u != null) {
       Gebruiker gebruiker = copy(u, Gebruiker.class);
-
       if (isAttributen) {
         laadAttributen(gebruiker);
       }
-
       return gebruiker;
     }
 
     return Gebruiker.getDefault();
   }
 
-  public Gebruiker getGebruikerByCredentials(String userAgent, String remoteAddress, Credentials credentials,
-      boolean useCache) {
+  @ThrowException(USER_NOT_FOUND_ERROR)
+  public Gebruiker getGebruikerByGebruiker(Gebruiker gebruiker) {
+    Gebruiker Gebruiker = getGebruikerByNaam(gebruiker.getGebruikersnaam(), false);
+    return Gebruiker != null ? Gebruiker : gebruiker;
+  }
+
+  public Gebruiker getGebruikerByCredentials(String userAgent, String remoteAddress,
+      Credentials credentials, boolean useCache) {
 
     if (cache.is(useCache, credentials)) {
       return cache.get(credentials);
@@ -167,18 +165,23 @@ public class GebruikerService extends AbstractService {
       addToLog(userAgent, remoteAddress, credentials, gebruiker);
     }
 
-    throw new ProException(AUTHENTICATION, INFO,
-        INLOGERROR); // als for-loop leeg is, dus als gebruiker niet bestaat
+    // als for-loop leeg is, dus als gebruiker niet bestaat
+    throw new ProException(AUTHENTICATION, INFO, INLOGERROR);
+  }
+
+  public Gebruiker getGebruikerByNaam(String gebruikersnaam) {
+    return getGebruikerByNaam(gebruikersnaam, false);
+  }
+
+  public Gebruiker getGebruikerByNaamWithCache(String gebruikersnaam) {
+    return getGebruikerByNaam(gebruikersnaam, true);
   }
 
   @ThrowException(USER_NOT_FOUND_ERROR)
-  public Gebruiker getGebruikerByGebruiker(Gebruiker gebruiker) {
-    Gebruiker Gebruiker = getGebruikerByNaam(gebruiker.getGebruikersnaam(), false);
-    return Gebruiker != null ? Gebruiker : gebruiker;
-  }
-
-  @ThrowException(USER_NOT_FOUND_ERROR)
-  public Gebruiker getGebruikerByNaam(String gebruikersnaam, boolean useCache) {
+  private Gebruiker getGebruikerByNaam(String gebruikersnaam, boolean useCache) {
+    if (StringUtils.isBlank(gebruikersnaam)) {
+      return null;
+    }
 
     // Laad gebruiker uit de cache
     if (cache.is(useCache, gebruikersnaam)) {
@@ -194,12 +197,15 @@ public class GebruikerService extends AbstractService {
     }
 
     // Zoek de gebruiker
-    for (Usr u : findByName(gebruikersnaam)) {
+    List<Usr> usrs = findByName(gebruikersnaam);
+    if (usrs.isEmpty()) {
+      usrs = findByEmail(gebruikersnaam);
+    }
+    for (Usr u : usrs) {
       Gebruiker gebruiker = laadAttributen(copy(u, Gebruiker.class));
       cache.put(gebruikersnaam, gebruiker);
       return gebruiker;
     }
-
     return null;
   }
 
@@ -253,22 +259,6 @@ public class GebruikerService extends AbstractService {
     }
 
     return newList;
-  }
-
-  @ThrowException(USER_NOT_FOUND_ERROR)
-  public Gebruiker getGebruikerByEmail(String gebruikersnaam) {
-    List<Gebruiker> gebruikers = getGebruikersByEmail(gebruikersnaam);
-    return gebruikers.size() == 1 ? gebruikers.get(0) : null;
-  }
-
-  @ThrowException(USER_NOT_FOUND_ERROR)
-  public List<Gebruiker> getGebruikersByEmail(String email) {
-    List<Gebruiker> gebruikers = new ArrayList<>();
-    for (Usr u : findByEmail(email)) {
-      gebruikers.add(laadAttributen(copy(u, Gebruiker.class)));
-    }
-
-    return gebruikers;
   }
 
   @ThrowException(USER_NOT_FOUND_ERROR)
@@ -590,8 +580,9 @@ public class GebruikerService extends AbstractService {
    * Voeg inlogpoging toe aan de log
    */
   @ThrowException("Fout bij opslaan inlogpoging")
-  private void addToLog(String userAgent, String remoteAddress, Credentials credentials, Gebruiker gebruiker) {
-    getServices().getLogService().addLoginAttempt(userAgent, remoteAddress, credentials, gebruiker);
+  public Gebruiker addToLog(String userAgent, String remoteAddress, Credentials credentials, Gebruiker gebruiker) {
+    getServices().getLogService().addLoginAttempt(userAgent, remoteAddress, credentials.getUsername(), gebruiker);
+    return gebruiker;
   }
 
   private List<GebruikerWachtwoord> getGebruikerWachtwoorden(Gebruiker gebruiker) {

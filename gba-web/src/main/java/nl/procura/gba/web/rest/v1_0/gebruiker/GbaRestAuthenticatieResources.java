@@ -28,6 +28,8 @@ import java.lang.reflect.Field;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.inject.servlet.RequestScoped;
 
 import nl.procura.gba.web.modules.beheer.parameters.bean.ParameterBean;
@@ -85,9 +87,8 @@ public class GbaRestAuthenticatieResources extends GbaRestServiceResource implem
     ProRestGebruikerAntwoord antwoord = new ProRestGebruikerAntwoord();
 
     if (fil(loggedInUser.getGebruikersnaam())) {
-
       ProRestGebruiker restGebruiker = new ProRestGebruiker();
-      Gebruiker gebruiker = getServices().getGebruikerService().getGebruikerByNaam(name, true);
+      Gebruiker gebruiker = getServices().getGebruikerService().getGebruikerByNaamWithCache(name);
 
       boolean accessAllowed = false;
       boolean userIsAdmin = loggedInUser.getRollen().contains(Rol.BEHEERDER);
@@ -154,18 +155,16 @@ public class GbaRestAuthenticatieResources extends GbaRestServiceResource implem
     GbaRestGebruikerAntwoord antwoord = new GbaRestGebruikerAntwoord();
 
     GbaRestElement gebruikers = antwoord.getAntwoordElement().add(GEBRUIKERS);
-    Gebruiker gebruiker = null;
+    Gebruiker gebruiker;
 
     if (pos(vraag.getCode())) {
       gebruiker = getServices().getGebruikerService().getGebruikerByCode(vraag.getCode(), true);
-    } else if (fil(vraag.getGebruikersnaam())) {
-      gebruiker = getServices().getGebruikerService().getGebruikerByNaam(vraag.getGebruikersnaam(), true);
-    } else if (fil(vraag.getEmail())) {
-      gebruiker = getServices().getGebruikerService().getGebruikerByEmail(vraag.getEmail());
+    } else {
+      String gebruikersnaam = StringUtils.defaultIfBlank(vraag.getGebruikersnaam(), vraag.getEmail());
+      gebruiker = getServices().getGebruikerService().getGebruikerByNaamWithCache(gebruikersnaam);
     }
 
     if (gebruiker != null && gebruiker.isStored()) {
-
       GbaRestElement g = gebruikers.add(GEBRUIKER);
       g.add(CODE).set(gebruiker.getCUsr());
 

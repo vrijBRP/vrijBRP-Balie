@@ -21,12 +21,16 @@ package nl.procura.gba.web.services.zaken.algemeen;
 
 import static java.util.Comparator.comparingInt;
 import static nl.procura.gba.common.MiscUtils.setClass;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.*;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -46,6 +50,7 @@ import nl.procura.gba.web.services.beheer.locatie.Locatie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
+import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakBehandelaar;
 import nl.procura.gba.web.services.zaken.algemeen.commentaar.CommentaarZaak;
 import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaarType;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdType;
@@ -104,6 +109,10 @@ public class ZaakUtils {
         uid.substring(4, 7) +
         "-" +
         uid.substring(7);
+  }
+
+  public static Optional<ZaakBehandelaar> getBehandelaar(Zaak zaak) {
+    return zaak.getZaakHistorie().getBehandelaarHistorie().getBehandelaar();
   }
 
   public static boolean isProbleemBijVerwerking(Zaak zaak) {

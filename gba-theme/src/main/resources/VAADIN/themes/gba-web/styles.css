@@ -321,9 +321,16 @@
 
 /* To disable the cursor when hovering over buttons */
 .remove-pointer {
-	cursor: auto;
+    cursor: auto;
 }
 
 .remove-pointer:focus {
-	outline: none;
+    outline: none;
+}
+
+.zaak-behandelaar-button {
+    float: right;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: middle;
 }

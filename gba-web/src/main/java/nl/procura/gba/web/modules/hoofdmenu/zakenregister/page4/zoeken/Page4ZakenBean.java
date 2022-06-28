@@ -63,6 +63,7 @@ public class Page4ZakenBean implements Serializable {
   public static final String VERWERKT           = "verwerkt";
   public static final String GEANNULEERD        = "geannuleerd";
   public static final String GEBRUIKER          = "gebruiker";
+  public static final String BEHANDELAAR        = "behandelaar";
   public static final String PROFIEL            = "profiel";
   public static final String ZAAKTYPES          = "zaakTypes";
   public static final String ZAAKSTATUSSEN      = "zaakStatussen";
@@ -123,10 +124,16 @@ public class Page4ZakenBean implements Serializable {
   private String nr = "";
 
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Gebruiker",
+      caption = "Ingevoerd door",
       width = "230px")
   @Immediate
   private UsrFieldValue gebruiker = new UsrFieldValue();
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Behandelaar",
+      width = "230px")
+  @Immediate
+  private UsrFieldValue behandelaar = new UsrFieldValue();
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Profiel",

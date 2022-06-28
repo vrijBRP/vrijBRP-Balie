@@ -215,6 +215,15 @@ public enum ParameterConstant implements ParameterType {
   ZAKEN_INIT_STATUS_PL_MUTATIE("zaken_init_pl_mutatie", "PL Mutatie",
       GROUP_ZAKEN_STATUS, true, true, true, "0"),
 
+  ZAKEN_NIEUW_BRONNEN("zaken_nieuw_bron", "Bronnen",
+          GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
+
+  ZAKEN_NIEUW_LEVERANCIERS("zaken_nieuw_leveranciers", "Leveranciers",
+          GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
+
+  ZAKEN_NIEUW_ZAAKTYPES("zaken_nieuw_zaaktypes", "Zaaktypes",
+          GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
+
   COVOG_ID_CODE("covog_idcode", "COVOG identificatiecode",
       GROUP_COVOG, true, false, false, ""),
 

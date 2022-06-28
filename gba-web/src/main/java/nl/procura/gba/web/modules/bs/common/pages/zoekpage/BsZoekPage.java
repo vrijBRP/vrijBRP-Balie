@@ -26,6 +26,7 @@ import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.components.layouts.page.buttons.ModalCloseButton;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
+import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -163,22 +164,31 @@ public class BsZoekPage extends ButtonPageTemplate {
     BsZoekBean b = getForm().getBean();
 
     PLEArgs args = new PLEArgs();
+    args.setMaxFindCount(50);
     args.addNummer(b.getBsn());
     args.setGeboortedatum(b.getGeboortedatum().getStringValue());
     args.setHuisnummer(b.getHnr());
     args.setPostcode(b.getPostcode());
+    args.setGeslachtsnaam(b.getGeslachtsnaam());
+    args.setVoornaam(b.getVoornamen());
 
-    PLResultComposite result = getApplication().getServices().getPersonenWsService().getPersoonslijsten(args,
-        false);
+    Address adres = b.getAdres();
+    if (adres != null) {
+      args.setPostcode(adres.getPostalCode());
+      args.setHuisnummer(adres.getHnr());
+      args.setHuisletter(adres.getHnrL());
+      args.setHuisnummertoevoeging(adres.getHnrT());
+    }
+
+    PLResultComposite result = getApplication().getServices().getPersonenWsService()
+        .getPersoonslijsten(args, false);
 
     if (result.getBasisPLWrappers().size() > 0) {
-
       getTable().setResult(result);
       getTable().select(getTable().firstItemId());
       getTable().focus();
 
       if (result.getBasisPLWrappers().size() == 1) {
-
         onEnter();
       }
     } else {

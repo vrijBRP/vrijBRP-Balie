@@ -439,6 +439,17 @@ public class BsPersoonUtils extends BsUtils {
     return persoon;
   }
 
+  public static DossierPersoon kopieDossierPersoonFromDatabase(DossierPersoon dossierPersoon, DossierPersoon targetPersoon) {
+    BsnFieldValue bsn = dossierPersoon.getBurgerServiceNummer();
+    if (bsn.isCorrect()) {
+      BasePLExt pl = Services.getInstance().getPersonenWsService().getPersoonslijst(bsn.getStringValue());
+      if (pl.getCats().isNotEmpty()) {
+        return kopieDossierPersoon(pl, targetPersoon);
+      }
+    }
+    return kopieDossierPersoon(dossierPersoon, targetPersoon);
+  }
+
   /**
    * Kopieert de ene dossierPersoon naar de andere
    */

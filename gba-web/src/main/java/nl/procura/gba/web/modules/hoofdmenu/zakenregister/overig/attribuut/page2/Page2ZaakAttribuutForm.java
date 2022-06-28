@@ -19,8 +19,7 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.ATTRIBUUT;
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.TYPE;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.*;
 import static nl.procura.standard.Globalfunctions.fil;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -31,21 +30,21 @@ public class Page2ZaakAttribuutForm extends GbaForm<Page2ZaakAttribuutBean> {
 
   public Page2ZaakAttribuutForm(ZaakAttribuut attribuut) {
 
-    setOrder(TYPE, ATTRIBUUT);
+    setOrder(TYPE, ATTRIBUUT, WAARDE);
     setColumnWidths("100px", "");
 
     Page2ZaakAttribuutBean bean = new Page2ZaakAttribuutBean();
+    bean.setType(ZaakAttribuutType.get(attribuut.getAttribuut()));
     bean.setAttribuut(attribuut.getAttribuut());
+    bean.setWaarde(attribuut.getWaarde());
     setBean(bean);
   }
 
   @Override
   public void afterSetBean() {
-
     super.afterSetBean();
 
     getField(TYPE).addListener((ValueChangeListener) event -> {
-
       if (event.getProperty().getValue() == ZaakAttribuutType.ANDERS) {
         getField(ATTRIBUUT).setVisible(true);
       } else {

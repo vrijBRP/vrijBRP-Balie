@@ -19,39 +19,50 @@
 
 package nl.procura.gba.jpa.personen.dao;
 
+import static java.util.Optional.ofNullable;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.jpa.personen.db.ZaakAttr;
-import nl.procura.gba.jpa.personen.db.ZaakAttrPK;
+import nl.procura.gba.jpa.personen.utils.GbaJpa;
+import nl.procura.standard.Globalfunctions;
 
 public class ZaakAttrDao extends GenericDao {
 
   public static final String ZAAK_ATTR = "zaakAttr";
+  public static final String C_USR     = "cUsr";
 
-  public static final List<ZaakAttr> find(ConditionalMap map) {
+  public static List<ZaakAttr> find(ConditionalMap map) {
 
     if (map.isEmpty()) {
       return new ArrayList<>();
     }
 
-    ZaakAttrPK pk = new ZaakAttrPK();
-
-    if (map.containsKey(ZAAK_ID)) {
-      pk.setZaakId(astr(map.get(ZAAK_ID)));
-    }
+    EntityManager em = GbaJpa.getManager();
+    StringBuilder sql = new StringBuilder();
+    sql.append("select z from ZaakAttr z ");
+    sql.append("where z.id.zaakId = :zaakId ");
+    sql.append("and z.id.cUsr = :cUsr ");
 
     if (map.containsKey(ZAAK_ATTR)) {
-      pk.setZaakAttr(astr(map.get(ZAAK_ATTR)));
+      sql.append("and z.id.zaakAttr = :zaakAttr");
     }
 
-    ZaakAttr id = new ZaakAttr();
+    TypedQuery<ZaakAttr> q = em.createQuery(sql.toString(), ZaakAttr.class);
+    q.setParameter("zaakId", astr(map.get(ZAAK_ID)));
+    q.setParameter("cUsr", ofNullable(map.get(C_USR))
+        .map(Globalfunctions::along)
+        .orElse(0L));
 
-    id.setId(pk);
-
-    return findByExample(id);
+    if (map.containsKey(ZAAK_ATTR)) {
+      q.setParameter("zaakAttr", astr(map.get(ZAAK_ATTR)));
+    }
+    return q.getResultList();
   }
 }

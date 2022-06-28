@@ -19,34 +19,50 @@
 
 package nl.procura.gba.web.rest.v2.services;
 
+import com.google.inject.Inject;
+
 import nl.procura.gba.web.services.Services;
 
 public class GbaRestServices {
 
-  private final GbaRestVerhuizingService  verhuizingService;
-  private final GbaRestGeboorteService    geboorteService;
-  private final GbaRestDossierService     dossierService;
-  private final GbaRestContactService     contactService;
-  private final GbaRestZaakService        zaakService;
-  private final GbaRestZaaksysteemService zaakDmsService;
-  private final GbaRestDmsService         dmsService;
-  private final GbaRestErkenningService   erkenningService;
-  private final GbaRestHuwelijkService    huwelijkService;
-  private final GbaRestOverlijdenService  overlijdenService;
-  private final GbaRestGebruikerService   gebruikerService;
+  @Inject
+  private GbaRestVerhuizingService verhuizingService;
 
-  public GbaRestServices(Services services) {
-    dossierService = new GbaRestDossierService(this, services);
-    contactService = new GbaRestContactService(this, services);
-    zaakService = new GbaRestZaakService(this, services);
-    zaakDmsService = new GbaRestZaaksysteemService(this, services);
-    dmsService = new GbaRestDmsService(services, zaakService);
-    erkenningService = new GbaRestErkenningService(dossierService);
-    verhuizingService = new GbaRestVerhuizingService(this, services);
-    geboorteService = new GbaRestGeboorteService(this, services);
-    huwelijkService = new GbaRestHuwelijkService(this, services);
-    overlijdenService = new GbaRestOverlijdenService(this, services);
-    gebruikerService = new GbaRestGebruikerService(this, services);
+  @Inject
+  private GbaRestGeboorteService geboorteService;
+
+  @Inject
+  private GbaRestDossierService dossierService;
+
+  @Inject
+  private GbaRestContactService contactService;
+
+  @Inject
+  private GbaRestZaakService zaakService;
+
+  @Inject
+  private GbaRestZaaksysteemService zaakDmsService;
+
+  @Inject
+  private GbaRestDmsService dmsService;
+
+  @Inject
+  private GbaRestErkenningService erkenningService;
+
+  @Inject
+  private GbaRestHuwelijkService huwelijkService;
+
+  @Inject
+  private GbaRestOverlijdenService overlijdenService;
+
+  @Inject
+  private GbaRestGebruikerService gebruikerService;
+
+  private Services services;
+
+  public GbaRestServices setServices(Services services) {
+    this.services = services;
+    return this;
   }
 
   public GbaRestVerhuizingService getVerhuizingService() {
@@ -91,5 +107,9 @@ public class GbaRestServices {
 
   public GbaRestGebruikerService getGebruikerService() {
     return gebruikerService;
+  }
+
+  public Services getServices() {
+    return services;
   }
 }

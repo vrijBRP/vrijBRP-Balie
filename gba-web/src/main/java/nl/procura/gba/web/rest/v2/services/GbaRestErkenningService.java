@@ -28,19 +28,14 @@ import nl.procura.gba.web.rest.v2.model.zaken.erkenning.GbaRestErkenningsType;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 
-public class GbaRestErkenningService {
-
-  private final GbaRestDossierService dossierService;
-
-  public GbaRestErkenningService(GbaRestDossierService dossierService) {
-    this.dossierService = dossierService;
-  }
+public class GbaRestErkenningService extends GbaRestAbstractService {
 
   public GbaRestErkenning toGbaRestErkenning(Dossier zaak) {
     DossierErkenning erkenning = (DossierErkenning) zaak.getZaakDossier();
 
     // To implement: kinderen, aktes, nationaliteiten, afstamming, toestemming?
     GbaRestErkenning restErkenning = new GbaRestErkenning();
+    GbaRestDossierService dossierService = getRestServices().getDossierService();
     restErkenning.setMoeder(dossierService.getRestPersoon(zaak, MOEDER));
     restErkenning.setErkenner(dossierService.getRestPersoon(zaak, ERKENNER));
     restErkenning

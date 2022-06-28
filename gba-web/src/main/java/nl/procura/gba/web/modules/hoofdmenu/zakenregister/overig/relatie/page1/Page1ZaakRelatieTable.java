@@ -67,7 +67,7 @@ public class Page1ZaakRelatieTable extends GbaTable {
     setSelectable(true);
     setMultiSelect(true);
 
-    addColumn("Nr", 50);
+    addColumn("Nr", 30);
     addColumn("Zaaktype");
     addColumn("Gebruiker");
     addColumn("Datum ingang");

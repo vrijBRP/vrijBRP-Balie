@@ -24,11 +24,13 @@ import static nl.procura.gba.web.modules.hoofdmenu.klapper.page3.Page3KlapperBea
 import static nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType.BLANCO;
 import static nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType.ONBEKEND;
 import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
@@ -45,6 +47,7 @@ import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.modules.hoofdmenu.klapper.PageKlapperTemplate;
+import nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1Klapper;
 import nl.procura.gba.web.modules.hoofdmenu.klapper.windows.KlapperZoekWindow;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page100.Page100Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page110.Page110Zaken;
@@ -55,10 +58,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page150.Page150Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page200.Page200Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page210.Page210Zaken;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
-import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteDeel;
-import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteNummer;
-import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort;
+import nl.procura.gba.web.services.bs.algemeen.akte.*;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
@@ -94,13 +94,14 @@ public class Page3Klapper extends PageKlapperTemplate {
 
       if (getWindow().isModal()) {
         addButton(buttonClose);
-      } else {
 
+      } else {
         addButton(buttonPrev);
 
         if (muteerbaar) {
           addButton(buttonCheck);
           addButton(buttonSave);
+
         } else {
           addButton(buttonNew);
           addButton(buttonChange);
@@ -114,6 +115,7 @@ public class Page3Klapper extends PageKlapperTemplate {
 
           if (!dossierAkte.isDossierCorrect()) {
             setInfo("Deze klapper zou gekoppeld moeten zijn aan een dossier in Proweb Personen.");
+
           } else if (!dossierAkte.isDossierVerwerkt()) {
             setInfo("De zaak die gekoppeld is aan deze klapper is nog niet verwerkt.");
           }
@@ -122,6 +124,20 @@ public class Page3Klapper extends PageKlapperTemplate {
 
       resetDefaultForm();
       resetExtraForms();
+
+      if (!muteerbaar) {
+        List<DossierAkte> aktes = new ArrayList<>();
+        if (fil(dossierAkte.getAkteGroepId())) {
+          KlapperZoekargumenten zoekargumenten = new KlapperZoekargumenten();
+          zoekargumenten.setAkteGroepId(dossierAkte.getAkteGroepId());
+          aktes.addAll(getServices().getAkteService()
+              .getAktes(zoekargumenten).stream()
+              .filter(d -> !d.getCode().equals(dossierAkte.getCode()))
+              .collect(Collectors.toList()));
+        }
+        addComponent(new KlapperKoppelLayout(aktes, da -> getNavigation()
+            .goToPage(new Page3Klapper(da, false))));
+      }
     }
 
     super.event(event);
@@ -145,36 +161,28 @@ public class Page3Klapper extends PageKlapperTemplate {
   }
 
   public void onCheck() {
-
     check(getAkteNummer());
-
     successMessage("Dit volgnummer is te gebruiken");
   }
 
   @Override
   public void onClose() {
-
     if (getWindow().isModal()) {
       getWindow().closeWindow();
     }
-
     super.onClose();
   }
 
   @Override
   public void onNew() {
-
     getNavigation().removePage(Page3Klapper.class);
     getNavigation().goToPage(new Page3Klapper(new DossierAkte(new DateTime()), true));
-
     super.onNew();
   }
 
   @Override
   public void onNextPage() {
-
     if (dossierAkte.isDossierCorrect()) {
-
       ZakenService db = getServices().getZakenService();
       List<Zaak> zaken = db.getVolledigeZaken(db.getMinimaleZaken(new ZaakArgumenten(dossierAkte.getZaakId())));
 
@@ -230,7 +238,7 @@ public class Page3Klapper extends PageKlapperTemplate {
 
   @Override
   public void onPreviousPage() {
-    getNavigation().goBackToPreviousPage();
+    getNavigation().goBackToPage(Page1Klapper.class);
   }
 
   @Override
@@ -331,11 +339,9 @@ public class Page3Klapper extends PageKlapperTemplate {
 
   private void doSave(DossierAkteNummer akteNummer) {
     getServices().getAkteService().save(null, dossierAkte, akteNummer, true);
-
     successMessage("De gegevens zijn opgeslagen");
 
     getNavigation().removePage(Page3Klapper.class);
-
     getNavigation().goToPage(new Page3Klapper(dossierAkte, false));
   }
 
@@ -349,16 +355,15 @@ public class Page3Klapper extends PageKlapperTemplate {
 
     dossierAkte.setInvoerType(form.getInvoerType());
     dossierAkte.setDatumIngang(new DateTime(form.getDatum()));
+    dossierAkte.setOpm(form.getBean().getOpm());
 
     for (CommittableForm form : forms) {
-
       updateDatumFeit(form, DATUM_GEBOORTE);
       updateDatumFeit(form, DATUM_HUWELIJK);
       updateDatumFeit(form, DATUM_ERKENNING);
       updateDatumFeit(form, DATUM_OVERLIJDEN);
 
       if (form instanceof PersoonLayout) {
-
         PersoonLayout persoonLayout = (PersoonLayout) form;
         PersoonForm persoonForm = persoonLayout.getForm();
 
@@ -410,9 +415,7 @@ public class Page3Klapper extends PageKlapperTemplate {
 
       @Override
       public void checkVolgNummer() {
-
         check(getAkteNummer());
-
         successMessage("Dit aktenummer is te gebruiken");
       }
 
@@ -432,11 +435,9 @@ public class Page3Klapper extends PageKlapperTemplate {
    * Wijzig datum feit
    */
   private void updateDatumFeit(CommittableForm form, String datum) {
-
     Field datumVeld = form.getForm().getField(datum);
 
     if (datumVeld != null) {
-
       dossierAkte.setDatumFeit(
           new GbaDateFieldValue(new DateFieldValue(astr(datumVeld.getValue())).getLongValue()));
     }

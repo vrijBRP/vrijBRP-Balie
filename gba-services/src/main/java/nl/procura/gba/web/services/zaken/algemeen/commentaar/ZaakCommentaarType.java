@@ -26,7 +26,7 @@ public enum ZaakCommentaarType {
   INFO(1, "I", "Info"),
   WARN(2, "W", "Waarschuwing"),
   ERROR(3, "E", "Fout"),
-  FAV(0, "F", "Favouriet"),
+  FAV(0, "F", "Favoriet"),
   ONBEKEND(0, "O", "Onbekend");
 
   private int    vnr;

@@ -84,7 +84,7 @@ public class DMSService extends AbstractService {
       DocumentVertrouwelijkheid vertrouwelijkheid = documentService
           .getStandaardVertrouwelijkheid(document.getVertrouwelijkheid(), ONBEKEND);
 
-      String ext = printActie.getPrintOptie().getUitvoerformaatType().getType();
+      String ext = printActie.getPrintOptie().getUitvoerformaatType().getExt();
       DMSDocument dmsDocument = DMSDocument.builder()
           .content(DMSBytesContent.fromExtension(ext, documentBytes))
           .title(document.getDocument())
