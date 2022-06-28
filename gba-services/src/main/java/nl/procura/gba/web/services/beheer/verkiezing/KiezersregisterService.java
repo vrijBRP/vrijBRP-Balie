@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.beheer.verkiezing;
 
 import static java.lang.Long.parseLong;
+import static org.apache.commons.lang3.Validate.notBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,18 +221,18 @@ public class KiezersregisterService extends AbstractService {
   public KiesrStem toKiezerPers(KiesrVerk verkiezing, Bestandsregel regel) {
     KiesrStem kiezer = new KiesrStem(verkiezing);
     kiezer.setVnr(regel.getVStem());
-    kiezer.setAnr(new Anummer(regel.getAnr()).getLongAnummer());
-    kiezer.setdGeb(parseLong(regel.getDGeb()));
-    kiezer.setVoorn(regel.getVoorn());
-    kiezer.setNaam(regel.getNaam());
-    kiezer.setGeslacht(regel.getGeslacht());
-    kiezer.setStraat(regel.getStraat());
-    kiezer.setHnr(parseLong(regel.getHnr()));
+    kiezer.setAnr(new Anummer(notBlank(regel.getAnr(), "A-nummer ontbreekt")).getLongAnummer());
+    kiezer.setdGeb(parseLong(notBlank(regel.getDGeb(), "Geboortedatum ontbreekt")));
+    kiezer.setVoorn(notBlank(regel.getVoorn(), "initialen ontbreken"));
+    kiezer.setNaam(notBlank(regel.getNaam(), "Naam ontbreekt"));
+    kiezer.setGeslacht(notBlank(regel.getGeslacht(), "Geslachtsaanduiding ontbreekt"));
+    kiezer.setStraat(notBlank(regel.getStraat(), "Straatnaam ontbreekt"));
+    kiezer.setHnr(parseLong(notBlank(regel.getHnr(), "Huisnummer ontbreekt")));
     kiezer.setHnrL(regel.getHnrL());
     kiezer.setHnrT(regel.getHnrT());
-    kiezer.setPc(regel.getPc());
-    kiezer.setWpl(regel.getWpl());
-    kiezer.setPasNr(regel.getPasNr());
+    kiezer.setPc(notBlank(regel.getPc(), "Postcode ontbreekt"));
+    kiezer.setWpl(notBlank(regel.getWpl(), "Woonplaats ontbreekt"));
+    kiezer.setPasNr(notBlank(regel.getPasNr(), "Stempasnr ontbreekt"));
     return kiezer;
   }
 

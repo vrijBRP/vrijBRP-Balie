@@ -58,6 +58,7 @@ public final class GbaWsEclipseLinkUtil {
   private static final String DB_LOG_INFO           = "INFO";
   private static final String DB_ORACLE             = "oracle";
   private static final String DB_POSTGRES           = "postgres";
+  private static final String TCP_KEEPALIVE         = "tcpKeepAlive";
 
   private static final String ONE = "1";
 
@@ -77,6 +78,7 @@ public final class GbaWsEclipseLinkUtil {
     String username = getProperty(properties, USERNAME);
     String password = getProperty(properties, PW);
     String logLevel = getProperty(properties, LOG_LEVEL);
+    String keepalive = getProperty(properties, TCP_KEEPALIVE);
 
     if (fil(getProperty(properties, PERSISTENCE_UNIT_NAME))) {
       persistenceUnitName = getProperty(properties, PERSISTENCE_UNIT_NAME);
@@ -141,6 +143,11 @@ public final class GbaWsEclipseLinkUtil {
       } else if (databaseType.equals(DB_ORACLE)) {
         finalDriver = "oracle.jdbc.OracleDriver";
       }
+    }
+
+    if (StringUtils.isNotBlank(keepalive)) {
+      configuration.put(TCP_KEEPALIVE, keepalive);
+      log.info("TCP keepalive enabled");
     }
 
     log.info("JPA connection: " + finalUrl);

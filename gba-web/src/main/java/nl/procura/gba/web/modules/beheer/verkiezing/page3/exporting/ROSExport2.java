@@ -25,45 +25,59 @@ import java.util.List;
 import nl.procura.gba.jpa.personen.db.KiesrStem;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.verkiezing.Stempas;
+import nl.procura.raas.message.elements.Voornamen;
+import nl.procura.standard.ProcuraDate;
+import nl.procura.validation.Postcode;
 
-public class ROSExport1 implements ROSExport {
+/**
+ * Lichtbestand
+ */
+public class ROSExport2 implements ROSExport {
 
   @Override
   public String getBestandsnaam() {
-    return "ROS-algemeen";
+    return "lichtbestand";
   }
 
   @Override
   public String getTitel() {
-    return "Algemene export (CSV)";
+    return "Lichtbestand (CSV)";
   }
 
   @Override
   public List<String[]> getExport(List<KiesrStem> stempassen, Services services) {
     List<String[]> lines = new ArrayList<>();
     lines.add(
-        new String[]{ "Gemeente", "A-nummer", "Pasnummer", "Volgnummer",
-            "Aanduiding (kort)", "Aanduiding (omschrijving)", "Tijdstip aanduiding",
-            "Voorletters", "Naam", "Adres", "Postcode", "Woonplaats" });
+        new String[]{ "A-nummer", "Nummer", "Mutatiesoort", "Mutatiedatum", "Opgemaakte naam",
+            "Voorletters", "Straat", "Huisnummer", "Huisletter", "Toevoeging",
+            "Postcode", "Woonplaats" });
     for (KiesrStem kiesrStem : stempassen) {
       Stempas stempas = new Stempas(kiesrStem);
-      String gemeente = services.getGebruiker().getGemeente();
       lines.add(new String[]{
-          gemeente,
           stempas.getAnr().getAnummer(),
-          stempas.getPasnummer(),
-          stempas.getVolgnr().toString(),
+          getNummer(stempas),
           stempas.getAanduidingType().getType(),
-          stempas.getAanduidingType().getOms(),
-          stempas.getAanduidingTijdstip(),
-          stempas.getStem().getVoorn(),
+          getMutatiedatum(stempas),
           stempas.getStem().getNaam(),
-          stempas.getAdres(),
+          stempas.getStem().getVoorn(),
+          stempas.getStem().getStraat(),
+          stempas.getStem().getHnr().toString(),
+          stempas.getStem().getHnrL(),
+          stempas.getStem().getHnrT(),
           stempas.getPostcode(),
-          stempas.getStem().getWpl(),
+          stempas.getStem().getWpl()
       });
     }
     return lines;
+  }
+
+  private String getMutatiedatum(Stempas stempas) {
+    return new ProcuraDate(stempas.getStem().getdAand().intValue()).getFormatDate("dd-MM-yyyy");
+  }
+
+  private String getNummer(Stempas stempas) {
+    return stempas.getStem().getKiesrVerk().getAfkVerkiezing()
+        + " " + stempas.getPasnummer();
   }
 
   @Override

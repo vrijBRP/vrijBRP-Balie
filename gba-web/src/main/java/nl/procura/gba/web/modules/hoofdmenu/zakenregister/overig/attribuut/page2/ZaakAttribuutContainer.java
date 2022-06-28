@@ -28,6 +28,7 @@ public class ZaakAttribuutContainer extends ArrayListContainer {
     addItem(ZaakAttribuutType.MIJN_OVERHEID_WEL);
     addItem(ZaakAttribuutType.MIJN_OVERHEID_NIET);
     addItem(ZaakAttribuutType.WACHT_OP_RISICOANALYSE);
+    addItem(ZaakAttribuutType.FOUT_BIJ_VERWERKING);
     addItem(ZaakAttribuutType.ANDERS);
   }
 }

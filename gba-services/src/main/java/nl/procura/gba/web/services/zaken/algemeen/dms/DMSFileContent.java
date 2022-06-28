@@ -57,6 +57,11 @@ public class DMSFileContent implements DMSContent {
   }
 
   @Override
+  public Long getSize() {
+    return file.length();
+  }
+
+  @Override
   public String getFilename() {
     return file.getName();
   }

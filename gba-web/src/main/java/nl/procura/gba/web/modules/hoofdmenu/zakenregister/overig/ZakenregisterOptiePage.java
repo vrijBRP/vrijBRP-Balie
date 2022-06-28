@@ -103,7 +103,6 @@ public class ZakenregisterOptiePage<T extends Zaak> extends ZakenregisterPage<T>
 
       @Override
       protected void reload() {
-
         tabsheet.reloadTabs();
         tabsheet.reloadTree();
       }
@@ -117,7 +116,6 @@ public class ZakenregisterOptiePage<T extends Zaak> extends ZakenregisterPage<T>
 
       @Override
       public void reload() {
-
         tabsheet.reloadTabs();
         tabsheet.reloadTree();
       }

@@ -109,6 +109,7 @@ public class CorrespondentieBean implements Serializable {
       width = "30px",
       description = "Huisletter")
   @InputPrompt(text = "L")
+  @TextField(maxLength = 1)
   private String hnrL = "";
 
   @Field(type = FieldType.TEXT_FIELD,

@@ -28,12 +28,10 @@ import org.slf4j.LoggerFactory;
 
 import nl.procura.gba.jpa.personen.db.RiskProfile;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesTemplate;
 import nl.procura.gba.web.services.zaken.algemeen.controle.StandaardControle;
-import nl.procura.standard.exceptions.ProException;
 
 /**
  * All checks of riskanalysis
@@ -63,19 +61,19 @@ public class RiskAnalysisChecks extends ControlesTemplate<RiskAnalysisService> {
   private Optional<RelocationCheck> getRelocationCheck(RiskAnalysisRelatedCase relatedCase) {
     Optional<RiskProfile> profile = service.getApplicableRiskProfile(relatedCase.getZaak())
         .filter(p -> !relatedCase.getZaak().getStatus().isEindStatus());
+
     if (profile.isPresent()) {
+      if (RiskAnalysisService.hasRiskAnalysisCase(relatedCase.getZaak())) {
+        return Optional.empty();
+      }
       LOGGER.info("Risicoprofiel {} gevonden voor zaak {}", profile.get().getName(), relatedCase.getZaakId());
       return Optional.of(new RelocationCheck(profile.get(), relatedCase));
     }
+
     // remove so personen-zaken-ws cases will be processed
     LOGGER.info("Geen risicoprofiel gevonden voor zaak {}", relatedCase.getZaakId());
     service.removeWaitForRiskAnalysis(relatedCase.getZaak());
     return Optional.empty();
-  }
-
-  private RiskProfile getProfile(Zaak zaak) {
-    return service.getApplicableRiskProfile(zaak)
-        .orElseThrow(() -> new ProException(format("Geen riscoprofiel gevonden voor zaak %s", zaak.getZaakId())));
   }
 
   public class RelocationCheck extends StandaardControle {
@@ -84,8 +82,10 @@ public class RiskAnalysisChecks extends ControlesTemplate<RiskAnalysisService> {
       super("Risicoprofiel", riskProfile.getName());
       setId(relatedCase.getZaakId());
 
+      service.getServices().getZakenService().getVolledigeZaak(relatedCase.getZaak());
       Dossier dossier = service.getNewZaak(riskProfile, relatedCase);
       service.save(dossier);
+
       String msg = "Risicoanalyse met zaak-id %s toegevoegd voor %d perso(o)n(en)";
       addOpmerking(format(msg, dossier.getZaakId(), relatedCase.getNumberOfPersons()));
     }

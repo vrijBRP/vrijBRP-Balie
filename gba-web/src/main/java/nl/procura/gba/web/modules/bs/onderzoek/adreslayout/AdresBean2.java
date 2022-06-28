@@ -68,7 +68,7 @@ public class AdresBean2 implements Serializable {
       caption = "HnrL",
       description = "Huisletter",
       width = "30px")
-  @TextField(nullRepresentation = "")
+  @TextField(nullRepresentation = "", maxLength = 1)
   private String hnrL = "";
 
   @Field(customTypeClass = GbaTextField.class,

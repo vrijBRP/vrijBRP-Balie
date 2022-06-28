@@ -206,9 +206,8 @@ public abstract class LijkbezorgingForm extends GbaForm<LijkbezorgingBean> {
   public void onDatumsWijziging() {
     getField(TERMIJN_LIJKBEZORGING).setVisible(false);
     getField(ONTVANGEN_DOCUMENT_LIJKBEZORGING).setVisible(false);
-
     List<Calendar> calendars = getFormCalendars();
-    if (calendars.size() > 0) {
+    if (calendars.size() > 1) {
       Calendar beginTijdstip = calendars.get(0);
       Calendar eindTijdstip = calendars.get(1);
 

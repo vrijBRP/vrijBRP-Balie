@@ -50,10 +50,10 @@ import lombok.Data;
 
 public class Page1ProfileRule extends NormalPageTemplate {
 
-  private VLayout               variablesLayout = new VLayout();
-  private List<ComponentVar>    varList         = new ArrayList<>();
+  private final VLayout            variablesLayout = new VLayout();
+  private final List<ComponentVar> varList         = new ArrayList<>();
   private Label                 errorLabel      = new Label();
-  private RiskProfileRule       riskProfileRule;
+  private final RiskProfileRule    riskProfileRule;
   private Page1ProfileRuleForm1 form;
 
   public Page1ProfileRule(RiskProfileRule riskProfileRule) {
@@ -245,7 +245,7 @@ public class Page1ProfileRule extends NormalPageTemplate {
       } else if (field instanceof ProComboBox) {
         FieldValue fv = (FieldValue) field.getValue();
         return fv.getStringValue();
-      } else if (field instanceof GbaTextField) {
+      } else if (field instanceof ProTextField) {
         return String.valueOf(field.getValue());
       } else {
         throw new IllegalArgumentException("Unknown field: " + field);

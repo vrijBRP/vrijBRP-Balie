@@ -136,6 +136,7 @@ public class ZoekBean implements Serializable {
       description = "Huisletter",
       width = "50px")
   @InputPrompt(text = "")
+  @TextField(maxLength = 1)
   private String hnrl = "";
 
   @Field(type = FieldType.TEXT_FIELD,

@@ -103,8 +103,11 @@ public class NewRiskAnalysisWindow extends GbaModalWindow {
 
       RiskAnalysisService service = getServices().getRiskAnalysisService();
       RiskProfile profile = form.getBean().getProfile();
+
+      getServices().getZakenService().getVolledigeZaak(relatedCase.getZaak());
       Dossier dossier = service.getNewZaak(profile, relatedCase);
       service.save(dossier);
+
       new Message(getParentWindow(), "De gegevens zijn opgeslagen", Message.TYPE_SUCCESS);
       changeListener.onChange();
       onClose();

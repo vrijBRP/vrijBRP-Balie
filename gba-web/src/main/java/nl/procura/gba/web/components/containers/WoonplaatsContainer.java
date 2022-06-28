@@ -19,11 +19,7 @@
 
 package nl.procura.gba.web.components.containers;
 
-import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.Globalfunctions.pad_left;
-
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
-import nl.procura.vaadin.component.field.fieldvalues.TabelFieldValue;
 
 public class WoonplaatsContainer extends TabelContainer {
 
@@ -33,10 +29,5 @@ public class WoonplaatsContainer extends TabelContainer {
 
   public WoonplaatsContainer(boolean isCurrent) {
     super(GBATable.WOONPLAATS, isCurrent);
-  }
-
-  @Override
-  public TabelFieldValue get(String waarde) {
-    return aval(waarde) >= 0 ? super.get(pad_left(waarde, "0", 4)) : new TabelFieldValue();
   }
 }

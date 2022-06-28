@@ -78,7 +78,7 @@ public class Page1Verkiezing extends ZakenPage {
           form2.setStempassen(getStempassen(verkiezing));
           table.setStempassen(getVolmachten(verkiezing));
         });
-        refreshVerkiezing();
+        form1.setVerkiezingen(getVerkiezingen());
         OptieLayout ol1 = new OptieLayout();
         ol1.getLeft().addComponent(form1);
         ol1.getRight().setCaption("Opties");

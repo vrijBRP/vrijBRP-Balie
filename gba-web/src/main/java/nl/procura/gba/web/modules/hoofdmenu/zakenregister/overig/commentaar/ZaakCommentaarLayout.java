@@ -68,17 +68,11 @@ public class ZaakCommentaarLayout extends GbaVerticalLayout {
 
     @Override
     public void setRecords() {
-
       if (getRecords().isEmpty()) {
-
         try {
-
           if (zaak instanceof CommentaarZaak) {
-
             for (ZaakCommentaar c : ((CommentaarZaak) zaak).getCommentaren().getCommentaren()) {
-
               if (c.getType().getVnr() > 0) {
-
                 Record r = addRecord(c);
                 r.addValue(TableImage.getByCommentaarIcon(c.getType()));
                 r.addValue(c.getTekst());

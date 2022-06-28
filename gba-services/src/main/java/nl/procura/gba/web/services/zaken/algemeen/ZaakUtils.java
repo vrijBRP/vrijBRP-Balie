@@ -45,6 +45,9 @@ import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.locatie.Locatie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
+import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
+import nl.procura.gba.web.services.zaken.algemeen.commentaar.CommentaarZaak;
+import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaarType;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdType;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatie;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
@@ -101,6 +104,26 @@ public class ZaakUtils {
         uid.substring(4, 7) +
         "-" +
         uid.substring(7);
+  }
+
+  public static boolean isProbleemBijVerwerking(Zaak zaak) {
+    return !zaak.getStatus().isEindStatus()
+        && zaak.getZaakHistorie().getAttribuutHistorie()
+            .is(ZaakAttribuutType.FOUT_BIJ_VERWERKING);
+  }
+
+  public static boolean isWachtOpRisicoAnalyse(Zaak zaak) {
+    return !zaak.getStatus().isEindStatus()
+        && zaak.getZaakHistorie().getAttribuutHistorie()
+            .is(ZaakAttribuutType.WACHT_OP_RISICOANALYSE);
+  }
+
+  public static ZaakCommentaarType getCommentaarIcon(Zaak zaak) {
+    if (zaak instanceof CommentaarZaak) {
+      return ((CommentaarZaak) zaak).getCommentaren().getCommentaar().getType();
+    } else {
+      return null;
+    }
   }
 
   public static String getDatumEnDagenTekst(String datum) {
@@ -167,7 +190,6 @@ public class ZaakUtils {
             String emigratieAdres = v.getEmigratie().getAdres();
             soort.append(emigratieAdres);
             break;
-
 
           default:
             break;
@@ -245,18 +267,13 @@ public class ZaakUtils {
   }
 
   public static String getStatus(ZaakStatusType status) {
-
     String s = status.getOms();
-
     switch (status) {
-
       case INCOMPLEET:
         return setClass("red", s);
-
       case VERWERKT:
       case VERWERKT_IN_GBA:
         return setClass("green", s);
-
       default:
         return s;
     }

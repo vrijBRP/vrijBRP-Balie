@@ -19,11 +19,13 @@
 
 package nl.procura.gbaws.web.vaadin.module.sources.procura.page1;
 
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
 import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.PERSON_ID;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import org.apache.commons.io.IOUtils;
 
 import com.vaadin.data.validator.AbstractStringValidator;
@@ -74,6 +76,11 @@ public class Page1DbProcuraForm extends DefaultForm {
     String id = anr.isCorrect() ? anr.toString() : bsn.toString();
 
     PLEArgs args = new PLEArgs();
+    args.addCat(PERSOON, OUDER_1, OUDER_2, NATIO, HUW_GPS, OVERL, INSCHR, VB, KINDEREN, VBTITEL, GEZAG, KIESR, VERW);
+    args.setShowHistory(false);
+    args.setShowMutations(false);
+    args.setShowArchives(true);
+    args.setShowRemoved(true);
     args.addNummer(id);
     args.setDatasource(PLEDatasource.PROCURA);
     args.setMaxFindCount(1);

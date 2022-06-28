@@ -93,6 +93,6 @@ public class NationalityBean {
   @Field(customTypeClass = GbaTextField.class,
       caption = "EU-persoonsnummer",
       width = "360px")
-  @TextField(maxLength = 14)
+  @TextField(maxLength = 40)
   private String euPersonNumber = "";
 }

@@ -59,6 +59,7 @@ public final class GbaEclipseLinkUtil {
   private static final String DB_LOG_INFO           = "INFO";
   private static final String DB_ORACLE             = "oracle";
   private static final String DB_POSTGRES           = "postgres";
+  private static final String TCP_KEEPALIVE         = "tcpKeepAlive";
 
   private static final String ONE = "1";
 
@@ -105,25 +106,21 @@ public final class GbaEclipseLinkUtil {
 
     // Instellingen
 
-    String databaseType, server, port;
-    String database, username, password;
-    String logLevel = DB_LOG_INFO;
-    String minConnections = ONE, maxConnections = ONE;
-
-    databaseType = getProperty(properties, DATABASE_TYPE);
-    server = getProperty(properties, SERVER);
-    port = getProperty(properties, PORT);
-    database = getProperty(properties, DATABASE);
-    username = getProperty(properties, USERNAME);
-    password = getProperty(properties, PW);
-    logLevel = getProperty(properties, LOG_LEVEL);
+    String databaseType = getProperty(properties, DATABASE_TYPE);
+    String server = getProperty(properties, SERVER);
+    String port = getProperty(properties, PORT);
+    String database = getProperty(properties, DATABASE);
+    String username = getProperty(properties, USERNAME);
+    String password = getProperty(properties, PW);
+    String logLevel = getProperty(properties, LOG_LEVEL);
+    String keepalive = getProperty(properties, TCP_KEEPALIVE);
 
     if (fil(getProperty(properties, PERSISTENCE_UNIT_NAME))) {
       persistenceUnitName = getProperty(properties, PERSISTENCE_UNIT_NAME);
     }
 
-    minConnections = "" + getNonNegatieveInteger(getProperty(properties, MIN_CONNECTIONS));
-    maxConnections = "" + getNonNegatieveInteger(getProperty(properties, MAX_CONNECTIONS));
+    String minConnections = "" + getNonNegatieveInteger(getProperty(properties, MIN_CONNECTIONS));
+    String maxConnections = "" + getNonNegatieveInteger(getProperty(properties, MAX_CONNECTIONS));
 
     if (log.isDebugEnabled()) {
       log.debug(pad_right("Persistence unit", ".", LOG_LINE_LENGTH) + ": " + persistenceUnitName);
@@ -182,6 +179,11 @@ public final class GbaEclipseLinkUtil {
       } else if (databaseType.equals(DB_ORACLE)) {
         finalDriver = "oracle.jdbc.OracleDriver";
       }
+    }
+
+    if (StringUtils.isNotBlank(keepalive)) {
+      configuration.put(TCP_KEEPALIVE, keepalive);
+      log.info("TCP keepalive enabled");
     }
 
     log.info("JPA connection: " + finalUrl);

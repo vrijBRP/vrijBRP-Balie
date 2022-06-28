@@ -68,6 +68,7 @@ public class Page4ZakenBean implements Serializable {
   public static final String ZAAKSTATUSSEN      = "zaakStatussen";
   static final String        DATUM_INVOER       = "datumInvoer";
   static final String        DATUM_INGANG       = "datumIngang";
+  static final String        INDICATIE          = "indicatie";
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Datum invoer",
@@ -132,6 +133,12 @@ public class Page4ZakenBean implements Serializable {
       width = "230px")
   @Immediate
   private FieldValue profiel = new FieldValue();
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Indicatie",
+      width = "230px")
+  @Immediate
+  private FieldValue indicatie = new FieldValue();
 
   @Field(customTypeClass = SimpleMultiField.class,
       caption = "Zaaktypes",

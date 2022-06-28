@@ -39,7 +39,6 @@ import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.bs.riskanalysis.page1.RiskProfileContainer;
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.modules.zaken.riskanalysis.page1.Page1RiskAnalysis;
-import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
@@ -93,8 +92,8 @@ public class Page2RiskAnalysis extends ZakenPage {
 
     RiskAnalysisService service = getServices().getRiskAnalysisService();
     RiskAnalysisRelatedCase relatedCase = form.getBean().getRelatedCase();
-    Dossier dossier = service.getNewZaak(form.getBean().getProfile(), relatedCase);
-    service.save(dossier);
+    getServices().getZakenService().getVolledigeZaak(relatedCase.getZaak());
+    service.save(service.getNewZaak(form.getBean().getProfile(), relatedCase));
 
     successMessage("Gegevens zijn opgeslagen");
 

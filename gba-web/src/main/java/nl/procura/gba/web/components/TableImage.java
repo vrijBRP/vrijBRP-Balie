@@ -35,18 +35,18 @@ public class TableImage extends EmbeddedResource {
   }
 
   public static TableImage getByCommentaarIcon(ZaakCommentaarType type) {
-
-    switch (type) {
-      case ERROR:
-
-      case INFO:
-        return new TableImage(Icons.getIcon(Icons.ICON_INFO));
-
-      case WARN:
-        return new TableImage(Icons.getIcon(Icons.ICON_WARN));
-
-      default:
-        return null;
+    if (type != null) {
+      switch (type) {
+        case ERROR:
+          return new TableImage(Icons.getIcon(Icons.ICON_WARN));
+        case INFO:
+          return new TableImage(Icons.getIcon(Icons.ICON_INFO));
+        case WARN:
+          return new TableImage(Icons.getIcon(Icons.ICON_WARN));
+        default:
+          return null;
+      }
     }
+    return null;
   }
 }

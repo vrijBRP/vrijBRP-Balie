@@ -79,15 +79,15 @@ public class Page2AantekeningBean implements Serializable {
 
   @Field(type = FieldType.TEXT_AREA,
       caption = "Inhoud",
-      width = "500px")
+      width = "1000px")
   @TextArea(rows = 25)
   private String inhoud = "";
 
   @Field(type = FieldType.TEXT_AREA,
       caption = "Inhoud",
-      width = "500px",
+      width = "1000px",
       readOnly = true)
-  @TextArea(rows = 8)
+  @TextArea(rows = 25)
   private String inhoudLabel = "";
 
   @Field(customTypeClass = ProNativeSelect.class,

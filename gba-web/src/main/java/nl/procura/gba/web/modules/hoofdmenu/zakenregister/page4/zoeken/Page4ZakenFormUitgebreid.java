@@ -36,6 +36,7 @@ import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.SimpleMultiField;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -47,7 +48,7 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
   public Page4ZakenFormUitgebreid() {
 
     setCaption("Overig");
-    setOrder(ZAAKTYPES, ZAAKSTATUSSEN, GEBRUIKER, PROFIEL);
+    setOrder(ZAAKTYPES, ZAAKSTATUSSEN, GEBRUIKER, PROFIEL, INDICATIE);
     setColumnWidths(WIDTH_130, "");
   }
 
@@ -76,6 +77,7 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
     addProfielContainer();
     addZaakTypeContainer();
     addZaakStatusContainer();
+    addIndicatieContainer();
     addValueChangeListeners();
   }
 
@@ -121,6 +123,10 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
     getField(ZAAKSTATUSSEN, SimpleMultiField.class).setContainer(new ArrayListContainer(getZaakStatussen()));
   }
 
+  private void addIndicatieContainer() {
+    getField(INDICATIE, GbaNativeSelect.class).setContainerDataSource(new ArrayListContainer(getIndicaties()));
+  }
+
   private Services getServices() {
     return getApplication().getServices();
   }
@@ -129,6 +135,13 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
     return Arrays.stream(ZaakType.values())
         .filter(type -> !ZaakType.ONBEKEND.equals(type))
         .map(type -> new FieldValue(type, type.getOms()))
+        .collect(Collectors.toList());
+  }
+
+  private List<FieldValue> getIndicaties() {
+    return Arrays.stream(ZaakAttribuutType.values())
+        .filter(type -> ZaakAttribuutType.ANDERS != type)
+        .map(type -> new FieldValue(type.getCode(), type.getOms()))
         .collect(Collectors.toList());
   }
 

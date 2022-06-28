@@ -39,6 +39,7 @@ import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.SubModuleZaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page12.Page12Module;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page13.Page13Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page160.Page160Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page5.Page5Module;
@@ -46,7 +47,9 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page6.Page6Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page8.Page8Module;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page9.Page9Module;
 import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakTypeStatussen;
+import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaakArgumenten;
 import nl.procura.gba.web.services.zaken.zakenregister.ZaakItem;
 import nl.procura.gba.web.services.zaken.zakenregister.ZakenregisterService;
@@ -59,6 +62,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
   public static final String  STATUS     = "Statussen";
   public static final String  OPTIES     = "Opties";
   public static final String  ZOEKEN     = "Zoeken";
+  public static final String  PROBLEMEN  = "Problemen";
   public static final String  BULKACTIES = "Bulkacties";
   public static final String  ZAAK       = "Zaken";
   public static final String  HUWELIJK   = "Huwelijk / GPS";
@@ -88,6 +92,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     // Items toevoegen
     addTreeItem(ZOEKEN, false, true, Page4Module.class);
     addTreeItem(OPTIES, false, true, Page160Module.class);
+    addTreeItem(PROBLEMEN, false, true, Page13Zaken.class);
     addTreeItem(STATUS, true, true, HorizontalLayout.class);
     addTreeItem(BULKACTIES, true, false, HorizontalLayout.class);
     addTreeItem(ZAAK, true, true, HorizontalLayout.class);
@@ -156,15 +161,18 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
 
     ZakenregisterService zakenregister = getServiceContainer().getZakenregisterService();
 
+    // Problemen
+    getItem(PROBLEMEN).getItemProperty(AANTAL).setValue(getAantalProblemen());
+
     // Bulk acties
     for (ZaakAantalItem zi : getItems(ZaakAantalItem.class)) {
-
       if (zi.getCaption().equals(BULK_UITT)) {
         DocumentZaakArgumenten args = new DocumentZaakArgumenten();
         args.setStatussen(OPGENOMEN, INBEHANDELING);
         args.setDocumentTypes(PL_UITTREKSEL);
         zi.setAantal(getServiceContainer().getDocumentZakenService().getZakenCount(args));
         zi.getItem().getItemProperty(AANTAL).setValue(zi.isValid() ? zi.getAantal() : "-");
+
       } else if (zi.getCaption().equals(BULK_CORR)) {
         DocumentZaakArgumenten args = new DocumentZaakArgumenten();
         args.setStatussen(OPGENOMEN, INBEHANDELING);
@@ -197,8 +205,15 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
       }
     }
 
+    setAantalOmschrijving(PROBLEMEN);
     setAantalOmschrijving(BULKACTIES);
     setAantalOmschrijving(ZAAK);
+  }
+
+  private long getAantalProblemen() {
+    ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
+    zaakArgumenten.addAttributen(ZaakAttribuutType.FOUT_BIJ_VERWERKING.getCode());
+    return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
   }
 
   private long getAantalZaken(ZaakItem zaakItem, ZakenAantalViewHandler zaakAantallen) {
@@ -214,9 +229,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
       Class<? extends Component> componentClass) {
 
     Item item = addItem(itemId);
-
     setChildrenAllowed(itemId, childrenAllowed);
-
     String oms = astr(itemId);
 
     item.getItemProperty(OMSCHRIJVING).setValue(oms);
@@ -235,7 +248,6 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
   }
 
   private void addZaakItem(ZaakItem z, Item item, Object oms) {
-
     for (ZaakStatusType type : ZaakTypeStatussen.getAlle(z.getTypes())) {
       if (type.isCombiStatus()) {
         continue;
@@ -276,7 +288,6 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
   private long getAantalOmschrijving(Object item) {
 
     int count = 0;
-
     if (item instanceof ZaakAantalItem) {
       count += ((ZaakAantalItem) item).getAantal();
     }
@@ -309,7 +320,6 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
   private void setAantalOmschrijving(Object itemId) {
 
     Item item = getItem(itemId);
-
     long aantal = getAantalOmschrijving(itemId);
 
     if (aantal > 0) {

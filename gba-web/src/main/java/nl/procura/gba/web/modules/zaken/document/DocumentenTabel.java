@@ -21,6 +21,8 @@ package nl.procura.gba.web.modules.zaken.document;
 
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import com.vaadin.ui.Embedded;
 
 import nl.procura.gba.common.DateTime;
@@ -66,6 +68,7 @@ public abstract class DocumentenTabel extends GbaTable {
       previewFile.setProperty("Vertrouwelijkheid", DocumentVertrouwelijkheid.get(dmsDocument
           .getConfidentiality())
           .getOmschrijving());
+      previewFile.setProperty("Grootte", FileUtils.byteCountToDisplaySize(dmsDocument.getContent().getSize()));
       previewFile.setProperty("Opslaglocatie", dmsDocument.getStorage().toString());
 
       FilePreviewWindow.preview(getApplication().getParentWindow(), previewFile);
@@ -87,6 +90,7 @@ public abstract class DocumentenTabel extends GbaTable {
     addColumn("Document");
     addColumn("DMS omschrijving", 200);
     addColumn("Vertrouwelijkheid", 130);
+    addColumn("Grootte", 120);
     addColumn("Zaak-id", 120);
     addColumn("Gebruiker", 150);
 
@@ -107,6 +111,7 @@ public abstract class DocumentenTabel extends GbaTable {
       r.addValue(record.getTitle());
       r.addValue(record.getDocumentTypeDescription());
       r.addValue(DocumentVertrouwelijkheid.get(record.getConfidentiality()).getOmschrijving());
+      r.addValue(FileUtils.byteCountToDisplaySize(record.getContent().getSize()));
       r.addValue(record.getZaakId());
       r.addValue(record.getUser());
 

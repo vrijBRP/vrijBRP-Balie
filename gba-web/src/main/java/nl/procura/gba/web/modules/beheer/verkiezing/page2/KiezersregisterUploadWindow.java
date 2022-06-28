@@ -125,7 +125,7 @@ public class KiezersregisterUploadWindow extends GbaModalWindow {
       public ImportWindow(Verkiezingsbestand verkiezingsbestand) {
         super(new VerkiezingsbestandImportTask(getGbaApplication(), verkiezingsbestand),
             new VaadinTaskOptions()
-                .setShowLog(false));
+                .setShowLog(true));
         setCaption("Bestand verwerken");
       }
 

@@ -35,7 +35,7 @@ public class Page2ZakenOpties extends GbaPopupButton {
 
   private final Page2ZakenTable table;
 
-  protected Page2ZakenOpties(final Page2ZakenTable table) {
+  public Page2ZakenOpties(final Page2ZakenTable table) {
 
     super("Opties", "110px", "105px");
 

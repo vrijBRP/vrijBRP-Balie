@@ -90,7 +90,6 @@ public class TabellenService extends GbaTemplateService {
     // Landelijk
     add("Nationaliteiten", GBATable.NATIO);
     add("Plaatsen", GBATable.PLAATS);
-    add("Woonplaatsen", GBATable.WOONPLAATS);
     add("Landen", GBATable.LAND);
     add("Voorvoegselsel", GBATable.VOORVOEGSEL);
     add("Redenen opnemen / beëindigen nationaliteit", GBATable.REDEN_NATIO);
@@ -103,6 +102,7 @@ public class TabellenService extends GbaTemplateService {
     add("Indicaties gezag minderjarige", GBATable.IND_GEZAG_MINDERJ);
 
     // Gemeentelijk
+    add("Woonplaatsen", new Woonplaats());
     add("Straten", new Straat());
     add("Openbare ruimtes", new OpenbareRuimte());
     add("Locaties", new Locatie());

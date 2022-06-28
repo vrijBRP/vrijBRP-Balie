@@ -241,4 +241,13 @@
             <column name="c_kiesr_verk"/>
         </createIndex>
     </changeSet>
+
+    <changeSet author="Procura (Frits)" id="v1_28_16">
+        <comment>Add field version_ts (version timestamp)</comment>
+        <addColumn tableName="doss">
+            <column name="version_ts" type="numeric" defaultValue="-1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

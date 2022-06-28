@@ -22,11 +22,13 @@ package nl.procura.gba.web.modules.zaken.verkiezing.page1;
 import static nl.procura.gba.web.modules.zaken.verkiezing.page1.Page1VerkiezingBean.F_VERKIEZING;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.beheer.verkiezing.Verkiezing;
+import org.jetbrains.annotations.NotNull;
 
 public class Page1VerkiezingForm1 extends GbaForm<Page1VerkiezingBean> {
 
@@ -44,10 +46,18 @@ public class Page1VerkiezingForm1 extends GbaForm<Page1VerkiezingBean> {
   }
 
   public void setVerkiezingen(List<Verkiezing> verkiezingen) {
+    Verkiezing verkiezing = getBean() != null ? getVerkiezing() : null;
     setBean(new Page1VerkiezingBean());
     VerkiezingContainer container = new VerkiezingContainer(verkiezingen);
-    getField(F_VERKIEZING, GbaNativeSelect.class).setContainerDataSource(container);
+    GbaNativeSelect field = getField(F_VERKIEZING, GbaNativeSelect.class);
+    field.setContainerDataSource(container);
     repaint();
+    setVerkiezing(verkiezingen, verkiezing).ifPresent(field::setValue);
+  }
+
+  @NotNull
+  private Optional<Verkiezing> setVerkiezing(List<Verkiezing> verkiezingen, Verkiezing verkiezing) {
+    return verkiezingen.stream().filter(v -> v.equals(verkiezing)).findFirst();
   }
 
   @Override

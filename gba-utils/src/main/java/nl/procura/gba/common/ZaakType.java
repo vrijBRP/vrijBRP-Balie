@@ -51,13 +51,13 @@ public enum ZaakType {
   INBOX(1500, "Inboxbericht", true),
   ONDERZOEK(1600, "Onderzoek", true),
   REGISTRATION(1700, "Eerste inschrijving", true),
-  RISK_ANALYSIS(1800, "Risicoanalyse", true),
-  PL_MUTATION(1900, "Persoonslijst mutaties", true),
+  RISK_ANALYSIS(1800, "Risicoanalyse", false),
+  PL_MUTATION(1900, "Persoonslijst mutaties", false),
   ONBEKEND(0, "Onbekend", false);
 
-  private long    code;
-  private String  oms;
-  private boolean heeftBijlagen;
+  private final long    code;
+  private final String  oms;
+  private final boolean heeftBijlagen;
 
   ZaakType(long code, String oms, boolean heeftBijlagen) {
 

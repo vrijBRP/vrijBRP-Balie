@@ -22,6 +22,7 @@ package nl.procura.gba.web.services.zaken.algemeen.dms.objectstore;
 import java.io.InputStream;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.objectstore.rest.domain.object.search.FieldName;
@@ -48,6 +49,11 @@ public class ObjectStoreContent implements DMSContent {
   @Override
   public InputStream getInputStream() {
     return contentFetcher.get(storageObject);
+  }
+
+  @Override
+  public Long getSize() {
+    return NumberUtils.toLong(storageObject.getFields().getAsString(FieldName.FILE_SIZE.getName()), 0);
   }
 
   @Override

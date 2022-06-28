@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
+import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
 import nl.procura.gba.web.services.Services;
@@ -180,6 +181,8 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     b.addOpmerking(getBijlageOpmerking(zaak));
     b.addOpmerking(getSms(zaak));
     b.addOpmerking(getRiskprofile(zaak));
+    b.addOpmerking(getWachtOpRisicoanalyse(zaak));
+    b.addOpmerking(getVerwerkingsfout(zaak));
 
     if (emp(b.getOpmerkingen())) {
       b.setOpmerkingen("Geen");
@@ -239,7 +242,7 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     if (getApplication() != null) {
       int aantalBijlagen = getApplication().getServices().getDmsService().countDocumentsByZaak(zaak);
       if (zaak.getType().isHeeftBijlagen() && aantalBijlagen == 0) {
-        return setClass(false, "Deze zaak heeft geen bijlagen");
+        return setClass("orange", "Deze zaak heeft geen bijlagen");
       }
     }
 
@@ -249,8 +252,24 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
   private String getRiskprofile(Zaak zaak) {
     RiskAnalysisService service = Services.getInstance().getRiskAnalysisService();
     RiskAnalysisRelatedCase relatedCase = new RiskAnalysisRelatedCase(zaak);
-    if (service.isApplicable(zaak) && !service.hasRiskAnalysisCase(relatedCase)) {
-      return setClass(false, "Deze zaak heeft nog geen risicoanalyse");
+    if (service.isApplicable(zaak)
+        && !service.hasRiskAnalysisCase(relatedCase)
+        && !relatedCase.getZaak().getStatus().is(ZaakStatusType.INCOMPLEET)) {
+      return setClass("orange", "Deze zaak heeft nog geen risicoanalyse");
+    }
+    return "";
+  }
+
+  private String getWachtOpRisicoanalyse(Zaak zaak) {
+    if (ZaakUtils.isWachtOpRisicoAnalyse(zaak)) {
+      return setClass("orange", "Verwerking wacht op de risicoanalyse");
+    }
+    return "";
+  }
+
+  private String getVerwerkingsfout(Zaak zaak) {
+    if (ZaakUtils.isProbleemBijVerwerking(zaak)) {
+      return setClass(false, "Fout bij de verwerking. Zie aantekeningen.");
     }
     return "";
   }

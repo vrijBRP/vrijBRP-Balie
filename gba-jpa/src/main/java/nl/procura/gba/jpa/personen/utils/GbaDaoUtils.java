@@ -196,7 +196,7 @@ public class GbaDaoUtils {
       if (!results.isEmpty() && instanceVersionTs != null) {
         Long dbVersion = results.get(0);
         if (instanceVersionTs < dbVersion) {
-          String message = "De gegevens in de database zijn door een ander proces gewijzigd. Herlaad deze zaak opnieuw.";
+          String message = "Deze zaak is door een ander proces of gebruiker gewijzigd. <br>Verlaat de zaak en controleer de status van de zaak.";
           throw new ProException(ProExceptionSeverity.WARNING, message);
         }
       }

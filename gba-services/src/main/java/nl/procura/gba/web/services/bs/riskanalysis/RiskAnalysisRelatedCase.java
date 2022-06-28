@@ -29,8 +29,9 @@ import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 
 public class RiskAnalysisRelatedCase {
 
+  private final Zaak zaak;
+
   private long         numberOfPersons;
-  private Zaak         zaak;
   private Adresformats address;
   private String       type;
   private FunctieAdres function;
@@ -42,6 +43,7 @@ public class RiskAnalysisRelatedCase {
       address = getRelocation().getNieuwAdres().getAdres();
       function = getRelocation().getNieuwAdres().getFunctieAdres();
       numberOfPersons = getRelocation().getNieuwAdres().getAantalPersonen();
+
     } else if (isRegistration()) {
       type = "Eerste inschrijving";
       address = getRegistration().getAddress();

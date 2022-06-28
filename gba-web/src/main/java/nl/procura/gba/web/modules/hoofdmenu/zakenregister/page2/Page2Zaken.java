@@ -54,11 +54,8 @@ public class Page2Zaken extends ZakenregisterPage<Zaak> {
   private ZaakSortering    zaakSortering = ZaakSortering.DATUM_INGANG_NIEUW_OUD;
 
   public Page2Zaken(ZaakItem zaakItem) {
-
     super(null, "Zakenregister - " + astr(zaakItem).toLowerCase());
-
     this.zaakItem = zaakItem;
-
     setSpacing(true);
     setHeight("450px");
   }
@@ -69,9 +66,7 @@ public class Page2Zaken extends ZakenregisterPage<Zaak> {
     if (event.isEvent(InitPage.class)) {
 
       table = new Table();
-
       setInfo("", "Zaken ouder dan één jaar worden niet getoond in dit scherm.");
-
       addExpandComponent(table);
 
       buttonReload.addListener(this);
@@ -97,7 +92,6 @@ public class Page2Zaken extends ZakenregisterPage<Zaak> {
     }
 
     opties = VaadinUtils.addOrReplaceComponent(getMainbuttons(), new Page2ZakenOpties(table));
-
     getMainbuttons().setComponentAlignment(opties, Alignment.MIDDLE_LEFT);
 
     super.event(event);

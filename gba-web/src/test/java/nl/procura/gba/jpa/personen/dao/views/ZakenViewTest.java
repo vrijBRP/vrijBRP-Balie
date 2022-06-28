@@ -376,6 +376,7 @@ public class ZakenViewTest {
     doss.setTypeDoss(BigDecimal.valueOf(type.getZaakType().getCode()));
     doss.setDAanvr(toDate(toDate(type))); // Invoer
     doss.setDIn(toDate(toDate(type))); // Ingang
+    doss.setVersionTs(-1L);
     em.persist(doss);
 
     assertCount(em, expectedCount, "doss");

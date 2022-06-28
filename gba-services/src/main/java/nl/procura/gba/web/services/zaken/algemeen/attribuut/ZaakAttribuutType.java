@@ -19,29 +19,29 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.attribuut;
 
+import java.util.Arrays;
+
 public enum ZaakAttribuutType {
 
   MIJN_OVERHEID_WEL("mijn-overheid-wel", "Wel abonnee van mijn-overheid"),
   MIJN_OVERHEID_NIET("mijn-overheid-niet", "Geen abonnee van mijn-overheid"),
   WACHT_OP_RISICOANALYSE("wacht-op-risicoanalyse", "Wacht op risicoanalyse"),
+  FOUT_BIJ_VERWERKING("fout-bij-verwerking", "Fout bij verwerking"),
   ANDERS("", "Anders");
 
-  private String code = "";
-  private String oms  = "";
+  private final String code;
+  private final String oms;
 
   ZaakAttribuutType(String code, String oms) {
-
-    setCode(code);
-    setOms(oms);
+    this.code = code;
+    this.oms = oms;
   }
 
   public static ZaakAttribuutType get(String code) {
-    for (ZaakAttribuutType type : values()) {
-      if (type.getCode().equals(code)) {
-        return type;
-      }
-    }
-    return null;
+    return Arrays.stream(values())
+        .filter(type -> type.getCode().equals(code))
+        .findFirst()
+        .orElse(null);
   }
 
   public static String getOms(String attribuut) {
@@ -53,16 +53,8 @@ public enum ZaakAttribuutType {
     return code;
   }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-
   public String getOms() {
     return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
   }
 
   public boolean is(ZaakAttribuutType type) {

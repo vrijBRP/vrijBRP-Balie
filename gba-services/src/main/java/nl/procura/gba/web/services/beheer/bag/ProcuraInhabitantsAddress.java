@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.beheer.bag;
 
 import static nl.procura.standard.Globalfunctions.aval;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public class ProcuraInhabitantsAddress extends AbstractAddress {
     aonId = wk.getBasisWk().getAon().getValue();
     inaId = wk.getBasisWk().getIna().getValue();
     hnr = wk.getBasisWk().getHuisnummer().getValue();
-    hnrL = wk.getBasisWk().getHuisletter().getValue();
-    hnrT = wk.getBasisWk().getToevoeging().getValue();
-    hnrA = wk.getBasisWk().getAanduiding().getValue();
+    hnrL = defaultIfBlank(wk.getBasisWk().getHuisletter().getValue(), " ");
+    hnrT = defaultIfBlank(wk.getBasisWk().getToevoeging().getValue(), " ");
+    hnrA = defaultIfBlank(wk.getBasisWk().getAanduiding().getValue(), " ");
     pc = wk.getBasisWk().getPostcode().getValue();
     street = wk.getBasisWk().getStraat().getValue();
     recidenceCode = wk.getBasisWk().getWoonplaats().getCode();

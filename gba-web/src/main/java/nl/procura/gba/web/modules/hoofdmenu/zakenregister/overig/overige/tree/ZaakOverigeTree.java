@@ -115,9 +115,7 @@ public abstract class ZaakOverigeTree extends Tree {
   }
 
   public void onReload() {
-
     getApplication().getServices().getZakenService().getService(zaak).setZaakHistory(zaak);
-
     update(ZaakOverigeContainer.IDENTIFICATIES,
         "Identificaties (" + zaak.getZaakHistorie().getIdentificaties().size() + ")");
     update(ZaakOverigeContainer.ATTRIBUTEN,

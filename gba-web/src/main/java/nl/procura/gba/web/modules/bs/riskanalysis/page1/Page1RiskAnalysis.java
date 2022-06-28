@@ -112,8 +112,10 @@ public class Page1RiskAnalysis extends NormalPageTemplate {
     }
 
     RiskAnalysisService service = getServices().getRiskAnalysisService();
+    getServices().getZakenService().getVolledigeZaak(relocation.getZaak());
     Dossier dossier = service.getNewZaak(form.getBean().getProfile(), relocation);
     service.save(dossier);
+
     ZaakregisterNavigator.navigatoTo(dossier, this, true);
   }
 }

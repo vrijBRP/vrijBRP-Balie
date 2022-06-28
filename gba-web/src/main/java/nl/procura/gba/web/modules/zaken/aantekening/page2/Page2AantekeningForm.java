@@ -51,7 +51,6 @@ public class Page2AantekeningForm extends GbaForm<Page2AantekeningBean> {
     }
 
     if (historie != null) {
-
       bean.setDatum(tr(astr(historie.getTijdstip())));
       bean.setGebruiker(tr(historie.getGebruiker().getDescription()));
 
@@ -68,7 +67,6 @@ public class Page2AantekeningForm extends GbaForm<Page2AantekeningBean> {
       setBean(bean);
 
       if (getField(INDICATIE) != null) {
-
         GbaNativeSelect indicatie = ((GbaNativeSelect) getField(INDICATIE));
         indicatie.setContainerDataSource(new IndicatieContainer(application));
 

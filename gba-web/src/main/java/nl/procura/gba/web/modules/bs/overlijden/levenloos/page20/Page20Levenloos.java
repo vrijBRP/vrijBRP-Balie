@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.bs.overlijden.levenloos.page20;
 
 import static java.util.Arrays.asList;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -74,7 +75,10 @@ public class Page20Levenloos extends Page20Geboorte<DossierLevenloos> {
 
         @Override
         public List<Calendar> getFormCalendars() {
-          return asList(getAanvangTermijnTijdstip(), form.getEindeTermijnTijdstip());
+          if (form != null) {
+            return asList(getAanvangTermijnTijdstip(), form.getEindeTermijnTijdstip());
+          }
+          return new ArrayList<>();
         }
 
         @Override

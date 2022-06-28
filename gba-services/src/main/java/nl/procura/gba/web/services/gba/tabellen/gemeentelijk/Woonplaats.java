@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2021 - 2022 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,31 +17,27 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.beheer.verkiezing.page3.exporting;
+package nl.procura.gba.web.services.gba.tabellen.gemeentelijk;
 
-public enum ROSScheidingstekenType {
+import static nl.procura.standard.Globalfunctions.pos;
 
-  PUNT_KOMMA(';', "Puntkomma"),
-  KOMMA(',', "Komma");
+import nl.procura.burgerzaken.gba.core.enums.GBATable;
+import nl.procura.diensten.gba.ple.procura.utils.diacrits.Diacs;
 
-  private final char   karakter;
-  private final String oms;
+public class Woonplaats extends GemeentelijkeTabel {
 
-  ROSScheidingstekenType(char karakter, String oms) {
-    this.karakter = karakter;
-    this.oms = oms;
-  }
-
-  public char getKarakter() {
-    return karakter;
-  }
-
-  public String getOms() {
-    return oms;
+  public Woonplaats() {
+    super(GBATable.WOONPLAATS);
+    setDiacrietVeld(Diacs.WPL);
+    setSql("select distinct x.cWpl, x.wpl, x.diac from Wpl x " +
+        "where x.cWpl >= 0 order by x.wpl");
   }
 
   @Override
-  public String toString() {
-    return getOms();
+  public String[] format(String[] row) {
+    setCode(row[0]);
+    setWaarde(row[1]);
+    setDiacriet(pos(row[2]));
+    return row;
   }
 }

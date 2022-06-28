@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>nl.procura.gba</groupId>
     <artifactId>gba-parent</artifactId>
-    <version>1.28</version>
+    <version>1.28.1</version>
     <name>Proweb GBA - Parent</name>
 
     <developers>
@@ -125,7 +125,7 @@
         <raas-micro.version>1.3.1</raas-micro.version>
         <geo-micro.version>1.0.0</geo-micro.version>
 
-        <gba.commons.version>1.0.8</gba.commons.version>
+        <gba.commons.version>1.0.9</gba.commons.version>
         <probev.jpa.version>1.0.8</probev.jpa.version>
         <hibernate.jpamodelgen.version>5.4.1.Final</hibernate.jpamodelgen.version>
         <vrs-services-api.version>0.9.4</vrs-services-api.version>

@@ -34,15 +34,13 @@ public class ExceptionInterceptor extends ServiceMethodInterceptor {
 
     try {
       return in.proceed(); // Voer de methode uit.
+    } catch (ProException e) {
+      throw e;
     } catch (RuntimeException e) {
-
       ThrowException th = getAnnotation(in, ThrowException.class);
-
       if (th != null) {
-
         throw new ProException(th.type(), th.severity(), th.value(), e);
       }
-
       throw e;
     }
   }

@@ -106,14 +106,15 @@ public class ROSExportWindow extends GbaModalWindow {
       List<String[]> lines = rosExport.getExport(result.getStempassen(), getServices());
       byte[] bytes = exportCsv(scheidingsteken, lines);
       DownloadHandlerImpl downloadHandler = new DownloadHandlerImpl(getWindow().getParent());
-      downloadHandler.download(new ByteArrayInputStream(bytes), getBestandsnaam(), true);
+      downloadHandler.download(new ByteArrayInputStream(bytes), getBestandsnaam(rosExport), true);
     }
 
-    private String getBestandsnaam() {
-      return String.format("ROS-%s-%s-%s.csv",
+    private String getBestandsnaam(ROSExport rosExport) {
+      return String.format("%s-%s-%s-%s.csv",
           verkiezing.getAfkVerkiezing(),
           getServices().getGebruiker().getGemeenteCode(),
-          new ProcuraDate().getSystemDate());
+          new ProcuraDate().getSystemDate(),
+          rosExport.getBestandsnaam());
     }
 
     private byte[] exportCsv(ROSScheidingstekenType scheidingsteken, List<String[]> lines) {
@@ -151,10 +152,13 @@ public class ROSExportWindow extends GbaModalWindow {
     public void afterSetBean() {
       List<ROSExport> exports = new ArrayList<>();
       exports.add(new ROSExport1());
+      exports.add(new ROSExport2());
+      exports.add(new ROSExport3());
       ArrayListContainer formatenContainer = new ArrayListContainer(exports);
       ArrayListContainer scheidingstekenContainer = new ArrayListContainer(ROSScheidingstekenType.values());
       getField(F_BESTANDINHOUD, GbaNativeSelect.class).setContainerDataSource(formatenContainer);
       getField(F_SCHEIDINGSTEKEN, GbaNativeSelect.class).setContainerDataSource(scheidingstekenContainer);
+      getField(F_SCHEIDINGSTEKEN, GbaNativeSelect.class).setValue(ROSScheidingstekenType.PUNT_KOMMA);
     }
   }
 

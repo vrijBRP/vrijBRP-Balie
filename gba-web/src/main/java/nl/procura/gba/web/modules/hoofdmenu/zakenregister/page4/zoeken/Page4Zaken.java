@@ -52,8 +52,6 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakSortering;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
-import nl.procura.gba.web.services.zaken.algemeen.commentaar.CommentaarZaak;
-import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaarType;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -305,6 +303,11 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
         for (FieldValue status : bUitgebreid.getZaakStatussen().getValues()) {
           za.addStatussen((ZaakStatusType) status.getValue());
         }
+
+        // Indicaties
+        if (bUitgebreid.getIndicatie() != null && fil(bUitgebreid.getIndicatie().getStringValue())) {
+          za.addAttributen(bUitgebreid.getIndicatie().getStringValue());
+        }
       }
 
       // Zet basisargumenten
@@ -365,13 +368,7 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
     @Override
     protected void loadZaak(int nr, Record record, Zaak zaak) {
       record.setValue(0, nr);
-      if (zaak instanceof CommentaarZaak) {
-        ZaakCommentaarType commentaarIcon = ((CommentaarZaak) zaak).getCommentaren().getCommentaar().getType();
-        record.setValue(1, TableImage.getByCommentaarIcon(commentaarIcon));
-      } else {
-        record.setValue(1, null);
-      }
-
+      record.setValue(1, TableImage.getByCommentaarIcon(ZaakUtils.getCommentaarIcon(zaak)));
       record.setValue(2, zaak.getType().getOms());
       record.setValue(3, ZaakUtils.getOmschrijving(zaak));
       record.setValue(4, table.getIngevoerdDoor(zaak));

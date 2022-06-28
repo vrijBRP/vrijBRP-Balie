@@ -128,13 +128,11 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
     zaakDossier.setRiskProfile(riskProfile);
 
     if (relatedCase.isRelocation()) {
-
       VerhuisAanvraag relocation = relatedCase.getRelocation();
       zaakDossier.setRelocation(relatedCase);
 
       // Add the subjects from the relocation
       for (VerhuisPersoon p : relocation.getPersonen()) {
-
         DossierPersoon persoon = new DossierPersoon();
         BsPersoonUtils.kopieDossierPersoon(p.getPersoon().getBasisPl(), persoon);
 
@@ -299,10 +297,9 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
     ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
     zaakArgumenten.addAttributen(WACHT_OP_RISICOANALYSE.getCode());
     zaakArgumenten.addNegeerStatussen(ZaakStatusType.INCOMPLEET);
-    return getServices().getZakenService().getVolledigeZaken(zaakArgumenten).stream()
-        .filter(zaak -> !hasRiskAnalysisCase(zaak))
+    ZakenService casesService = getServices().getZakenService();
+    return casesService.getStandaardZaken(zaakArgumenten).stream()
         .map(RiskAnalysisRelatedCase::new)
-        .filter(relatedCase -> relatedCase.getNumberOfPersons() > 0)
         .collect(toList());
   }
 
@@ -315,7 +312,7 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
     zaakArgumenten.addAttributen(WACHT_OP_RISICOANALYSE.getCode());
 
     ZakenService casesService = getServices().getZakenService();
-    return casesService.getVolledigeZaken(zaakArgumenten)
+    return casesService.getStandaardZaken(zaakArgumenten)
         .stream()
         .filter(zaak -> matchProfile(profile, zaak))
         .map(RiskAnalysisRelatedCase::new)

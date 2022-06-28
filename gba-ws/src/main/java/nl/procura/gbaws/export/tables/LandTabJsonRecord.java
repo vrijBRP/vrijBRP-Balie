@@ -82,7 +82,7 @@ public class LandTabJsonRecord {
   private String netw         = "";
   private String eu           = "";
   private String id           = "";
-  private String gezag        = "";
+  private final String gezag        = "";
 
   @JsonIgnore
   private Formats formats = new Formats();
@@ -563,9 +563,6 @@ public class LandTabJsonRecord {
         case RNI_DEELNEMER:
           return p(4, getC_rni_dn());
 
-        case WOONPLAATS:
-          return p(4, getC_woonplaats());
-
         case GEZAG:
           return getGezag();
 
@@ -617,9 +614,6 @@ public class LandTabJsonRecord {
 
         case RNI_DEELNEMER:
           return getRni_dn();
-
-        case WOONPLAATS:
-          return getWoonplaats();
 
         default:
           throw new ProException("Onbekende tabel: " + getTabel());

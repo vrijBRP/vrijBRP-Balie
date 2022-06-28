@@ -29,7 +29,7 @@ import org.eclipse.persistence.annotations.BatchFetchType;
 
 @Entity
 @Table(name = "doss")
-public class Doss extends BaseEntity implements DossPerEntity, DossNatEntity, EventLogEntity {
+public class Doss extends BaseEntity implements DossPerEntity, DossNatEntity, EventLogEntity, VersionEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -95,6 +95,9 @@ public class Doss extends BaseEntity implements DossPerEntity, DossNatEntity, Ev
   @Column(name = "descr",
       length = 255)
   private String descr;
+
+  @Column(name = "version_ts")
+  private Long versionTs;
 
   @OneToMany(mappedBy = "doss")
   private List<DossAkte> dossAktes;
@@ -256,6 +259,7 @@ public class Doss extends BaseEntity implements DossPerEntity, DossNatEntity, Ev
     this.dossVereistes = dossVereistes;
   }
 
+  @Override
   public String getZaakId() {
     return zaakId;
   }
@@ -304,5 +308,15 @@ public class Doss extends BaseEntity implements DossPerEntity, DossNatEntity, Ev
   @Override
   public String getObjectId() {
     return zaakId;
+  }
+
+  @Override
+  public Long getVersionTs() {
+    return versionTs;
+  }
+
+  @Override
+  public void setVersionTs(Long versionTs) {
+    this.versionTs = versionTs;
   }
 }

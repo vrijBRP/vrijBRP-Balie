@@ -41,7 +41,8 @@ public class DossPer extends BaseEntity implements DossPerEntity, DossNatEntity 
       valueColumnName = "val",
       pkColumnValue = "doss_pers",
       allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.TABLE, generator = "table_gen_doss_pers")
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "table_gen_doss_pers")
   @Column(name = "c_doss_pers", unique = true, nullable = false, precision = 131_089)
   private Long cDossPers;
 

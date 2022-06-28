@@ -21,7 +21,6 @@ package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis;
 
 import static java.text.MessageFormat.format;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
-import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.WACHT_OP_RISICOANALYSE;
 import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
 
@@ -163,9 +162,7 @@ public class RiskAnalysisProcessor extends CaseProcessor {
    * Change the related case
    */
   private void updateRelatedCase(Zaak relatedCase, boolean thresholdReached) {
-
     getServices().getRiskAnalysisService().removeWaitForRiskAnalysis(relatedCase);
-    log(INFO, "Zaak attribuut {0} is verwijderd van zaak {0}", WACHT_OP_RISICOANALYSE, relatedCase.getZaakId());
 
     if (thresholdReached) {
       // Threshold reached which is NOT good.

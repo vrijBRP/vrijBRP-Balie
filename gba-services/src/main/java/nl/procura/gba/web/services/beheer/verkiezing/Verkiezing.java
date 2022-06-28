@@ -25,6 +25,8 @@ import java.util.List;
 
 import nl.procura.gba.jpa.personen.db.KiesrVerk;
 import nl.procura.standard.ProcuraDate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Verkiezing {
 
@@ -56,5 +58,18 @@ public class Verkiezing {
   public void setStempassen(List<Stempas> stempassen) {
     this.stempassen = stempassen;
     this.stempassen.forEach(stempas -> stempas.setVerkiezing(this));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Verkiezing)) return false;
+    Verkiezing that = (Verkiezing) o;
+    return new EqualsBuilder().append(verk.getcKiesrVerk(), that.verk.getcKiesrVerk()).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(verk.getcKiesrVerk()).toHashCode();
   }
 }

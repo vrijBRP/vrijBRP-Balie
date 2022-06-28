@@ -195,8 +195,6 @@ public class PLEElementFormatter {
 
       case WPL_NAAM:
         diacriet(waarden, input, Diacs.WPL, isLandelijkeTabel);
-        Object cWplBag = get(input, "CWplBag");
-        waarden.setVal(pos(cWplBag) ? astr(cWplBag) : "");
         break;
 
       case LENGTE_HOUDER:

@@ -22,48 +22,39 @@ package nl.procura.gba.web.modules.beheer.verkiezing.page3.exporting;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import nl.procura.gba.jpa.personen.db.KiesrStem;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.verkiezing.Stempas;
 
-public class ROSExport1 implements ROSExport {
+public class ROSExport3 implements ROSExport {
 
   @Override
   public String getBestandsnaam() {
-    return "ROS-algemeen";
+    return "ROS-StembureauApp";
   }
 
   @Override
   public String getTitel() {
-    return "Algemene export (CSV)";
+    return "Bestand voor de StembureauApp (CSV)";
   }
 
   @Override
   public List<String[]> getExport(List<KiesrStem> stempassen, Services services) {
     List<String[]> lines = new ArrayList<>();
-    lines.add(
-        new String[]{ "Gemeente", "A-nummer", "Pasnummer", "Volgnummer",
-            "Aanduiding (kort)", "Aanduiding (omschrijving)", "Tijdstip aanduiding",
-            "Voorletters", "Naam", "Adres", "Postcode", "Woonplaats" });
     for (KiesrStem kiesrStem : stempassen) {
       Stempas stempas = new Stempas(kiesrStem);
-      String gemeente = services.getGebruiker().getGemeente();
-      lines.add(new String[]{
-          gemeente,
-          stempas.getAnr().getAnummer(),
-          stempas.getPasnummer(),
-          stempas.getVolgnr().toString(),
-          stempas.getAanduidingType().getType(),
-          stempas.getAanduidingType().getOms(),
-          stempas.getAanduidingTijdstip(),
-          stempas.getStem().getVoorn(),
-          stempas.getStem().getNaam(),
-          stempas.getAdres(),
-          stempas.getPostcode(),
-          stempas.getStem().getWpl(),
+      lines.add(new String[]{ getQrText(stempas)
       });
     }
     return lines;
+  }
+
+  @NotNull
+  private String getQrText(Stempas stempas) {
+    KiesrStem stem = stempas.getStem();
+    return stem.getKiesrVerk().getAfkVerkiezing() + "/" + stem.getPasNr();
   }
 
   @Override

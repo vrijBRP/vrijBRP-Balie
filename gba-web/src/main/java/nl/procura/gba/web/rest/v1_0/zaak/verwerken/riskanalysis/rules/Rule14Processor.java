@@ -20,6 +20,7 @@
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
 import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.X;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
@@ -29,6 +30,7 @@ import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchResponse;
 import nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType;
+import nl.procura.standard.exceptions.ProException;
 
 /**
  * Rule 13
@@ -57,6 +59,9 @@ public class Rule14Processor extends AbstractBagRuleProcessor {
       FeatureType type = feature.getType();
 
       if (FeatureType.VERBLIJFSOBJECT.equals(type)) {
+        if (numberOfPersons < 1) {
+          throw new ProException(ERROR, "Het veld 'aantal personen nieuw adres' is niet gevuld");
+        }
         int surfaceSize = feature.getVerblijfsobject().getOppervlakte();
         int minimalPP = rule.getIntAttribute(X.name());
         long surfacePP = surfaceSize / numberOfPersons;

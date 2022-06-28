@@ -68,25 +68,46 @@ public class VerkiezingsbestandImportTask implements VaadinTask {
       ThreadLocalStorage.init(new GbaJpaStorageWrapper(GbaConfig.getProperties()));
       Services services = application.getServices();
       KiezersregisterService service = services.getKiezersregisterService();
+      int added = 0;
+      int skipped = 0;
       int nr = 0;
-      List<Bestandsregel> regels = verkiezingsbestand.getNieuweRegels();
-      LIST: for (List<Bestandsregel> partition : ListUtils.partition(regels, 500)) {
-        List<KiesrStem> kiezers = new ArrayList<>();
-        for (Bestandsregel regel : partition) {
-          if (abort) {
-            break LIST;
+      List<Bestandsregel> nieuweRegels = verkiezingsbestand.getNieuweRegels();
+      List<Bestandsregel> bestaandeRegels = verkiezingsbestand.getBestaandeRegels();
+      if (nieuweRegels.isEmpty() && !bestaandeRegels.isEmpty()) {
+        LOGGER.info("Alle " + bestaandeRegels.size() + " regels in dit bestand zijn al verwerkt.");
+      } else {
+        LIST: for (List<Bestandsregel> partition : ListUtils.partition(nieuweRegels, 500)) {
+          List<KiesrStem> kiezers = new ArrayList<>();
+          for (Bestandsregel regel : partition) {
+            if (abort) {
+              break LIST;
+            }
+            try {
+              kiezers.add(service.toKiezerPers(verkiezingsbestand.getVerkiezing(), regel));
+              added++;
+            } catch (Exception e) {
+              skipped++;
+              LOGGER.debug("Fout bij verwerken regel " + regel.getPasNr() + ": " + e.getMessage());
+            }
+            nr++;
+            setPercentage((100.00 / nieuweRegels.size()) * nr);
           }
-          kiezers.add(service.toKiezerPers(verkiezingsbestand.getVerkiezing(), regel));
-          nr++;
-          setPercentage((100.00 / regels.size()) * nr);
+          service.save(kiezers);
         }
-        service.save(kiezers);
+        LOGGER.info(toRegel(added) + " verwerkt.");
+        LOGGER.info(toRegel(nieuweRegels.size() - added) + " nog niet verwerkt.");
+        LOGGER.info(toRegel(skipped) + " overgeslagen wegens een fout.");
       }
       success = true;
       setPercentage(100.00);
     } catch (Exception e) {
       e.printStackTrace();
+      LOGGER.error("ERROR: De verwerking is afgebroken!");
     }
+  }
+
+  private String toRegel(int added) {
+    return added == 1 ? "Er is 1 regel" : "Er zijn " + added + " regels";
   }
 
   @Override
