@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   <groupId>nl.procura.gba</groupId>
   <artifactId>gba-parent</artifactId>
-  <version>1.29.1</version>
+  <version>1.29.2</version>
   <name>Proweb GBA - Parent</name>
 
   <developers>
@@ -68,7 +68,7 @@
     <json.version>20100517</json.version>
     <ssl-web.version>2.4.6</ssl-web.version>
     <opencsv.version>2.1</opencsv.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.13.2</junit.version>
     <hamcrest.version>1.3</hamcrest.version>
     <jacoco.version>0.8.5</jacoco.version>
     <commons-logging.version>1.2</commons-logging.version>
@@ -95,7 +95,6 @@
     <xerces.version>2.11.0</xerces.version>
     <xalan.version>2.7.2</xalan.version>
     <xml-apis.version>1.4.01</xml-apis.version>
-    <proweb-admin-license.version>1.1.0</proweb-admin-license.version>
     <vrijbrp-connect.version>1.1.1</vrijbrp-connect.version>
     <objectstore.version>1.0.2</objectstore.version>
     <okhttp.version>4.9.3</okhttp.version>
@@ -149,6 +148,15 @@
     <module>gba-ws-jpa</module>
   </modules>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <dependencyManagement>
     <dependencies>
       <!-- Own modules -->
@@ -193,13 +201,6 @@
         <groupId>nl.vrijbrp</groupId>
         <artifactId>javax</artifactId>
         <version>${vrijbrp-libs.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>

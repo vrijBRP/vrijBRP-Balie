@@ -19,11 +19,13 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
+import static com.vaadin.event.ShortcutAction.KeyCode.F4;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.NO_ACTION_INCORRECT_HIST;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
 
+import com.vaadin.ui.Button;
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -44,6 +46,8 @@ public class Page2PersonListMutations extends NormalPageTemplate {
 
   private Page2PersonListMutationsForm   form;
   private Page2PersonListMutationsLayout layout;
+  private Page2BCMCheckResultLayout      bcmCheckResultLayout;
+  private final Button                   buttonBCMCheck = new Button("BCM Controle (F4)");
 
   public Page2PersonListMutations() {
     super("Nieuwe mutatie toevoegen");
@@ -54,12 +58,16 @@ public class Page2PersonListMutations extends NormalPageTemplate {
   protected void initPage() {
     addButton(buttonPrev);
     addButton(buttonNext);
-    addButton(buttonPrint, 1f);
+    addButton(buttonPrint);
+    addButton(buttonBCMCheck, 1f);
     addButton(buttonClose);
 
     layout = new Page2PersonListMutationsLayout();
     form = new Page2PersonListMutationsForm(getNewPL(), layout);
+    bcmCheckResultLayout = new Page2BCMCheckResultLayout();
 
+    addComponent(bcmCheckResultLayout);
+    bcmCheckResultLayout.setVisible(false);
     addComponent(form);
     addComponent(layout);
     setExpandRatio(layout, 1.0F);
@@ -161,6 +169,15 @@ public class Page2PersonListMutations extends NormalPageTemplate {
   }
 
   @Override
+  public void handleEvent(Button button, int keyCode) {
+    if (isKeyCode(button, keyCode, F4, buttonBCMCheck)) {
+      onBCMCheck();
+    } else {
+      super.handleEvent(button, keyCode);
+    }
+  }
+
+  @Override
   public void onClose() {
     getWindow().closeWindow();
   }
@@ -170,10 +187,20 @@ public class Page2PersonListMutations extends NormalPageTemplate {
     getNavigation().goToPage(new Page7PersonListMutations(toPrintData()));
   }
 
+  public void onBCMCheck() {
+    Page2BCMCheckResultLayout newBcmCheckResultLayout = new BCMCheckResultLayoutBuilder(
+        getPL().getPersoon().getAnr().getDescr(),
+        getApplication()).getBcmCheckResultLayout();
+    replaceComponent(bcmCheckResultLayout, newBcmCheckResultLayout);
+    bcmCheckResultLayout = newBcmCheckResultLayout;
+  }
+
   private PersonListPrintData toPrintData() {
     form.commit();
     BasePLSet set = form.getSetValue().getItem();
-    return new PersonListPrintData(getPL(), set);
+    return new PersonListPrintData(getPL(), set,
+        bcmCheckResultLayout.getHeader(),
+        bcmCheckResultLayout.getTable().getElementRecords());
   }
 
   public Page2PersonListMutationsLayout getLayout() {

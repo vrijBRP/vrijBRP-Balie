@@ -22,7 +22,6 @@ public class Page7PersonListMutations extends NormalPageTemplate {
   public void event(PageEvent event) {
     if (event.isEvent(InitPage.class)) {
       PersonListCategoryTemplateData data = new PersonListCategoryTemplateData(printData);
-
       printLayout = new PrintMultiLayout(data, null, null, DocumentType.PL_CATEGORIE);
       printLayout.setInfo("");
       addButton(buttonPrev);

@@ -30,11 +30,9 @@ public class OverlijdenAccordionTab extends GbaAccordionTab {
   private static final long serialVersionUID = -4996705844277080025L;
 
   public OverlijdenAccordionTab(GbaApplication application) {
-
     super("Overlijden", application);
 
     addLink(ModuleOverlijdenGemeente.class);
-    //      addLink (ModuleOverlijdenBuitenland.class); Nog niet helemaal uitgewerkt
     addLink(ModuleLijkvinding.class);
     addLink(ModuleLevenloos.class);
   }

@@ -33,13 +33,12 @@ public enum GbaConfigProperty {
   GEMEENTE(true, "s_gem", "gemeente.naam"),
   PROWEB_AUTHENTICATION(false, "proweb.authentication"),
   PROCURA_ENDPOINT(false, "procura.endpoint"),
-  LICENSE_KEY(false, "license.key"),
   ENCRYPTION_KEY0(false, "crypt.version0.key"),
   ENCRYPTION_KEY1(false, "crypt.version1.key"),
   ENCRYPTION_KEY1_UPDATE(false, "crypt.version1.key.update");
 
-  private boolean  required;
-  private String[] properties;
+  private final boolean  required;
+  private final String[] properties;
 
   GbaConfigProperty(boolean required, String... properties) {
     this.required = required;

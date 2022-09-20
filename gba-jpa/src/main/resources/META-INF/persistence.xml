@@ -148,5 +148,7 @@
         <class>nl.procura.gba.jpa.personen.db.KiesrStem</class>
         <class>nl.procura.gba.jpa.personen.db.KiesrWijz</class>
         <class>nl.procura.gba.jpa.personen.db.KiesrVerkInfo</class>
+        <class>nl.procura.gba.jpa.personen.db.FileImport</class>
+        <class>nl.procura.gba.jpa.personen.db.FileRecord</class>
     </persistence-unit>
 </persistence>

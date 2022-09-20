@@ -25,28 +25,19 @@ import nl.procura.gba.web.modules.beheer.onderhoud.page1.tab2.Tab2CertificatenPa
 import nl.procura.gba.web.modules.beheer.onderhoud.page1.tab3.Tab3OnderhoudPage;
 import nl.procura.gba.web.modules.beheer.onderhoud.page1.tab6.Tab6OnderhoudPage;
 import nl.procura.gba.web.modules.beheer.onderhoud.page1.tab8.Tab8OnderhoudPage;
-import nl.procura.gba.web.modules.beheer.onderhoud.page1.tab9.Tab9OnderhoudPage;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.layout.page.PageLayout;
 
 public class OnderhoudTab extends PageLayout {
 
-  private final GbaTabsheet          tabs                 = new GbaTabsheet();
-  private final Tab1OnderhoudPage    tab1OnderhoudPage    = new Tab1OnderhoudPage();
-  private final Tab2CertificatenPage tab2CertificatenPage = new Tab2CertificatenPage();
-  private final Tab3OnderhoudPage    tab3OnderhoudPage    = new Tab3OnderhoudPage();
-  private final Tab6OnderhoudPage    tab6OnderhoudPage    = new Tab6OnderhoudPage();
-  private final Tab8OnderhoudPage    tab8OnderhoudPage    = new Tab8OnderhoudPage();
-  private final Tab9OnderhoudPage    tab9OnderhoudPage    = new Tab9OnderhoudPage();
-
   public OnderhoudTab() {
+    GbaTabsheet tabs = new GbaTabsheet();
     tabs.addStyleName(GbaWebTheme.TABSHEET_TOP);
-    tabs.addTab(tab1OnderhoudPage, "Info", null);
-    tabs.addTab(tab2CertificatenPage, "Certificaten", null);
-    tabs.addTab(tab3OnderhoudPage, "Systeeminformatie", null);
-    tabs.addTab(tab6OnderhoudPage, "Geladen gegevens", null);
-    tabs.addTab(tab8OnderhoudPage, "Sessies", null);
-    tabs.addTab(tab9OnderhoudPage, "Licentie", null);
+    tabs.addTab(new Tab1OnderhoudPage(), "Info", null);
+    tabs.addTab(new Tab2CertificatenPage(), "Certificaten", null);
+    tabs.addTab(new Tab3OnderhoudPage(), "Systeeminformatie", null);
+    tabs.addTab(new Tab6OnderhoudPage(), "Geladen gegevens", null);
+    tabs.addTab(new Tab8OnderhoudPage(), "Sessies", null);
 
     addExpandComponent(tabs);
   }

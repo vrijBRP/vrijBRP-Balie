@@ -19,9 +19,11 @@
 
 package nl.procura.gba.web.common.tables;
 
+import static nl.procura.commons.misc.teletex.Teletex.fromUtf8;
 import static nl.procura.standard.Globalfunctions.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +31,7 @@ import java.util.Objects;
 
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.burgerzaken.gba.core.tables.GBATableValues;
+import nl.procura.commons.misc.teletex.Teletex;
 import nl.procura.gba.web.services.gba.tabellen.TabelRecord;
 import nl.procura.gba.web.services.gba.tabellen.TabelRecordAttributen;
 import nl.procura.gba.web.services.gba.tabellen.TabellenService;
@@ -70,6 +73,17 @@ public final class GBATableList {
 
   public TabelFieldValue getByKey(Number waarde) {
     return getByKey(astr(waarde));
+  }
+
+  public TabelFieldValue getByDescr(String omschrijving) {
+    return get().stream()
+        .filter(tfv -> {
+          byte[] data1 = fromUtf8(tfv.getDescription().getBytes()).getBaseCharactersData();
+          byte[] data2 = fromUtf8(omschrijving.getBytes()).getBaseCharactersData();
+          return Arrays.equals(data1, data2);
+        })
+        .findFirst()
+        .orElse(new TabelFieldValue(omschrijving, omschrijving));
   }
 
   public TabelRecordAttributen getMatchingAttributen() {

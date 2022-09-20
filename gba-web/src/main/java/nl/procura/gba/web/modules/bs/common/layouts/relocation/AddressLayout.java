@@ -19,21 +19,27 @@
 
 package nl.procura.gba.web.modules.bs.common.layouts.relocation;
 
-import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.*;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_A;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_L;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_T;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_POSTAL_CODE;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_RESIDENCE;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_STREET;
 import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BAG;
 import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BRP;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
 import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import nl.procura.vaadin.component.field.ProComboBox;
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Validator;
@@ -61,27 +67,37 @@ import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.window.Message;
 import nl.procura.vaadin.functies.VaadinUtils;
 import nl.procura.vaadin.theme.twee.ProcuraTheme;
+import nl.procura.validation.Postcode;
 
 public class AddressLayout extends VLayout {
 
-  private final OptieLayout          optionLayout;
-  private final MunicipalAddressForm addressForm;
+  private OptieLayout          optionLayout;
+  private MunicipalAddressForm addressForm;
 
   private final int INT_ZERO = 0;
   private final int INT_ONE  = 1;
 
-  private final RelocationAddress address;
-  private AddressInfoLayout       localAddressInfoLayout;
-  private Services                services;
-  private String                  confirmedAddress = "";
+  private RelocationAddress address;
+  private AddressInfoLayout localAddressInfoLayout;
+  private final Services    services;
+  private String            confirmedAddress = "";
 
   public AddressLayout(RelocationAddress address, Services services) {
     this.address = address;
     this.services = services;
-    this.address.setBagAddress(getBagAddress(address.getAon()));
+    this.address.setBagAddress(getBagAddress(address));
     this.addressForm = new MunicipalAddressForm(address, services);
     this.optionLayout = new OptieLayout();
 
+    addComponent(getAdresLayout(addressForm));
+  }
+
+  public void updateAddress(RelocationAddress address) {
+    this.address = address;
+    this.address.setBagAddress(getBagAddress(address));
+    this.addressForm = new MunicipalAddressForm(address, services);
+    this.optionLayout = new OptieLayout();
+    removeAllComponents();
     addComponent(getAdresLayout(addressForm));
   }
 
@@ -239,13 +255,19 @@ public class AddressLayout extends VLayout {
   /**
    * Get a specific address in the BAG
    */
-  private Address getBagAddress(String aon) {
+  private Address getBagAddress(RelocationAddress address) {
     if (services.getGeoService().isGeoServiceActive()) {
-      if (StringUtils.isNotBlank(aon)) {
-        AddressRequest request = new AddressRequest().setId(aon);
-        Optional<Address> results = services.getGeoService().search(request).stream().findFirst();
-        if (results.isPresent()) {
-          return results.get();
+      String pc = address.getPostalCode().getStringValue();
+      String hnr = address.getHouseNumber();
+      if (StringUtils.isNoneBlank(pc, hnr)) {
+        List<Address> results = services.getGeoService()
+            .search(new AddressRequest()
+                .setPc(pc)
+                .setHnr(hnr)
+                .setHnrL(address.getHouseNumberL())
+                .setHnrT(address.getHouseNumberT()));
+        if (results.size() == 1) {
+          return results.get(0);
         }
       }
     }
@@ -325,11 +347,18 @@ public class AddressLayout extends VLayout {
    */
   private VerhuisAdres findBagAddress(MunicipalAddressBean bean) {
     if (bean.getBagAddress() != null) {
-      return services.getGeoService()
-          .search(new AddressRequest().setId(bean.getBagAddress().getAonId()))
+      List<VerhuisAdres> results = services.getGeoService()
+          .search(new AddressRequest()
+              .setPc(Postcode.getCompact(bean.getBagAddress().getPostalCode()))
+              .setHnr(bean.getBagAddress().getHnr())
+              .setHnrL(bean.getBagAddress().getHnrL())
+              .setHnrT(bean.getBagAddress().getHnrT()))
           .stream()
           .map(address -> new VerhuisAdres(address, services.getGebruiker()))
-          .findFirst().orElse(null);
+          .collect(Collectors.toList());
+      if (results.size() == 1) {
+        return results.get(0);
+      }
     }
     return null;
   }

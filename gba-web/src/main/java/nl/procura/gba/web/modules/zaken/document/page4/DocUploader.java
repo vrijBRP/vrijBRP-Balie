@@ -33,15 +33,13 @@ import nl.procura.vaadin.theme.twee.Icons;
 public class DocUploader extends CustomComponent
     implements Upload.SucceededListener, Upload.FailedListener, Upload.Receiver {
 
-  private final GridLayout     fileLayout = new GridLayout(2, 1);
-  private final VerticalLayout root;
-  private File                 file;
-  private String               fileName   = "";
-  private Upload               upload     = new Upload("", this);
+  private final GridLayout fileLayout = new GridLayout(2, 1);
+  private File             file;
+  private String           fileName   = "";
+  private Upload           upload     = new Upload(null, this);
 
   public DocUploader() {
-
-    root = new VerticalLayout();
+    VerticalLayout root = new VerticalLayout();
     root.setSpacing(true);
     root.setWidth("100%");
     setCompositionRoot(root);
@@ -58,7 +56,6 @@ public class DocUploader extends CustomComponent
   }
 
   public void addMessage(String msg, int icon) {
-
     clearMessage();
     fileLayout.addComponent(new Embedded(null, new ThemeResource(Icons.getIcon(icon))));
     fileLayout.addComponent(new Label(msg, Label.CONTENT_XHTML));
@@ -100,11 +97,8 @@ public class DocUploader extends CustomComponent
 
   @Override
   public OutputStream receiveUpload(String filename, String MIMEType) {
-
     FileOutputStream fos;
-
     try {
-
       setFileName(filename);
       setFile(DocumentenPrintenService.newTijdelijkBestand(filename));
       fos = new FileOutputStream(getFile());

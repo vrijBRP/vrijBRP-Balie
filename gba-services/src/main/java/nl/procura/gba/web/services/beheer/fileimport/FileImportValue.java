@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2022 - 2023 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,25 +17,19 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.applicatie.onderhoud;
+package nl.procura.gba.web.services.beheer.fileimport;
 
-public enum LicenseType {
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-  ADRESONDERZOEK("adresonderzoek"),
-  RISK_ANALYSIS("risicoanalyse");
+@Data
+@AllArgsConstructor
+public class FileImportValue {
 
-  private String id = "";
+  private String value;
+  private String remark;
 
-  LicenseType(String id) {
-    this.id = id;
+  public boolean isValid() {
+    return remark == null;
   }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
 }

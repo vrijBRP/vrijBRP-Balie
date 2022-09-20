@@ -22,8 +22,10 @@ package nl.procura.gba.web.modules.bs.registration;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 
+import java.util.Optional;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.modules.bs.common.modules.BsModule;
+import nl.procura.gba.web.modules.bs.registration.fileimport.FileImportRegistrant;
 import nl.procura.gba.web.modules.bs.registration.page10.Page10Registration;
 import nl.procura.gba.web.modules.bs.registration.page20.Page20Registration;
 import nl.procura.gba.web.modules.bs.registration.printing.PrintingWindow;
@@ -40,7 +42,8 @@ import nl.procura.vaadin.functies.VaadinUtils;
     profielActie = ProfielActie.SELECT_ZAAK_REGISTRATIE)
 public class ModuleRegistration extends BsModule {
 
-  private Dossier dossier;
+  private FileImportRegistrant importRegistrant;
+  private Dossier              dossier;
 
   public ModuleRegistration() {
   }
@@ -94,5 +97,13 @@ public class ModuleRegistration extends BsModule {
     }
 
     super.event(event);
+  }
+
+  public void setImportRegistrant(FileImportRegistrant importRegistrant) {
+    this.importRegistrant = importRegistrant;
+  }
+
+  public Optional<FileImportRegistrant> getImportRegistrant() {
+    return Optional.ofNullable(importRegistrant);
   }
 }

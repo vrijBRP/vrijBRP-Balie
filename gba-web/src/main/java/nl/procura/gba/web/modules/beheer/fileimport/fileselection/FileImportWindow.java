@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2022 - 2023 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,18 +17,26 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.beheer.onderhoud.page1.tab9;
+package nl.procura.gba.web.modules.beheer.fileimport.fileselection;
 
-import com.vaadin.data.validator.AbstractStringValidator;
+import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
+import nl.procura.vaadin.component.layout.VLayout;
 
-public class LicenseValidator extends AbstractStringValidator {
+public class FileImportWindow extends GbaModalWindow {
 
-  public LicenseValidator() {
-    super("De licentie is niet valide.");
+  private final FileImportHandler fileImportHandler;
+
+  public FileImportWindow(FileImportHandler fileImportHandler) {
+    super("Importeer uit bestand", "450px");
+    this.fileImportHandler = fileImportHandler;
   }
 
   @Override
-  protected boolean isValidString(String value) {
-    return false;
+  public void attach() {
+    VLayout vLayout = new VLayout();
+    vLayout.setMargin(true);
+    vLayout.add(new FileImportForm(fileImportHandler));
+    setContent(vLayout);
+    super.attach();
   }
 }

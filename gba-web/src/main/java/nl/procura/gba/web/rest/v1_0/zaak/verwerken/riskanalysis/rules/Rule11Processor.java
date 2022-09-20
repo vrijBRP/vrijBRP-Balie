@@ -47,7 +47,7 @@ public class Rule11Processor extends AbstractRuleProcessor {
       DossRiskAnalysisSubject subject,
       RiskProfileRule rule) {
 
-    List<BaseWKExt> addresses = getUtils().getRelocationAddress(relatedCase);
+    List<BaseWKExt> addresses = getUtils().getRelocationAddress(relatedCase, false);
 
     boolean isMatch = false;
     if (INTEGER_ONE.equals(addresses.size())) {

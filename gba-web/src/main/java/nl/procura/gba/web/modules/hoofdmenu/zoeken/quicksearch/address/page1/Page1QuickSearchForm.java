@@ -19,11 +19,26 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.*;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_BAG_ADDRESS;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_HOUSE_NUMBER;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_HOUSE_NUMBER_A;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_HOUSE_NUMBER_L;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_HOUSE_NUMBER_T;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_POSTAL_CODE;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_RESIDENCE;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_SOURCE;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1.Page1QuickSearchBean.F_STREET;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_SEARCH_DEFAULT;
 import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BAG;
 import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BRP;
-import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.*;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.ADRESSEERBAAROBJECTID;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.GEMEENTE_CODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISLETTER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMERTOEVOEGING;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.POSTCODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.WEERGAVENAAM;
 import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 import static nl.procura.standard.Globalfunctions.isTru;
 
@@ -39,7 +54,7 @@ import nl.procura.vaadin.component.layout.table.TableLayout;
 
 public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
 
-  private Services services;
+  private final Services services;
 
   Page1QuickSearchForm(Services services) {
     this.services = services;
@@ -90,7 +105,7 @@ public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
                 .search(TYPE, "adres")
                 .search(GEMEENTE_CODE, gemCode)
                 .search(value)
-                .filters(WEERGAVENAAM, ADRESSEERBAAR_OBJECT_ID,
+                .filters(WEERGAVENAAM, ADRESSEERBAAROBJECTID,
                     POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
       }
     }

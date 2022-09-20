@@ -1,17 +1,14 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page7;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.KIESR;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
 import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.HIST;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
@@ -20,9 +17,9 @@ import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
 import nl.procura.diensten.gba.ple.base.BasePLElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.BCMCheckResultElem;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListPrintData;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentTemplateData;
-import org.apache.commons.lang3.StringUtils;
 
 public class PersonListCategoryTemplateData extends DocumentTemplateData {
 
@@ -45,6 +42,7 @@ public class PersonListCategoryTemplateData extends DocumentTemplateData {
           return new Record(currentRecord, recordSize, rec);
         })
         .collect(Collectors.toList()));
+    put("bcmCheck", new BCMCheck(printData));
   }
 
   private class Record extends DocumentTemplateData {
@@ -85,6 +83,25 @@ public class PersonListCategoryTemplateData extends DocumentTemplateData {
       put("descr", elem.getValue().getDescr());
       put("codeDescr", getDescrAndCode(gbaElemType));
       put("value", getValue(elem));
+    }
+  }
+
+  public class BCMCheck extends DocumentTemplateData {
+
+    public BCMCheck(PersonListPrintData printData) {
+      put("header", printData.getBcmHeader());
+      put("results", printData.getBcmResults()
+          .stream()
+          .map(BCMCheckResult::new)
+          .collect(Collectors.toList()));
+    }
+  }
+
+  public static class BCMCheckResult extends DocumentTemplateData {
+
+    public BCMCheckResult(BCMCheckResultElem elem) {
+      put("code", elem.getCode());
+      put("descr", elem.getOmschrijving());
     }
   }
 

@@ -19,8 +19,20 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.*;
-import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.*;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_ADRES;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_ANR;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_BSN;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_GEBOORTEDATUM;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_HNR;
+import static nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1.Page1QuickSearchBean.F_POSTCODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.ADRESSEERBAAROBJECTID;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISLETTER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMERTOEVOEGING;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.POSTCODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.WEERGAVENAAM;
 import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 
 import com.vaadin.ui.Field;
@@ -60,7 +72,7 @@ public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
                 .setOffset(0).setRows(10)
                 .search(TYPE, "adres")
                 .search(value)
-                .filters(WEERGAVENAAM, ADRESSEERBAAR_OBJECT_ID,
+                .filters(WEERGAVENAAM, ADRESSEERBAAROBJECTID,
                     POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
       } else {
         suggestionBox.setVisible(false);

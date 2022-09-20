@@ -24,6 +24,7 @@ import static nl.procura.standard.Globalfunctions.isTru;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.procura.gba.web.services.beheer.fileimport.FileImportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,6 +217,7 @@ public class Services {
     add(RelationService.class);
     add(PersonListMutationsService.class);
     add(ZaakConfiguratieService.class);
+    add(FileImportService.class);
   }
 
   public static Services getInstance() {
@@ -501,6 +503,10 @@ public class Services {
 
   public RijbewijsService getRijbewijsService() {
     return get(RijbewijsService.class);
+  }
+
+  public FileImportService getFileImportService() {
+    return get(FileImportService.class);
   }
 
   public List<AbstractService> getServices() {

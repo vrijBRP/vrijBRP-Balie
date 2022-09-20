@@ -19,9 +19,6 @@
 
 package nl.procura.gba.web.modules.zaken.overzicht.page1;
 
-import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.ADRESONDERZOEK;
-import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.RISK_ANALYSIS;
-
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Panel;
@@ -112,15 +109,8 @@ public class Page1OverzichtZaken extends ZakenPage {
       addZaak(new Zaak(ModuleIndicatie.class, false));
       addZaak(new Zaak(ModuleInhouding.class, false));
       addZaak(new Zaak(ModuleNaamgebruik.class, false));
-
-      // Check license
-      if (getServices().getOnderhoudService().hasLicenseFor(ADRESONDERZOEK)) {
-        addZaak(new Zaak(ModuleOnderzoek.class, false));
-      }
-      if (getServices().getOnderhoudService().hasLicenseFor(RISK_ANALYSIS)) {
-        addZaak(new Zaak(ModuleRiskAnalysis.class, false));
-      }
-
+      addZaak(new Zaak(ModuleOnderzoek.class, false));
+      addZaak(new Zaak(ModuleRiskAnalysis.class, false));
       addZaak(new Zaak(ModuleOverlijden.class, false));
       addZaak(new Zaak(ModuleReisdocument.class, false));
 

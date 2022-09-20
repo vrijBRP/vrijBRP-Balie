@@ -32,7 +32,6 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakNumbers;
 public class HoofdAccordionTab extends GbaAccordionTab {
 
   public HoofdAccordionTab(GbaApplication application) {
-
     super("Hoofdmenu", application);
 
     addLink(ModuleZoeken.class);

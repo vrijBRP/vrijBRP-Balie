@@ -99,6 +99,9 @@ public class WoningObjectLayout extends VLayout {
       if (addresses.size() == 1) {
         this.bagAddress = addresses.get(0);
       }
+      if (addresses.size() > 1) {
+        return setLayout(bagAddress, " is meerdere keren gevonden in de landelijke BAG");
+      }
     }
 
     return setLayout(bagAddress, " is niet gevonden in de landelijke BAG");

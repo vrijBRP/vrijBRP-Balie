@@ -21,17 +21,24 @@ package nl.procura.gba.web.modules.bs.registration.presenceq;
 
 import java.util.function.Consumer;
 
+import java.util.function.Supplier;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab6.search.PresentievraagZoekBean;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.DossierRegistration;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
 public class PersonPresenceWindow extends GbaModalWindow {
 
-  public PersonPresenceWindow(DossierRegistration dossier,
-      DossierPersoon person,
+  public PersonPresenceWindow(DossierRegistration dossier, DossierPersoon person,
       Consumer<DossierPersoon> nextListener) {
+    this(dossier, person, null, nextListener);
+  }
+
+  public PersonPresenceWindow(DossierRegistration dossier, DossierPersoon person,
+      Supplier<PresentievraagZoekBean> searchBean, Consumer<DossierPersoon> nextListener) {
     super("Presentievraag", "1000px");
-    addComponent(new MainModuleContainer(false, new PersonPresenceSearchPage(dossier, person, nextListener)));
+    addComponent(
+        new MainModuleContainer(false, new PersonPresenceSearchPage(dossier, person, searchBean, nextListener)));
   }
 }

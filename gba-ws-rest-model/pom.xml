@@ -3,7 +3,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.29.1</version>
+        <version>1.29.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -38,12 +38,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

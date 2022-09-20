@@ -46,7 +46,6 @@ class Page10DeclarationForm extends GbaForm<Page10DeclarationBean> {
     this.dossier = dossier;
     this.dossRegistration = (DossierRegistration) dossier.getZaakDossier();
 
-    setCaption("Aanvang inschrijving");
     setColumnWidths("200px", "");
     setOrder(F_DATUM_AANGIFTE, F_ORIGIN_SITUATION, F_COUNTRY, F_STAY_DURATION);
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+  <property name="blob_type" value="bytea" dbms="postgresql"/>
+  <property name="blob_type" value="blob" dbms="hsqldb"/>
+  <property name="blob_type" value="blob" dbms="h2"/>
+
+  <changeSet author="Procura" id="v1_29_1">
+    <createTable tableName="fileimport">
+      <column name="c_fileimport" type="numeric">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="fileimport_pk"/>
+      </column>
+      <column name="name" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="template" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_29_2">
+    <createTable tableName="filerecord">
+      <column name="c_filerecord" type="numeric">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="filerecord_pk"/>
+      </column>
+      <column name="c_fileimport" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="content" type="${blob_type}">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_29_3">
+    <addForeignKeyConstraint
+      baseColumnNames="c_fileimport"
+      baseTableName="filerecord"
+      constraintName="filerecord_c_fileimport_fkey"
+      deferrable="false" initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_fileimport"
+      referencedTableName="fileimport"/>
+  </changeSet>
+</databaseChangeLog>

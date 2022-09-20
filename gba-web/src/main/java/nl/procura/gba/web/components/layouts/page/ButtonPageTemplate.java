@@ -205,7 +205,7 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
   public void onSearch() {
   }
 
-  public void onPrint(){
+  public void onPrint() {
   }
 
   public void removeButton(Component... cs) {

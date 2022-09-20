@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2022 - 2023 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,18 +17,9 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.applicatie.onderhoud;
+package nl.procura.gba.web.modules.beheer.fileimport;
 
-import lombok.Getter;
+public enum FileImportProcess {
 
-@Getter
-public class LicenseConf {
-
-  private String pw;
-  private String license;
-
-  public LicenseConf(String pw, String license) {
-    this.pw = pw;
-    this.license = license;
-  }
+  FIRST_REGISTRATION;
 }

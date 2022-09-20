@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 
 import com.vaadin.ui.Button;
 
+import java.util.function.Supplier;
 import nl.bprbzk.bcgba.v14.MatchIdenGegBI;
 import nl.bprbzk.bcgba.v14.MatchIdenGegBU;
 import nl.procura.bcgba.v14.actions.ActionMatchIdenGeg;
@@ -39,22 +40,26 @@ import nl.procura.gba.web.services.gba.presentievraag.PresentievraagService;
 
 public class PersonPresenceSearchPage extends NormalPageTemplate {
 
-  private final PresentievraagLayout searchLayout;
-  private final Button               buttonSkip = new Button("Overslaan (alleen in testomgeving)");
-  private DossierRegistration        dossier;
-  private DossierPersoon             person;
-  private Consumer<DossierPersoon>   nextListener;
+  private final PresentievraagLayout             searchLayout;
+  private final Button                           buttonSkip = new Button("Overslaan (alleen in testomgeving)");
+  private final DossierRegistration              dossier;
+  private final DossierPersoon                   person;
+  private final Supplier<PresentievraagZoekBean> searchBean;
+  private final Consumer<DossierPersoon>         nextListener;
 
   public PersonPresenceSearchPage(DossierRegistration dossier,
       DossierPersoon person,
+      Supplier<PresentievraagZoekBean> searchBean,
       Consumer<DossierPersoon> nextListener) {
     super("Presentievraag - nieuwe inschrijver");
     this.dossier = dossier;
     this.person = person;
+    this.searchBean = searchBean;
     this.nextListener = nextListener;
 
-    PresentievraagZoekBean bean = new PresentievraagZoekBean();
-    searchLayout = new PresentievraagLayout(bean);
+    searchLayout = new PresentievraagLayout(searchBean != null
+        ? searchBean.get()
+        : new PresentievraagZoekBean());
 
     addButton(buttonSearch);
     addButton(buttonReset);

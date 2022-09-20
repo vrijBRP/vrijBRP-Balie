@@ -19,8 +19,15 @@
 
 package nl.procura.gba.jpa.personen.types;
 
-import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.*;
-import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.*;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.COUNTRY;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.DISTRICT1;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.DISTRICT2;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.DISTRICT3;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.NUMBER;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleMap.Type.POSNUMBER;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.X;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.Y;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.Z;
 
 import nl.procura.gba.common.EnumUtils;
 import nl.procura.gba.common.EnumWithId;
@@ -73,35 +80,15 @@ public enum RiskProfileRuleType implements EnumWithId<Integer> {
       "Verhuizing naar een adres waarbij de oppervlakte per persoon < x (BAG)",
       new RiskProfileRuleMap().add(X, "Oppervlakte pp (x)", POSNUMBER)),
 
-  //  RULE_8(8, "Verhuizing waarbij door deze verhuizing meer dan x verschillende achternamen op een adres voorkomen",
-  //      new RiskProfileRuleMap().add(X, "Aantal (x)", POSNUMBER)),
-  //
-  //  RULE_9(9,
-  //      "Verhuizing van persoon waarvan het reisdocument verloopt binnen periode x aantal dagen",
-  //      new RiskProfileRuleMap().add(X, "Aantal dagen (x)", POSNUMBER)),
-  //
-  //  RULE_10(10,
-  //      "Verhuizing van persoon waarvan het rijbewijs verloopt binnen periode x aantal dagen",
-  //      new RiskProfileRuleMap().add(X, "Aantal dagen (x)", POSNUMBER)),
-  //
-  //  RULE_11(11, "Verhuizing van persoon die ouder is dan x die verhuist naar het adres van een familielid",
-  //      new RiskProfileRuleMap().add(X, "Leeftijd (x)", POSNUMBER)),
-  //
-  //  RULE_12(12,
-  //      "Verhuizing van persoon waarbij op het oude adres in de afgelopen x aantal dagen een nieuw geboren kind is ingeschreven",
-  //      new RiskProfileRuleMap().add(X, "Aantal dagen (x)", POSNUMBER)),
-  //
-
-  //
-  //
-  //  RULE_15(15, "Verhuizing waarbij door deze verhuizing meer dan x verschillende nationaliteiten op een adres voorkomen",
-  //      new RiskProfileRuleMap().add(X, "Aantal (x)", POSNUMBER)),
+  RULE_15(15, "Verhuizing van persoon die onder curatele staat"),
+  RULE_16(16, "Verhuizing naar het huidige adres"),
+  RULE_17(17, "Hoofdbewoner is geen bewoner van het nieuwe adres en het is geen baliezaak"),
 
   UNKNOWN(0, "Onbekend");
 
   private final int          id;
-  private final String       descr;
-  private RiskProfileRuleMap variables;
+  private final String             descr;
+  private final RiskProfileRuleMap variables;
 
   RiskProfileRuleType(int code, String descr) {
     this(code, descr, new RiskProfileRuleMap());

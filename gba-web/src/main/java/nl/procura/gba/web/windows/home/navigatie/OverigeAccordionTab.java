@@ -19,9 +19,6 @@
 
 package nl.procura.gba.web.windows.home.navigatie;
 
-import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.ADRESONDERZOEK;
-import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.RISK_ANALYSIS;
-
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.navigation.GbaAccordionTab;
 import nl.procura.gba.web.modules.bs.onderzoek.ModuleOnderzoek;
@@ -36,21 +33,12 @@ import nl.procura.gba.web.modules.hoofdmenu.sms.ModuleSms;
 public class OverigeAccordionTab extends GbaAccordionTab {
 
   public OverigeAccordionTab(GbaApplication application) {
-
     super("Overige", application);
 
     addLink(ModuleGv.class);
     addLink(ModuleKlapper.class);
-
-    // Check license
-    if (application.getServices().getOnderhoudService().hasLicenseFor(ADRESONDERZOEK)) {
-      addLink(ModuleOnderzoek.class);
-    }
-
-    if (application.getServices().getOnderhoudService().hasLicenseFor(RISK_ANALYSIS)) {
-      addLink(ModuleRiskAnalysis.class);
-    }
-
+    addLink(ModuleOnderzoek.class);
+    addLink(ModuleRiskAnalysis.class);
     addLink(ModuleRegistration.class);
     addLink(ModulePresentievraag.class);
     addLink(ModuleSms.class);

@@ -19,7 +19,23 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_3;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_AANVANG_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERTREK_UIT_NL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.FUNCTIE_ADRES;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_DEEL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_A;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_L;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_T;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERTREK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LOCATIEBESCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.POSTCODE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.STRAATNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.WPL_NAAM;
 
 import java.util.List;
 
@@ -86,7 +102,7 @@ public class RiskAnalysisRuleUtils {
     return addresses.sortDescending();
   }
 
-  public List<BaseWKExt> getRelocationAddress(RiskAnalysisRelatedCase relatedCase) {
+  public List<BaseWKExt> getRelocationAddress(RiskAnalysisRelatedCase relatedCase, boolean extraPLGegevens) {
     ZoekArgumenten za = new ZoekArgumenten();
     za.setStraatnaam(relatedCase.getAddress().getStraat());
     za.setPostcode(Postcode.getCompact(relatedCase.getAddress().getPostcode()));
@@ -94,6 +110,7 @@ public class RiskAnalysisRuleUtils {
     za.setHuisletter(relatedCase.getAddress().getHuisletter());
     za.setHuisnummertoevoeging(relatedCase.getAddress().getHuisnummertoev());
     za.setHuisnummeraanduiding(relatedCase.getAddress().getHuisnummeraand());
+    za.setExtra_pl_gegevens(extraPLGegevens);
     return services.getPersonenWsService().getAdres(za, true).getBasisWkWrappers();
   }
 

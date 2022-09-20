@@ -26,8 +26,9 @@ public class ActieDescr {
   public static final String BEHEER_DMS                      = "(Beheer) dms";
   public static final String BEHEER_EMAIL                    = "(Beheer) e-mail";
   public static final String BEHEER_SMS                      = "(Beheer) sms";
-  public static final String BEHEER_VERKIEZING               = "(Beheer) verkiezing";
-  public static final String BEHEER_GEBRUIKERS               = "(Beheer) gebruikers";
+  public static final String BEHEER_VERKIEZING     = "(Beheer) verkiezing";
+  public static final String BEHEER_BESTAND_IMPORT = "(Beheer) bestanden importeren";
+  public static final String BEHEER_GEBRUIKERS     = "(Beheer) gebruikers";
   public static final String BEHEER_ONDERHOUD                = "(Beheer) onderhoud";
   public static final String BEHEER_PROFIELEN                = "(Beheer) profielen";
   public static final String BEHEER_LICENTIE                 = "(Beheer) licentie";

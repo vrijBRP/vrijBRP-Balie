@@ -22,7 +22,9 @@ package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis;
 import static java.text.MessageFormat.format;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
 import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,13 +38,34 @@ import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
 import nl.procura.gba.jpa.personen.db.RiskProfile;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
-import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.*;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.AbstractRuleProcessor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule10Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule11Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule12Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule13Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule14Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule15Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule16Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule17Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule1Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule2Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule3Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule4Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule5Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule6Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule7Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule8Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule9Processor;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
+import nl.procura.gba.web.services.zaken.algemeen.CaseProcessor;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.standard.exceptions.ProException;
 
@@ -151,6 +174,9 @@ public class RiskAnalysisProcessor extends CaseProcessor {
     ruleProcessors.add(new Rule12Processor());
     ruleProcessors.add(new Rule13Processor());
     ruleProcessors.add(new Rule14Processor());
+    ruleProcessors.add(new Rule15Processor());
+    ruleProcessors.add(new Rule16Processor());
+    ruleProcessors.add(new Rule17Processor());
 
     return ruleProcessors.stream()
         .filter(processor -> processor.getRuleType() == rule.getRuleType())

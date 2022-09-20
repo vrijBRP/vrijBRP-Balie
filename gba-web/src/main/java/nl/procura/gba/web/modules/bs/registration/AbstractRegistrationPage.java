@@ -19,10 +19,19 @@
 
 package nl.procura.gba.web.modules.bs.registration;
 
+import static java.util.Optional.ofNullable;
+
+import java.util.Optional;
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
+import nl.procura.gba.web.modules.bs.registration.fileimport.FileImportRegistrant;
+import nl.procura.gba.web.modules.bs.registration.fileimport.FileImportRegistrantLayout;
 import nl.procura.gba.web.services.bs.registration.DossierRegistration;
+import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+import nl.procura.vaadin.functies.VaadinUtils;
 
 public abstract class AbstractRegistrationPage extends BsPage<DossierRegistration> {
+
+  protected final FileImportRegistrantLayout registrantLayout = new FileImportRegistrantLayout();
 
   public AbstractRegistrationPage(String title) {
     super(title);
@@ -38,4 +47,22 @@ public abstract class AbstractRegistrationPage extends BsPage<DossierRegistratio
     goToNextProces();
   }
 
+  public Optional<FileImportRegistrant> getFileImportRegistrant() {
+    return ofNullable(getApplication().getMainWindow())
+        .flatMap(w -> VaadinUtils.getChild(w, ModuleRegistration.class)
+            .getImportRegistrant());
+  }
+
+  public void setFileImportRegistrant(FileImportRegistrant registrant) {
+    ofNullable(getApplication().getMainWindow())
+        .map(w -> VaadinUtils.getChild(w, ModuleRegistration.class))
+        .ifPresent(m -> m.setImportRegistrant(registrant));
+    registrantLayout.setFileImportRegistrant(registrant);
+  }
+
+  @Override
+  public void event(PageEvent event) {
+    getFileImportRegistrant().ifPresent(registrantLayout::setFileImportRegistrant);
+    super.event(event);
+  }
 }

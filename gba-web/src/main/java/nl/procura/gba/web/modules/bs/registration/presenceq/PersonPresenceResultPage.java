@@ -43,10 +43,10 @@ import nl.procura.proweb.rest.utils.JsonUtils;
 
 public class PersonPresenceResultPage extends NormalPageTemplate {
 
-  private final Presentievraag     presentievraag;
-  private DossierRegistration      dossier;
-  private DossierPersoon           person;
-  private Consumer<DossierPersoon> nextListener;
+  private final Presentievraag           presentievraag;
+  private final DossierRegistration      dossier;
+  private final DossierPersoon           person;
+  private final Consumer<DossierPersoon> nextListener;
 
   public PersonPresenceResultPage(DossierRegistration dossier,
       DossierPersoon person,

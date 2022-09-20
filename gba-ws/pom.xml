@@ -6,7 +6,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.29.1</version>
+    <version>1.29.2</version>
   </parent>
 
   <packaging>war</packaging>

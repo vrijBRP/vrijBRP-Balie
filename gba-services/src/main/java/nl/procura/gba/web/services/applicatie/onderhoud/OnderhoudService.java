@@ -24,8 +24,13 @@ import static nl.procura.commons.liquibase.utils.LbConnectionUtils.getConnection
 import static nl.procura.commons.liquibase.utils.LbConnectionUtils.getDatabase;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEMEENTE_CODES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SSL_PROXY_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SYSTEM_MIN_HD_SIZE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TEST_OMGEVING;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.isTru;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
@@ -47,7 +52,6 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import nl.procura.burgerzaken.gba.StringUtils;
 import nl.procura.commons.liquibase.connections.LbDatabaseType;
 import nl.procura.gba.config.GbaConfig;
-import nl.procura.gba.config.GbaConfigProperty;
 import nl.procura.gba.jpa.personen.dao.AppDao;
 import nl.procura.gba.jpa.personen.db.App;
 import nl.procura.gba.web.rest.client.GbaRestClient;
@@ -57,8 +61,6 @@ import nl.procura.gba.web.services.applicatie.DatabaseConfig;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.beheer.parameter.ParameterService;
-import nl.procura.proweb.admin.license.License;
-import nl.procura.proweb.admin.license.LicenseUtils;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruikerAntwoord;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMelding;
@@ -68,16 +70,12 @@ import nl.procura.ssl.web.rest.client.SslWebRestClientResponse;
 import nl.procura.ssl.web.rest.v1_0.certificates.SslRestCertificate;
 import nl.procura.ssl.web.rest.v1_0.certificates.SslRestCertificatesResponse;
 import nl.procura.ssl.web.rest.v1_0.connections.SslRestConnectionsResponse;
-import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.exceptions.ProException;
 
 public class OnderhoudService extends AbstractService {
 
   public static final Object TICKET = "ticket";
   private static final long  KB     = 1024L;
-
-  public static String LICENSE_ENV_TEST = "test";
-  public static String LICENSE_ENV_PROD = "prod";
 
   public OnderhoudService() {
     super("Onderhoud");
@@ -358,43 +356,6 @@ public class OnderhoudService extends AbstractService {
   public boolean isTestEnvironment() {
     ParameterService parameterService = getServices().getParameterService();
     return isTru(parameterService.getSysteemParameter(TEST_OMGEVING).getValue());
-  }
-
-  /**
-   * Is the license valid for the module
-   */
-  public boolean hasLicenseFor(LicenseType type) {
-    boolean out = false;
-    try {
-      LicenseConf licenseConf = getLicense();
-      if (fil(licenseConf.getLicense())) {
-        License license = LicenseUtils.decryptLicense(licenseConf.getPw(), licenseConf.getLicense());
-        String municipCode = getGemeenteCodes();
-        boolean testOmgevingParm = isTestEnvironment();
-        boolean isTestEnv = testOmgevingParm && license.getEnvironmentId().equals(LICENSE_ENV_TEST);
-        boolean isProdEnv = !testOmgevingParm && license.getEnvironmentId().equals(LICENSE_ENV_PROD);
-        if (license.getCustomerId().equals(municipCode) && (isTestEnv || isProdEnv)) {
-          out = license.getModules().stream().filter(m -> m.getModuleId().equals(type.getId()))
-              .anyMatch(m -> !new ProcuraDate(m.getEndDate()).isExpired());
-        }
-      }
-    } catch (Exception ignore) {
-      // Ignore the exception
-    }
-
-    return out;
-  }
-
-  public LicenseConf getLicense() {
-    String licensePw = GbaConfig.get(GbaConfigProperty.LICENSE_KEY);
-    String license = getServices().getParameterService().getSysteemParameter(LICENSE).getValue();
-    return new LicenseConf(licensePw, license);
-  }
-
-  public void saveLicense(String pw, String text) {
-    GbaConfig.getProperties().setProperty(GbaConfigProperty.LICENSE_KEY.getProperty(), pw);
-    GbaConfig.storeProperties();
-    getServices().getParameterService().saveParameter(LICENSE, text, null, null, true);
   }
 
   private boolean getLoginOk(App sync, Application app, GbaRestClient client) {

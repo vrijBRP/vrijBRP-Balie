@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.riskanalysis.summary;
 
-import static nl.procura.gba.web.modules.bs.riskanalysis.summary.RiskAnalysisSummaryBean.*;
+import static nl.procura.gba.web.modules.bs.riskanalysis.summary.RiskAnalysisSummaryBean.F_PROFILE;
+import static nl.procura.gba.web.modules.bs.riskanalysis.summary.RiskAnalysisSummaryBean.F_RELATEDCASE;
+import static nl.procura.gba.web.modules.bs.riskanalysis.summary.RiskAnalysisSummaryBean.F_THRESHOLD;
 import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
 
 import com.vaadin.ui.Embedded;
@@ -80,9 +82,9 @@ public class RiskAnalysisSummaryLayout extends GbaVerticalLayout implements Zaak
     };
 
     addComponent(form);
-    addComponent(new Fieldset("Regels", rulesTable));
     addComponent(new Fieldset("Betreffende personen", new InfoLayout("Klik op de regel voor meer informatie")));
     addComponent(subjectsTable);
+    addComponent(new Fieldset("Regels", rulesTable));
     rulesTable.focus();
   }
 

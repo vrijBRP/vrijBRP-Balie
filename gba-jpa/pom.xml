@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.29.1</version>
+        <version>1.29.2</version>
     </parent>
 
     <artifactId>gba-jpa</artifactId>
@@ -28,12 +28,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

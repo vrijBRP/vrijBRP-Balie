@@ -334,3 +334,8 @@
     line-height: 24px;
     vertical-align: middle;
 }
+
+.registrant-import-layout {
+	background-color: #fefef2;
+	padding: 10px;
+}

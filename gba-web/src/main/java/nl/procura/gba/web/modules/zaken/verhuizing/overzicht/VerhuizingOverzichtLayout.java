@@ -20,7 +20,6 @@
 package nl.procura.gba.web.modules.zaken.verhuizing.overzicht;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.web.services.applicatie.onderhoud.LicenseType.RISK_ANALYSIS;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
@@ -39,7 +38,11 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNav
 import nl.procura.gba.web.modules.zaken.bs.page2.Page2BsTemplate;
 import nl.procura.gba.web.modules.zaken.riskanalysis.window.NewRiskAnalysisWindow;
 import nl.procura.gba.web.modules.zaken.verhuizing.overzicht.bewoners.BewonersOverzichtWindow;
-import nl.procura.gba.web.modules.zaken.verhuizing.page2.*;
+import nl.procura.gba.web.modules.zaken.verhuizing.page2.Page2VerhuizingForm1;
+import nl.procura.gba.web.modules.zaken.verhuizing.page2.Page2VerhuizingForm2;
+import nl.procura.gba.web.modules.zaken.verhuizing.page2.Page2VerhuizingForm3;
+import nl.procura.gba.web.modules.zaken.verhuizing.page2.Page2VerhuizingTable1;
+import nl.procura.gba.web.modules.zaken.verhuizing.page2.Page2VerhuizingTable2;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
@@ -133,8 +136,7 @@ public abstract class VerhuizingOverzichtLayout extends GbaVerticalLayout implem
     optieLayout1.getRight().setCaption("Opties");
 
     // Check is riskanalysis is allowed for this user
-    if (Services.getInstance().getOnderhoudService().hasLicenseFor(RISK_ANALYSIS) &&
-        Services.getInstance().getGebruiker().getProfielen().isProfielActie(ProfielActie.SELECT_CASE_RISK_ANALYSIS)) {
+    if (Services.getInstance().getGebruiker().getProfielen().isProfielActie(ProfielActie.SELECT_CASE_RISK_ANALYSIS)) {
       optieLayout1.getRight().addButton(buttonRiskAnalysis, this);
     }
 

@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.bs.registration.person;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.vaadin.ui.Alignment;
@@ -31,6 +32,9 @@ import com.vaadin.ui.Label;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.proces.ProcessLayout;
+import nl.procura.gba.web.modules.bs.registration.ModuleRegistration;
+import nl.procura.gba.web.modules.bs.registration.fileimport.FileImportRegistrant;
+import nl.procura.gba.web.modules.bs.registration.fileimport.FileImportRegistrantLayout;
 import nl.procura.gba.web.modules.bs.registration.identification.IdentificationWindow;
 import nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonPage;
 import nl.procura.gba.web.modules.bs.registration.person.modules.module2.NationalityPage;
@@ -44,13 +48,14 @@ import nl.procura.gba.web.services.zaken.contact.Contact;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.label.Ruler;
 import nl.procura.vaadin.component.layout.VLayout;
+import nl.procura.vaadin.functies.VaadinUtils;
 
 public class PersonMenuPage extends NormalPageTemplate {
 
   private final ProcessLayout            processLayout = new ProcessLayout();
   private final Consumer<DossierPersoon> addPersonListener;
   private final DossierPersoon           person;
-  private DossierRegistration            zaakDossier;
+  private final DossierRegistration      zaakDossier;
   private ButtonNavigation               navigation;
 
   public PersonMenuPage(DossierRegistration zaakDossier, DossierPersoon person,
@@ -78,6 +83,8 @@ public class PersonMenuPage extends NormalPageTemplate {
   @Override
   protected void initPage() {
     super.initPage();
+
+    getFileImportRegistrant().ifPresent(registrant -> addComponent(new FileImportRegistrantLayout(registrant)));
 
     processLayout.setWidths("200px", "100%");
 
@@ -119,6 +126,10 @@ public class PersonMenuPage extends NormalPageTemplate {
     leftLayout.setComponentAlignment(extraOptions, Alignment.BOTTOM_CENTER);
 
     addExpandComponent(this.processLayout.getLayout());
+  }
+
+  private Optional<FileImportRegistrant> getFileImportRegistrant() {
+    return VaadinUtils.getChild(getApplication().getMainWindow(), ModuleRegistration.class).getImportRegistrant();
   }
 
   private void setNavigationButtonVisibility(ButtonNavigation navigation) {

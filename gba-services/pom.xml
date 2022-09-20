@@ -6,7 +6,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.29.1</version>
+    <version>1.29.2</version>
   </parent>
 
   <artifactId>gba-services</artifactId>
@@ -268,13 +268,6 @@
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
       <version>2.2.11</version>
-    </dependency>
-
-    <!-- License -->
-    <dependency>
-      <groupId>nl.procura.proweb.admin</groupId>
-      <artifactId>license</artifactId>
-      <version>${proweb-admin-license.version}</version>
     </dependency>
 
     <!-- On-premise-connector -->

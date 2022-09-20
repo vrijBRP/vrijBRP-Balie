@@ -20,18 +20,21 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
 import lombok.Data;
-import nl.procura.diensten.gba.ple.base.BasePL;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 
 @Data
 public class PersonListPrintData {
 
-  private BasePLExt pl;
-  private BasePLSet set;
+  private final BasePLExt           pl;
+  private final BasePLSet           set;
+  private final String              bcmHeader;
+  private final BCMCheckResultElems bcmResults;
 
-  public PersonListPrintData(BasePLExt pl, BasePLSet set) {
+  public PersonListPrintData(BasePLExt pl, BasePLSet set, String bcmHeader, BCMCheckResultElems bcmResults) {
     this.pl = pl;
     this.set = set;
+    this.bcmHeader = bcmHeader;
+    this.bcmResults = bcmResults;
   }
 }

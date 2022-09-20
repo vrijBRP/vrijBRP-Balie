@@ -24,9 +24,17 @@ import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.GBA_V_VERLOOP;
 import static nl.procura.gba.web.services.gba.templates.ZoekProfielType.PROFIEL_GBAV_PLUS;
 import static nl.procura.gba.web.services.gba.templates.ZoekProfielType.PROFIEL_STANDAARD;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
-import static nl.procura.standard.exceptions.ProExceptionType.*;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -217,20 +225,7 @@ public class PersonenWsService extends GbaTemplateService {
     return resultaat;
   }
 
-  public GbaWsRestGbavAccount getGbavAccount(GbaWsRestGbavAccount account) {
-
-    List<GbaWsRestGbavAccount> accounts = getGbavAccounts(PROFIEL_STANDAARD);
-    for (GbaWsRestGbavAccount newAccount : accounts) {
-      if (newAccount.getCode() == account.getCode()) {
-        return newAccount;
-      }
-    }
-
-    throw new ProException(CONFIG, "Geen GBA-V account met code: " + account.getCode());
-  }
-
   public List<GbaWsRestGbavAccount> getGbavAccounts(ZoekProfielType type) {
-
     try {
       return getPersonenWsClient(type).getGbav().getAccounts().getAccounts();
     } catch (RuntimeException e) {
@@ -239,13 +234,10 @@ public class PersonenWsService extends GbaTemplateService {
   }
 
   public BasePLExt getHuidige() {
-
     BasePLExt pl = getOpslag().getHuidige();
-
     if (pl == null) {
       throw new ProException(NO_RESULTS, ERROR, "Geen persoonslijst gevonden.");
     }
-
     return pl;
   }
 

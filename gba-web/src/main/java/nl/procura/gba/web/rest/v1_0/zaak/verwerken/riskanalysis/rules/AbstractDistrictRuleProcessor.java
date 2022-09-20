@@ -59,7 +59,7 @@ public abstract class AbstractDistrictRuleProcessor extends AbstractRuleProcesso
       throw new ProException(ERROR, "Geen {0} genaamd {1} gevonden", districtString, attr);
     }
 
-    List<BaseWKExt> addresses = getUtils().getRelocationAddress(relatedCase);
+    List<BaseWKExt> addresses = getUtils().getRelocationAddress(relatedCase, false);
 
     boolean isMatch = false;
     if (INTEGER_ONE.equals(addresses.size())) {

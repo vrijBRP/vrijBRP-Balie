@@ -30,7 +30,6 @@ public class AfstammingAccordionTab extends GbaAccordionTab {
   private static final long serialVersionUID = -4996705844277080025L;
 
   public AfstammingAccordionTab(GbaApplication application) {
-
     super("Naam & Afstamming", application);
 
     addLink(ModuleGeboorte.class);

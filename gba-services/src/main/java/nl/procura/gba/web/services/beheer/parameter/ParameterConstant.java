@@ -19,7 +19,48 @@
 
 package nl.procura.gba.web.services.beheer.parameter;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ALGEMENE_INSTELLINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_BSM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_CONNECT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_CONTACT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_COVOG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_CURATELE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_DOCUMENTEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_EMAIL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GEO;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GPK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_HANDLEIDINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INTERNAL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KASSA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KENNISBANK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_MIDOFFICE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_MIJN_OVERHEID;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ONDERZOEK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ONTBINDING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_PORTAAL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_PRESENTIEVRAAG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_PRINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_PROBEV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_PROTOCOLLERING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_RAAS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_REISDOCUMENTEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_RIJBEWIJZEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_RISKANALYSIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_SMS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_SYSTEM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_TERUGMELDINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_VERHUIZING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_VERIFICATIEVRAAG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_WERKPROCES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZAKEN_ALGEMEEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZAKEN_BEHANDELEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZAKEN_DMS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZAKEN_DMS_TYPES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZAKEN_STATUS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_ALGEMEEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_PROFIEL_GBAV_PLUS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_PROFIEL_STANDAARD;
 
 public enum ParameterConstant implements ParameterType {
 
@@ -645,7 +686,6 @@ public enum ParameterConstant implements ParameterType {
   PL_TOON_RECORDS("pl_toon_records", GROUP_INTERNAL, false, false, false, "1000"),
   SHOW_MESSAGES("show_messages", GROUP_INTERNAL, false, false, false, ""),
   SHOW_USER_MESSAGES("show_user_messages", GROUP_INTERNAL, false, false, false, ""),
-  LICENSE("license", GROUP_INTERNAL, false, false, false, ""),
   MIN_VOORRAAD("min_voorraad", GROUP_INTERNAL, false, false, false, ""),
   ZAKEN_SORT("zaken_sort", GROUP_INTERNAL, false, false, false, ""),
   COVOG_VOLGNR("covog_volgnr", GROUP_INTERNAL, false, false, false, ""),

@@ -19,11 +19,29 @@
 
 package nl.procura.gba.web.modules.bs.common.layouts.relocation;
 
-import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.*;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_ADDRESS_FUNCTION;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_BAG_ADDRESS;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_CONSENT_PROVIDER;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_A;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_L;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_T;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_NO_OF_PEOPLE;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_POSTAL_CODE;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_RESIDENCE;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_SOURCE;
+import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_STREET;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_SEARCH_DEFAULT;
 import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BAG;
 import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BRP;
-import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.*;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.ADRESSEERBAAROBJECTID;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.GEMEENTE_CODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISLETTER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMERTOEVOEGING;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.POSTCODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.WEERGAVENAAM;
 import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 import static nl.procura.standard.Globalfunctions.isTru;
 
@@ -59,7 +77,7 @@ public class MunicipalAddressForm extends GbaForm<MunicipalAddressBean> {
       + " B&W aangewezen <br> instelling op het terrein van maatschappelijke opvang;</li>"
       + "<li> In bijzondere gevallen om veiligheidsredenen (naar oordeel van de <br> burgemeester).</li>";
 
-  private Services services;
+  private final Services services;
 
   MunicipalAddressForm(final RelocationAddress address, Services services) {
     this.services = services;
@@ -142,7 +160,8 @@ public class MunicipalAddressForm extends GbaForm<MunicipalAddressBean> {
                 .search(TYPE, "adres")
                 .search(GEMEENTE_CODE, gemCode)
                 .search(value)
-                .filters(WEERGAVENAAM, ADRESSEERBAAR_OBJECT_ID));
+                .filters(WEERGAVENAAM, ADRESSEERBAAROBJECTID,
+                    POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
       }
     }
   }

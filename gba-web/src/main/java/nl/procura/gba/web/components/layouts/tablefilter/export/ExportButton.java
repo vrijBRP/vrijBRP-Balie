@@ -36,7 +36,7 @@ public class ExportButton extends Button {
 
   public ExportButton(final IndexedTable table, final List<? extends Spreadsheet> spreadsheets) {
 
-    super("Export");
+    super("Exporteer");
     addListener((ClickListener) event -> ((GbaApplication) getApplication()).getParentWindow().addWindow(
         new GbaIndexedTableExportWindow(table, spreadsheets)));
   }

@@ -30,7 +30,6 @@ public class HuwelijkAccordionTab extends GbaAccordionTab {
   private static final long serialVersionUID = -4205885736656234365L;
 
   public HuwelijkAccordionTab(GbaApplication application) {
-
     super("Huwelijk / GPS", application);
 
     addLink(ModuleHuwelijk.class);

@@ -24,11 +24,15 @@ import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Window.CloseListener;
 
+import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
+import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.modules.bs.common.pages.zoekpage.BsZoekWindow;
 import nl.procura.gba.web.modules.bs.registration.AbstractRegistrationPage;
@@ -36,8 +40,11 @@ import nl.procura.gba.web.modules.bs.registration.identification.IdentificationW
 import nl.procura.gba.web.modules.bs.registration.person.PersonWindow;
 import nl.procura.gba.web.modules.bs.registration.person.modules.module1.RelativeNotInBrpWindow;
 import nl.procura.gba.web.modules.bs.registration.presenceq.PersonPresenceWindow;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab6.search.PresentievraagZoekBean;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
+import nl.procura.gba.web.services.bs.registration.DeclarationType;
+import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
@@ -78,6 +85,7 @@ public class Page20Registration extends AbstractRegistrationPage {
     addButton(buttonPrev);
     addButton(buttonNext);
 
+    addComponent(registrantLayout);
     addComponent(createNewPeopleTable());
     addComponent(createRelativeFromBrpTable());
     addComponent(createRelativeTable());
@@ -245,7 +253,34 @@ public class Page20Registration extends AbstractRegistrationPage {
   }
 
   private void onStartPresenceQuestion() {
-    getParentWindow().addWindow(new PersonPresenceWindow(getZaakDossier(),
-        person, dossierPersoon -> openPersonWindow()));
+    getParentWindow().addWindow(new PersonPresenceWindow(getZaakDossier(), person,
+        getSearchBean(), getDossierPersoon()));
+  }
+
+  private Consumer<DossierPersoon> getDossierPersoon() {
+    return dossierPersoon -> {
+      getFileImportRegistrant().ifPresent(registrant -> {
+        dossierPersoon.setGeslachtsnaam(registrant.getLastname());
+        dossierPersoon.setVoornaam(registrant.getFirstname());
+        dossierPersoon.setVoorvoegsel(registrant.getPrefix());
+        dossierPersoon.setGeslacht(Geslacht.get(registrant.getGender()));
+        dossierPersoon.setDatumGeboorte(new GbaDateFieldValue(registrant.getBirthDate().getSystemDate()));
+        dossierPersoon.setGeboorteland(GbaTables.LAND.getByDescr(registrant.getBirthCountry()));
+        dossierPersoon.setGeboorteplaats(GbaTables.PLAATS.getByDescr(registrant.getBirthPlace()));
+        dossierPersoon.setBron(DeclarationType.REGISTERED.getCode());
+      });
+      openPersonWindow();
+    };
+  }
+
+  private Supplier<PresentievraagZoekBean> getSearchBean() {
+    return () -> getFileImportRegistrant().map(registrant -> {
+      PresentievraagZoekBean zb = new PresentievraagZoekBean();
+      zb.setGeslachtsnaam(registrant.getLastname());
+      zb.setVoorvoegsel(registrant.getPrefix());
+      zb.setGeboortedatum(new GbaDateFieldValue(registrant.getBirthDate().getSystemDate()));
+      zb.setGeslacht(Geslacht.get(registrant.getGender()));
+      return zb;
+    }).orElse(null);
   }
 }

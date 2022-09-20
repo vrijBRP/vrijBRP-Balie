@@ -31,8 +31,8 @@ public class PersonWindow extends GbaModalWindow {
     super(false, "In te schrijven persoon (Escape om te sluiten)", "1200px");
   }
 
-  public PersonWindow(DossierRegistration zaakDossier,
-      DossierPersoon person, Consumer<DossierPersoon> savePersonListener) {
+  public PersonWindow(DossierRegistration zaakDossier, DossierPersoon person,
+      Consumer<DossierPersoon> savePersonListener) {
     this();
     addComponent(new PersonMenuPage(zaakDossier, person, savePersonListener));
   }
