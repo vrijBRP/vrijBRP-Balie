@@ -97,7 +97,7 @@ public class DossierGeboorte extends DossGeb
 
   @Override
   public DateTime getAkteDatum() {
-    return getDossier().getDatumTijdInvoer();
+    return new DateTime();
   }
 
   @Override

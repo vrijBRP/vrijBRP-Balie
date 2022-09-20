@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2022 - 2023 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,20 +17,29 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.components.validators;
+package nl.procura.gba.jpa.personen.utils;
 
-import com.vaadin.data.validator.AbstractStringValidator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import nl.procura.sms.rest.number.DutchPhoneNumberParser;
+import lombok.Builder;
+import org.apache.commons.lang3.StringUtils;
 
-public class GbaFixedPhoneValidator extends AbstractStringValidator {
+@Builder
+public class JDBCQueryBuilder {
 
-  public GbaFixedPhoneValidator() {
-    super("Geen geldig vast telefoonnummer");
-  }
+  private boolean keepalive;
 
   @Override
-  protected boolean isValidString(String number) {
-    return DutchPhoneNumberParser.getFixedNumber(number).isValid();
+  public String toString() {
+    Map<String, Object> str = new HashMap<>();
+    if (keepalive) {
+      str.put("tcpKeepAlive", true);
+    }
+    String out = str.entrySet().stream()
+        .map(entry -> entry.getKey() + "=" + entry.getValue())
+        .collect(Collectors.joining("&"));
+    return StringUtils.isNotBlank(out) ? "?" + out : "";
   }
 }

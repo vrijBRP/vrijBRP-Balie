@@ -132,7 +132,7 @@ public abstract class AbstractDossierOverlijden
 
   @Override
   public DateTime getAkteDatum() {
-    return getDossier().getDatumTijdInvoer();
+    return new DateTime();
   }
 
   @Override

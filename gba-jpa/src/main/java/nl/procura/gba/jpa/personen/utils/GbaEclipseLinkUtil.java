@@ -166,8 +166,12 @@ public final class GbaEclipseLinkUtil {
     String finalDriver = properties.getProperty(CUSTOM_DRIVER);
 
     if (StringUtils.isBlank(finalUrl)) {
+      String parameters = JDBCQueryBuilder.builder()
+          .keepalive(StringUtils.isNotBlank(keepalive))
+          .build()
+          .toString();
       if (databaseType.equals(DB_POSTGRES)) {
-        finalUrl = String.format("jdbc:postgresql://%s:%s/%s", server, port, database);
+        finalUrl = String.format("jdbc:postgresql://%s:%s/%s%s", server, port, database, parameters);
       } else if (databaseType.equals(DB_ORACLE)) {
         finalUrl = String.format("jdbc:oracle:thin:@%s:%s:%s", server, port, database);
       }
@@ -179,11 +183,6 @@ public final class GbaEclipseLinkUtil {
       } else if (databaseType.equals(DB_ORACLE)) {
         finalDriver = "oracle.jdbc.OracleDriver";
       }
-    }
-
-    if (StringUtils.isNotBlank(keepalive)) {
-      configuration.put(TCP_KEEPALIVE, keepalive);
-      log.info("TCP keepalive enabled");
     }
 
     log.info("JPA connection: " + finalUrl);

@@ -167,7 +167,7 @@ public class NavigationSorterTest {
     assertArrayEquals(test.toArray(), files.toArray());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetAllFilesInvalidDirectory() {
     FileUtils.listFiles(new File(""), null, true);
   }

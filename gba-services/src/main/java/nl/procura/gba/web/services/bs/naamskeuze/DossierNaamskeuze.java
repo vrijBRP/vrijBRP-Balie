@@ -81,7 +81,7 @@ public class DossierNaamskeuze extends DossNk
 
   @Override
   public DateTime getAkteDatum() {
-    return getDossier().getDatumTijdInvoer();
+    return new DateTime();
   }
 
   @Override

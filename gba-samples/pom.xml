@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.29</version>
+        <version>1.29.1</version>
     </parent>
 
     <artifactId>gba-samples</artifactId>
@@ -89,8 +89,8 @@
 
         <!-- Logging -->
         <dependency>
-            <groupId>nl.procura.pom</groupId>
-            <artifactId>logging</artifactId>
+            <groupId>nl.vrijbrp.commons</groupId>
+            <artifactId>commons-poms-logging</artifactId>
             <type>pom</type>
         </dependency>
 
@@ -100,7 +100,7 @@
         </dependency>
 
         <dependency>
-            <groupId>nl.procura.proweb-rest</groupId>
+            <groupId>nl.vrijbrp.proweb-rest</groupId>
             <artifactId>proweb-rest-shared</artifactId>
         </dependency>
 

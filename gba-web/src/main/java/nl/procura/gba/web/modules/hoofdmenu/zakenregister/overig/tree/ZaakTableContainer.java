@@ -178,7 +178,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
 
     getItem(MIJN_ZAKEN).getItemProperty(AANTAL).setValue(getAantalMijnZaken());
     getItem(FAVORIETEN).getItemProperty(AANTAL).setValue(getAantalFavorieteZaken());
-    getItem(PROBLEMEN).getItemProperty(AANTAL).setValue(getAantalMetAttribuut(FOUT_BIJ_VERWERKING));
+    getItem(PROBLEMEN).getItemProperty(AANTAL).setValue(getAantalMetProblemen());
 
     if (getServiceContainer().getZaakAttribuutService().isZakenBehandelenEnable()) {
       getItem(ZONDER_BEHANDELAAR).getItemProperty(AANTAL).setValue(getAantalNieuweZaken());
@@ -245,10 +245,8 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
   }
 
-  private long getAantalMetAttribuut(ZaakAttribuutType type) {
-    ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
-    zaakArgumenten.addAttributen(type.getCode());
-    zaakArgumenten.getNegeerStatussen().addAll(ZaakStatusType.getMetEindStatus());
+  private long getAantalMetProblemen() {
+    ZaakArgumenten zaakArgumenten = probleemZaken();
     return getServiceContainer().getZakenService().getMinimaleZaken(zaakArgumenten).size();
   }
 

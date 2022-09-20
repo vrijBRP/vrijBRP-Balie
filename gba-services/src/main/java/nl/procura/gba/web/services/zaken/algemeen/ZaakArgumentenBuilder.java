@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.zaken.algemeen;
 
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FOUT_BIJ_VERWERKING;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -43,6 +44,13 @@ public class ZaakArgumentenBuilder {
     ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
     zaakArgumenten.getNegeerStatussen().addAll(ZaakStatusType.getMetEindStatus());
     zaakArgumenten.setCodeBehandelaar(services.getGebruiker().getCUsr());
+    return zaakArgumenten;
+  }
+
+  public static ZaakArgumenten probleemZaken() {
+    ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
+    zaakArgumenten.addAttributen(FOUT_BIJ_VERWERKING.getCode());
+    zaakArgumenten.getNegeerStatussen().addAll(ZaakStatusType.getMetEindStatus());
     return zaakArgumenten;
   }
 

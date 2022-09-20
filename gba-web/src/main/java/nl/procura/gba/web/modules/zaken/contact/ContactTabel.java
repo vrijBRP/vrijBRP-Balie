@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.contact.Contact;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
-import nl.procura.sms.rest.DutchPhoneNumberParser;
+import nl.procura.sms.rest.number.DutchPhoneNumberParser;
 
 public class ContactTabel extends GbaTable {
 

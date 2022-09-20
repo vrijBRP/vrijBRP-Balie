@@ -21,8 +21,10 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page13;
 
 import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FOUT_BIJ_VERWERKING;
 
+import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.ZaakAttribuutPage;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumentenBuilder;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 
 public class Page13Zaken extends ZaakAttribuutPage {
@@ -34,8 +36,6 @@ public class Page13Zaken extends ZaakAttribuutPage {
 
   @Override
   protected ZaakArgumenten getZaakArgumenten() {
-    ZaakArgumenten zaakArgumenten = new ZaakArgumenten();
-    zaakArgumenten.addAttributen(FOUT_BIJ_VERWERKING.getCode());
-    return zaakArgumenten;
+    return ZaakArgumentenBuilder.probleemZaken();
   }
 }

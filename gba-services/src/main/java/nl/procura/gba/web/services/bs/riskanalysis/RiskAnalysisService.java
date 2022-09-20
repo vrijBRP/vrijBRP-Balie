@@ -27,10 +27,12 @@ import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.NaturalComparator.compareTo;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +43,14 @@ import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.Doss;
+import nl.procura.gba.jpa.personen.db.DossPer;
+import nl.procura.gba.jpa.personen.db.DossRiskAnalysis;
+import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
+import nl.procura.gba.jpa.personen.db.RiskProfile;
+import nl.procura.gba.jpa.personen.db.RiskProfileRule;
+import nl.procura.gba.jpa.personen.db.RiskProfileSig;
+import nl.procura.gba.jpa.personen.db.RiskProfileType;
 import nl.procura.gba.jpa.personen.types.RiskProfileRelatedCaseType;
 import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.aop.ThrowException;
@@ -53,9 +62,14 @@ import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.interfaces.address.Address;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakService;
+import nl.procura.gba.web.services.zaken.algemeen.ControleerbareService;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
+import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuut;
-import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutService;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
@@ -72,12 +86,8 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RiskAnalysisService.class);
 
-  private final ZaakAttribuutService attribuutService;
-
-  @Inject
-  public RiskAnalysisService(ZaakAttribuutService attribuutService) {
+  public RiskAnalysisService() {
     super("Risicoanalyses", ZaakType.RISK_ANALYSIS);
-    this.attribuutService = attribuutService;
   }
 
   @Override
@@ -445,13 +455,13 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
       return;
     }
     if (isApplicable(zaak)) {
-      attribuutService.save(new ZaakAttribuut(zaak.getZaakId(), WACHT_OP_RISICOANALYSE));
+      getServices().getZaakAttribuutService().save(new ZaakAttribuut(zaak.getZaakId(), WACHT_OP_RISICOANALYSE));
     }
   }
 
   public void removeWaitForRiskAnalysis(Zaak zaak) {
     LOGGER.info("Verwijder attribuut {} van zaak {}", WACHT_OP_RISICOANALYSE, zaak.getZaakId());
-    attribuutService.delete(zaak.getZaakId(), WACHT_OP_RISICOANALYSE);
+    getServices().getZaakAttribuutService().delete(zaak.getZaakId(), WACHT_OP_RISICOANALYSE);
   }
 
   /**

@@ -21,6 +21,7 @@ package nl.procura.gba.web.services.beheer.vrs;
 
 import static java.util.Optional.ofNullable;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static org.apache.commons.lang3.StringUtils.getIfBlank;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -83,7 +84,7 @@ public class VrsService {
   private String getAccessToken() {
     long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
     String customIssuerUri = parameterService.getSysteemParm(VRS_IDP_SERVICE_URL, true);
-    String tokenUrl = StringUtils.defaultString(customIssuerUri, getApi().getIDPIssuerResponse().getIssuerUri());
+    String tokenUrl = getIfBlank(customIssuerUri, () -> getApi().getIDPIssuerResponse().getIssuerUri());
     String proxyTokenUrl = parameterService.getProxyUrl(tokenUrl, true);
     VrsClient vrsClient = new VrsClient(proxyTokenUrl, Duration.ofSeconds(timeout));
 

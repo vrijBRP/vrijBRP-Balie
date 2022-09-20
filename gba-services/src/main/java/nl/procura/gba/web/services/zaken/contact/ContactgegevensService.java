@@ -48,7 +48,8 @@ import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierPartners;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.java.Pair;
-import nl.procura.sms.rest.DutchPhoneNumberParser;
+import nl.procura.sms.rest.number.DutchPhoneNumberParser;
+import nl.procura.sms.rest.number.MobileNumber;
 import nl.procura.validation.Bsn;
 
 public class ContactgegevensService extends AbstractService {
@@ -84,7 +85,7 @@ public class ContactgegevensService extends AbstractService {
     for (PlContactgegeven gegeven : contactgegevens) {
       if (fil(gegeven.getAant())) {
         if (gegeven.getContactgegeven().isGegeven(ContactgegevensService.TEL_MOBIEL)) {
-          DutchPhoneNumberParser.MobileNumber nr = DutchPhoneNumberParser.getMobileNumber(gegeven.getAant());
+          MobileNumber nr = DutchPhoneNumberParser.getMobileNumber(gegeven.getAant());
           if (nr.isValid()) {
             out.setType(ContactgegevensService.TEL_MOBIEL);
             out.setMobileNr(nr.getFormats().standard());

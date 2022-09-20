@@ -78,7 +78,7 @@ public class DossierErkenning extends DossErk
 
   @Override
   public DateTime getAkteDatum() {
-    return getDossier().getDatumTijdInvoer();
+    return new DateTime();
   }
 
   @Override

@@ -19,7 +19,11 @@
 
 package nl.procura.gba.web.rest.v2.services;
 
-import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.*;
+import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.EMAIL;
+import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.TEL_MOBIEL;
+import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.TEL_MOBIEL_BL;
+import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.TEL_THUIS;
+import static nl.procura.gba.web.services.zaken.contact.ContactgegevensService.TEL_WERK;
 
 import java.util.List;
 
@@ -30,7 +34,8 @@ import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.GbaRestContactgegevens;
 import nl.procura.gba.web.rest.v2.model.zaken.verhuizing.GbaRestTelefoonBuitenland;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
-import nl.procura.sms.rest.DutchPhoneNumberParser;
+import nl.procura.sms.rest.number.DutchPhoneNumberParser;
+import nl.procura.sms.rest.number.MobileNumber;
 import nl.procura.validation.Bsn;
 
 public class GbaRestContactService extends GbaRestAbstractService {
@@ -45,7 +50,7 @@ public class GbaRestContactService extends GbaRestAbstractService {
 
       // If value is valid mobile number then store in mobile field. Could then be used for things like SMS.
       if (StringUtils.isBlank(telMobiel) && StringUtils.isNotBlank(telThuis)) {
-        DutchPhoneNumberParser.MobileNumber telMobile = DutchPhoneNumberParser.getMobileNumber(telThuis);
+        MobileNumber telMobile = DutchPhoneNumberParser.getMobileNumber(telThuis);
         if (telMobile.isValid()) {
           telMobiel = telMobile.getFormats().standard();
           telThuis = "";

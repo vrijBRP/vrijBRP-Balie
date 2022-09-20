@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.29</version>
+        <version>1.29.1</version>
     </parent>
 
     <artifactId>gba-ple</artifactId>
@@ -32,8 +32,8 @@
 
         <!-- End own modules -->
         <dependency>
-            <groupId>nl.procura.pom</groupId>
-            <artifactId>logging</artifactId>
+            <groupId>nl.vrijbrp.commons</groupId>
+            <artifactId>commons-poms-logging</artifactId>
             <type>pom</type>
         </dependency>
 
@@ -68,7 +68,7 @@
         </dependency>
 
         <dependency>
-            <groupId>nl.procura.gba</groupId>
+            <groupId>nl.vrijbrp.gba</groupId>
             <artifactId>probev-jpa</artifactId>
         </dependency>
 
@@ -85,8 +85,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <useDefaultManifestFile>true
-                    </useDefaultManifestFile>
                     <includes>
                         <include>nl/**/*</include>
                         <include>META-INF/**/*</include>

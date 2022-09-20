@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>gba-parent</artifactId>
 		<groupId>nl.procura.gba</groupId>
-		<version>1.29</version>
+		<version>1.29.1</version>
 	</parent>
 
     <artifactId>gba-rest-client</artifactId>
@@ -20,8 +20,8 @@
         </dependency>
 
         <dependency>
-            <groupId>nl.procura.pom</groupId>
-            <artifactId>logging</artifactId>
+            <groupId>nl.vrijbrp.commons</groupId>
+            <artifactId>commons-poms-logging</artifactId>
             <type>pom</type>
         </dependency>
 
@@ -32,9 +32,9 @@
 
         <!-- rest koppeling -->
         <dependency>
-            <groupId>nl.procura.proweb-rest</groupId>
+            <groupId>nl.vrijbrp.proweb-rest</groupId>
             <artifactId>proweb-rest-client</artifactId>
-            <version>${proweb-rest.version}</version>
+            <version>${vrijbrp-libs.version}</version>
         </dependency>
 
         <!-- Google Guice. Alleen voor voorbeelden -->
@@ -60,8 +60,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <useDefaultManifestFile>true
-                    </useDefaultManifestFile>
                     <includes>
                         <include>nl/**/*</include>
                     </includes>

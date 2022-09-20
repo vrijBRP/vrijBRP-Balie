@@ -3,7 +3,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.29</version>
+        <version>1.29.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,12 +12,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>nl.procura.burgerzaken</groupId>
+            <groupId>nl.vrijbrp</groupId>
             <artifactId>gba-commons</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>nl.procura.proweb-rest</groupId>
+            <groupId>nl.vrijbrp.proweb-rest</groupId>
             <artifactId>proweb-rest-shared</artifactId>
             <exclusions>
                 <exclusion>
@@ -25,8 +25,8 @@
                     <artifactId>commons-io</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>nl.vrijbrp</groupId>
                     <artifactId>javax</artifactId>
-                    <groupId>nl.procura</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>commons-codec</artifactId>

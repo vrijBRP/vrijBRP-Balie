@@ -1,342 +1,337 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>gba-parent</artifactId>
-        <groupId>nl.procura.gba</groupId>
-        <version>1.29</version>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>gba-parent</artifactId>
+    <groupId>nl.procura.gba</groupId>
+    <version>1.29.1</version>
+  </parent>
 
-    <packaging>war</packaging>
-    <artifactId>gba-web</artifactId>
-    <name>Proweb GBA - Webapplicatie</name>
+  <packaging>war</packaging>
+  <artifactId>gba-web</artifactId>
+  <name>Proweb GBA - Webapplicatie</name>
 
-    <properties>
-    </properties>
+  <properties>
+  </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-rest-model</artifactId>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>nl.procura.gba</groupId>
+      <artifactId>gba-rest-model</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-services</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>nl.procura.gba</groupId>
+      <artifactId>gba-services</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-theme</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>nl.procura.gba</groupId>
+      <artifactId>gba-theme</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-testdata</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>nl.procura.gba</groupId>
+      <artifactId>gba-testdata</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>com.oracle.ojdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>com.oracle.ojdbc</groupId>
+      <artifactId>ojdbc8</artifactId>
+    </dependency>
 
-        <!-- Commons -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
+    <!-- Commons -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
 
-        <!-- Procura commons -->
-        <dependency>
-            <groupId>nl.procura.commons</groupId>
-            <artifactId>commons-misc</artifactId>
-        </dependency>
+    <!-- Procura commons -->
+    <dependency>
+      <groupId>nl.vrijbrp.commons</groupId>
+      <artifactId>commons-misc</artifactId>
+    </dependency>
 
-        <!-- REST -->
-        <dependency>
-            <groupId>nl.procura.proweb-rest</groupId>
-            <artifactId>proweb-rest-server</artifactId>
-            <version>${proweb-rest.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.xml.bind</groupId>
-                    <artifactId>jaxb-impl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.inject</groupId>
-                    <artifactId>guice</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.inject.extensions</groupId>
-                    <artifactId>guice-servlet</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+    <!-- REST -->
+    <dependency>
+      <groupId>nl.vrijbrp.proweb-rest</groupId>
+      <artifactId>proweb-rest-server</artifactId>
+      <version>${vrijbrp-libs.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-impl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.inject.extensions</groupId>
+          <artifactId>guice-servlet</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-        <!-- Vaadin -->
-        <dependency>
-            <groupId>nl.procura.vaadin</groupId>
-            <artifactId>vaadin6-componenten</artifactId>
-            <version>${vaadin-componenten.version}</version>
-        </dependency>
+    <!-- Vaadin -->
+    <dependency>
+      <groupId>nl.vrijbrp.vaadin</groupId>
+      <artifactId>vaadin6-componenten</artifactId>
+      <version>${vrijbrp-libs.version}</version>
+    </dependency>
 
-        <!-- lambdaj -->
-        <dependency>
-            <groupId>com.googlecode.lambdaj</groupId>
-            <artifactId>lambdaj</artifactId>
-        </dependency>
+    <!-- lambdaj -->
+    <dependency>
+      <groupId>com.googlecode.lambdaj</groupId>
+      <artifactId>lambdaj</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>${hamcrest.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>${hamcrest.version}</version>
+    </dependency>
 
-        <!-- logging -->
-        <dependency>
-            <groupId>nl.procura.pom</groupId>
-            <artifactId>logging</artifactId>
-            <type>pom</type>
-        </dependency>
+    <!-- logging -->
+    <dependency>
+      <groupId>nl.vrijbrp.commons</groupId>
+      <artifactId>commons-poms-logging</artifactId>
+      <type>pom</type>
+    </dependency>
 
-        <!-- guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
+    <!-- guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
 
-        <!-- overlays -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>overlays</artifactId>
-            <version>${overlays.version}</version>
-        </dependency>
+    <!-- overlays -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>overlays</artifactId>
+      <version>${overlays.version}</version>
+    </dependency>
 
-        <!-- XML editor -->
-        <dependency>
-            <groupId>org.vaadin</groupId>
-            <artifactId>aceeditor</artifactId>
-            <version>${vaadin-aceeditor.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>vaadin</artifactId>
-                    <groupId>com.vaadin</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+    <!-- XML editor -->
+    <dependency>
+      <groupId>org.vaadin</groupId>
+      <artifactId>aceeditor</artifactId>
+      <version>${vaadin-aceeditor.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>vaadin</artifactId>
+          <groupId>com.vaadin</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-        <!-- Voor GWT compilatie -->
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <version>${gwt.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <!-- Voor GWT compilatie -->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <!-- Visualisaties -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>visualizationsforvaadin</artifactId>
+      <version>${vaadin-visualizations.version}</version>
+    </dependency>
 
-        <!-- Visualisaties -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>visualizationsforvaadin</artifactId>
-            <version>${vaadin-visualizations.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>com.google.gwt.google-apis</groupId>
+      <artifactId>gwt-visualization</artifactId>
+      <version>${gwt-visualization.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.google.gwt.google-apis</groupId>
-            <artifactId>gwt-visualization</artifactId>
-            <version>${gwt-visualization.version}</version>
-        </dependency>
+    <!-- Html Editor -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>ckeditor-wrapper-for-vaadin</artifactId>
+      <version>${vaadin-ckeditor.version}</version>
+    </dependency>
 
-        <!-- Html Editor -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>ckeditor-wrapper-for-vaadin</artifactId>
-            <version>${vaadin-ckeditor.version}</version>
-        </dependency>
+    <!-- kopieren naar clipboard -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>copytoclipboard</artifactId>
+      <version>${vaadin-clipboard.version}</version>
+    </dependency>
 
-        <!-- kopieren naar clipboard -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>copytoclipboard</artifactId>
-            <version>${vaadin-clipboard.version}</version>
-        </dependency>
+    <!-- popupbutton -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>popupbutton</artifactId>
+      <version>${popupbutton.version}</version>
+    </dependency>
 
-        <!-- popupbutton -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>popupbutton</artifactId>
-            <version>${popupbutton.version}</version>
-        </dependency>
+    <!-- Voor push van server naar client -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>refresher</artifactId>
+      <version>${vaadin-refresher.version}</version>
+    </dependency>
 
-        <!-- Voor push van server naar client -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>refresher</artifactId>
-            <version>${vaadin-refresher.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+    <!-- lazy layout wrapper -->
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>lazyloadwrapper</artifactId>
+      <version>${vaadin-lazyloadwrapper.version}</version>
+    </dependency>
 
-        <!-- lazy layout wrapper -->
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>lazyloadwrapper</artifactId>
-            <version>${vaadin-lazyloadwrapper.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>nl.vrijbrp</groupId>
+      <artifactId>dependency-analysis-burgerzaken</artifactId>
+      <version>${vrijbrp-libs.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>nl.procura.burgerzaken</groupId>
-            <artifactId>dependency-analysis-burgerzaken</artifactId>
-            <version>${dependency-analysis.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.4.1</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.4.1</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>nl.vrijbrp.hub</groupId>
+      <artifactId>client</artifactId>
+    </dependency>
+  </dependencies>
 
-        <dependency>
-            <groupId>nl.vrijbrp.hub</groupId>
-            <artifactId>client</artifactId>
-        </dependency>
-    </dependencies>
-
-    <profiles>
-        <profile>
-            <id>vaadin</id>
-            <build>
-                <plugins>
-                    <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
-                    <!-- directory is cleaned properly -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>src/main/webapp/VAADIN/widgetsets</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </plugin>
-
-                    <!-- compileer gwt -->
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>gwt-maven-plugin</artifactId>
-                        <version>${gwt.version}</version>
-                        <configuration>
-                            <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                            <extraJvmArgs>-Xmx512M -Xss1024k -server</extraJvmArgs>
-                            <noServer>true</noServer>
-                            <persistentunitcache>false</persistentunitcache>
-                            <style>OBF</style>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <!-- <goal>resources</goal> -->
-                                    <goal>compile</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.google.gwt</groupId>
-                                <artifactId>gwt-user</artifactId>
-                                <version>${gwt.version}</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>com.google.gwt</groupId>
-                                <artifactId>gwt-dev</artifactId>
-                                <version>${gwt.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>com.vaadin</groupId>
-                        <artifactId>vaadin-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>update-widgetset</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    <build>
-        <finalName>personen</finalName>
+  <profiles>
+    <profile>
+      <id>vaadin</id>
+      <build>
         <plugins>
-            <!-- Git plugin -->
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>${git-commit-id-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <offline>true</offline>
-                    <prefix>git</prefix>
-                    <dateFormat>yyyy-MM-dd HH:mm:ss z</dateFormat>
-                    <verbose>false</verbose>
-                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-                    <skipPoms>true</skipPoms>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
-                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
-                    <gitDescribe>
-                        <skip>false</skip>
-                        <always>false</always>
-                        <abbrev>7</abbrev>
-                        <dirty>-dirty</dirty>
-                        <forceLongFormat>false</forceLongFormat>
-                    </gitDescribe>
-                </configuration>
-            </plugin>
+          <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
+          <!-- directory is cleaned properly -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>src/main/webapp/VAADIN/widgetsets</directory>
+                </fileset>
+              </filesets>
+            </configuration>
+          </plugin>
+
+          <!-- compileer gwt -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>gwt-maven-plugin</artifactId>
+            <version>${gwt.version}</version>
+            <configuration>
+              <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
+              <extraJvmArgs>-Xmx512M -Xss1024k -server</extraJvmArgs>
+              <noServer>true</noServer>
+              <persistentunitcache>false</persistentunitcache>
+              <style>OBF</style>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <!-- <goal>resources</goal> -->
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${gwt.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-dev</artifactId>
+                <version>${gwt.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+
+          <plugin>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>update-widgetset</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <finalName>personen</finalName>
+    <plugins>
+      <!-- Git plugin -->
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>${git-commit-id-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <offline>true</offline>
+          <prefix>git</prefix>
+          <dateFormat>yyyy-MM-dd HH:mm:ss z</dateFormat>
+          <verbose>false</verbose>
+          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+          <skipPoms>true</skipPoms>
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>target/classes/git.properties
+          </generateGitPropertiesFilename>
+          <failOnNoGitDirectory>true</failOnNoGitDirectory>
+          <gitDescribe>
+            <skip>false</skip>
+            <always>false</always>
+            <abbrev>7</abbrev>
+            <dirty>-dirty</dirty>
+            <forceLongFormat>false</forceLongFormat>
+          </gitDescribe>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -1,538 +1,616 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
-    <groupId>nl.procura.gba</groupId>
-    <artifactId>gba-parent</artifactId>
-    <version>1.29</version>
-    <name>Proweb GBA - Parent</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>pom</packaging>
+  <groupId>nl.procura.gba</groupId>
+  <artifactId>gba-parent</artifactId>
+  <version>1.29.1</version>
+  <name>Proweb GBA - Parent</name>
 
-    <developers>
-        <developer>
-            <name>Frits Janssen</name>
-            <email>frits@procura.nl</email>
-            <organization>Procura B.V.</organization>
-            <organizationUrl>http://www.procura.nl</organizationUrl>
-        </developer>
-    </developers>
+  <developers>
+    <developer>
+      <name>Frits Janssen</name>
+      <email>frits@procura.nl</email>
+      <organization>Procura B.V.</organization>
+      <organizationUrl>http://www.procura.nl</organizationUrl>
+    </developer>
+  </developers>
 
-    <organization>
-        <name>Procura B.V.</name>
-        <url>http://www.procura.nl</url>
-    </organization>
+  <organization>
+    <name>Procura B.V.</name>
+    <url>http://www.procura.nl</url>
+  </organization>
 
-    <scm>
-        <developerConnection>scm:git:https://github.com/vrijBRP/vrijBRP-Balie.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+  <scm>
+    <developerConnection>scm:git:https://github.com/vrijBRP/vrijBRP-Balie.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>vrijBRP</id>
-            <url>${vrijbrp.releases}</url>
-        </repository>
+  <distributionManagement>
+    <repository>
+      <id>vrijBRP</id>
+      <url>${vrijbrp.releases}</url>
+    </repository>
 
-        <snapshotRepository>
-            <id>vrijBRP</id>
-            <url>${vrijbrp.snapshots}</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <snapshotRepository>
+      <id>vrijBRP</id>
+      <url>${vrijbrp.snapshots}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javax.version>1.3</javax.version>
-        <procura.commons.version>0.18.0</procura.commons.version>
-        <postgres.version>42.3.6</postgres.version>
-        <oracle.version>19.3.0.0</oracle.version>
-        <logging.version>1.0</logging.version>
-        <jasypt.version>1.9.3</jasypt.version>
-        <lambdaj.version>2.4</lambdaj.version>
-        <guava.version>21.0</guava.version>
-        <soap-utils.version>1.0.0</soap-utils.version>
-        <eclipselink.version>2.7.9</eclipselink.version>
-        <javax.mail.version>1.4.7</javax.mail.version>
-        <reflections.version>0.9.11</reflections.version>
-        <lombok.version>1.18.12</lombok.version>
-        <barcode-zxing.version>3.4.0</barcode-zxing.version>
-        <jollyday.version>0.4.9</jollyday.version>
-        <org.jvnet.jaxb2_commons.version>3.0</org.jvnet.jaxb2_commons.version>
-        <pdfbox.version>2.0.20</pdfbox.version>
-        <ootools.version>1.3.1</ootools.version>
-        <bsm.version>3.0.2</bsm.version>
-        <gba.bsm.version>1.11.11</gba.bsm.version>
-        <javaee-web-api.version>6.0</javaee-web-api.version>
-        <proweb-rest.version>1.0.0</proweb-rest.version>
-        <guice.version>5.1.0</guice.version>
-        <quartz.version>2.2.1</quartz.version>
-        <servlet.version>2.5</servlet.version>
-        <validation-api.version>1.0.0.GA</validation-api.version>
-        <axis.version>1.2</axis.version>
-        <json.version>20100517</json.version>
-        <commons-net.version>3.2</commons-net.version>
-        <ssl-web.version>2.3.0</ssl-web.version>
-        <validation-api.version>1.0.0.GA</validation-api.version>
-        <opencsv.version>2.1</opencsv.version>
-        <junit.version>4.11</junit.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <jacoco.version>0.8.2</jacoco.version>
-        <commons-io.version>2.4</commons-io.version>
-        <commons-collections.version>3.2.1</commons-collections.version>
-        <commons-beanutils.version>1.8.3</commons-beanutils.version>
-        <commons-net.version>3.2</commons-net.version>
-        <wss4j.version>1.6.9</wss4j.version>
-        <jaxws-rt.version>2.2.10</jaxws-rt.version>
-        <vaadin-componenten.version>3.0.2</vaadin-componenten.version>
-        <vaadin-visualizations.version>1.1.2</vaadin-visualizations.version>
-        <vaadin-ckeditor.version>1.8.2</vaadin-ckeditor.version>
-        <vaadin-clipboard.version>0.5.0</vaadin-clipboard.version>
-        <vaadin-refresher.version>1.1.1</vaadin-refresher.version>
-        <vaadin-lazyloadwrapper.version>1.0.2</vaadin-lazyloadwrapper.version>
-        <gwt-visualization.version>1.1.0</gwt-visualization.version>
-        <gwt.version>2.5.1</gwt.version>
-        <popupbutton.version>1.2.1</popupbutton.version>
-        <overlays.version>0.9.8</overlays.version>
-        <vaadin-aceeditor.version>0.3.1</vaadin-aceeditor.version>
-        <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
-        <xerces.version>2.11.0</xerces.version>
-        <xalan.version>2.7.2</xalan.version>
-        <xml-apis.version>1.4.01</xml-apis.version>
-        <proweb-admin-license.version>1.1.0</proweb-admin-license.version>
-        <vrijbrp-connect.version>1.1.0</vrijbrp-connect.version>
-        <dependency-analysis.version>1.0</dependency-analysis.version>
-        <objectstore.version>1.0.1</objectstore.version>
-        <okhttp.version>4.9.0</okhttp.version>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <vrijbrp-libs.version>1.0.0</vrijbrp-libs.version>
+    <postgres.version>42.2.2</postgres.version>
+    <oracle.version>19.3.0.0</oracle.version>
+    <logging.version>1.0</logging.version>
+    <jasypt.version>1.9.3</jasypt.version>
+    <lambdaj.version>2.4</lambdaj.version>
+    <guava.version>21.0</guava.version>
+    <eclipselink.version>2.5.1</eclipselink.version>
+    <javax.mail.version>1.4.7</javax.mail.version>
+    <reflections.version>0.9.11</reflections.version>
+    <lombok.version>1.18.12</lombok.version>
+    <barcode-zxing.version>3.4.0</barcode-zxing.version>
+    <jollyday.version>0.4.9</jollyday.version>
+    <jodatime.version>2.4</jodatime.version>
+    <org.jvnet.jaxb2_commons.version>3.0</org.jvnet.jaxb2_commons.version>
+    <pdfbox.version>2.0.20</pdfbox.version>
+    <bsm.version>3.0.2</bsm.version>
+    <gba.bsm.version>1.11.11</gba.bsm.version>
+    <javaee-web-api.version>6.0</javaee-web-api.version>
+    <guice.version>5.1.0</guice.version>
+    <quartz.version>2.2.1</quartz.version>
+    <servlet.version>2.5</servlet.version>
+    <axis.version>1.2</axis.version>
+    <json.version>20100517</json.version>
+    <ssl-web.version>2.4.6</ssl-web.version>
+    <opencsv.version>2.1</opencsv.version>
+    <junit.version>4.11</junit.version>
+    <hamcrest.version>1.3</hamcrest.version>
+    <jacoco.version>0.8.5</jacoco.version>
+    <commons-logging.version>1.2</commons-logging.version>
+    <commons-net.version>3.2</commons-net.version>
+    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <commons-codec.version>1.15</commons-codec.version>
+    <commons-io.version>2.11.0</commons-io.version>
+    <commons-collections.version>3.2.1</commons-collections.version>
+    <commons-beanutils.version>1.8.3</commons-beanutils.version>
+    <commons-net.version>3.2</commons-net.version>
+    <wss4j.version>1.6.9</wss4j.version>
+    <jaxws-rt.version>2.2.10</jaxws-rt.version>
+    <vaadin-visualizations.version>1.1.2</vaadin-visualizations.version>
+    <vaadin-ckeditor.version>1.8.2</vaadin-ckeditor.version>
+    <vaadin-clipboard.version>0.5.0</vaadin-clipboard.version>
+    <vaadin-refresher.version>1.1.1</vaadin-refresher.version>
+    <vaadin-lazyloadwrapper.version>1.0.2</vaadin-lazyloadwrapper.version>
+    <gwt-visualization.version>1.1.0</gwt-visualization.version>
+    <gwt.version>2.5.1</gwt.version>
+    <popupbutton.version>1.2.1</popupbutton.version>
+    <overlays.version>0.9.8</overlays.version>
+    <vaadin-aceeditor.version>0.3.1</vaadin-aceeditor.version>
+    <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
+    <xerces.version>2.11.0</xerces.version>
+    <xalan.version>2.7.2</xalan.version>
+    <xml-apis.version>1.4.01</xml-apis.version>
+    <proweb-admin-license.version>1.1.0</proweb-admin-license.version>
+    <vrijbrp-connect.version>1.1.1</vrijbrp-connect.version>
+    <objectstore.version>1.0.2</objectstore.version>
+    <okhttp.version>4.9.3</okhttp.version>
+    <slf4j.version>1.7.13</slf4j.version>
 
-        <!-- PLE -->
-        <gson.version>2.8.5</gson.version>
-        <jsap.version>2.1</jsap.version>
-        <yaml.version>1.5</yaml.version>
+    <!-- PLE -->
+    <gson.version>2.8.9</gson.version>
+    <jsap.version>2.1</jsap.version>
+    <yaml.version>1.5</yaml.version>
 
-        <!-- RDW -->
-        <jaxb-impl.version>2.2.4-1</jaxb-impl.version>
-        <jaxb-api.version>2.2.4</jaxb-api.version>
-        <jaxb-xjc.version>2.2.4-1</jaxb-xjc.version>
-        <jaxb2-basics.version>0.6.3</jaxb2-basics.version>
+    <!-- RDW -->
+    <jaxb-impl.version>2.2.4-1</jaxb-impl.version>
+    <jaxb-api.version>2.2.4</jaxb-api.version>
+    <jaxb-xjc.version>2.2.4-1</jaxb-xjc.version>
+    <jaxb2-basics.version>0.6.3</jaxb2-basics.version>
 
-        <!-- Vog -->
-        <axis-jaxrpc.version>1.4</axis-jaxrpc.version>
-        <jaxrpc-impl.version>1.1.3_01</jaxrpc-impl.version>
+    <!-- Vog -->
+    <axis-jaxrpc.version>1.4</axis-jaxrpc.version>
+    <jaxrpc-impl.version>1.1.3_01</jaxrpc-impl.version>
 
-        <!-- Micro -->
-        <micro.rest.version>2.2.3</micro.rest.version>
-        <brp-inbox.version>1.2.2</brp-inbox.version>
-        <sms-micro.version>1.2.0</sms-micro.version>
-        <raas-micro.version>1.3.2</raas-micro.version>
-        <geo-micro.version>1.0.0</geo-micro.version>
+    <!-- Micro -->
+    <brp-inbox.version>1.3.1</brp-inbox.version>
+    <sms-micro.version>1.4.3</sms-micro.version>
+    <raas-micro.version>1.3.3</raas-micro.version>
+    <geo-micro.version>1.2.2</geo-micro.version>
 
-        <gba.commons.version>1.0.9</gba.commons.version>
-        <probev.jpa.version>1.0.8</probev.jpa.version>
-        <hibernate.jpamodelgen.version>5.4.1.Final</hibernate.jpamodelgen.version>
-        <vrs-services-api.version>0.9.4</vrs-services-api.version>
-        <hub.version>1.0.0</hub.version>
-    </properties>
+    <hibernate.jpamodelgen.version>5.4.1.Final</hibernate.jpamodelgen.version>
+    <hub.version>1.0.0</hub.version>
+  </properties>
 
-    <modules>
-        <module>gba-utils</module>
-        <module>gba-services</module>
-        <module>gba-rest-client</module>
-        <module>gba-rest-model</module>
-        <module>gba-bvbsn</module>
-        <module>gba-bcgba</module>
-        <module>gba-rdw</module>
-        <module>gba-curatele</module>
-        <module>gba-vog</module>
-        <module>gba-tmv</module>
-        <module>gba-jpa</module>
-        <module>gba-ple</module>
-        <module>gba-gbav</module>
-        <module>gba-theme</module>
-        <module>gba-web</module>
-        <module>gba-ws</module>
-        <module>gba-samples</module>
-        <module>gba-testdata</module>
-        <module>gba-ws-rest-model</module>
-        <module>gba-ws-jpa</module>
-    </modules>
+  <modules>
+    <module>gba-utils</module>
+    <module>gba-services</module>
+    <module>gba-rest-client</module>
+    <module>gba-rest-model</module>
+    <module>gba-bvbsn</module>
+    <module>gba-bcgba</module>
+    <module>gba-rdw</module>
+    <module>gba-curatele</module>
+    <module>gba-vog</module>
+    <module>gba-tmv</module>
+    <module>gba-jpa</module>
+    <module>gba-ple</module>
+    <module>gba-gbav</module>
+    <module>gba-theme</module>
+    <module>gba-web</module>
+    <module>gba-ws</module>
+    <module>gba-samples</module>
+    <module>gba-testdata</module>
+    <module>gba-ws-rest-model</module>
+    <module>gba-ws-jpa</module>
+  </modules>
 
-    <dependencyManagement>
-        <dependencies>
-            <!-- Own modules -->
-            <dependency>
-                <groupId>nl.procura.gba</groupId>
-                <artifactId>gba-utils</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>nl.procura.gba</groupId>
-                <artifactId>gba-rest-model</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>nl.procura.gba</groupId>
-                <artifactId>gba-ws-jpa</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>nl.procura.gba</groupId>
-                <artifactId>gba-ws-rest-model</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!-- End own modules -->
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgres.version}</version>
-            </dependency>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Own modules -->
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>com.oracle.ojdbc</groupId>
-                <artifactId>ojdbc8</artifactId>
-                <version>${oracle.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-rest-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura</groupId>
-                <artifactId>javax</artifactId>
-                <version>${javax.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-simple</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-ws-jpa</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-ws-rest-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-all</artifactId>
-                <version>${hamcrest.version}</version>
-                <scope>test</scope>
-            </dependency>
+      <!-- End own modules -->
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgres.version}</version>
+      </dependency>
 
-            <!-- Java agent -->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                <scope>provided</scope>
-            </dependency>
+      <dependency>
+        <groupId>com.oracle.ojdbc</groupId>
+        <artifactId>ojdbc8</artifactId>
+        <version>${oracle.version}</version>
+      </dependency>
 
-            <!-- Apache commons -->
-            <dependency>
-                <groupId>nl.procura.commons</groupId>
-                <artifactId>commons-misc</artifactId>
-                <version>${procura.commons.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>nl.vrijbrp</groupId>
+        <artifactId>javax</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>${commons-collections.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-all</artifactId>
+        <version>${hamcrest.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils-core</artifactId>
-                <version>${commons-beanutils.version}</version>
-            </dependency>
+      <!-- Java agent -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
 
-            <!-- Mailen -->
-            <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>mail</artifactId>
-                <version>${javax.mail.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>nl.vrijbrp.commons</groupId>
+        <artifactId>commons-misc</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura.pom</groupId>
-                <artifactId>logging</artifactId>
-                <version>${logging.version}</version>
-                <type>pom</type>
-            </dependency>
+      <!-- Logging -->
+      <dependency>
+        <groupId>nl.vrijbrp.commons</groupId>
+        <artifactId>commons-poms-logging</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+        <type>pom</type>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura.burgerzaken</groupId>
-                <artifactId>gba-commons</artifactId>
-                <version>${gba.commons.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
 
-            <!-- Procura Commons -->
-            <dependency>
-                <groupId>nl.procura.commons</groupId>
-                <artifactId>commons-core</artifactId>
-                <version>${procura.commons.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
 
-            <!-- JPA -->
-            <dependency>
-                <groupId>org.eclipse.persistence</groupId>
-                <artifactId>eclipselink</artifactId>
-                <version>${eclipselink.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>org.jasypt</groupId>
-                <artifactId>jasypt</artifactId>
-                <version>${jasypt.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jul-to-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>com.googlecode.lambdaj</groupId>
-                <artifactId>lambdaj</artifactId>
-                <version>${lambdaj.version}</version>
-            </dependency>
+      <!-- Apache commons -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura.soap</groupId>
-                <artifactId>soap-utils</artifactId>
-                <version>${soap-utils.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>com.sun.xml.ws</groupId>
-                <artifactId>jaxws-rt</artifactId>
-                <version>${jaxws-rt.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${commons-collections.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>org.reflections</groupId>
-                <artifactId>reflections</artifactId>
-                <version>${reflections.version}</version>
-            </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils-core</artifactId>
+        <version>${commons-beanutils.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura.proweb-rest</groupId>
-                <artifactId>proweb-rest-shared</artifactId>
-                <version>1.0.0</version>
-            </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>${commons-logging.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura.gba</groupId>
-                <artifactId>probev-jpa</artifactId>
-                <version>${probev.jpa.version}</version>
-            </dependency>
+      <!-- Mailen -->
+      <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>${javax.mail.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-jpamodelgen</artifactId>
-                <version>${hibernate.jpamodelgen.version}</version>
-            </dependency>
+      <!-- Time -->
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>${jodatime.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>1</version>
-            </dependency>
+      <dependency>
+        <groupId>nl.vrijbrp</groupId>
+        <artifactId>gba-commons</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.procura.burgerzaken</groupId>
-                <artifactId>vrs-services-api</artifactId>
-                <version>${vrs-services-api.version}</version>
-            </dependency>
+      <!-- Procura Commons -->
+      <dependency>
+        <groupId>nl.vrijbrp.commons</groupId>
+        <artifactId>commons-core</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
-            <dependency>
-                <groupId>nl.vrijbrp.hub</groupId>
-                <artifactId>client</artifactId>
-                <version>${hub.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/log4j.properties</exclude>
-                </excludes>
-            </resource>
+      <!-- PLE Yaml -->
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${yaml.version}</version>
+      </dependency>
 
-            <resource>
-                <directory>src/main/java</directory>
-                <excludes>
-                    <exclude>**/*.properties</exclude>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-        </resources>
+      <!-- JPA -->
+      <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>eclipselink</artifactId>
+        <version>${eclipselink.version}</version>
+      </dependency>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>jaxws-maven-plugin</artifactId>
-                    <version>2.4.1</version>
-                    <configuration>
-                        <vmArgs>
-                            <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-                        </vmArgs>
-                    </configuration>
-                </plugin>
+      <!-- HTTP client -->
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-common</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>1.4.10</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
+        <version>1.4.10</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.jvnet.jaxb2.maven2</groupId>
-                    <artifactId>maven-jaxb2-plugin</artifactId>
-                    <version>0.13.1</version>
-                </plugin>
+      <!-- Encryption -->
+      <dependency>
+        <groupId>org.jasypt</groupId>
+        <artifactId>jasypt</artifactId>
+        <version>${jasypt.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.6</version>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
+      <dependency>
+        <groupId>com.googlecode.lambdaj</groupId>
+        <artifactId>lambdaj</artifactId>
+        <version>${lambdaj.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>2.6</version>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>1.9.1</version>
-                </plugin>
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${gson.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.7</version>
-                </plugin>
+      <dependency>
+        <groupId>nl.vrijbrp.soap</groupId>
+        <artifactId>soap-utils</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
-                </plugin>
+      <dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-rt</artifactId>
+        <version>${jaxws-rt.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.2</version>
-                </plugin>
+      <dependency>
+        <groupId>org.reflections</groupId>
+        <artifactId>reflections</artifactId>
+        <version>${reflections.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.4.1</version>
-                </plugin>
+      <dependency>
+        <groupId>nl.vrijbrp.proweb-rest</groupId>
+        <artifactId>proweb-rest-shared</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
-                <plugin>
-                    <groupId>com.vaadin</groupId>
-                    <artifactId>vaadin-maven-plugin</artifactId>
-                    <version>1.0.2</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+      <dependency>
+        <groupId>nl.vrijbrp.proweb-rest</groupId>
+        <artifactId>proweb-rest-client</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
 
+      <dependency>
+        <groupId>nl.vrijbrp.gba</groupId>
+        <artifactId>probev-jpa</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-jpamodelgen</artifactId>
+        <version>${hibernate.jpamodelgen.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>nl.vrijbrp</groupId>
+        <artifactId>vrs-services-api</artifactId>
+        <version>${vrijbrp-libs.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>nl.vrijbrp.hub</groupId>
+        <artifactId>client</artifactId>
+        <version>${hub.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <excludes>
+          <exclude>**/log4j.properties</exclude>
+        </excludes>
+      </resource>
+
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes>
+          <exclude>**/*.properties</exclude>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>jaxws-maven-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <vmArgs>
+              <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+            </vmArgs>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jvnet.jaxb2.maven2</groupId>
+          <artifactId>maven-jaxb2-plugin</artifactId>
+          <version>0.13.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.2</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>com.vaadin</groupId>
+          <artifactId>vaadin-maven-plugin</artifactId>
+          <version>1.0.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <nonFilteredFileExtensions>
+            <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+            <nonFilteredFileExtension>doc</nonFilteredFileExtension>
+            <nonFilteredFileExtension>odt</nonFilteredFileExtension>
+            <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+            <nonFilteredFileExtension>png</nonFilteredFileExtension>
+            <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+          </nonFilteredFileExtensions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+        <configuration>
+          <argLine>-Dfile.encoding=UTF-8</argLine>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>jacoco</id>
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>ico</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>doc</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>odt</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>png</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
-                <configuration>
-                    <additionalparam>-Xdoclint:none</additionalparam>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
-                </configuration>
-            </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>jacoco</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+      </build>
+    </profile>
+  </profiles>
 </project>

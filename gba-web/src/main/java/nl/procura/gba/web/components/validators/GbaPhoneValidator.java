@@ -21,7 +21,7 @@ package nl.procura.gba.web.components.validators;
 
 import com.vaadin.data.validator.AbstractStringValidator;
 
-import nl.procura.sms.rest.DutchPhoneNumberParser;
+import nl.procura.sms.rest.number.DutchPhoneNumberParser;
 
 public class GbaPhoneValidator extends AbstractStringValidator {
 
