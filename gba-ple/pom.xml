@@ -4,7 +4,7 @@
     <parent>
         <artifactId>gba-parent</artifactId>
         <groupId>nl.procura.gba</groupId>
-        <version>1.29.2</version>
+        <version>1.29.3</version>
     </parent>
 
     <artifactId>gba-ple</artifactId>
@@ -15,25 +15,30 @@
 
     <dependencies>
         <!-- Own modules -->
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-ws-jpa</artifactId>
-        </dependency>
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-ws-jpa</artifactId>
+      </dependency>
 
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-utils</artifactId>
-        </dependency>
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-utils</artifactId>
+      </dependency>
 
-        <dependency>
-            <groupId>nl.procura.gba</groupId>
-            <artifactId>gba-ws-rest-model</artifactId>
-        </dependency>
+      <dependency>
+        <groupId>nl.vrijbrp.commons</groupId>
+        <artifactId>commons-misc</artifactId>
+      </dependency>
 
-        <!-- End own modules -->
-        <dependency>
-            <groupId>nl.vrijbrp.commons</groupId>
-            <artifactId>commons-poms-logging</artifactId>
+      <dependency>
+        <groupId>nl.procura.gba</groupId>
+        <artifactId>gba-ws-rest-model</artifactId>
+      </dependency>
+
+      <!-- End own modules -->
+      <dependency>
+        <groupId>nl.vrijbrp.commons</groupId>
+        <artifactId>commons-poms-logging</artifactId>
             <type>pom</type>
         </dependency>
 
@@ -63,7 +68,7 @@
 
         <dependency>
             <groupId>nl.vrijbrp.gba</groupId>
-            <artifactId>probev-jpa</artifactId>
+          <artifactId>probev-jpa2</artifactId>
         </dependency>
 
         <dependency>

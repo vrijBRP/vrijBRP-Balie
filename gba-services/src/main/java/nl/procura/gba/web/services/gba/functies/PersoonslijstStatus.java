@@ -19,11 +19,12 @@
 
 package nl.procura.gba.web.services.gba.functies;
 
-import static nl.procura.gba.common.ZaakStatusType.*;
+import static nl.procura.gba.common.ZaakStatusType.getZonderEindStatus;
 import static nl.procura.standard.Globalfunctions.trim;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.Cat1PersoonExt;
+import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.gba.ple.opslag.PersonenWsOpslag;
 import nl.procura.gba.web.services.gba.ple.opslag.PersoonIndicatieOpslagEntry;
@@ -91,12 +92,13 @@ public class PersoonslijstStatus {
 
   private static int getAantalLopendeTmv(Services services, BasePLExt pl) {
     ZaakService tmv = services.getTerugmeldingService();
-    return tmv.getZakenCount(new ZaakArgumenten(pl, INBEHANDELING, OPGENOMEN, INCOMPLEET));
+    ZaakArgumenten argumenten = new ZaakArgumenten(pl).addStatussen(getZonderEindStatus());
+    return tmv.getZakenCount(argumenten);
   }
 
   private static int getAantalLopendeZaken(Services services, BasePLExt pl) {
-    ZaakArgumenten z = new ZaakArgumenten(pl, INBEHANDELING, OPGENOMEN, INCOMPLEET, DOCUMENT_ONTVANGEN);
-    return services.getZakenService().getAantalZaken(z);
+    ZaakArgumenten argumenten = new ZaakArgumenten(pl).addStatussen(ZaakStatusType.getZonderEindStatus());
+    return services.getZakenService().getAantalZaken(argumenten);
   }
 
   private static PersonenWsOpslag getOpslag(Services services) {

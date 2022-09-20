@@ -19,7 +19,19 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.persoonpage;
 
-import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.*;
+import static nl.procura.gba.common.ZaakType.LIJKVINDING;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_GEMEENTE;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.AKTENAAM;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.BSN;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.GESLACHT;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.NAAM;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.STATUS;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.TITEL;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.VOORN;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.VOORV;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AANGEVER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AMBTENAAR;
+import static nl.procura.gba.web.services.gba.functies.PersoonslijstStatus.getStoredStatus;
 
 import com.vaadin.ui.Field;
 
@@ -27,6 +39,7 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.lazyloading.LazyLayout;
 import nl.procura.gba.web.components.layouts.page.StatusButton;
+import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.gba.functies.PersoonslijstStatus;
@@ -38,20 +51,21 @@ public class BsPersoonForm1 extends BsPersoonForm {
 
   private final GbaApplication gbaApplication;
 
-  public BsPersoonForm1(GbaApplication gbaApplication, DossierPersoon dossierPersoon,
+  public BsPersoonForm1(GbaApplication gbaApplication, Dossier dossier, DossierPersoon dossierPersoon,
       BsPersoonRequirement requirement) {
 
     super(dossierPersoon, requirement);
-
     this.gbaApplication = gbaApplication;
+    DossierPersoonType persoonType = dossierPersoon.getDossierPersoonType();
+    setCaption("Persoonsgegevens van " + persoonType.getDescrExtra());
 
-    setCaption("Persoonsgegevens van " + dossierPersoon.getDossierPersoonType().getDescrExtra());
-
-    if (dossierPersoon.getDossierPersoonType().is(DossierPersoonType.AMBTENAAR)) {
-
+    if (persoonType.is(AMBTENAAR)) {
       setOrder(NAAM, BSN, VOORV, TITEL, VOORN, GESLACHT, AKTENAAM, STATUS);
-    } else {
 
+    } else if (dossier.getType().is(OVERLIJDEN_IN_GEMEENTE, LIJKVINDING) && persoonType.is(AANGEVER)) {
+      setOrder(NAAM, BSN, VOORV, TITEL, VOORN, GESLACHT);
+
+    } else {
       setOrder(NAAM, BSN, VOORV, TITEL, VOORN, GESLACHT, STATUS);
     }
 
@@ -71,22 +85,17 @@ public class BsPersoonForm1 extends BsPersoonForm {
             bsn.getDefaultBsn());
 
         if (pl != null) {
-
-          PersoonStatusOpslagEntry status = PersoonslijstStatus.getStoredStatus(gbaApplication.getServices(),
-              pl);
-
+          PersoonStatusOpslagEntry status = getStoredStatus(gbaApplication.getServices(), pl);
           final StatusButton button = new StatusButton(status != null ? status.getStatus() : "", pl);
 
           if (status != null) {
-
             column.addComponent(button);
-          } else {
 
+          } else {
             LazyLayout lazyLayout = new LazyLayout(button, 200, "500px", "25px") {
 
               @Override
               public void onVisible() {
-
                 button.setCaption(PersoonslijstStatus.getStatus(gbaApplication.getServices(), pl));
               }
 
@@ -103,12 +112,10 @@ public class BsPersoonForm1 extends BsPersoonForm {
 
   @Override
   public void setColumn(Column column, Field field, Property property) {
-
     if (property.is(AKTENAAM, STATUS)) {
       column.setColspan(3);
     }
 
     super.setColumn(column, field, property);
   }
-
 }

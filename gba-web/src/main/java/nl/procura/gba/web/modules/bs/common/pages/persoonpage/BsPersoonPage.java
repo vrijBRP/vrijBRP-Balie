@@ -200,7 +200,7 @@ public class BsPersoonPage<T extends ZaakDossier> extends BsPage<T> {
       requirement = new BsPersoonRequirementChecker().getRequirement(zaakType,
           dossierPersoon.getDossierPersoonType());
 
-      form1 = new BsPersoonForm1(getApplication(), dossierPersoon, requirement);
+      form1 = new BsPersoonForm1(getApplication(), getZaakDossier().getDossier(), dossierPersoon, requirement);
       form2 = new BsPersoonForm2(dossierPersoon, requirement);
       form3 = new BsPersoonForm3(dossierPersoon, requirement);
       form4 = new BsPersoonForm4(dossierPersoon, requirement);

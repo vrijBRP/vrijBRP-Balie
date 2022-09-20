@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
+import static java.util.Optional.ofNullable;
+
 import java.lang.annotation.ElementType;
 import java.util.stream.Collectors;
 
@@ -57,7 +59,10 @@ public class SignaleringBean {
   private final String email;
 
   public SignaleringBean(Signalering signalering) {
-    this.registratiedatum = DateTime.of(signalering.getRegistratiedatum()).getFormatDate();
+    this.registratiedatum = ofNullable(signalering.getRegistratiedatum())
+        .map(d -> DateTime.of(d)
+            .getFormatDate())
+        .orElse("Onbekend");
     this.artikelen = signalering.getSubartikelen().stream()
         .map(artikel -> artikel.getArtikel().getSubartikelomschrijvingScherm())
         .collect(Collectors.joining("<br/>\n"));

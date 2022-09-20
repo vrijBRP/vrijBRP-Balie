@@ -40,7 +40,7 @@ public class Tab1VerbindingenTable extends GbaTable {
     setMultiSelect(true);
 
     addColumn("Naam", 170);
-    addColumn("URL", 240);
+    addColumn("URL", 340);
     addColumn("Certificaat", 210);
     addColumn("Melding").setUseHTML(true);
   }

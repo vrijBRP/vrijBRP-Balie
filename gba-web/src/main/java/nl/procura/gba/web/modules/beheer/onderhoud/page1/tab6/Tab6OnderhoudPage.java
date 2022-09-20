@@ -84,21 +84,19 @@ public class Tab6OnderhoudPage extends OnderhoudTabPage {
 
     @Override
     public void setColumns() {
-
-      addColumn("Laatst geladen", 130);
-      addColumn("Naam");
+      addColumn("Laatst geladen", 140);
+      addColumn("Naam", 300);
+      addColumn("Aantal records");
     }
 
     @Override
     public void setRecords() {
-
       try {
-
         for (TabelResultaat tabel : getServices().getTabellenService().getTabellen()) {
-
           Record record = addRecord(tabel);
           record.addValue(getDag(tabel.getTijdstip()));
           record.addValue(tabel.getOmschrijving());
+          record.addValue(tabel.getRecords().size());
         }
       } catch (Exception e) {
         getApplication().handleException(e);

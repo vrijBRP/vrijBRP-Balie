@@ -21,11 +21,17 @@ package nl.procura.gba.web.modules.bs.geboorte.page35;
 
 import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.ErkenningsApplicatie.BUITEN_PROWEB;
 import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.ErkenningsApplicatie.IN_PROWEB;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.*;
-import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.*;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.ERKENNINGS_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.GEZIN;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.NAAMSKEUZE_TYPE;
+import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.ERKENNING_BIJ_AANGIFTE;
+import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.ERKENNING_ONGEBOREN_VRUCHT;
+import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.GEEN_ERKENNING;
 import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.ERKENNER;
 import static nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType.JA;
-import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.*;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HETERO_HUWELIJK;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HOMO_HUWELIJK;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BUITEN_HUWELIJK;
 import static nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType.RECHTBANK;
 import static nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeType.NAAMSKEUZE_VOOR_GEBOORTE;
 import static nl.procura.standard.Globalfunctions.along;
@@ -234,7 +240,7 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
           resetErkenningEnNaamskeuze();
         }
 
-        if (gezin.is(BINNEN_HETERO_HUWELIJK) && NAAMSKEUZE_VOOR_GEBOORTE.is(nkType)) {
+        if (gezin.is(BINNEN_HETERO_HUWELIJK, BINNEN_HOMO_HUWELIJK) && NAAMSKEUZE_VOOR_GEBOORTE.is(nkType)) {
           if (NaamskeuzeApplicatie.IN_PROWEB.is(nkApp)) {
             Page35Geboorte.this.addComponent(binnenProwebLayoutNk);
           }

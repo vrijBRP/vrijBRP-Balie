@@ -39,7 +39,6 @@ public class ProbevSqlService extends GbaTemplateService {
   }
 
   public List<String[]> find(String sql) {
-
     List<String[]> recordList = new ArrayList<>();
     try {
       PersonenWsClient client = getServices().getPersonenWsService().getPersonenWsClient(PROFIEL_STANDAARD);
@@ -53,7 +52,7 @@ public class ProbevSqlService extends GbaTemplateService {
           fieldList.add(veld.getWaarde());
         }
 
-        recordList.add(fieldList.toArray(new String[fieldList.size()]));
+        recordList.add(fieldList.toArray(new String[0]));
       }
 
       return recordList;

@@ -1,0 +1,47 @@
+{
+  "id": "0d933fa8-b24e-4fc4-8f65-abeb84228054",
+  "name": "signaleringscontroles_v1_persoonsgegevens_wildcard_2",
+  "priority": "3",
+  "request": {
+    "url": "/signaleringcontroles/v1/persoonsgegevens",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.aanvraagnummer=~/^[0-9]{10}$/)]",
+        "matchesJsonPath": "$.[?(@.geslachtsnaam=~/(.*?)/)]",
+        "matchesJsonPath": "$.[?(@.geboortedatum=~/(.*?)/)]",
+        "matchesJsonPath": "$.[?(@.voornamen=~/(.*?)/)]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatCode\":\"NO_HIT\",\"resultaatOmschrijving\":\"Geen paspoortsignalering(en) voor persoon aanwezig\",\"peildatum\":\"2020-08-28T11:54:05.953Z\"}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Fri, 21 Aug 2020 11:54:05 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "0d933fa8-b24e-4fc4-8f65-abeb84228054",
+  "persistent": true,
+  "insertionIndex": 29
+}

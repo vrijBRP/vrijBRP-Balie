@@ -28,17 +28,26 @@ import static nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType.PD
 import static nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType.PDF_A1;
 import static nl.procura.gba.web.services.zaken.documenten.stempel.PositieType.RECHTSBOVEN;
 import static nl.procura.gba.web.services.zaken.documenten.stempel.PositieType.RECHTSONDER;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.*;
+import static nl.procura.standard.exceptions.ProExceptionType.DOCUMENTS;
+import static nl.procura.standard.exceptions.ProExceptionType.PRINT;
+import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
 import static org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode.APPEND;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -91,6 +100,11 @@ import nl.procura.vaadin.functies.downloading.DownloadHandler;
 import au.com.bytecode.opencsv.CSVWriter;
 import net.sf.jooreports.templates.DocumentTemplate;
 import net.sf.jooreports.templates.ZippedDocumentTemplate;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class DocumentenPrintenService extends AbstractService {
 
@@ -130,12 +144,16 @@ public class DocumentenPrintenService extends AbstractService {
         IOUtils.closeQuietly(csv);
       }
 
-      return converteer(UitvoerformaatType.CSV, format, csvOs.toByteArray());
+      return csvOs.toByteArray();
     } catch (IOException e) {
       throw new ProException("Fout bij maken spreadsheet", e);
     } finally {
       IOUtils.closeQuietly(csvOs);
     }
+  }
+
+  public String getRestApi() {
+    return astr(getServices().getParameterService().getParm(ParameterConstant.OPENOFFICE_REST_API));
   }
 
   public String getConnectionHost() {
@@ -305,7 +323,52 @@ public class DocumentenPrintenService extends AbstractService {
         .collect(Collectors.toList());
   }
 
-  private byte[] converteer(UitvoerformaatType invoerFormaat, UitvoerformaatType uitvoerFormaat, byte[] inBytes) {
+  private synchronized byte[] converteer(UitvoerformaatType invoerFormaat, UitvoerformaatType uitvoerFormaat,
+      byte[] inBytes) {
+
+    if (StringUtils.isNotBlank(getRestApi())) {
+      return convertWithRestAPI(invoerFormaat, uitvoerFormaat, inBytes);
+
+    } else {
+      return convertWithRemoteClient(invoerFormaat, uitvoerFormaat, inBytes);
+    }
+  }
+
+  private synchronized byte[] convertWithRestAPI(UitvoerformaatType invoerFormaat,
+      UitvoerformaatType uitvoerFormaat,
+      byte[] inBytes) {
+
+    OkHttpClient client = new OkHttpClient();
+    String url = getRestApi() + "/lool/convert-to/" + uitvoerFormaat.getExt();
+
+    // Add extra parameter for PDF/A1
+    if (uitvoerFormaat == PDF_A1) {
+      url += "?lfdSelectPdfVersion=1";
+    }
+
+    LOGGER.info(String.format("Sending request to %s for conversion file to %s ...", url, uitvoerFormaat.getExt()));
+    RequestBody fileBody = RequestBody.create(inBytes);
+    String tempFileName = UUID.randomUUID() + "." + invoerFormaat.getExt();
+    MultipartBody multipartBody = new MultipartBody.Builder()
+        .setType(MultipartBody.FORM)
+        .addFormDataPart("data", tempFileName, fileBody) // file param
+        .build();
+
+    Request request = new Request.Builder()
+        .url(url)
+        .post(multipartBody)
+        .build();
+
+    try (Response response = client.newCall(request).execute()) {
+      return response.body().bytes();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private byte[] convertWithRemoteClient(UitvoerformaatType invoerFormaat,
+      UitvoerformaatType uitvoerFormaat,
+      byte[] inBytes) {
     ByteArrayOutputStream os = null;
     ByteArrayInputStream is = null;
     byte[] outBytes;
@@ -317,7 +380,8 @@ public class DocumentenPrintenService extends AbstractService {
         if (!OOTools.canConnect(getConnectionHost(), getConnectionPort())) {
           throw new ProException(WEBSERVICE, ERROR,
               "Er kan geen verbinding worden gemaakt met de OpenOffice listener op " + getConnectionHost() + ":"
-                  + getConnectionPort() + ".<br>Probeer het nogmaals.<br>Neem anders contact op met applicatiebeheer");
+                  + getConnectionPort()
+                  + ".<br>Probeer het nogmaals.<br>Neem anders contact op met applicatiebeheer");
         }
 
         LOGGER.debug("Document wordt geconverteerd naar " + uitvoerFormaat);

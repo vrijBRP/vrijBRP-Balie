@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>gba-parent</artifactId>
+    <groupId>nl.procura.gba</groupId>
+    <version>1.29.3</version>
+  </parent>
+
+  <artifactId>gba-vrs</artifactId>
+  <name>Proweb GBA - VRS</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.6.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>1.19.4</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+      <version>1.19.4</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-jre8</artifactId>
+      <version>2.27.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/openapi/src/main/java/</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>6.0.1</version>
+        <configuration>
+          <inputSpec>${project.basedir}/src/main/resources/vrs-services-api.yaml</inputSpec>
+          <generatorName>java</generatorName>
+          <configOptions>
+            <sourceFolder>src/main/java</sourceFolder>
+            <dateLibrary>java8</dateLibrary>
+            <java8>true</java8>
+            <library>native</library>
+            <useRuntimeException>true</useRuntimeException>
+          </configOptions>
+          <invokerPackage>nl.procura.burgerzaken.vrsclient</invokerPackage>
+          <apiPackage>nl.procura.burgerzaken.vrsclient.api</apiPackage>
+          <modelPackage>nl.procura.burgerzaken.vrsclient.model</modelPackage>
+          <generateApis>false</generateApis>
+          <generateSupportingFiles>false</generateSupportingFiles>
+          <generateModelTests>false</generateModelTests>
+          <generateModelDocumentation>false</generateModelDocumentation>
+          <generateApiTests>false</generateApiTests>
+          <generateApiDocumentation>false</generateApiDocumentation>
+          <templateDirectory>src/main/resources/Java</templateDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

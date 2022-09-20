@@ -25,7 +25,6 @@ import static nl.procura.gbaws.web.vaadin.login.GbaWsAuthenticationHandler.getUs
 
 import java.util.Optional;
 
-import nl.procura.gbaws.web.vaadin.login.GbaWsAuthenticationHandler;
 import nl.procura.gbaws.web.vaadin.login.GbaWsCredentials;
 import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieValidator;
 import nl.procura.proweb.rest.v1_0.Rol;
@@ -43,15 +42,19 @@ public class GbaWsRestAuthenticatieValidator implements ProRestAuthenticatieVali
     GbaWsCredentials user = ofNullable(authentication
         .map(auth -> getUserByUsernameAndEmail(auth.username(), auth.email()))
         .orElseGet(() -> getUserByCredentials(username, password, false)))
-            .orElseThrow(GbaWsAuthenticationHandler::getLogoutException);
+            .orElseGet(() -> {
+              HubContext.instance().logout();
+              return null;
+            });
 
     ProRestGebruiker restGebruiker = new ProRestGebruiker();
-    restGebruiker.setGebruikersnaam(user.getUsername());
-    restGebruiker.setNaam(user.getFullname());
-    restGebruiker.getRollen().add(Rol.GEBRUIKER);
-
-    if (user.isAdmin()) {
-      restGebruiker.getRollen().add(Rol.BEHEERDER);
+    if (user != null) {
+      restGebruiker.setGebruikersnaam(user.getUsername());
+      restGebruiker.setNaam(user.getFullname());
+      restGebruiker.getRollen().add(Rol.GEBRUIKER);
+      if (user.isAdmin()) {
+        restGebruiker.getRollen().add(Rol.BEHEERDER);
+      }
     }
 
     antwoord.setGebruiker(restGebruiker);

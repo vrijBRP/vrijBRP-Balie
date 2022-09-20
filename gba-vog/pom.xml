@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>gba-parent</artifactId>
 		<groupId>nl.procura.gba</groupId>
-		<version>1.29.2</version>
+		<version>1.29.3</version>
 	</parent>
 
 	<artifactId>gba-vog</artifactId>
@@ -23,18 +23,11 @@
 			<groupId>nl.vrijbrp.soap</groupId>
 			<artifactId>soap-utils</artifactId>
 		</dependency>
-	
-		<dependency>
-			<groupId>axis</groupId>
-			<artifactId>axis-jaxrpc</artifactId>
-			<version>${axis-jaxrpc.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.sun.xml.rpc</groupId>
-			<artifactId>jaxrpc-impl</artifactId>
-			<version>${jaxrpc-impl.version}</version>
-		</dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+    </dependency>
 	</dependencies>
 
 	<build>

@@ -19,8 +19,6 @@
 
 package nl.procura.gba.web.services.beheer.parameter;
 
-import static ch.lambdaj.Lambda.extract;
-import static ch.lambdaj.Lambda.on;
 import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
@@ -30,12 +28,14 @@ import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personen.dao.ParmDao;
 import nl.procura.gba.jpa.personen.dao.UsrDao;
 import nl.procura.gba.jpa.personen.db.BaseEntity;
 import nl.procura.gba.jpa.personen.db.Parm;
+import nl.procura.gba.jpa.personen.db.Profile;
 import nl.procura.gba.jpa.personen.db.Usr;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.ThrowException;
@@ -61,7 +61,8 @@ public class ParameterService extends AbstractService {
 
   @ThrowException(ERROR_RETRIEVING_PARMS)
   public Parameters getGebruikerParameters(Gebruiker gebruiker) {
-    List<Long> cProfiles = extract(gebruiker.getProfielen().getAlle(), on(Profiel.class).getCProfile());
+    List<Long> cProfiles = gebruiker.getProfielen().getAlle().stream().map(Profile::getCProfile)
+        .collect(Collectors.toList());
     List<Parm> findParameters = ParmDao.findParameters(asList(gebruiker.getCUsr()), cProfiles, null);
     Parameters params = new Parameters();
     for (Parm parm : addDefaultParameters(findParameters)) {

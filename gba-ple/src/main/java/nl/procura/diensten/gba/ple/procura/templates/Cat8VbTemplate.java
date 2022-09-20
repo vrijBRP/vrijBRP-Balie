@@ -19,7 +19,39 @@
 
 package nl.procura.diensten.gba.ple.procura.templates;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_3;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_AANVANG_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VAN_OPNEMING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERTREK_UIT_NL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VESTIGING_IN_NL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.FUNCTIE_ADRES;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_DEEL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_INSCHR_CODE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_A;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_L;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_T;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IDCODE_NUMMERAAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ID_VERBLIJFPLAATS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_ONJUIST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDAT_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERTREK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VESTIGING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LOCATIEBESCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_VAN_DE_AANGIFTE_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OPENB_RUIMTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.POSTCODE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.STRAATNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOLGCODE_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.WPL_NAAM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +92,9 @@ public class Cat8VbTemplate extends PLETemplateProcura<AbstractVb> {
 
         PLEWoningObject woningobject = new PLEWoningObject();
         woningobject.setRef_pl(getBuilder().getResult().getBasePLs().size() - 1);
-        woningobject.setC_gem_deel((int) vb.getGemDeel().getCGemDeel());
-        woningobject.setC_locatie((int) vb.getLocatie().getCLocatie());
-        woningobject.setC_straat((int) vb.getStraat().getCStraat());
+        woningobject.setC_gem_deel(vb.getGemDeel().getCGemDeel().intValue());
+        woningobject.setC_locatie(vb.getLocatie().getCLocatie().intValue());
+        woningobject.setC_straat(vb.getStraat().getCStraat().intValue());
         woningobject.setHnr(vb.getHnr().intValue());
         woningobject.setHnr_a(vb.getHnrA());
         woningobject.setHnr_l(vb.getHnrL());

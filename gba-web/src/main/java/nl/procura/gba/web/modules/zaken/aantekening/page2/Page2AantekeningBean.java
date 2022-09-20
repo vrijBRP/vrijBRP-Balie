@@ -26,8 +26,12 @@ import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekeningIndicatie;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekeningStatus;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextArea;
 import nl.procura.vaadin.component.field.ProNativeSelect;
 
 import lombok.Data;
@@ -79,13 +83,13 @@ public class Page2AantekeningBean implements Serializable {
 
   @Field(type = FieldType.TEXT_AREA,
       caption = "Inhoud",
-      width = "1000px")
+      width = "700px")
   @TextArea(rows = 25)
   private String inhoud = "";
 
   @Field(type = FieldType.TEXT_AREA,
       caption = "Inhoud",
-      width = "1000px",
+      width = "700px",
       readOnly = true)
   @TextArea(rows = 25)
   private String inhoudLabel = "";

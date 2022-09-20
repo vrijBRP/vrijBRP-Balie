@@ -1,0 +1,45 @@
+{
+  "id": "250828c0-3474-44ed-91bc-9c58ef58cafe",
+  "name": "signaleringcontroles_v1_bsn",
+  "priority": 1,
+  "request": {
+    "url": "/signaleringcontroles/v1/bsn",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.aanvraagnummer=~/^[0-9]{10}$/)]",
+        "matchesJsonPath": "$.[?(@.bsn=='000001351')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatCode\":\"HIT\",\"resultaatOmschrijving\":\"Paspoortsignalering(en) voor persoon aanwezig\",\"peildatum\":\"2020-08-22T11:54:02.084Z\",\"signaleringInformatie\":{\"persoon\":{\"bsn\":\"999995947\",\"geslachtsnaam\":\"Willems\",\"voorvoegselGeslachtsnaam\":\"van de\",\"voornamen\":\"Karen\",\"geslacht\":\"V\",\"geboortedatum\":\"1978-01-14\",\"geboorteplaats\":\"Alkmaar\",\"geboorteland\":{\"code\":\"6030\",\"naam\":\"Nederland\"}},\"signaleringen\":[{\"registratiedatum\":\"2019-11-23\",\"subartikelen\":[{\"artikel\":{\"artikelnummer\":\"18\",\"subartikel\":\"a\",\"subartikelomschrijvingScherm\":\"Artikel 18 onder a: een persoon, die wordt verdacht van het plegen van een strafbaar feit waarvoor een bevel tot voorlopige hechtenis is toegelaten\"}}],\"instantie\":{\"naam\":\"Dienst Uitvoering Onderwijs\"},\"zaaknummer\":\"9988776655\",\"naamContactpersoon\":\"Vos\",\"telefoonContactpersoon\":\"050-1111111\",\"emailContactpersoon\":\"rein.vos@duo.nl\"}]}}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Fri, 21 Aug 2020 11:54:05 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "250828c0-3474-44ed-91bc-9c58ef58cafe",
+  "persistent": true,
+  "insertionIndex": 4
+}

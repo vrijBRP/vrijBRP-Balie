@@ -19,9 +19,18 @@
 
 package nl.procura.gba.web.services.beheer.bag;
 
-import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.*;
-import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.*;
+import static java.util.Objects.requireNonNull;
+import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.LIGPLAATS;
+import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.STANDPLAATS;
+import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.VERBLIJFSOBJECT;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.ADRESSEERBAAR_OBJECT_ID;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISLETTER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMERTOEVOEGING;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.POSTCODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
 import static nl.procura.standard.Globalfunctions.isTru;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +46,11 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.services.interfaces.address.AddressRequest;
 import nl.procura.geo.rest.client.GeoRestClient;
-import nl.procura.geo.rest.domain.ngr.wfs.*;
+import nl.procura.geo.rest.domain.ngr.wfs.SearchParam;
+import nl.procura.geo.rest.domain.ngr.wfs.SearchType;
+import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
+import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchRequest;
+import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchResponse;
 import nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerDoc;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerDocResponse;
@@ -53,7 +66,11 @@ public class BagService extends AbstractService {
   public GeoRestClient getGeoClient() {
     ParameterService parameterService = getServices().getParameterService();
     String baseUrl = parameterService.getSysteemParameter(ParameterConstant.GEO_ENDPOINT).getValue();
-    return new GeoRestClient(baseUrl);
+    String username = parameterService.getSysteemParameter(ParameterConstant.GEO_USERNAME).getValue();
+    String pw = parameterService.getSysteemParameter(ParameterConstant.GEO_PW).getValue();
+    return isNoneBlank(username, pw)
+        ? new GeoRestClient(baseUrl, username, pw)
+        : new GeoRestClient(baseUrl);
   }
 
   public boolean isGeoServiceActive() {
@@ -100,9 +117,8 @@ public class BagService extends AbstractService {
       req.search(SearchType.IDENTIFICATIE, request.getId());
 
     } else {
-
-      Objects.nonNull(request.getPc()); // Minimal requirement
-      Objects.nonNull(request.getHnr()); // Minimal requirement
+      requireNonNull(request.getPc(), "Postcode is verplicht"); // Minimal requirement
+      requireNonNull(request.getHnr(), "Huisnummer is verplicht"); // Minimal requirement
 
       if (StringUtils.isNotBlank(request.getPc())) {
         req.search(SearchType.POSTCODE, request.getPc());

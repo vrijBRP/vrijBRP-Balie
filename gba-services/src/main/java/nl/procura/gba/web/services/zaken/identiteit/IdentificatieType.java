@@ -21,6 +21,8 @@ package nl.procura.gba.web.services.zaken.identiteit;
 
 import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
 
+import java.util.Arrays;
+
 public enum IdentificatieType {
 
   PASPOORT("P", "Paspoort"),
@@ -32,41 +34,30 @@ public enum IdentificatieType {
   PERSOON_GEZIEN_VNM("G", "Persoon gezien, vragen niet mogelijk"),
   VRAGEN("X", "Vragen"),
   EXTERNE_APPLICATIE("E", "Door externe applicatie"),
+  RPS("RPS", "Door VRS"),
   ONBEKEND("", "Onbekend");
 
   private String code = "";
   private String oms  = "";
 
   IdentificatieType(String code, String oms) {
-
-    setCode(code);
-    setOms(oms);
+    this.code = code;
+    this.oms = oms;
   }
 
   public static IdentificatieType get(String code) {
-    for (IdentificatieType a : values()) {
-      if (equalsIgnoreCase(a.getCode(), code)) {
-        return a;
-      }
-    }
-
-    return ONBEKEND;
+    return Arrays.stream(values())
+        .filter(a -> equalsIgnoreCase(a.getCode(), code))
+        .findFirst()
+        .orElse(ONBEKEND);
   }
 
   public String getCode() {
     return code;
   }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-
   public String getOms() {
     return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
   }
 
   @Override

@@ -19,7 +19,31 @@
 
 package nl.procura.diensten.gba.ple.procura.templates;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AANDUIDING_NAAMGEBRUIK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AKTENR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ANR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BESCHRIJVING_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BSN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VAN_OPNEMING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTEDATUM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTELAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTEPLAATS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEMEENTE_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSAAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_ONJUIST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDAT_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REGIST_GEM_AKTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.TITEL_PREDIKAAT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOLGCODE_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOLGEND_A_NUMMER;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOORNAMEN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOORV_GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VORIG_A_NUMMER;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.diensten.gba.ple.procura.utils.SortableObject;
@@ -35,10 +59,10 @@ public class Cat1InwTemplate extends PLETemplateProcura<AbstractInw> {
     addCat(GBACat.PERSOON, so);
 
     AbstractInw inw = so.getObject();
-    int a1, a2, a3, bsn = 0;
-    a1 = (int) inw.getId().getA1();
-    a2 = (int) inw.getId().getA2();
-    a3 = (int) inw.getId().getA3();
+    long a1, a2, a3, bsn = 0;
+    a1 = inw.getId().getA1();
+    a2 = inw.getId().getA2();
+    a3 = inw.getId().getA3();
     String anr = anr(a1, a2, a3);
 
     if (inw.getSnr() != null) {
@@ -46,7 +70,7 @@ public class Cat1InwTemplate extends PLETemplateProcura<AbstractInw> {
     }
 
     AnrWijz anrWijz = getEntityManager().find(AnrWijz.class,
-        new AnrWijzPK(anr, inw.getIndAnr().intValue()));
+        new AnrWijzPK(anr, inw.getIndAnr().longValue()));
 
     if (anrWijz != null) {
       addElem(ANR, anrWijz.getAnrOud());

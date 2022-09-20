@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>gba-parent</artifactId>
 		<groupId>nl.procura.gba</groupId>
-		<version>1.29.2</version>
+		<version>1.29.3</version>
 	</parent>
 
 	<artifactId>gba-rdw</artifactId>
@@ -25,43 +25,27 @@
 			<type>pom</type>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb1-impl</artifactId>
-			<version>${jaxb-impl.version}</version>
-			<scope>provided</scope>
-		</dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>${jaxb-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-xjc</artifactId>
-			<version>${jaxb-xjc.version}</version>                        
-			<scope>provided</scope>
-		</dependency>
-        
-		<dependency>
-			<groupId>org.jvnet.jaxb2_commons</groupId>
-			<artifactId>jaxb2-basics</artifactId>
-			<version>${jaxb2-basics.version}</version>
-			<scope>provided</scope>
-		</dependency>
+    <!-- Used for code generation of GeneratedClasses.java -->
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-xjc</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>org.jasypt</groupId>
-			<artifactId>jasypt</artifactId>
-			<scope>provided</scope>
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <scope>provided</scope>
 		</dependency>
 	</dependencies>
 

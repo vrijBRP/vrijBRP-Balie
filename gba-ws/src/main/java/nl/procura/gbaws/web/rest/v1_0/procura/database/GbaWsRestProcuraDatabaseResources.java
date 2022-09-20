@@ -25,6 +25,7 @@ import static nl.procura.standard.Globalfunctions.fil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -61,39 +62,30 @@ public class GbaWsRestProcuraDatabaseResources extends GbaWsRestDienstenbusResou
   public GbaWsRestProcuraSelecterenAntwoord getTabel(GbaWsRestProcuraSelecterenVraag vraag) {
 
     GbaWsRestProcuraSelecterenAntwoord antwoord = new GbaWsRestProcuraSelecterenAntwoord();
-
     final PLEJpaManager em = PleJpaUtils.createManager();
 
     try {
-
-      List<?> l = em.createQuery(trimSql(vraag.getQuery())).getResultList();
-
-      for (Object o : l) {
-
+      List<?> list = em.createQuery(trimSql(vraag.getQuery())).getResultList();
+      for (Object obj : list) {
         GbaWsRestQueryRecord record = new GbaWsRestQueryRecord();
+        List<GbaWsRestQueryVeld> velden = new ArrayList<>();
 
-        antwoord.getRecords().add(record);
-
-        List<GbaWsRestQueryVeld> velden = record.getVelden();
-
-        if (o instanceof Object[]) {
-
-          Object[] oArray = (Object[]) o;
-
-          int i = 0;
-
-          for (Object x : oArray) {
-
-            velden.add(new GbaWsRestQueryVeld(astr(i), astr(x)));
-
-            i++;
+        if (obj instanceof Object[]) {
+          Object[] oArray = (Object[]) obj;
+          int index = 0;
+          for (Object object : oArray) {
+            velden.add(new GbaWsRestQueryVeld(astr(index), astr(object)));
+            index++;
           }
-        } else if ((o instanceof String) || (o instanceof Number)) {
+        } else if ((obj instanceof String) || (obj instanceof Number)) {
+          velden.add(new GbaWsRestQueryVeld("0", astr(obj)));
 
-          velden.add(new GbaWsRestQueryVeld("0", astr(o)));
         } else {
-          getMethods(o, velden);
+          getMethods(obj, velden);
         }
+
+        record.setVelden(velden);
+        antwoord.getRecords().add(record);
       }
     } finally {
       IOUtils.closeQuietly(em);
@@ -103,46 +95,33 @@ public class GbaWsRestProcuraDatabaseResources extends GbaWsRestDienstenbusResou
   }
 
   private String trimSql(String sql) {
-
-    String s = sql;
-
     while (true) {
-
-      int start = s.indexOf("_");
-
+      int start = sql.indexOf("_");
       if (start < 0) {
-        return s;
+        return sql;
       }
 
-      int next = (start + 2) < s.length() ? 2 : 1;
-      s = (s.substring(0, start) + s.substring(start + 1, start + next).toUpperCase() + s.substring(start + next));
+      int next = (start + 2) < sql.length() ? 2 : 1;
+      sql = (sql.substring(0, start)
+          + sql.substring(start + 1, start + next).toUpperCase()
+          + sql.substring(start + next));
     }
   }
 
   private void getMethods(Object o, List<GbaWsRestQueryVeld> velden) {
-
     for (Field f : o.getClass().getDeclaredFields()) {
-
       if (f.getType() == Collection.class) {
         continue;
       }
 
-      String name;
-
       String methodName = normalize1(f, normalize2(f.getName()));
-
       if (f.getAnnotations().length > 0) {
-
-        name = getDatabaseFieldName(f);
+        String name = getDatabaseFieldName(f);
 
         for (Method m : o.getClass().getMethods()) {
-
           if (m.getName().equals(methodName)) {
-
             Object returnvalue = invoke(methodName, o);
-
             if (returnvalue.getClass().getName().startsWith("java")) {
-
               velden.add(new GbaWsRestQueryVeld(name, astr(returnvalue)));
             } else {
               getMethods(returnvalue, velden);
@@ -159,17 +138,11 @@ public class GbaWsRestProcuraDatabaseResources extends GbaWsRestDienstenbusResou
    * Geef veld naam zoals deze in de dabase staat
    */
   private String getDatabaseFieldName(Field field) {
-
     String name = field.getName();
-
     for (Annotation a : field.getAnnotations()) {
-
       if (a instanceof Column) {
-
         Column c = ((Column) a);
-
         if (fil(c.name())) {
-
           name = c.name();
         }
       }
@@ -187,7 +160,6 @@ public class GbaWsRestProcuraDatabaseResources extends GbaWsRestDienstenbusResou
   }
 
   private Object invoke(String methodName, Object o) {
-
     try {
       Method subMethod = o.getClass().getMethod(methodName);
       return subMethod.invoke(o);

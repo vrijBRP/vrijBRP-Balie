@@ -19,12 +19,61 @@
 
 package nl.procura.diensten.gba.ple.procura.templates.custom;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AANDUIDING_NAAMGEBRUIK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_3;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ANR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BSN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_AANVANG_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VAN_OPNEMING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERTREK_UIT_NL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VESTIGING_IN_NL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.FUNCTIE_ADRES;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTEDATUM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTELAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTEPLAATS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_DEEL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEM_INSCHR_CODE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSAAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_A;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_L;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.HNR_T;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IDCODE_NUMMERAAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ID_VERBLIJFPLAATS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_GEHEIM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_ONJUIST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDAT_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERTREK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VESTIGING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LOCATIEBESCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_VAN_DE_AANGIFTE_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OPENB_RUIMTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.POSTCODE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.STRAATNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.TITEL_PREDIKAAT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOORNAMEN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOORV_GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.WPL_NAAM;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.diensten.gba.ple.procura.utils.PLEWoningObject;
 import nl.procura.diensten.gba.ple.procura.utils.SortableObject;
-import nl.procura.gba.jpa.probev.db.*;
+import nl.procura.gba.jpa.probev.db.AnrWijz;
+import nl.procura.gba.jpa.probev.db.AnrWijzPK;
+import nl.procura.gba.jpa.probev.db.Inschr;
+import nl.procura.gba.jpa.probev.db.Inw;
+import nl.procura.gba.jpa.probev.db.Vb;
+import nl.procura.gba.jpa.probev.db.Verw;
 
 public class Wk extends CustomTemplate {
 
@@ -36,12 +85,12 @@ public class Wk extends CustomTemplate {
       addCat(GBACat.PERSOON, so);
 
       Inw inw = (Inw) so.getObject();
-      int a1 = (int) inw.getId().getA1();
-      int a2 = (int) inw.getId().getA2();
-      int a3 = (int) inw.getId().getA3();
+      long a1 = inw.getId().getA1();
+      long a2 = inw.getId().getA2();
+      long a3 = inw.getId().getA3();
 
       AnrWijz anrWijz = getEntityManager().find(AnrWijz.class,
-          new AnrWijzPK(anr(a1, a2, a3), inw.getIndAnr().intValue()));
+          new AnrWijzPK(anr(a1, a2, a3), inw.getIndAnr().longValue()));
 
       if (anrWijz != null) {
         addElem(ANR, anrWijz.getAnrOud());
@@ -91,9 +140,9 @@ public class Wk extends CustomTemplate {
 
           PLEWoningObject woningobject = new PLEWoningObject();
           woningobject.setRef_pl(getBuilder().getResult().getBasePLs().size() - 1);
-          woningobject.setC_gem_deel((int) vb.getGemDeel().getCGemDeel());
-          woningobject.setC_locatie((int) vb.getLocatie().getCLocatie());
-          woningobject.setC_straat((int) vb.getStraat().getCStraat());
+          woningobject.setC_gem_deel(vb.getGemDeel().getCGemDeel().intValue());
+          woningobject.setC_locatie(vb.getLocatie().getCLocatie().intValue());
+          woningobject.setC_straat(vb.getStraat().getCStraat().intValue());
           woningobject.setHnr(vb.getHnr().intValue());
           woningobject.setHnr_a(vb.getHnrA());
           woningobject.setHnr_l(vb.getHnrL());
@@ -134,12 +183,12 @@ public class Wk extends CustomTemplate {
       addCat(GBACat.VERW, so);
 
       Verw verw = (Verw) so.getObject();
-      int a1 = (int) verw.getId().getA1();
-      int a2 = (int) verw.getId().getA2();
-      int a3 = (int) verw.getId().getA3();
+      long a1 = verw.getId().getA1();
+      long a2 = verw.getId().getA2();
+      long a3 = verw.getId().getA3();
 
       AnrWijz anrWijz = getEntityManager().find(AnrWijz.class,
-          new AnrWijzPK(anr(a1, a2, a3), verw.getIndAnr().intValue()));
+          new AnrWijzPK(anr(a1, a2, a3), verw.getIndAnr().longValue()));
 
       if (anrWijz != null) {
         addElem(ANR, anrWijz.getAnrOud());

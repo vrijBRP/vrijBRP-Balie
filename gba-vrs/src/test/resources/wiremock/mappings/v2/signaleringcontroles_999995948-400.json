@@ -1,0 +1,43 @@
+{
+  "id": "009aebd2-9553-4fc3-b8c5-ae6e5884121c",
+  "name": "signaleringcontroles_v2_bsn",
+  "priority": 1,
+  "request": {
+    "url": "/signaleringcontroles/v2/bsn",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.[?(@.aanvraagnummer=~/^[0-9]{10}$/)]",
+        "matchesJsonPath": "$.[?(@.bsn=='999995948')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 400,
+    "body": "{\"status\":\"400\",\"code\":\"parametersValidatie\",\"tijdstip\":\"2020-08-27T11:53:58.019Z\",\"titel\":\"Een of meerdere parameters zijn niet correct\",\"instantie\":\"/signaleringcontroles/v2/bsn\",\"ongeldige-parameters\":[{\"code\":\"invalid\",\"reden\":\"BSN voldoet niet aan elfproef.\",\"naam\":\"bsn\"}]}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Fri, 21 Aug 2020 11:53:58 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "009aebd2-9553-4fc3-b8c5-ae6e5884121c",
+  "persistent": true,
+  "insertionIndex": 2
+}

@@ -33,7 +33,7 @@ public class Page1IdentificatieTable extends GbaTable {
     setMultiSelect(true);
 
     addColumn("Nr", 30);
-    addColumn("Vraag");
+    addColumn("Vraag", 230);
     addColumn("Antwoord");
 
     super.setColumns();

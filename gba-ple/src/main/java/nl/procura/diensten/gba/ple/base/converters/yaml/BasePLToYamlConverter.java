@@ -26,22 +26,29 @@ import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 
-import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.DumperOptions.FlowStyle;
-import org.yaml.snakeyaml.nodes.Tags;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
 import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
-import nl.procura.diensten.gba.ple.base.*;
+import nl.procura.diensten.gba.ple.base.BasePL;
+import nl.procura.diensten.gba.ple.base.BasePLCat;
+import nl.procura.diensten.gba.ple.base.BasePLElem;
+import nl.procura.diensten.gba.ple.base.BasePLList;
+import nl.procura.diensten.gba.ple.base.BasePLRec;
+import nl.procura.diensten.gba.ple.base.BasePLSet;
+import nl.procura.diensten.gba.ple.base.PLEMessage;
+import nl.procura.diensten.gba.ple.base.PLEResult;
 
 /**
  * Used in ZoekPersoon.pl for PROBEL
  *
  * DO NOT DELETE
  */
-public class BasisPLToYamlConverter {
+public class BasePLToYamlConverter {
 
   public static void toStream(OutputStream os, PLEResult zoekResultaat) {
 
@@ -105,15 +112,13 @@ public class BasisPLToYamlConverter {
 
     try {
       Representer representer = new Representer();
-      representer.addClassTag(R.class, Tags.MAP);
-      DumperOptions options = new DumperOptions();
+      representer.addClassTag(R.class, Tag.MAP);
 
+      DumperOptions options = new DumperOptions();
       options.setDefaultFlowStyle(FlowStyle.BLOCK);
       options.setExplicitStart(true);
 
-      Dumper dumper = new Dumper(representer, options);
-      org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml(dumper);
-
+      Yaml yaml = new Yaml(representer, options);
       StringWriter writer = new StringWriter();
       yaml.dump(r, writer);
       os.write(writer.toString().getBytes());

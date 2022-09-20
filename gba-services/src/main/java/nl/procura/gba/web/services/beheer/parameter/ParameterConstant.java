@@ -257,13 +257,13 @@ public enum ParameterConstant implements ParameterType {
       GROUP_ZAKEN_STATUS, true, true, true, "0"),
 
   ZAKEN_NIEUW_BRONNEN("zaken_nieuw_bron", "Bronnen",
-          GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
+      GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
 
   ZAKEN_NIEUW_LEVERANCIERS("zaken_nieuw_leveranciers", "Leveranciers",
-          GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
+      GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
 
   ZAKEN_NIEUW_ZAAKTYPES("zaken_nieuw_zaaktypes", "Zaaktypes",
-          GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
+      GROUP_ZAKEN_BEHANDELEN, true, true, true, ""),
 
   COVOG_ID_CODE("covog_idcode", "COVOG identificatiecode",
       GROUP_COVOG, true, false, false, ""),
@@ -408,6 +408,8 @@ public enum ParameterConstant implements ParameterType {
 
   MIDOFFICE_DASHBOARD_LEVERANCIERS("dashboard_mo_leverancier", "Midoffice leveranciers (dashboard)",
       GROUP_MIDOFFICE, true, false, false, ""),
+
+  OPENOFFICE_REST_API("openoffice_rest_api", "OpenOffice REST API", GROUP_PRINT, true, false, false, ""),
 
   OPENOFFICE_HOSTNAME("openoffice_hostname", "OpenOffice Host", GROUP_PRINT, true, false, false, ""),
 
@@ -664,6 +666,12 @@ public enum ParameterConstant implements ParameterType {
       GROUP_GEO, true, true, true, ""),
 
   GEO_ENDPOINT("Geo_endpoint", "Geo / BAG service endpoint",
+      GROUP_GEO, true, false, false, ""),
+
+  GEO_USERNAME("Geo_username", "Geo / BAG service gebruikersnaam",
+      GROUP_GEO, true, false, false, ""),
+
+  GEO_PW("Geo_pw", "Geo / BAG service wachtwoord",
       GROUP_GEO, true, false, false, ""),
 
   GEO_SEARCH_DEFAULT("Geo_search_default", "Veld 'Bron gegevens standaard' op BAG ",

@@ -1,0 +1,45 @@
+{
+  "id": "84389e28-636f-43c4-ab74-374aa7c09b55",
+  "name": "signaleringcontroles_v2_bsn",
+  "priority": 1,
+  "request": {
+    "url": "/signaleringcontroles/v2/bsn",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.aanvraagnummer=~/^[0-9]{10}$/)]",
+        "matchesJsonPath": "$.[?(@.bsn=='999995315')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatCode\":\"HIT\",\"resultaatOmschrijving\":\"Paspoortsignalering(en) voor persoon aanwezig\",\"mededelingRvIG\":\"Neem contact op met de Rijksdienst voor Identiteitsgegevens van het ministerie van Binnenlandse Zaken en Koninkrijksrelaties via het nummer 088-9001000.\",\"peildatum\":\"2020-11-03T11:45:34.844Z\",\"signaleringInformatie\":{\"persoon\":{\"bsn\":\"999995959\",\"geslachtsnaam\":\"Petersen\",\"voornamen\":\"Janneke\",\"geslacht\":\"V\",\"geboortedatum\":\"17-04-1982\",\"geboorteplaats\":\"Pieterburen\",\"geboorteland\":{\"code\":\"6030\",\"naam\":\"Nederland\"}},\"signaleringen\":[]}}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Fri, 21 Aug 2020 11:45:34 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "84389e28-636f-43c4-ab74-374aa7c09b55",
+  "persistent": true,
+  "insertionIndex": 1
+}

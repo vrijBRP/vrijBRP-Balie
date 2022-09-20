@@ -19,7 +19,11 @@
 
 package nl.procura.diensten.gba.ple.procura.utils.diacrits;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -135,7 +139,7 @@ public class Diacrieten {
     return diacveld;
   }
 
-  private byte[] getDiacJPA(String veld, int c_veld) {
+  private byte[] getDiacJPA(String veld, long c_veld) {
     return getEntityManager().getManager().find(Diac.class, new DiacPK(veld, c_veld)).getDiac().getBytes();
   }
 

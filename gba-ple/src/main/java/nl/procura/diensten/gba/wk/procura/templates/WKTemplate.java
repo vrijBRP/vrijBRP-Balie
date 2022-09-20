@@ -26,7 +26,22 @@ import nl.procura.diensten.gba.wk.baseWK.BaseWK;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKPerson;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKValue;
 import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
-import nl.procura.gba.jpa.probev.db.*;
+import nl.procura.gba.jpa.probev.db.GemDeel;
+import nl.procura.gba.jpa.probev.db.Locatie;
+import nl.procura.gba.jpa.probev.db.Obj1;
+import nl.procura.gba.jpa.probev.db.Obj2;
+import nl.procura.gba.jpa.probev.db.Obj3;
+import nl.procura.gba.jpa.probev.db.Obr;
+import nl.procura.gba.jpa.probev.db.Ppd;
+import nl.procura.gba.jpa.probev.db.Stem;
+import nl.procura.gba.jpa.probev.db.Straat;
+import nl.procura.gba.jpa.probev.db.Vbo;
+import nl.procura.gba.jpa.probev.db.VboKrt;
+import nl.procura.gba.jpa.probev.db.VboKrtPK;
+import nl.procura.gba.jpa.probev.db.VboPK;
+import nl.procura.gba.jpa.probev.db.WonInd;
+import nl.procura.gba.jpa.probev.db.Woning;
+import nl.procura.gba.jpa.probev.db.Wpl;
 
 public class WKTemplate extends WKTemplateProcura {
 
@@ -89,7 +104,7 @@ public class WKTemplate extends WKTemplateProcura {
     basiswk.getWoning_indicatie().setCode(astr(wInd.getWonInd())).setValue(
         getDiacriet(wInd, Diacs.WON_IND, wInd.getOms()));
     basiswk.setDatum_ingang(getDate(object.getDIn().intValue()));
-    basiswk.setDatum_einde(getDate((int) vko.getDEnd()));
+    basiswk.setDatum_einde(getDate(vko.getDEnd().intValue()));
     basiswk.getVolgcode_einde().setCode(astr(vko.getVEnd()));
     basiswk.getCode_object().setCode(astr(vko.getCVbo()));
     basiswk.getOpmerking().setValue(object.getOpm());
@@ -125,9 +140,9 @@ public class WKTemplate extends WKTemplateProcura {
         WKSearchPersonTemplate inwZoekTemplate = new WKSearchPersonTemplate();
         inwZoekTemplate.setEntityManager(getEntityManager());
         inwZoekTemplate.setBuilder(getBuilder());
-        inwZoekTemplate.setA1((int) vboKrt.getId().getA1());
-        inwZoekTemplate.setA2((int) vboKrt.getId().getA2());
-        inwZoekTemplate.setA3((int) vboKrt.getId().getA3());
+        inwZoekTemplate.setA1(vboKrt.getId().getA1().intValue());
+        inwZoekTemplate.setA2(vboKrt.getId().getA2().intValue());
+        inwZoekTemplate.setA3(vboKrt.getId().getA3().intValue());
         inwZoekTemplate.parse();
 
         persoon.getBsn()
@@ -139,7 +154,7 @@ public class WKTemplate extends WKTemplateProcura {
       VboKrtPK krt = vboKrt.getId();
 
       persoon.setDatum_ingang(getDate(vboKrt.getDIn().intValue()));
-      persoon.setDatum_vertrek(getDate((int) krt.getDEnd()));
+      persoon.setDatum_vertrek(getDate(krt.getDEnd().intValue()));
       persoon.setDatum_geboren(getDate(vboKrt.getDGeb().intValue()));
       persoon.getGezin_code().setCode(astr(vboKrt.getVGezin()));
       persoon.getVolg_code().setCode(astr(vboKrt.getVInw()));

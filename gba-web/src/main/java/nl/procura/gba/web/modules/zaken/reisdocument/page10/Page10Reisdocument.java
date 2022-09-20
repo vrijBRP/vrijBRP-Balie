@@ -23,7 +23,9 @@ import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VREEMDELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringStatusType.JA;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringStatusType.NEE;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
@@ -48,7 +50,12 @@ import nl.procura.gba.web.modules.zaken.reisdocument.page23.Page23Reisdocument;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.legezaak.LegeZaak;
-import nl.procura.gba.web.services.zaken.reisdocumenten.*;
+import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentC1;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
@@ -83,7 +90,7 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
       form1.getReisdocumentField().addListener(this);
 
       ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
-      Optional<SignaleringResult> signalering = reisdocumentService.signalering(aanvraag.getAanvraagnummer(), pl);
+      Optional<SignaleringResult> signalering = reisdocumentService.checkAanvraag(aanvraag.getAanvraagnummer(), pl);
 
       form2 = new Page10ReisdocumentForm2(pl, getServices().getDocumentInhoudingenService(), signalering.orElse(null));
 

@@ -25,7 +25,9 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import java.util.List;
 import java.util.Optional;
 
+import nl.procura.burgerzaken.vrsclient.model.Persoon;
 import nl.procura.burgerzaken.vrsclient.model.Signalering;
+import nl.procura.burgerzaken.vrsclient.model.SignaleringResponse.ResultaatCodeEnum;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -37,13 +39,19 @@ import lombok.Getter;
 @Getter
 public class SignaleringResult {
 
-  private final String            description;
-  @Builder.Default
-  private final String            note          = null;
+  private final ResultaatCodeEnum resultaatCode;
+  private final String            resultaatOmschrijving;
+  private final String            mededelingRvIG;
+  private final Persoon           persoon;
+
   @Builder.Default
   private final List<Signalering> signaleringen = emptyList();
 
-  public Optional<String> getNote() {
-    return isBlank(note) ? Optional.empty() : Optional.of(note);
+  public Optional<String> getMededelingRvIG() {
+    return isBlank(mededelingRvIG) ? Optional.empty() : Optional.of(mededelingRvIG);
+  }
+
+  public boolean isHit() {
+    return ResultaatCodeEnum.NO_HIT != resultaatCode;
   }
 }

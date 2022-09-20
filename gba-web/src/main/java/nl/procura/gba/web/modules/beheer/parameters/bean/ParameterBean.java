@@ -20,7 +20,215 @@
 package nl.procura.gba.web.modules.beheer.parameters.bean;
 
 import static nl.procura.commons.elements.codegeneration.GenerateReflectionUtils.getNewInstanceof;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ACCESS_RISK_PROFILE_SIGNALS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_EXTERNAL_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_INTERNAL_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ZAKEN_DMS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ZAKEN_DMS_VARIANT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ZAKEN_DMS_ZAAKTYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BZ_CONNECT_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BZ_CONNECT_PRINTING_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BZ_CONNECT_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BZ_CONNECT_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BZ_CONNECT_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.CONTACT_VERPLICHT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.COVOG_ID_CODE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.COVOG_RELATIE_ID;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.COVOG_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.CURATELE_GEBRUIKERSNAAM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.CURATELE_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.CURATELE_WACHTWOORD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_CONFIDENTIALITY;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_DMS_TYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OUTPUT_PAD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_TEMPLATE_PAD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_TOON_BESTAND;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_VERWIJDEREN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.EMAIL_EIGENSCHAPPEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.EMAIL_HOST;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.EMAIL_PORT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.EMAIL_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.EMAIL_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_REISDOC;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEBR_PPD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEMEENTE_CODES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_SEARCH_DEFAULT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GMAPKEY;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GPK_AFGEVER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GV_DATUM_KENBAAR_MAKEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GV_DATUM_VERSTREKKEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GV_DATUM_VERSTREKKEN_GEEN_BEZW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GV_KB_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_BEHEERDER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_GEBRUIKER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_HUP;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_INSCHRIJVING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_RAADPLEGER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ID_VERPLICHT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INLOGOPMERKING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_CLEAR_LIST;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FILENAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FTP_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FTP_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FTP_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_ID;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_SEND_TYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_TYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KENNISBANK_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.LOCATIE_OPSLAG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.LOG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIDOFFICE_BVH_OPNEMEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIDOFFICE_DASHBOARD_BRONNEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIDOFFICE_DASHBOARD_LEVERANCIERS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIJN_OVERHEID_BULK_UITTREKSELS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_5_DAGEN_TERM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_ANDER_ORGAAN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_DEFAULT_AAND;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_EXTRA_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_FASE1_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_FASE2_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_REDEN_OVERSLAAN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_VOORNEMEN_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONTBINDING_KB_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.OPENOFFICE_CONVERT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.OPENOFFICE_HOSTNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.OPENOFFICE_PORT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.OPENOFFICE_REST_API;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PORTAAL_ROLLEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PRESENTIE_VRAAG_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PROBEV_GEBR_CODE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PROT_IGNORE_LOGIN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PROT_IGNORE_SEARCH;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PROT_STORE_PL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RAAS_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RAAS_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RAAS_IDENT_BEWIJS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_PV_NR;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_SIGNAL_INFO;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_TERMIJN_WIJZIGING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REMEMBER_ME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RISKANALYSIS_RELOCATION_IND;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_AANPASSINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_GEBRUIKERSNAAM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_PV_NR;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_TEST;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_VERGELIJKSCHERM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_VERVALTERMIJN_DAGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SCHERMOPBOUWTYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SESSIE_TIMEOUT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SMS_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SMS_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SMS_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SMS_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SSL_PROXY_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SYSTEM_MIN_HD_SIZE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TERUGMBEHEER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TEST;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TEST_OMGEVING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TMV_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TOON_AANTEKENING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VERHUIS_DATUM_LIMIET_TOEKOMST;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VERHUIS_DATUM_LIMIET_VERLEDEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VER_VRAAG_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_ID;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_RESOURCE_SERVER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_SCOPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_SECRET;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_IDP_SERVICE_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_INSTANTIE_CODE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_TIMEOUT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_START_DATE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.WACHTWOORD_VERLOOP;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.X_UA_COMPATIBLE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_ERK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_GEB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_NK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_COVOG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_GV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_HUW_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_INH_VERMIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_NAAMGEBRUIK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_OMZET_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_ONDERZOEK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_ONTB_HUW_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_OVERL_GEM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_OVERL_LEVENLOOS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_OVERL_LIJKV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_REGISTRATION;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_REISDOC;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_RISK_ANALYSIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_UITTREKSEL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_VERHUIZING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_VERSTREK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_EINDSTATUS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_ERK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_GEB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_NK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_CORRES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_COVOG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_GPK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_GV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_HUW_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INBOX;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INDICATIE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INH_VERMIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INH_VERMIS_RYB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_NAAMGEBRUIK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OMZET_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_ONDERZOEK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_ONTBINDING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OVERL_GEM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OVERL_LEVENLOOS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OVERL_LIJKV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_PL_MUTATIE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_REGISTRATION_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_REGISTRATION_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_REISDOC;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_RISK_ANALYSIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_TMV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_UITTREKSEL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BINNEN_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BINNEN_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BUITEN_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BUITEN_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_EMIGR_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_EMIGR_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_HERV_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_HERV_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERSTREK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_BRONNEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_LEVERANCIERS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_ZAAKTYPES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_STATUS_EIGEN_ZAAK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_TAB_VOLGORDE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_ALL_RECORDS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_MAX_FOUND_COUNT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PERSONEN_PROFIEL2_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PERSONEN_PROFIEL2_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_ADMIN_HIST;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_BRON_GBAV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_BRON_GEMEENTE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_NAAMGEBRUIK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PROFIEL;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.io.Serializable;
@@ -32,7 +240,22 @@ import nl.procura.gba.jpa.personen.db.Parm;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.SimpleMultiField;
 import nl.procura.gba.web.components.fields.values.MultiFieldValue;
-import nl.procura.gba.web.modules.beheer.parameters.container.*;
+import nl.procura.gba.web.modules.beheer.parameters.container.ContactVerplichtContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.DmsTypeContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.DocumentVertrouwelijkheidParameterContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.IdVerplichtContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.KassaApplicationTypeContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.KassaVerstuurTypeContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.KassalijstOpschonenContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.OpenOfficeContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.ParmBooleanContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.ParmEmptyBooleanContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.ProtocolleringContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.RdwAanpassingenContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.SchermopbouwtypeContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.TabVolgordeContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.ZaakDmsVariantContainer;
+import nl.procura.gba.web.modules.beheer.parameters.container.ZaakIdentificatieTypeParameterContainer;
 import nl.procura.gba.web.modules.beheer.parameters.layout.ZakenBehandelingParametersLayout.toDatabaseConverter;
 import nl.procura.gba.web.modules.beheer.parameters.layout.ZakenBehandelingParametersLayout.toFieldConverter;
 import nl.procura.gba.web.modules.bs.onderzoek.page20.AanduidingOnderzoekContainer;
@@ -40,8 +263,13 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterType;
 import nl.procura.gba.web.services.beheer.parameter.Parameters;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterValueConverter;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextArea;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.annotation.layout.FormBean;
 import nl.procura.vaadin.annotation.layout.Position;
 import nl.procura.vaadin.annotation.layout.Position.Direction;
@@ -921,6 +1149,14 @@ public class ParameterBean implements Serializable {
       width = "400px")
   private String moDashboardLeverancier = "";
 
+  // Open Office REST API
+  @ParameterAnnotation(OPENOFFICE_REST_API)
+  @Position(order = "1")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "OpenOffice REST API",
+      description = "Gebruik een externe REST API voor OpenOffice conversies")
+  private String openOfficeRestAPI = "";
+
   // Open Office Hostname
   @ParameterAnnotation(OPENOFFICE_HOSTNAME)
   @Position(order = "1")
@@ -1630,11 +1866,27 @@ public class ParameterBean implements Serializable {
   private String geoEnabled = "";
 
   @ParameterAnnotation(GEO_ENDPOINT)
-  @Position(order = "10")
+  @Position(order = "2")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Geo / BAG service endpoint",
       width = "400px")
   private String geoEndpoint = "";
+
+  @ParameterAnnotation(GEO_USERNAME)
+  @Position(order = "3")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Geo / BAG service gebruikersnaam",
+      description = "De gebruikersnaam waarmee deze applicatie zich identificeert")
+  @TextField
+  private String geoUsername;
+
+  @ParameterAnnotation(GEO_PW)
+  @Position(order = "4")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Geo / BAG service wachtwoord",
+      description = "Het wachtwoord waarmee deze applicatie zich identificeert")
+  @TextField(secret = true)
+  private String geoPw;
 
   @ParameterAnnotation(GEO_SEARCH_DEFAULT)
   @Position(order = "11")

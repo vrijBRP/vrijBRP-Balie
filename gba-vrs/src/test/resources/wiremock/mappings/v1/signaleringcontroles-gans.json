@@ -1,0 +1,46 @@
+{
+  "id": "d3061ebd-365d-4078-b47a-e390b3b75040",
+  "name": "signaleringcontroles",
+  "priority": "1",
+  "request": {
+    "url": "/signaleringcontroles/v1/persoonsgegevens",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.aanvraagnummer=~/^[0-9]{10}$/)]",
+        "matchesJsonPath": "$.[?(@.geslachtsnaam=='Gans')]",
+        "matchesJsonPath": "$.[?(@.geboortedatum=='1975-01-01')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatCode\":\"MULTIPLE_HITS\",\"resultaatOmschrijving\":\"Meerdere potentiele personen gevonden, verfijn uw zoekcriteria\",\"mededelingRvIG\":\"Neem contact op met de Rijksdienst voor Identiteitsgegevens van het ministerie van Binnenlandse Zaken en Koninkrijksrelaties via het nummer 088-9001000.\",\"peildatum\":\"2020-11-01T13:46:47.071Z\"}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 13:46:47 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "d3061ebd-365d-4078-b47a-e390b3b75040",
+  "persistent": true,
+  "insertionIndex": 30
+}

@@ -19,7 +19,10 @@
 
 package nl.procura.gba.web.services.zaken.identiteit;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import java.math.BigDecimal;
@@ -112,6 +115,10 @@ public class Identificatie extends Idvaststelling {
 
           case EXTERNE_APPLICATIE:
             sb.append("een externe applicatie");
+            break;
+
+          case RPS:
+            sb.append("het Register Paspoortsignaleringen (RPS)");
             break;
 
           case VRAGEN:

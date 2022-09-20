@@ -19,17 +19,32 @@
 
 package nl.procura.gba.web.modules.zaken.identificatie.page1;
 
-import static nl.procura.gba.web.modules.zaken.identificatie.page1.Page1IdentificatieBean.*;
+import static nl.procura.gba.web.modules.zaken.identificatie.page1.Page1IdentificatieBean.EXTERNE_APP;
+import static nl.procura.gba.web.modules.zaken.identificatie.page1.Page1IdentificatieBean.REISDOCUMENT_ADMINISTRATIE;
+import static nl.procura.gba.web.modules.zaken.identificatie.page1.Page1IdentificatieBean.RIJBEWIJS_ADMINISTRATIE;
+import static nl.procura.gba.web.modules.zaken.identificatie.page1.Page1IdentificatieBean.RPS;
+import static nl.procura.gba.web.modules.zaken.identificatie.page1.Page1IdentificatieBean.VRAGEN_NIET_MOGELIJK;
+
+import com.vaadin.ui.Field;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class Page1IdentificatieForm2 extends GbaForm<Page1IdentificatieBean> {
 
   public Page1IdentificatieForm2() {
 
     setCaption("Overig");
-    setOrder(REISDOCUMENT_ADMINISTRATIE, RIJBEWIJS_ADMINISTRATIE, EXTERNE_APP, VRAGEN_NIET_MOGELIJK);
-    setColumnWidths("220px", "");
+    setOrder(REISDOCUMENT_ADMINISTRATIE, RIJBEWIJS_ADMINISTRATIE, EXTERNE_APP, RPS, VRAGEN_NIET_MOGELIJK);
+    setColumnWidths("240px", "", "220px", "");
     setBean(new Page1IdentificatieBean());
+  }
+
+  @Override
+  public void setColumn(Column column, Field field, Property property) {
+    if (property.is(VRAGEN_NIET_MOGELIJK)) {
+      column.setColspan(3);
+    }
+    super.setColumn(column, field, property);
   }
 }

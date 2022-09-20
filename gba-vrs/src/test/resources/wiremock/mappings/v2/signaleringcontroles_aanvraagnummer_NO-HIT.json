@@ -1,0 +1,37 @@
+{
+  "id": "6322a242-658e-478c-9a5f-acc61cae4df9",
+  "name": "signaleringcontroles_v2_bsn",
+  "priority": 10,
+  "request": {
+    "url": "/signaleringcontroles/v2/bsn",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatCode\":\"NO_HIT\",\"resultaatOmschrijving\":\"Geen paspoortsignalering(en) voor persoon aanwezig\",\"peildatum\":\"2020-08-23T11:54:05.953Z\"}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Fri, 21 Aug 2020 11:54:05 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "9cd32fa5-d739-4a2d-9035-38a102c54e46",
+  "persistent": true,
+  "insertionIndex": 3
+}

@@ -20,8 +20,18 @@
 package nl.procura.gba.web.modules.bs.common.utils;
 
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BSN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSAAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_VERBINTENIS;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HETERO_HUWELIJK;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HOMO_HUWELIJK;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BUITEN_HUWELIJK;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,20 +55,20 @@ public class BsHuwelijkUtils extends BsUtils {
   public static GezinssituatieType getGezinssituatie(Services services, long datumGeboorte, BsnFieldValue bsnMoeder) {
 
     if (bsnMoeder.isCorrect()) {
-
       BasePLExt moeder = getPl(services, bsnMoeder);
 
       for (Partnerschap partnerschap : getPartnerschappen(moeder)) {
-
         boolean isActueel = partnerschap.isBinnenPartnerschap(datumGeboorte);
         int dagen = partnerschap.getAantalDagenNaDatumOntbinding(datumGeboorte);
+        boolean hetero = !moeder.getPersoon().getGeslacht().getVal()
+            .equalsIgnoreCase(partnerschap.getGeslachtPartner());
 
         if (isActueel || (dagen > 0 && dagen <= MAXIMALE_TERMIJN_GEBOORTE && partnerschap.isOverlijden())) {
-          return GezinssituatieType.BINNEN_HETERO_HUWELIJK;
+          return hetero ? BINNEN_HETERO_HUWELIJK : BINNEN_HOMO_HUWELIJK;
         }
       }
 
-      return GezinssituatieType.BUITEN_HUWELIJK;
+      return BUITEN_HUWELIJK;
     }
 
     return GezinssituatieType.ONBEKEND;

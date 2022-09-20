@@ -40,13 +40,12 @@ import lombok.Data;
 
 public abstract class GeoTestDialog extends GbaModalWindow {
 
-  private static final String POSTCODE        = "postcode";
-  private static final String HNR             = "hnr";
-  private static final String LOCATIE_SERVICE = "locatieService";
-  private static final String WFS_SERVICE     = "wfsService";
+  private static final String POSTCODE  = "postcode";
+  private static final String HNR       = "hnr";
+  private static final String RESULTAAT = "resultaat";
 
   public GeoTestDialog() {
-    super("GEO / BAG koppeling testen (Escape om te sluiten)", "500px");
+    super("GEO / BAG koppeling testen (Escape om te sluiten)", "700px");
   }
 
   @Override
@@ -58,14 +57,12 @@ public abstract class GeoTestDialog extends GbaModalWindow {
     mainModule.getNavigation().addPage(module);
   }
 
-  public abstract String onTest1(String pc, String hnr);
-
-  public abstract String onTest2(String pc, String hnr);
+  public abstract String onTest(String pc, String hnr);
 
   @Data
   @FormFieldFactoryBean(
       accessType = ElementType.FIELD,
-      defaultWidth = "320px")
+      defaultWidth = "100px")
   public static class Bean implements Serializable {
 
     @Field(customTypeClass = PostalcodeField.class,
@@ -79,14 +76,9 @@ public abstract class GeoTestDialog extends GbaModalWindow {
     private String hnr = "";
 
     @Field(type = Field.FieldType.LABEL,
-        caption = "Locatie service",
+        caption = "Resultaat",
         required = true)
-    private String locatieService = "";
-
-    @Field(type = Field.FieldType.LABEL,
-        caption = "WFS service",
-        required = true)
-    private String wfsService = "";
+    private String resultaat = "";
   }
 
   public class Form1 extends GbaForm<Bean> {
@@ -104,7 +96,7 @@ public abstract class GeoTestDialog extends GbaModalWindow {
     public Form2(Bean bean) {
       setCaption("Resultaat");
       setColumnWidths("90px", "");
-      setOrder(LOCATIE_SERVICE, WFS_SERVICE);
+      setOrder(RESULTAAT);
       setBean(bean);
     }
   }
@@ -171,14 +163,9 @@ public abstract class GeoTestDialog extends GbaModalWindow {
       String postcode = form1.getBean().getPostcode().getStringValue();
       String hnr = form1.getBean().getHnr();
       try {
-        bean.setLocatieService(MiscUtils.setClass(true, onTest1(postcode, hnr)));
+        bean.setResultaat(MiscUtils.setClass(true, onTest(postcode, hnr)));
       } catch (RuntimeException e) {
-        bean.setLocatieService(MiscUtils.setClass(false, e.getMessage()));
-      }
-      try {
-        bean.setWfsService(MiscUtils.setClass(true, onTest2(postcode, hnr)));
-      } catch (RuntimeException e) {
-        bean.setWfsService(MiscUtils.setClass(false, e.getMessage()));
+        bean.setResultaat(MiscUtils.setClass(false, e.getMessage()));
       }
 
       form2.setBean(bean);

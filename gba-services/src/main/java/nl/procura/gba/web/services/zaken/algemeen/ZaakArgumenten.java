@@ -23,7 +23,12 @@ import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.ZaakStatusType;
@@ -171,8 +176,12 @@ public class ZaakArgumenten {
   }
 
   public ZaakArgumenten addStatussen(ZaakStatusType... statussen) {
-    this.statussen.addAll(Arrays.asList(statussen));
-    this.statussen.addAll(ZaakStatusType.getCombiStatussen(statussen));
+    return addStatussen(Arrays.asList(statussen));
+  }
+
+  public ZaakArgumenten addStatussen(List<ZaakStatusType> statussen) {
+    this.statussen.addAll(statussen);
+    this.statussen.addAll(ZaakStatusType.getCombiStatussen(statussen.toArray(new ZaakStatusType[0])));
     return this;
   }
 

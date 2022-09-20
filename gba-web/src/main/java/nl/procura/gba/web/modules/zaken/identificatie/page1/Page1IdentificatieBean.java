@@ -24,8 +24,12 @@ import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.container.NLBooleanContainer;
 
 import lombok.Data;
@@ -40,6 +44,7 @@ public class Page1IdentificatieBean implements Serializable {
   public static final String RIJBEWIJS_ADMINISTRATIE    = "rijbewijsAdministratie";
   public static final String EXTERNE_APP                = "externeApp";
   public static final String VRAGEN_NIET_MOGELIJK       = "vragenNietMogelijk";
+  public static final String RPS                        = "rps";
 
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Nummer",
@@ -87,4 +92,12 @@ public class Page1IdentificatieBean implements Serializable {
       itemCaptionPropertyId = NLBooleanContainer.JA_NEE)
   @Immediate
   private boolean vragenNietMogelijk = false;
+
+  @Field(type = FieldType.CHECK_BOX,
+      caption = "Register Paspoortsignaleringen (RPS)")
+  @Select(nullSelectionAllowed = false,
+      containerDataSource = NLBooleanContainer.class,
+      itemCaptionPropertyId = NLBooleanContainer.JA_NEE)
+  @Immediate
+  private boolean rps = false;
 }

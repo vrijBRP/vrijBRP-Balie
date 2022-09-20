@@ -6,7 +6,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.29.2</version>
+    <version>1.29.3</version>
   </parent>
 
   <packaging>war</packaging>
@@ -26,6 +26,12 @@
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-services</artifactId>
       <version>${project.parent.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jsr305</artifactId>
+          <groupId>com.google.code.findbugs</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -259,7 +265,7 @@
             <version>${gwt.version}</version>
             <configuration>
               <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-              <extraJvmArgs>-Xmx512M -Xss1024k -server</extraJvmArgs>
+              <extraJvmArgs>-Xmx2048M</extraJvmArgs>
               <noServer>true</noServer>
               <persistentunitcache>false</persistentunitcache>
               <style>OBF</style>

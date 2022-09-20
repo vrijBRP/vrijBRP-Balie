@@ -25,12 +25,14 @@ import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 
 import nl.procura.bvbsn.actions.ActionVerificatieIdentiteitsDocument;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab4.search.window.BvBsnWindow;
 import nl.procura.gba.web.modules.zaken.identificatie.page1.IdVraagGenerator.IDVraag;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.modules.zaken.rijbewijs.errorpage.RijbewijsErrorWindow;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.gba.verificatievraag.VerificatievraagService;
@@ -39,6 +41,7 @@ import nl.procura.gba.web.services.zaken.identiteit.IdVerplichtMate;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieStatusListener;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
 import nl.procura.gba.web.services.zaken.rijbewijs.NrdServices;
 import nl.procura.rdw.functions.RdwMessage;
 import nl.procura.rdw.messages.P0252;
@@ -62,11 +65,11 @@ public class Page1Identificatie extends NormalPageTemplate {
   private final Button                      buttonSkip           = new Button("Overslaan (F1)");
   private final Button                      buttonRijbewijs      = new Button("Toon rijbewijs");
   private final Button                      buttonReisdocumenten = new Button("Toon reisdocumenten");
+  private final Button                      buttonRpsInfo        = new Button("Toon RPS info");
   private final IdentificatieStatusListener succesListener;
   private Page1IdentificatieTable           table                = null;
   private Page1IdentificatieForm1           form1                = null;
   private Page1IdentificatieForm2           form2                = null;
-  private OptieLayout                       ol1                  = null;
 
   public Page1Identificatie(IdentificatieStatusListener succesListener) {
 
@@ -92,14 +95,10 @@ public class Page1Identificatie extends NormalPageTemplate {
         @Override
         public void setRecords() {
 
-          IdVraagGenerator g = new IdVraagGenerator();
-
           int i = 0;
-
-          for (IDVraag v : g.getVragen(getPl())) {
-
+          IdVraagGenerator generator = new IdVraagGenerator();
+          for (IDVraag v : generator.getVragen(getPl())) {
             i++;
-
             Record r = addRecord(v);
             r.addValue(i);
             r.addValue(v.getVraag());
@@ -109,46 +108,41 @@ public class Page1Identificatie extends NormalPageTemplate {
       };
 
       form1 = new Page1IdentificatieForm1();
-
       form1.getField(Page1IdentificatieBean.SOORT).addListener((ValueChangeListener) event1 -> {
-
         Object value = event1.getProperty().getValue();
-
         buttonVerifieer.setEnabled(value != null);
       });
-
-      form2 = new Page1IdentificatieForm2();
-
-      ol1 = new OptieLayout();
-
-      ol1.getLeft().addComponent(form1);
-      ol1.getLeft().addComponent(form2);
-
-      ol1.getRight().setWidth("200px");
-      ol1.getRight().setCaption("Opties");
 
       buttonVerifieer.setDescription("Verifieer het nummer met de verificatievraag");
       buttonRijbewijs.setDescription("Toon de rijbewijsgegevens");
 
+      OptieLayout ol1 = new OptieLayout();
+      ol1.getLeft().addComponent(form1);
+      ol1.getRight().setWidth("200px");
+      ol1.getRight().setCaption("Opties");
       ol1.getRight().addButton(buttonVerifieer, this);
       ol1.getRight().addButton(buttonRijbewijs, this);
       ol1.getRight().addButton(buttonReisdocumenten, this);
 
+      form2 = new Page1IdentificatieForm2();
       OptieLayout ol2 = new OptieLayout();
-
-      ol2.getLeft().addComponent(new Fieldset("Identificatie aan de hand van vragen.", table));
-
+      ol2.getLeft().addComponent(form2);
       ol2.getRight().setWidth("200px");
       ol2.getRight().setCaption("Opties");
+      ol2.getRight().addButton(buttonRpsInfo, this);
+      buttonRpsInfo.setEnabled(getServices().getReisdocumentService().isVrsEnabled());
 
-      ol2.getRight().addButton(buttonVragen, this);
-
-      H2 h2 = new H2("Identificatie");
+      OptieLayout ol3 = new OptieLayout();
+      ol3.getLeft().addComponent(new Fieldset("Identificatie aan de hand van vragen.", table));
+      ol3.getRight().setWidth("200px");
+      ol3.getRight().setCaption("Opties");
+      ol3.getRight().addButton(buttonVragen, this);
 
       addButton(buttonSkip);
       addButton(buttonAkkoord);
       addButton(buttonClose);
 
+      H2 h2 = new H2("Identificatie");
       getButtonLayout().addComponent(h2, getButtonLayout().getComponentIndex(buttonSkip));
       getButtonLayout().setExpandRatio(h2, 1f);
       getButtonLayout().setWidth("100%");
@@ -160,6 +154,7 @@ public class Page1Identificatie extends NormalPageTemplate {
 
       addComponent(ol1);
       addComponent(ol2);
+      addComponent(ol3);
 
       IdVerplichtMate verplichtMate = IdVerplichtMate.get(
           along(getApplication().getParmValue(ParameterConstant.ID_VERPLICHT)));
@@ -171,11 +166,9 @@ public class Page1Identificatie extends NormalPageTemplate {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     Identificatie id = new Identificatie(getPl());
 
     if (isKeyCode(button, keyCode, KeyCode.F2, buttonAkkoord)) {
-
       form2.commit();
 
       if (form2.getBean().isReisdocumentAdministratie()) {
@@ -194,47 +187,53 @@ public class Page1Identificatie extends NormalPageTemplate {
         id.addIdentificatieType(IdentificatieType.PERSOON_GEZIEN_VNM);
       }
 
+      if (form2.getBean().isRps()) {
+        id.addIdentificatieType(IdentificatieType.RPS);
+      }
+
       if (buttonVerifieer.isEnabled()) {
-
         form1.commit();
-
         id.addIdentificatieType(form1.getBean().getSoort());
-
         id.setDocumentnr(form1.getBean().getNummer());
       }
 
       if (table.getSelectedRecords().size() > 0) {
-
         if (table.getSelectedRecords().size() >= MIN_AANTAL_VRAGEN) {
-
           id.addIdentificatieType(IdentificatieType.VRAGEN);
+
         } else {
           throw new ProException(INFO, "Selecteer minimaal 4 vragen");
         }
       }
 
       if (id.getIdentificatieTypes().size() > 0) {
-
         setIdentificatie(id);
+
       } else {
         throw new ProException(INFO, "Geen identificatie ingevoerd");
       }
     } else if (isKeyCode(button, keyCode, KeyCode.F4, buttonVerifieer)) {
-
       form1.commit();
-
       verifierNummer();
+
     } else if (isKeyCode(button, keyCode, KeyCode.F5, buttonVragen)) {
-
       table.init();
+
     } else if (isKeyCode(button, keyCode, KeyCode.F1, buttonSkip)) {
-
       setStatus(false);
+
+    } else if (button == buttonRpsInfo) {
+      ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
+      reisdocumentService.checkIdentiteit(getServices().getPersonenWsService().getHuidige())
+          .ifPresent(sig -> {
+            form2.getField(Page1IdentificatieBean.RPS, CheckBox.class).setValue(Boolean.TRUE);
+            getApplication().getParentWindow().addWindow(new SignaleringWindow(sig));
+          });
+
     } else if (button == buttonRijbewijs) {
-
       toonRijbewijs();
-    } else if (button == buttonReisdocumenten) {
 
+    } else if (button == buttonReisdocumenten) {
       toonReisdocumenten();
     }
 

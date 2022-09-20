@@ -20,11 +20,14 @@
 package nl.procura.gba.web.modules.bs.registration.person.modules.module1;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.*;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_ANR;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_BSN;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_DATE_OF_BIRTH;
 import static nl.procura.gba.web.services.bs.registration.SourceDocumentType.CUSTOM;
 import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.IDENTITEITSKAART;
 import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.PASPOORT;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.math.BigDecimal;
@@ -45,8 +48,10 @@ import nl.procura.gba.web.services.bs.registration.SourceDocumentType;
 import nl.procura.gba.web.services.bs.registration.ValidityDateType;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
+import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
+import nl.procura.vaadin.theme.twee.ProcuraTheme;
 import nl.procura.validation.Anummer;
 import nl.procura.validation.Bsn;
 
@@ -99,10 +104,6 @@ public class PersonPage extends AbstractPersonPage {
 
     personalDetailsForm.update(getPerson());
     birthDetailsForm.update(getPerson());
-
-    bsnButton.setEnabled(emp(personalDetailsForm.getBean().getBsn()));
-    anrButton.setEnabled(emp(personalDetailsForm.getBean()
-        .getAnr() == null ? "" : personalDetailsForm.getBean().getAnr().getStringValue()));
 
     final OptieLayout layout = new OptieLayout();
     layout.getLeft().addComponent(new Fieldset("Persoon"));
@@ -186,23 +187,59 @@ public class PersonPage extends AbstractPersonPage {
   }
 
   private void onNewBsn() {
-    final String currentBsn = astr(personalDetailsForm.getField(F_BSN).getValue());
-    final IdNumbersResponseRestElement response = getServices().getRegistrationService()
-        .getIdentificationNumbers(!Bsn.isCorrect(currentBsn), false);
+    final String bsn = astr(personalDetailsForm.getField(F_BSN).getValue());
+    if (Bsn.isCorrect(bsn)) {
+      getApplication().getParentWindow()
+          .addWindow(new ConfirmDialog("Weet u het zeker?",
+              "Er is al een BSN uit de voorraad gehaald en toegekend aan deze persoon<hr>" +
+                  "Weet u zeker dat u nogmaals een nieuw BSN uit de voorraad wilt halen?",
+              "500px", ProcuraTheme.ICOON_24.WARNING) {
 
+            @Override
+            public void buttonYes() {
+              getNewBsn();
+              super.buttonYes();
+            }
+          });
+    } else {
+      getNewBsn();
+    }
+  }
+
+  private void getNewBsn() {
+    final IdNumbersResponseRestElement response = getServices()
+        .getRegistrationService().getIdentificationNumbers(true, false);
     if (fil(response.getBsn())) {
       final String bsn = response.getBsn();
       personalDetailsForm.getField(F_BSN).setValue(Bsn.format(bsn));
-      personalDetailsForm.getBean().setBsn(bsn);
+      personalDetailsForm.getBean().setBsn(new BsnFieldValue(bsn));
       personalDetailsForm.repaint();
     }
   }
 
   private void onNewANumber() {
-    final String currentAnr = astr(personalDetailsForm.getField(F_ANR).getValue());
-    final IdNumbersResponseRestElement response = getServices().getRegistrationService().getIdentificationNumbers(false,
-        !Anummer.isCorrect(currentAnr));
+    final String anr = astr(personalDetailsForm.getField(F_ANR).getValue());
+    if (Anummer.isCorrect(anr)) {
+      getApplication().getParentWindow()
+          .addWindow(new ConfirmDialog("Weet u het zeker?",
+              "Er is al een A-nummer uit de voorraad gehaald en toegekend aan deze persoon<hr>" +
+                  "Weet u zeker dat u nogmaals een nieuw A-nummer uit de voorraad wilt halen?",
+              "550px", ProcuraTheme.ICOON_24.WARNING) {
 
+            @Override
+            public void buttonYes() {
+              getNewAnr();
+              super.buttonYes();
+            }
+          });
+    } else {
+      getNewAnr();
+    }
+  }
+
+  private void getNewAnr() {
+    final IdNumbersResponseRestElement response = getServices()
+        .getRegistrationService().getIdentificationNumbers(false, true);
     if (fil(response.getAnr())) {
       final String aNum = response.getAnr();
       personalDetailsForm.getField(F_ANR).setValue(Anummer.format(aNum));

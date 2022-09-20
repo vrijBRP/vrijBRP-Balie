@@ -1,0 +1,15 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/idpconfiguratie/v1",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"issuerUri\":\"/token\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

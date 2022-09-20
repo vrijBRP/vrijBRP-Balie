@@ -19,7 +19,21 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
-import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.*;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.PersoonBean.BSN;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.PersoonBean.GEBOREN;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.PersoonBean.GESLACHT;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.PersoonBean.NAAM;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.ResultaatBean.RESULTAAT_CODE;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.ResultaatBean.RESULTAAT_OMS;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.ARTIKELEN;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.CONTACTPERSOON;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.EMAIL;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.INSTANTIE;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.REGISTRATIEDATUM;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.TELEFOON;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringBean.ZAAKNUMMER;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import nl.procura.burgerzaken.vrsclient.model.Signalering;
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
@@ -31,35 +45,72 @@ import nl.procura.vaadin.theme.twee.layout.ScrollLayout;
 
 public class SignaleringWindow extends GbaModalWindow {
 
-  public SignaleringWindow(SignaleringResult signaleringResult) {
-    setCaption(signaleringResult.getDescription() + " (Esc om te sluiten)");
+  public SignaleringWindow(SignaleringResult result) {
+    setCaption(result.getResultaatOmschrijving() + " (Esc om te sluiten)");
     setWidth(1000, UNITS_PIXELS);
     VLayout layout = new VLayout()
         .margin(true)
         .spacing(true);
-    signaleringResult.getNote()
-        .ifPresent(note -> layout.addComponent(new InfoLayout("Er is sprake van een signalering", note)));
-    int nr = 1;
-    for (Signalering signalering : signaleringResult.getSignaleringen()) {
-      ReadOnlyForm<SignaleringBean> form = new ReadOnlyForm<SignaleringBean>() {
+    result.getMededelingRvIG()
+        .ifPresent(note -> layout.addComponent(new InfoLayout("Mededeling van RvIG", note)));
+
+    addResultaatForm(result, layout);
+    if (result.getPersoon() != null) {
+      addPersoonForm(result, layout);
+    }
+
+    AtomicInteger nr = new AtomicInteger(1);
+    addSignaleringenForms(result, layout, nr);
+
+    ScrollLayout scrollLayout = new ScrollLayout(layout);
+    scrollLayout.setSizeUndefined();
+    setContent(scrollLayout);
+  }
+
+  private void addResultaatForm(SignaleringResult result, VLayout layout) {
+    ReadOnlyForm<ResultaatBean> resultaatBeanReadOnlyForm = new ReadOnlyForm<ResultaatBean>() {
+
+      @Override
+      public ResultaatBean getNewBean() {
+        return new ResultaatBean(result);
+      }
+    };
+
+    resultaatBeanReadOnlyForm.setColumnWidths("130px", "");
+    resultaatBeanReadOnlyForm.setOrder(RESULTAAT_CODE, RESULTAAT_OMS);
+    resultaatBeanReadOnlyForm.setCaption("Resultaat");
+    layout.addComponent(resultaatBeanReadOnlyForm);
+  }
+
+  private void addPersoonForm(SignaleringResult result, VLayout layout) {
+    ReadOnlyForm<PersoonBean> persoonForm = new ReadOnlyForm<PersoonBean>() {
+
+      @Override
+      public PersoonBean getNewBean() {
+        return new PersoonBean(result.getPersoon());
+      }
+    };
+
+    persoonForm.setColumnWidths("130px", "");
+    persoonForm.setOrder(BSN, NAAM, GESLACHT, GEBOREN);
+    persoonForm.setCaption("Persoonsgegevens");
+    layout.addComponent(persoonForm);
+  }
+
+  private void addSignaleringenForms(SignaleringResult result, VLayout layout, AtomicInteger nr) {
+    for (Signalering signalering : result.getSignaleringen()) {
+      ReadOnlyForm<SignaleringBean> signaleringForm = new ReadOnlyForm<SignaleringBean>() {
 
         @Override
         public SignaleringBean getNewBean() {
           return new SignaleringBean(signalering);
         }
       };
-      form.setOrder(REGISTRATIEDATUM, ARTIKELEN, INSTANTIE, ZAAKNUMMER, CONTACTPERSOON, TELEFOON, EMAIL);
-      form.setCaption(new StringBuilder()
-          .append("Signalering ")
-          .append(nr++)
-          .append(" van ")
-          .append(signaleringResult.getSignaleringen().size()).toString());
-      layout.addComponent(form);
+      signaleringForm.setOrder(REGISTRATIEDATUM, ARTIKELEN, INSTANTIE, ZAAKNUMMER, CONTACTPERSOON, TELEFOON, EMAIL);
+      signaleringForm.setCaption(String.format("Signalering %d van %d",
+          nr.getAndIncrement(), result.getSignaleringen().size()));
+      layout.addComponent(signaleringForm);
     }
-
-    ScrollLayout scrollLayout = new ScrollLayout(layout);
-    scrollLayout.setSizeUndefined();
-    setContent(scrollLayout);
   }
 
   @Override

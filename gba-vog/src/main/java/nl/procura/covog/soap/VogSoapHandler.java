@@ -22,14 +22,26 @@ package nl.procura.covog.soap;
 import static nl.procura.standard.Globalfunctions.along;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.messaging.URLEndpoint;
 import javax.xml.namespace.QName;
-import javax.xml.soap.*;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPConnection;
+import javax.xml.soap.SOAPConnectionFactory;
+import javax.xml.soap.SOAPConstants;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
 import javax.xml.ws.soap.SOAPFaultException;
-import javax.xml.xpath.*;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -116,7 +128,7 @@ public class VogSoapHandler extends SoapHandler {
       getRequest().setSoapMessage(soapMessage);
       getRequest().setXmlMessage(new String(requestBos.toByteArray(), StandardCharsets.UTF_8));
 
-      SOAPMessage reply = soapConnection.call(soapMessage, new URLEndpoint(endpoint));
+      SOAPMessage reply = soapConnection.call(soapMessage, new URL(endpoint));
 
       ByteArrayOutputStream responseBos = new ByteArrayOutputStream();
       reply.writeTo(responseBos);

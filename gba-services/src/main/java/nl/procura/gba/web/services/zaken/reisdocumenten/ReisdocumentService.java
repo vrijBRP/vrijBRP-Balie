@@ -19,12 +19,24 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
-import static nl.procura.gba.common.MiscUtils.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_BEZIT_BUITENL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_INH_VERMIS_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AUTORIT_VAN_AFGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_GELDIG_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INH_VERMIS_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_UITGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.NR_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SIG_MET_BETREK_TOT_VERSTREK_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_NL_REISDOC;
+import static nl.procura.gba.common.MiscUtils.copy;
+import static nl.procura.gba.common.MiscUtils.copyList;
+import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.common.ZaakStatusType.VERWERKT;
 import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toNul;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +66,13 @@ import nl.procura.gba.web.services.aop.Timer;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.beheer.raas.RaasService;
+import nl.procura.gba.web.services.beheer.vrs.VrsRequest;
 import nl.procura.gba.web.services.beheer.vrs.VrsService;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
+import nl.procura.gba.web.services.zaken.algemeen.ControleerbareService;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
@@ -63,6 +80,7 @@ import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.Clausules;
 import nl.procura.raas.rest.domain.aanvraag.FindAanvraagRequest;
+import nl.procura.validation.Bsn;
 
 public class ReisdocumentService extends AbstractZaakContactService<ReisdocumentAanvraag>
     implements ZaakService<ReisdocumentAanvraag>, ControleerbareService {
@@ -302,10 +320,28 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
     callListeners(ServiceEvent.CHANGE);
   }
 
-  public Optional<SignaleringResult> signalering(Aanvraagnummer aanvraagnummer, BasePLExt pl) {
+  public Optional<SignaleringResult> checkIdentiteit(BasePLExt pl) {
     VrsService vrsService = new VrsService(getServices().getParameterService());
     if (vrsService.isEnabled()) {
-      return vrsService.checkSignalering(aanvraagnummer, pl.getPersoon().getBsn().getDescr());
+      return vrsService.checkSignalering(VrsRequest.builder()
+          .bsn(new Bsn(pl.getPersoon().getBsn().getDescr()))
+          .build());
+    }
+    return Optional.empty();
+  }
+
+  public boolean isVrsEnabled() {
+    return new VrsService(getServices().getParameterService()).isEnabled();
+  }
+
+  public Optional<SignaleringResult> checkAanvraag(Aanvraagnummer aanvraagnummer, BasePLExt pl) {
+    VrsService vrsService = new VrsService(getServices().getParameterService());
+    if (vrsService.isEnabled()) {
+      return vrsService.checkSignalering(VrsRequest.builder()
+          .aanvraagnummer(aanvraagnummer)
+          .bsn(new Bsn(pl.getPersoon().getBsn().getDescr()))
+          .build())
+          .filter(SignaleringResult::isHit);
     } else {
       return signaleringFromPl(pl);
     }
@@ -315,8 +351,8 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
     if (pl.getReisdoc().heeftSignalering()) {
       return Optional
           .of(SignaleringResult.builder()
-              .note(getSysteemParm(ParameterConstant.REISD_SIGNAL_INFO, false))
-              .description("Signalering met betrekking tot verstrekken Nederlands reisdocument op de PL")
+              .mededelingRvIG(getSysteemParm(ParameterConstant.REISD_SIGNAL_INFO, false))
+              .resultaatOmschrijving("Signalering met betrekking tot verstrekken Nederlands reisdocument op de PL")
               .build());
     }
 

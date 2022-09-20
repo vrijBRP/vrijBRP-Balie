@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.components.fields.values;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
 
 import java.math.BigDecimal;
 
@@ -83,5 +85,10 @@ public class GbaDateFieldValue extends DateFieldValue {
     d.autocomplete();
     setValue(d.getSystemDate());
     setDescription(d.getFormatDate());
+  }
+
+  @Override
+  public int compareTo(DateFieldValue o) {
+    return aval(this.getValue()) > aval(o.getValue()) ? 1 : -1;
   }
 }

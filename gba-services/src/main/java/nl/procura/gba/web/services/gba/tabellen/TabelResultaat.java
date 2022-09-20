@@ -20,7 +20,6 @@
 package nl.procura.gba.web.services.gba.tabellen;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TabelResultaat {
@@ -35,7 +34,6 @@ public class TabelResultaat {
   }
 
   public TabelResultaat(int code, String omschrijving) {
-    this.tijdstip = new Date().getTime();
     this.code = code;
     this.omschrijving = omschrijving;
   }
@@ -85,6 +83,10 @@ public class TabelResultaat {
 
   public void setTijdstip(long tijdstip) {
     this.tijdstip = tijdstip;
+  }
+
+  public boolean isGeladen() {
+    return tijdstip > 0;
   }
 
   @Override

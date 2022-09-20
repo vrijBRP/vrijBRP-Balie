@@ -19,5 +19,4 @@
     <inherits name="com.vaadin.lazyloadwrapper.widgetset.LazyLoadWrapperWidgetset"/>
 
     <inherits name="org.vaadin.aceeditor.gwt.AceEditorWidgetSet"/>
-
 </module>

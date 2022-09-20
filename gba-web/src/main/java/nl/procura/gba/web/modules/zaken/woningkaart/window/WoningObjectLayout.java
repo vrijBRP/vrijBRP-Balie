@@ -37,9 +37,9 @@ import nl.procura.vaadin.component.layout.tabsheet.LazyTabChangeListener;
 
 public class WoningObjectLayout extends VLayout {
 
-  private final Address  address;
-  private GbaApplication application;
-  private Address        brpAddress;
+  private final Address        address;
+  private final GbaApplication application;
+  private Address              brpAddress;
   private Address        bagAddress;
 
   public WoningObjectLayout(GbaApplication application, Address address) {
@@ -87,14 +87,12 @@ public class WoningObjectLayout extends VLayout {
 
   private Component showBagAddress() {
     if (bagAddress == null) {
-      AddressRequest request = new AddressRequest();
-      request.setPc(address.getPostalCode());
-      request.setHnr(address.getHnr());
-      request.setHnrL(address.getHnrL());
-      request.setHnrT(address.getHnrT());
-
       List<Address> addresses = application.getServices()
-          .getGeoService().search(request);
+          .getGeoService().search(new AddressRequest()
+              .setPc(address.getPostalCode())
+              .setHnr(address.getHnr())
+              .setHnrL(address.getHnrL())
+              .setHnrT(address.getHnrT()));
 
       if (addresses.size() == 1) {
         this.bagAddress = addresses.get(0);

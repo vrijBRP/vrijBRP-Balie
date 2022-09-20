@@ -19,8 +19,15 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.form1;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.*;
-import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.*;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.ERKENNINGS_APP;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.ERKENNINGS_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.GEZIN;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.NAAMSKEUZE_APP;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1.NAAMSKEUZE_TYPE;
+import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.GEEN_ERKENNING;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HETERO_HUWELIJK;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HOMO_HUWELIJK;
+import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BUITEN_HUWELIJK;
 import static nl.procura.standard.Globalfunctions.emp;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -30,7 +37,6 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.erkenning.ErkenningsType;
-import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.geboorte.GezinssituatieType;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
@@ -62,16 +68,16 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
         && geboorte.getErkenningsType() != ErkenningsType.ONBEKEND);
 
     getField(NAAMSKEUZE_TYPE).setReadOnly(geboorte != null
-        && geboorte.getNaamskeuzeType() != NaamskeuzeVanToepassingType.ONBEKEND);
+        && geboorte.getNaamskeuzeSoort() != NaamskeuzeType.ONBEKEND);
 
     getField(GEZIN).addListener(new FieldChangeListener<GezinssituatieType>() {
 
       @Override
       public void onChange(GezinssituatieType gezin) {
-        bijWijzigingGezin(gezin);
+        bijWijzigingGezin(gezin, (ErkenningsType) getField(ERKENNINGS_TYPE).getValue());
         getField(ERKENNINGS_TYPE).setValue(null);
         getField(NAAMSKEUZE_TYPE).setValue(null);
-        bijWijzigingErkenningsType(null);
+        bijWijzigingErkenningsType(null, null);
         bijWijzigingNaamskeuzeType(null);
       }
     });
@@ -80,7 +86,7 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
 
       @Override
       public void onChange(ErkenningsType type) {
-        bijWijzigingErkenningsType(type);
+        bijWijzigingErkenningsType(type, (GezinssituatieType) getField(GEZIN).getValue());
         getField(ERKENNINGS_APP).setValue(null);
         updateGekoppeldeZaakLayouts(null, null, false);
       }
@@ -125,8 +131,8 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
     NaamskeuzeType nkType = getBean().getNaamskeuzeType();
     NaamskeuzeApplicatie nkApp = getBean().getNaamskeuzeApp();
 
-    bijWijzigingGezin(gezin);
-    bijWijzigingErkenningsType(erkType);
+    bijWijzigingGezin(gezin, erkType);
+    bijWijzigingErkenningsType(erkType, gezin);
     bijWijzigingNaamskeuzeType(nkType);
     updateGekoppeldeZaakLayouts(erkApp, nkApp, true);
   }
@@ -138,14 +144,19 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
 
   protected abstract DossierNaamskeuze getProwebNaamskeuze();
 
-  private void bijWijzigingGezin(GezinssituatieType gezin) {
-    getField(ERKENNINGS_TYPE).setVisible(!GezinssituatieType.BINNEN_HETERO_HUWELIJK.equals(gezin));
-    getField(NAAMSKEUZE_TYPE).setVisible(GezinssituatieType.BINNEN_HETERO_HUWELIJK.equals(gezin));
+  private void bijWijzigingGezin(GezinssituatieType gezin, ErkenningsType erkType) {
+    getField(ERKENNINGS_TYPE).setVisible(!BINNEN_HETERO_HUWELIJK.equals(gezin));
+    getField(NAAMSKEUZE_TYPE).setVisible(BINNEN_HETERO_HUWELIJK.equals(gezin)
+        || (BINNEN_HOMO_HUWELIJK.equals(gezin) && GEEN_ERKENNING.equals(erkType)));
     repaint();
   }
 
-  private void bijWijzigingErkenningsType(ErkenningsType type) {
+  private void bijWijzigingErkenningsType(ErkenningsType type, GezinssituatieType gezin) {
     getField(ERKENNINGS_APP).setVisible(ErkenningsType.ERKENNING_ONGEBOREN_VRUCHT.equals(type));
+    getField(NAAMSKEUZE_TYPE)
+        .setVisible(GEEN_ERKENNING.equals(type) && GezinssituatieType.BINNEN_HOMO_HUWELIJK.equals(gezin));
+    getField(NAAMSKEUZE_APP)
+        .setVisible(GEEN_ERKENNING.equals(type) && GezinssituatieType.BINNEN_HOMO_HUWELIJK.equals(gezin));
     repaint();
   } // Override
 
@@ -170,6 +181,12 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
   private void detecteerProwebNaamskeuze(Page35GeboorteBean1 bean) {
     DossierNaamskeuze prowebNaamskeuze = getProwebNaamskeuze();
     if (bean.getGezin().is(BINNEN_HETERO_HUWELIJK) && prowebNaamskeuze != null) {
+      bean.setNaamskeuzeType(NaamskeuzeType.NAAMSKEUZE_VOOR_GEBOORTE);
+      bean.setNaamskeuzeApp(NaamskeuzeApplicatie.IN_PROWEB);
+      geboorte.setNaamskeuzeVoorGeboorte(prowebNaamskeuze);
+
+    } else if (bean.getGezin().is(BINNEN_HOMO_HUWELIJK) && prowebNaamskeuze != null) {
+      bean.setErkenningsType(GEEN_ERKENNING);
       bean.setNaamskeuzeType(NaamskeuzeType.NAAMSKEUZE_VOOR_GEBOORTE);
       bean.setNaamskeuzeApp(NaamskeuzeApplicatie.IN_PROWEB);
       geboorte.setNaamskeuzeVoorGeboorte(prowebNaamskeuze);

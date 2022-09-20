@@ -6,7 +6,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.29.2</version>
+    <version>1.29.3</version>
   </parent>
 
   <artifactId>gba-services</artifactId>
@@ -66,6 +66,13 @@
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-curatele</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <!-- VRS -->
+    <dependency>
+      <groupId>nl.procura.gba</groupId>
+      <artifactId>gba-vrs</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
 
@@ -160,7 +167,7 @@
     </dependency>
 
     <dependency>
-      <groupId>nl.procura.gba.bsm.core</groupId>
+      <groupId>nl.vrijbrp.gba.bsm.core</groupId>
       <artifactId>bsm-rest-client</artifactId>
       <version>${bsm.version}</version>
       <exclusions>
@@ -177,9 +184,9 @@
     </dependency>
 
     <dependency>
-      <groupId>nl.procura.gba.bsm</groupId>
+      <groupId>nl.vrijbrp.gba.bsm</groupId>
       <artifactId>gba-bsm-shared</artifactId>
-      <version>${gba.bsm.version}</version>
+      <version>${bsm.version}</version>
     </dependency>
 
     <!-- Voor encryptie -->
@@ -263,12 +270,11 @@
       </exclusions>
     </dependency>
 
-    <!-- Jaxb-impl werd niet geladen -->
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>2.2.11</version>
-    </dependency>
+    <!--    &lt;!&ndash; Jaxb-impl werd niet geladen &ndash;&gt;-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.sun.xml.bind</groupId>-->
+    <!--      <artifactId>jaxb-impl</artifactId>-->
+    <!--    </dependency>-->
 
     <!-- On-premise-connector -->
     <dependency>
@@ -282,11 +288,6 @@
       <groupId>nl.procura.objectstore</groupId>
       <artifactId>objectstore-client</artifactId>
       <version>${objectstore.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>nl.vrijbrp</groupId>
-      <artifactId>vrs-services-api</artifactId>
     </dependency>
   </dependencies>
 

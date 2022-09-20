@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.header;
 
-import static nl.procura.gba.common.ZaakStatusType.*;
+import static nl.procura.gba.common.ZaakStatusType.getZonderEindStatus;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -121,10 +121,10 @@ class Page1LopendeZaken extends ButtonPageTemplate {
   }
 
   public List<Zaak> getAanvragen() {
-
     ZakenService db = getApplication().getServices().getZakenService();
     List<Zaak> zaken = new ArrayList<>();
-    zaken.addAll(db.getMinimaleZaken(new ZaakArgumenten(persoonslijst, INCOMPLEET, OPGENOMEN, INBEHANDELING)));
+    ZaakArgumenten argumenten = new ZaakArgumenten(persoonslijst).addStatussen(getZonderEindStatus());
+    zaken.addAll(db.getMinimaleZaken(argumenten));
 
     zaken.sort(new ZaakDatumIngangComparator());
 

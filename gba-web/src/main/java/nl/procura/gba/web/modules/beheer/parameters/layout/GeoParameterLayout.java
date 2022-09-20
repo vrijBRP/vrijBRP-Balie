@@ -19,19 +19,16 @@
 
 package nl.procura.gba.web.modules.beheer.parameters.layout;
 
-import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.modules.beheer.parameters.layout.geo.GeoTestDialog;
-import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
-import nl.procura.gba.web.services.beheer.parameter.ParameterService;
+import nl.procura.gba.web.services.beheer.bag.BagService;
 import nl.procura.geo.rest.client.GeoRestClient;
-import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchRequest;
-import nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType;
-import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
-import nl.procura.geo.rest.domain.pdok.locationserver.SearchType;
 
 public class GeoParameterLayout extends DatabaseParameterLayout {
 
@@ -58,29 +55,10 @@ public class GeoParameterLayout extends DatabaseParameterLayout {
     getWindow().addWindow(new GeoTestDialog() {
 
       @Override
-      public String onTest1(String postcode, String hnr) {
-        ParameterService parameterService = getServices().getParameterService();
-        String baseUrl = parameterService.getSysteemParameter(ParameterConstant.GEO_ENDPOINT).getValue();
-        GeoRestClient client = new GeoRestClient(baseUrl);
-        LocationServerRequest request = new LocationServerRequest();
-        request.search(SearchType.POSTCODE, postcode);
-        request.search(SearchType.HUISNUMMER, hnr);
-        request.setRequestorName("Procura Burgerzaken");
-        return astr(client.getPdok().getLocationServer().search(request).getResponse().getDocs().size()
-            + " verblijfsobject(en)");
-      }
-
-      @Override
-      public String onTest2(String postcode, String hnr) {
-        ParameterService parameterService = getServices().getParameterService();
-        String baseUrl = parameterService.getSysteemParameter(ParameterConstant.GEO_ENDPOINT).getValue();
-        GeoRestClient client = new GeoRestClient(baseUrl);
-        WfsSearchRequest request = new WfsSearchRequest();
-        request.search(nl.procura.geo.rest.domain.ngr.wfs.SearchType.POSTCODE, postcode);
-        request.search(nl.procura.geo.rest.domain.ngr.wfs.SearchType.HUISNUMMER, hnr);
-        request.setRequestorName("Procura Burgerzaken");
-        request.setFeatureType(FeatureType.VERBLIJFSOBJECT);
-        return astr(client.getPdok().getWfs().search(request).getTotalFeatures() + " verblijfsobject(en)");
+      public String onTest(String postcode, String hnr) {
+        BagService geoService = getServices().getGeoService();
+        GeoRestClient client = geoService.getGeoClient();
+        return StringUtils.join(client.getTest().search(postcode, aval(hnr)).getMessages(), "<br/>");
       }
     });
   }

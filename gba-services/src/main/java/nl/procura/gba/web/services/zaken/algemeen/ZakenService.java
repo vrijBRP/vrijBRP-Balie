@@ -26,7 +26,11 @@ import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
 import static org.apache.commons.collections.CollectionUtils.containsAny;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import nl.procura.gba.common.MaxList;
 import nl.procura.gba.common.ZaakType;
@@ -47,16 +51,12 @@ public class ZakenService extends AbstractService {
    */
   @Timer
   public int getAantalZaken(ZaakArgumenten zaakArgumenten) {
-
-    int count = 0;
-
     getAlternativeZaakIds(zaakArgumenten);
 
-    for (ZaakService db : getServices(zaakArgumenten.getTypen())) {
-      count += db.getZakenCount(zaakArgumenten);
-    }
-
-    return count;
+    return getServices(zaakArgumenten.getTypen())
+        .stream()
+        .mapToInt(db -> db.getZakenCount(zaakArgumenten))
+        .sum();
   }
 
   /**

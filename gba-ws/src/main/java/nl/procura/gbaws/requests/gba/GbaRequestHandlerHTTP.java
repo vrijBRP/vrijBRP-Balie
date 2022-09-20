@@ -29,7 +29,7 @@ import nl.procura.diensten.gba.ple.base.PLEMessage;
 import nl.procura.diensten.gba.ple.base.converters.java.BasePLToJavaConverter;
 import nl.procura.diensten.gba.ple.base.converters.json.BasePLToJsonConverter;
 import nl.procura.diensten.gba.ple.base.converters.ple.BasePLToPleConverter;
-import nl.procura.diensten.gba.ple.base.converters.yaml.BasisPLToYamlConverter;
+import nl.procura.diensten.gba.ple.base.converters.yaml.BasePLToYamlConverter;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.utils.PLECommandLineUtils;
 import nl.procura.gbaws.requests.RequestCredentials;
@@ -60,7 +60,7 @@ public class GbaRequestHandlerHTTP extends RequestHandlerHTTP {
           break;
 
         case YAML: // Used by PROBEL (ZoekPersoon.pl)
-          BasisPLToYamlConverter.toStream(getOutputStream(), builder.getResult());
+          BasePLToYamlConverter.toStream(getOutputStream(), builder.getResult());
           break;
 
         default:

@@ -19,10 +19,18 @@
 
 package nl.procura.gba.web.modules.bs.registration.person.modules.module1;
 
-import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.*;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_ANR;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_BSN;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_FAMILY_NAME;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_FIRSTNAMES;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_GENDER;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_PREFIX;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_TITLE;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Buffered;
 import com.vaadin.data.Validator.InvalidValueException;
@@ -53,8 +61,6 @@ public class PersonalDetailsForm extends GbaForm<PersonBean> {
     }
     if (Globalfunctions.def(p.getAnr())) {
       getField(F_ANR).setValue(Anummer.format(p.getAnr().toString()));
-      //during update we don't allow to update A number
-      getField(F_ANR).setReadOnly(true);
     }
     if (p.getVoorvoegsel() != null) {
       getField(F_PREFIX).setValue(new FieldValue(p.getVoorvoegsel()));
@@ -83,12 +89,17 @@ public class PersonalDetailsForm extends GbaForm<PersonBean> {
 
   @Override
   public void commit() throws Buffered.SourceException, InvalidValueException {
-    //validate readonly fields
-    final String currentBsn = astr(getField(F_BSN).getValue());
 
-    if (!Bsn.isCorrect(currentBsn)) {
-      throw new ProException(ENTRY, INFO, "Haal eerst een nieuw BSN op");
+    final String bsn = astr(getField(F_BSN).getValue());
+    if (StringUtils.isBlank(bsn)) {
+      throw new ProException(ENTRY, WARNING, "Vraag eerst een nieuw BSN op");
     }
+
+    final String anr = astr(getField(F_ANR).getValue());
+    if (StringUtils.isBlank(anr)) {
+      throw new ProException(ENTRY, WARNING, "Vraag eerst een nieuw A-nummer op");
+    }
+
     super.commit();
   }
 }

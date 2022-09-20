@@ -44,7 +44,13 @@ import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14ReisdocumentTable1;
 import nl.procura.gba.web.services.beheer.raas.AfsluitRequest;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
-import nl.procura.gba.web.services.zaken.reisdocumenten.*;
+import nl.procura.gba.web.services.zaken.reisdocumenten.LeveringType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentStatus;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
+import nl.procura.gba.web.services.zaken.reisdocumenten.SluitingType;
 import nl.procura.raas.rest.domain.aanvraag.AfsluitingStatusType;
 import nl.procura.raas.rest.domain.aanvraag.LeveringStatusType;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
@@ -85,8 +91,9 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
     if (event.isEvent(InitPage.class)) {
 
       ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
-      Optional<SignaleringResult> signalering = reisdocumentService.signalering(getAanvraag().getAanvraagnummer(),
-          getPl());
+      Optional<SignaleringResult> signalering = reisdocumentService
+          .checkAanvraag(getAanvraag().getAanvraagnummer(), getPl())
+          .filter(SignaleringResult::isHit);
 
       infoLayout = new InfoLayout("Ter informatie", "");
       headerForm = new ZaakHeaderForm(getAanvraag());

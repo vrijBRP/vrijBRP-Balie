@@ -36,8 +36,10 @@ import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.AnrField;
+import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.ProComboBox;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
+import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 import lombok.Data;
@@ -59,17 +61,15 @@ public class PersonBean {
   public static final String F_FOREIGN_MUN   = "foreignMunicipality";
   public static final String F_COUNTRY       = "country";
 
-  @Field(customTypeClass = GbaTextField.class,
+  @Field(customTypeClass = BsnField.class,
       caption = "BSN",
       required = true,
-      readOnly = true,
       width = "210px")
-  private String bsn;
+  private BsnFieldValue bsn;
 
   @Field(customTypeClass = AnrField.class,
       caption = "A-nummer",
       required = true,
-      readOnly = false,
       width = "210px")
   private AnrFieldValue anr;
 
