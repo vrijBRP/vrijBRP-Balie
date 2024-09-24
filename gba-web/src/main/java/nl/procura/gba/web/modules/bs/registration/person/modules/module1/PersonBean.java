@@ -26,6 +26,7 @@ import nl.procura.gba.web.components.containers.GeslachtContainer;
 import nl.procura.gba.web.components.containers.PlaatsContainer;
 import nl.procura.gba.web.components.containers.VoorvoegselContainer;
 import nl.procura.gba.web.components.fields.CountryBox;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaTextField;
@@ -36,7 +37,6 @@ import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.AnrField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.ProComboBox;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
@@ -61,7 +61,7 @@ public class PersonBean {
   public static final String F_FOREIGN_MUN   = "foreignMunicipality";
   public static final String F_COUNTRY       = "country";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "BSN",
       required = true,
       width = "210px")

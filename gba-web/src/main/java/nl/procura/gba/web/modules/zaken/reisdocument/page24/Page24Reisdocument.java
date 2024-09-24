@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.reisdocument.page24;
 
 import static com.vaadin.event.ShortcutAction.KeyCode.F1;
+import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.REISDOCUMENTAANVRAAG;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_REISDOC;
 import static nl.procura.standard.Globalfunctions.along;
@@ -32,6 +33,9 @@ import java.util.Optional;
 
 import com.vaadin.ui.Button;
 
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
+import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.application.ProcessChangeInterceptor;
@@ -39,10 +43,13 @@ import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.modules.zaken.common.ZaakHeaderForm;
 import nl.procura.gba.web.modules.zaken.reisdocument.ReisdocumentAanvraagPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtLayoutForm3;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.AanvraagArchiefButton;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.BasisregisterButton;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14ReisdocumentTable1;
 import nl.procura.gba.web.services.beheer.raas.AfsluitRequest;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.LeveringType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
@@ -61,6 +68,7 @@ import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+import nl.procura.validation.Bsn;
 
 /**
  * Uitreiken reisdocument
@@ -77,9 +85,7 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
   private UitreikLayout                    uitreikLayout = null;
 
   public Page24Reisdocument(ReisdocumentAanvraag aanvraag) {
-
     super("Reisdocument: uitreiken", aanvraag);
-
     addButton(buttonPrev);
     addButton(buttonSave);
     addButton(buttonDocumenten);
@@ -89,11 +95,23 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
+      ReisdocumentService reisdocService = getServices().getReisdocumentService();
+      VrsService vrsService = reisdocService.getVrsService();
 
-      ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
-      Optional<SignaleringResult> signalering = reisdocumentService
+      Optional<SignaleringResult> signalering = reisdocService
           .checkAanvraag(getAanvraag().getAanvraagnummer(), getPl())
           .filter(SignaleringResult::isHit);
+
+      Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> vrsDocumenten = vrsService
+          .getReisdocumenten(new VrsRequest()
+              .aanleiding(REISDOCUMENTAANVRAAG)
+              .bsn(new Bsn(getPl().getPersoon().getBsn().toLong()))
+              .aanvraagnummer(getAanvraag().getAanvraagnummer().getNummer()));
+
+      Optional<ControleAanvragenResponse> vrsAanvragen = vrsService.getAanvragen(new VrsRequest()
+          .aanleiding(REISDOCUMENTAANVRAAG)
+          .bsn(new Bsn(getPl().getPersoon().getBsn().toLong()))
+          .aanvraagnummer(getAanvraag().getAanvraagnummer().getNummer()));
 
       infoLayout = new InfoLayout("Ter informatie", "");
       headerForm = new ZaakHeaderForm(getAanvraag());
@@ -110,10 +128,18 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
 
       checkInfo();
 
-      signalering.ifPresent(s -> {
+      signalering.ifPresent(response -> {
         Button signaleringButton = new Button("Signalering");
-        signaleringButton.addListener((Button.ClickListener) e -> this.showSignalering(s));
+        signaleringButton.addListener((Button.ClickListener) e -> this.showSignalering(response));
         addButton(signaleringButton);
+      });
+
+      vrsDocumenten.ifPresent(response -> {
+        addButton(new BasisregisterButton(getAanvraag().getAanvraagnummer(), response));
+      });
+
+      vrsAanvragen.ifPresent(result -> {
+        addButton(new AanvraagArchiefButton(getAanvraag().getAanvraagnummer(), result, true));
       });
 
     } else if (event.isEvent(AfterReturn.class)) {

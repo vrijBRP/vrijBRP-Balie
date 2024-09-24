@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,15 +19,23 @@
 
 package nl.procura.gba.web.services.bs.geboorte;
 
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AANGEVER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.VADER_DUO_MOEDER;
 import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.ERKENNING_BIJ_AANGIFTE;
 import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.GEEN_ERKENNING;
 import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BINNEN_HOMO_HUWELIJK;
 import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BUITEN_HUWELIJK;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakType;
@@ -40,7 +48,12 @@ import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierLatereVermeldin
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierMetAkte;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoonFilter;
-import nl.procura.gba.web.services.bs.erkenning.*;
+import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
+import nl.procura.gba.web.services.bs.erkenning.EersteKindType;
+import nl.procura.gba.web.services.bs.erkenning.ErkenningsType;
+import nl.procura.gba.web.services.bs.erkenning.KindLeeftijdsType;
+import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
+import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
 import nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ErkenningBuitenProweb;
 import nl.procura.gba.web.services.bs.geboorte.naamskeuzebuitenproweb.NaamskeuzeBuitenProweb;
 import nl.procura.gba.web.services.bs.lv.LatereVermelding;
@@ -199,6 +212,12 @@ public class DossierGeboorte extends DossGeb
     return NaamskeuzeType.get(getTypeNk());
   }
 
+  public boolean isOvergangsperiodeNaamskeuze() {
+    return getDossier().getDatumIngang()
+        .getDate().toInstant().atZone(ZoneId.systemDefault())
+        .getYear() == 2024;
+  }
+
   public void setNaamskeuzeSoort(NaamskeuzeType type) {
     setTypeNk(type != null ? type.getCode() : NaamskeuzeType.ONBEKEND.getCode());
   }
@@ -253,6 +272,26 @@ public class DossierGeboorte extends DossGeb
   @Override
   public String getKeuzeNaam() {
     return trim(getKeuzeTitel() + " " + getKeuzeVoorvoegsel() + " " + getKeuzeGeslachtsnaam());
+  }
+
+  @Override
+  public String getOrigineleKeuzeNaam() {
+    if (StringUtils.isNotBlank(getOrgKeuzeNaam())) {
+      return getOrgKeuzeNaam();
+
+    } else if (getVragen().heeftErkenningVoorGeboorte()) {
+      return getErkenningVoorGeboorte().getKeuzeNaam();
+
+    } else if (getVragen().heeftErkenningBuitenProweb()) {
+      return getErkenningBuitenProweb().getNaam();
+
+    } else if (getVragen().heeftNaamskeuzeVoorGeboorte()) {
+      return getNaamskeuzeVoorGeboorte().getKeuzeNaam();
+
+    } else if (getVragen().heeftNaamskeuzeBuitenProweb()) {
+      return getNaamskeuzeBuitenProweb().getNaam();
+    }
+    return getKeuzeNaam();
   }
 
   @Override

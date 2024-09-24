@@ -19,29 +19,43 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.AKTENR;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.BIJZONDERHEDEN;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.DATUM;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.GEMEENTE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.GESLACHTSNAAM;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.LAND;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.NAAMS_PERSOON_TYPE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.PLAATS;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.TITEL;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.VOORV;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.BIJZONDERHEDEN;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.DUBBELE_NAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.LAND;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.NAAMS_PERSOON_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.PLAATS;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.TITEL;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.VOORV;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.trim;
+
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Field;
 
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenPage.NaamsKeuze;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenWindow;
+import nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenErk;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.geboorte.naamskeuzebuitenproweb.NaamskeuzeBuitenProweb;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
+import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
-public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanNk> {
+public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanBuitenNk> {
+
+  private final DossierGeboorte geboorte;
 
   public Page35GeboorteFormNk(DossierGeboorte geboorte) {
+    this.geboorte = geboorte;
     setColumnWidths("200px", "");
-    setOrder(LAND, GEMEENTE, PLAATS, DATUM, AKTENR, NAAMS_PERSOON_TYPE, GESLACHTSNAAM, VOORV, TITEL, BIJZONDERHEDEN);
+    setOrder(LAND, GEMEENTE, PLAATS, DATUM, AKTENR, NAAMS_PERSOON_TYPE,
+        TITEL, VOORV, GESLACHTSNAAM, DUBBELE_NAAM, BIJZONDERHEDEN);
     setGeboorte(geboorte);
     setCaptionAndOrder();
   }
@@ -56,17 +70,35 @@ public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanNk> {
   }
 
   @Override
-  public Page35GeboorteBeanNk getNewBean() {
-    return new Page35GeboorteBeanNk();
+  public void afterSetColumn(Column column, Field field, Property property) {
+    if (property.is(Page35GeboorteBeanBuitenErk.DUBBELE_NAAM)) {
+      column.addComponent(new Button("Naamselectie", event -> {
+        getApplication().getParentWindow().addWindow(new BsNamenWindow(geboorte) {
+
+          @Override
+          public void setNaam(NaamsKeuze naamsKeuze) {
+            getField(Page35GeboorteBeanBinnenErk.DUBBELE_NAAM).setValue(trim(String.format("%s %s",
+                astr(naamsKeuze.getVoorvoegsel()), naamsKeuze.getGeslachtsnaam())));
+          }
+        });
+      }));
+    }
+
+    super.afterSetColumn(column, field, property);
+  }
+
+  @Override
+  public Page35GeboorteBeanBuitenNk getNewBean() {
+    return new Page35GeboorteBeanBuitenNk();
   }
 
   public void setCaptionAndOrder() {
   }
 
   public void setGeboorte(DossierGeboorte geboorte) {
-    Page35GeboorteBeanNk bean = new Page35GeboorteBeanNk();
+    Page35GeboorteBeanBuitenNk bean = new Page35GeboorteBeanBuitenNk();
 
-    if (geboorte != null && geboorte.getVragen().heeftNaamskeuzeBuitenProweb()) {
+    if (geboorte.getVragen().heeftNaamskeuzeBuitenProweb()) {
       NaamskeuzeBuitenProweb naamskeuzeBuitenProweb = geboorte.getNaamskeuzeBuitenProweb();
       bean.setAktenr(naamskeuzeBuitenProweb.getAktenummer());
       bean.setDatum(new DateFieldValue(naamskeuzeBuitenProweb.getDatum().getLongDate()));
@@ -75,12 +107,17 @@ public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanNk> {
       bean.setPlaats(naamskeuzeBuitenProweb.getBuitenlandsePlaats());
       bean.setNaamsPersoonType(naamskeuzeBuitenProweb.getNaamskeuzePersoon());
       bean.setBijzonderheden(naamskeuzeBuitenProweb.getBijzonderheden());
-      bean.setGeslachtsnaam(geboorte.getKeuzeGeslachtsnaam());
-      bean.setVoorv(new FieldValue(geboorte.getKeuzeVoorvoegsel()));
       bean.setTitel(geboorte.getKeuzeTitel());
+      bean.setVoorv(new FieldValue(geboorte.getKeuzeVoorvoegsel()));
+      bean.setGeslachtsnaam(geboorte.getKeuzeGeslachtsnaam());
+      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaam());
     }
 
     setBean(bean);
+    Field dubbeleNaam = getField(DUBBELE_NAAM);
+    dubbeleNaam.setVisible(geboorte.isOvergangsperiodeNaamskeuze());
+    dubbeleNaam.setReadOnly(false);
+    repaint();
   }
 
   private void onChangeLand(FieldValue land) {

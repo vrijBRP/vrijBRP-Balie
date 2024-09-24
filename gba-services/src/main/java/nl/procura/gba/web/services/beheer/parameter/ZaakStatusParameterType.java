@@ -21,6 +21,7 @@ package nl.procura.gba.web.services.beheer.parameter;
 
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_ERK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_GEB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_LV;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_NK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_CORRES;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_COVOG;
@@ -72,6 +73,7 @@ public enum ZaakStatusParameterType {
   GEBOORTE(ZAKEN_INIT_STATUS_AFSTAM_GEB, ZaakType.GEBOORTE),
   ERKENNING(ZAKEN_INIT_STATUS_AFSTAM_ERK, ZaakType.ERKENNING),
   NAAMSKEUZE(ZAKEN_INIT_STATUS_AFSTAM_NK, ZaakType.NAAMSKEUZE),
+  LV(ZAKEN_INIT_STATUS_AFSTAM_LV, ZaakType.LV),
   CORRESPONDENTIE(ZAKEN_INIT_STATUS_CORRES, ZaakType.CORRESPONDENTIE),
   COVOG(ZAKEN_INIT_STATUS_COVOG, ZaakType.COVOG),
   VERSTREKKINGSBEPERKING(ZAKEN_INIT_STATUS_VERSTREK, ZaakType.VERSTREKKINGSBEPERKING),

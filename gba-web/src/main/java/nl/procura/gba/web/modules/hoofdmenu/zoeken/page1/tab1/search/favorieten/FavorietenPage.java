@@ -21,12 +21,15 @@ package nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab1.search.favorieten
 
 import static nl.procura.standard.Globalfunctions.astr;
 
+import java.util.function.Consumer;
+
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorie;
 import nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieService;
 import nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieType;
@@ -44,9 +47,11 @@ import nl.procura.vaadin.component.table.indexed.IndexedTableFilterLayout;
 public class FavorietenPage extends NormalPageTemplate {
 
   private final PersoonHistorieType type;
+  private final Consumer<String>    nrConsumer;
   private FavorietenTable           table = null;
 
-  public FavorietenPage(PersoonHistorieType type) {
+  public FavorietenPage(PersoonHistorieType type, Consumer<String> nrConsumer) {
+    this.nrConsumer = nrConsumer;
     setSpacing(true);
     setMargin(true);
     this.type = type;
@@ -54,9 +59,7 @@ public class FavorietenPage extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
       GbaTextField searchField = new GbaTextField();
       searchField.setWidth("100%");
       searchField.setInputPrompt("Filter...");
@@ -73,10 +76,9 @@ public class FavorietenPage extends NormalPageTemplate {
 
         @Override
         public void setRecords() {
-
-          PersoonHistorieService db = getApplication().getServices().getPersoonHistorieService();
-          for (PersoonHistorie ph : db.getPersoonHistorie(type,
-              getApplication().getServices().getGebruiker())) {
+          Services services = getApplication().getServices();
+          PersoonHistorieService db = services.getPersoonHistorieService();
+          for (PersoonHistorie ph : db.getPersoonHistorie(type, services.getGebruiker())) {
             Record record = addRecord(ph);
             record.addValue(ph.getOmschrijving());
           }
@@ -129,6 +131,10 @@ public class FavorietenPage extends NormalPageTemplate {
   }
 
   private void goToPl(PersoonHistorie ph) {
-    getApplication().goToPl(getWindow().getParent(), "", ph.getDatabron(), astr(ph.getNummer()));
+    if (nrConsumer != null) {
+      nrConsumer.accept(astr(ph.getNummer()));
+    } else {
+      getApplication().goToPl(getWindow().getParent(), "", ph.getDatabron(), astr(ph.getNummer()));
+    }
   }
 }

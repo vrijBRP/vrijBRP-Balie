@@ -22,6 +22,7 @@ package nl.procura.gba.web.services.zaken.reisdocumenten;
 import static nl.procura.gba.common.MiscUtils.trimNr;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.pos;
 
 public class Aanvraagnummer {
 
@@ -84,7 +85,9 @@ public class Aanvraagnummer {
 
   @SuppressWarnings("unused")
   private void setFormatNummer(String formatNummer) {
-    String s = String.format("%09d", along(getNummer()));
-    this.formatNummer = String.format("%s-%s-%s", s.substring(0, 1), s.substring(1, 5), s.substring(5, 9));
+    if (pos(getNummer())) {
+      String s = String.format("%09d", along(getNummer()));
+      this.formatNummer = String.format("%s-%s-%s", s.charAt(0), s.substring(1, 5), s.substring(5, 9));
+    }
   }
 }

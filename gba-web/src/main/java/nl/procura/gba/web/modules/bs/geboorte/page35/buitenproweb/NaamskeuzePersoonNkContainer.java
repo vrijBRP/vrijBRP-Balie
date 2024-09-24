@@ -20,13 +20,15 @@
 package nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb;
 
 import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.MOEDER;
+import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.MOEDER_PARTNER;
 import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.PARTNER;
+import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.PARTNER_MOEDER;
 
 import nl.procura.gba.web.components.containers.GbaContainer;
 
 public class NaamskeuzePersoonNkContainer extends GbaContainer {
 
   public NaamskeuzePersoonNkContainer() {
-    addItems(MOEDER, PARTNER);
+    addItems(MOEDER, PARTNER, MOEDER_PARTNER, PARTNER_MOEDER);
   }
 }

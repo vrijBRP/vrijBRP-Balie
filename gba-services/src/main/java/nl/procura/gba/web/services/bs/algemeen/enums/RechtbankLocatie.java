@@ -21,6 +21,11 @@ package nl.procura.gba.web.services.bs.algemeen.enums;
 
 import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
 
+import java.util.Arrays;
+
+import lombok.Getter;
+
+@Getter
 public enum RechtbankLocatie {
 
   AMSTERDAM("Amsterdam", "rechtbank Amsterdam"),
@@ -34,50 +39,35 @@ public enum RechtbankLocatie {
   OVERIJSSEL("Overijssel", "rechtbank Overijssel"),
   ROTTERDAM("Rotterdam", "rechtbank Rotterdam"),
   ZEELAND_WEST_BRABANT("Zeeland-West-Brabant", "rechtbank Zeeland-West-Brabant"),
-  gerechtshof_ARNHEM_LEEUWARDEN("gerechtshof Arnhem-Leeuwarden"),
-  gerechtshof_DEN_HAAG("gerechtshof Den Haag"),
-  gerechtshof_S_HERTOGENBOSCH("gerechtshof 's-Hertogenbosch"),
+  GERECHTSHOF_ARNHEM_LEEUWARDEN("gerechtshof Arnhem-Leeuwarden"),
+  GERECHTSHOF_DEN_HAAG("gerechtshof Den Haag"),
+  GERECHTSHOF_S_HERTOGENBOSCH("gerechtshof 's-Hertogenbosch"),
   HOGE_RAAD("Hoge Raad der Nederlanden"),
+  ANDERS("anders, namelijk"),
   ONBEKEND("", "Onbekend");
 
-  private String code = null;
-  private String oms  = "";
+  private final String code;
+  private final String oms;
 
   RechtbankLocatie(String code) {
     this(code, code);
   }
 
   RechtbankLocatie(String code, String oms) {
-
-    setCode(code);
-    setOms(oms);
+    this.code = code;
+    this.oms = oms;
   }
 
   public static RechtbankLocatie get(String code) {
+    return Arrays.stream(values())
+        .filter(locatie -> equalsIgnoreCase(locatie.getCode(), code) || equalsIgnoreCase(locatie.getOms(), code))
+        .findFirst()
+        .orElse(ONBEKEND);
 
-    for (RechtbankLocatie a : values()) {
-      if (equalsIgnoreCase(a.getCode(), code)) {
-        return a;
-      }
-    }
-
-    return ONBEKEND;
   }
 
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getOms() {
-    return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
+  public boolean is(RechtbankLocatie... types) {
+    return Arrays.stream(types).anyMatch(type -> type == this);
   }
 
   @Override

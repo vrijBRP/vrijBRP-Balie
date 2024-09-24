@@ -29,6 +29,7 @@ import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMu
 import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.OPERATION;
 import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.RECORD;
 import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.SET;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_SET;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -117,7 +118,7 @@ public class Page3PersonListMutations extends NormalPageTemplate {
 
   private BasePLSet getBasePLSet(PersonListMutation mutation) {
     BasePLList<BasePLSet> sets = mutation.getBasisPersoon().getCat(mutation.getCatType()).getSets();
-    if (sets.isEmpty()) {
+    if (sets.isEmpty() || mutation.getActionType().is(ADD_SET)) {
       return getEmptySet(mutation.getCatType(), mutation.getSet().intValue());
     }
     return sets
@@ -127,8 +128,8 @@ public class Page3PersonListMutations extends NormalPageTemplate {
         .orElseThrow(() -> new ProException("Geen set met code " + mutation.getSet()));
   }
 
-  private BasePLSet getEmptySet(GBACat category, int volgCode) {
-    BasePLSet set = new BasePLSet(category, volgCode);
+  private BasePLSet getEmptySet(GBACat category, int setCode) {
+    BasePLSet set = new BasePLSet(category, setCode);
     BasePLRec record = new BasePLRec(category, set, GBARecStatus.CURRENT);
     record.setIndex(1);
     for (GBAGroupElements.GBAGroupElem type : GBAGroupElements.getByCat(category.getCode())) {

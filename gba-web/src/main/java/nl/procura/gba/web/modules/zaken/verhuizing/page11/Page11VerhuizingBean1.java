@@ -22,10 +22,10 @@ package nl.procura.gba.web.modules.zaken.verhuizing.page11;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -51,7 +51,7 @@ public class Page11VerhuizingBean1 implements Serializable {
       caption = "Adresidentificatie",
       description = "Zoek alle personen die op hetzelfde adres wonen")
   private boolean       adresind      = false;
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "BSN")
   private BsnFieldValue bsn           = new BsnFieldValue();
   @Field(customTypeClass = DatumVeld.class,

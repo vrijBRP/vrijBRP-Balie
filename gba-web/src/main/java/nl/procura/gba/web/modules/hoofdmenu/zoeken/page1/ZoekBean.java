@@ -30,17 +30,23 @@ import nl.procura.gba.web.components.containers.actueel.GemdeelActueelContainer;
 import nl.procura.gba.web.components.containers.actueel.LocatieActueelContainer;
 import nl.procura.gba.web.components.containers.actueel.PlaatsActueelContainer;
 import nl.procura.gba.web.components.containers.actueel.StraatActueelContainer;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FilteringMode;
 import nl.procura.vaadin.annotation.field.FilteringMode.Mode;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.InputPrompt;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.AnrField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.PostalcodeField;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
@@ -76,7 +82,7 @@ public class ZoekBean implements Serializable {
   public static final String RIJBEWIJS        = "rijbewijs";
   public static final String VREEMDELINGENDOC = "vreemdelingendoc";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer")
   @Immediate
   private BsnFieldValue bsn = null;

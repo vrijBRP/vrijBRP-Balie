@@ -19,7 +19,15 @@
 
 package nl.procura.gba.web.services.beheer.verkiezing;
 
-import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.*;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_BRIEFSTEMBEWIJS;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_GEEN;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_INTREKKEN_OVERIG;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_INTREKKEN_VERLIES;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_KIEZERSPAS;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_ONGELDIG_KIESG;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_ONGELDIG_OVERL;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_VERVANGEN;
+import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_VOLMACHTBEWIJS;
 
 import java.util.Arrays;
 
@@ -30,7 +38,7 @@ public enum KiezersregisterActieType {
   ACT_VERVANGEN(3, "Vervangen door nieuwe stempas", AAND_VERVANGEN),
   ACT_MACHTIGEN(4, "Machtigen", AAND_VOLMACHTBEWIJS),
   ACT_ONGELDIG_OVERL(5, "Ongeldig verklaren wegens overlijden", AAND_ONGELDIG_OVERL),
-  ACT_ONGELDIG_KIESG(6, "Ongeldig verklaren wegens ontbreken kiesgerechtigheid", AAND_KIEZERSPAS),
+  ACT_ONGELDIG_KIESG(6, "Ongeldig verklaren wegens ontbreken kiesgerechtigheid", AAND_ONGELDIG_KIESG),
   ACT_INTREKKEN_VERLIES(7, "Ongeldig verklaren (intrekken) wegens vastgestelde ontvreemding", AAND_INTREKKEN_VERLIES),
   ACT_INTREKKEN_OVERIG(8, "Stempas ongeldig verklaren (intrekken) wegens overige reden", AAND_INTREKKEN_OVERIG),
   ACT_TOEVOEGEN(9, "Toevoegen aan kiezersregister", AAND_GEEN),

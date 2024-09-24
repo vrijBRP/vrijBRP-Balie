@@ -20,7 +20,9 @@
 package nl.procura.gba.web.modules.bs.common.pages.persoonpage;
 
 import static java.util.Arrays.asList;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.ui.Button;
@@ -49,12 +51,10 @@ public class BsContactpersoonPage<T extends ZaakDossier> extends BsPersoonPage<T
   public void handleEvent(Button button, int keyCode) {
 
     if (button == buttonIden) {
-
       check(false, buttonIden);
     }
 
     if (button == buttonContact) {
-
       check(false, buttonContact);
     }
 
@@ -72,6 +72,7 @@ public class BsContactpersoonPage<T extends ZaakDossier> extends BsPersoonPage<T
 
     if (isIdentificatieNodig) {
       check(true, buttonIden, buttonContact);
+
     } else {
       check(true);
     }

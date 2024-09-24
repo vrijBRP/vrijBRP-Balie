@@ -1,0 +1,1248 @@
+---
+openapi: 3.0.1
+info:
+  title: Controle aanvragen API
+  version: 1.56.0
+servers:
+  - url: http://api
+    description: Generated server url
+tags:
+  - name: Controle aanvragen controller
+    description: Controle aanvragen API
+paths:
+  "/controleaanvragen/v2/personalisatiegegevens":
+    post:
+      tags:
+        - Controle aanvragen controller
+      summary: 'Controle aanvragen op persoonsgegevens '
+      operationId: controleAanvragen
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ControleAanvragenRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ControleAanvragenResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/controleaanvragen/v2/aanvraag":
+    post:
+      tags:
+        - Controle aanvragen controller
+      summary: 'Controle aanvragen op aanvraagnummer '
+      operationId: controleAanvraag
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ControleAanvraagRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ControleAanvraagDetailResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/controleaanvragen/v2/aanvraag/details":
+    post:
+      tags:
+        - Controle aanvragen controller
+      summary: 'Controle volledige aanvraag op aanvraagnummer '
+      operationId: controleAanvraagVolledig
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ControleAanvraagRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ControleAanvraagVolledigResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/controleaanvragen/v1/personalisatiegegevens":
+    post:
+      tags:
+        - Controle aanvragen controller
+      summary: 'Controle aanvragen op persoonsgegevens '
+      operationId: controleAanvragen_1
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PersonalisatiegegevensRequestV1"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ControleAanvragenResponseV1"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/controleaanvragen/v1/aanvraag":
+    post:
+      tags:
+        - Controle aanvragen controller
+      summary: 'Controle aanvragen op aanvraagnummer '
+      operationId: controleAanvraag_1
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ControleAanvraagRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ControleAanvraagDetailResponseV1"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/controleaanvragen/v1/aanvraag/details":
+    post:
+      tags:
+        - Controle aanvragen controller
+      summary: 'Controle volledige aanvraag op aanvraagnummer '
+      operationId: controleAanvraagVolledig_1
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ControleAanvraagRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+components:
+  schemas:
+    ControleAanvragenRequest:
+      required:
+        - aanleiding
+      type: object
+      properties:
+        geslachtsnaam:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        voornamen:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]+%?)$"
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          maxLength: 80
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        aanleiding:
+          type: string
+          enum:
+            - REISDOCUMENTAANVRAAG
+            - IDENTITEITSONDERZOEK
+        voorvoegselgeslachtsnaam:
+          maxLength: 10
+          minLength: 0
+          pattern: "^[\\p{L}',. -]*$"
+          type: string
+        bsn:
+          type: integer
+          format: int64
+        anummer:
+          type: integer
+          format: int64
+        aanvraagnummer:
+          type: string
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        code:
+          type: string
+        tijdstip:
+          type: string
+          format: date-time
+        titel:
+          type: string
+        instantie:
+          type: string
+    Aanvraagstatus:
+      type: object
+      properties:
+        code:
+          type: string
+        aanvraagstatusOmschrijving:
+          type: string
+        begindatum:
+          type: string
+          format: date
+    ControleAanvragenResponse:
+      type: object
+      properties:
+        peildatum:
+          type: string
+          format: date
+        resultaatomschrijving:
+          type: string
+        aanvragen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvragenResponse.ControleAanvraagBasic"
+    ControleAanvragenResponse.ControleAanvraagBasic:
+      type: object
+      properties:
+        documentNummer:
+          type: string
+        aanvraagnummer:
+          type: integer
+          format: int64
+        aangevraagdReisdocumentsoort:
+          type: string
+        datumAanvraag:
+          type: string
+          format: date
+        aanvraagstatus:
+          "$ref": "#/components/schemas/Aanvraagstatus"
+        aanvraaginstantie:
+          type: string
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ControleAanvragenResponse.Personalisatiegegevens"
+    ControleAanvragenResponse.Personalisatiegegevens:
+      type: object
+      properties:
+        bsn:
+          type: integer
+          format: int64
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        geboortedatum:
+          type: string
+    InvalidParam:
+      type: object
+      properties:
+        code:
+          type: string
+        reden:
+          type: string
+        naam:
+          type: string
+    ValidationErrorMessages:
+      type: object
+      properties:
+        status:
+          type: string
+        code:
+          type: string
+        tijdstip:
+          type: string
+          format: date-time
+        titel:
+          type: string
+        instantie:
+          type: string
+        ongeldige-parameters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InvalidParam"
+    Aanvraaginformatie:
+      required:
+        - aanvraagnummer
+      type: object
+      properties:
+        aanvraagnummer:
+          pattern: "^\\d{0,10}$"
+          type: string
+    ControleAanvraagRequest:
+      required:
+        - aanleiding
+        - aanvraaginformatie
+      type: object
+      properties:
+        aanleiding:
+          type: string
+          enum:
+            - REISDOCUMENTAANVRAAG
+            - IDENTITEITSONDERZOEK
+        aanvraaginformatie:
+          "$ref": "#/components/schemas/Aanvraaginformatie"
+        aanvraagnummer:
+          type: string
+    ControleAanvraagDetailResponse:
+      type: object
+      properties:
+        documentNummer:
+          type: string
+        aanvraagnummer:
+          type: integer
+          format: int64
+        aangevraagdReisdocumentsoort:
+          type: string
+        datumAanvraag:
+          type: string
+          format: date
+        aanvraagstatus:
+          "$ref": "#/components/schemas/Aanvraagstatus"
+        aanvraaginstantie:
+          type: string
+        aanvraaglocatie:
+          type: string
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ControleAanvraagDetailResponse.Personalisatiegegevens"
+    ControleAanvraagDetailResponse.Personalisatiegegevens:
+      type: object
+      properties:
+        anummer:
+          type: integer
+          format: int64
+        voornamen:
+          type: string
+        geboorteplaats:
+          type: string
+        autoriteitVanAfgifte:
+          type: string
+        bsn:
+          type: integer
+          format: int64
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        geboortedatum:
+          type: string
+    ControleAanvraagVolledigResponse:
+      type: object
+      properties:
+        reisdocument:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Reisdocument"
+        aanvraaginformatie:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AanvraaginformatieResponse"
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Personalisatiegegevens"
+        aanvraagstatussen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Aanvraagstatus"
+        aanvraagactiviteiten:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Aanvraagactiviteit"
+        adressenbinnenland:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AdresBinnenland"
+        adressenbuitenland:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AdresBuitenland"
+        adressenongespecificeerd:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AdresOngespecificeerd"
+    ControleAanvraagVolledigResponse.Aanvraagactiviteit:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+        conclusie:
+          type: string
+        datumAanvraagactiviteit:
+          type: string
+          format: date-time
+        toelichting:
+          type: string
+    ControleAanvraagVolledigResponse.AanvraaginformatieResponse:
+      type: object
+      properties:
+        aanvraagnummer:
+          type: integer
+          format: int64
+        aanvraagdatum:
+          type: string
+          format: date
+        reisdocumentsoort:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Reisdocumentsoort"
+        instantielocatie:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Instantielocatie"
+        artikel23b:
+          type: boolean
+        nietPersoonlijkAanwezig:
+          type: string
+        autoriteitVerstrekking:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AutoriteitVerstrekking"
+        inleverinstantie:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Instantie"
+        inleverdatum:
+          type: string
+          format: date
+        verzochtEindeGeldigheid:
+          type: string
+          format: date
+        redenvingerafwezig:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.VingerafdrukkenAfwezig"
+        goedkeuringGelaat:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.GoedkeuringGelaat"
+        nietInStaatTotOndertekening:
+          type: boolean
+        autoriteitVanAfgifte:
+          type: string
+    ControleAanvraagVolledigResponse.Aanvraagmelding:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+        meldingdatum:
+          type: string
+          format: date-time
+        verwerkingdatum:
+          type: string
+          format: date-time
+        meldingredendatum:
+          type: string
+          format: date
+        redenCode:
+          type: string
+        redenOmschrijving:
+          type: string
+        meldendeInstantieNaam:
+          type: string
+        meldendeInstantieGemeentecode:
+          type: string
+        meldendeInstantielocatieNaam:
+          type: string
+    ControleAanvraagVolledigResponse.Aanvraagstatus:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+        begindatum:
+          type: string
+          format: date-time
+        einddatum:
+          type: string
+          format: date-time
+        aanvraagmeldingen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Aanvraagmelding"
+    ControleAanvraagVolledigResponse.AdellijkeTitelPredicaat:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponse.AdresBinnenland:
+      type: object
+      properties:
+        straatnaam:
+          type: string
+        huisnummer:
+          type: integer
+          format: int32
+        huisletter:
+          type: string
+        huisnummertoevoeging:
+          type: string
+        postcode:
+          type: string
+        postbus:
+          type: string
+        plaatsnaam:
+          type: string
+        registratiedatum:
+          type: string
+          format: date-time
+    ControleAanvraagVolledigResponse.AdresBuitenland:
+      type: object
+      properties:
+        land:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Land"
+        regelAdresBuitenland1:
+          type: string
+        regelAdresBuitenland2:
+          type: string
+        regelAdresBuitenland3:
+          type: string
+        registratiedatum:
+          type: string
+          format: date-time
+    ControleAanvraagVolledigResponse.AdresOngespecificeerd:
+      type: object
+      properties:
+        ongespecificeerdAdres:
+          type: string
+    ControleAanvraagVolledigResponse.AutoriteitVerstrekking:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponse.GoedkeuringGelaat:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponse.Instantie:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponse.Instantielocatie:
+      type: object
+      properties:
+        code:
+          type: string
+        naam:
+          type: string
+        aanvraaginstantie:
+          type: string
+    ControleAanvraagVolledigResponse.Land:
+      type: object
+      properties:
+        code:
+          type: string
+        naam:
+          type: string
+    ControleAanvraagVolledigResponse.Nationaliteit:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponse.Personalisatiegegevens:
+      type: object
+      properties:
+        bsn:
+          type: integer
+          format: int64
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        geboortedatum:
+          type: string
+        anummer:
+          type: integer
+          format: int64
+        voornamen:
+          type: string
+        geboorteplaats:
+          type: string
+        adellijketitel:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AdellijkeTitelPredicaat"
+        nationaliteit:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.Nationaliteit"
+        geslachtCode:
+          type: string
+        geslachtOmschrijving:
+          type: string
+          enum:
+            - VROUW
+            - MAN
+            - ONBEKEND
+        spoedaanvraag:
+          type: string
+          enum:
+            - GEEN
+            - VERZOEK_AANVRAGER
+            - VERZOEK_UITGEVENDE_INSTANTIE
+            - PERSONALISATIEFOUT
+            - MISDRUK
+            - BIJZONDER_SCHULD_PRODUCENT
+            - BIJZONDER_SCHULD_GEMEENTE
+        datumverstrekking:
+          type: string
+          format: date
+        lengte:
+          type: integer
+          format: int32
+        pseudoniem:
+          type: string
+        geslachtsnaamPartner:
+          type: string
+        voorvoegselGeslachtsnaamPartner:
+          type: string
+        adellijketitelpartner:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponse.AdellijkeTitelPredicaat"
+        wijzeVermeldingPartnerCode:
+          type: string
+        wijzeVermeldingPartnerOmschrijving:
+          type: string
+          enum:
+            - NIET_VERMELDEN
+            - ECHTGENOTE_VAN
+            - ECHTGENOOT_VAN
+            - GEHUWD_GEWEEST
+            - GEREGISTREERD_PARTNER
+            - GEREGISTREERD_PARTNER_GEWEEST
+            - EV
+            - WV
+            - GV
+            - PV
+            - BV
+            - AV
+        verblijfsdocumentnummer:
+          type: string
+        verblijfsdocumentEindegeldigheid:
+          type: string
+          format: date
+        functievermeldingNederlands:
+          type: string
+        functievermeldingEngels:
+          type: string
+        functievermeldingFrans:
+          type: string
+        terVervangingVanDocumentnummer:
+          type: string
+        uitgezonderdLanden:
+          type: string
+        geldigVoorLanden:
+          type: string
+        staatloze:
+          type: boolean
+    ControleAanvraagVolledigResponse.Reisdocument:
+      type: object
+      properties:
+        documentNummer:
+          type: string
+    ControleAanvraagVolledigResponse.Reisdocumentsoort:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponse.VingerafdrukkenAfwezig:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    PersonalisatiegegevensRequestV1:
+      required:
+        - aanleiding
+      type: object
+      properties:
+        geslachtsnaam:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        voornamen:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]+%?)$"
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          maxLength: 80
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        aanleiding:
+          type: string
+          enum:
+            - REISDOCUMENTAANVRAAG
+            - IDENTITEITSONDERZOEK
+        voorvoegselgeslachtsnaam:
+          maxLength: 10
+          minLength: 0
+          pattern: "^[\\p{L}',. -]*$"
+          type: string
+        bsn:
+          type: string
+        anummer:
+          pattern: "^( *$)|^(\\d{10})$"
+          type: string
+        aanvraagnummer:
+          type: string
+    ControleAanvragenResponseV1:
+      type: object
+      properties:
+        peildatum:
+          type: string
+          format: date
+        resultaatomschrijving:
+          type: string
+        aanvragen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvragenResponseV1.ControleAanvraagBasic"
+    ControleAanvragenResponseV1.ControleAanvraagBasic:
+      type: object
+      properties:
+        documentNummer:
+          type: string
+        aanvraagnummer:
+          type: integer
+          format: int64
+        aangevraagdReisdocumentsoort:
+          type: string
+        datumAanvraag:
+          type: string
+          format: date
+        aanvraagstatus:
+          "$ref": "#/components/schemas/Aanvraagstatus"
+        aanvraaginstantie:
+          type: string
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ControleAanvragenResponseV1.Personalisatiegegevens"
+    ControleAanvragenResponseV1.Personalisatiegegevens:
+      type: object
+      properties:
+        bsn:
+          type: string
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        geboortedatum:
+          type: string
+    ControleAanvraagDetailResponseV1:
+      type: object
+      properties:
+        documentNummer:
+          type: string
+        aanvraagnummer:
+          type: integer
+          format: int64
+        aangevraagdReisdocumentsoort:
+          type: string
+        datumAanvraag:
+          type: string
+          format: date
+        aanvraagstatus:
+          "$ref": "#/components/schemas/Aanvraagstatus"
+        aanvraaginstantie:
+          type: string
+        aanvraaglocatie:
+          type: string
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ControleAanvraagDetailResponseV1.Personalisatiegegevens"
+    ControleAanvraagDetailResponseV1.Personalisatiegegevens:
+      type: object
+      properties:
+        bsn:
+          type: string
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        geboortedatum:
+          type: string
+        anummer:
+          type: integer
+          format: int64
+        voornamen:
+          type: string
+        geboorteplaats:
+          type: string
+        autoriteitVanAfgifte:
+          type: string
+    ControleAanvraagVolledigResponseV1:
+      type: object
+      properties:
+        reisdocument:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Reisdocument"
+        aanvraaginformatie:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Aanvraaginformatie"
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Personalisatiegegevens"
+        aanvraagstatussen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Aanvraagstatus"
+        aanvraagactiviteiten:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Aanvraagactiviteit"
+        adressenbinnenland:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.AdresBinnenland"
+        adressenbuitenland:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.AdresBuitenland"
+        adressenongespecificeerd:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.AdresOngespecificeerd"
+    ControleAanvraagVolledigResponseV1.Aanvraagactiviteit:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+        conclusie:
+          type: string
+        datumAanvraagactiviteit:
+          type: string
+          format: date-time
+        toelichting:
+          type: string
+    ControleAanvraagVolledigResponseV1.Aanvraaginformatie:
+      type: object
+      properties:
+        aanvraagnummer:
+          type: integer
+          format: int64
+        aanvraagdatum:
+          type: string
+          format: date
+        reisdocumentsoort:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Reisdocumentsoort"
+        instantielocatie:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Instantielocatie"
+        artikel23b:
+          type: boolean
+        nietPersoonlijkAanwezig:
+          type: string
+        autoriteitVerstrekking:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.AutoriteitVerstrekking"
+        inleverinstantie:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Instantie"
+        inleverdatum:
+          type: string
+          format: date
+        verzochtEindeGeldigheid:
+          type: string
+          format: date
+        redenvingerafwezig:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.VingerafdrukkenAfwezig"
+        goedkeuringGelaat:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.GoedkeuringGelaat"
+        nietInStaatTotOndertekening:
+          type: boolean
+        autoriteitVanAfgifte:
+          type: string
+    ControleAanvraagVolledigResponseV1.Aanvraagmelding:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+        meldingdatum:
+          type: string
+          format: date-time
+        verwerkingdatum:
+          type: string
+          format: date-time
+        meldingredendatum:
+          type: string
+          format: date
+        redenCode:
+          type: string
+        redenOmschrijving:
+          type: string
+        meldendeInstantieNaam:
+          type: string
+        meldendeInstantieGemeentecode:
+          type: string
+        meldendeInstantielocatieNaam:
+          type: string
+    ControleAanvraagVolledigResponseV1.Aanvraagstatus:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+        begindatum:
+          type: string
+          format: date-time
+        einddatum:
+          type: string
+          format: date-time
+        aanvraagmeldingen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Aanvraagmelding"
+    ControleAanvraagVolledigResponseV1.AdellijkeTitelPredicaat:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponseV1.AdresBinnenland:
+      type: object
+      properties:
+        straatnaam:
+          type: string
+        huisnummer:
+          type: integer
+          format: int32
+        huisletter:
+          type: string
+        huisnummertoevoeging:
+          type: string
+        postcode:
+          type: string
+        postbus:
+          type: string
+        plaatsnaam:
+          type: string
+        registratiedatum:
+          type: string
+          format: date-time
+    ControleAanvraagVolledigResponseV1.AdresBuitenland:
+      type: object
+      properties:
+        land:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Land"
+        regelAdresBuitenland1:
+          type: string
+        regelAdresBuitenland2:
+          type: string
+        regelAdresBuitenland3:
+          type: string
+        registratiedatum:
+          type: string
+          format: date-time
+    ControleAanvraagVolledigResponseV1.AdresOngespecificeerd:
+      type: object
+      properties:
+        ongespecificeerdAdres:
+          type: string
+    ControleAanvraagVolledigResponseV1.AutoriteitVerstrekking:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponseV1.GoedkeuringGelaat:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponseV1.Instantie:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponseV1.Instantielocatie:
+      type: object
+      properties:
+        code:
+          type: string
+        naam:
+          type: string
+        aanvraaginstantie:
+          type: string
+    ControleAanvraagVolledigResponseV1.Land:
+      type: object
+      properties:
+        code:
+          type: string
+        naam:
+          type: string
+    ControleAanvraagVolledigResponseV1.Nationaliteit:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponseV1.Personalisatiegegevens:
+      type: object
+      properties:
+        bsn:
+          type: string
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        geboortedatum:
+          type: string
+        anummer:
+          type: integer
+          format: int64
+        voornamen:
+          type: string
+        geboorteplaats:
+          type: string
+        adellijketitel:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.AdellijkeTitelPredicaat"
+        nationaliteit:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.Nationaliteit"
+        geslachtCode:
+          type: string
+        geslachtOmschrijving:
+          type: string
+          enum:
+            - VROUW
+            - MAN
+            - ONBEKEND
+        spoedaanvraag:
+          type: string
+          enum:
+            - GEEN
+            - VERZOEK_AANVRAGER
+            - VERZOEK_UITGEVENDE_INSTANTIE
+            - PERSONALISATIEFOUT
+            - MISDRUK
+            - BIJZONDER_SCHULD_PRODUCENT
+            - BIJZONDER_SCHULD_GEMEENTE
+        datumverstrekking:
+          type: string
+          format: date
+        lengte:
+          type: integer
+          format: int32
+        pseudoniem:
+          type: string
+        geslachtsnaamPartner:
+          type: string
+        voorvoegselGeslachtsnaamPartner:
+          type: string
+        adellijketitelpartner:
+          "$ref": "#/components/schemas/ControleAanvraagVolledigResponseV1.AdellijkeTitelPredicaat"
+        wijzeVermeldingPartnerCode:
+          type: string
+        wijzeVermeldingPartnerOmschrijving:
+          type: string
+          enum:
+            - NIET_VERMELDEN
+            - ECHTGENOTE_VAN
+            - ECHTGENOOT_VAN
+            - GEHUWD_GEWEEST
+            - GEREGISTREERD_PARTNER
+            - GEREGISTREERD_PARTNER_GEWEEST
+            - EV
+            - WV
+            - GV
+            - PV
+            - BV
+            - AV
+        verblijfsdocumentnummer:
+          type: string
+        verblijfsdocumentEindegeldigheid:
+          type: string
+          format: date
+        functievermeldingNederlands:
+          type: string
+        functievermeldingEngels:
+          type: string
+        functievermeldingFrans:
+          type: string
+        terVervangingVanDocumentnummer:
+          type: string
+        uitgezonderdLanden:
+          type: string
+        geldigVoorLanden:
+          type: string
+        staatloze:
+          type: boolean
+    ControleAanvraagVolledigResponseV1.Reisdocument:
+      type: object
+      properties:
+        documentNummer:
+          type: string
+    ControleAanvraagVolledigResponseV1.Reisdocumentsoort:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ControleAanvraagVolledigResponseV1.VingerafdrukkenAfwezig:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+  parameters:
+    pseudoniem:
+      name: pseudoniem
+      in: header
+      description: gebruiker pseudoniem
+      schema:
+        type: string
+    instantie_code:
+      name: instantie_code
+      in: header
+      description: gebruiker instantie code
+      schema:
+        type: string
+  securitySchemes:
+    jwt-bearer-token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -10,7 +10,7 @@ public class NaamTest {
 
   @Test
   public void mustShowCorrectInitials() {
-    BasePLElem voornamen = getBasePLElem("Cle-xaïs Ruth -Maria Sigmélie Migdailine Amelia");
+    BasePLElem voornamen = getBasePLElem("Cle-xaïs Æjoud Ruth -Maria Sigmélie Migdailine Amelia");
     BasePLElem geslachtsnaam = getBasePLElem("Bakker");
     BasePLElem voorvoegsel = new BasePLElem();
     BasePLElem titel = new BasePLElem();
@@ -18,8 +18,8 @@ public class NaamTest {
     Naam partner = null;
 
     Naam naam = new Naam(voornamen, geslachtsnaam, voorvoegsel, titel, naamgebruik, partner);
-    Assert.assertEquals("C-x.R.M.S.M.A.", naam.getInit());
-    Assert.assertEquals("C.R.M.S.M.A.", naam.getInitNen());
+    Assert.assertEquals("C-x.Æ.R.M.S.M.A.", naam.getInit());
+    Assert.assertEquals("C.Æ.R.M.S.M.A.", naam.getInitNen());
   }
 
   private static BasePLElem getBasePLElem(String value) {

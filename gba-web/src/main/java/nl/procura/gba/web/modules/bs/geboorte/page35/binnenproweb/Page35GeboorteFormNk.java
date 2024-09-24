@@ -19,55 +19,92 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.AKTENR;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.DATUM;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.GEMEENTE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.GESLACHTSNAAM;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.NAAMSKEUZE_PERSOON;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.TITEL;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.VOORVOEGSEL;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.DUBBELE_NAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.NAAMSKEUZE_PERSOON;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.TITEL;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk.VOORVOEGSEL;
 import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.util.List;
 
-import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Field;
+
+import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenPage.NaamsKeuze;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenWindow;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
+import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
-public class Page35GeboorteFormNk extends ReadOnlyForm<Page35GeboorteBeanNk> {
+public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanBinnenNk> {
+
+  private final DossierGeboorte   geboorte;
+  private       DossierNaamskeuze naamskeuze;
 
   public Page35GeboorteFormNk(DossierGeboorte geboorte) {
-
+    this.geboorte = geboorte;
     setColumnWidths("200px", "");
-    setOrder(GEMEENTE, DATUM, AKTENR, GESLACHTSNAAM, VOORVOEGSEL, TITEL, NAAMSKEUZE_PERSOON);
+    setOrder(GEMEENTE, DATUM, AKTENR, NAAMSKEUZE_PERSOON, TITEL, VOORVOEGSEL, GESLACHTSNAAM, DUBBELE_NAAM);
     setGeboorte(geboorte);
   }
 
   @Override
-  public Page35GeboorteBeanNk getNewBean() {
-    return new Page35GeboorteBeanNk();
+  public Page35GeboorteBeanBinnenNk getNewBean() {
+    return new Page35GeboorteBeanBinnenNk();
   }
 
   public void setGeboorte(DossierGeboorte geboorte) {
-    Page35GeboorteBeanNk bean = new Page35GeboorteBeanNk();
-    if (geboorte != null && geboorte.getVragen().heeftNaamskeuzeVoorGeboorte()) {
-      DossierNaamskeuze naamskeuze = geboorte.getNaamskeuzeVoorGeboorte();
+    Page35GeboorteBeanBinnenNk bean = new Page35GeboorteBeanBinnenNk();
+    if (geboorte.getVragen().heeftNaamskeuzeVoorGeboorte()) {
+      naamskeuze = geboorte.getNaamskeuzeVoorGeboorte();
       List<DossierAkte> aktes = naamskeuze.getDossier().getAktes();
 
-      if (aktes.size() > 0) {
+      if (!aktes.isEmpty()) {
         bean.setAktenr(astr(aktes.get(0).getAkte()));
       }
 
       bean.setGemeente(naamskeuze.getGemeente().getDescription());
       bean.setDatum(astr(naamskeuze.getDossier().getDatumTijdInvoer().getFormatDate()));
-      bean.setGeslachtsnaam(naamskeuze.getKeuzeGeslachtsnaam());
-      bean.setVoorv(new FieldValue(naamskeuze.getKeuzeVoorvoegsel()));
-      bean.setTitel(naamskeuze.getKeuzeTitel());
       bean.setNaamskeuzePersoon(naamskeuze.getNaamskeuzePersoon());
+      bean.setTitel(naamskeuze.getKeuzeTitel());
+      bean.setVoorv(new FieldValue(naamskeuze.getKeuzeVoorvoegsel()));
+      bean.setGeslachtsnaam(naamskeuze.getKeuzeGeslachtsnaam());
+      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaam());
     }
 
     setBean(bean);
+
+    Field dubbeleNaam = getField(DUBBELE_NAAM);
+    dubbeleNaam.setVisible(naamskeuze != null && geboorte.isOvergangsperiodeNaamskeuze());
+    dubbeleNaam.setReadOnly(false);
+    repaint();
+  }
+
+  @Override
+  public void afterSetColumn(Column column, Field field, Property property) {
+    if (property.is(Page35GeboorteBeanBinnenErk.DUBBELE_NAAM)
+        && geboorte.isOvergangsperiodeNaamskeuze()
+        && naamskeuze != null) {
+      column.addComponent(new Button("Naamselectie", event -> {
+        getApplication().getParentWindow().addWindow(new BsNamenWindow(geboorte) {
+
+          @Override
+          public void setNaam(NaamsKeuze naamsKeuze) {
+            getField(Page35GeboorteBeanBinnenErk.DUBBELE_NAAM).setValue(trim(String.format("%s %s",
+                astr(naamsKeuze.getVoorvoegsel()), naamsKeuze.getGeslachtsnaam())));
+          }
+        });
+      }));
+    }
+
+    super.afterSetColumn(column, field, property);
   }
 }

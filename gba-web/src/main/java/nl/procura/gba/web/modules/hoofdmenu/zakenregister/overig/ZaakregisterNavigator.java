@@ -47,6 +47,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page270.Page270Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page280.Page280Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page290.Page290Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page30.Page30Zaken;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page300.Page300Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page40.Page40Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page50.Page50Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page60.Page60Zaken;
@@ -60,6 +61,7 @@ import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.levenloos.DossierLevenloos;
+import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
@@ -181,6 +183,8 @@ public class ZaakregisterNavigator {
             nav.goToPage(new Page250Zaken((Dossier) zaak));
           } else if (dossier.getZaakDossier() instanceof DossierRegistration) {
             nav.goToPage(new Page260Zaken((Dossier) zaak));
+          } else if (dossier.getZaakDossier() instanceof DossierLv) {
+            nav.goToPage(new Page300Zaken((Dossier) zaak));
           } else {
             throw new ProException(WARNING, "Deze zaak is onvolledig en kan niet worden geladen.");
           }

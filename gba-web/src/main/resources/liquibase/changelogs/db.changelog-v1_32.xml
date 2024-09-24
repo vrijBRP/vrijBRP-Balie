@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+  <changeSet author="Procura" id="v1_32_1">
+    <createTable tableName="doss_lv">
+      <column name="c_doss_lv" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="soort_lv" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_lv" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="akte" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="akte_huidig" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="akte_nieuw" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="akte_gem" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="akte_jaar" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="uitspraak" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_uitspraak" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_gewijsde" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="soort_verbintenis" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_nr" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_datum" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_door" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_plaats" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tweede_doc" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tweede_doc_oms" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tweede_doc_datum" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tweede_doc_plaats" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="betreft_ouder" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="betreft_ouder_persoon" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gesl_ouder" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="voorn_ouder" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="keuze_gesl" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gesl" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="voorn" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gesl_aand" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gekozen_recht" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_wijz" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fam_recht_betrek" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="verbeterd" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_32_2">
+    <addPrimaryKey columnNames="c_doss_lv"
+      constraintName="doss_lv_pkey"
+      tableName="doss_lv"/>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_32_3">
+    <addForeignKeyConstraint
+      baseColumnNames="c_doss_lv"
+      baseTableName="doss_lv"
+      constraintName="doss_lv_c_doss_lv_fkey"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_doss"
+      referencedTableName="doss"/>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_32_4">
+    <createView viewName="zaken_view" replaceIfExists="true">
+      <![CDATA[
+      SELECT uitt_aanvr.zaak_id,
+             'uittreksel'       AS zaak_type,
+             'uitt_aanvr'       AS tabel,
+             uitt_aanvr.ind_verwerkt,
+             uitt_aanvr.d_aanvr AS d_invoer,
+             uitt_aanvr.d_aanvr AS d_ingang
+      FROM uitt_aanvr,
+           document
+      WHERE uitt_aanvr.c_document = document.c_document
+        AND document.document_type = 'pl'
+      GROUP BY uitt_aanvr.zaak_id, uitt_aanvr.ind_verwerkt, uitt_aanvr.d_aanvr
+      UNION
+      SELECT uitt_aanvr.zaak_id,
+             'formulier'        AS zaak_type,
+             'uitt_aanvr'       AS tabel,
+             uitt_aanvr.ind_verwerkt,
+             uitt_aanvr.d_aanvr AS d_invoer,
+             uitt_aanvr.d_aanvr AS d_ingang
+      FROM uitt_aanvr,
+           document
+      WHERE uitt_aanvr.c_document = document.c_document
+        AND document.document_type <> 'pl'
+      GROUP BY uitt_aanvr.zaak_id, uitt_aanvr.ind_verwerkt, uitt_aanvr.d_aanvr
+      UNION
+      SELECT geheimhouding.zaak_id,
+             'verstrekkingsbeperking' AS zaak_type,
+             'geheimhouding'          AS tabel,
+             geheimhouding.ind_verwerkt,
+             geheimhouding.d_in       AS d_invoer,
+             geheimhouding.d_wijz     AS d_ingang
+      FROM geheimhouding
+      GROUP BY geheimhouding.zaak_id, geheimhouding.ind_verwerkt, geheimhouding.d_in,
+               geheimhouding.d_wijz
+      UNION
+      SELECT naamgebruik.zaak_id,
+             'naamgebruik'      AS zaak_type,
+             'naamgebruik'      AS tabel,
+             naamgebruik.ind_verwerkt,
+             naamgebruik.d_in   AS d_invoer,
+             naamgebruik.d_wijz AS d_ingang
+      FROM naamgebruik
+      GROUP BY naamgebruik.zaak_id, naamgebruik.ind_verwerkt, naamgebruik.d_in, naamgebruik.d_wijz
+      UNION
+      SELECT bvh_park.zaak_id,
+             'binnenverhuizing' AS zaak_type,
+             'bvh_park'         AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn     AS d_invoer,
+             bvh_park.d_aanv    AS d_ingang
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 1
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+      UNION
+      SELECT bvh_park.zaak_id,
+             'buitenverhuizing' AS zaak_type,
+             'bvh_park'         AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn     AS d_invoer,
+             bvh_park.d_aanv    AS d_ingang
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 2
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+      UNION
+      SELECT bvh_park.zaak_id,
+             'emigratie'     AS zaak_type,
+             'bvh_park'      AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn  AS d_invoer,
+             bvh_park.d_aanv AS d_ingang
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 3
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+      UNION
+      SELECT bvh_park.zaak_id,
+             'hervestiging'  AS zaak_type,
+             'bvh_park'      AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn  AS d_invoer,
+             bvh_park.d_aanv AS d_ingang
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 4
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv
+      UNION
+      SELECT vog_aanvr.zaak_id,
+             'vog'             AS zaak_type,
+             'vog_aanvr'       AS tabel,
+             vog_aanvr.ind_verwerkt,
+             vog_aanvr.d_aanvr AS d_invoer,
+             vog_aanvr.d_aanvr AS d_ingang
+      FROM vog_aanvr
+      GROUP BY vog_aanvr.zaak_id, vog_aanvr.ind_verwerkt, vog_aanvr.d_aanvr
+      UNION
+      SELECT gpk.zaak_id,
+             'gpk'       AS zaak_type,
+             'gpk'       AS tabel,
+             gpk.ind_verwerkt,
+             gpk.d_aanvr AS d_invoer,
+             gpk.d_aanvr AS d_ingang
+      FROM gpk
+      GROUP BY gpk.zaak_id, gpk.ind_verwerkt, gpk.d_aanvr
+      UNION
+      SELECT rdm01.zaak_id,
+             'reisdocument' AS zaak_type,
+             'rdm01'        AS tabel,
+             rdm01.ind_verwerkt,
+             rdm01.d_aanvr  AS d_invoer,
+             rdm01.d_aanvr  AS d_ingang
+      FROM rdm01
+      GROUP BY rdm01.zaak_id, rdm01.ind_verwerkt, rdm01.d_aanvr
+      UNION
+      SELECT doc_inh.zaak_id,
+             'inhouding_vermissing' AS zaak_type,
+             'doc_inh'              AS tabel,
+             doc_inh.ind_verwerkt,
+             doc_inh.d_inneming     AS d_invoer,
+             doc_inh.d_inneming     AS d_ingang
+      FROM doc_inh
+      GROUP BY doc_inh.zaak_id, doc_inh.ind_verwerkt, doc_inh.d_inneming
+      UNION
+      SELECT nrd.zaak_id,
+             'rijbewijs' AS zaak_type,
+             'nrd'       AS tabel,
+             nrd.ind_verwerkt,
+             nrd.d_aanvr AS d_invoer,
+             nrd.d_aanvr AS d_ingang
+      FROM nrd
+      GROUP BY nrd.zaak_id, nrd.ind_verwerkt, nrd.d_aanvr
+      UNION
+      SELECT terugmelding.zaak_id,
+             'terugmelding'    AS zaak_type,
+             'terugmelding'    AS tabel,
+             terugmelding.ind_verwerkt,
+             terugmelding.d_in AS d_invoer,
+             terugmelding.d_in AS d_ingang
+      FROM terugmelding
+      GROUP BY terugmelding.zaak_id, terugmelding.ind_verwerkt, terugmelding.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'geboorte'   AS zaak_type,
+             'doss'       AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr AS d_invoer,
+             doss.d_in    AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 100
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'erkenning'  AS zaak_type,
+             'doss'       AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr AS d_invoer,
+             doss.d_in    AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 200
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'huw_gps'    AS zaak_type,
+             'doss'       AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr AS d_invoer,
+             doss.d_in    AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 300
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'naamskeuze' AS zaak_type,
+             'doss'       AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr AS d_invoer,
+             doss.d_in    AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 400
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'overlijden_in_gemeente' AS zaak_type,
+             'doss'                   AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr             AS d_invoer,
+             doss.d_in                AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 500
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'lijkvinding' AS zaak_type,
+             'doss'        AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr  AS d_invoer,
+             doss.d_in     AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 600
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'overlijden_in_buitenland' AS zaak_type,
+             'doss'                     AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.d_in                  AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 700
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'levenloos_geboren_kind' AS zaak_type,
+             'doss'                   AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr             AS d_invoer,
+             doss.d_in                AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 800
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT indicatie.zaak_id,
+             'indicatie'    AS zaak_type,
+             'indicatie'    AS tabel,
+             indicatie.ind_verwerkt,
+             indicatie.d_in AS d_invoer,
+             indicatie.d_in AS d_ingang
+      FROM indicatie
+      GROUP BY indicatie.zaak_id, indicatie.ind_verwerkt, indicatie.d_in
+      UNION
+      SELECT correspondentie.zaak_id,
+             'correspondentie'    AS zaak_type,
+             'correspondentie'    AS tabel,
+             correspondentie.ind_verwerkt,
+             correspondentie.d_in AS d_invoer,
+             correspondentie.d_in AS d_ingang
+      FROM correspondentie
+      GROUP BY correspondentie.zaak_id, correspondentie.ind_verwerkt, correspondentie.d_in
+      UNION
+      SELECT gv.zaak_id,
+             'gegevensverstrekking' AS zaak_type,
+             'gv'                   AS tabel,
+             gv.ind_verwerkt,
+             gv.d_in                AS d_invoer,
+             gv.d_wijz              AS d_ingang
+      FROM gv
+      GROUP BY gv.zaak_id, gv.ind_verwerkt, gv.d_in, gv.d_wijz
+      UNION
+      SELECT doss.zaak_id,
+             'omzetting_gps' AS zaak_type,
+             'doss'          AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr    AS d_invoer,
+             doss.d_in       AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 1300
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'ontbinding_huwelijk_gps' AS zaak_type,
+             'doss'                    AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr              AS d_invoer,
+             doss.d_in                 AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 1400
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT inbox.zaak_id,
+             'inbox'        AS zaak_type,
+             'inbox'        AS tabel,
+             inbox.ind_verwerkt,
+             inbox.d_invoer,
+             inbox.d_invoer AS d_ingang
+      FROM inbox
+      GROUP BY inbox.zaak_id, inbox.ind_verwerkt, inbox.d_invoer
+      UNION
+      SELECT doss.zaak_id,
+             'onderzoek'  AS zaak_type,
+             'doss'       AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr AS d_invoer,
+             doss.d_in    AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 1600
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'eerste_inschrijving' AS zaak_type,
+             'doss'                AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr          AS d_invoer,
+             doss.d_in             AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 1700
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'risicoanalyse' AS zaak_type,
+             'doss'          AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr    AS d_invoer,
+             doss.d_in       AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 1800
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'naturalisatie' AS zaak_type,
+             'doss'          AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr    AS d_invoer,
+             doss.d_in       AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 2000
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT doss.zaak_id,
+             'latere_vermelding' AS zaak_type,
+             'doss'              AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr        AS d_invoer,
+             doss.d_in           AS d_ingang
+      FROM doss
+      WHERE doss.type_doss = 2100
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in
+      UNION
+      SELECT pl_mut.zaak_id,
+             'pl_mutatie' AS zaak_type,
+             'pl_mut'     AS tabel,
+             pl_mut.ind_verwerkt,
+             pl_mut.d_in  AS d_invoer,
+             pl_mut.d_in  AS d_ingang
+      FROM pl_mut
+      GROUP BY pl_mut.zaak_id, pl_mut.ind_verwerkt, pl_mut.d_in;
+      ]]>
+    </createView>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_5">
+    <addColumn tableName="doss_geb">
+      <column name="org_keuze_naam" type="VARCHAR(255)" defaultValue="">
+      </column>
+    </addColumn>
+  </changeSet>
+</databaseChangeLog>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -28,6 +28,7 @@ import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.IDE
 import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.PASPOORT;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.math.BigDecimal;
@@ -38,15 +39,19 @@ import java.util.function.Consumer;
 import com.vaadin.ui.Button;
 
 import nl.procura.bsm.rest.v1_0.objecten.gba.probev.idnumbers.IdNumbersResponseRestElement;
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.gba.jpa.personen.db.DossSourceDoc;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.fields.GbaDateField;
+import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.modules.bs.registration.person.modules.AbstractPersonPage;
 import nl.procura.gba.web.modules.zaken.common.SourceDocumentForm;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.SourceDocumentType;
 import nl.procura.gba.web.services.bs.registration.ValidityDateType;
+import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
@@ -100,6 +105,9 @@ public class PersonPage extends AbstractPersonPage {
     final Button anrButton = new Button("Nieuw A-nummer", e -> onNewANumber());
     anrButton.setWidth("130px");
 
+    final Button rpsInfoButton = new Button("Toon RPS info", e -> onShowRPSInfo());
+    rpsInfoButton.setWidth("130px");
+
     personalDetailsForm = new PersonalDetailsForm();
     birthDetailsForm = new BirthDetailsForm();
 
@@ -114,6 +122,7 @@ public class PersonPage extends AbstractPersonPage {
     layout.getRight().setCaption("Opties");
     layout.getRight().addButton(bsnButton, this);
     layout.getRight().addButton(anrButton, this);
+    layout.getRight().addButton(rpsInfoButton, this);
 
     addComponent(layout);
     addComponent(new Fieldset("Geboorte"));
@@ -245,5 +254,26 @@ public class PersonPage extends AbstractPersonPage {
       personalDetailsForm.getBean().setAnr(new AnrFieldValue(aNum));
       personalDetailsForm.repaint();
     }
+  }
+
+  private void onShowRPSInfo() {
+    String firstNames = astr(personalDetailsForm.getValue(PersonBean.F_FIRSTNAMES, String.class));
+    String prefix = astr(personalDetailsForm.getValue(PersonBean.F_PREFIX, FieldValue.class));
+    String familyName = astr(personalDetailsForm.getValue(PersonBean.F_FAMILY_NAME, String.class));
+    GbaDateFieldValue birthday = birthDetailsForm.getValue(PersonBean.F_DATE_OF_BIRTH, GbaDateFieldValue.class);
+
+    if (isBlank(familyName) || birthday == null || isBlank(birthday.getSystemDate())) {
+      throw new ProException(WARNING, "Geslachtsnaam en geboortedatum zijn verplicht");
+    }
+
+    VrsRequest request = new VrsRequest()
+        .voornamen(firstNames)
+        .voorvoegsel(prefix)
+        .geslachtsnaam(familyName)
+        .geboortedatum(birthday.getSystemDate());
+
+    getServices().getReisdocumentService().getVrsService()
+        .checkSignalering(request)
+        .ifPresent(sig -> getParentWindow().addWindow(new SignaleringWindow(sig)));
   }
 }

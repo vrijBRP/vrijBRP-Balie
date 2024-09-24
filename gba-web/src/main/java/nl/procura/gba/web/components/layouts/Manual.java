@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,13 +19,15 @@
 
 package nl.procura.gba.web.components.layouts;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_BEHEERDER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_GEBRUIKER;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_HUP;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_INSCHRIJVING;
 
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 
 public enum Manual {
 
-  CONSULTER(HANDLEIDING_RAADPLEGER, "Voor raadplegers", "handleiding-raadplegers.pdf"),
   USER(HANDLEIDING_GEBRUIKER, "Voor gebruikers", "handleiding-gebruikers.pdf"),
   ADMIN(HANDLEIDING_BEHEERDER, "Voor beheerders", "handleiding-beheerders.pdf"),
   FIRST_REGISTRATION(HANDLEIDING_INSCHRIJVING, "Voor 1e inschrijving", "handleiding-1e-inschrijving.pdf"),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -45,6 +45,7 @@ import java.util.Optional;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -67,7 +68,6 @@ import nl.procura.gba.web.services.aop.Timer;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.beheer.raas.RaasService;
-import nl.procura.gba.web.services.beheer.vrs.VrsRequest;
 import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
 import nl.procura.gba.web.services.zaken.algemeen.ControleerbareService;
@@ -310,9 +310,9 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
   @Transactional
   @ThrowException("Fout bij het verwijderen")
   public void delete(ReisdocumentAanvraag zaak) {
-    if (fil(zaak.getAanvraagnummer().getNummer())) {
+    if (fil(zaak.getZaakId())) {
       ConditionalMap map = new ConditionalMap();
-      map.put(Rdm01Dao.ZAAK_ID, zaak.getAanvraagnummer().getNummer());
+      map.put(Rdm01Dao.ZAAK_ID, zaak.getZaakId());
       map.put(Rdm01Dao.MAX_CORRECT_RESULTS, 1);
       removeEntities(Rdm01Dao.find(map));
 
@@ -322,18 +322,8 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
     callListeners(ServiceEvent.CHANGE);
   }
 
-  public Optional<SignaleringResult> checkIdentiteit(BasePLExt pl) {
-    VrsService vrsService = new VrsService(getServices().getParameterService());
-    if (vrsService.isEnabled()) {
-      return vrsService.checkSignalering(VrsRequest.builder()
-          .bsn(new Bsn(pl.getPersoon().getBsn().getDescr()))
-          .build());
-    }
-    return Optional.empty();
-  }
-
-  public boolean isVrsEnabled() {
-    return new VrsService(getServices().getParameterService()).isEnabled();
+  public VrsService getVrsService() {
+    return new VrsService(getServices().getParameterService());
   }
 
   public boolean isNieuwGezagReglement(ProcuraDate date) {
@@ -344,10 +334,9 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
   public Optional<SignaleringResult> checkAanvraag(Aanvraagnummer aanvraagnummer, BasePLExt pl) {
     VrsService vrsService = new VrsService(getServices().getParameterService());
     if (vrsService.isEnabled()) {
-      return vrsService.checkSignalering(VrsRequest.builder()
-          .aanvraagnummer(aanvraagnummer)
-          .bsn(new Bsn(pl.getPersoon().getBsn().getDescr()))
-          .build())
+      return vrsService.checkSignalering(new VrsRequest()
+              .aanvraagnummer(aanvraagnummer.getNummer())
+              .bsn(new Bsn(pl.getPersoon().getBsn().getDescr())))
           .filter(SignaleringResult::isHit);
     } else {
       return signaleringFromPl(pl);
@@ -356,11 +345,10 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
 
   private Optional<SignaleringResult> signaleringFromPl(BasePLExt pl) {
     if (pl.getReisdoc().heeftSignalering()) {
-      return Optional
-          .of(SignaleringResult.builder()
-              .mededelingRvIG(getSysteemParm(ParameterConstant.REISD_SIGNAL_INFO, false))
-              .resultaatOmschrijving("Signalering met betrekking tot verstrekken Nederlands reisdocument op de PL")
-              .build());
+      return Optional.of(SignaleringResult.builder()
+          .mededelingRvIG(getSysteemParm(ParameterConstant.REISD_SIGNAL_INFO, false))
+          .resultaatOmschrijving("Signalering met betrekking tot verstrekken Nederlands reisdocument op de PL")
+          .build());
     }
 
     return Optional.empty();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,12 +19,20 @@
 
 package nl.procura.gba.web.modules.bs.registration.identification;
 
+import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.IDENTITEITSONDERZOEK;
+
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse;
+import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.VrsDocumentenWindow;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 
 public class IdentificationPage extends NormalPageTemplate {
@@ -62,8 +70,33 @@ public class IdentificationPage extends NormalPageTemplate {
     setInfo("Identificatie van de inschrijver",
         "Om verder te kunnen gaan zal de identiteit van deze persoon moeten worden vastgesteld. <br/>" +
             "Bij voorkeur aan de hand van een reisdocument, vreemdelingendocument of rijbewijs");
-    addComponent(idForm);
+
+    OptieLayout ol = new OptieLayout();
+    ol.getLeft().addComponent(idForm);
+
+    ol.getRight().setWidth("130px");
+    ol.getRight().setCaption("Opties");
+    ol.getRight().addButton(new Button("Basisregister", e -> zoekBasisregister()), this);
+    addComponent(ol);
+
     super.initPage();
+  }
+
+  private void zoekBasisregister() {
+    idForm.commit();
+    Services services = getApplication().getServices();
+    VrsRequest request = new VrsRequest()
+        .aanleiding(IDENTITEITSONDERZOEK)
+        .documentnummer(idForm.getBean().getNummer());
+
+    Optional<ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse> document = services
+        .getReisdocumentService()
+        .getVrsService()
+        .getReisdocument(request);
+
+    document.ifPresent(response -> getApplication()
+        .getParentWindow()
+        .addWindow(new VrsDocumentenWindow(response, null)));
   }
 
   @Override

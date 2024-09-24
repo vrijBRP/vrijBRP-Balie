@@ -46,12 +46,15 @@ import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
 import nl.procura.gba.web.modules.bs.geboorte.BsPageGeboorte;
 import nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.BinnenProwebLayoutErk;
 import nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.BinnenProwebLayoutNk;
+import nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenErk;
+import nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenNk;
 import nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.BuitenProwebLayoutErk;
 import nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.BuitenProwebLayoutNk;
-import nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk;
-import nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk;
+import nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk;
+import nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk;
 import nl.procura.gba.web.modules.bs.geboorte.page35.form1.ErkenningsApplicatie;
 import nl.procura.gba.web.modules.bs.geboorte.page35.form1.NaamskeuzeApplicatie;
+import nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1;
 import nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteForm1;
 import nl.procura.gba.web.modules.bs.geboorte.page40.Page40Geboorte;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
@@ -82,7 +85,6 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
   private Page35GeboorteForm1   situatieForm          = null;
 
   public Page35Geboorte() {
-
     this("Geboorte - gezinssituatie");
   }
 
@@ -97,14 +99,13 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
 
     situatieForm.commit();
 
-    nl.procura.gba.web.modules.bs.geboorte.page35.form1.Page35GeboorteBean1 b1 = situatieForm.getBean();
-
+    Page35GeboorteBean1 b1 = situatieForm.getBean();
     getZaakDossier().setGezinssituatie(b1.getGezin());
     getZaakDossier().setErkenningsType(b1.getErkenningsType());
     getZaakDossier().setNaamskeuzeSoort(b1.getNaamskeuzeType());
+    getZaakDossier().setOrgKeuzeNaam("");
 
     ErkenningsApplicatie erkenningsApp = situatieForm.getBean().getErkenningsApp();
-
     if (erkenningsApp != null) {
       switch (erkenningsApp) {
         case IN_PROWEB:
@@ -112,12 +113,15 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
             throw new ProException(WARNING, "Koppel eerst een erkenning");
           }
 
+          binnenProwebLayoutErk.getForm().commit();
+          Page35GeboorteBeanBinnenErk binnenBean = binnenProwebLayoutErk.getForm().getBean();
+          getZaakDossier().setOrgKeuzeNaam(binnenBean.getDubbeleNaam());
           break;
 
         case BUITEN_PROWEB:
           buitenProwebLayoutErk.getForm().commit();
 
-          Page35GeboorteBeanErk bean = buitenProwebLayoutErk.getForm().getBean();
+          Page35GeboorteBeanBuitenErk bean = buitenProwebLayoutErk.getForm().getBean();
           ErkenningBuitenProweb bp = getZaakDossier().getErkenningBuitenProweb();
           bp.setAktenummer(bean.getAktenr());
           bp.setDatumErkenning(new DateTime(bean.getDatum().getBigDecimalValue()));
@@ -130,6 +134,11 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
           bp.setNaamskeuzeType(bean.getNaamskeuzeType());
           bp.setNaamskeuzePersoon(JA.equals(bean.getNaamskeuzeType()) ? ERKENNER : bean.getNaamsPersoonType());
           bp.setLandAfstamming(bean.getAfstammingsrecht());
+          bp.setTitel(bean.getTitel());
+          bp.setVoorvoegsel(bean.getVoorv());
+          bp.setGeslachtsnaam(bean.getGeslachtsnaam());
+
+          getZaakDossier().setOrgKeuzeNaam(bean.getDubbeleNaam());
           break;
 
         default:
@@ -146,12 +155,16 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
             throw new ProException(WARNING, "Koppel eerst een naamskeuze");
           }
 
+          binnenProwebLayoutNk.getForm().commit();
+          Page35GeboorteBeanBinnenNk binnenBean = binnenProwebLayoutNk.getForm().getBean();
+          getZaakDossier().setOrgKeuzeNaam(binnenBean.getDubbeleNaam());
+
           break;
 
         case BUITEN_PROWEB:
           buitenProwebLayoutNk.getForm().commit();
 
-          Page35GeboorteBeanNk bean = buitenProwebLayoutNk.getForm().getBean();
+          Page35GeboorteBeanBuitenNk bean = buitenProwebLayoutNk.getForm().getBean();
           NaamskeuzeBuitenProweb bp = getZaakDossier().getNaamskeuzeBuitenProweb();
           bp.setAktenummer(bean.getAktenr());
           bp.setDatum(new DateTime(bean.getDatum().getBigDecimalValue()));
@@ -159,12 +172,13 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
           bp.setLand(bean.getLand());
           bp.setBuitenlandsePlaats(bean.getPlaats());
           bp.setNaamskeuzePersoon(bean.getNaamsPersoonType());
-          bp.setGeslachtsnaam(bean.getGeslachtsnaam());
-          bp.setVoorvoegsel(bean.getVoorv());
           bp.setTitel(bean.getTitel());
+          bp.setVoorvoegsel(bean.getVoorv());
+          bp.setGeslachtsnaam(bean.getGeslachtsnaam());
           bp.setBijzonderheden(bean.getBijzonderheden());
           getZaakDossier().setEersteKindType(EersteKindType.JA);
           getZaakDossier().setNaamskeuzeType(JA);
+          getZaakDossier().setOrgKeuzeNaam(bean.getDubbeleNaam());
           break;
 
         default:

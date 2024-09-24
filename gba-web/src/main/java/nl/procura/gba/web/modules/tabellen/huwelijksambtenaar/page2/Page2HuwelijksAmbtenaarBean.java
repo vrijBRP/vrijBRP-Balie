@@ -22,12 +22,12 @@ package nl.procura.gba.web.modules.tabellen.huwelijksambtenaar.page2;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.TextArea;
 import nl.procura.vaadin.annotation.field.TextField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.EmailField;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
@@ -48,7 +48,7 @@ public class Page2HuwelijksAmbtenaarBean implements Serializable {
   public static final String INGANG_GELD = "ingangGeld";
   public static final String EINDE_GELD  = "eindeGeld";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       required = true,
       width = "100px")

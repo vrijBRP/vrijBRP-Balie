@@ -29,6 +29,12 @@ public class NaamskeuzePersoonContainer extends ArrayListContainer {
     addItem(NaamsPersoonType.ERKENNER);
     addItem(NaamsPersoonType.VADER_DUO_MOEDER);
     addItem(NaamsPersoonType.PARTNER);
+    addItem(NaamsPersoonType.MOEDER_VADER_DUO_MOEDER);
+    addItem(NaamsPersoonType.MOEDER_ERKENNER);
+    addItem(NaamsPersoonType.MOEDER_PARTNER);
+    addItem(NaamsPersoonType.VADER_DUO_MOEDER_MOEDER);
+    addItem(NaamsPersoonType.ERKENNER_MOEDER);
+    addItem(NaamsPersoonType.PARTNER_MOEDER);
     addItem(NaamsPersoonType.GEEN_VAN_BEIDE);
     addItem(NaamsPersoonType.ONBEKEND);
   }

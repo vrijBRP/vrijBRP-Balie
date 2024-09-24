@@ -26,16 +26,19 @@ import java.util.Arrays;
 
 import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType;
 
+import lombok.Getter;
+
+@Getter
 public enum DossierPersoonType {
 
   AANGEVER(10, "Aangever", "", false),
   AFGEVER(11, "Afgever", "", true),
   OVERLEDENE(15, "Overledene", "", true),
   KIND(20, "Kind", "", true),
-  VADER_DUO_MOEDER(30, "Vader / duo-moeder", "", true),
+  VADER_DUO_MOEDER(30, "Vader/duo-moeder", "", true),
   MOEDER(40, "Moeder", "V", true),
   PARTNER(50, "Partner", "", true, HUWELIJK, PARTNERSCHAP),
-  PARTNER_ANDERE_OUDER(51, "Partner / andere ouder", "", true),
+  PARTNER_ANDERE_OUDER(51, "Partner/andere ouder", "", true),
   EXPARTNER(55, "Ex-partner", "", true),
   ERKENNER(60, "Erkenner", "", true),
   PARTNER1(70, "Partner 1", "", true),
@@ -51,7 +54,8 @@ public enum DossierPersoonType {
   VERTEGENWOORDIGER(83, "Vertegenwoordiger", "", false),
   TOESTEMMINGGEVER(84, "Toestemminggever", "", false),
   MEDE_VERZOEKER_PARTNER(85, "Mede-verzoeker (partner)", "", false),
-  MEDE_VERZOEKER_KIND(86, "Mede-verzoeker (kind)", "", false);
+  MEDE_VERZOEKER_KIND(86, "Mede-verzoeker (kind)", "", false),
+  ADOPTIEFOUDER(87, "Adoptiefouder", "", false);
 
   private final long                   code;
   private final String                 descr;
@@ -91,28 +95,8 @@ public enum DossierPersoonType {
         .findFirst().orElse(ONBEKEND);
   }
 
-  public BurgerlijkeStaatType[] getBsTypes() {
-    return bsTypes;
-  }
-
-  public long getCode() {
-    return code;
-  }
-
-  public String getDescr() {
-    return descr;
-  }
-
   public String getDescrExtra() {
     return (KIND.equals(this) ? "het " : "de ") + getDescr().toLowerCase();
-  }
-
-  public String getGeslacht() {
-    return geslacht;
-  }
-
-  public DossierPersoonType[] getSubTypes() {
-    return subTypes;
   }
 
   public boolean heeftMogelijkeBurgerlijkeStaat(BurgerlijkeStaatType burgerlijkeStaat) {
@@ -143,10 +127,6 @@ public enum DossierPersoonType {
     }
 
     return false;
-  }
-
-  public boolean isMagOverledenZijn() {
-    return magOverledenZijn;
   }
 
   @Override

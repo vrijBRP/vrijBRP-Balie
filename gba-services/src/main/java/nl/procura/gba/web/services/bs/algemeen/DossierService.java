@@ -68,6 +68,7 @@ import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.levenloos.DossierLevenloos;
+import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
@@ -193,6 +194,10 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
 
       case RISK_ANALYSIS:
         classImplType = DossierRiskAnalysis.class;
+        break;
+
+      case LV:
+        classImplType = DossierLv.class;
         break;
 
       default:

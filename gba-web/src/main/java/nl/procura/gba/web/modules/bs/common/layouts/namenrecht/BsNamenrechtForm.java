@@ -20,10 +20,23 @@
 package nl.procura.gba.web.modules.bs.common.layouts.namenrecht;
 
 import static nl.procura.gba.common.MiscUtils.to;
-import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.*;
-import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.*;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.EERSTE_KIND_TYPE;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.KIND_OUDER_DAN_16;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.NAAMSKEUZE_PERSOON;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.NAAMSKEUZE_TYPE;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.RECHT;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.TITEL;
+import static nl.procura.gba.web.modules.bs.common.layouts.namenrecht.BsNamenrechtBean.VOORV;
+import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.ERKENNER;
+import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.PARTNER;
+import static nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType.VADER_DUO_MOEDER;
 import static nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeType.NAAMSKEUZE_VOOR_GEBOORTE;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import java.util.Arrays;
 
@@ -41,7 +54,11 @@ import nl.procura.gba.web.modules.zaken.common.ToelichtingWindow;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierNamenrecht;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.gba.web.services.bs.erkenning.*;
+import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
+import nl.procura.gba.web.services.bs.erkenning.EersteKindType;
+import nl.procura.gba.web.services.bs.erkenning.KindLeeftijdsType;
+import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
+import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ErkenningBuitenProweb;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
@@ -75,30 +92,26 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
 
   @Override
   public void afterSetColumn(Column column, com.vaadin.ui.Field field, Property property) {
+    if (property.is(GESLACHTSNAAM)) {
+      Label label = new Label("Druk op \"Naamselectie\" om de naam te selecteren.");
+      label.setWidth("550px");
+      column.addComponent(label);
+    }
+    if (property.is(TITEL)) {
+      if (dossier instanceof DossierNaamskeuze) {
+        column.addComponent(new ToelichtingButton() {
 
-    if (!readOnlyAllFields) {
-      if (property.is(GESLACHTSNAAM)) {
-        Label label = new Label("Druk op \"Namen ouders\" om de naam te selecteren.");
-        label.setWidth("550px");
-        column.addComponent(label);
-      }
-      if (property.is(TITEL)) {
-        if (dossier instanceof DossierNaamskeuze) {
-          column.addComponent(new ToelichtingButton() {
-
-            @Override
-            public void buttonClick(ClickEvent event) {
-              String msg = "Een adellijke titel of een adellijk predikaat gaat alleen op de kinderen " +
-                  "over als zij de geslachtsnaam van hun adellijke vader verkrijgen.";
-              getWindow().addWindow(new ToelichtingWindow("Voorwaarden adellijke titel / adellijk predikaat", msg));
-            }
-          });
-        }
+          @Override
+          public void buttonClick(ClickEvent event) {
+            String msg = "Een adellijke titel of een adellijk predikaat gaat alleen op de kinderen " +
+                "over als zij de geslachtsnaam van hun adellijke vader verkrijgen.";
+            getWindow().addWindow(new ToelichtingWindow("Voorwaarden adellijke titel / adellijk predikaat", msg));
+          }
+        });
       }
     }
 
     if (property.is(RECHT)) {
-
       column.addComponent(new KennisbankButton(KennisBankBron.LAND, KennisBankDoel.NAMENRECHT, 0) {
 
         @Override
@@ -134,11 +147,9 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
 
   @Override
   public com.vaadin.ui.Field newField(com.vaadin.ui.Field field, Property property) {
-
-    if (readOnlyAllFields) {
+    if (readOnlyAllFields && !property.is(GESLACHTSNAAM, VOORV, TITEL)) {
       field.setReadOnly(true);
     }
-
     return super.newField(field, property);
   }
 
@@ -213,23 +224,28 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
   }
 
   private String getNaamErkenner() {
-    return trim(dossier.getVaderErkenner().getGeslachtsnaam() + dossier.getVaderErkenner().getVoorvoegsel());
+    return trim(dossier.getVaderErkenner().getVoorv() + " " + dossier.getVaderErkenner().getGeslachtsnaam());
   }
 
   private String getNaamMoeder() {
-    return trim(dossier.getMoeder().getGeslachtsnaam() + dossier.getMoeder().getVoorvoegsel());
+    return trim(dossier.getMoeder().getVoorv() + " " + dossier.getMoeder().getGeslachtsnaam());
   }
 
   public void initBean() {
+    String keuzeGeslachtsnaam = "";
+    String keuzeVoorv = "";
+    FieldValue keuzeTitel = new FieldValue();
+
     if (dossier instanceof DossierGeboorte) {
       DossierGeboorte geboorte = to(dossier, DossierGeboorte.class);
-
       if (geboorte.getVragen().heeftErkenningVoorGeboorte()) {
         DossierNamenrecht dn = geboorte.getErkenningVoorGeboorte();
+
+        keuzeGeslachtsnaam = dn.getKeuzeGeslachtsnaam();
+        keuzeVoorv = dn.getKeuzeVoorvoegsel();
+        keuzeTitel = dn.getKeuzeTitel();
+
         dossier.setEersteKindType(dn.getEersteKindType());
-        dossier.setKeuzeGeslachtsnaam(dn.getKeuzeGeslachtsnaam());
-        dossier.setKeuzeVoorvoegsel(dn.getKeuzeVoorvoegsel());
-        dossier.setKeuzeTitel(dn.getKeuzeTitel());
         dossier.setNaamskeuzePersoon(dn.getNaamskeuzePersoon());
         dossier.setNaamskeuzeType(dn.getNaamskeuzeType());
         dossier.setLandNaamRecht(dn.getLandNaamRecht());
@@ -241,24 +257,25 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
 
         if (dn.getNaamskeuzePersoon() == ERKENNER) {
           dossier.setNaamskeuzePersoon(ERKENNER);
-          dossier.setKeuzeGeslachtsnaam(geboorte.getVader().getGeslachtsnaam());
-          dossier.setKeuzeVoorvoegsel(geboorte.getVader().getVoorvoegsel());
-          dossier.setKeuzeTitel(geboorte.getVader().getTitel());
+          keuzeGeslachtsnaam = geboorte.getVader().getGeslachtsnaam();
+          keuzeVoorv = geboorte.getVader().getVoorvoegsel();
+          keuzeTitel = geboorte.getVader().getTitel();
 
         } else if (dn.getNaamskeuzePersoon() == NaamsPersoonType.MOEDER) {
           dossier.setNaamskeuzePersoon(NaamsPersoonType.MOEDER);
-          dossier.setKeuzeGeslachtsnaam(geboorte.getMoeder().getGeslachtsnaam());
-          dossier.setKeuzeVoorvoegsel(geboorte.getMoeder().getVoorvoegsel());
+          keuzeGeslachtsnaam = geboorte.getMoeder().getGeslachtsnaam();
+          keuzeVoorv = geboorte.getMoeder().getVoorvoegsel();
+          keuzeTitel = geboorte.getMoeder().getTitel();
         }
 
         dossier.setNaamskeuzeType(dn.getNaamskeuzeType());
 
       } else if (geboorte.getVragen().heeftNaamskeuzeVoorGeboorte()) {
         DossierNaamskeuze nk = geboorte.getNaamskeuzeVoorGeboorte();
-        dossier.setNaamskeuzePersoon(nk.getNaamskeuzePersoon());
-        dossier.setKeuzeGeslachtsnaam(nk.getKeuzeGeslachtsnaam());
-        dossier.setKeuzeVoorvoegsel(nk.getKeuzeVoorvoegsel());
-        dossier.setKeuzeTitel(nk.getKeuzeTitel());
+        keuzeGeslachtsnaam = nk.getKeuzeGeslachtsnaam();
+        keuzeVoorv = nk.getKeuzeVoorvoegsel();
+        keuzeTitel = nk.getKeuzeTitel();
+
         dossier.setEersteKindType(EersteKindType.JA);
         dossier.setNaamskeuzeType(NaamskeuzeVanToepassingType.JA);
         setReadOnlyAllFields(true);
@@ -269,10 +286,14 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
     }
 
     setDefaultNaamskeuzePersoon(dossier.getNaamskeuzePersoon());
-    BsNamenrechtBean bean = new BsNamenrechtBean();
-    bean.setGeslachtsnaam(dossier.getKeuzeGeslachtsnaam());
-    bean.setKindOuderDan16(KindLeeftijdsType.OUDER_DAN_16.equals(dossier.getKindLeeftijdsType()) ? "Ja" : "Nee");
 
+    BsNamenrechtBean bean = new BsNamenrechtBean();
+    bean.setGeslachtsnaam(defaultIfBlank(dossier.getKeuzeGeslachtsnaam(), keuzeGeslachtsnaam));
+    bean.setVoorv(new FieldValue(defaultIfBlank(dossier.getKeuzeVoorvoegsel(), keuzeVoorv)));
+    bean.setTitel(
+        new FieldValue(defaultIfBlank(dossier.getKeuzeTitel().getStringValue(), keuzeTitel.getStringValue())));
+
+    bean.setKindOuderDan16(KindLeeftijdsType.OUDER_DAN_16.equals(dossier.getKindLeeftijdsType()) ? "Ja" : "Nee");
     if (dossier instanceof DossierNaamskeuze) {
       DossierNaamskeuze nk = (DossierNaamskeuze) dossier;
       if (nk.getDossierNaamskeuzeType() == NAAMSKEUZE_VOOR_GEBOORTE) {
@@ -280,8 +301,6 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
       }
     }
 
-    bean.setVoorv(new FieldValue(dossier.getKeuzeVoorvoegsel()));
-    bean.setTitel(dossier.getKeuzeTitel());
     bean.setRecht(BsNamenRechtUtils.getNamenRecht(services, dossier.getLandNaamRecht(), dossier));
     bean.setNaamskeuzePersoon(dossier.getNaamskeuzePersoon());
     bean.setEersteKindType(dossier.getEersteKindType());
@@ -303,24 +322,19 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
   }
 
   private void onFieldChanged() {
-    String naam = trim(astr(getValue(GESLACHTSNAAM)) + astr(getValue(VOORV)));
+    String naam = trim(astr(getValue(VOORV)) + " " + astr(getValue(GESLACHTSNAAM)));
     String naamMoeder = getNaamMoeder();
     String naamErkenner = getNaamErkenner();
 
-    boolean isNaamMoeder = fil(naamMoeder) && naam.equalsIgnoreCase(getNaamMoeder());
-    boolean isMoeder = NaamsPersoonType.MOEDER.is(getNaamsPersoonType()) || isNaamMoeder;
-
-    boolean isNaamErkenner = fil(naamErkenner) && naam.equalsIgnoreCase(naamErkenner);
-    boolean isErkenner = getNaamsPersoonType().is(ERKENNER, VADER_DUO_MOEDER, PARTNER) || isNaamErkenner;
-    boolean isBeide = (isMoeder && isErkenner);
-
-    updateNaamsPersoonType(isMoeder, isErkenner, isBeide);
+    NaamsPersoonType partnerType = getCaseSpecificPartnerType();
+    setNaamskeuzePersoonVeld(NaamsPersoonType.getNaamsPersoonType(naam, naamMoeder, naamErkenner, partnerType));
 
     boolean isNederlandsRecht = Landelijk.getNederland().equals(getField(RECHT).getValue());
     boolean eersteKindJa = EersteKindType.JA.equals(getValue(EERSTE_KIND_TYPE));
     boolean binnenHuwelijk = dossier.isGeborenBinnenHuwelijk();
-    boolean moederNaam = getValue(NAAMSKEUZE_PERSOON, NaamsPersoonType.class).is(NaamsPersoonType.MOEDER);
-    boolean partnerNaam = getValue(NAAMSKEUZE_PERSOON, NaamsPersoonType.class).is(ERKENNER, VADER_DUO_MOEDER, PARTNER);
+    NaamsPersoonType naamsPersoonType = getValue(NAAMSKEUZE_PERSOON, NaamsPersoonType.class);
+    boolean moederNaam = naamsPersoonType.is(NaamsPersoonType.MOEDER);
+    boolean partnerNaam = naamsPersoonType.is(ERKENNER, VADER_DUO_MOEDER, PARTNER);
 
     if (!dossier.getVaderErkenner().isVolledig()) {
       // Geen vader, partner of erkenner, dus eerste kind is niet van toepassing
@@ -335,19 +349,19 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
         setNaamskeuzeVeld(NaamskeuzeVanToepassingType.JA);
 
       } else if (eersteKindJa) {
-        if (binnenHuwelijk && moederNaam) {
+        if (naamsPersoonType.getCombiTypes() != null) { // Dubbele naam dan altijd ja
           setNaamskeuzeVeld(NaamskeuzeVanToepassingType.JA);
-        }
 
-        if (!binnenHuwelijk && partnerNaam) {
+        } else if (binnenHuwelijk && moederNaam) {
           setNaamskeuzeVeld(NaamskeuzeVanToepassingType.JA);
-        }
 
-        if (!binnenHuwelijk && moederNaam) {
+        } else if (!binnenHuwelijk && partnerNaam) {
+          setNaamskeuzeVeld(NaamskeuzeVanToepassingType.JA);
+
+        } else if (!binnenHuwelijk && moederNaam) {
           setNaamskeuzeVeld(NaamskeuzeVanToepassingType.NEE);
-        }
 
-        if (binnenHuwelijk && partnerNaam) {
+        } else if (binnenHuwelijk && partnerNaam) {
           setNaamskeuzeVeld(NaamskeuzeVanToepassingType.NEE);
         }
       }
@@ -434,33 +448,15 @@ public class BsNamenrechtForm extends GbaForm<BsNamenrechtBean> {
     getBean().setNaamskeuzeType(type);
   }
 
-  private void updateNaamsPersoonType(boolean isMoeder, boolean isErkenner, boolean isBeide) {
+  private NaamsPersoonType getCaseSpecificPartnerType() {
+    if (dossier instanceof DossierErkenning) {
+      return ERKENNER;
 
-    NaamsPersoonType nieuwNaamsPersoonType = getValue(NAAMSKEUZE_PERSOON, NaamsPersoonType.class);
+    } else if (dossier instanceof DossierNaamskeuze) {
+      return PARTNER;
 
-    if (!isBeide) {
-      // Het kan zijn dat beide
-      // ouders dezelfde naam hebben
-      if (isMoeder) {
-        nieuwNaamsPersoonType = MOEDER;
-
-      } else {
-        if (isErkenner) {
-          if (dossier instanceof DossierErkenning) {
-            nieuwNaamsPersoonType = ERKENNER;
-
-          } else if (dossier instanceof DossierNaamskeuze) {
-            nieuwNaamsPersoonType = PARTNER;
-
-          } else {
-            nieuwNaamsPersoonType = VADER_DUO_MOEDER;
-          }
-        } else {
-          nieuwNaamsPersoonType = GEEN_VAN_BEIDE;
-        }
-      }
+    } else {
+      return VADER_DUO_MOEDER;
     }
-
-    setNaamskeuzePersoonVeld(nieuwNaamsPersoonType);
   }
 }

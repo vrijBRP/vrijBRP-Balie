@@ -25,6 +25,7 @@ import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonContr
 import nl.procura.gba.web.modules.bs.erkenning.overzicht.ErkenningOverzichtBuilder;
 import nl.procura.gba.web.modules.bs.geboorte.overzicht.GeboorteOverzichtBuilder;
 import nl.procura.gba.web.modules.bs.huwelijk.overzicht.form1.HuwelijkOverzichtBuilder;
+import nl.procura.gba.web.modules.bs.lv.summary.LvSummaryBuilder;
 import nl.procura.gba.web.modules.bs.naamskeuze.overzicht.NaamskeuzeOverzichtBuilder;
 import nl.procura.gba.web.modules.bs.omzetting.overzicht.form1.OmzettingOverzichtBuilder;
 import nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBuilder;
@@ -45,6 +46,7 @@ import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.levenloos.DossierLevenloos;
+import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
@@ -123,6 +125,8 @@ public class Page2BsTemplate extends ZakenOverzichtPage<Dossier> {
       RiskAnalysisSummaryBuilder.addTab(tabsheet, getZaak().getZaakDossier());
     } else if (zaakDossier instanceof DossierRegistration) {
       RegistrationSummaryBuilder.addTab(tabsheet, getZaak().getZaakDossier());
+    } else if (zaakDossier instanceof DossierLv) {
+      LvSummaryBuilder.addTab(tabsheet, getZaak().getZaakDossier());
     } else {
       throw new ProException(WARNING, "Deze zaak is onvolledig en kan niet worden geladen.");
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -362,5 +362,9 @@ public class MiscUtils {
   public static String getBuilddate() {
     String date = GitFileParser.getProperty(GitFileParser.GIT_COMMIT_TIME);
     return date != null ? GitFileParser.getDate(date, "dd-MM-yyyy") : "";
+  }
+
+  public static String getBranch() {
+    return GitFileParser.getProperty(GitFileParser.GIT_BRANCH);
   }
 }

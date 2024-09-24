@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -45,6 +45,8 @@ public interface DossierNamenrecht {
   /**
    * Geslachtsnaam
    */
+
+  String getOrigineleKeuzeNaam();
 
   String getKeuzeGeslachtsnaam();
 

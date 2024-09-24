@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -53,8 +53,8 @@ public class PrintTableTemplate extends GbaTable {
     setSelectable(true);
     setMultiSelect(true);
 
-    addColumn("Soort");
-    addColumn("Document", 400);
+    addColumn("Soort", 400);
+    addColumn("Document");
     addColumn("Uitvoer naar", 250).setClassType(Component.class);
   }
 

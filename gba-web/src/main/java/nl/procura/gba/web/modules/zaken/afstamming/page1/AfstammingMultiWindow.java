@@ -25,6 +25,7 @@ import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
+import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 
@@ -40,6 +41,7 @@ public class AfstammingMultiWindow extends ZaakMultiWindow {
     addKeuze(new KeuzeGeboorte());
     addKeuze(new KeuzeErkenning());
     addKeuze(new KeuzeNaamskeuze());
+    addKeuze(new KeuzeLv());
   }
 
   public class KeuzeErkenning extends FragmentKeuze {
@@ -100,6 +102,26 @@ public class AfstammingMultiWindow extends ZaakMultiWindow {
 
       BsPersoonUtils.kopieDossierPersoon(getGbaApplication().getServices().getPersonenWsService().getHuidige(),
           zaakDossier.getAangever());
+      getGbaApplication().getServices().getMemoryService().setObject(Dossier.class, zaakDossier.getDossier());
+      super.buttonClick(event);
+    }
+  }
+
+  public class KeuzeLv extends FragmentKeuze {
+
+    public KeuzeLv() {
+      super("Latere vermelding", "bs.lv");
+    }
+
+    @Override
+    public void buttonClick(ClickEvent event) {
+
+      Dossier dossier = (Dossier) getGbaApplication().getServices().getLvService().getNewZaak();
+      DossierLv zaakDossier = (DossierLv) dossier.getZaakDossier();
+
+      BasePLExt pl = getGbaApplication().getServices().getPersonenWsService().getHuidige();
+      BsPersoonUtils.kopieDossierPersoon(pl, zaakDossier.getKind());
+
       getGbaApplication().getServices().getMemoryService().setObject(Dossier.class, zaakDossier.getDossier());
       super.buttonClick(event);
     }

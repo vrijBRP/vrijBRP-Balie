@@ -7,357 +7,366 @@
 @import "components/components.css";
 
 .v-app .config-xml {
-	border: 1px solid #bcbdbe;
-	line-height: 1.5;
-	line-height: 1.5em;
-	line-height: 150%;
+  border: 1px solid #bcbdbe;
+  line-height: 1.5;
+  line-height: 1.5em;
+  line-height: 150%;
 }
 
 .v-window-outerheader {
-	padding: 6px 10px 0;
+  padding: 6px 10px 0;
 }
 
 /* Horizontaal uitlijnen option group*/
 .horizontally-padded .v-select-option {
-	float: left;
+  float: left;
 }
 
 .rdwinfolayout {
-	padding: 5px;
+  padding: 5px;
 }
 
 .rdwinfolayout .icon {
-	width: 20px;
-	vertical-align: bottom;
+  width: 20px;
+  vertical-align: bottom;
 }
 
 .rdwinfolayout .message {
-	vertical-align: bottom;
-	font-weight: bold;
+  vertical-align: bottom;
+  font-weight: bold;
 }
 
 .rdwvergelijk .v-label.v-label-header.header {
-	text-align: left;
-	font-weight: 700;
+  text-align: left;
+  font-weight: 700;
 }
 
 .voorwaarden {
-	line-height: 16px;
+  line-height: 16px;
 }
 
 .voorwaarden ul {
-	list-style-type: decimal;
+  list-style-type: decimal;
 }
 
 .voorwaarden li {
-	padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .zoektab .v-tabsheet-tabitem .v-caption {
-	width: 120px !important;
-	height: 100% !important;
-	box-sizing: border-box;
+  width: 120px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 .rbwtab .v-tabsheet-tabitem .v-caption {
-    width: 140px !important;
-    height: 100% !important;
-    box-sizing: border-box;
+  width: 140px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 .zakenregister-zoektab .v-tabsheet-tabitem .v-caption {
-	width: 160px !important;
-	height: 100% !important;
-	box-sizing: border-box;
+  width: 160px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 .vbo-zoektab .v-tabsheet-tabitem .v-caption {
-	width: 220px !important;
-	height: 100% !important;
-	box-sizing: border-box;
+  width: 220px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 
 .meldingtab .v-tabsheet-tabitem .v-caption {
-	width: 250px !important;
-	height: 100% !important;
-	box-sizing: border-box;
+  width: 250px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 .dynamic-width-tab .v-tabsheet-tabitem .v-caption {
-    width: auto !important;
-    height: 100% !important;
-    box-sizing: border-box;
+  width: auto !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 .favWindow .v-window-outerheader {
-	padding: 6px 5px 0;
+  padding: 6px 5px 0;
 }
 
 .favtab .v-tabsheet-tabitem .v-caption {
-	width: 100px !important;
-	height: 100% !important;
-	box-sizing: border-box;
+  width: 100px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 /* Voor de gebruikersgegevens */
 .v-table input.v-textfield {
-	padding: 2px;
+  padding: 2px;
 }
 
 /* Voor kennisbank plaatje */
 .kennisbank img {
-	border: 1px solid #fff;
-	padding: 3px;
+  border: 1px solid #fff;
+  padding: 3px;
 }
 
 .kennisbank:hover img {
-	border: 1px solid #ddd;
-	padding: 2px;
-	border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 2px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 /* Voor persoon URL plaatje */
 .pl-url-button {
-	float: right;
-	height: 24px;
-	line-height: 24px;
-	vertical-align: middle;
+  float: right;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
 }
 
 .pl-id-button {
-	height: 24px;
-	line-height: 24px;
-	vertical-align: middle;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
 }
 
 /* Voor adres indicatie plaatje */
 .pl-adres-ind-label {
-	float: right;
-	background: #ac0000;
-	color: #ffffff;
-	text-indent: 7px;
-	width: 23px;
-	border-radius: 4px;
-	-webkit-border-radius: 4px;
+  float: right;
+  background: #ac0000;
+  color: #ffffff;
+  text-indent: 7px;
+  width: 23px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 .reisdocument-uitleg-button {
-	float: right;
-	height: 24px;
-	line-height: 24px;
-	vertical-align: middle;
+  float: right;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
 }
 
 .pl_algemeentab2 .v-accordion-item-first .v-accordion-item-caption {
-	border-top: 0px;
+  border-top: 0px;
 }
 
 /* download window */
 .download-window .download-layout {
-	background-color: #eee;
+  background-color: #eee;
 }
 
 .download-window .download-layout .v-tabsheet-tabitem .v-caption {
-	width: 120px !important;
-    height: 100% !important;
-    box-sizing: border-box;
+  width: 120px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }
 
 .download-window .download-layout .text {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .download-window .v-tabsheet-tabitem .v-caption .v-icon {
-	padding-right: 6px;
+  padding-right: 6px;
 }
 
 
 /* proces-thread-layout */
 .proces-thread-layout .v-panel-content {
-	border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .proces-thread-layout table .nr {
-	padding-right: 10px;
-	text-align: right;
-	font-weight: bold;
-	width: 30px;
+  padding-right: 10px;
+  text-align: right;
+  font-weight: bold;
+  width: 30px;
 }
 
 .footerwarning {
-	background: #efdd00;
-	color: #000;
-	padding: 2px 7px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	font-weight: 700;
+  background: #efdd00;
+  color: #000;
+  padding: 2px 7px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  font-weight: 700;
 }
 
 .notificaties-overlay {
-	background: #f9f9f9;
-	border: 1px solid #ddd;
-	border-bottom: none;
-	box-shadow: 0 0 1px 2px #f2f2f2;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  box-shadow: 0 0 1px 2px #f2f2f2;
 }
 
 .notificaties-overlay .click {
-	font-weight: 700;
-	font-size: 11px;
-	padding-top: 5px;
-	text-align: center;
-	width: 240px;
+  font-weight: 700;
+  font-size: 11px;
+  padding-top: 5px;
+  text-align: center;
+  width: 240px;
 }
 
 .queue .message-standaard .v-csslayout-margin {
-	border: 4px solid #FFF;
-	color: #f9f9f9;
+  border: 4px solid #FFF;
+  color: #f9f9f9;
 }
 
 .queue .message-standaard.download .v-csslayout-margin {
-	background: url(layouts/img/download.png) no-repeat;
-	background-position: 5px 7px;
-	text-indent: 15px;
+  background: url(layouts/img/download.png) no-repeat;
+  background-position: 5px 7px;
+  text-indent: 15px;
 }
 
 .queue .message-standaard.v-csslayout-item {
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #ddd;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #ddd;
 }
 
 .queue .v-button.v-button-link.link.v-button-close.close {
-	background: #f9f9f9;
-	background-image: url(layouts/img/close.png);
-	background-repeat: no-repeat;
-	background-position: center 0px;
-	width: 17px;
-	height: 15px;
-	margin: 0px;
-	padding: 0px;
+  background: #f9f9f9;
+  background-image: url(layouts/img/close.png);
+  background-repeat: no-repeat;
+  background-position: center 0px;
+  width: 17px;
+  height: 15px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .queue .message-standaard .v-csslayout-margin .v-label {
-	color: #44698b;
+  color: #44698b;
 }
 
-.queue .message-standaard.v-csslayout-item:hover, .queue .message-standaard .v-csslayout-margin .v-label:hover
-	{
-	cursor: pointer;
+.queue .message-standaard.v-csslayout-item:hover, .queue .message-standaard .v-csslayout-margin .v-label:hover {
+  cursor: pointer;
 }
 
 .status-footer {
-	font-size: 12px;
-	font-weight: 700;
-	color: gray;
+  font-size: 12px;
+  font-weight: 700;
+  color: gray;
 }
 
 .indicatie-dialog .v-verticallayout {
-	background: #fefef2
+  background: #fefef2
 }
 
 .small-margin-dialog .v-verticallayout-margin {
-	padding: 10px;
+  padding: 10px;
 }
 
 .percentage-layout {
-	border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .percentage-label {
-	padding: 1px;
-	padding-left: 3px;
-	background: #4D749F;
-	color: #fff;
-	font-size: 10px;
-	white-space: nowrap;
+  padding: 1px;
+  padding-left: 3px;
+  background: #4D749F;
+  color: #fff;
+  font-size: 10px;
+  white-space: nowrap;
 }
 
 .sub-percentage-label {
-	background: #5d89b7;
-	border-bottom: 1px solid #ccc;
-	white-space: nowrap;
+  background: #5d89b7;
+  border-bottom: 1px solid #ccc;
+  white-space: nowrap;
 }
 
 .job-progress {
-	text-indent: 25px;
-	background: url(layouts/img/indicator.gif);
-	background-repeat: no-repeat;
-	background-position: left center;
-	font-size: 12px;
-	vertical-align: middle;
+  text-indent: 25px;
+  background: url(layouts/img/indicator.gif);
+  background-repeat: no-repeat;
+  background-position: left center;
+  font-size: 12px;
+  vertical-align: middle;
 }
 
 .v-table-column-selector {
-	display: none !important;
+  display: none !important;
 }
 
 .indent {
-	margin-left: 15px;
+  margin-left: 15px;
 }
- 
+
 .mainpanel .v-lazyloadingwrapper-loading {
-	border: none;
-	background-color: transparent;
-	background-image: url(layouts/img/indicator.gif);
+  border: none;
+  background-color: transparent;
+  background-image: url(layouts/img/indicator.gif);
 }
 
 .mainpanel .indicator-none.v-lazyloadingwrapper-loading {
-    background-image: none;
+  background-image: none;
 }
 
 .mainpanel .indicator-left.v-lazyloadingwrapper-loading {
-    background-position: 10px 50%;
+  background-position: 10px 50%;
 }
 
 .registration-proceslayout {
-	padding-top: 18px;
-	border: 1px solid #dcdcdc;
-	margin-right: 10px;
-	margin-top: 9px;
+  padding-top: 18px;
+  border: 1px solid #dcdcdc;
+  margin-right: 10px;
+  margin-top: 9px;
 }
 
 /* To disable the cursor when hovering over buttons */
 .remove-pointer {
-    cursor: auto;
+  cursor: auto;
 }
 
 .remove-pointer:focus {
-    outline: none;
+  outline: none;
 }
 
 .zaak-behandelaar-button {
-    float: right;
-	height: 24px;
-	line-height: 24px;
-	vertical-align: middle;
+  float: right;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
 }
 
 .registrant-import-layout {
-	background-color: #fefef2;
-	padding: 10px;
+  background-color: #fefef2;
+  padding: 10px;
 }
 
 /* Voor naturalisatie */
 .valuechoicewindow .tableform .label {
-	text-align: left;
+  text-align: left;
 }
 
 .valuechoicewindow .tableform .label {
-	white-space: nowrap;
-	padding-right: 20px;
+  white-space: nowrap;
+  padding-right: 20px;
 }
 
 .valuechoicewindow .tableform .label:first-of-type {
-	width: 1%;
+  width: 1%;
 }
 
 .valuechoicewindow .tableform .data {
-	white-space: nowrap;
-	width: 1%;
+  white-space: nowrap;
+  width: 1%;
 }
 
 .raas-textarea {
-	line-height: 20px !important;
+  line-height: 20px !important;
+}
+
+.lv-verbetering .tableform .label {
+  text-align: left;
+}
+
+.reisdoc-aanvragen .v-tabsheet-tabitem .v-caption {
+  width: 180px !important;
+  height: 100% !important;
+  box-sizing: border-box;
 }

@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.naamskeuze.page30;
 
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER_ANDERE_OUDER;
 import static nl.procura.gba.web.services.bs.algemeen.functies.BsNatioUtils.heeftNederlandseNationaliteit;
 
 import java.util.List;
@@ -105,6 +107,7 @@ public class Page30Naamskeuze extends BsPageNaamskeuze {
 
     form2 = new Page30NaamskeuzeForm2(getZaakDossier());
     namenrechtLayout = new BsNamenrechtLayout(getServices(), getZaakDossier());
+    namenrechtLayout.checkRecht();
   }
 
   private void initWaarden() {

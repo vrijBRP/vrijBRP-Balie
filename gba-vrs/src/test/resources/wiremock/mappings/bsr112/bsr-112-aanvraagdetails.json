@@ -1,0 +1,37 @@
+{
+  "id": "17a7747a-773b-11ee-b962-0242ac120002",
+  "name": "reisdocumentaanvraag",
+  "priority": "1",
+  "request": {
+    "url": "/controleaanvragen/v2/aanvraag/details",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"reisdocument\":{\"documentNummer\":\"IP8799D18\"},\"aanvraaginformatie\":{\"aanvraagnummer\":468480588,\"reisdocumentsoort\":{\"code\":\"NI\",\"omschrijving\":\"Nederlandse identiteitskaart\"},\"instantielocatie\":{\"code\":\"RDL51829\",\"naam\":\"Havik\",\"aanvraaginstantie\":\"Peter3b\"},\"artikel23b\":false,\"autoriteitVerstrekking\":{\"code\":\"B1783\",\"omschrijving\":\"Burgemeester van Westland\"},\"nietInStaatTotOndertekening\":false,\"autoriteitVanAfgifte\":\"AuthoriteitVerstrekking\"},\"personalisatiegegevens\":{\"bsn\":999995947,\"geslachtsnaam\":\"Boer\",\"voorvoegselGeslachtsnaam\":\"de\",\"geboortedatum\":\"19500929\",\"voornamen\":\"Albertus Vincent\",\"geboorteplaats\":\"Veere, Zeeland\",\"nationaliteit\":{\"code\":\"0000\",\"omschrijving\":\"Onbekend\"},\"geslachtCode\":\"M\",\"geslachtOmschrijving\":\"MAN\",\"spoedaanvraag\":\"GEEN\",\"datumverstrekking\":\"2021-02-23\",\"lengte\":175,\"staatloze\":false},\"aanvraagstatussen\":[{\"code\":\"AF\",\"omschrijving\":\"Aanvraag afgerond\",\"begindatum\":\"2022-01-11T10:19:38.695Z\",\"aanvraagmeldingen\":[{\"code\":\"AAF\",\"omschrijving\":\"Aanvraag is afgerond\",\"meldingdatum\":\"2021-02-24T07:04:00.000Z\",\"verwerkingdatum\":\"2022-01-11T10:19:38.695Z\",\"redenCode\":\"AAFO\",\"redenOmschrijving\":\"Ongespecificeerde reden aanvraag afgerond\",\"meldendeInstantieNaam\":\"Peter3b\",\"meldendeInstantielocatieNaam\":\"Havik\"},{\"code\":\"APG\",\"omschrijving\":\"Aanvraag personalisatieopdracht gegeven\",\"meldingdatum\":\"2021-02-23T10:22:00.000Z\",\"verwerkingdatum\":\"2022-01-11T10:19:38.697Z\",\"redenCode\":\"APGO\",\"redenOmschrijving\":\"Ongespecificeerde reden personalisatieopdracht gegeven\",\"meldendeInstantieNaam\":\"Peter3b\",\"meldendeInstantielocatieNaam\":\"Havik\"},{\"code\":\"ADP\",\"omschrijving\":\"Aanvraag is aangeboden aan distributieproces\",\"meldingdatum\":\"2021-02-22T23:00:00.000Z\",\"verwerkingdatum\":\"2022-01-11T10:19:38.698Z\",\"redenCode\":\"ADPO\",\"redenOmschrijving\":\"Ongespecificeerde reden aanvraag in distributieproces\",\"meldendeInstantieNaam\":\"Peter3b\",\"meldendeInstantielocatieNaam\":\"Havik\"}]},{\"code\":\"PP\",\"omschrijving\":\"Aanvraag in productie/personalisatie proces\",\"begindatum\":\"2022-01-11T10:19:38.697Z\",\"einddatum\":\"2022-01-11T10:19:38.695Z\"},{\"code\":\"DP\",\"omschrijving\":\"Aanvraag in distributieproces\",\"begindatum\":\"2022-01-11T10:19:38.698Z\",\"einddatum\":\"2022-01-11T10:19:38.697Z\"}]}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 15:48:28 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "17a7747a-773b-11ee-b962-0242ac120002",
+  "persistent": true,
+  "insertionIndex": 23
+}

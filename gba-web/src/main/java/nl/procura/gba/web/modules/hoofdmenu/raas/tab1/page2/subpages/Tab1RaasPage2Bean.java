@@ -22,10 +22,14 @@ package nl.procura.gba.web.modules.hoofdmenu.raas.tab1.page2.subpages;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.modules.zaken.reisdocument.page18.ReisdocumentValidator;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.AnrField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 
 import lombok.Data;
@@ -171,7 +175,7 @@ public class Tab1RaasPage2Bean implements Serializable {
       required = true)
   private Object anr = null;
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       required = true)
   private Object bsn = null;

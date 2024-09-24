@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.fields.BagPopupField;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
@@ -31,7 +32,6 @@ import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Immediate;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.PostalcodeField;
 
@@ -55,7 +55,7 @@ public class BsZoekBean implements Serializable {
       width = "200px")
   private String type = "";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       width = "200px",
       description = "Burgerservice nummer")

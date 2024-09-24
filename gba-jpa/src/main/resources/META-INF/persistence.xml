@@ -153,5 +153,6 @@
         <class>nl.procura.gba.jpa.personen.db.DossNatur</class>
         <class>nl.procura.gba.jpa.personen.db.DossNaturVerz</class>
         <class>nl.procura.gba.jpa.personen.db.TaskEntity</class>
+        <class>nl.procura.gba.jpa.personen.db.DossLv</class>
     </persistence-unit>
 </persistence>

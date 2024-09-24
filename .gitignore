@@ -74,3 +74,5 @@ gba-rdw/src/main/resources/examples/generated/
 gba-rdw/src/main/resources/tcp*
 gba-db-updates/src/main/resources/liquibase/generated/
 gba-jpa/.factorypath
+
+vrs.properties

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -58,18 +58,19 @@ import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
  */
 public class Page1Identificatie extends NormalPageTemplate {
 
-  private static final int                  MIN_AANTAL_VRAGEN    = 4;
-  private final Button                      buttonAkkoord        = new Button("Akkoord (F2)");
-  private final Button                      buttonVerifieer      = new Button("Verifieer (F4)");
-  private final Button                      buttonVragen         = new Button("Nieuwe vragen (F5)");
-  private final Button                      buttonSkip           = new Button("Overslaan (F1)");
-  private final Button                      buttonRijbewijs      = new Button("Toon rijbewijs");
-  private final Button                      buttonReisdocumenten = new Button("Toon reisdocumenten");
-  private final Button                      buttonRpsInfo        = new Button("Toon RPS info");
+  private static final int                     MIN_AANTAL_VRAGEN    = 4;
+  private final        Button                  buttonAkkoord        = new Button("Akkoord (F2)");
+  private final        Button                  buttonVerifieer      = new Button("Verifieer (F4)");
+  private final        Button                  buttonVragen         = new Button("Nieuwe vragen (F5)");
+  private final        Button                  buttonSkip           = new Button("Overslaan (F1)");
+  private final        Button                  buttonRijbewijs      = new Button("Toon rijbewijs");
+  private final        Button                  buttonReisdocumenten = new Button("Toon reisdocumenten BRP");
+  private final        Button                  buttonBasisregister  = new Button("Basisregister");
+  private final        Button                  buttonRpsInfo        = new Button("Toon RPS info");
   private final IdentificatieStatusListener succesListener;
-  private Page1IdentificatieTable           table                = null;
-  private Page1IdentificatieForm1           form1                = null;
-  private Page1IdentificatieForm2           form2                = null;
+  private              Page1IdentificatieTable table                = null;
+  private              Page1IdentificatieForm1 form1                = null;
+  private              Page1IdentificatieForm2 form2                = null;
 
   public Page1Identificatie(IdentificatieStatusListener succesListener) {
 
@@ -123,6 +124,7 @@ public class Page1Identificatie extends NormalPageTemplate {
       ol1.getRight().addButton(buttonVerifieer, this);
       ol1.getRight().addButton(buttonRijbewijs, this);
       ol1.getRight().addButton(buttonReisdocumenten, this);
+      ol1.getRight().addButton(buttonBasisregister, this);
 
       form2 = new Page1IdentificatieForm2();
       OptieLayout ol2 = new OptieLayout();
@@ -130,7 +132,10 @@ public class Page1Identificatie extends NormalPageTemplate {
       ol2.getRight().setWidth("200px");
       ol2.getRight().setCaption("Opties");
       ol2.getRight().addButton(buttonRpsInfo, this);
-      buttonRpsInfo.setEnabled(getServices().getReisdocumentService().isVrsEnabled());
+
+      boolean isVrsEnabled = getServices().getReisdocumentService().getVrsService().isEnabled();
+      buttonRpsInfo.setEnabled(isVrsEnabled);
+      buttonBasisregister.setEnabled(isVrsEnabled);
 
       OptieLayout ol3 = new OptieLayout();
       ol3.getLeft().addComponent(new Fieldset("Identificatie aan de hand van vragen.", table));
@@ -197,7 +202,7 @@ public class Page1Identificatie extends NormalPageTemplate {
         id.setDocumentnr(form1.getBean().getNummer());
       }
 
-      if (table.getSelectedRecords().size() > 0) {
+      if (!table.getSelectedRecords().isEmpty()) {
         if (table.getSelectedRecords().size() >= MIN_AANTAL_VRAGEN) {
           id.addIdentificatieType(IdentificatieType.VRAGEN);
 
@@ -206,7 +211,7 @@ public class Page1Identificatie extends NormalPageTemplate {
         }
       }
 
-      if (id.getIdentificatieTypes().size() > 0) {
+      if (!id.getIdentificatieTypes().isEmpty()) {
         setIdentificatie(id);
 
       } else {
@@ -224,7 +229,7 @@ public class Page1Identificatie extends NormalPageTemplate {
 
     } else if (button == buttonRpsInfo) {
       ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
-      reisdocumentService.checkIdentiteit(getServices().getPersonenWsService().getHuidige())
+      reisdocumentService.getVrsService().checkIdentiteit(getServices().getPersonenWsService().getHuidige())
           .ifPresent(sig -> {
             form2.getField(Page1IdentificatieBean.RPS, CheckBox.class).setValue(Boolean.TRUE);
             getApplication().getParentWindow().addWindow(new SignaleringWindow(sig));
@@ -235,6 +240,9 @@ public class Page1Identificatie extends NormalPageTemplate {
 
     } else if (button == buttonReisdocumenten) {
       toonReisdocumenten();
+
+    } else if (button == buttonBasisregister) {
+      toonBasisregister();
     }
 
     super.handleEvent(button, keyCode);
@@ -294,8 +302,11 @@ public class Page1Identificatie extends NormalPageTemplate {
   }
 
   private void toonReisdocumenten() {
-
     getWindow().getParent().addWindow(new Page1IdentificatieReisdocumentWindow(this, getPl()));
+  }
+
+  private void toonBasisregister() {
+    getWindow().getParent().addWindow(new Page1IdentificatieBasisregisterWindow(this, getPl()));
   }
 
   private void toonRijbewijs() {

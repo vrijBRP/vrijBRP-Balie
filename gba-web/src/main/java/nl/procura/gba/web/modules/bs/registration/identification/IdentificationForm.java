@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.registration.identification;
 
-import static nl.procura.gba.web.modules.bs.registration.identification.IdentificationBean.*;
+import static nl.procura.gba.web.modules.bs.registration.identification.IdentificationBean.F_ISSUING_COUNTRY;
+import static nl.procura.gba.web.modules.bs.registration.identification.IdentificationBean.F_NUMMER;
+import static nl.procura.gba.web.modules.bs.registration.identification.IdentificationBean.F_SOORT;
 
 import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -29,7 +31,7 @@ import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
 public class IdentificationForm extends GbaForm<IdentificationBean> {
 
   public IdentificationForm(DossierPersoon person) {
-    setCaption("Identificate");
+    setCaption("Identificatie");
     setColumnWidths("130px", "");
     setOrder(F_SOORT, F_ISSUING_COUNTRY, F_NUMMER);
     setPersonIdentity(person);

@@ -19,9 +19,18 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.trim;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.joinWith;
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
@@ -29,12 +38,17 @@ import nl.procura.gba.web.modules.bs.common.utils.BsOuderUtils;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierNamenrecht;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
+import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
+import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
+import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.label.H2;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+
+import lombok.Data;
 
 public class BsNamenPage extends ButtonPageTemplate {
 
@@ -43,8 +57,7 @@ public class BsNamenPage extends ButtonPageTemplate {
   private Table1                  table1 = new Table1();
 
   public BsNamenPage(BsNamenWindow namenWindow, DossierNamenrecht dossier) {
-
-    H2 h2 = new H2("Beschikbare namen");
+    H2 h2 = new H2("Naamselectie");
 
     addButton(buttonClose);
     getButtonLayout().addComponent(h2, getButtonLayout().getComponentIndex(buttonClose));
@@ -61,7 +74,10 @@ public class BsNamenPage extends ButtonPageTemplate {
 
     if (event.isEvent(InitPage.class)) {
       setSpacing(true);
-      setInfo("De geslachtsnaam is nog niet bepaald. Selecteer de geslachtsnaam.");
+      setInfo("De geslachtsnaam kan geselecteerd worden uit de lijst met suggesties die hieronder is aangegeven. "
+          + "Let erop dat het voorkomen in deze lijst niet per definitie betekent dat deze naam in dit "
+          + "geval mogelijk is voor deze persoon. Dat is afhankelijk van de van toepassing zijnde wetgeving. "
+          + "De lijst is bedoeld als hulpmiddel.");
       setTable1(new Table1());
       addComponent(getTable1());
     }
@@ -93,7 +109,8 @@ public class BsNamenPage extends ButtonPageTemplate {
     @Override
     public void setColumns() {
 
-      addColumn("Relatie");
+      addColumn("Relatie", 200);
+      addColumn("Voorvoegsel", 100);
       addColumn("Geslachtsnaam");
       addColumn("Opmerking");
 
@@ -146,71 +163,133 @@ public class BsNamenPage extends ButtonPageTemplate {
           break;
       }
 
-      add(moeder.getDossierPersoonType().getDescr(), moeder, opmerkingPersoon1);
-      add(partner.getDossierPersoonType().getDescr(), partner, opmerkingPersoon2);
-      add("Geen", null, null);
+      String moederDescr = moeder.getDossierPersoonType().getDescr();
+      String partnerDescr = partner.getDossierPersoonType().getDescr();
+      add(moederDescr, singletonList(moeder), opmerkingPersoon1);
+      add(partnerDescr, singletonList(partner), opmerkingPersoon2);
+      add(partnerDescr + " + " + moederDescr, asList(partner, moeder), opmerkingPersoon2);
+      add(moederDescr + " + " + partnerDescr, asList(moeder, partner), opmerkingPersoon2);
+      add("Geen", new ArrayList<>(), null);
 
       super.setRecords();
     }
 
-    private void add(String relatie, DossierPersoon persoon, String opmerking) {
-
-      if (persoon != null && !persoon.isVolledig()) {
-        return;
-      }
-
-      String naam = "";
-      if (persoon != null) {
-        // Als er sprake is van een namenreek (alleen geslachtsnaam) 
-        // dan streepje bij geslachtsnaam
-        naam = persoon.getNaam().getVoorv_gesl();
-        String voorn = persoon.getNaam().getVoornamen();
-
-        if (fil(naam) && emp(voorn)) {
-          opmerking = naam + " (is namenreeks)";
-          naam = "-";
+    private void add(String relatie, List<DossierPersoon> personen, String opmerking) {
+      for (DossierPersoon persoon : personen) {
+        if (persoon != null && !persoon.isVolledig()) {
+          return;
         }
       }
 
-      Record r = addRecord(persoon);
+      NaamsKeuze naamsKeuze = toNaamsKeuze(personen);
+      Record r = addRecord(naamsKeuze);
       r.addValue(relatie);
-      r.addValue(persoon == null ? "zelf invullen" : naam);
-      r.addValue(astr(opmerking));
+      r.addValue(naamsKeuze.getVoorvoegsel());
+      r.addValue(personen.isEmpty() ? "zelf invullen" : naamsKeuze.geslachtsnaam);
+      r.addValue(trim(joinWith(". ", opmerking, naamsKeuze.getOpmerking())));
     }
 
     private void selectRecord(Record record) {
-      String naam = null;
-      FieldValue voorvoegsel = null;
-      FieldValue titel = null;
-      DossierPersoonType type = DossierPersoonType.ONBEKEND;
-
+      NaamsKeuze naamsKeuze = new NaamsKeuze();
       if (record.getObject() != null) {
-        DossierPersoon persoon = (DossierPersoon) record.getObject();
+        naamsKeuze = (NaamsKeuze) record.getObject();
+      }
+      namenWindow.setNaam(naamsKeuze);
+      ((ModalWindow) getWindow()).closeWindow();
+    }
+  }
+
+  private NaamsKeuze toNaamsKeuze(List<DossierPersoon> personen) {
+    NaamsKeuze naamsKeuze = new NaamsKeuze();
+    String naam = "";
+    FieldValue voorv = null;
+    FieldValue titel = null;
+    NaamsPersoonType type = NaamsPersoonType.ONBEKEND;
+
+    int personNr = 0;
+    for (DossierPersoon persoon : personen) {
+      if (persoon != null && persoon.isVolledig()) {
+        personNr++;
+        DossierPersoonType persoonType = persoon.getDossierPersoonType();
         String pNaam = persoon.getNaam().getGeslachtsnaam();
         String pVoorn = persoon.getNaam().getVoornamen();
         String pVoorv = persoon.getNaam().getVoorvoegsel();
         String pTp = persoon.getNaam().getTitel();
-        type = persoon.getDossierPersoonType();
+        boolean namenreeks = fil(pNaam) && emp(pVoorn);
 
-        if (fil(pNaam)) {
-          naam = pNaam;
+        if (namenreeks) {
+          naamsKeuze.setOpmerking(persoonType + " heeft namenreeks");
         }
 
-        if (fil(pVoorv)) {
-          voorvoegsel = new FieldValue(pVoorv);
+        if (fil(pNaam) && !namenreeks) {
+          if (personNr == 2) {
+            naam += (" " + pVoorv + " " + pNaam);
+          } else {
+            naam = pNaam;
+          }
         }
-
+        if (personNr == 1 && fil(pVoorv)) {
+          voorv = new FieldValue(pVoorv);
+        }
         if (fil(pTp)) {
           titel = persoon.getTitel();
         }
-
-        if (fil(pNaam) && emp(pVoorn)) {
-          naam = "-";
+        if (dossier instanceof DossierNaamskeuze) {
+          titel = titelOpschonen(titel, persoonType);
         }
+        type = toType(persoon);
       }
 
-      namenWindow.setNaam(naam, voorvoegsel, titel, type);
-      ((ModalWindow) getWindow()).closeWindow();
+      if (personen.size() == 2) {
+        NaamsPersoonType type1 = toType(personen.get(0));
+        NaamsPersoonType type2 = toType(personen.get(1));
+        type = NaamsPersoonType.getType(type1, type2);
+      }
+
+      naamsKeuze.setVoorvoegsel(voorv);
+      naamsKeuze.setTitel(titel);
+      naamsKeuze.setGeslachtsnaam(normalizeSpace(defaultIfBlank(naam, "-")));
+      naamsKeuze.setType(type);
     }
+    return naamsKeuze;
+  }
+
+  private NaamsPersoonType toType(DossierPersoon persoon) {
+    switch (persoon.getDossierPersoonType()) {
+      case MOEDER:
+        return NaamsPersoonType.MOEDER;
+      case VADER_DUO_MOEDER:
+        return NaamsPersoonType.VADER_DUO_MOEDER;
+      case PARTNER:
+      case PARTNER_ANDERE_OUDER:
+        return NaamsPersoonType.PARTNER;
+      case ERKENNER:
+        return NaamsPersoonType.ERKENNER;
+      default:
+        return NaamsPersoonType.ONBEKEND;
+    }
+  }
+
+  /*
+  Een adellijke titel of een adellijk predikaat gaat alleen op de kinderen
+  over als zij de geslachtsnaam van hun adellijke vader verkrijgen.
+  */
+  private FieldValue titelOpschonen(FieldValue titel, DossierPersoonType type) {
+    return dossier.getDossier()
+        .getPersonen(type)
+        .stream()
+        .anyMatch(p -> Geslacht.MAN == p.getGeslacht())
+        ? titel
+        : null;
+  }
+
+  @Data
+  public static class NaamsKeuze {
+
+    private String           geslachtsnaam;
+    private FieldValue       voorvoegsel;
+    private FieldValue       titel;
+    private NaamsPersoonType type = NaamsPersoonType.ONBEKEND;
+    private String           opmerking;
   }
 }

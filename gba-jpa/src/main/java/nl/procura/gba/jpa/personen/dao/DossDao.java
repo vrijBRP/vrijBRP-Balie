@@ -45,6 +45,7 @@ import nl.procura.gba.jpa.personen.db.DossAkte;
 import nl.procura.gba.jpa.personen.db.DossErk;
 import nl.procura.gba.jpa.personen.db.DossGeb;
 import nl.procura.gba.jpa.personen.db.DossHuw;
+import nl.procura.gba.jpa.personen.db.DossLv;
 import nl.procura.gba.jpa.personen.db.DossNatur;
 import nl.procura.gba.jpa.personen.db.DossNk;
 import nl.procura.gba.jpa.personen.db.DossOmzet;
@@ -73,12 +74,14 @@ public class DossDao extends ZaakDao {
 
   private static final BigDecimal TYPE_AANGEVER              = toBigDecimal(10);
   private static final BigDecimal TYPE_OVERLEDENE            = toBigDecimal(15);
+  private static final BigDecimal TYPE_KIND                  = toBigDecimal(20);
   private static final BigDecimal TYPE_VADER_DUO_MOEDER      = toBigDecimal(30);
   private static final BigDecimal TYPE_MOEDER                = toBigDecimal(40);
   private static final BigDecimal TYPE_PARTNER               = toBigDecimal(50);
   private static final BigDecimal TYPE_ERKENNER              = toBigDecimal(60);
   private static final BigDecimal TYPE_PARTNER1              = toBigDecimal(70);
   private static final BigDecimal TYPE_PARTNER2              = toBigDecimal(71);
+  private static final BigDecimal TYPE_OUDER                 = toBigDecimal(74);
   private static final BigDecimal TYPE_BETROKKENE            = toBigDecimal(75);
   private static final BigDecimal TYPE_INSCHRIJVER           = toBigDecimal(80);
   private static final BigDecimal TYPE_GERELATEERDE_BRP      = toBigDecimal(81);
@@ -86,6 +89,7 @@ public class DossDao extends ZaakDao {
   private static final BigDecimal TYPE_TOESTEMMINGGEVER      = toBigDecimal(84);
   private static final BigDecimal TYPE_MEDEVERZOEKER_KIND    = toBigDecimal(85);
   private static final BigDecimal TYPE_MEDEVERZOEKER_PARTNER = toBigDecimal(86);
+  private static final BigDecimal TYPE_ADOPTIEFOUDER         = toBigDecimal(87);
 
   private static final long TYPE_GEBOORTE      = ZaakType.GEBOORTE.getCode();
   private static final long TYPE_ERKENNING     = ZaakType.ERKENNING.getCode();
@@ -101,6 +105,7 @@ public class DossDao extends ZaakDao {
   private static final long TYPE_NATURALISATIE = ZaakType.NATURALISATIE.getCode();
   private static final long TYPE_RISK_ANALYSIS = ZaakType.RISK_ANALYSIS.getCode();
   private static final long TYPE_REGISTRATION  = ZaakType.REGISTRATION.getCode();
+  private static final long TYPE_LV            = ZaakType.LV.getCode();
 
   public static List<ZaakKey> findZaakKeys(ConditionalMap map, QueryListener queryListener) {
 
@@ -214,6 +219,10 @@ public class DossDao extends ZaakDao {
       zakenPredicates.add(getSubZaak(builder, query, table, DossRegistration.class, TYPE_REGISTRATION));
     }
 
+    if (isType(map, TYPE_LV)) {
+      zakenPredicates.add(getSubZaak(builder, query, table, DossLv.class, TYPE_LV));
+    }
+
     if (!zakenPredicates.isEmpty()) {
       where.add(builder.or(zakenPredicates.toArray(new Predicate[0])));
     }
@@ -297,6 +306,11 @@ public class DossDao extends ZaakDao {
       if (isType(map, TYPE_REGISTRATION)) {
         persoonPredicates.add(getPersoon(builder, query, table, map,
             TYPE_REGISTRATION, TYPE_INSCHRIJVER, TYPE_GERELATEERDE_BRP));
+      }
+
+      if (isType(map, TYPE_LV)) {
+        persoonPredicates.add(getPersoon(builder, query, table, map,
+            TYPE_LV, TYPE_KIND, TYPE_OUDER, TYPE_ADOPTIEFOUDER));
       }
 
       where.add(builder.or(persoonPredicates.toArray(new In[zakenPredicates.size()])));

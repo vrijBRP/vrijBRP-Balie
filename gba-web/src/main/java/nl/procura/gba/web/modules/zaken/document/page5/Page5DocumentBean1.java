@@ -22,10 +22,10 @@ package nl.procura.gba.web.modules.zaken.document.page5;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -40,7 +40,7 @@ public class Page5DocumentBean1 implements Serializable {
   @Field(type = FieldType.LABEL,
       caption = "Adres")
   private String     adres         = "";
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "BSN")
   private FieldValue bsn           = new FieldValue();
   @Field(customTypeClass = DatumVeld.class,

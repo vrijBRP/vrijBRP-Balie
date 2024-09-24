@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.standard.Globalfunctions;
+import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.TabelFieldValue;
 
 public class DutchTravelDocumentAuthorityContainer extends TabelContainer {
@@ -34,21 +35,27 @@ public class DutchTravelDocumentAuthorityContainer extends TabelContainer {
     super(GBATable.AUT_VERSTREK_NED_REISD, false);
   }
 
-  public static boolean isCountryCode(TabelFieldValue value) {
+  public static FieldValue getAuthority(String value) {
+    if (value == null) {
+      return null;
+    }
+    return new FieldValue(value.replaceAll("\\d+", ""));
+  }
+
+  public static boolean isCountryCode(String value) {
     if (value == null) {
       return false;
     }
-    String stringValue = value.getKey().toString();
-    return stringValue.startsWith("C") || stringValue.startsWith("G");
+    return value.startsWith("C") || value.startsWith("G");
   }
 
   /**
    * The municipality is sometime part of the value id, like BI0518
    * If that is the case then extract the municipality
    */
-  public static TabelFieldValue getMayorMunicipality(TabelFieldValue value) {
+  public static FieldValue getMayorMunicipality(String value) {
     if (isMayorCode(value)) {
-      String number = value.getKey().toString().replaceAll("\\D+", "");
+      String number = value.replaceAll("\\D+", "");
       if (Globalfunctions.pos(number)) {
         return GbaTables.PLAATS.get(number);
       }
@@ -56,20 +63,28 @@ public class DutchTravelDocumentAuthorityContainer extends TabelContainer {
     return null;
   }
 
-  public static boolean isMayorCode(TabelFieldValue value) {
-    if (value == null) {
-      return false;
+  public static FieldValue getCountry(String value) {
+    if (isCountryCode(value)) {
+      String number = value.replaceAll("\\D+", "");
+      if (Globalfunctions.pos(number)) {
+        return GbaTables.LAND.get(number);
+      }
     }
-    String stringValue = value.getKey().toString();
-    return stringValue.startsWith("B");
+    return null;
   }
 
-  public static boolean isForeignAndInternalAffairs(TabelFieldValue value) {
+  public static boolean isMayorCode(String value) {
     if (value == null) {
       return false;
     }
-    String stringValue = value.getKey().toString();
-    return stringValue.startsWith("BU") || stringValue.startsWith("BI");
+    return value.startsWith("B");
+  }
+
+  public static boolean isForeignAndInternalAffairs(String value) {
+    if (value == null) {
+      return false;
+    }
+    return value.startsWith("BU") || value.startsWith("BI");
   }
 
   @Override

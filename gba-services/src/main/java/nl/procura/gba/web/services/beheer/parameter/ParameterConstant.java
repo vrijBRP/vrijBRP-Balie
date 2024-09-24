@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -103,6 +103,12 @@ public enum ParameterConstant implements ParameterType {
   ZAKEN_DMS_AFSTAM_NK("zaken_dms_afstam_nk", "Afstamming (naamskeuze)",
       GROUP_ZAKEN_DMS_TYPES, true, true, true, ""),
 
+  ZAKEN_INIT_STATUS_AFSTAM_LV("zaken_init_afstam_lv", "Afstamming (latere vermelding)",
+      GROUP_ZAKEN_STATUS, true, true, true, "0"),
+
+  ZAKEN_DMS_AFSTAM_LV("zaken_dms_afstam_lv", "Afstamming (latere vermelding)",
+      GROUP_ZAKEN_DMS_TYPES, true, true, true, ""),
+
   ZAKEN_INIT_STATUS_CORRES("zaken_init_corres", "Correspondentie",
       GROUP_ZAKEN_STATUS, true, true, true, "0"),
 
@@ -158,6 +164,9 @@ public enum ParameterConstant implements ParameterType {
       GROUP_ZAKEN_STATUS, true, true, true, "0"),
 
   ZAKEN_DMS_REGISTRATION("zaken_dms_registration", "Eerste inschrijving",
+      GROUP_ZAKEN_DMS_TYPES, true, true, true, ""),
+
+  ZAKEN_DMS_LV("zaken_dms_lv", "Latere vermelding",
       GROUP_ZAKEN_DMS_TYPES, true, true, true, ""),
 
   ZAKEN_DMS_ONTB_HUW_GPS("zaken_dms_ontb_huw_gps", "Ontbinding/einde Huwelijk/GPS",
@@ -303,9 +312,6 @@ public enum ParameterConstant implements ParameterType {
 
   LOCATIE_OPSLAG("locatie_opslag", "Laatste locatie automatisch selecteren",
       GROUP_ALGEMENE_INSTELLINGEN, true, true, true, "1"),
-
-  HANDLEIDING_RAADPLEGER("handleiding_raadpleger", "Handleiding voor raadplegers",
-      GROUP_HANDLEIDINGEN, true, true, true, ""),
 
   HANDLEIDING_GEBRUIKER("handleiding_gebruiker", "Handleiding voor gebruikers",
       GROUP_HANDLEIDINGEN, true, true, true, ""),
@@ -499,8 +505,11 @@ public enum ParameterConstant implements ParameterType {
   VRS_SERVICE_TIMEOUT("reisd_vrs_timeout", "Timeout in seconden van VRS services application API",
       GROUP_REISDOCUMENTEN, true, false, false, "10"),
 
-  VRS_START_DATE("reisd_vrs_start_date", "Ingangsdatum VRS",
-      GROUP_REISDOCUMENTEN, true, false, false, "20230101"),
+  VRS_ENABLED("reisd_vrs_enabled", "VRS inschakelen",
+      GROUP_REISDOCUMENTEN, true, false, false, "1"),
+
+  VRS_BASISREGISTER("reisd_vrs_basisregister", "VRS Basisregister inschakelen",
+      GROUP_REISDOCUMENTEN, true, false, false, "0"),
 
   VRS_CLIENT_ID("reisd_vrs_client_id", "VRS client-ID",
       GROUP_REISDOCUMENTEN, true, false, false, ""),

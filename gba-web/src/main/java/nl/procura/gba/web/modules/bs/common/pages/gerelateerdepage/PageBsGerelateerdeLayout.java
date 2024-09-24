@@ -20,117 +20,90 @@
 package nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage;
 
 import static java.util.Arrays.asList;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
 import static nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage.PageBsGerelateerdenUtils.getTypePersonen;
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.EXPARTNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.OUDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.gba.web.application.GbaApplication;
-import nl.procura.gba.web.components.dialogs.DeleteProcedure;
-import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
-import nl.procura.gba.web.components.layouts.OptieLayout;
-import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.vaadin.component.layout.Fieldset;
 
-public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
+public class PageBsGerelateerdeLayout extends PageBsGerelateerdeTableLayout {
 
   private final GbaApplication application;
   private final DossierPersoon dossierPersoon;
-  private final Dossier        dossier;
 
-  private final RelatiesTableLayout relatiesLayout1;
-  private final RelatiesTableLayout relatiesLayout2;
-  private final RelatiesTableLayout relatiesLayout3;
-
-  public PageBsGerelateerdeLayout(GbaApplication application, Dossier dossier,
-      DossierPersoon dossierPersoon, DossierPersoonType... types) {
-
+  public PageBsGerelateerdeLayout(GbaApplication application, Dossier dossier, DossierPersoon dossierPersoon,
+      DossierPersoonType... types) {
+    super(application, dossier);
     this.application = application;
-    this.dossier = dossier;
     this.dossierPersoon = dossierPersoon;
 
     // Laad alleen de personen als deze nog niet zijn gevuld
-    if (!isPersonen(PARTNER)) {
+    if (isGeenPersonen(PARTNER)) {
       laadPersonen(dossierPersoon.getPersonen(PARTNER), PARTNER);
       afterLaadPersonen();
     }
 
     // Laad alleen de personen als deze nog niet zijn gevuld
-    if (!isPersonen(EXPARTNER)) {
+    if (isGeenPersonen(EXPARTNER)) {
       laadPersonen(dossierPersoon.getPersonen(EXPARTNER), EXPARTNER);
       afterLaadPersonen();
     }
 
     // Laad alleen de personen als deze nog niet zijn gevuld
-    if (!isPersonen(OUDER)) {
+    if (isGeenPersonen(OUDER)) {
       laadPersonen(dossierPersoon.getPersonen(OUDER), OUDER);
       afterLaadPersonen();
     }
 
     // Laad alleen de personen als deze nog niet zijn gevuld
-    if (!isPersonen(DossierPersoonType.KIND)) {
-      laadPersonen(dossierPersoon.getPersonen(DossierPersoonType.KIND), KIND);
+    if (isGeenPersonen(KIND)) {
+      laadPersonen(dossierPersoon.getPersonen(KIND), KIND);
       afterLaadPersonen();
     }
 
-    relatiesLayout1 = new RelatiesTableLayout("Partner(s)", PARTNER, EXPARTNER);
-    relatiesLayout2 = new RelatiesTableLayout("Ouder(s)", OUDER);
-    relatiesLayout3 = new RelatiesTableLayout("Minderjarige kind(eren)", DossierPersoonType.KIND);
+    RelatiesTableLayout layout1 = addLayout(new RelatiesTableLayout("Partner(s)", PARTNER, EXPARTNER));
+    RelatiesTableLayout layout2 = addLayout(new RelatiesTableLayout("Ouder(s)", OUDER));
+    RelatiesTableLayout layout3 = addLayout(new RelatiesTableLayout("Minderjarige kind(eren)", KIND));
 
     if (isType(asList(types), PARTNER, EXPARTNER)) {
-      addExpandComponent(relatiesLayout1, 0.30f);
+      addExpandComponent(layout1, 0.30f);
     }
 
     if (isType(asList(types), OUDER)) {
-      addExpandComponent(relatiesLayout2, 0.30f);
+      addExpandComponent(layout2, 0.30f);
     }
 
-    if (isType(asList(types), DossierPersoonType.KIND)) {
-      addExpandComponent(relatiesLayout3, 0.40f);
+    if (isType(asList(types), KIND)) {
+      addExpandComponent(layout3, 0.40f);
     }
   }
 
-  public List<DossierPersoon> getPersonen() {
-    List<DossierPersoon> personen = new ArrayList<>();
-    personen.addAll(relatiesLayout1.getTable().getAllValues(DossierPersoon.class));
-    personen.addAll(relatiesLayout2.getTable().getAllValues(DossierPersoon.class));
-    personen.addAll(relatiesLayout3.getTable().getAllValues(DossierPersoon.class));
-    return personen;
+  public boolean isGeenPersonen(DossierPersoonType... types) {
+    return dossierPersoon.getPersonen(types).isEmpty();
   }
 
-  public void init() {
-    relatiesLayout1.getTable().init();
-    relatiesLayout2.getTable().init();
-    relatiesLayout3.getTable().init();
+  @Override
+  public List<DossierPersoon> getPersonen(DossierPersoonType... types) {
+    return dossierPersoon.getPersonen(types);
   }
 
-  public boolean isPersonen(DossierPersoonType... types) {
-    return !dossierPersoon.getPersonen(types).isEmpty();
-  }
-
-  public void laadPersonen(Collection<DossierPersoon> personen, DossierPersoonType type) {
-    application.getServices().getDossierService().deletePersonen(dossier, personen);
-    laadRelaties(type);
-  }
-
+  @Override
   public void laadRelaties(DossierPersoonType... types) {
     Services services = application.getServices();
     if (isType(asList(types), PARTNER, EXPARTNER)) {
-      dossierPersoon.toevoegenPersonen(getTypePersonen(services, dossierPersoon, HUW_GPS));
+      toevoegenPersonen(getTypePersonen(services, dossierPersoon, HUW_GPS));
     }
 
     if (isType(asList(types), OUDER)) {
@@ -138,222 +111,31 @@ public class PageBsGerelateerdeLayout extends GbaVerticalLayout {
     }
 
     if (isType(asList(types), DossierPersoonType.KIND)) {
-      dossierPersoon.toevoegenPersonen(getTypePersonen(services, dossierPersoon, GBACat.KINDEREN));
+      toevoegenPersonen(getTypePersonen(services, dossierPersoon, GBACat.KINDEREN));
     }
   }
 
+  @Override
+  public void verwijderPersoon(DossierPersoon persoon) {
+    dossierPersoon.verwijderPersoon(persoon);
+  }
+
+  @Override
+  public void toevoegenPersonen(List<DossierPersoon> personen) {
+    dossierPersoon.toevoegenPersonen(personen);
+  }
+
   // Override please
+  @Override
   @SuppressWarnings("unused")
   public void onDossierPersoon(DossierPersoon dossierPersoon) {
   }
 
-  @SuppressWarnings("unused")
+  @Override
   public void onHerladen(DossierPersoonType[] types) {
     for (DossierPersoonType type : types) {
       laadPersonen(dossierPersoon.getPersonen(type), type);
       afterLaadPersonen();
-    }
-  }
-
-  @SuppressWarnings("unused")
-  public void onToevoegen(DossierPersoonType type) {
-  } // Override
-
-  @SuppressWarnings("unused")
-  public void onVerwijderen(DossierPersoon persoon) {
-  } // Override
-
-  /**
-   * Wordt aangeroepen nadat de personen zijn geladen
-   */
-  protected void afterLaadPersonen() {
-  }
-
-  private boolean isType(List<DossierPersoonType> typeList, DossierPersoonType... types) {
-
-    if (typeList.isEmpty()) {
-      return true;
-    }
-
-    for (DossierPersoonType type : types) {
-      if (typeList.contains(type)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  private class ButtonType implements ClickListener {
-
-    private final DossierPersoonType type;
-    private final Button             button;
-
-    public ButtonType(DossierPersoonType type) {
-      this.type = type;
-      button = new Button(type.getDescr(), this);
-      button.setSizeFull();
-    }
-
-    @Override
-    public void buttonClick(ClickEvent event) {
-    }
-
-    public Button getButton() {
-      return button;
-    }
-
-    public DossierPersoonType getType() {
-      return type;
-    }
-  }
-
-  private class DossierTypeWindow extends GbaModalWindow {
-
-    private final List<ButtonType> buttonTypes = new ArrayList<>();
-
-    public DossierTypeWindow(DossierPersoonType... types) {
-
-      super("Selecteer een type", "200px");
-
-      VerticalLayout layout = new VerticalLayout();
-      layout.setSpacing(true);
-      layout.setMargin(true);
-
-      for (DossierPersoonType type : types) {
-
-        ButtonType buttonType = new ButtonType(type) {
-
-          @Override
-          public void buttonClick(ClickEvent event) {
-            onClick(getType());
-            closeWindow();
-          }
-        };
-
-        buttonTypes.add(buttonType);
-      }
-
-      for (ButtonType buttonType : buttonTypes) {
-        layout.addComponent(buttonType.getButton());
-      }
-
-      setContent(layout);
-    }
-
-    @SuppressWarnings("unused")
-    public void onClick(DossierPersoonType type) {
-    } // Override
-  }
-
-  private class RelatiesTable extends PageBsGerelateerdeTable {
-
-    public RelatiesTable(DossierPersoonType... types) {
-      super(dossierPersoon, types);
-    }
-
-    @Override
-    public void onDoubleClick(Record record) {
-      onDossierPersoon((DossierPersoon) record.getObject());
-    }
-  }
-
-  private class RelatiesTableKind extends RelatiesTable {
-
-    public RelatiesTableKind(DossierPersoonType... types) {
-      super(types);
-    }
-
-    @Override
-    public void setColumns() {
-
-      setMultiSelect(true);
-      setSelectable(true);
-
-      addColumn("Nr", 30);
-      addColumn("Naam", 338).setUseHTML(true);
-      addColumn("Leeftijd", 60);
-      addColumn("Type");
-      addColumn("&nbsp;", 70).setClassType(Component.class);
-    }
-  }
-
-  private class RelatiesTableLayout extends OptieLayout implements ClickListener {
-
-    private final DossierPersoonType[] types;
-    private final Button               buttonReload = new Button("Herladen");
-    private final Button               buttonAdd    = new Button("Toevoegen");
-    private final Button               buttonDel    = new Button("Verwijderen");
-    private final RelatiesTable        table;
-
-    public RelatiesTableLayout(String caption, DossierPersoonType... types) {
-
-      this.types = types;
-      this.table = DossierPersoonType.KIND.is(types)
-          ? new RelatiesTableKind(types)
-          : new RelatiesTable(types);
-
-      getLeft().addComponent(new Fieldset(caption));
-      getLeft().addExpandComponent(table);
-
-      getRight().setWidth("140px");
-      getRight().setCaption("Opties");
-
-      getRight().addButton(buttonReload, this);
-      getRight().addButton(buttonAdd, this);
-      getRight().addButton(buttonDel, this);
-    }
-
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (event.getButton() == buttonReload) {
-        onHerladen();
-
-      } else if (event.getButton() == buttonAdd) {
-        onToevoegen();
-
-      } else if (event.getButton() == buttonDel) {
-        onVerwijderen();
-      }
-    }
-
-    public RelatiesTable getTable() {
-      return table;
-    }
-
-    private void onHerladen() {
-      PageBsGerelateerdeLayout.this.onHerladen(types);
-      init();
-    }
-
-    private void onToevoegen() {
-
-      if (types.length > 1) {
-        DossierTypeWindow dossierTypeWindow = new DossierTypeWindow(types) {
-
-          @Override
-          public void onClick(DossierPersoonType type) {
-            PageBsGerelateerdeLayout.this.onToevoegen(type);
-          }
-        };
-        getParentWindow().addWindow(dossierTypeWindow);
-
-      } else {
-        PageBsGerelateerdeLayout.this.onToevoegen(types[0]);
-      }
-    }
-
-    private void onVerwijderen() {
-
-      new DeleteProcedure<DossierPersoon>(table) {
-
-        @Override
-        protected void deleteValue(DossierPersoon persoon) {
-          PageBsGerelateerdeLayout.this.onVerwijderen(persoon);
-          dossierPersoon.verwijderPersoon(persoon);
-          init();
-        }
-      };
     }
   }
 }

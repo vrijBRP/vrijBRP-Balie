@@ -24,11 +24,15 @@ import java.util.Optional;
 
 import nl.procura.gba.common.ZaakType;
 
+import lombok.Getter;
+
+@Getter
 public enum DmsParameterType {
 
   GEBOORTE(ParameterConstant.ZAKEN_DMS_AFSTAM_GEB, ZaakType.GEBOORTE),
   ERKENNING(ParameterConstant.ZAKEN_DMS_AFSTAM_ERK, ZaakType.ERKENNING),
   NAAMSKEUZE(ParameterConstant.ZAKEN_DMS_AFSTAM_NK, ZaakType.NAAMSKEUZE),
+  LV(ParameterConstant.ZAKEN_DMS_AFSTAM_LV, ZaakType.LV),
   COVOG(ParameterConstant.ZAKEN_DMS_COVOG, ZaakType.COVOG),
   VERSTREKKINGSBEPERKING(ParameterConstant.ZAKEN_DMS_VERSTREK, ZaakType.VERSTREKKINGSBEPERKING),
   HUWELIJK_GPS_GEMEENTE(ParameterConstant.ZAKEN_DMS_HUW_GPS, ZaakType.HUWELIJK_GPS_GEMEENTE),
@@ -59,13 +63,5 @@ public enum DmsParameterType {
 
   public static Optional<DmsParameterType> getByZaakType(ZaakType zaakType) {
     return Arrays.stream(values()).filter(type -> type.getZaakType() == zaakType).findFirst();
-  }
-
-  public ParameterType getParameterType() {
-    return parameterType;
-  }
-
-  public ZaakType getZaakType() {
-    return zaakType;
   }
 }

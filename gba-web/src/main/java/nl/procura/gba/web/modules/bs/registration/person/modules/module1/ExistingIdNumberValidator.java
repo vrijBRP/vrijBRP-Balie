@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.bs.registration.person.modules.module1;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import com.vaadin.data.validator.AbstractStringValidator;
@@ -29,7 +31,8 @@ import nl.procura.validation.Bsn;
 
 public class ExistingIdNumberValidator extends AbstractStringValidator {
 
-  private final Supplier<Services> servicesSupplier;
+  private final Supplier<Services>   servicesSupplier;
+  private final Map<String, Boolean> results = new HashMap<>();
 
   public enum TYPE {
     BSN,
@@ -46,8 +49,13 @@ public class ExistingIdNumberValidator extends AbstractStringValidator {
   @Override
   protected boolean isValidString(String id) {
     try {
+      if (results.containsKey(id)) {
+        return results.get(id);
+      }
       if (Bsn.isCorrect(id) || Anummer.isCorrect(id)) {
-        return servicesSupplier.get().getPersonenWsService().getPersoonslijst(id).getCats().isEmpty();
+        boolean result = servicesSupplier.get().getPersonenWsService().getPersoonslijst(id).getCats().isEmpty();
+        results.put(id, result);
+        return result;
       }
     } catch (RuntimeException e) {
       // ignore

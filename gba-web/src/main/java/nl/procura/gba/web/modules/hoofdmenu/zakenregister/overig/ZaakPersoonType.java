@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig;
 
+import lombok.Getter;
+
+@Getter
 public enum ZaakPersoonType {
 
   AANGEVER("Aangever"),
@@ -30,19 +33,12 @@ public enum ZaakPersoonType {
   BETROKKENE("Betrokkene"),
   PARTNER("Partner"),
   PARTNER_1("Partner 1"),
-  PARTNER_2("Partner 2");
+  PARTNER_2("Partner 2"),
+  KIND("Kind");
 
-  private String caption;
+  private final String caption;
 
   ZaakPersoonType(String caption) {
-    this.caption = caption;
-  }
-
-  public String getCaption() {
-    return caption;
-  }
-
-  public void setCaption(String caption) {
     this.caption = caption;
   }
 }

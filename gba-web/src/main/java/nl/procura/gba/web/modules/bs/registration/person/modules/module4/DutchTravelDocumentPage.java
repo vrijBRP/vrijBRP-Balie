@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,7 +26,6 @@ import java.util.function.Consumer;
 
 import nl.procura.gba.jpa.personen.db.DossTravelDoc;
 import nl.procura.gba.web.components.layouts.OptieLayout;
-import nl.procura.gba.web.modules.bs.registration.SingleEditFormWindow;
 import nl.procura.gba.web.modules.bs.registration.person.modules.AbstractPersonPage;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
@@ -97,7 +96,6 @@ public class DutchTravelDocumentPage extends AbstractPersonPage {
 
   @Override
   public void onNew() {
-
     final DossierPersoon person = getPerson();
     final DossTravelDoc travelDoc = new DossTravelDoc(person);
 
@@ -109,8 +107,8 @@ public class DutchTravelDocumentPage extends AbstractPersonPage {
       travelDoc.setNedReisdoc(ReisdocumentType.NEDERLANDSE_IDENTITEITSKAART.getCode());
       travelDoc.setDocNr(person.getIdDocNr());
     }
-    DutchTravelDocumentForm form = new DutchTravelDocumentForm(person, travelDoc, this::onNewTravelDoc);
-    showTravelDocForm(form);
+
+    showTravelDocForm(new DutchTravelDocumentForm(person, travelDoc, this::onNewTravelDoc));
   }
 
   private void onNewTravelDoc(DossTravelDoc travelDoc) {
@@ -130,8 +128,7 @@ public class DutchTravelDocumentPage extends AbstractPersonPage {
   }
 
   private void showTravelDocForm(DutchTravelDocumentForm form) {
-    SingleEditFormWindow window = new SingleEditFormWindow(form,
-        "700px", "Nederlands reisdocument", "Nederlands reisdocument");
-    getParentWindow().addWindow(window);
+    getParentWindow().addWindow(new DutchTravelDocumentWindow(form,
+        "700px", "Nederlands reisdocument", "Nederlands reisdocument"));
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -73,7 +73,6 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HAN
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_GEBRUIKER;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_HUP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_INSCHRIJVING;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_RAADPLEGER;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ID_VERPLICHT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INLOGOPMERKING;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_CLEAR_LIST;
@@ -142,19 +141,21 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TOO
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VERHUIS_DATUM_LIMIET_TOEKOMST;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VERHUIS_DATUM_LIMIET_VERLEDEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VER_VRAAG_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_BASISREGISTER;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_ID;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_RESOURCE_SERVER;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_SCOPE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_SECRET;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_IDP_SERVICE_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_INSTANTIE_CODE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_TIMEOUT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_URL;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_START_DATE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.WACHTWOORD_VERLOOP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.X_UA_COMPATIBLE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_ERK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_GEB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_LV;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_NK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_COVOG;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_GV;
@@ -178,6 +179,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAK
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_EINDSTATUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_ERK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_GEB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_LV;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_NK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_CORRES;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_COVOG;
@@ -389,6 +391,18 @@ public class ParameterBean implements Serializable {
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Afstamming (naamskeuze)")
   private String dmsAfstamNk = "";
+
+  @ParameterAnnotation(ZAKEN_INIT_STATUS_AFSTAM_LV)
+  @Position(order = "Afstamming (latere vermelding)")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Afstamming (latere vermelding)")
+  private String initieleStatusAfstamLv = "";
+
+  @ParameterAnnotation(ZAKEN_DMS_AFSTAM_LV)
+  @Position(order = "1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Afstamming (latere vermelding)")
+  private String dmsAfstamLv = "";
 
   @ParameterAnnotation(ZAKEN_INIT_STATUS_CORRES)
   @Position(order = "Correspondentie")
@@ -820,16 +834,8 @@ public class ParameterBean implements Serializable {
   @Select(containerDataSource = ParmBooleanContainer.class,
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
   private String locatieOpslaan;
-  // Handleidingen
-  @ParameterAnnotation(HANDLEIDING_RAADPLEGER)
-  @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Handleiding voor raadplegers",
-      width = "60px")
-  @Position(order = "1")
-  @Select(containerDataSource = ParmBooleanContainer.class,
-      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
-  private String handleidingRaadpleger = "";
 
+  // Handleidingen  
   @ParameterAnnotation(HANDLEIDING_GEBRUIKER)
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Handleiding voor gebruikers",
@@ -1369,64 +1375,75 @@ public class ParameterBean implements Serializable {
   private String rijbewijsVervaltermijnInDagen = "";
 
   @ParameterAnnotation(REISD_PV_NR)
-  @Position(order = "01")
+  @Position(order = "1")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Standaard proces-verbaalnummer",
       width = "400px")
   private String reisdocumentPvNr = "";
 
   @ParameterAnnotation(REISD_WIJZIGING_GEZAG)
-  @Position(order = "02")
+  @Position(order = "2")
   @Field(customTypeClass = DatumVeld.class,
       caption = "Ingangsdatum wijziging afleiding gezag",
       width = "80px")
   private String reisdocumentGezagsRegels = "";
 
   @ParameterAnnotation(REISD_SIGNAL_INFO)
-  @Position(order = "03")
+  @Position(order = "3")
   @Field(type = FieldType.TEXT_AREA,
       caption = "Toelichting bij signalering",
       width = "400px")
   @TextArea(rows = 5)
   private String reisdocumentToelSignalering = "";
 
-  @ParameterAnnotation(VRS_START_DATE)
-  @Position(order = "04")
-  @Field(customTypeClass = DatumVeld.class,
-      caption = "Ingangsdatum VRS",
-      width = "80px")
-  private String reisdocumentVrsStartDate = "";
+  @ParameterAnnotation(VRS_ENABLED)
+  @Position(order = "10")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "VRS inschakelen",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String reisdocumentEnableVrs = "";
+
+  @ParameterAnnotation(VRS_BASISREGISTER)
+  @Position(order = "11")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "VRS Basisregister inschakelen",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String reisdocumentVrsBasisregister = "";
 
   @ParameterAnnotation(VRS_SERVICE_URL)
-  @Position(order = "05")
+  @Position(order = "12")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "URL van VRS API",
       width = "400px")
   private String reisdocumentVrsUrl = "";
 
   @ParameterAnnotation(VRS_IDP_SERVICE_URL)
-  @Position(order = "06")
+  @Position(order = "13")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "URL van VRS Token API",
       width = "400px")
   private String reisdocumentVrsTokenUrl = "";
 
   @ParameterAnnotation(VRS_SERVICE_TIMEOUT)
-  @Position(order = "07")
+  @Position(order = "14")
   @Field(customTypeClass = NumberField.class,
       caption = "VRS timeout",
       width = "80px")
   private String reisdocumentVrsTimeout = "";
 
   @ParameterAnnotation(VRS_CLIENT_ID)
-  @Position(order = "08")
+  @Position(order = "15")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS client-id",
       width = "400px")
   private String reisdocumentVrsClientId = "";
 
   @ParameterAnnotation(VRS_CLIENT_SECRET)
-  @Position(order = "09")
+  @Position(order = "16")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS client secret",
       width = "400px")
@@ -1434,21 +1451,21 @@ public class ParameterBean implements Serializable {
   private String reisdocumentVrsClientSecret = "";
 
   @ParameterAnnotation(VRS_CLIENT_SCOPE)
-  @Position(order = "10")
+  @Position(order = "17")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS scope",
       width = "400px")
   private String reisdocumentVrsScope = "";
 
   @ParameterAnnotation(VRS_CLIENT_RESOURCE_SERVER)
-  @Position(order = "11")
+  @Position(order = "18")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS resource server",
       width = "400px")
   private String reisdocumentVrsResourceServer = "";
 
   @ParameterAnnotation(VRS_INSTANTIE_CODE)
-  @Position(order = "12")
+  @Position(order = "19")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "VRS instantie-code",
       width = "400px")

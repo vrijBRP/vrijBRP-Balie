@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,15 +19,13 @@
 
 package nl.procura.gba.web.modules.zaken.identificatie.page1;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.VerticalLayout;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14ReisdocumentTable1;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
+import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 
 public class Page1IdentificatieReisdocumentWindow extends GbaModalWindow {
@@ -35,22 +33,14 @@ public class Page1IdentificatieReisdocumentWindow extends GbaModalWindow {
   private final Page1Identificatie page1;
 
   public Page1IdentificatieReisdocumentWindow(Page1Identificatie page1, BasePLExt pl) {
-
     super("Reisdocumenten (Esc om te sluiten)", "1000px");
-
     this.page1 = page1;
-
-    VerticalLayout verticalLayout = new VerticalLayout();
-    verticalLayout.setMargin(true);
-    verticalLayout.setSpacing(true);
-
-    verticalLayout.addComponent(BUTTON_CLOSE);
-    verticalLayout.addComponent(new InfoLayout("De huidige reisdocumenten",
-        "Selecteer een record om te gebruiken in het vorige scherm"));
-    verticalLayout.addComponent(new Table(pl));
-    verticalLayout.setComponentAlignment(BUTTON_CLOSE, Alignment.TOP_RIGHT);
-
-    setContent(verticalLayout);
+    setContent(new VLayout()
+        .margin(true)
+        .spacing(true)
+        .add(new InfoLayout("De huidige reisdocumenten",
+            "Selecteer een record om te gebruiken in het vorige scherm"))
+        .add(new Table(pl)));
   }
 
   class Table extends Page14ReisdocumentTable1 {
@@ -61,13 +51,9 @@ public class Page1IdentificatieReisdocumentWindow extends GbaModalWindow {
 
     @Override
     public void onClick(Record record) {
-
       Reisdocument rd = (Reisdocument) record.getObject();
-
       if (rd != null) {
-
         switch (ReisdocumentType.get(rd.getNederlandsReisdocument().getVal())) {
-
           case EERSTE_NATIONAAL_PASPOORT:
           case EERSTE_ZAKENPASPOORT:
           case FACILITEITEN_PASPOORT:
@@ -86,10 +72,8 @@ public class Page1IdentificatieReisdocumentWindow extends GbaModalWindow {
           default:
             break;
         }
-
         closeWindow();
       }
     }
-
   }
 }

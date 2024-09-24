@@ -57,10 +57,8 @@ public class BinnenProwebLayoutErk extends GbaVerticalLayout implements ClickLis
   }
 
   // Als er een erkenning is gevonden dan die melding tonen
-
   @Override
   public void buttonClick(ClickEvent event) {
-
     if (event.getButton() == buttonZoek) {
       BsErkenningWindow erkWindow = new BsErkenningWindow(geboorte);
       erkWindow.addListener((CloseListener) e -> form.setGeboorte(geboorte));
@@ -77,15 +75,16 @@ public class BinnenProwebLayoutErk extends GbaVerticalLayout implements ClickLis
   }
 
   private void setInfo() {
-
     DossierErkenning erkenning = geboorte.getErkenningVoorGeboorte();
-
+    String info = "Koppeling een erkenning aan de geboorteaangifte.";
     if (emp(geboorte.getGezinssituatie().getCode()) && erkenning != null) {
-      addComponent(new InfoLayout("Ter informatie",
-          "Er is een erkenning gevonden van de moeder van "
-              + erkenning.getDossier().getDatumIngang()));
-    } else {
-      addComponent(new InfoLayout("Ter informatie", "Koppeling een erkenning aan de geboorteaangifte."));
+      info = "Er is een erkenning gevonden van de moeder van " + erkenning.getDossier().getDatumIngang();
     }
+    if (geboorte.isOvergangsperiodeNaamskeuze()) {
+      info +=
+          "<hr/><b>Als de erkenning gedaan is in 2023 dan is mogelijk destijds ook gekozen voor een dubbele achternaam."
+              + "<br>Vul dan bij 2e gekozen naam deze dubbele achternaam in. Dit wordt afgedrukt op de latere vermelding</b>";
+    }
+    addComponent(new InfoLayout("Ter informatie", info));
   }
 }

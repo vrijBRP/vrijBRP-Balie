@@ -33,7 +33,6 @@ import java.util.Map.Entry;
 import nl.procura.diensten.gba.ple.base.BasePLElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.gba.common.MiscUtils;
-import nl.procura.standard.Globalfunctions;
 
 public class Naam {
 
@@ -695,7 +694,7 @@ public class Naam {
       }
     }
 
-    return trim(sb.toString().replaceAll("-$", "") + ".");
+    return (sb.toString().replaceAll("-$", "") + ".");
   }
 
   private String getVoornInit() {
@@ -703,6 +702,8 @@ public class Naam {
   }
 
   private String trim(String input) {
-    return Globalfunctions.trim(input).replaceAll(" - ", "-");
+    return input.trim()
+        .replaceAll(" - ", "-")
+        .replaceAll("\\s+", " ");
   }
 }

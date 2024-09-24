@@ -5,7 +5,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.32.1</version>
+    <version>1.33.0</version>
   </parent>
 
   <artifactId>gba-vrs</artifactId>
@@ -15,7 +15,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.6.2</version>
+      <version>5.9.3</version>
       <scope>test</scope>
     </dependency>
 
@@ -37,6 +37,16 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.vrijbrp</groupId>
+      <artifactId>javax</artifactId>
     </dependency>
 
     <dependency>
@@ -70,9 +80,8 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>6.0.1</version>
+        <version>6.6.0</version>
         <configuration>
-          <inputSpec>${project.basedir}/src/main/resources/vrs-services-api.yaml</inputSpec>
           <generatorName>java</generatorName>
           <configOptions>
             <sourceFolder>src/main/java</sourceFolder>
@@ -94,9 +103,31 @@
         </configuration>
         <executions>
           <execution>
+            <id>bsr-101</id>
             <goals>
               <goal>generate</goal>
             </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/bsr-101-1_29_0.yaml</inputSpec>
+            </configuration>
+          </execution>
+          <execution>
+            <id>bsr-112</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/bsr-112-1_56_0.yaml</inputSpec>
+            </configuration>
+          </execution>
+          <execution>
+            <id>bsr-119</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/bsr-119-1_63_0.yaml</inputSpec>
+            </configuration>
           </execution>
         </executions>
       </plugin>

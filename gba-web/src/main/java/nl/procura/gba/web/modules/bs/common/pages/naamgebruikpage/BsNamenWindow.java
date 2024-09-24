@@ -20,10 +20,9 @@
 package nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage;
 
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
-import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenPage.NaamsKeuze;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierNamenrecht;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public abstract class BsNamenWindow extends GbaModalWindow {
 
@@ -40,8 +39,5 @@ public abstract class BsNamenWindow extends GbaModalWindow {
     addComponent(new MainModuleContainer(false, new BsNamenPage(this, dossier)));
   }
 
-  public abstract void setNaam(String geslachtsnaam,
-      FieldValue voorvoegsel,
-      FieldValue titel,
-      DossierPersoonType type);
+  public abstract void setNaam(NaamsKeuze naamsKeuze);
 }

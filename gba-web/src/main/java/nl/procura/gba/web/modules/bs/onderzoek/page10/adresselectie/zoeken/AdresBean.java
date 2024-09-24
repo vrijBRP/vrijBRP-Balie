@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.containers.StraatContainer;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.HuisnummerVeld;
@@ -31,7 +32,6 @@ import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Immediate;
 import nl.procura.vaadin.annotation.field.Select;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.PostalcodeField;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -49,7 +49,7 @@ public class AdresBean implements Serializable {
   public static final String HNRT   = "hnrT";
   public static final String PC     = "pc";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "BSN",
       width = "200px")
   private BsnFieldValue bsn = new BsnFieldValue();

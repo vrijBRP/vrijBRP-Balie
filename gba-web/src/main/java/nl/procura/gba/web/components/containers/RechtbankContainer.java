@@ -25,9 +25,8 @@ import nl.procura.vaadin.component.container.ArrayListContainer;
 public class RechtbankContainer extends ArrayListContainer {
 
   public RechtbankContainer() {
-
     for (RechtbankLocatie locatie : RechtbankLocatie.values()) {
-      if (locatie != RechtbankLocatie.ONBEKEND) {
+      if (locatie != RechtbankLocatie.ONBEKEND && locatie != RechtbankLocatie.ANDERS) {
         addItem(locatie);
       }
     }

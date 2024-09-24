@@ -19,8 +19,23 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.klapper.page1;
 
-import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.BSN;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.DATUM_AKTE;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.DATUM_FEIT;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.DEEL;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.GEBOORTEDATUM;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.INVOERTYPE;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.JAAR;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.NUMMER;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.OPMERKING;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.SOORT;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.VOLGORDE;
+import static nl.procura.gba.web.modules.hoofdmenu.klapper.page1.Page1KlapperBean.VOORNAMEN;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.util.List;
 
@@ -34,7 +49,12 @@ import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.beheer.aktes.page3.AkteRegistersoortContainer;
-import nl.procura.gba.web.services.bs.algemeen.akte.*;
+import nl.procura.gba.web.services.bs.algemeen.akte.AkteService;
+import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteDeel;
+import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType;
+import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort;
+import nl.procura.gba.web.services.bs.algemeen.akte.KlapperVolgordeType;
+import nl.procura.gba.web.services.bs.algemeen.akte.KlapperZoekargumenten;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.BsnField;

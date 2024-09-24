@@ -29,7 +29,12 @@ import java.util.List;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.validator.AbstractStringValidator;
-import com.vaadin.ui.*;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.Select;
+import com.vaadin.ui.TextField;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
@@ -41,6 +46,7 @@ import nl.procura.burgerzaken.gba.core.validators.NumVal;
 import nl.procura.burgerzaken.gba.core.validators.Val;
 import nl.procura.gba.web.common.validators.GbaDatumValidator;
 import nl.procura.gba.web.components.containers.TabelContainer;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
@@ -48,7 +54,6 @@ import nl.procura.gba.web.modules.persoonslijst.overig.grid.RecordElementCombo;
 import nl.procura.gba.web.modules.zaken.tmv.objects.TmvRecord;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.AnrField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -237,7 +242,7 @@ public class TmvLijstLayout extends GbaVerticalLayout {
     GbaTextField field = new GbaTextField();
 
     if (pleE.getElem() == GBAElem.BSN) {
-      return new BsnField();
+      return new GbaBsnField();
     } else if (pleE.getElem() == GBAElem.ANR) {
       return new AnrField();
     } else if (tabel != GBATable.ONBEKEND) {

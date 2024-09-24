@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.hoofdmenu.sms.page3;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.modules.hoofdmenu.sms.page3.Page3SmsForm.ApplicationContainer;
@@ -30,10 +31,13 @@ import nl.procura.gba.web.modules.hoofdmenu.sms.page3.Page3SmsForm.TemplateConta
 import nl.procura.gba.web.services.beheer.sms.SmsTemplate;
 import nl.procura.sms.rest.domain.Application;
 import nl.procura.sms.rest.domain.Sender;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextArea;
 import nl.procura.vaadin.component.container.NLBooleanContainer;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.ProNativeSelect;
 import nl.procura.vaadin.component.field.ProTextArea;
 
@@ -62,7 +66,7 @@ public class Page3SmsBean implements Serializable {
       caption = "Zaak-ID")
   private String zaakId = "";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer")
   private String bsn = "";
 

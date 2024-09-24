@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
+import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.REISDOCUMENTAANVRAAG;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VLUCHTELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VREEMDELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringStatusType.JA;
@@ -36,6 +37,9 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button;
 
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
+import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
@@ -47,6 +51,7 @@ import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page18.Page18Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page23.Page23Reisdocument;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.legezaak.LegeZaak;
@@ -61,15 +66,18 @@ import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+import nl.procura.validation.Bsn;
 
 /**
  * Nieuw reisdocument
  */
 public class Page10Reisdocument extends ReisdocumentAanvraagPage implements ValueChangeListener {
 
-  private final Button            buttonDocumenten = new Button("Reisdocumenten");
-  private Page10ReisdocumentForm1 form1            = null;
-  private Page10ReisdocumentForm2 form2            = null;
+  private final Button buttonDocumenten  = new Button("Reisdocumenten BRP");
+  private final Button buttonSignalering = new Button("Signalering");
+
+  private Page10ReisdocumentForm1 form1 = null;
+  private Page10ReisdocumentForm2 form2 = null;
 
   public Page10Reisdocument(ReisdocumentAanvraag aanvraag) {
     super("Reisdocument: nieuw", aanvraag);
@@ -80,34 +88,50 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
       ReisdocumentAanvraag aanvraag = getAanvraag();
       BasePLExt pl = getPl();
       form1 = new Page10ReisdocumentForm1(pl, aanvraag, getServices());
       form1.setAfhaalLocaties(getApplication());
       form1.getReisdocumentField().addListener(this);
 
-      ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
-      Optional<SignaleringResult> signalering = reisdocumentService.checkAanvraag(aanvraag.getAanvraagnummer(), pl);
-
-      form2 = new Page10ReisdocumentForm2(pl, getServices().getDocumentInhoudingenService(), signalering.orElse(null));
-
       OptieLayout ol = new OptieLayout();
       ol.getLeft().addComponent(form1);
-
       OptieLayout.Right right = ol.getRight();
       right.setWidth("200px");
       right.setCaption("Opties");
-
-      buttonDocumenten.setDescription("Overzicht documenten");
-
       right.addButton(buttonDocumenten, this);
-      signalering.ifPresent(s -> right.addButton(new Button("Signalering"), e -> this.showSignalering(s)));
+
+      ReisdocumentService reisdocService = getServices().getReisdocumentService();
+      VrsService vrsService = reisdocService.getVrsService();
+
+      Optional<SignaleringResult> vrsSignalering = reisdocService.checkAanvraag(aanvraag.getAanvraagnummer(), pl);
+      form2 = new Page10ReisdocumentForm2(pl, getServices().getDocumentInhoudingenService(),
+          vrsSignalering.orElse(null));
+
+      vrsSignalering.ifPresent(result -> right.addButton(buttonSignalering, e -> this.showSignalering(result)));
+
+      Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> vrsDocumenten = vrsService
+          .getReisdocumenten(new VrsRequest()
+              .aanleiding(REISDOCUMENTAANVRAAG)
+              .bsn(new Bsn(pl.getPersoon().getBsn().toLong()))
+              .aanvraagnummer(aanvraag.getAanvraagnummer().getNummer()));
+
+      Optional<ControleAanvragenResponse> vrsAanvragen = vrsService.getAanvragen(new VrsRequest()
+          .aanleiding(REISDOCUMENTAANVRAAG)
+          .bsn(new Bsn(pl.getPersoon().getBsn().toLong()))
+          .aanvraagnummer(aanvraag.getAanvraagnummer().getNummer()));
+
+      vrsAanvragen.ifPresent(response -> {
+        right.addButton(new AanvraagArchiefButton(aanvraag.getAanvraagnummer(), response, true), this);
+      });
+
+      vrsDocumenten.ifPresent(response -> {
+        right.addButton(new BasisregisterButton(aanvraag.getAanvraagnummer(), response), this);
+      });
+
       addComponent(ol);
       addComponent(form2);
-
       recheckDocument();
 
     } else if (event.isEvent(AfterBackwardReturn.class)) {
@@ -119,12 +143,14 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
   }
 
   private void showSignalering(SignaleringResult signalering) {
+    if (signalering == null) {
+      throw new ProException(INFO, "Geen signalering gevonden");
+    }
     getWindow().addWindow(new SignaleringWindow(signalering));
   }
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     if (button == buttonDocumenten) {
       getNavigation().goToPage(new Page14Reisdocument(getPl()));
     }

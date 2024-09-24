@@ -20,7 +20,9 @@
 package nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,34 +32,11 @@ import com.vaadin.ui.Label;
 
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
-import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.theme.GbaWebTheme;
 
-public class PageBsGerelateerdeTable extends GbaTable {
-
-  private final List<DossierPersoon> list = new ArrayList<>();
-  private final DossierPersoon       dossierPersoon;
-  private final DossierPersoonType[] types;
-
-  public PageBsGerelateerdeTable(
-      DossierPersoon dossierPersoon,
-      DossierPersoonType... types) {
-
-    this.dossierPersoon = dossierPersoon;
-    this.types = types;
-  }
-
-  public List<DossierPersoon> getList() {
-    return list;
-  }
-
-  @Override
-  public void init() {
-    initTable();
-    super.init();
-  }
+public abstract class PageBsGerelateerdeTable extends GbaTable {
 
   @Override
   public void setColumns() {
@@ -74,9 +53,11 @@ public class PageBsGerelateerdeTable extends GbaTable {
     super.setColumns();
   }
 
+  public abstract List<DossierPersoon> getPersonen();
+
   @Override
   public void setRecords() {
-
+    List<DossierPersoon> list = new ArrayList<>(getPersonen());
     int nr = list.size();
     int index = 0;
     for (DossierPersoon person : list) {
@@ -119,12 +100,5 @@ public class PageBsGerelateerdeTable extends GbaTable {
     }
 
     super.setRecords();
-  }
-
-  private void initTable() {
-    list.clear();
-    for (DossierPersoonType type : types) {
-      list.addAll(dossierPersoon.getPersonen(type));
-    }
   }
 }

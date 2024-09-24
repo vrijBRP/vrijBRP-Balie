@@ -35,7 +35,7 @@ public class NaamformatsTest {
     Naamformats nf3 = new Naamformats("Cle-xaïs Ruth -Maria Sigmélie Migdailine Amelia", "Terlouw", "de", "Jonkvrouw",
         "E",
         pnf);
-    Naamformats nf4 = new Naamformats("Ïsmaël Álbert", "Terlouw", "de", "Jonkheer",
+    Naamformats nf4 = new Naamformats("Ïsmaël Æjoud Álbert", "Terlouw", "de", "Jonkheer",
         "E",
         pnf);
 

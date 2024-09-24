@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -468,7 +468,7 @@ public class PersonListMutationsChecks {
       int dOpsch = aval(elem.getPl().getCat(INSCHR).getLatestRec().getElemVal(DATUM_OPSCH_BIJHOUD).getVal());
       if (dOpsch > 0) {
         ProcuraDate currentDate = new ProcuraDate(dOpsch);
-        if (isFirstDateOlderThanSecond(currentDate, newDate)) {
+        if (isFirstDateOlderOrTheSame(currentDate, newDate)) {
           return Optional.of("De datum moet vóór de opschortingsdatum ("
               + currentDate.getFormatDate() + ") liggen");
         }
@@ -479,11 +479,11 @@ public class PersonListMutationsChecks {
 
       if (StringUtils.isNotBlank(elem.getCurrentValue().getVal())) {
         if (elem.getAction().is(UPDATE_SET)) {
-          if (isFirstDateOlderThanSecond(newDate, currentDate)) {
+          if (isFirstDateOlder(newDate, currentDate)) {
             return Optional.of("Nieuwe datum moet recenter zijn dan de oude datum");
           }
         } else if (elem.getAction().is(ADD_HISTORIC, CORRECT_HISTORIC_GENERAL)) {
-          if (isFirstDateOlderThanSecond(currentDate, newDate)) {
+          if (isFirstDateOlder(currentDate, newDate)) {
             return Optional.of("Een historische datum moet vóór de datum van het actuele record ("
                 + currentDate.getFormatDate() + ") liggen");
           }
@@ -649,14 +649,14 @@ public class PersonListMutationsChecks {
     return Optional.empty();
   }
 
-  /**
-   * Is het first date is older than the second date
-   */
-  private static boolean isFirstDateOlderThanSecond(ProcuraDate firstDate, ProcuraDate secondDate) {
-    return secondDate.getSystemDate().equals(firstDate.getSystemDate())
-        || (secondDate.isCorrect()
-            && firstDate.isCorrect()
-            && secondDate.isExpired(firstDate));
+  private static boolean isFirstDateOlder(ProcuraDate firstDate, ProcuraDate secondDate) {
+    return !secondDate.getSystemDate().equals(firstDate.getSystemDate())
+        && (secondDate.isCorrect() && firstDate.isCorrect() && secondDate.isExpired(firstDate));
+  }
+
+  private static boolean isFirstDateOlderOrTheSame(ProcuraDate firstDate, ProcuraDate secondDate) {
+    return (secondDate.isCorrect() && firstDate.isCorrect() && secondDate.isExpired(firstDate))
+        || secondDate.getSystemDate().equals(firstDate.getSystemDate());
   }
 
   private static Optional<String> msg(String msg, GBAGroup... groups) {

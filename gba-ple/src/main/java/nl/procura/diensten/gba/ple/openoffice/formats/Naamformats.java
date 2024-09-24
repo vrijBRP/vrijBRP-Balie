@@ -27,8 +27,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import nl.procura.standard.Globalfunctions;
-
 public class Naamformats {
 
   private String      geslachtsnaam = "";
@@ -626,6 +624,8 @@ public class Naamformats {
   }
 
   private String trim(String input) {
-    return Globalfunctions.trim(input).replaceAll(" - ", "-");
+    return input.trim()
+        .replaceAll(" - ", "-")
+        .replaceAll("\\s+", " ");
   }
 }

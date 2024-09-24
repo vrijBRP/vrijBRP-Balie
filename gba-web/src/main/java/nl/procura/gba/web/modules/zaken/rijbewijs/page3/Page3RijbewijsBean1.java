@@ -22,13 +22,13 @@ package nl.procura.gba.web.modules.zaken.rijbewijs.page3;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.component.field.AnrField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
@@ -45,7 +45,7 @@ public class Page3RijbewijsBean1 implements Serializable {
       caption = "Anr",
       required = true)
   private AnrFieldValue     anr           = new AnrFieldValue();
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "BSN",
       required = true)
   private BsnFieldValue     bsn           = new BsnFieldValue();

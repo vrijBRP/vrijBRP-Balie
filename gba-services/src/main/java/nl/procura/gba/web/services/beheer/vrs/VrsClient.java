@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,17 +22,21 @@ package nl.procura.gba.web.services.beheer.vrs;
 import static com.sun.jersey.api.json.JSONConfiguration.FEATURE_POJO_MAPPING;
 import static java.lang.String.format;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.function.Supplier;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 
 import nl.procura.burgerzaken.vrsclient.ApiClient;
+import nl.procura.burgerzaken.vrsclient.model.InvalidParam;
 import nl.procura.gba.web.common.jackson.ObjectMapperContextResolver;
 import nl.procura.standard.exceptions.ProException;
 
@@ -53,24 +57,42 @@ public class VrsClient extends ApiClient {
   @Override
   public <T, R> R get(Request<T> request, Class<R> type) {
     String uri = getBaseUri() + request.path;
-    try {
+    return invoke(() -> {
       WebResource.Builder builder = client.resource(URI.create(uri)).getRequestBuilder();
       request.headers.forEach(builder::header);
       return builder.get(type);
-    } catch (RuntimeException e) {
-      throw new ProException(CONFIG, ERROR, format("Fout bij het uitvoeren van GET %s", uri), e);
-    }
+    });
   }
 
   @Override
   public <T, R> R post(Request<T> request, Class<R> type) {
     String uri = getBaseUri() + request.path;
-    try {
+    return invoke(() -> {
       WebResource.Builder builder = client.resource(URI.create(uri)).getRequestBuilder();
       request.headers.forEach(builder::header);
       return builder.post(type, request.body);
+    });
+  }
+
+  private <R> R invoke(Supplier<R> supplier) {
+    try {
+      return supplier.get();
+    } catch (UniformInterfaceException e) {
+      int status = e.getResponse().getStatus();
+      if (status >= 400 && status < 500) {
+        Error400Response errorMessages = e.getResponse().getEntity(Error400Response.class);
+        if (errorMessages != null) {
+          StringBuilder sb = new StringBuilder(errorMessages.getTitel());
+          sb.append("<br>");
+          for (InvalidParam ongeldigeParameter : errorMessages.getOngeldigeParameters()) {
+            sb.append(format(" - %s<br>", ongeldigeParameter.getReden()));
+          }
+          throw new ProException(WEBSERVICE, WARNING, sb.toString());
+        }
+      }
+      throw new ProException(WEBSERVICE, ERROR, "Fout bij het raadplegen van VRS", e);
     } catch (RuntimeException e) {
-      throw new ProException(CONFIG, ERROR, format("Fout bij het uitvoeren van POST %s", uri), e);
+      throw new ProException(WEBSERVICE, ERROR, "Fout bij het raadplegen van VRS", e);
     }
   }
 }

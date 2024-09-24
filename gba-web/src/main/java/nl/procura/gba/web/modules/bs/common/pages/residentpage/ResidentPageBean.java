@@ -21,11 +21,11 @@ package nl.procura.gba.web.modules.bs.common.pages.residentpage;
 
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.TextArea;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -42,7 +42,7 @@ public class ResidentPageBean {
   public static final String F_TERUGMELDING      = "terugmelding";
   public static final String F_TOESTEMMING_GEVER = "toestemmingGever";
 
-  @Field(customTypeClass = BsnField.class, caption = "BSN")
+  @Field(customTypeClass = GbaBsnField.class, caption = "BSN")
   private FieldValue bsn           = new FieldValue();
   @Field(customTypeClass = DatumVeld.class, caption = "Geboortedatum")
   private FieldValue geboortedatum = new FieldValue();

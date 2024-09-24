@@ -1,0 +1,44 @@
+{
+  "id": "c42a4dfe-7735-11ee-b962-0242ac120002",
+  "name": "reisdocumentaanvragen",
+  "priority": "1",
+  "request": {
+    "url": "/reisdocumentinformatie/uitgevendeinstanties/v2/personalisatiegegevens",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.bsn==999995947)]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatOmschrijving\":\"Er zijn documenten gevonden.\",\"reisdocumentenLijst\":[{\"reisdocument\":{\"documentnummer\":\"IP8799D18\",\"documentsoort\":{\"code\":\"NI\",\"omschrijving\":\"Nederlandse identiteitskaart\"},\"autoriteitVanAfgifte\":\"AuthoriteitVerstrekking\",\"autoriteitVerstrekking\":{\"code\":\"B1783\",\"omschrijving\":\"Burgemeester van Westland\"},\"persoon\":{\"bsn\":999995947,\"geslachtsnaam\":\"Boer\",\"voorvoegselGeslachtsnaam\":\"de\",\"voornamen\":\"Albertus Vincent\",\"geboortedatum\":\"19500929\",\"geboorteplaats\":\"Veere, Zeeland\"},\"statusMeestRecent\":{\"documentstatusCode\":\"IA\",\"documentstatusOmschrijving\":\"In aanvraag\"},\"datumafgifte\":\"2021-02-23\",\"datumGeldigTot\":\"2031-02-23\"}}]}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 15:48:28 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "c42a4dfe-7735-11ee-b962-0242ac120002",
+  "persistent": true,
+  "insertionIndex": 23
+}

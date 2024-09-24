@@ -1,0 +1,44 @@
+{
+  "id": "c42a4dfe-7735-11ee-b962-0242ac120002",
+  "name": "reisdocumentaanvragen",
+  "priority": "1",
+  "request": {
+    "url": "/controleaanvragen/v2/personalisatiegegevens",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.bsn==999995947)]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"peildatum\":\"2023-10-30\",\"resultaatomschrijving\":\"Er zijn aanvragen gevonden.\",\"aanvragen\":[{\"aanvraagnummer\":768480547,\"aangevraagdReisdocumentsoort\":\"Nederlandse identiteitskaart\",\"aanvraagstatus\":{\"code\":\"PP\",\"aanvraagstatusOmschrijving\":\"Aanvraag in productie/personalisatie proces\",\"begindatum\":\"2022-01-11\"},\"aanvraaginstantie\":\"Peter3b\",\"personalisatiegegevens\":{\"bsn\":999995947,\"geslachtsnaam\":\"Boer\",\"voorvoegselGeslachtsnaam\":\"de\",\"geboortedatum\":\"19500929\"}},{\"aanvraagnummer\":468480588,\"aangevraagdReisdocumentsoort\":\"Nederlandse identiteitskaart\",\"aanvraagstatus\":{\"code\":\"AF\",\"aanvraagstatusOmschrijving\":\"Aanvraag afgerond\",\"begindatum\":\"2022-01-11\"},\"aanvraaginstantie\":\"Peter3b\",\"personalisatiegegevens\":{\"bsn\":999995947,\"geslachtsnaam\":\"Boer\",\"voorvoegselGeslachtsnaam\":\"de\",\"geboortedatum\":\"19500929\"}}]}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 15:48:28 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "c42a4dfe-7735-11ee-b962-0242ac120002",
+  "persistent": true,
+  "insertionIndex": 23
+}

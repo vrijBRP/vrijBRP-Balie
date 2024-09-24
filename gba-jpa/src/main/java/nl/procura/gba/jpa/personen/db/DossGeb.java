@@ -141,6 +141,9 @@ public class DossGeb extends BaseEntity<Long> {
       precision = 131089)
   private BigDecimal bNaamskeuzeErkenning;
 
+  @Column(name = "org_keuze_naam")
+  private String orgKeuzeNaam;
+
   @Column(name = "wijze_bez")
   private String wijzeBez;
 
@@ -704,5 +707,13 @@ public class DossGeb extends BaseEntity<Long> {
 
   public void setVerklaringGezagErk(BigDecimal verklaringGezagErk) {
     this.verklaringGezagErk = verklaringGezagErk;
+  }
+
+  public String getOrgKeuzeNaam() {
+    return orgKeuzeNaam;
+  }
+
+  public void setOrgKeuzeNaam(String orgKeuzeNaam) {
+    this.orgKeuzeNaam = orgKeuzeNaam;
   }
 }

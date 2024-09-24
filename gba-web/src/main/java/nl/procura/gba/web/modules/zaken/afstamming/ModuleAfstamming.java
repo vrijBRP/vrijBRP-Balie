@@ -19,7 +19,11 @@
 
 package nl.procura.gba.web.modules.zaken.afstamming;
 
-import nl.procura.gba.common.ZaakType;
+import static nl.procura.gba.common.ZaakType.ERKENNING;
+import static nl.procura.gba.common.ZaakType.GEBOORTE;
+import static nl.procura.gba.common.ZaakType.LV;
+import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
+
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.modules.zaken.ZakenModuleTemplate;
 import nl.procura.gba.web.modules.zaken.afstamming.page1.Page1Afstamming;
@@ -31,7 +35,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 @ModuleAnnotation(url = "#zaken.afstamming",
     caption = "Naam & Afstamming",
     service = DossierService.class,
-    zaakTypes = { ZaakType.GEBOORTE, ZaakType.ERKENNING, ZaakType.NAAMSKEUZE },
+    zaakTypes = {GEBOORTE, ERKENNING, NAAMSKEUZE, LV},
     profielActie = ProfielActie.SELECT_ZAAK_AFSTAMMING)
 public class ModuleAfstamming extends ZakenModuleTemplate {
 

@@ -21,6 +21,9 @@ package nl.procura.gba.web.services.zaken.documenten;
 
 import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
 
+import lombok.Getter;
+
+@Getter
 public enum DocumentType {
 
   PL_UITTREKSEL(1, "pl", Constants.PERSOONSLIJSTEN, "Uittreksel"),
@@ -49,8 +52,29 @@ public enum DocumentType {
   ERKENNING("erkenning", "zaak", "Erkenning"),
   GEBOORTE("geboorte", "zaak", "Geboorte"),
   NAAMSKEUZE("naamskeuze", "zaak", "Naamskeuze"),
-  LATERE_VERMELDING_ERK("lv", "zaak", "Latere vermelding erkenning"),
-  LATERE_VERMELDING_NK("lv_nk", "zaak", "Latere vermelding naamskeuze"),
+  LATERE_VERMELDING_ERK("lv", "zaak", "LV erkenning"),
+  LATERE_VERMELDING_NK("lv_nk", "zaak", "LV naamskeuze"),
+  LATERE_VERMELDING_AFST("lv_afst", "data", "LV afstamming"),
+  LATERE_VERMELDING_AFST_1("lv_afst_1", "data", "LV afstamming - adoptie"),
+  LATERE_VERMELDING_AFST_2("lv_afst_2", "data", "LV afstamming - ambtshalve verbetering akte"),
+  LATERE_VERMELDING_AFST_3("lv_afst_3", "data", "LV afstamming - doorhaling akte"),
+  LATERE_VERMELDING_AFST_4("lv_afst_4", "data", "LV afstamming - gerechtelijke vaststelling ouderschap"),
+  LATERE_VERMELDING_AFST_5("lv_afst_5", "data", "LV afstamming - herroeping adoptie"),
+  LATERE_VERMELDING_AFST_6("lv_afst_6", "data", "LV afstamming - ontkenning ouderschap"),
+  LATERE_VERMELDING_AFST_7("lv_afst_7", "data", "LV afstamming - vaststelling namen bij KB"),
+  LATERE_VERMELDING_AFST_8("lv_afst_8", "data", "LV afstamming - vaststelling namen bij optie"),
+  LATERE_VERMELDING_AFST_9("lv_afst_9", "data", "LV afstamming - verbetering akte"),
+  LATERE_VERMELDING_AFST_10("lv_afst_10", "data", "LV afstamming - vernietiging erkenning"),
+  LATERE_VERMELDING_AFST_11("lv_afst_11", "data", "LV afstamming - wettiging"),
+  LATERE_VERMELDING_AFST_12("lv_afst_12", "data", "LV afstamming - wijziging geslacht"),
+  LATERE_VERMELDING_AFST_13("lv_afst_13", "data", "LV afstamming - wijziging geslachtsnaam bij KB"),
+  LATERE_VERMELDING_AFST_14("lv_afst_14", "data",
+      "LV afstamming - wijziging geslachtsnaam door rechterlijke uitspraak"),
+  LATERE_VERMELDING_AFST_15("lv_afst_15", "data", "LV afstamming - wijziging geslachtsnaam t.g.v. huwelijk"),
+  LATERE_VERMELDING_AFST_16("lv_afst_16", "data", "LV afstamming - wijziging geslachtsnaam t.g.v. echtscheiding"),
+  LATERE_VERMELDING_AFST_17("lv_afst_17", "data", "LV afstamming - wijziging geslachtsnaam door erkenning ouder"),
+  LATERE_VERMELDING_AFST_18("lv_afst_18", "data", "LV afstamming - wijziging voornamen"),
+  LATERE_VERMELDING_AFST_19("lv_afst_19", "data", "LV afstamming - naamskeuze"),
   HUWELIJK("huwelijk", "zaak", "Huwelijk / GPS"),
   HUWELIJK_VOORBEREIDING("huwelijk_vn", "zaak", "Huwelijk/GPS (voorbereiding)"),
   GPS_OMZETTING("gps_omzetting", "zaak", "Omzetting GPS in Huwelijk"),
@@ -99,22 +123,6 @@ public enum DocumentType {
     }
 
     return ONBEKEND;
-  }
-
-  public String getDoc() {
-    return doc;
-  }
-
-  public String getOms() {
-    return oms;
-  }
-
-  public int getOrder() {
-    return order;
-  }
-
-  public String getType() {
-    return type;
   }
 
   @Override

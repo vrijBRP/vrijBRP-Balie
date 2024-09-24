@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -67,6 +67,7 @@ import nl.procura.gba.web.components.containers.AutoriteitReisdocumentContainer;
 import nl.procura.gba.web.components.containers.EULandContainer;
 import nl.procura.gba.web.components.containers.TabelContainer;
 import nl.procura.gba.web.components.fields.DateReference;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.IndicatieOnjuistField;
 import nl.procura.gba.web.components.fields.UpperCaseField;
@@ -87,7 +88,6 @@ import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.AnrField;
-import nl.procura.vaadin.component.field.BsnField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.PostalcodeField;
@@ -210,7 +210,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     AbstractField field = new GbaTextField();
 
     if (pleE.getElem().is(GBAElem.BSN)) {
-      field = new BsnField();
+      field = new GbaBsnField();
 
     } else if (pleE.getElem().is(GBAElem.ANR)) {
       field = new AnrField();
@@ -289,6 +289,11 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       if (GBAElem.IND_ONJUIST.is(pleE.getElem())) {
         mutElem.setDefaultValue(FieldValue::new);
       }
+    }
+
+    // Ingangsdatum geldigheid altijd leegmaken
+    if (GBAElem.INGANGSDAT_GELDIG.is(pleE.getElem())) {
+      mutElem.setDefaultValue(() -> new GbaDateFieldValue(""));
     }
 
     if (mutElem.getAction().is(CORRECT_CATEGORY)) {

@@ -19,36 +19,51 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.AFSTAMMINGSRECHT;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.AKTENR;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.DATUM;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.GEMEENTE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.LAND;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.NAAMSKEUZE_TYPE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.NAAMS_PERSOON_TYPE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.NAAMS_PERSOON_TYPE_ERK;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.PLAATS;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.RECHTBANK;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.TOESTEMMINGGEVER_TYPE;
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.VERKLARING_GEZAG;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.AFSTAMMINGSRECHT;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.DUBBELE_NAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.LAND;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.NAAMSKEUZE_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.NAAMS_PERSOON_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.PLAATS;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.RECHTBANK;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.TITEL;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.TOESTEMMINGGEVER_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.VERKLARING_GEZAG;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenErk.VOORV;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.trim;
+
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Field;
 
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenPage.NaamsKeuze;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenWindow;
+import nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanBinnenErk;
 import nl.procura.gba.web.services.bs.algemeen.enums.RechtbankLocatie;
-import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ErkenningBuitenProweb;
 import nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
+import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
-public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
+public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanBuitenErk> {
+
+  private final DossierGeboorte geboorte;
 
   public Page35GeboorteFormErk(DossierGeboorte geboorte) {
+    this.geboorte = geboorte;
 
     setColumnWidths("200px", "");
     setOrder(LAND, GEMEENTE, PLAATS, DATUM, AKTENR, TOESTEMMINGGEVER_TYPE, VERKLARING_GEZAG,
-        RECHTBANK, NAAMSKEUZE_TYPE, NAAMS_PERSOON_TYPE, NAAMS_PERSOON_TYPE_ERK, AFSTAMMINGSRECHT);
+        RECHTBANK, NAAMSKEUZE_TYPE, NAAMS_PERSOON_TYPE, TITEL, VOORV, GESLACHTSNAAM,
+        DUBBELE_NAAM, AFSTAMMINGSRECHT);
 
     setGeboorte(geboorte);
     setCaptionAndOrder();
@@ -56,11 +71,6 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
 
   @Override
   public void afterSetBean() {
-
-    getField(NAAMSKEUZE_TYPE)
-        .addListener((ValueChangeListener) event -> {
-          onChangeNaamskeuze((NaamskeuzeVanToepassingType) event.getProperty().getValue());
-        });
 
     getField(TOESTEMMINGGEVER_TYPE).addListener((ValueChangeListener) event -> {
       onChangeToestemminggever((ToestemminggeverType) event.getProperty().getValue());
@@ -71,22 +81,39 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
     });
 
     onChangeLand(getBean().getLand());
-    onChangeNaamskeuze(getBean().getNaamskeuzeType());
     onChangeToestemminggever(getBean().getToestemminggeverType());
   }
 
   @Override
-  public Page35GeboorteBeanErk getNewBean() {
-    return new Page35GeboorteBeanErk();
+  public void afterSetColumn(Column column, Field field, Property property) {
+    if (property.is(Page35GeboorteBeanBuitenErk.DUBBELE_NAAM)) {
+      column.addComponent(new Button("Naamselectie", event -> {
+        getApplication().getParentWindow().addWindow(new BsNamenWindow(geboorte) {
+
+          @Override
+          public void setNaam(NaamsKeuze naamsKeuze) {
+            getField(Page35GeboorteBeanBinnenErk.DUBBELE_NAAM).setValue(trim(String.format("%s %s",
+                astr(naamsKeuze.getVoorvoegsel()), naamsKeuze.getGeslachtsnaam())));
+          }
+        });
+      }));
+    }
+
+    super.afterSetColumn(column, field, property);
+  }
+
+  @Override
+  public Page35GeboorteBeanBuitenErk getNewBean() {
+    return new Page35GeboorteBeanBuitenErk();
   }
 
   public void setCaptionAndOrder() {
   }
 
   public void setGeboorte(DossierGeboorte geboorte) {
-    Page35GeboorteBeanErk bean = new Page35GeboorteBeanErk();
+    Page35GeboorteBeanBuitenErk bean = new Page35GeboorteBeanBuitenErk();
 
-    if (geboorte != null && geboorte.getVragen().heeftErkenningBuitenProweb()) {
+    if (geboorte.getVragen().heeftErkenningBuitenProweb()) {
       ErkenningBuitenProweb erkenningBuitenProweb = geboorte.getErkenningBuitenProweb();
       bean.setAktenr(erkenningBuitenProweb.getAktenummer());
       bean.setDatum(new DateFieldValue(erkenningBuitenProweb.getDatumErkenning().getLongDate()));
@@ -99,9 +126,17 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
       bean.setNaamskeuzeType(erkenningBuitenProweb.getNaamskeuzeType());
       bean.setNaamsPersoonType(erkenningBuitenProweb.getNaamskeuzePersoon());
       bean.setAfstammingsrecht(erkenningBuitenProweb.getLandAfstamming());
+      bean.setTitel(geboorte.getKeuzeTitel());
+      bean.setVoorv(new FieldValue(geboorte.getKeuzeVoorvoegsel()));
+      bean.setGeslachtsnaam(geboorte.getKeuzeGeslachtsnaam());
+      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaam());
     }
 
     setBean(bean);
+    Field dubbeleNaam = getField(Page35GeboorteBeanBuitenNk.DUBBELE_NAAM);
+    dubbeleNaam.setVisible(geboorte.isOvergangsperiodeNaamskeuze());
+    dubbeleNaam.setReadOnly(false);
+    repaint();
   }
 
   private void onChangeLand(FieldValue land) {
@@ -117,13 +152,6 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
       getField(GEMEENTE).setValue(null);
     }
 
-    repaint();
-  }
-
-  private void onChangeNaamskeuze(NaamskeuzeVanToepassingType type) {
-    boolean isJa = NaamskeuzeVanToepassingType.JA.equals(type);
-    getField(NAAMS_PERSOON_TYPE_ERK).setVisible(isJa);
-    getField(NAAMS_PERSOON_TYPE).setVisible(!isJa);
     repaint();
   }
 

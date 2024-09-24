@@ -42,7 +42,14 @@ public class BuitenProwebLayoutNk extends VerticalLayout implements ClickListene
     optieLayout2.getRight().setWidth("150px");
 
     addComponent(new Fieldset("Naamskeuzegegevens"));
-    addComponent(new InfoLayout("Ter informatie", "Vul de velden handmatig in."));
+
+    String info = "Vul de velden handmatig in.";
+    if (geboorte.isOvergangsperiodeNaamskeuze()) {
+      info +=
+          "<hr><b>Als de naamskeuze gedaan is in 2023 dan is mogelijk destijds ook gekozen voor een dubbele achternaam."
+              + "<br>Vul dan bij 2e gekozen naam deze dubbele achternaam in. Dit wordt afgedrukt op de latere vermelding</b>";
+    }
+    addComponent(new InfoLayout("Ter informatie", info));
     setSpacing(true);
     addComponent(optieLayout2);
   }

@@ -32,24 +32,21 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.GbaFieldsetLayout;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.modules.bs.common.pages.broerzuspage.BsBroerZusWindow;
+import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenPage.NaamsKeuze;
 import nl.procura.gba.web.modules.bs.common.pages.naamgebruikpage.BsNamenWindow;
 import nl.procura.gba.web.modules.bs.geboorte.ModuleGeboorte;
 import nl.procura.gba.web.modules.bs.geboorte.checks.DeclarationCheckButton;
 import nl.procura.gba.web.modules.bs.geboorte.checks.NameSelectionCheckWindow;
 import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierNamenrecht;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierNamenrechtVerzoek;
 import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorteVerzoek;
-import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
-import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.functies.VaadinUtils;
 
 public class BsNamenrechtLayout extends GbaFieldsetLayout implements ClickListener {
 
-  private final Button buttonNamen    = new Button("Namen ouders");
+  private final Button buttonNamen = new Button("Naamselectie");
   private final Button buttonBroerZus = new Button("Broer / zus");
 
   private final Services          services;
@@ -67,20 +64,7 @@ public class BsNamenrechtLayout extends GbaFieldsetLayout implements ClickListen
     buttonNamen.setDescription("Toon de namen van de ouders.");
     buttonBroerZus.setDescription("Toon de broers / zussen van het kind");
 
-    if (dossier instanceof DossierNaamskeuze) {
-      buttonNamen.setCaption("Naamskeuze");
-    }
-
-    form = new BsNamenrechtForm(services, dossier) {
-
-      @Override
-      public void setReadOnlyAllFields(boolean readOnlyAllFields) {
-        buttonNamen.setEnabled(!readOnlyAllFields);
-        buttonBroerZus.setEnabled(!readOnlyAllFields);
-        super.setReadOnlyAllFields(readOnlyAllFields);
-      }
-    };
-
+    form = new BsNamenrechtForm(services, dossier);
     OptieLayout namenrechtOptieLayout = new OptieLayout(form, "150px");
     namenrechtOptieLayout.getRight().addButton(buttonNamen, this);
     namenrechtOptieLayout.getRight().addButton(buttonBroerZus, this);
@@ -158,48 +142,9 @@ public class BsNamenrechtLayout extends GbaFieldsetLayout implements ClickListen
     getParentWindow().addWindow(new BsNamenWindow(dossier) {
 
       @Override
-      public void setNaam(String geslachtsnaam, FieldValue voorv, FieldValue titel, DossierPersoonType type) {
-
-        if (dossier instanceof DossierNaamskeuze) {
-          titel = titelOpschonen(titel, type);
-        }
-
-        switch (type) {
-          case MOEDER:
-            form.setNewNaamskeuzePersoon(NaamsPersoonType.MOEDER);
-            break;
-
-          case VADER_DUO_MOEDER:
-            form.setNewNaamskeuzePersoon(NaamsPersoonType.VADER_DUO_MOEDER);
-            break;
-
-          case PARTNER:
-          case PARTNER_ANDERE_OUDER:
-            form.setNewNaamskeuzePersoon(NaamsPersoonType.PARTNER);
-            break;
-
-          case ERKENNER:
-            form.setNewNaamskeuzePersoon(NaamsPersoonType.ERKENNER);
-            break;
-
-          default:
-            form.setNewNaamskeuzePersoon(NaamsPersoonType.ONBEKEND);
-        }
-
-        form.setNaam(geslachtsnaam, voorv, titel);
-      }
-
-      /*
-       Een adellijke titel of een adellijk predikaat gaat alleen op de kinderen
-       over als zij de geslachtsnaam van hun adellijke vader verkrijgen.
-       */
-      private FieldValue titelOpschonen(FieldValue titel, DossierPersoonType type) {
-        return dossier.getDossier()
-            .getPersonen(type)
-            .stream()
-            .anyMatch(p -> Geslacht.MAN == p.getGeslacht())
-                ? titel
-                : null;
+      public void setNaam(NaamsKeuze naamsKeuze) {
+        form.setNewNaamskeuzePersoon(naamsKeuze.getType());
+        form.setNaam(naamsKeuze.getGeslachtsnaam(), naamsKeuze.getVoorvoegsel(), naamsKeuze.getTitel());
       }
     });
   }

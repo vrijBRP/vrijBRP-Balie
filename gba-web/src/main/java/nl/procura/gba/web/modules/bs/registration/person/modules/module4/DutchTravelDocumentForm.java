@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,25 @@
 
 package nl.procura.gba.web.modules.bs.registration.person.modules.module4;
 
-import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.*;
-import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.*;
+import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.IDENTITEITSONDERZOEK;
+import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.getAuthority;
+import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.getCountry;
+import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.getMayorMunicipality;
+import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.isCountryCode;
+import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.isForeignAndInternalAffairs;
+import static nl.procura.gba.web.components.containers.DutchTravelDocumentAuthorityContainer.isMayorCode;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_AUTHORITY;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_AUTHORITY_COUNTRY;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_AUTHORITY_MUNICIPALITY;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_DOSSIER_DESCRIPTION;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_DOSSIER_MUNICIPALITY;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_DOSSIER_START_DATE;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_END_DATE;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_ISSUE_DATE;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_NUMBER;
+import static nl.procura.gba.web.modules.bs.registration.person.modules.module4.DutchTravelDocumentBean.F_TYPE;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -33,9 +49,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.validator.AbstractValidator;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
 
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseReisdocument;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.MiscUtils;
 import nl.procura.gba.jpa.personen.db.DossTravelDoc;
@@ -47,6 +67,8 @@ import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.validators.DatumVolgordeValidator;
 import nl.procura.gba.web.modules.bs.registration.AbstractRegistrationForm;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.VrsDocumentenWindow;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentUtils;
@@ -57,6 +79,7 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.TabelFieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.table.TableLayout;
+import nl.procura.vaadin.component.window.Message;
 
 class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocumentBean> {
 
@@ -83,10 +106,8 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
     this(person, travelDoc, NO_OPERATION);
   }
 
-  DutchTravelDocumentForm(DossierPersoon person, DossTravelDoc travelDoc,
-      Consumer<DossTravelDoc> saveConsumer) {
+  DutchTravelDocumentForm(DossierPersoon person, DossTravelDoc travelDoc, Consumer<DossTravelDoc> saveConsumer) {
     this.person = person;
-
     setCaption("Reisdocumentgegevens");
     setReadonlyAsText(false);
     setOrder(F_TYPE, F_NUMBER, F_ISSUE_DATE, F_END_DATE, F_AUTHORITY, F_AUTHORITY_MUNICIPALITY,
@@ -128,7 +149,7 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
     final TabelFieldValue country = countries.get(travelDoc.getAutVerstrekLand());
     setAuthorityState(code, municipality, country, travelDoc.getDossOms());
 
-    authority.addListener((ValueChangeListener) e -> onAuthorityChange((TabelFieldValue) e.getProperty().getValue()));
+    authority.addListener((ValueChangeListener) e -> onAuthorityChange((FieldValue) e.getProperty().getValue()));
     authorityMunicipality.addListener((ValueChangeListener) e -> {
       onAuthorityMunicipalityChange((TabelFieldValue) e.getProperty().getValue());
     });
@@ -175,7 +196,52 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
       issueDateLabel.setContentMode(Label.CONTENT_XHTML);
       column.addComponent(issueDateLabel);
     }
+
+    if (property.is(F_NUMBER)) {
+      if (Services.getInstance().getReisdocumentService().getVrsService().isBasisregisterEnabled()) {
+        column.addComponent(new Button("Basisregister", event -> zoekBasisregister()));
+      }
+    }
     super.afterSetColumn(column, field, property);
+  }
+
+  private void zoekBasisregister() {
+    String idNumber = getValue(F_NUMBER, String.class);
+    if (isBlank(idNumber)) {
+      new Message(getWindow(), "Nummer is verplicht", Message.TYPE_WARNING_MESSAGE);
+
+    } else {
+      Services services = getApplication().getServices();
+      Optional<ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse> document = services
+          .getReisdocumentService()
+          .getVrsService()
+          .getReisdocument(new VrsRequest()
+              .aanleiding(IDENTITEITSONDERZOEK)
+              .documentnummer(idNumber));
+
+      document.ifPresent(response -> {
+        getApplication()
+            .getParentWindow()
+            .addWindow(new VrsDocumentenWindow(response,
+                (documentResponse, window) -> {
+                  ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseReisdocument reisdoc = documentResponse
+                      .getReisdocument();
+                  setValue(F_TYPE, new FieldValue(reisdoc.getDocumentsoort().getCode()));
+                  setValue(F_ISSUE_DATE, DateTime.of(reisdoc.getDocumentAfgifte()).getDate());
+                  setValue(F_END_DATE, DateTime.of(reisdoc.getDocumentGeldigTot()).getDate());
+
+                  String aut = documentResponse.getAutoriteitVerstrekking().getAutoriteitVerstrekkingCode();
+                  FieldValue authority = getAuthority(aut);
+                  FieldValue municipality = getMayorMunicipality(aut);
+                  FieldValue country = getCountry(aut);
+
+                  setAuthorityState(authority, municipality, country, "");
+                  repaint();
+                  updateIssueDateLabel();
+                  window.closeWindow();
+                }));
+      });
+    }
   }
 
   private void setTravelDocFromForm() {
@@ -201,15 +267,13 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
         .orElse("-1");
   }
 
-  private void onAuthorityChange(TabelFieldValue value) {
+  private void onAuthorityChange(FieldValue value) {
     setAuthorityState(value, NO_VALUE, NO_VALUE, "");
     repaint();
     updateIssueDateLabel();
   }
 
-  private void setAuthorityState(TabelFieldValue code, FieldValue municipality,
-      TabelFieldValue country, String dossierOms) {
-
+  private void setAuthorityState(FieldValue code, FieldValue municipality, FieldValue country, String dossierOms) {
     Field autority = getField(F_AUTHORITY);
     Field autorityMun = getField(F_AUTHORITY_MUNICIPALITY);
     Field autorityCountry = getField(F_AUTHORITY_COUNTRY);
@@ -217,12 +281,12 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
     Field dossierMun = getField(F_DOSSIER_MUNICIPALITY);
     autority.setValue(code);
 
-    FieldValue forceMunicipality = getMayorMunicipality(code);
+    FieldValue forceMunicipality = getMayorMunicipality(code.getStringValue());
     if (forceMunicipality != null) {
       municipality = forceMunicipality;
     }
 
-    if (isForeignAndInternalAffairs(code)) {
+    if (isForeignAndInternalAffairs(code.getStringValue())) {
       forceMunicipality = GbaTables.PLAATS.get(GEMEENTE_SGRAVENHAGE);
       municipality = forceMunicipality;
       setField(autorityMun, true, forceMunicipality != null, municipality);
@@ -231,7 +295,7 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
       setField(dossierDescr, true, false, dossierOms);
       autorityMun.focus();
 
-    } else if (isMayorCode(code)) {
+    } else if (isMayorCode(code.getStringValue())) {
       setField(autorityMun, true, forceMunicipality != null, municipality);
       setField(autorityCountry, false, false, null);
       setField(dossierMun, true, true, municipality);
@@ -239,7 +303,7 @@ class DutchTravelDocumentForm extends AbstractRegistrationForm<DutchTravelDocume
       getBean().setDossierDescription("");
       autorityMun.focus();
 
-    } else if (isCountryCode(code)) {
+    } else if (isCountryCode(code.getStringValue())) {
       setField(autorityMun, false, false, null);
       setField(autorityCountry, true, false, country);
       setField(dossierMun, true, true, null);

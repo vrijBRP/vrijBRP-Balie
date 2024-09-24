@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -56,6 +56,7 @@ import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEvent;
 import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
+import nl.procura.vaadin.component.layout.info.InfoLayout;
 
 public class Page4PersonListMutations extends NormalPageTemplate {
 
@@ -108,7 +109,7 @@ public class Page4PersonListMutations extends NormalPageTemplate {
       String anr = personenWsService.getHuidige().getPersoon().getAnr().getVal();
       list.addAll(PersonListRelationMutationHandler.getNew(anr, personenWsService::getPersoonslijst));
     } else {
-      setInfo("", "Alleen van toepassing bij actualisering van categorie 1: persoon");
+      addComponent(new InfoLayout("", "Alleen van toepassing bij actualisering van categorie 1: persoon"));
     }
 
     if (!list.isEmpty()) {

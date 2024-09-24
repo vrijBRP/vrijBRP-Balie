@@ -1,0 +1,44 @@
+{
+  "id": "c42a4dfe-7735-11ee-b962-0242ac120002",
+  "name": "reisdocumentaanvragen",
+  "priority": "1",
+  "request": {
+    "url": "/reisdocumentinformatie/uitgevendeinstanties/v2/documentnummer",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.documentnummer=='IP8799D18')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"resultaatOmschrijving\":\"Er is een document gevonden.\",\"reisdocument\":{\"documentnummer\":\"IP8799D18\",\"documentAfgifte\":\"2021-02-23\",\"documentGeldigTot\":\"2031-02-23\",\"documentsoort\":{\"code\":\"NI\",\"omschrijving\":\"Nederlandse identiteitskaart\"}},\"persoon\":{\"bsn\":999995947,\"geslachtsnaam\":\"Boer\",\"voorvoegselGeslachtsnaam\":\"de\",\"voornamen\":\"Albertus Vincent\",\"geboortedatum\":\"19500929\",\"geboorteplaats\":\"Veere, Zeeland\",\"nationaliteit\":{\"code\":\"0000\",\"omschrijving\":\"Onbekend\"},\"geslacht\":{\"code\":\"M\",\"omschrijving\":\"MAN\"},\"personalisatiegegevens\":{\"lengte\":175,\"staatloze\":false,\"aanvraag\":{\"aanvraagnummer\":468480588}}},\"autoriteitVanAfgifte\":\"AuthoriteitVerstrekking\",\"autoriteitVerstrekking\":{\"autoriteitVerstrekkingCode\":\"B1783\",\"autoriteitVerstrekkingOmschrijving\":\"Burgemeester van Westland\"},\"statussen\":[{\"documentstatusCode\":\"IA\",\"documentstatusOmschrijving\":\"In aanvraag\",\"meldingen\":[{\"meldingCode\":\"RGP\",\"meldingOmschrijving\":\"Reisdocument is gepersonaliseerd\",\"meldendeInstantieNaam\":\"Peter3b\",\"meldendeInstantielocatieNaam\":\"Havik\",\"redenCode\":\"REGP\",\"redenOmschrijving\":\"Reisdocument is gepersonaliseerd\",\"meldingTijdstip\":\"2021-02-22T23:00:00.000Z\",\"verwerkingTijdstip\":\"2022-01-11T10:19:38.742Z\",\"administratiefOnjuist\":false}],\"documentstatusStartdatum\":\"2022-01-11T10:19:38.742Z\"}]}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 15:48:28 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "c42a4dfe-7735-11ee-b962-0242ac120002",
+  "persistent": true,
+  "insertionIndex": 23
+}

@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 
@@ -26,14 +29,9 @@ public class DocumentTypeContainer extends ArrayListContainer {
 
   public DocumentTypeContainer() {
 
-    for (DocumentType type : DocumentType.values()) {
-      if (type == DocumentType.ONBEKEND) {
-        continue;
-      }
-
-      addItem(type);
-    }
-
-    sort();
+    Arrays.stream(DocumentType.values())
+        .filter(type -> type != DocumentType.ONBEKEND)
+        .sorted(Comparator.comparing(DocumentType::getOms))
+        .forEach(this::addItem);
   }
 }

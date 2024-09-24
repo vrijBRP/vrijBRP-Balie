@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.math.BigDecimal;
 
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
@@ -30,8 +31,11 @@ import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteDeel;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort;
 import nl.procura.gba.web.services.bs.algemeen.akte.KlapperVolgordeType;
-import nl.procura.vaadin.annotation.field.*;
-import nl.procura.vaadin.component.field.BsnField;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.InputPrompt;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.ProTextField;
@@ -103,7 +107,7 @@ public class Page1KlapperBean implements Serializable {
   @Immediate
   private String nummer = "";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       width = "170px")
   @Immediate

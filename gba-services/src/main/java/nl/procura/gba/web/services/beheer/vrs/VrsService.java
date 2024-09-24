@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,37 +20,39 @@
 package nl.procura.gba.web.services.beheer.vrs;
 
 import static java.util.Optional.ofNullable;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_BASISREGISTER;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_ID;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_RESOURCE_SERVER;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_SCOPE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_CLIENT_SECRET;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_IDP_SERVICE_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_INSTANTIE_CODE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_TIMEOUT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_URL;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_START_DATE;
+import static nl.procura.standard.Globalfunctions.isTru;
+import static nl.procura.standard.Globalfunctions.pos;
 import static org.apache.commons.lang3.StringUtils.getIfBlank;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
-
-import nl.procura.burgerzaken.vrsclient.api.SignaleringControllerApi;
-import nl.procura.burgerzaken.vrsclient.api.SignaleringRequest;
+import nl.procura.burgerzaken.vrsclient.api.AanvragenApi;
+import nl.procura.burgerzaken.vrsclient.api.DocumentenApi;
+import nl.procura.burgerzaken.vrsclient.api.SignaleringApi;
 import nl.procura.burgerzaken.vrsclient.api.TokenApi;
+import nl.procura.burgerzaken.vrsclient.api.VrsMetadata;
+import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.burgerzaken.vrsclient.api.model.TokenRequest;
-import nl.procura.burgerzaken.vrsclient.model.SignaleringRequestV2Bsn;
-import nl.procura.burgerzaken.vrsclient.model.SignaleringRequestV2Bsn.AanleidingEnum;
-import nl.procura.burgerzaken.vrsclient.model.SignaleringRequestV2PersoonsGegevens;
+import nl.procura.burgerzaken.vrsclient.model.ControleAanvraagVolledigResponse;
+import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse;
+import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.burgerzaken.vrsclient.model.SignaleringResponse;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
-import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.validation.Bsn;
 
 public class VrsService {
 
@@ -61,86 +63,100 @@ public class VrsService {
   }
 
   public Optional<SignaleringResult> checkSignalering(VrsRequest request) {
-    SignaleringControllerApi api = getApi();
-
-    SignaleringRequest signaleringRequest = getSignaleringRequest(request)
-        .accessToken(getAccessToken())
-        .pseudoniem("gebruiker-" + parameterService.getServices().getGebruiker().getCUsr())
-        .instantieCode(parameterService.getSysteemParm(VRS_INSTANTIE_CODE, true));
-
-    SignaleringResponse response = api.signaleringsRequest(signaleringRequest);
+    request.metadata(getVrsMetadata());
+    SignaleringApi api = getSignaleringApi();
+    SignaleringResponse response = api.signaleringsRequest(request);
     SignaleringResult.SignaleringResultBuilder builder = SignaleringResult.builder()
         .resultaatCode(response.getResultaatCode())
         .resultaatOmschrijving(response.getResultaatOmschrijving())
         .mededelingRvIG(response.getMededelingRvIG());
 
-    ofNullable(response.getSignaleringInformatie()).ifPresent(si -> builder
-        .signaleringen(si.getSignaleringen())
-        .persoon(si.getPersoon()));
+    ofNullable(response.getSignaleringInformatie())
+        .ifPresent(si -> builder.signaleringen(si.getSignaleringen())
+            .persoon(si.getPersoon()));
 
     return Optional.of(builder.build());
   }
 
-  private SignaleringRequest getSignaleringRequest(VrsRequest vrsRequest) {
-    SignaleringRequest signaleringRequest = new SignaleringRequest();
-    if (vrsRequest.getBsn() != null) {
-      signaleringRequest.v2Bsn(getBsnRequest(vrsRequest));
-    } else if (StringUtils.isNotBlank(vrsRequest.getGeslachtsnaam())) {
-      signaleringRequest.v2PersoonsGegevens(getPersoonsgegevensRequest(vrsRequest));
-    } else {
-      throw new ProException(ProExceptionSeverity.WARNING, "Raadpleeg VRS op BSN of geslachtsnaam en geboortedatum");
-    }
-    return signaleringRequest;
+  public Optional<SignaleringResult> checkIdentiteit(BasePLExt pl) {
+    return checkSignalering(new VrsRequest()
+        .bsn(new Bsn(pl.getPersoon().getBsn().getDescr())));
   }
 
-  private SignaleringRequestV2PersoonsGegevens getPersoonsgegevensRequest(VrsRequest vrsRequest) {
-    SignaleringRequestV2PersoonsGegevens req = new SignaleringRequestV2PersoonsGegevens();
-    req.setGeslachtsnaam(vrsRequest.getGeboortedatum());
-    req.setGeboortedatum(toGeboorteDatum(vrsRequest.getGeboortedatum()));
-
-    if (vrsRequest.getAanvraagnummer() == null) {
-      req.setAanleiding(SignaleringRequestV2PersoonsGegevens.AanleidingEnum.IDENTITEITSONDERZOEK);
-    } else {
-      req.setAanleiding(SignaleringRequestV2PersoonsGegevens.AanleidingEnum.REISDOCUMENTAANVRAAG);
-      req.aanvraagnummer(vrsRequest.getAanvraagnummer().getNummer());
+  public Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> getReisdocumenten(VrsRequest request) {
+    if (isBasisregisterEnabled()) {
+      request.metadata(getVrsMetadata());
+      return ofNullable(getDocumentenApi().documenten(request));
     }
-    return req;
+    return Optional.empty();
   }
 
-  private SignaleringRequestV2Bsn getBsnRequest(VrsRequest vrsRequest) {
-    SignaleringRequestV2Bsn req = new SignaleringRequestV2Bsn();
-    req.setBsn(vrsRequest.getBsn().getDefaultBsn());
-    if (vrsRequest.getAanvraagnummer() == null) {
-      req.setAanleiding(AanleidingEnum.IDENTITEITSONDERZOEK);
-    } else {
-      req.setAanleiding(AanleidingEnum.REISDOCUMENTAANVRAAG);
-      req.aanvraagnummer(vrsRequest.getAanvraagnummer().getNummer());
+  public Optional<ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse> getReisdocument(
+      VrsRequest request) {
+    if (isBasisregisterEnabled()) {
+      request.metadata(getVrsMetadata());
+      return ofNullable(getDocumentenApi().document(request));
     }
-    return req;
+    return Optional.empty();
   }
 
-  private LocalDate toGeboorteDatum(String geboortedatum) {
-    return new ProcuraDate(geboortedatum)
-        .getDateFormat()
-        .toInstant().atZone(ZoneId.systemDefault())
-        .toLocalDate();
+  public Optional<ControleAanvragenResponse> getAanvragen(VrsRequest request) {
+    if (isBasisregisterEnabled()) {
+      request.metadata(getVrsMetadata());
+      return ofNullable(getAanvragenApi().aanvragen(request));
+    }
+    return Optional.empty();
+  }
+
+  public Optional<ControleAanvraagVolledigResponse> getAanvraag(VrsRequest request) {
+    if (isBasisregisterEnabled()) {
+      request.metadata(getVrsMetadata());
+      return ofNullable(getAanvragenApi().aanvraagDetails(request));
+    }
+    return Optional.empty();
   }
 
   public boolean isEnabled() {
-    return new ProcuraDate(parameterService.getSysteemParameter(VRS_START_DATE).getValue()).isExpired();
+    return pos(parameterService.getSysteemParameter(VRS_ENABLED).getValue());
   }
 
-  public SignaleringControllerApi getApi() {
+  public boolean isBasisregisterEnabled() {
+    return isEnabled() && isTru(parameterService.getSysteemParm(VRS_BASISREGISTER, false));
+  }
+
+  private SignaleringApi getSignaleringApi() {
+    return new SignaleringApi(getVrsClient());
+  }
+
+  private AanvragenApi getAanvragenApi() {
+    return new AanvragenApi(getVrsClient());
+  }
+
+  private DocumentenApi getDocumentenApi() {
+    return new DocumentenApi(getVrsClient());
+  }
+
+  private TokenApi getTokenApi() {
+    return new TokenApi(getVrsClient());
+  }
+
+  private VrsClient getVrsClient() {
     String url = parameterService.getProxyUrl(VRS_SERVICE_URL, true);
     long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
-    VrsClient vrsClient = new VrsClient(url, Duration.ofSeconds(timeout));
-    return new SignaleringControllerApi(vrsClient);
+    return new VrsClient(url, Duration.ofSeconds(timeout));
+  }
+
+  private VrsMetadata getVrsMetadata() {
+    return new VrsMetadata()
+        .accessToken(getAccessToken())
+        .pseudoniem("gebruiker-" + parameterService.getServices().getGebruiker().getCUsr())
+        .instantieCode(parameterService.getSysteemParm(VRS_INSTANTIE_CODE, true));
   }
 
   private String getAccessToken() {
     long timeout = Long.parseLong(parameterService.getSysteemParm(VRS_SERVICE_TIMEOUT, true));
     String customIssuerUri = parameterService.getSysteemParm(VRS_IDP_SERVICE_URL, false);
-    String tokenUrl = getIfBlank(customIssuerUri, () -> getApi().getIDPIssuerResponse().getIssuerUri());
+    String tokenUrl = getIfBlank(customIssuerUri, () -> getTokenApi().getIDPIssuerResponse().getIssuerUri());
     String proxyTokenUrl = parameterService.getProxyUrl(tokenUrl, true);
     VrsClient vrsClient = new VrsClient(proxyTokenUrl, Duration.ofSeconds(timeout));
 

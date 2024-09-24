@@ -19,21 +19,30 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab1.search.favorieten;
 
+import static nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieType.FAVORIETEN;
+import static nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieType.HISTORIE;
+
+import java.util.function.Consumer;
+
 import com.vaadin.ui.VerticalLayout;
 
 import nl.procura.gba.web.components.layouts.tabsheet.GbaTabsheet;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.zaken.ZakenModuleTemplate;
-import nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieType;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class FavorietenWindow extends GbaModalWindow {
 
+  private final Consumer<String> nrConsumer;
+
   public FavorietenWindow() {
+    this(null);
+  }
 
+  public FavorietenWindow(Consumer<String> nrConsumer) {
     super("Favorieten / historie (Escape om te sluiten)", "400px");
-
+    this.nrConsumer = nrConsumer;
     addStyleName("favWindow");
     setIcon(null);
   }
@@ -51,11 +60,11 @@ public class FavorietenWindow extends GbaModalWindow {
     tabSheet.addTab(new ModuleFavorieten(), "Favorieten", null);
     tabSheet.addTab(new ModuleHistorie(), "Historie", null);
 
-    VerticalLayout v = new VerticalLayout();
-    v.setMargin(false);
-    v.addComponent(tabSheet);
+    VerticalLayout layout = new VerticalLayout();
+    layout.setMargin(false);
+    layout.addComponent(tabSheet);
 
-    setContent(v);
+    setContent(layout);
   }
 
   public class ModuleFavorieten extends ZakenModuleTemplate {
@@ -66,12 +75,9 @@ public class FavorietenWindow extends GbaModalWindow {
 
     @Override
     public void event(PageEvent event) {
-
       super.event(event);
-
       if (event.isEvent(InitPage.class)) {
-
-        getPages().getNavigation().goToPage(new FavorietenPage(PersoonHistorieType.FAVORIETEN));
+        getPages().getNavigation().goToPage(new FavorietenPage(FAVORIETEN, nrConsumer));
       }
     }
   }
@@ -86,7 +92,7 @@ public class FavorietenWindow extends GbaModalWindow {
     public void event(PageEvent event) {
       super.event(event);
       if (event.isEvent(InitPage.class)) {
-        getPages().getNavigation().goToPage(new FavorietenPage(PersoonHistorieType.HISTORIE));
+        getPages().getNavigation().goToPage(new FavorietenPage(HISTORIE, nrConsumer));
       }
     }
   }

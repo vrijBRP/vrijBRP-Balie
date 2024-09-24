@@ -1,0 +1,845 @@
+---
+openapi: 3.0.1
+info:
+  title: Reisdocument informatie uitgevende instanties API
+  version: 1.63.0
+servers:
+  - url: http://api
+    description: Generated server url
+tags:
+  - name: Reisdocument informatie uitgevende instanties Controller
+    description: Reisdocument informatie uitgevende instanties API
+paths:
+  "/reisdocumentinformatie/uitgevendeinstanties/v2/personalisatiegegevens":
+    post:
+      tags:
+        - Reisdocument informatie uitgevende instanties Controller
+      summary: Verkrijg reisdocumentinformatie op personalisatiegegevens voor uitgevende
+        instanties
+      operationId: reisdocumentInformatiePersonalisatiegegevens
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VrsReisdocumentInformatieUitgevendeInstantiesPersonalisatiegegevensRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/reisdocumentinformatie/uitgevendeinstanties/v2/documentnummer":
+    post:
+      tags:
+        - Reisdocument informatie uitgevende instanties Controller
+      summary: Verkrijg reisdocumentinformatie op documentnummer voor uitgevende instanties
+      operationId: reisdocumentInformatieDocumentnummer
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VrsReisdocumentInformatieUitgevendeInstantiesDocumentnummerRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/reisdocumentinformatie/uitgevendeinstanties/v1/personalisatiegegevens":
+    post:
+      tags:
+        - Reisdocument informatie uitgevende instanties Controller
+      summary: Verkrijg reisdocumentinformatie op personalisatiegegevens voor uitgevende
+        instanties
+      operationId: reisdocumentInformatiePersonalisatiegegevens_1
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PersonalisatiegegevensRequestV1"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponseV1"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+  "/reisdocumentinformatie/uitgevendeinstanties/v1/documentnummer":
+    post:
+      tags:
+        - Reisdocument informatie uitgevende instanties Controller
+      summary: Verkrijg reisdocumentinformatie op documentnummer voor uitgevende instanties
+      operationId: reisdocumentInformatieDocumentnummer_1
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VrsReisdocumentInformatieUitgevendeInstantiesDocumentnummerRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+components:
+  schemas:
+    VrsReisdocumentInformatieUitgevendeInstantiesPersonalisatiegegevensRequest:
+      required:
+        - aanleiding
+      type: object
+      properties:
+        geslachtsnaam:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        voornamen:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]+%?)$"
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          maxLength: 80
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        aanleiding:
+          type: string
+          enum:
+            - REISDOCUMENTAANVRAAG
+            - IDENTITEITSONDERZOEK
+        voorvoegselgeslachtsnaam:
+          maxLength: 10
+          minLength: 0
+          pattern: "^[\\p{L}',. -]*$"
+          type: string
+        bsn:
+          type: integer
+          format: int64
+        anummer:
+          type: integer
+          format: int64
+        aanvraagnummer:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse:
+      type: object
+      properties:
+        resultaatOmschrijving:
+          type: string
+        reisdocumentenLijst:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse.ReisdocumentInformatiePersoonsgegevens"
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse.AutoriteitVerstrekking:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse.PersoonResponse:
+      type: object
+      properties:
+        bsn:
+          type: integer
+          format: int64
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        voornamen:
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse.ReisdocumentInformatiePersoonsgegevens:
+      type: object
+      properties:
+        reisdocument:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse.ReisdocumentPersoonsgegevensResponse"
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse.ReisdocumentPersoonsgegevensResponse:
+      type: object
+      properties:
+        documentnummer:
+          type: string
+        documentsoort:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse.Reisdocumentsoort"
+        autoriteitVanAfgifte:
+          type: string
+        autoriteitVerstrekking:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse.AutoriteitVerstrekking"
+        persoon:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse.PersoonResponse"
+        statusMeestRecent:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponse.StatusDetail"
+        datumafgifte:
+          type: string
+          format: date
+        datumGeldigTot:
+          type: string
+          format: date
+        datumMeldingvermissing:
+          type: string
+          format: date-time
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse.Reisdocumentsoort:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponse.StatusDetail:
+      type: object
+      properties:
+        documentstatusCode:
+          type: string
+        documentstatusOmschrijving:
+          type: string
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        code:
+          type: string
+        tijdstip:
+          type: string
+          format: date-time
+        titel:
+          type: string
+        instantie:
+          type: string
+    InvalidParam:
+      type: object
+      properties:
+        code:
+          type: string
+        reden:
+          type: string
+        naam:
+          type: string
+    ValidationErrorMessages:
+      type: object
+      properties:
+        status:
+          type: string
+        code:
+          type: string
+        tijdstip:
+          type: string
+          format: date-time
+        titel:
+          type: string
+        instantie:
+          type: string
+        ongeldige-parameters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InvalidParam"
+    VrsReisdocumentInformatieUitgevendeInstantiesDocumentnummerRequest:
+      required:
+        - aanleiding
+        - documentnummer
+      type: object
+      properties:
+        documentnummer:
+          maxLength: 9
+          minLength: 9
+          pattern: "^(?i)[ABDEILNRS][A-NP-Z][0-9BCDFHJKLPR]{6}\\d$"
+          type: string
+        aanleiding:
+          type: string
+          enum:
+            - REISDOCUMENTAANVRAAG
+            - IDENTITEITSONDERZOEK
+        aanvraagnummer:
+          type: string
+    AutoriteitVerstrekkingDto:
+      type: object
+      properties:
+        autoriteitVerstrekkingCode:
+          type: string
+        autoriteitVerstrekkingOmschrijving:
+          type: string
+    InleverinstantieDto:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse:
+      type: object
+      properties:
+        resultaatOmschrijving:
+          type: string
+        reisdocument:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Reisdocument"
+        persoon:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Persoon"
+        autoriteitVanAfgifte:
+          type: string
+        autoriteitVerstrekking:
+          "$ref": "#/components/schemas/AutoriteitVerstrekkingDto"
+        statussen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.StatusDto"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Aanvraag:
+      type: object
+      properties:
+        aanvraagnummer:
+          type: integer
+          format: int64
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.AdellijkeTitelPredicaat:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Geslacht:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.MeldingDetailDto:
+      type: object
+      properties:
+        meldingCode:
+          type: string
+        meldingOmschrijving:
+          type: string
+        meldendeInstantieNaam:
+          type: string
+        meldendeInstantieGemeentecode:
+          type: string
+        meldendeInstantielocatieNaam:
+          type: string
+        redenMeldingDatum:
+          type: string
+          format: date
+        redenCode:
+          type: string
+        redenOmschrijving:
+          type: string
+        meldingTijdstip:
+          type: string
+          format: date-time
+        administratiefOnjuist:
+          type: boolean
+        verwerkingTijdstip:
+          type: string
+          format: date-time
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Nationaliteit:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Personalisatiegegevens:
+      type: object
+      properties:
+        geslachtsnaamPartner:
+          type: string
+        voorvoegselGeslachtsnaamPartner:
+          type: string
+        adellijketitelpartner:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.AdellijkeTitelPredicaat"
+        wijzeVermeldingPartner:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.WijzeVermeldingPartner"
+        lengte:
+          type: integer
+          format: int32
+        pseudoniem:
+          type: string
+        verblijfsdocumentnummer:
+          type: string
+        verblijfsdocumentEindegeldigheid:
+          type: string
+          format: date
+        functievermeldingNederlands:
+          type: string
+        functievermeldingEngels:
+          type: string
+        functievermeldingFrans:
+          type: string
+        terVervangingVanDocumentnummer:
+          type: string
+        uitgezonderdLanden:
+          type: string
+        geldigVoorLanden:
+          type: string
+        staatloze:
+          type: boolean
+        inleverinstantie:
+          "$ref": "#/components/schemas/InleverinstantieDto"
+        inleverdatum:
+          type: string
+          format: date
+        aanvraag:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Aanvraag"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Persoon:
+      type: object
+      properties:
+        bsn:
+          type: integer
+          format: int64
+        anummer:
+          type: integer
+          format: int64
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        voornamen:
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          type: string
+        adellijkeTitelPredicaat:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.AdellijkeTitelPredicaat"
+        nationaliteit:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Nationaliteit"
+        geslacht:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Geslacht"
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Personalisatiegegevens"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.Reisdocument:
+      type: object
+      properties:
+        documentnummer:
+          type: string
+        documentAfgifte:
+          type: string
+          format: date
+        documentGeldigTot:
+          type: string
+          format: date
+        documentsoort:
+          "$ref": "#/components/schemas/ReisdocumentsoortDto"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.StatusDto:
+      type: object
+      properties:
+        documentstatusCode:
+          type: string
+        documentstatusOmschrijving:
+          type: string
+        meldingen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.MeldingDetailDto"
+        documentstatusStartdatum:
+          type: string
+          format: date-time
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.WijzeVermeldingPartner:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentsoortDto:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    PersonalisatiegegevensRequestV1:
+      required:
+        - aanleiding
+      type: object
+      properties:
+        geslachtsnaam:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        voornamen:
+          maxLength: 200
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]+%?)$"
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          maxLength: 80
+          minLength: 0
+          pattern: "^([\\p{L}',. -]*)|^([\\p{L}',. -]{4,}%?)$"
+          type: string
+        aanleiding:
+          type: string
+          enum:
+            - REISDOCUMENTAANVRAAG
+            - IDENTITEITSONDERZOEK
+        voorvoegselgeslachtsnaam:
+          maxLength: 10
+          minLength: 0
+          pattern: "^[\\p{L}',. -]*$"
+          type: string
+        bsn:
+          type: string
+        anummer:
+          pattern: "^( *$)|^(\\d{10})$"
+          type: string
+        aanvraagnummer:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponseV1:
+      type: object
+      properties:
+        resultaatOmschrijving:
+          type: string
+        reisdocumentenLijst:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.ReisdocumentInformatiePersoonsgegevens"
+    ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.PersoonResponse:
+      type: object
+      properties:
+        bsn:
+          type: string
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        voornamen:
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.ReisdocumentInformatiePersoonsgegevens:
+      type: object
+      properties:
+        reisdocument:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.ReisdocumentPersoonsgegevensResponse"
+    ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.ReisdocumentPersoonsgegevensResponse:
+      type: object
+      properties:
+        documentnummer:
+          type: string
+        documentsoort:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.Reisdocumentsoort"
+        persoon:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.PersoonResponse"
+        statusMeestRecent:
+          "$ref": "#/components/schemas/ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.StatusDetail"
+        datumafgifte:
+          type: string
+          format: date
+        datumGeldigTot:
+          type: string
+          format: date
+    ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.Reisdocumentsoort:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatiePersoonsGegevensInstantieResponseV1.StatusDetail:
+      type: object
+      properties:
+        documentstatusCode:
+          type: string
+        documentstatusOmschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1:
+      type: object
+      properties:
+        resultaatOmschrijving:
+          type: string
+        reisdocument:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Reisdocument"
+        persoon:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Persoon"
+        autoriteitVanAfgifte:
+          type: string
+        autoriteitVerstrekking:
+          "$ref": "#/components/schemas/AutoriteitVerstrekkingDto"
+        statussen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.StatusDto"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Aanvraag:
+      type: object
+      properties:
+        aanvraagnummer:
+          type: integer
+          format: int64
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.AdellijkeTitelPredicaat:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Geslacht:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.MeldingDetailDto:
+      type: object
+      properties:
+        meldingCode:
+          type: string
+        meldingOmschrijving:
+          type: string
+        meldendeInstantieNaam:
+          type: string
+        meldendeInstantieGemeentecode:
+          type: string
+        meldendeInstantielocatieNaam:
+          type: string
+        redenMeldingDatum:
+          type: string
+          format: date
+        redenCode:
+          type: string
+        redenOmschrijving:
+          type: string
+        meldingTijdstip:
+          type: string
+          format: date-time
+        administratiefOnjuist:
+          type: boolean
+        verwerkingTijdstip:
+          type: string
+          format: date-time
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Nationaliteit:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Personalisatiegegevens:
+      type: object
+      properties:
+        geslachtsnaamPartner:
+          type: string
+        voorvoegselGeslachtsnaamPartner:
+          type: string
+        adellijketitelpartner:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.AdellijkeTitelPredicaat"
+        wijzeVermeldingPartner:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.WijzeVermeldingPartner"
+        lengte:
+          type: integer
+          format: int32
+        pseudoniem:
+          type: string
+        verblijfsdocumentnummer:
+          type: string
+        verblijfsdocumentEindegeldigheid:
+          type: string
+          format: date
+        functievermeldingNederlands:
+          type: string
+        functievermeldingEngels:
+          type: string
+        functievermeldingFrans:
+          type: string
+        terVervangingVanDocumentnummer:
+          type: string
+        uitgezonderdLanden:
+          type: string
+        geldigVoorLanden:
+          type: string
+        staatloze:
+          type: boolean
+        inleverinstantie:
+          "$ref": "#/components/schemas/InleverinstantieDto"
+        inleverdatum:
+          type: string
+          format: date
+        aanvraag:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Aanvraag"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Persoon:
+      type: object
+      properties:
+        bsn:
+          type: string
+        anummer:
+          type: integer
+          format: int64
+        geslachtsnaam:
+          type: string
+        voorvoegselGeslachtsnaam:
+          type: string
+        voornamen:
+          type: string
+        geboortedatum:
+          type: string
+        geboorteplaats:
+          type: string
+        adellijkeTitelPredicaat:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.AdellijkeTitelPredicaat"
+        nationaliteit:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Nationaliteit"
+        geslacht:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Geslacht"
+        personalisatiegegevens:
+          "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Personalisatiegegevens"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.Reisdocument:
+      type: object
+      properties:
+        documentnummer:
+          type: string
+        documentAfgifte:
+          type: string
+          format: date
+        documentGeldigTot:
+          type: string
+          format: date
+        documentsoort:
+          "$ref": "#/components/schemas/ReisdocumentsoortDto"
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.StatusDto:
+      type: object
+      properties:
+        documentstatusCode:
+          type: string
+        documentstatusOmschrijving:
+          type: string
+        meldingen:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.MeldingDetailDto"
+        documentstatusStartdatum:
+          type: string
+          format: date-time
+    ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponseV1.WijzeVermeldingPartner:
+      type: object
+      properties:
+        code:
+          type: string
+        omschrijving:
+          type: string
+  parameters:
+    pseudoniem:
+      name: pseudoniem
+      in: header
+      description: gebruiker pseudoniem
+      schema:
+        type: string
+    instantie_code:
+      name: instantie_code
+      in: header
+      description: gebruiker instantie code
+      schema:
+        type: string
+  securitySchemes:
+    jwt-bearer-token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

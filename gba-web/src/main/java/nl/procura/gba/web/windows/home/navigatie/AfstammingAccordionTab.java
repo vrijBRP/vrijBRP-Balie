@@ -23,6 +23,7 @@ import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.navigation.GbaAccordionTab;
 import nl.procura.gba.web.modules.bs.erkenning.ModuleErkenning;
 import nl.procura.gba.web.modules.bs.geboorte.ModuleGeboorte;
+import nl.procura.gba.web.modules.bs.lv.ModuleLv;
 import nl.procura.gba.web.modules.bs.naamskeuze.ModuleNaamskeuze;
 
 public class AfstammingAccordionTab extends GbaAccordionTab {
@@ -35,5 +36,6 @@ public class AfstammingAccordionTab extends GbaAccordionTab {
     addLink(ModuleGeboorte.class);
     addLink(ModuleErkenning.class);
     addLink(ModuleNaamskeuze.class);
+    addLink(ModuleLv.class);
   }
 }

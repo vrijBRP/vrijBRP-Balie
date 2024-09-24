@@ -24,15 +24,19 @@ import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.containers.GeslachtContainer;
 import nl.procura.gba.web.components.containers.VoorvoegselContainer;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FilteringMode;
 import nl.procura.vaadin.annotation.field.FilteringMode.Mode;
-import nl.procura.vaadin.component.field.BsnField;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
@@ -84,7 +88,7 @@ public class Page3KlapperBean2 implements Serializable {
       width = "80px")
   private DateFieldValue datumGeboorte = null;
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       width = "150px")
   private BsnFieldValue bsn1 = null;
@@ -126,7 +130,7 @@ public class Page3KlapperBean2 implements Serializable {
       required = true)
   private GbaDateFieldValue geboortedatum1 = null;
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       width = "150px")
   private BsnFieldValue bsn2 = null;

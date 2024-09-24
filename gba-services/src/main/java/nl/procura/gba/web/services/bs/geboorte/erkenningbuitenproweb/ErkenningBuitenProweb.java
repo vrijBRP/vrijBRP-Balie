@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb;
 
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.math.BigDecimal;
 
@@ -135,6 +136,34 @@ public class ErkenningBuitenProweb {
 
   public void setVerklaringGezag(boolean verklaringGezag) {
     dg.setVerklaringGezagErk(BigDecimal.valueOf(verklaringGezag ? 1L : 0L));
+  }
+
+  public String getGeslachtsnaam() {
+    return dg.getKeuzeNaamGesl();
+  }
+
+  public void setGeslachtsnaam(String geslachtsnaam) {
+    dg.setKeuzeNaamGesl(geslachtsnaam);
+  }
+
+  public String getVoorvoegsel() {
+    return dg.getKeuzeVoorvoegsel();
+  }
+
+  public void setVoorvoegsel(FieldValue voorvoegsel) {
+    dg.setKeuzeVoorvoegsel(voorvoegsel.getStringValue());
+  }
+
+  public FieldValue getTitel() {
+    return dg.getKeuzeTitel();
+  }
+
+  public void setTitel(FieldValue titel) {
+    dg.setKeuzeTitel(titel);
+  }
+
+  public String getNaam() {
+    return trim(getTitel() + " " + getVoorvoegsel() + " " + getGeslachtsnaam());
   }
 
   public void reset() {

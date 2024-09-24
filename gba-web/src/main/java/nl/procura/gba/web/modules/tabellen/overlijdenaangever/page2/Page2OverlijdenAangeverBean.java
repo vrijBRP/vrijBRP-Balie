@@ -22,17 +22,26 @@ package nl.procura.gba.web.modules.tabellen.overlijdenaangever.page2;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
-import nl.procura.gba.web.components.containers.*;
+import nl.procura.gba.web.components.containers.AdelijkeTitelPredikaatContainer;
+import nl.procura.gba.web.components.containers.GeslachtContainer;
+import nl.procura.gba.web.components.containers.LandContainer;
+import nl.procura.gba.web.components.containers.PlaatsContainer;
+import nl.procura.gba.web.components.containers.VoorvoegselContainer;
+import nl.procura.gba.web.components.fields.GbaBsnField;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FilteringMode;
 import nl.procura.vaadin.annotation.field.FilteringMode.Mode;
-import nl.procura.vaadin.component.field.BsnField;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.EmailField;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
@@ -60,7 +69,7 @@ public class Page2OverlijdenAangeverBean implements Serializable {
   public static final String INGANG_GELD       = "ingangGeld";
   public static final String EINDE_GELD        = "eindeGeld";
 
-  @Field(customTypeClass = BsnField.class,
+  @Field(customTypeClass = GbaBsnField.class,
       caption = "Burgerservicenummer",
       width = "150px")
   private BsnFieldValue bsn = new BsnFieldValue();

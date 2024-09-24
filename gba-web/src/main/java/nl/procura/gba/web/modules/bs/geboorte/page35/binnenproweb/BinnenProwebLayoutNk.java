@@ -78,13 +78,15 @@ public class BinnenProwebLayoutNk extends GbaVerticalLayout implements ClickList
 
   private void setInfo() {
     DossierNaamskeuze naamskeuze = geboorte.getNaamskeuzeVoorGeboorte();
+    String info = "Koppeling een naamskeuze aan de geboorteaangifte.";
     if (emp(geboorte.getGezinssituatie().getCode()) && naamskeuze != null) {
-      addComponent(new InfoLayout("Ter informatie",
-          "Er is een naamskeuze gevonden van de moeder van "
-              + naamskeuze.getDossier().getDatumIngang()));
-
-    } else {
-      addComponent(new InfoLayout("Ter informatie", "Koppeling een naamskeuze aan de geboorteaangifte."));
+      info = "Er is een naamskeuze gevonden van de moeder van " + naamskeuze.getDossier().getDatumIngang();
     }
+    if (geboorte.isOvergangsperiodeNaamskeuze()) {
+      info +=
+          "<hr/><b>Als de naamskeuze gedaan is in 2023 dan is mogelijk destijds ook gekozen voor een dubbele achternaam."
+              + "<br>Vul dan bij 2e gekozen naam deze dubbele achternaam in. Dit wordt afgedrukt op de latere vermelding</b>";
+    }
+    addComponent(new InfoLayout("Ter informatie", info));
   }
 }

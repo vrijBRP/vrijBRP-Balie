@@ -59,6 +59,7 @@ import nl.procura.gba.web.services.bs.erkenning.ErkenningService;
 import nl.procura.gba.web.services.bs.geboorte.GeboorteService;
 import nl.procura.gba.web.services.bs.huwelijk.HuwelijkService;
 import nl.procura.gba.web.services.bs.levenloos.LevenloosService;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvService;
 import nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeService;
 import nl.procura.gba.web.services.bs.naturalisatie.NaturalisatieService;
 import nl.procura.gba.web.services.bs.omzetting.OmzettingService;
@@ -182,6 +183,7 @@ public class Services {
     add(IdentificatieService.class);
     add(RijbewijsService.class);
     add(GeboorteService.class);
+    add(LvService.class);
     add(HuwelijkService.class);
     add(OmzettingService.class);
     add(OntbindingService.class);
@@ -299,6 +301,10 @@ public class Services {
 
   public GeboorteService getGeboorteService() {
     return get(GeboorteService.class);
+  }
+
+  public LvService getLvService() {
+    return get(LvService.class);
   }
 
   public Gebruiker getGebruiker() {

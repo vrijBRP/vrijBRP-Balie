@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.bs.geboorte.naamskeuzebuitenproweb;
 
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
@@ -116,6 +117,10 @@ public class NaamskeuzeBuitenProweb {
 
   public void setTitel(FieldValue titel) {
     dg.setKeuzeTitel(titel);
+  }
+
+  public String getNaam() {
+    return trim(getTitel() + " " + getVoorvoegsel() + " " + getGeslachtsnaam());
   }
 
   public void reset() {

@@ -19,6 +19,11 @@
 
 package nl.procura.gba.web.modules.zaken.afstamming.page1;
 
+import static nl.procura.gba.common.ZaakType.ERKENNING;
+import static nl.procura.gba.common.ZaakType.GEBOORTE;
+import static nl.procura.gba.common.ZaakType.LV;
+import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
+
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.bs.page1.Page1BsTemplate;
 import nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils;
@@ -41,6 +46,8 @@ public class Page1Afstamming extends Page1BsTemplate {
     switch (zaakType) {
       case NAAMSKEUZE:
         return DocumentType.NAAMSKEUZE;
+      case LV:
+        return DocumentType.LATERE_VERMELDING_AFST;
       case ERKENNING:
         return DocumentType.ERKENNING;
       case GEBOORTE:
@@ -54,6 +61,8 @@ public class Page1Afstamming extends Page1BsTemplate {
     switch (zaakType) {
       case NAAMSKEUZE:
         return "bs.naamskeuze";
+      case LV:
+        return "bs.lv";
       case ERKENNING:
         return "bs.erkenning";
       case GEBOORTE:
@@ -69,6 +78,6 @@ public class Page1Afstamming extends Page1BsTemplate {
 
   @Override
   protected ZaakType[] getZaakTypes() {
-    return new ZaakType[]{ ZaakType.GEBOORTE, ZaakType.ERKENNING, ZaakType.NAAMSKEUZE };
+    return new ZaakType[]{GEBOORTE, ERKENNING, NAAMSKEUZE, LV};
   }
 }

@@ -32,11 +32,11 @@ import nl.procura.vaadin.component.layout.HLayout;
 
 public class PageBsGerelateerdeNavLayout extends HLayout {
 
-  private DossierService       service;
-  private GbaTable             table;
-  private DossierPersoon       person;
-  private List<DossierPersoon> persons;
-  private int                  index;
+  private final DossierService       service;
+  private final GbaTable             table;
+  private final DossierPersoon       person;
+  private final List<DossierPersoon> persons;
+  private final int                  index;
 
   public PageBsGerelateerdeNavLayout(DossierService service,
       GbaTable table,

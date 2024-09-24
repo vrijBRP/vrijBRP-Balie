@@ -293,7 +293,7 @@ public class UnOfficialDashboardDao extends DashboardDao {
 
     JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
         .from(dossRiskAnalysisSubject)
-        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+        .where(dossRiskAnalysisSubject.score.lt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
 
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
         .from(doss)
@@ -312,7 +312,7 @@ public class UnOfficialDashboardDao extends DashboardDao {
 
     JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
         .from(dossRiskAnalysisSubject)
-        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+        .where(dossRiskAnalysisSubject.score.goe(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
 
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
         .from(doss)
@@ -353,7 +353,7 @@ public class UnOfficialDashboardDao extends DashboardDao {
 
     JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
         .from(dossRiskAnalysisSubject)
-        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+        .where(dossRiskAnalysisSubject.score.goe(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
 
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
         .from(doss)

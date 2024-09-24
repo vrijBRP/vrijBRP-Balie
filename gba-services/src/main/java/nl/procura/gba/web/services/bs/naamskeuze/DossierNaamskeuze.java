@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,10 @@
 
 package nl.procura.gba.web.services.bs.naamskeuze;
 
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER_ANDERE_OUDER;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.Globalfunctions.trim;
 
@@ -178,6 +181,11 @@ public class DossierNaamskeuze extends DossNk
   @Override
   public String getKeuzeNaam() {
     return trim(getKeuzeTitel() + " " + getKeuzeVoorvoegsel() + " " + getKeuzeGeslachtsnaam());
+  }
+
+  @Override
+  public String getOrigineleKeuzeNaam() {
+    return getKeuzeNaam();
   }
 
   @Override

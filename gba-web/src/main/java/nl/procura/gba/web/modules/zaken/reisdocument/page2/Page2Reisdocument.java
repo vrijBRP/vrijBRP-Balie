@@ -30,6 +30,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.zaken.common.ZakenOverzichtPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtBuilder;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10Reisdocument;
+import nl.procura.gba.web.modules.zaken.reisdocument.page18.Page18Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page19.Page19Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page24.Page24Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page3.Page3Reisdocument;
@@ -90,7 +91,11 @@ public class Page2Reisdocument extends ZakenOverzichtPage<ReisdocumentAanvraag> 
 
   @Override
   protected void goToZaak() {
-    getNavigation().goToPage(new Page10Reisdocument(getZaak()));
+    if (getZaak().getAanvraagnummer().isCorrect()) {
+      getNavigation().goToPage(new Page10Reisdocument(getZaak()));
+    } else {
+      getNavigation().goToPage(new Page18Reisdocument(getZaak()));
+    }
   }
 
   @Override

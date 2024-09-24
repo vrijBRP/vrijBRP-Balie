@@ -1,0 +1,37 @@
+{
+  "id": "17a7747a-773b-11ee-b962-0242ac120002",
+  "name": "reisdocumentaanvraag",
+  "priority": "1",
+  "request": {
+    "url": "/controleaanvragen/v2/aanvraag",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"documentNummer\":\"IP8799D18\",\"aanvraagnummer\":468480588,\"aangevraagdReisdocumentsoort\":\"Nederlandse identiteitskaart\",\"aanvraagstatus\":{\"code\":\"AF\",\"aanvraagstatusOmschrijving\":\"Aanvraag afgerond\",\"begindatum\":\"2022-01-11\"},\"aanvraaginstantie\":\"Peter3b\",\"aanvraaglocatie\":\"Havik\",\"personalisatiegegevens\":{\"voornamen\":\"Albertus Vincent\",\"geboorteplaats\":\"Veere, Zeeland\",\"autoriteitVanAfgifte\":\"AuthoriteitVerstrekking\",\"bsn\":999995947,\"geslachtsnaam\":\"Boer\",\"voorvoegselGeslachtsnaam\":\"de\",\"geboortedatum\":\"19500929\"}}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 15:48:28 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "17a7747a-773b-11ee-b962-0242ac120002",
+  "persistent": true,
+  "insertionIndex": 23
+}

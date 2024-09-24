@@ -41,6 +41,7 @@ import static nl.procura.gba.common.ZaakType.INDICATIE;
 import static nl.procura.gba.common.ZaakType.INHOUD_VERMIS;
 import static nl.procura.gba.common.ZaakType.LEVENLOOS;
 import static nl.procura.gba.common.ZaakType.LIJKVINDING;
+import static nl.procura.gba.common.ZaakType.LV;
 import static nl.procura.gba.common.ZaakType.NAAMGEBRUIK;
 import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
 import static nl.procura.gba.common.ZaakType.NATURALISATIE;
@@ -91,6 +92,7 @@ public class ZaakTypeStatussen {
     add(NAAMGEBRUIK, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(NATURALISATIE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(NAAMSKEUZE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
+    add(LV, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(OVERLIJDEN_IN_BUITENLAND, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(OVERLIJDEN_IN_GEMEENTE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(LEVENLOOS, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
