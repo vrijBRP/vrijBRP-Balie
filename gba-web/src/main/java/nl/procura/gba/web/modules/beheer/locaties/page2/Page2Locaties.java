@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -130,7 +130,7 @@ public class Page2Locaties extends NormalPageTemplate {
       locatie.setCodeRaas(b2.getRaasCode());
       locatie.setGkasId(b2.getJCCGKASid());
 
-      for (String ipadres : locatie.getIpAddressen()) {
+      for (String ipadres : locatie.getIpAdressen()) {
 
         try {
           getServices().getLocatieService().getLookupAdress(ipadres);

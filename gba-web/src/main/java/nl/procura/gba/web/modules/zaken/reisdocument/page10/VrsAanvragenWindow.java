@@ -208,7 +208,7 @@ public class VrsAanvragenWindow extends GbaModalWindow {
       tabs.addTab(newTab(form2), "Personalisatiegegevens");
       tabs.addTab(newTab(new Table1()), "Statussen (" + statussen + ")");
       tabs.addTab(newTab(new Table2()), "Activiteiten (" + activiteiten + ")");
-      tabs.addTab(newTab(new Table3()), "Addressen (" + adressen + ")");
+      tabs.addTab(newTab(new Table3()), "Adressen (" + adressen + ")");
 
       addExpandComponent(tabs);
     }
@@ -277,8 +277,8 @@ public class VrsAanvragenWindow extends GbaModalWindow {
       @Override
       public void setColumns() {
         setSelectable(true);
-        addColumn("Begindatum", 150);
-        addColumn("Einddatum", 150);
+        addColumn("Begindatum", 130);
+        addColumn("Einddatum", 130);
         addColumn("Status", 300);
         addColumn("Melding");
         super.setColumns();
@@ -313,10 +313,8 @@ public class VrsAanvragenWindow extends GbaModalWindow {
       @Override
       public void setColumns() {
         setSelectable(true);
-        addColumn("Datum", 150);
-        addColumn("Status");
+        addColumn("Datum", 130);
         addColumn("Omschrijving");
-        addColumn("Conclusie");
         addColumn("Toelichting");
         super.setColumns();
       }
@@ -327,7 +325,6 @@ public class VrsAanvragenWindow extends GbaModalWindow {
           for (ControleAanvraagVolledigResponseAanvraagactiviteit activiteit : activiteiten) {
             Record r = addRecord(activiteit);
             r.addValue(DateTime.of(activiteit.getDatumAanvraagactiviteit().toLocalDateTime()));
-            r.addValue(activiteit.getConclusie());
             r.addValue(activiteit.getOmschrijving());
             r.addValue(activiteit.getToelichting());
           }
@@ -341,9 +338,9 @@ public class VrsAanvragenWindow extends GbaModalWindow {
       @Override
       public void setColumns() {
         setSelectable(true);
-        addColumn("Soort", 150);
-        addColumn("Datum / tijd");
+        addColumn("Soort", 130);
         addColumn("Adres");
+        addColumn("Datum / tijd", 130);
         super.setColumns();
       }
 
@@ -351,12 +348,13 @@ public class VrsAanvragenWindow extends GbaModalWindow {
       public void setRecords() {
         for (Adres adres : adressen) {
           Record r = addRecord(adres);
+          r.addValue(adres.getSoort());
+          r.addValue(adres.getAdres());
           r.addValue(ofNullable(adres.getDatumTijd())
               .map(OffsetDateTime::toLocalDateTime)
               .map(DateTime::of)
               .map(DateTime::getFormatDate)
-              .orElse(""));
-          r.addValue(adres.getAdres());
+              .orElse("N.v.t."));
         }
         super.setRecords();
       }

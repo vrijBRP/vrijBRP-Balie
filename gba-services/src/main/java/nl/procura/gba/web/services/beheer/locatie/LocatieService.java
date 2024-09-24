@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,14 +19,21 @@
 
 package nl.procura.gba.web.services.beheer.locatie;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.select;
 import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.web.services.beheer.locatie.LocatieType.NORMALE_LOCATIE;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.net.InetAddress;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,7 +176,7 @@ public class LocatieService extends AbstractService {
 
   public boolean isCorrect(Locatie locatie) {
 
-    for (String address : locatie.getIpAddressen()) {
+    for (String address : locatie.getIpAdressen()) {
       try {
         getServices().getLocatieService().getLookupAdress(address);
       } catch (Exception e) {
@@ -219,7 +226,7 @@ public class LocatieService extends AbstractService {
 
   private boolean isMatch(Locatie l, Set<String> userAddresses) {
 
-    for (String address : l.getIpAddressen()) {
+    for (String address : l.getIpAdressen()) {
       try {
         for (String locationAdress : getLookupAdress(address)) {
           for (String userAddress : userAddresses) {

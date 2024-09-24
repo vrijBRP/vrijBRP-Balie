@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -64,7 +64,7 @@ public class Locatie extends Location
     return NaturalComparator.compareTo(getLocatie(), o.getLocatie());
   }
 
-  public List<String> getIpAddressen() {
+  public List<String> getIpAdressen() {
     List<String> l = new ArrayList<>();
     for (String ip : getIp().split(",|\r|\n")) {
       if (fil(ip.trim())) {
