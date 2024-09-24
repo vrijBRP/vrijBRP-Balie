@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,7 +23,11 @@ import static nl.procura.commons.liquibase.utils.LbConnectionUtils.getConnection
 import static nl.procura.commons.liquibase.utils.LbConnectionUtils.getDatabase;
 import static nl.procura.standard.Globalfunctions.aval;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import nl.procura.commons.liquibase.connections.LbDatabaseType;
 import nl.procura.commons.liquibase.parameters.LbConnectionParameters;
@@ -37,7 +41,9 @@ import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.exception.LiquibaseException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DatabaseUpdate {
 
   public DatabaseUpdate(EntityManager entityManager) {
@@ -65,6 +71,7 @@ public class DatabaseUpdate {
   private void update(EntityManager entityManager, Database targetDatabase) {
 
     try {
+      unlockLiquibase(entityManager);
       // Pre checks
       new DBPreCheck(entityManager, targetDatabase);
 
@@ -76,6 +83,27 @@ public class DatabaseUpdate {
       new DBPostCheck(entityManager, targetDatabase);
     } catch (LiquibaseException | RuntimeException e) {
       throw new RuntimeException("Fout tijdens bijwerken van de database.", e);
+    }
+  }
+
+  private static void unlockLiquibase(EntityManager entityManager) {
+    EntityTransaction transaction = entityManager.getTransaction();
+    transaction.begin();
+    try {
+      String sql = "delete from databasechangeloglock "
+          + "where locked = true "
+          + "and lockgranted is not null "
+          + "and lockgranted < ?1";
+      Query nativeQuery = entityManager.createNativeQuery(sql);
+      LocalDateTime time = LocalDateTime.now().minusMinutes(5);
+      nativeQuery.setParameter(1, time);
+      int update = nativeQuery.executeUpdate();
+      if (update > 0) {
+        log.info("Oude liquibase lock verwijderd");
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
     }
   }
 }
