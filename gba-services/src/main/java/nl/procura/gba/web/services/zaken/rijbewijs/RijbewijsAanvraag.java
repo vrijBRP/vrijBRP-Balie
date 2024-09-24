@@ -58,6 +58,7 @@ public class RijbewijsAanvraag extends Nrd implements ContactZaak, ZaakAfhaalbaa
   private RijbewijsAanvraagStatussen statussen       = new RijbewijsAanvraagStatussen();
 
   public RijbewijsAanvraag() {
+    setIndBezorgen(false);
     setStatus(ZaakStatusType.OPGENOMEN);
   }
 
