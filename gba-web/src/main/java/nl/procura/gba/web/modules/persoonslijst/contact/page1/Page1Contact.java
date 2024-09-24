@@ -39,7 +39,7 @@ import nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataPage;
 public class Page1Contact extends PlDataPage {
 
   public Page1Contact(BasePLSet set) {
-    super("Kiesrecht", set);
+    super("Contactgegevens", set);
   }
 
   @Override

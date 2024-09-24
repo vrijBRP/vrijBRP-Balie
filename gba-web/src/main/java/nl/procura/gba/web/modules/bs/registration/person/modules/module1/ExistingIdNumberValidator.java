@@ -24,6 +24,8 @@ import java.util.function.Supplier;
 import com.vaadin.data.validator.AbstractStringValidator;
 
 import nl.procura.gba.web.services.Services;
+import nl.procura.validation.Anummer;
+import nl.procura.validation.Bsn;
 
 public class ExistingIdNumberValidator extends AbstractStringValidator {
 
@@ -42,7 +44,14 @@ public class ExistingIdNumberValidator extends AbstractStringValidator {
   }
 
   @Override
-  protected boolean isValidString(String s) {
-    return servicesSupplier.get().getPersonenWsService().getPersoonslijst(s).getCats().isEmpty();
+  protected boolean isValidString(String id) {
+    try {
+      if (Bsn.isCorrect(id) || Anummer.isCorrect(id)) {
+        return servicesSupplier.get().getPersonenWsService().getPersoonslijst(id).getCats().isEmpty();
+      }
+    } catch (RuntimeException e) {
+      // ignore
+    }
+    return true;
   }
 }

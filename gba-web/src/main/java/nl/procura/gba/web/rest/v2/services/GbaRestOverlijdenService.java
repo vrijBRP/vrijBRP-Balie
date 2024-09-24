@@ -19,7 +19,6 @@
 
 package nl.procura.gba.web.rest.v2.services;
 
-import static nl.procura.gba.common.DateTime.TimeType.TIME_4_DIGITS;
 import static nl.procura.gba.web.components.containers.Container.LAND;
 import static nl.procura.gba.web.components.containers.Container.PLAATS;
 import static nl.procura.gba.web.rest.v2.converters.GbaRestBaseTypeConverter.setIfPresent;
@@ -44,7 +43,14 @@ import nl.procura.gba.web.modules.bs.overlijden.lijkvinding.processen.Lijkvindin
 import nl.procura.gba.web.rest.v2.model.base.HeeftContactgegevens;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
 import nl.procura.gba.web.rest.v2.model.zaken.base.persoon.GbaRestPersoon;
-import nl.procura.gba.web.rest.v2.model.zaken.overlijden.*;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestCommunicatieType;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestDoodsoorzaakType;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestLijkbezorging;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestLijkbezorgingType;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestOverlijden;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestOverlijdenCorrespondentie;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestOverlijdenUittreksel;
+import nl.procura.gba.web.rest.v2.model.zaken.overlijden.GbaRestVerzoek;
 import nl.procura.gba.web.rest.v2.model.zaken.overlijden.gemeente.GbaRestDocumentType;
 import nl.procura.gba.web.rest.v2.model.zaken.overlijden.gemeente.GbaRestOverlijdenAangifte;
 import nl.procura.gba.web.rest.v2.model.zaken.overlijden.gemeente.GbaRestOverlijdenInGemeente;
@@ -60,7 +66,11 @@ import nl.procura.gba.web.services.bs.algemeen.enums.OntvangenDocument;
 import nl.procura.gba.web.services.bs.algemeen.enums.WijzeLijkbezorging;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.gba.web.services.bs.overlijden.*;
+import nl.procura.gba.web.services.bs.overlijden.AbstractDossierOverlijden;
+import nl.procura.gba.web.services.bs.overlijden.DossierOverlijden;
+import nl.procura.gba.web.services.bs.overlijden.DossierOverlijdenLijkbezorging;
+import nl.procura.gba.web.services.bs.overlijden.DossierOverlijdenVerzoek;
+import nl.procura.gba.web.services.bs.overlijden.OverlijdenService;
 import nl.procura.gba.web.services.bs.overlijden.gemeente.DossierOverlijdenGemeente;
 import nl.procura.gba.web.services.bs.overlijden.lijkvinding.DossierLijkvinding;
 import nl.procura.gba.web.services.bs.overlijden.lijkvinding.SchriftelijkeAangever;
@@ -192,8 +202,7 @@ public class GbaRestOverlijdenService extends GbaRestAbstractService {
     checkGemeenteCode(rest.getPlaats().getWaarde());
     setIfPresent(rest.getPlaats(), value -> zaak.setPlaatsOverlijden(PLAATS.get(value.getWaarde())));
     setIfPresent(rest.getDatum(), value -> zaak.setDatumOverlijden(new DateTime(value)));
-    setIfPresent(rest.getTijd(),
-        value -> zaak.setTijdOverlijden(new DateTime(0, value.longValue(), TIME_4_DIGITS)));
+    setIfPresent(rest.getTijd(), value -> zaak.setTijdOverlijden(new DateTime(0, value.longValue())));
     setIfPresent(rest.getDocumentType(), value -> zaak.setOntvangenDocument(OntvangenDocument.get(value.getCode())));
   }
 
@@ -214,7 +223,7 @@ public class GbaRestOverlijdenService extends GbaRestAbstractService {
     setIfPresent(rest.getPlaats(), value -> zaak.setPlaatsLijkvinding(PLAATS.get(rest.getPlaats().getWaarde())));
     setIfPresent(rest.getDatum(), value -> zaak.setDatumLijkvinding(new DateTime(value)));
     setIfPresent(rest.getTijd(),
-        value -> zaak.setTijdLijkvinding(new DateTime(0, value.longValue(), TIME_4_DIGITS)));
+        value -> zaak.setTijdLijkvinding(new DateTime(0, value.longValue())));
     setIfPresent(rest.getToevoeging(), zaak::setPlaatsToevoeging);
     setIfPresent(rest.getDocumentType(), value -> zaak.setOntvangenDocument(OntvangenDocument.get(value.getCode())));
   }
@@ -223,7 +232,7 @@ public class GbaRestOverlijdenService extends GbaRestAbstractService {
     Validate.notNull(rest, "Element lijkbezorging is niet gezet");
     setIfPresent(rest.getDatum(), value -> zaak.setDatumLijkbezorging(new DateTime(value)));
     setIfPresent(rest.getTijd(),
-        value -> zaak.setTijdLijkbezorging(new DateTime(0, value.longValue(), TIME_4_DIGITS)));
+        value -> zaak.setTijdLijkbezorging(new DateTime(0, value.longValue())));
     setIfPresent(rest.getLijkbezorgingType(),
         value -> zaak.setWijzeLijkBezorging(WijzeLijkbezorging.get(value.getCode())));
     setIfPresent(rest.getBuitenBenelux(), zaak::setBuitenBenelux);
