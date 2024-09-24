@@ -19,7 +19,10 @@
 
 package nl.procura.diensten.gba.ple.extensions.formats;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.TITEL_PREDIKAAT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOORNAMEN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOORV_GESLACHTSNAAM;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
 
@@ -39,12 +42,12 @@ public class Naam {
   private static final String NG_PARTNER       = "p";
   private static final String NG_EIGEN         = "e";
 
-  private BasePLElem geslachtsnaam;
-  private BasePLElem naamgebruik;
-  private BasePLElem titel;
-  private BasePLElem voornamen;
-  private BasePLElem voorvoegsel;
-  private Naam       partner;
+  private final BasePLElem geslachtsnaam;
+  private final BasePLElem naamgebruik;
+  private final BasePLElem titel;
+  private final BasePLElem voornamen;
+  private final BasePLElem voorvoegsel;
+  private Naam             partner;
 
   public Naam(BasePLRec r) {
     this(r, new BasePLElem(), null);
@@ -451,8 +454,11 @@ public class Naam {
 
     String[] vns = getVoornInit().split("\\s+");
     for (String voornaam : vns) {
-      s.append(getInitPart(voornaam, true));
-      s.append(".");
+      String initPart = getInitPart(voornaam, true);
+      if (fil(initPart)) {
+        s.append(initPart);
+        s.append(".");
+      }
     }
 
     return trim(s.toString());
@@ -639,6 +645,15 @@ public class Naam {
 
   private String getInitPart(String vn, boolean nen) {
 
+    if (fil(vn)) {
+      // replace first and last non-alpha characters
+      vn = vn.replaceAll("^[^a-zA-Z]+", "").replaceAll("[^a-zA-Z]+$", "");
+    }
+
+    if (emp(vn)) {
+      return "";
+    }
+
     if (nen) {
       return vn.substring(0, 1);
     }
@@ -666,12 +681,18 @@ public class Naam {
     }
 
     if (nen) {
-      sb.append(getInitPart(vn, true));
+      String initPart = getInitPart(vn, true);
+      if (fil(initPart)) {
+        sb.append(initPart);
+      }
     } else {
       String[] sps = vn.split("-");
       for (String sp : sps) {
-        sb.append(getInitPart(sp, false));
-        sb.append("-");
+        String initPart = getInitPart(sp, false);
+        if (fil(initPart)) {
+          sb.append(initPart);
+          sb.append("-");
+        }
       }
     }
 

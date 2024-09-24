@@ -175,7 +175,8 @@ public class OnderzoekOverzichtLayout extends VerticalLayout {
             setOrder(BETROKKENEN, DATUM_EINDE_ONDERZOEK);
             break;
           case IMMIGRATIE:
-          case BINNEN_INTER:
+          case BINNEN_INTER_WOON:
+          case BINNEN_INTER_BRIEF:
             setOrder(BETROKKENEN, RESULTAAT_NOGMAALS, RESULTAAT_ADRES, RESULTAAT_PC);
             break;
           case NAAR_ANDERE:

@@ -32,16 +32,20 @@ public class NaamformatsTest {
         pnf);
     Naamformats nf2 = new Naamformats("Theodorus Marcus Jan-Peter Albertus Gaius", "Terlouw", "de", "Jonkheer", "V",
         pnf);
+    Naamformats nf3 = new Naamformats("Cle-xaïs Ruth -Maria Sigmélie Migdailine Amelia", "Terlouw", "de", "Jonkvrouw",
+        "E",
+        pnf);
 
     System.out.println("Met Baron\n");
     log(nf1);
 
     System.out.println("\nMet Jonkheer\n");
     log(nf2);
+
+    log(nf3);
   }
 
-  private static void log(Naamformats nf) {
-
+  private static void log(Naamformats nf) {//
     log("adeltitel", nf.getAdeltitel());
     log("eersteinit", nf.getEersteinit());
     log("eersteinit_nen", nf.getEersteinit_nen());

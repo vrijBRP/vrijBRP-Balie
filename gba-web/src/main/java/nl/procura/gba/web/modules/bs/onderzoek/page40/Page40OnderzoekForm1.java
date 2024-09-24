@@ -95,7 +95,8 @@ public abstract class Page40OnderzoekForm1 extends GbaForm<Page40OnderzoekBean1>
           onShowWarning(true);
           break;
         case IMMIGRATIE:
-        case BINNEN_INTER:
+        case BINNEN_INTER_WOON:
+        case BINNEN_INTER_BRIEF:
         case NAAR_ANDERE:
         case EMIGRATIE:
           getField(NOGMAALS_AANSCHRIJVEN).setVisible(true);

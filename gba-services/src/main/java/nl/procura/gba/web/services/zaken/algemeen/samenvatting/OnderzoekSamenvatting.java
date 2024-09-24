@@ -192,7 +192,8 @@ public class OnderzoekSamenvatting extends ZaakSamenvattingTemplate<DossierOnder
         rubriek.add("Datum einde", zaak.getDatumEindeOnderzoek());
         break;
       case IMMIGRATIE:
-      case BINNEN_INTER:
+      case BINNEN_INTER_WOON:
+      case BINNEN_INTER_BRIEF:
         rubriek.add("Nogmaals aanschrijven", getBooleanValue(zaak.getNogmaalsAanschrijven()));
         addResultaatAdres(zaak, "Adresgegevens binnen de gemeente");
         break;

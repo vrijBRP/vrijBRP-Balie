@@ -19,7 +19,9 @@
 
 package nl.procura.diensten.gba.ple.openoffice.formats;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -403,6 +405,15 @@ public class Naamformats {
 
   private String getInitPart(String vn, boolean nen) {
 
+    if (fil(vn)) {
+      // replace first and last non-alpha characters
+      vn = vn.replaceAll("^[^a-zA-Z]+", "").replaceAll("[^a-zA-Z]+$", "");
+    }
+
+    if (emp(vn)) {
+      return "";
+    }
+
     if (nen) {
       return vn.substring(0, 1);
     }
@@ -423,20 +434,24 @@ public class Naamformats {
   }
 
   private String getInit(String vn, boolean nen) {
-
     StringBuilder sb = new StringBuilder();
-
     if (emp(vn)) {
       return "";
     }
 
     if (nen) {
-      sb.append(getInitPart(vn, true));
+      String initPart = getInitPart(vn, true);
+      if (fil(initPart)) {
+        sb.append(initPart);
+      }
     } else {
       String[] sps = vn.trim().split("-");
       for (String sp : sps) {
-        sb.append(getInitPart(sp, false));
-        sb.append("-");
+        String initPart = getInitPart(sp, false);
+        if (fil(initPart)) {
+          sb.append(initPart);
+          sb.append("-");
+        }
       }
     }
 
@@ -444,17 +459,18 @@ public class Naamformats {
   }
 
   public String getInit_nen() {
-
     StringBuilder sb = new StringBuilder();
-
     if (emp(getVoornamen())) {
       return "";
     }
 
     String[] vns = getVoornamen().split("\\s+");
     for (String voornaam : vns) {
-      sb.append(getInitPart(voornaam, true));
-      sb.append(".");
+      String initPart = getInitPart(voornaam, true);
+      if (fil(initPart)) {
+        sb.append(initPart);
+        sb.append(".");
+      }
     }
 
     return trim(sb.toString());

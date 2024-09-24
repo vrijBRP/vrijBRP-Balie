@@ -34,9 +34,27 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nl.procura.gba.common.DateTime;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.Aantekening;
+import nl.procura.gba.jpa.personen.db.Document;
+import nl.procura.gba.jpa.personen.db.Location;
+import nl.procura.gba.jpa.personen.db.PresVraag;
+import nl.procura.gba.jpa.personen.db.UittAanvr;
+import nl.procura.gba.jpa.personen.db.ZaakAttr;
+import nl.procura.gba.jpa.personen.db.ZaakAttrPK;
+import nl.procura.gba.jpa.personen.db.ZaakId;
+import nl.procura.gba.jpa.personen.db.ZaakIdPK;
+import nl.procura.gba.jpa.personen.db.ZaakRel;
+import nl.procura.gba.jpa.personen.db.ZaakRelPK;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
-import nl.procura.gba.web.common.database.checks.*;
+import nl.procura.gba.web.common.database.checks.DBCheckPost1;
+import nl.procura.gba.web.common.database.checks.DBCheckPost2;
+import nl.procura.gba.web.common.database.checks.DBCheckPost3;
+import nl.procura.gba.web.common.database.checks.DBCheckPost4;
+import nl.procura.gba.web.common.database.checks.DBCheckPost5;
+import nl.procura.gba.web.common.database.checks.DBCheckPost7;
+import nl.procura.gba.web.common.database.checks.DBCheckPost8;
+import nl.procura.gba.web.common.database.checks.DBCheckPost9;
+import nl.procura.gba.web.common.database.checks.DBCheckPre1;
 import nl.procura.gba.web.services.TemporaryDatabase;
 
 import liquibase.database.core.HsqlDatabase;
@@ -55,7 +73,7 @@ public class DBCheckTests {
     HsqlDatabase database = getHsqlDatabase(getConnection());
     // Pre-liquibase checks
     new DBCheckPre1(GbaJpa.getManager(), database, "").execute();
-    new DBCheckPre2(GbaJpa.getManager(), database, "").execute();
+    new DBCheckPre1(GbaJpa.getManager(), database, "").execute();
     // Post-liquibase checks
     new DBCheckPost1(GbaJpa.getManager(), database, "").execute();
     new DBCheckPost2(GbaJpa.getManager(), database, "").execute();

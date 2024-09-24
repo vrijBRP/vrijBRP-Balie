@@ -31,7 +31,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.BvhPark;
+import nl.procura.gba.jpa.personen.db.Correspondentie;
+import nl.procura.gba.jpa.personen.db.DocInh;
+import nl.procura.gba.jpa.personen.db.DocInhPK;
+import nl.procura.gba.jpa.personen.db.Document;
+import nl.procura.gba.jpa.personen.db.Doss;
+import nl.procura.gba.jpa.personen.db.Geheimhouding;
+import nl.procura.gba.jpa.personen.db.Gpk;
+import nl.procura.gba.jpa.personen.db.Gv;
+import nl.procura.gba.jpa.personen.db.Inbox;
+import nl.procura.gba.jpa.personen.db.Indicatie;
+import nl.procura.gba.jpa.personen.db.Location;
+import nl.procura.gba.jpa.personen.db.Naamgebruik;
+import nl.procura.gba.jpa.personen.db.Nrd;
+import nl.procura.gba.jpa.personen.db.PlMut;
+import nl.procura.gba.jpa.personen.db.Rdm01;
+import nl.procura.gba.jpa.personen.db.Terugmelding;
+import nl.procura.gba.jpa.personen.db.UittAanvr;
+import nl.procura.gba.jpa.personen.db.Usr;
+import nl.procura.gba.jpa.personen.db.VogAanvr;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 import nl.procura.gba.web.services.TemporaryDatabase;
 import nl.procura.gba.web.services.zaken.opschonen.VerwijderZakenOverzicht;
@@ -82,10 +101,11 @@ public class ZakenViewTest {
     addOnderzoek(em);
     addEersteInschrijving(em);
     addRisicoAnalyse(em);
+    addNaturalisatie(em);
     addPLMutatie(em);
 
     // Total
-    assertCount(em, 37L, "zaken_view");
+    assertCount(em, 38L, "zaken_view");
 
     em.getTransaction().rollback();
   }
@@ -355,10 +375,14 @@ public class ZakenViewTest {
     addDossier(em, "270", VerwijderZaakType.RISICOANALYSE, 13L);
   }
 
+  private void addNaturalisatie(EntityManager em) {
+    addDossier(em, "280", VerwijderZaakType.NATURALISATIE, 14L);
+  }
+
   private void addPLMutatie(EntityManager em) {
     assertZakenCount(0L, VerwijderZaakType.PL_MUTATIE);
     PlMut plMut = new PlMut();
-    plMut.setZaakId("280");
+    plMut.setZaakId("290");
     plMut.setDIn(toDate(toDate(VerwijderZaakType.PL_MUTATIE)));
     plMut.setLocation(em.find(Location.class, 0L));
     plMut.setUsr(em.find(Usr.class, 0L));
@@ -366,7 +390,7 @@ public class ZakenViewTest {
 
     assertCount(em, 1L, "pl_mut");
     assertZakenCount(1L, VerwijderZaakType.PL_MUTATIE);
-    assertZaak("280", VerwijderZaakType.PL_MUTATIE);
+    assertZaak("290", VerwijderZaakType.PL_MUTATIE);
   }
 
   private void addDossier(EntityManager em, String zaakId, VerwijderZaakType type, long expectedCount) {

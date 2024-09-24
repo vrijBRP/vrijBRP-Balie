@@ -34,8 +34,6 @@ import javax.inject.Inject;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.jpa.personen.db.BaseEntity;
-import nl.procura.gba.jpa.personen.db.EventLogEntity;
-import nl.procura.gba.jpa.personen.db.EventType;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
@@ -243,11 +241,14 @@ public abstract class AbstractService implements Serializable {
   @ThrowException(severity = ERROR,
       value = "Fout bij het bijwerken van de database")
   protected <T> T saveEntity(T o) {
-    EventType eventType = isNew(o) ? EventType.CREATED : EventType.SAVED;
+    //  EventType eventType = isNew(o) ? EventType.CREATED : EventType.SAVED;
     GenericDao.saveEntity(o);
-    if (o instanceof EventLogEntity) {
-      eventLogService.addEvent((EventLogEntity) o, eventType, services.getGebruiker());
-    }
+
+    //  Disabled. Not used now
+    //  if (o instanceof EventLogEntity) {
+    //    eventLogService.addEvent((EventLogEntity) o, eventType, services.getGebruiker());
+    //  }
+
     return o;
   }
 

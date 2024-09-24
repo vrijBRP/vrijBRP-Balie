@@ -22,7 +22,6 @@ package nl.procura.gba.web.common.database;
 import javax.persistence.EntityManager;
 
 import nl.procura.gba.web.common.database.checks.DBCheckPre1;
-import nl.procura.gba.web.common.database.checks.DBCheckPre2;
 
 import liquibase.database.Database;
 
@@ -31,7 +30,6 @@ public class DBPreCheck {
   private static final String TYPE = "vóór";
 
   public DBPreCheck(EntityManager entityManager, Database database) {
-    new DBCheckPre1(entityManager, database, TYPE);
-    new DBCheckPre2(entityManager, database, TYPE);
+    new DBCheckPre1(entityManager, database, TYPE).execute();
   }
 }

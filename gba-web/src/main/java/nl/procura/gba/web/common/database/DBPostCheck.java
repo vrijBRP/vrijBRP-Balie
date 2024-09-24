@@ -21,7 +21,14 @@ package nl.procura.gba.web.common.database;
 
 import javax.persistence.EntityManager;
 
-import nl.procura.gba.web.common.database.checks.*;
+import nl.procura.gba.web.common.database.checks.DBCheckPost1;
+import nl.procura.gba.web.common.database.checks.DBCheckPost2;
+import nl.procura.gba.web.common.database.checks.DBCheckPost3;
+import nl.procura.gba.web.common.database.checks.DBCheckPost4;
+import nl.procura.gba.web.common.database.checks.DBCheckPost5;
+import nl.procura.gba.web.common.database.checks.DBCheckPost6;
+import nl.procura.gba.web.common.database.checks.DBCheckPost7;
+import nl.procura.gba.web.common.database.checks.DBCheckPost8;
 
 import liquibase.database.Database;
 
@@ -38,6 +45,6 @@ public class DBPostCheck {
     new DBCheckPost6(entityManager, database, TYPE).execute();
     new DBCheckPost7(entityManager, database, TYPE).execute();
     new DBCheckPost8(entityManager, database, TYPE).execute();
-    new DBCheckPost9(entityManager, database, TYPE).execute();
+    // new DBCheckPost9(entityManager, database, TYPE).execute(); // Disabled for now. Too slow
   }
 }

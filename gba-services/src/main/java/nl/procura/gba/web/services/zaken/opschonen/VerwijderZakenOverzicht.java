@@ -19,7 +19,39 @@
 
 package nl.procura.gba.web.services.zaken.opschonen;
 
-import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.*;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.BINNENVERHUIZING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.BUITENVERHUIZING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.CORRESPONDENTIE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.EERSTE_INSCHRIJVING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.EMIGRATIE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.ERKENNING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.FORMULIER;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.GEBOORTE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.GEGEVENSVERSTREKKING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.GPK;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.HERVESTIGING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.HUW_GPS;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.INBOX;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.INDICATIE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.INHOUDING_VERMISSING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.LEVENLOOS;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.LIJKVINDING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.NAAMGEBRUIK;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.NAAMSKEUZE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.NATURALISATIE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.OMZETTING_GPS;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.ONDERZOEK;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.ONTBINDING_HUW_GPS;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.OVERLIJDEN_BUITENLAND;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.OVERLIJDEN_GEMEENTE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.PL_MUTATIE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.REISDOCUMENT;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.RIJBEWIJS;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.RISICOANALYSE;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.TERUGMELDING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.UITTREKSEL;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.VERSTREKKINGSBEPERKING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.VOG;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +96,7 @@ public class VerwijderZakenOverzicht {
     add(EERSTE_INSCHRIJVING, 110);
     add(RISICOANALYSE, 5);
     add(PL_MUTATIE, 110);
+    add(NATURALISATIE, 10);
   }
 
   public void add(VerwijderZaakType verwijderZaakType, int jaar) {

@@ -27,7 +27,9 @@ import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
+import java.util.stream.Stream;
 
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeButton;
@@ -96,6 +98,22 @@ public class MeldingenButtons extends HorizontalLayout {
     addComponent(taskButton);
 
     update();
+    showMessages();
+  }
+
+  private void showMessages() {
+    if (HomeWindow.NAME.equalsIgnoreCase(application.getMainWindow().getName())) {
+      MeldingService meldingService = application.getServices().getMeldingService();
+      if (!meldingService.isMessagePopupShown()) {
+        if (meldingService.isShowMessagesPopup()) {
+          meldingService.disableMessagePopupShown();
+          Stream.of(meldingenButton1, meldingenButton2, meldingenButton3)
+              .filter(AbstractComponent::isVisible)
+              .findFirst()
+              .ifPresent(Button::click);
+        }
+      }
+    }
   }
 
   public void update() {

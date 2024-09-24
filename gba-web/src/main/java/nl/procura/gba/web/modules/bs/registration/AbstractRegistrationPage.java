@@ -69,10 +69,7 @@ public abstract class AbstractRegistrationPage extends BsPage<DossierRegistratio
   public void event(PageEvent event) {
     super.event(event);
     if (event.isEvent(InitPage.class)) {
-      getImportRegistrant().ifPresent(importRegistrant -> {
-        loadImportRegistrant(importRegistrant);
-        registrantLayout.setRegistrant(importRegistrant);
-      });
+      getImportRegistrant().ifPresent(registrantLayout::setRegistrant);
     }
   }
 }

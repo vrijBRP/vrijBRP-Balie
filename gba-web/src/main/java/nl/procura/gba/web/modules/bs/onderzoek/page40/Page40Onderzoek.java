@@ -23,7 +23,8 @@ import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean
 import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.NOGMAALS_AANSCHRIJVEN;
 import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.TOELICHTING;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
-import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER_BRIEF;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER_WOON;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.EMIGRATIE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.IMMIGRATIE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.NAAR_ANDERE;
@@ -107,7 +108,9 @@ public class Page40Onderzoek extends BsPageOnderzoek {
   }
 
   private void setBetrokkene(BetrokkeneType betrokkeneType) {
-    if (BINNEN_INTER.equals(betrokkeneType) || IMMIGRATIE.equals(betrokkeneType)) {
+    if (BINNEN_INTER_WOON.equals(betrokkeneType)
+        || BINNEN_INTER_BRIEF.equals(betrokkeneType)
+        || IMMIGRATIE.equals(betrokkeneType)) {
       adresLayout.setForm(AdresLayout.FormType.BINNEN_GEM);
 
     } else if (NAAR_ANDERE.equals(betrokkeneType)) {

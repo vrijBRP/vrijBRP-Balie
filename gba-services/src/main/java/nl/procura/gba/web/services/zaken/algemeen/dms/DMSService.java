@@ -22,6 +22,7 @@ package nl.procura.gba.web.services.zaken.algemeen.dms;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLED;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid.ONBEKEND;
 import static nl.procura.standard.Globalfunctions.isTru;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public class DMSService extends AbstractService {
   }
 
   public DMSResult getDocumentsById(String id) {
-    return id != null ? getStorageService().getDocumentsById(id) : new DMSResult();
+    return isNotBlank(id) ? getStorageService().getDocumentsById(id) : new DMSResult();
   }
 
   public DMSResult getDocumentsByPL(BasePLExt pl) {

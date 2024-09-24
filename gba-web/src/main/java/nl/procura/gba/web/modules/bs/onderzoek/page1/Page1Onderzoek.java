@@ -154,7 +154,10 @@ public class Page1Onderzoek extends BsPageOnderzoek {
   }
 
   public void setVermoedAdres(VermoedAdresType type) {
-    if (VermoedAdresType.IN_GEMEENTE.equals(type)) {
+    if (VermoedAdresType.IN_GEMEENTE_WOON.equals(type)) {
+      adresLayout.setForm(AdresLayout.FormType.BINNEN_GEM);
+
+    } else if (VermoedAdresType.IN_GEMEENTE_BRIEF.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.BINNEN_GEM);
 
     } else if (VermoedAdresType.ANDERE_GEMEENTE.equals(type)) {

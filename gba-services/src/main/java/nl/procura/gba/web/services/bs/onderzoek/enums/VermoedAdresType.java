@@ -22,9 +22,10 @@ package nl.procura.gba.web.services.bs.onderzoek.enums;
 public enum VermoedAdresType {
 
   ONBEKEND(0, "Onbekend", BetrokkeneType.ONBEKEND),
-  IN_GEMEENTE(1, "In deze gemeente", BetrokkeneType.BINNEN_INTER),
+  IN_GEMEENTE_WOON(1, "In deze gemeente (woonadres)", BetrokkeneType.BINNEN_INTER_WOON),
   ANDERE_GEMEENTE(2, "In andere gemeente", BetrokkeneType.NAAR_ANDERE),
-  BUITENLAND(3, "In buitenland", BetrokkeneType.EMIGRATIE);
+  BUITENLAND(3, "In buitenland", BetrokkeneType.EMIGRATIE),
+  IN_GEMEENTE_BRIEF(4, "In deze gemeente (briefadres)", BetrokkeneType.BINNEN_INTER_BRIEF);
 
   private int            code = 0;
   private       String         oms  = "";

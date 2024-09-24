@@ -21,7 +21,8 @@ package nl.procura.gba.web.modules.bs.onderzoek.page60;
 
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNavigator.navigatoTo;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
-import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER_BRIEF;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER_WOON;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.EMIGRATIE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.IMMIGRATIE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.NAAR_ONBEKEND;
@@ -129,7 +130,8 @@ public class Page60Onderzoek extends BsPageOnderzoek {
       return new ResultaatVerhuisMelding(false, "Er is al een verhuiszaak aangemaakt bij dit proces");
     } else {
       DossierOnderzoek zaakDossier = getZaakDossier();
-      if (zaakDossier.getResultaatOnderzoekBetrokkene().is(BINNEN_INTER, EMIGRATIE, NAAR_ONBEKEND)) {
+      if (zaakDossier.getResultaatOnderzoekBetrokkene().is(BINNEN_INTER_WOON, BINNEN_INTER_BRIEF, EMIGRATIE,
+          NAAR_ONBEKEND)) {
         if (isGeschiktvoorVerhuizing()) {
           if (isNotBlank(zaakDossier.getAanschrDatumEindVoornemen().toString())) {
             return new ResultaatVerhuisMelding(true,
@@ -195,8 +197,11 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     VerhuisAanvraag va = (VerhuisAanvraag) service.getNewZaak();
 
     switch (betrokkeneType) {
-      case BINNEN_INTER:
-        toNieuwBinnenOfInterAdres(va, getZaakDossier());
+      case BINNEN_INTER_WOON:
+        toNieuwBinnenOfInterAdres(va, getZaakDossier(), FunctieAdres.WOONADRES);
+        break;
+      case BINNEN_INTER_BRIEF:
+        toNieuwBinnenOfInterAdres(va, getZaakDossier(), FunctieAdres.BRIEFADRES);
         break;
       case EMIGRATIE:
         va.setTypeVerhuizing(VerhuisType.EMIGRATIE);
@@ -247,11 +252,11 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     throw new ProException("Deze zaak heeft geen betrokkenen");
   }
 
-  private void toNieuwBinnenOfInterAdres(VerhuisAanvraag va, DossierOnderzoek onderzoek) {
+  private void toNieuwBinnenOfInterAdres(VerhuisAanvraag va, DossierOnderzoek onderzoek, FunctieAdres functieAdres) {
     va.setTypeVerhuizing(isBinnengemeentelijk() ? BINNENGEMEENTELIJK : INTERGEMEENTELIJK);
     va.setDatumIngang(getZaakDossier().getAanschrDatumInVoornemen());
     VerhuisAanvraagAdres nieuwAdres = va.getNieuwAdres();
-    nieuwAdres.setFunctieAdres(FunctieAdres.WOONADRES);
+    nieuwAdres.setFunctieAdres(functieAdres);
     nieuwAdres.setHnr(along(onderzoek.getResultaatHnr()));
     nieuwAdres.setHnrL(onderzoek.getResultaatHnrL());
     nieuwAdres.setHnrT(onderzoek.getResultaatHnrT());
