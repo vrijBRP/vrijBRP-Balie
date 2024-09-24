@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,10 @@
 package nl.procura.gba.web.services.beheer.kassa;
 
 import static nl.procura.gba.common.MiscUtils.copyList;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.util.List;
 
@@ -109,7 +112,7 @@ public class KassaProduct extends Kassa implements DatabaseTable {
   }
 
   public boolean heeftAlleGekoppeldeProducten(List<KassaProduct> list) {
-    if (getGekoppeldeProducten().size() > 0) {
+    if (!getGekoppeldeProducten().isEmpty()) {
       for (KassaProduct gk : getGekoppeldeProducten()) {
         if (!list.contains(gk)) {
           return false;

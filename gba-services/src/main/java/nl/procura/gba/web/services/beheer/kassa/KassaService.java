@@ -19,12 +19,13 @@
 
 package nl.procura.gba.web.services.beheer.kassa;
 
+import static java.util.Collections.singletonList;
 import static nl.procura.gba.common.MiscUtils.copy;
+import static nl.procura.gba.web.services.beheer.kassa.KassaProductConverter.getNieuweKassaProducten;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -138,12 +139,10 @@ public class KassaService extends AbstractService implements ZaakNumbers {
 
   @ThrowException("Fout bij het zoeken van kassaproducten")
   public List<KassaProduct> getKassaProducten() {
-
     List<KassaProduct> kassaObjecten = new ArrayList<>();
     for (Kassa kassa : KassaDao.findKassaProducten()) {
       kassaObjecten.add(vulGegevensAan(copy(kassa, KassaProduct.class)));
     }
-
     return kassaObjecten;
   }
 
@@ -166,7 +165,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   public List<KassaProductAanvraag> getVerversdeWinkelwagen() {
     List<KassaProductAanvraag> list = getProductenInWinkelwagen();
     for (KassaProductAanvraag p : list) {
-      for (KassaProduct kassaProduct : getKassaProducten(Collections.singletonList(p.getKassaProduct()))) {
+      for (KassaProduct kassaProduct : getKassaProducten(singletonList(p.getKassaProduct()))) {
         p.setKassaProduct(kassaProduct);
       }
     }
@@ -219,43 +218,46 @@ public class KassaService extends AbstractService implements ZaakNumbers {
     saveEntity(kassaProduct);
   }
 
-  public void addToWinkelwagen(List<KassaProduct> producten) {
-    List<KassaProduct> nieuweProducten = new ArrayList<>(producten);
-    for (KassaProduct kassa : getKassaProducten()) {
-      if (kassa.isKassaBundel()) {
-        if (kassa.heeftAlleGekoppeldeProducten(producten)) {
-          // Verwijder de producten die voorkomen in de bundel
-          nieuweProducten.removeAll(kassa.getGekoppeldeProducten());
-          // Voeg de nieuwe bundel toe
-          nieuweProducten.add(kassa);
-        }
-      }
-    }
-
-    for (KassaProduct nieuwProduct : nieuweProducten) {
-      if (nieuwProduct.getKassaType() != KassaType.ONBEKEND) {
-        BasePLExt pl = getServices().getPersonenWsService().getHuidige();
-        UsrFieldValue gebruiker = new UsrFieldValue(getServices().getGebruiker());
-        KassaProductAanvraag aanvraag = new KassaProductAanvraag(nieuwProduct, pl, gebruiker);
-        getProductenInWinkelwagen().add(aanvraag);
-        callListeners(ServiceEvent.CHANGE);
-      }
-    }
-  }
-
   public void addToWinkelwagen(Zaak zaak) {
     addToWinkelwagen(zaak, true);
   }
 
   public void addToWinkelwagen(Zaak zaak, boolean magDubbelVoorkomen) {
     if (getServices().isType(Services.TYPE.PROWEB)) {
-      List<KassaProduct> producten = KassaProductConverter.getKassaProductAanvragen(this, zaak);
-      if (magDubbelVoorkomen) {
-        addToWinkelwagen(getKassaProducten(producten));
-      } else {
-        addToWinkelwagen(getOntbrekendeProducten(producten));
+      List<KassaProduct> producten = samenvoegenTotBundel(getKassaProducten(getNieuweKassaProducten(this, zaak)));
+      addToWinkelwagen(producten, magDubbelVoorkomen);
+    }
+  }
+
+  public void addToWinkelwagen(List<KassaProduct> producten) {
+    addToWinkelwagen(producten, true);
+  }
+
+  public void addToWinkelwagen(List<KassaProduct> producten, boolean magDubbelVoorkomen) {
+    for (KassaProduct product : samenvoegenTotBundel(producten)) {
+      if (product.getKassaType() != KassaType.ONBEKEND) {
+        if (!magDubbelVoorkomen && isToegevoegdAanWinkelwagen(product)) {
+          continue;
+        }
+        BasePLExt pl = getServices().getPersonenWsService().getHuidige();
+        UsrFieldValue gebruiker = new UsrFieldValue(getServices().getGebruiker());
+        KassaProductAanvraag aanvraag = new KassaProductAanvraag(product, pl, gebruiker);
+        getProductenInWinkelwagen().add(aanvraag);
+        callListeners(ServiceEvent.CHANGE);
       }
     }
+  }
+
+  private List<KassaProduct> samenvoegenTotBundel(List<KassaProduct> producten) {
+    List<KassaProduct> nieuweProducten = new ArrayList<>(producten);
+    getKassaProducten().stream()
+        .filter(KassaProduct::isKassaBundel)
+        .filter(product -> product.heeftAlleGekoppeldeProducten(producten))
+        .forEach(product -> {
+          nieuweProducten.removeAll(product.getGekoppeldeProducten()); // Verwijder de producten die voorkomen in de product
+          nieuweProducten.add(product); // Voeg de nieuwe product toe
+        });
+    return nieuweProducten;
   }
 
   public boolean verstuur() {
@@ -319,7 +321,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
       producten.add(aanvraag.getKassaProduct());
     }
 
-    Set<KassaProduct> bundels = new LinkedHashSet();
+    Set<KassaProduct> bundels = new LinkedHashSet<>();
     for (Set<KassaProduct> set : KassaCombinations.getCombinationsFor(producten)) {
       for (KassaProduct kassa : getKassaProducten()) {
         if (kassa.isKassaBundel() && kassa.heeftAlleGekoppeldeProducten(new ArrayList(set))) {
@@ -335,9 +337,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
    * Haal kassaproduct uit database op
    */
   private List<KassaProduct> getKassaProducten(List<KassaProduct> kassaProducten) {
-
     List<KassaProduct> list = new ArrayList<>();
-
     for (KassaProduct kassaProduct : kassaProducten) {
       kassaProduct = getKassaProduct(kassaProduct);
       if (!kassaProduct.isStored()) {
@@ -345,7 +345,6 @@ public class KassaService extends AbstractService implements ZaakNumbers {
         kassaProduct.setKassa("++");
         getServices().getKassaService().save(kassaProduct);
       }
-
       list.add(kassaProduct);
     }
 
@@ -362,20 +361,17 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   /**
    * Is het product van deze persoon al in de kassa
    */
-  private List<KassaProduct> getOntbrekendeProducten(List<KassaProduct> producten) {
-    List<KassaProduct> nieuweProducten = new ArrayList<>();
-    PROD_LIST: for (KassaProduct nieuwProdukt : producten) {
-      for (KassaProductAanvraag aanvraag : getProductenInWinkelwagen()) {
-        if (aanvraag.getKassaProduct().getKassaType() == nieuwProdukt.getKassaType()) {
-          BasePLExt pl = getServices().getPersonenWsService().getHuidige();
-          if (pl.is(aanvraag.getPl())) {
-            continue PROD_LIST;
-          }
+  private boolean isToegevoegdAanWinkelwagen(KassaProduct product) {
+    for (KassaProductAanvraag aanvraag : getProductenInWinkelwagen()) {
+      if (aanvraag.getKassaProduct().getId().equals(product.getId())) {
+        BasePLExt pl = getServices().getPersonenWsService().getHuidige();
+        if (pl.is(aanvraag.getPl())) {
+          return true;
         }
       }
-      nieuweProducten.add(nieuwProdukt);
     }
-    return nieuweProducten;
+
+    return false;
   }
 
   private void verwijderEersteProductUitWinkelwagen(KassaProduct kassaProduct) {

@@ -40,7 +40,7 @@ public class KassaProductConverter {
   /**
    * Vertaald zaak naar kassaproduct
    */
-  public static List<KassaProduct> getKassaProductAanvragen(KassaService service, Zaak zaak) {
+  public static List<KassaProduct> getNieuweKassaProducten(KassaService service, Zaak zaak) {
     List<KassaProduct> list = new ArrayList<>();
     if (zaak.getStatus().isMinimaal(ZaakStatusType.OPGENOMEN)) {
       switch (zaak.getType()) {
