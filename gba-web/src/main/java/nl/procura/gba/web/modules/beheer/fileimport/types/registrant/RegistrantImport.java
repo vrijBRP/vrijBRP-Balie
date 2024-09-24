@@ -19,9 +19,11 @@
 
 package nl.procura.gba.web.modules.beheer.fileimport.types.registrant;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -51,11 +53,13 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportResult;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportValue;
+import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.validator.PostcodeValidator;
 
 public class RegistrantImport extends AbstractFileImport {
 
+  public static final String DATUMTIJD_INVOER      = "Datum/tijd invoer";
   public static final String ACHTERNAAM            = "Achternaam";
   public static final String VOORVOEGSEL           = "Voorvoegsel";
   public static final String VOORNAMEN             = "Voornamen";
@@ -84,6 +88,7 @@ public class RegistrantImport extends AbstractFileImport {
     Csv csv = CsvParser.parse(CsvConfig.builder()
         .content(content)
         .converter(new OnbekendConverter())
+        .header(ACHTERNAAM).and()
         .header(ACHTERNAAM).and()
         .header(VOORVOEGSEL).and()
         .header(VOORNAMEN).and()
@@ -119,6 +124,7 @@ public class RegistrantImport extends AbstractFileImport {
     for (CsvRow csvLine : csv.getLines()) {
       FileImportRecord fileImportRecord = new FileImportRecord();
       Map<String, FileImportValue> values = new LinkedHashMap<>();
+      values.put(DATUMTIJD_INVOER, new FileImportValue(LocalDateTime.now().format(ISO_LOCAL_DATE_TIME), null));
       for (CsvValue csvValue : csvLine.getValues()) {
         FileImportValue value = new FileImportValue(csvValue.getValue(), csvValue.getRemark());
         values.put(csvValue.getHeader().getName(), value);

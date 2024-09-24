@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page60;
 
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNavigator.navigatoTo;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.EMIGRATIE;
@@ -110,8 +111,7 @@ public class Page60Onderzoek extends BsPageOnderzoek {
 
     service.save(getDossier());
 
-    //    checkVerhuizing(() -> navigatoTo(getDossier(), this, true));
-    checkVerhuizing(() -> {});
+    checkVerhuizing(() -> navigatoTo(getDossier(), this, true));
 
     super.onNextPage();
   }

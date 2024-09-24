@@ -23,6 +23,8 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC
 import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid.ONBEKEND;
 import static nl.procura.standard.Globalfunctions.isTru;
 
+import java.util.Map;
+
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.AbstractService;
@@ -70,6 +72,10 @@ public class DMSService extends AbstractService {
     return zaak != null ? getStorageService().getDocumentsByZaak(zaak) : new DMSResult();
   }
 
+  public DMSResult getDocumentsByQuery(String query) {
+    return getStorageService().getDocumentsByQuery(query);
+  }
+
   public DMSDocument save(DMSDocument dmsDocument) {
     return getStorageService().save(dmsDocument);
   }
@@ -107,6 +113,10 @@ public class DMSService extends AbstractService {
 
       save(dmsDocument);
     }
+  }
+
+  public void updateMetadata(String collection, String id, Map<String, String> metadata) {
+    getStorageService().updateMetadata(collection, id, metadata);
   }
 
   public FilesystemDMSStorage getLocalStore() {

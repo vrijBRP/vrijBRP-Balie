@@ -29,6 +29,8 @@ public interface PLEJpaInterface {
 
   String getServer();
 
+  String getSchema();
+
   String getDatabase();
 
   String getSid();

@@ -19,6 +19,9 @@
 
 package nl.procura.diensten.gba.ple.openoffice;
 
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_EU_LIDSTAAT_VAN_HERKOMST;
 import static nl.procura.gba.common.MiscUtils.trimNr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
@@ -35,7 +38,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
+import nl.procura.diensten.gba.ple.base.BasePLElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.converters.persoonlijst.BasePLToPersoonsLijstConverter;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -760,6 +765,23 @@ public class DocumentPL implements Serializable {
   }
 
   public class OOKiesrecht extends Kiesrechtgegevens {
+
+    public String getAdres_eu_lidstaat_van_herkomst() {
+      return getVal(ADRES_EU_LIDSTAAT_VAN_HERKOMST).getValue().getDescr();
+    }
+
+    public String getPlaats_eu_lidstaat_van_herkomst() {
+      return getVal(PLAATS_EU_LIDSTAAT_VAN_HERKOMST).getValue().getDescr();
+    }
+
+    public String getLand_eu_lidstaat_van_herkomst() {
+      return getVal(LAND_EU_LIDSTAAT_VAN_HERKOMST).getValue().getDescr();
+    }
+
+    private BasePLElem getVal(GBAElem elem) {
+      BasePLElem val = basisPl.getLatestRec(GBACat.KIESR).getElem(elem);
+      return val.isAllowed() ? val : new BasePLElem();
+    }
   }
 
   public class OOHuwelijk extends Huwelijkgegevens {

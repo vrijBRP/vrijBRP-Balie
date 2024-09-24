@@ -109,6 +109,8 @@ public class ActieDescr {
   public static final String PL_GEZAGSVERHOUDING             = "(Persoonslijst) gezagsverhouding";
   public static final String PL_REISDOCUMENT                 = "(Persoonslijst) reisdocument";
   public static final String PL_KIESRECHT                    = "(Persoonslijst) kiesrecht";
+  public static final String PL_TVBA                         = "(Persoonslijst) tijdelijk verblijfsadres";
+  public static final String PL_CONTACT                      = "(Persoonslijst) contactgegevens";
   public static final String PL_AFN_INDICATIES               = "(Persoonslijst) afn. indicaties";
   public static final String PL_RIJBEWIJS                    = "(Persoonslijst) rijbewijs";
   public static final String PL_KLADBLOK_OUD                 = "(Persoonslijst) kladblok (oud)";

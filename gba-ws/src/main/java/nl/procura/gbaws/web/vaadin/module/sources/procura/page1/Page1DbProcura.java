@@ -19,7 +19,19 @@
 
 package nl.procura.gbaws.web.vaadin.module.sources.procura.page1;
 
-import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.*;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.CUSTOM_DRIVER;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.CUSTOM_URL;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.DATABASE;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.MAX_CONN;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.MIN_CONN;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.PERSON_ID;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.PORT;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.PW;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.SCHEMA;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.SERVER;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.SID;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.TNS_ADMIN_DIR;
+import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.USERNAME;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Properties;
@@ -59,7 +71,7 @@ public class Page1DbProcura extends ModuleDbPage {
       addButton(buttonNext);
 
       buttonNext.setCaption("Controleer database");
-      form1 = new Page1DbProcuraForm("Standaard", DATABASE, SID, SERVER, PORT);
+      form1 = new Page1DbProcuraForm("Standaard", DATABASE, SID, SERVER, SCHEMA, PORT);
       form2 = new Page1DbProcuraForm("Handmatig invullen", TNS_ADMIN_DIR, CUSTOM_URL, CUSTOM_DRIVER);
       form3 = new Page1DbProcuraForm("Overige eigenschappen", USERNAME, PW, MIN_CONN, MAX_CONN);
       form4 = new Page1DbProcuraForm("Exporteren", PERSON_ID);
@@ -70,6 +82,7 @@ public class Page1DbProcura extends ModuleDbPage {
       bean.setDatabase(procuraDb.getDatabase());
       bean.setSid(procuraDb.getSid());
       bean.setServer(procuraDb.getServer());
+      bean.setSchema(procuraDb.getSchema());
       bean.setPort(procuraDb.getPort());
       bean.setTnsAdminDir(procuraDb.getTnsAdminDir());
       bean.setCustomUrl(procuraDb.getUrl());
@@ -117,6 +130,7 @@ public class Page1DbProcura extends ModuleDbPage {
     procuraDb.setDatabase(bean1.getDatabase());
     procuraDb.setSid(bean1.getSid());
     procuraDb.setServer(bean1.getServer());
+    procuraDb.setSchema(bean1.getSchema());
     procuraDb.setPort(bean1.getPort());
 
     procuraDb.setTnsAdminDir(bean2.getTnsAdminDir());
@@ -155,6 +169,7 @@ public class Page1DbProcura extends ModuleDbPage {
     properties.put(GbaWsEclipseLinkUtil.DATABASE_TYPE, bean1.getDatabase());
     properties.put(GbaWsEclipseLinkUtil.DATABASE, bean1.getSid());
     properties.put(GbaWsEclipseLinkUtil.SERVER, bean1.getServer());
+    properties.put(GbaWsEclipseLinkUtil.SCHEMA, bean1.getSchema());
     properties.put(GbaWsEclipseLinkUtil.PORT, bean1.getPort());
 
     properties.put(GbaWsEclipseLinkUtil.TNS_ADMIN_DIR, bean2.getTnsAdminDir());

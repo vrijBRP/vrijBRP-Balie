@@ -26,12 +26,10 @@ import java.io.InputStream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
-import nl.procura.objectstore.rest.domain.object.search.FieldName;
-import nl.procura.objectstore.rest.domain.object.search.StorageObject;
 import nl.procura.standard.exceptions.ProException;
+import nl.procura.storage.client.model.StorageObject;
 
 import lombok.Data;
 
@@ -70,12 +68,12 @@ public class ObjectStoreContent implements DMSContent {
 
   @Override
   public Long getSize() {
-    return NumberUtils.toLong(storageObject.getFields().getAsString(FieldName.FILE_SIZE.getName()), 0);
+    return storageObject.getMetadata().getFileSize();
   }
 
   @Override
   public String getFilename() {
-    return storageObject.getFields().getAsString(FieldName.FILE_NAME.getName());
+    return storageObject.getMetadata().getFileName();
   }
 
   @Override

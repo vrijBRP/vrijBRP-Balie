@@ -19,7 +19,19 @@
 
 package nl.procura.diensten.gba.ple.procura.templates;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AANDUIDING_EURO_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_UITGESLOTEN_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BESCHRIJVING_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERZ_OF_MED_EURO_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.EINDDATUM_UITSLUIT_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.EINDDATUM_UITSL_EURO_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEMEENTE_DOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDAT_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.VOLGCODE_GELDIG;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.diensten.gba.ple.procura.utils.SortableObject;
@@ -39,6 +51,10 @@ public class Cat13KiesrTemplate extends PLETemplateProcura<AbstractKiesr> {
 
     addElem(AAND_UITGESLOTEN_KIESR, kiesr.getKiesrecht());
     addElem(EINDDATUM_UITSLUIT_KIESR, kiesr.getDKiesrEnd());
+
+    addElem(ADRES_EU_LIDSTAAT_VAN_HERKOMST, kiesr.getAdrHerk());
+    addElem(PLAATS_EU_LIDSTAAT_VAN_HERKOMST, kiesr.getPHerk());
+    addElem(LAND_EU_LIDSTAAT_VAN_HERKOMST, kiesr.getLHerk());
 
     addElem(GEMEENTE_DOC, kiesr.getGOntl());
     addElem(DATUM_DOC, kiesr.getDOntl());

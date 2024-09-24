@@ -38,6 +38,10 @@ public class Page1KiesrechtBean implements Serializable {
   public static final String DATUMVERZOEKMEDEDELING                = "datumVerzoekMededeling";
   public static final String EINDDATUMUITSLUITINGEUROPEESKIESRECHT = "einddatumUitsluitingEuropeesKiesrecht";
 
+  public static final String ADRES_EU_LIDSTAAT_VAN_HERKOMST  = "adresEULidstaatVanHerkomst";
+  public static final String PLAATS_EU_LIDSTAAT_VAN_HERKOMST = "plaatsEULidstaatVanHerkomst";
+  public static final String LAND_EU_LIDSTAAT_VAN_HERKOMST   = "landEULidstaatVanHerkomst";
+
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Aanduiding uitgesloten kiesrecht")
   private String aanduidingUitgeslotenKiesrecht = "";
@@ -57,4 +61,16 @@ public class Page1KiesrechtBean implements Serializable {
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Einddatum uitsluiting europees kiesrecht")
   private String einddatumUitsluitingEuropeesKiesrecht = "";
+
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Adres EU-lidstaat van herkomst")
+  private String adresEULidstaatVanHerkomst = "";
+
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Plaats EU-lidstaat van herkomst")
+  private String plaatsEULidstaatVanHerkomst = "";
+
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Land EU-lidstaat van herkomst")
+  private String landEULidstaatVanHerkomst = "";
 }

@@ -162,9 +162,9 @@ public abstract class TabelUpdatesImportTask implements VaadinTask {
   }
 
   private String toPropertyString(LandTabJsonRecord record) {
-
     Properties attrProps = new Properties();
     attrProps.put("eu", record.getEu());
+    attrProps.put("eer", record.getEer());
     attrProps.put("id", record.getId());
     ByteArrayOutputStream bos = null;
 

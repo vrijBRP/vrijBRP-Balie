@@ -4,7 +4,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.30.0</version>
+    <version>1.31.0</version>
   </parent>
 
   <artifactId>gba-services</artifactId>
@@ -262,12 +262,6 @@
       </exclusions>
     </dependency>
 
-    <!--    &lt;!&ndash; Jaxb-impl werd niet geladen &ndash;&gt;-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.sun.xml.bind</groupId>-->
-    <!--      <artifactId>jaxb-impl</artifactId>-->
-    <!--    </dependency>-->
-
     <!-- On-premise-connector -->
     <dependency>
       <groupId>nl.procura</groupId>
@@ -275,11 +269,11 @@
       <version>${vrijbrp-connect.version}</version>
     </dependency>
 
-    <!-- Objectstore -->
+    <!-- Object-storage -->
     <dependency>
-      <groupId>nl.procura.objectstore</groupId>
-      <artifactId>objectstore-client</artifactId>
-      <version>${objectstore.version}</version>
+      <groupId>nl.procura.storage</groupId>
+      <artifactId>client</artifactId>
+      <version>${object-storage.version}</version>
     </dependency>
   </dependencies>
 

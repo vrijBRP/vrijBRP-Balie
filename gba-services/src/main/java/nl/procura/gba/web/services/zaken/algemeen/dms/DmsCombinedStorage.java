@@ -21,6 +21,7 @@ package nl.procura.gba.web.services.zaken.algemeen.dms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.Services;
@@ -66,6 +67,11 @@ public class DmsCombinedStorage extends AbstractDmsStorage {
   }
 
   @Override
+  public DMSResult getDocumentsByQuery(String query) {
+    return toDmsResult(objectStore.getDocumentsByQuery(query).getDocuments());
+  }
+
+  @Override
   public int countDocumentsById(String id) {
     return localStore.countDocumentsById(id) + objectStore.countDocumentsById(id);
   }
@@ -82,21 +88,29 @@ public class DmsCombinedStorage extends AbstractDmsStorage {
 
   @Override
   public DMSDocument save(DMSDocument dmsDocument) {
-    DMSStorageType dmsType = DMSStorageType.valueOfCode(getSysteemParm(ParameterConstant.DOC_DMS_TYPE, false));
-    if (dmsType == DMSStorageType.OBJECTSTORE) {
-      return objectStore.save(dmsDocument);
-    } else {
-      return localStore.save(dmsDocument);
-    }
+    return getStorage().save(dmsDocument);
+  }
+
+  @Override
+  public void updateMetadata(String collection, String id, Map<String, String> metadata) {
+    getStorage().updateMetadata(collection, id, metadata);
   }
 
   @Override
   public void delete(DMSDocument dmsDocument) {
     if (dmsDocument.getStorage() == DMSStorageType.DEFAULT) {
       localStore.delete(dmsDocument);
+    } else {
+      getStorage().delete(dmsDocument);
     }
-    if (dmsDocument.getStorage() == DMSStorageType.OBJECTSTORE) {
-      objectStore.delete(dmsDocument);
+  }
+
+  private DMSStorage getStorage() {
+    DMSStorageType dmsType = DMSStorageType.valueOfCode(getSysteemParm(ParameterConstant.DOC_DMS_TYPE, false));
+    if (dmsType == DMSStorageType.OBJECT_STORAGE) {
+      return objectStore;
+    } else {
+      return localStore;
     }
   }
 }

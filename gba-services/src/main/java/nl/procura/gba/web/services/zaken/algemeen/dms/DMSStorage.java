@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms;
 
+import java.util.Map;
+
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 
@@ -39,4 +41,8 @@ public interface DMSStorage {
   DMSDocument save(DMSDocument dmsDocument);
 
   void delete(DMSDocument dmsDocument);
+
+  DMSResult getDocumentsByQuery(String query);
+
+  void updateMetadata(String collection, String id, Map<String, String> metadata);
 }

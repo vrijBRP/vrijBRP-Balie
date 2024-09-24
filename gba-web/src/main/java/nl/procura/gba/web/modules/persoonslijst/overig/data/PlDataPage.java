@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
@@ -26,6 +29,7 @@ import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.gba.web.modules.persoonslijst.overig.PlForm;
 import nl.procura.gba.web.modules.persoonslijst.overig.meta.PlMetaPage;
+import nl.procura.vaadin.component.layout.Fieldset;
 
 public class PlDataPage extends PlMetaPage {
 
@@ -39,6 +43,10 @@ public class PlDataPage extends PlMetaPage {
 
   public PlForm getMainForm() {
     return null;
+  }
+
+  public List<PlForm> getMainForms() {
+    return new ArrayList<>();
   }
 
   public PlDataBeanForm getMetaForm(BasePLRec record) {
@@ -64,7 +72,11 @@ public class PlDataPage extends PlMetaPage {
     metaV.setSpacing(true);
     metaV.setWidth("300px");
 
-    catV.addComponent(getMainForm());
+    PlForm<?> mainForm = getMainForm();
+    if (mainForm != null) {
+      catV.addComponent(mainForm);
+    }
+    getMainForms().forEach(form -> catV.addComponent(new Fieldset(form)));
     metaV.addComponent(metaForm);
 
     h.addComponent(catV);

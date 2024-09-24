@@ -20,7 +20,9 @@
 package nl.procura.gba.web.common.tables;
 
 import static nl.procura.commons.misc.teletex.Teletex.fromUtf8;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +33,6 @@ import java.util.Objects;
 
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.burgerzaken.gba.core.tables.GBATableValues;
-import nl.procura.commons.misc.teletex.Teletex;
 import nl.procura.gba.web.services.gba.tabellen.TabelRecord;
 import nl.procura.gba.web.services.gba.tabellen.TabelRecordAttributen;
 import nl.procura.gba.web.services.gba.tabellen.TabellenService;
@@ -148,7 +149,7 @@ public final class GBATableList {
 
         // Match attributen
         if (matchingAttributen != null) {
-          if (matches(itemId.getAttributes())) {
+          if (!pos(key) || matches(itemId.getAttributes())) {
             items.add(itemId);
           }
         } else {

@@ -29,7 +29,6 @@ import nl.procura.gba.web.components.layouts.BeanHandler;
 public class ReadOnlyForm<T> extends GbaForm<T> {
 
   public ReadOnlyForm() {
-
     addStyleName("pl_form");
     setReadonlyAsText(true);
   }

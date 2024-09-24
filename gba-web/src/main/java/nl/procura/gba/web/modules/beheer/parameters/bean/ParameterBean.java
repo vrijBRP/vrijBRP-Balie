@@ -933,7 +933,7 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(DOC_OBJECT_STORAGE_ENABLED)
   @Position(order = "50")
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Bestanden database actief",
+      caption = "Documenten service actief",
       width = "70px")
   @Select(containerDataSource = ParmBooleanContainer.class,
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
@@ -942,21 +942,21 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(DOC_OBJECT_STORAGE_URL)
   @Position(order = "51")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "Bestanden database endpoint",
+      caption = "Documenten service endpoint",
       width = "400px")
   private String documentObjStorageUrl = "";
 
   @ParameterAnnotation(DOC_OBJECT_STORAGE_USERNAME)
   @Position(order = "52")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "Bestanden database gebruikersnaam",
+      caption = "Documenten service gebruikersnaam",
       width = "200px")
   private String documentObjStorageUsername = "";
 
   @ParameterAnnotation(DOC_OBJECT_STORAGE_PW)
   @Position(order = "53")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "Bestanden database wachtwoord",
+      caption = "Documenten service wachtwoord",
       width = "200px")
   @TextField(secret = true)
   private String documentObjStoragePw = "";

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -135,6 +136,16 @@ public class FilesystemDMSStorage extends AbstractDmsStorage {
         getFilesByFolder(deleteFile.getParentFile());
       }
     }
+  }
+
+  @Override
+  public DMSResult getDocumentsByQuery(String query) {
+    throw new IllegalArgumentException("Dit is niet geimplementeerd voor de interne opslag");
+  }
+
+  @Override
+  public void updateMetadata(String collection, String id, Map<String, String> metadata) {
+    throw new IllegalArgumentException("Dit is niet geimplementeerd voor de interne opslag");
   }
 
   private File getDocumentsFolder() {

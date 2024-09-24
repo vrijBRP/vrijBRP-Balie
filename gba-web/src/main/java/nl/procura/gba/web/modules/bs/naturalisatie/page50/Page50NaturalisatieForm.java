@@ -169,6 +169,7 @@ public class Page50NaturalisatieForm extends GbaForm<Page50NaturalisatieBean> {
             GbaTextField nummerField = new GbaTextField();
             nummerField.setMaxLength(15);
             nummerField.setImmediate(true);
+            nummerField.setNullRepresentation("");
             return nummerField;
           })
           .getter(DossierNaturalisatieVerzoeker::getBehNrKoningBesluit)

@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.data;
 
-import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.*;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.AKTE;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.ONJUIST;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.VORIGANR;
 import static nl.procura.standard.Globalfunctions.fil;
 
 import com.vaadin.ui.Field;
@@ -64,33 +66,41 @@ public class PlDataBeanForm extends PlForm {
 
   private void fillMetaBean(PlDataBean metaBean) {
 
-    metaBean.setGeldigheid(getMetaElement(GBAElem.INGANGSDAT_GELDIG));
-    metaBean.setOpname(getMetaElement(GBAElem.DATUM_VAN_OPNEMING));
-
+    // 20
     metaBean.setVoriganr(getMetaElement(GBAElem.VORIG_A_NUMMER));
     metaBean.setVolgendanr(getMetaElement(GBAElem.VOLGEND_A_NUMMER));
 
-    // Geen admin tonen. Hoort eigenlijk niet in Onjuist veld
-    String indOnjuist = getMetaElement(GBAElem.IND_ONJUIST);
-    metaBean.setOnjuist(indOnjuist.contains("Adm") ? "" : indOnjuist);
+    // 75
+    String indDoc = getMetaElement(GBAElem.IND_DOC);
+    metaBean.setInddocument(fil(indDoc) ? "niet-verwerkt document" : "");
 
+    // 81
+    String akteNr = getMetaElement(GBAElem.AKTENR);
+    String akteGem = getMetaElement(GBAElem.REGIST_GEM_AKTE);
+    metaBean.setAkte(akteNr + " " + akteGem);
+
+    // 82
+    String datDoc = getMetaElement(GBAElem.DATUM_DOC);
+    String gemDoc = getMetaElement(GBAElem.GEMEENTE_DOC);
+    String beschrDoc = getMetaElement(GBAElem.BESCHRIJVING_DOC);
+    metaBean.setOntlening(datDoc + " " + gemDoc);
+    metaBean.setDocument(beschrDoc);
+
+    // Geen admin tonen. Hoort eigenlijk niet in Onjuist veld
+    //  83
     metaBean.setInonderzoek(getMetaElement(GBAElem.AAND_GEG_IN_ONDERZ));
     metaBean.setDatumingang(getMetaElement(GBAElem.DATUM_INGANG_ONDERZ));
     metaBean.setDatumeinde(getMetaElement(GBAElem.DATUM_EINDE_ONDERZ));
 
-    String akteNr = getMetaElement(GBAElem.AKTENR);
-    String akteGem = getMetaElement(GBAElem.REGIST_GEM_AKTE);
+    // 84
+    String indOnjuist = getMetaElement(GBAElem.IND_ONJUIST);
+    metaBean.setOnjuist(indOnjuist.contains("Adm") ? "" : indOnjuist);
 
-    String datDoc = getMetaElement(GBAElem.DATUM_DOC);
-    String gemDoc = getMetaElement(GBAElem.GEMEENTE_DOC);
-    String beschrDoc = getMetaElement(GBAElem.BESCHRIJVING_DOC);
-    String indDoc = getMetaElement(GBAElem.IND_DOC);
+    // 85
+    metaBean.setGeldigheid(getMetaElement(GBAElem.INGANGSDAT_GELDIG));
 
-    metaBean.setAkte(akteNr + " " + akteGem);
-    metaBean.setOntlening(datDoc + " " + gemDoc);
-    metaBean.setDocument(beschrDoc);
-    metaBean.setInddocument(fil(indDoc) ? "niet-verwerkt document" : "");
-    metaBean.setDocument(beschrDoc);
+    // 86
+    metaBean.setOpname(getMetaElement(GBAElem.DATUM_VAN_OPNEMING));
   }
 
   private String getMetaElement(GBAElem type) {

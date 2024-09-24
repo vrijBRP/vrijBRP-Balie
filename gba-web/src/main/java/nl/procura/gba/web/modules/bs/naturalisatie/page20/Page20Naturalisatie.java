@@ -108,6 +108,7 @@ public class Page20Naturalisatie extends BsPageNaturalisatie {
       try {
         getServices().getNaturalisatieService().saveVerzoekerGegevens(getZaakDossier());
         getServices().getNaturalisatieService().save(getDossier());
+
       } catch (Exception ex) {
         getZaakDossier().setDossiernr(originalDossier);
         if (MiscUtils.isStackTrace(ex, "dossiernr", "already exists")) {

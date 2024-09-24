@@ -9,4 +9,5 @@ public abstract class FileImportTable extends GbaTable {
 
   public abstract void update(List<FileImportRecord> records);
 
+  public abstract void sort(Object value);
 }

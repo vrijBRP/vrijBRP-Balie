@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.zaken.document;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import com.vaadin.ui.Embedded;
 
@@ -70,6 +71,8 @@ public abstract class DocumentenTabel extends GbaTable {
           .getOmschrijving());
       previewFile.setProperty("Grootte", FileUtils.byteCountToDisplaySize(dmsDocument.getContent().getSize()));
       previewFile.setProperty("Opslaglocatie", dmsDocument.getStorage().toString());
+      previewFile.setProperty("Verzonden naar DMS",
+          BooleanUtils.toBoolean(dmsDocument.getOtherProperties().get("dms")) ? "Ja" : "Nee");
 
       FilePreviewWindow.preview(getApplication().getParentWindow(), previewFile);
 

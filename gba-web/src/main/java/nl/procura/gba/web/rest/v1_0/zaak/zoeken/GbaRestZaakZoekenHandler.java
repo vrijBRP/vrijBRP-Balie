@@ -19,11 +19,52 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.zoeken;
 
-import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.AANTEKENING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.AANTEKENINGEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ANR;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ATTRIBUTEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ATTRIBUUT;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.BRON;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.BSN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.CODE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DATUM_INGANG;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DATUM_INVOER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.EMAIL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBRUIKER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBRUIKERSNAAM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBRUIKER_INVOER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.INHOUD;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.LEVERANCIER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.LOCATIE_INVOER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.MOBIEL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NAAM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ONDERWERP;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.OPMERKING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RELATIE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RELATIES;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RELATIE_ZAAK_ID;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RELATIE_ZAAK_TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.SOORT;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.STATUS;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.STATUSSEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.SYSTEEM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.SYSTEMEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TELEFOON;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.THUIS;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TIJD_INVOER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TOELICHTING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.WERK;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ZAAKID;
 import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestElementHandler.add;
-import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakVraagType.*;
+import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakVraagType.MAXIMAAL;
+import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakVraagType.MINIMAAL;
+import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakVraagType.STANDAARD;
 import static nl.procura.gba.web.services.zaken.algemeen.ZaakSortering.DATUM_INGANG_OUD_NIEUW;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.date2str;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.time2str;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
@@ -37,12 +78,17 @@ import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.rest.v1_0.GbaRestHandler;
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElement;
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType;
-import nl.procura.gba.web.rest.v1_0.zaak.*;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakStatus;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakStatusUpdateVraag;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakType;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakVraag;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakVraagType;
 import nl.procura.gba.web.rest.v1_0.zaak.attribuut.GbaRestZaakAttribuut;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.afstamming.erkenning.GbaRestErkenningHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.afstamming.geboorte.GbaRestGeboorteHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.afstamming.naamskeuze.GbaRestNaamskeuzeHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.huwelijk.GbaRestHuwelijkHandler;
+import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.nationaliteit.GbaRestNationaliteitHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.omzetting.GbaRestOmzettingHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.onderzoek.GbaRestOnderzoekHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs.ontbinding.GbaRestOntbindingHandler;
@@ -69,7 +115,11 @@ import nl.procura.gba.web.rest.v1_0.zaak.zoeken.verhuizing.GbaRestVerhuizingHand
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.locatie.Locatie;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakSortering;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakStatus;
+import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.AantekeningHistorie;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekening;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekeningHistorie;
@@ -368,12 +418,14 @@ public class GbaRestZaakZoekenHandler extends GbaRestHandler {
             new GbaRestGvHandler(getServices()).convert(gbaZaak, zaak);
             break;
 
+          case NATURALISATIE:
+            new GbaRestNationaliteitHandler(getServices()).convert(gbaZaak, zaak);
+            break;
+
           case OVERLIJDEN_IN_BUITENLAND:
             throw new ProException(ERROR, zaak.getType() + " is nog niet uitgewerkt");
-
           case LEGE_PERSOONLIJST:
           case ONBEKEND:
-          default:
             throw new ProException(ERROR, "Onbekende zaaktype:  " + zaak.getType());
         }
       }

@@ -36,6 +36,7 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_VBT;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_1;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_2;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_3;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_EU_LIDSTAAT_VAN_HERKOMST;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AKTENR;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ANR;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AUTORIT_VAN_AFGIFTE_NL_REISDOC;
@@ -53,10 +54,12 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IDCODE_NUMMERAAND;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ID_VERBLIJFPLAATS;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDATUM_VBT;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDAT_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_EU_LIDSTAAT_VAN_HERKOMST;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERTREK;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.NR_NL_REISDOC;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OPENB_RUIMTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_EU_LIDSTAAT_VAN_HERKOMST;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_VERBINTENIS;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_ONTBINDING;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REGIST_GEM_AKTE;
@@ -320,6 +323,24 @@ public class PersonListMutationsChecks {
           if (elems.isAllBlank(elem.getGroup())) {
             req = msg("Als %s of %s voorkomt, dan komen ze beide voor",
                 EUROPEES_KIESRECHT, UITSL_KIESR);
+          }
+        }
+
+        if (!elems.isAllBlank(ADRES_EU_LIDSTAAT_VAN_HERKOMST)) {
+          if (elem.getElemType().is(PLAATS_EU_LIDSTAAT_VAN_HERKOMST)) {
+            return msg("Is verplicht omdat %s ook voorkomt",
+                ADRES_EU_LIDSTAAT_VAN_HERKOMST.getDescrAndCode());
+          }
+          if (elem.getElemType().is(LAND_EU_LIDSTAAT_VAN_HERKOMST)) {
+            return msg("Is verplicht omdat %s ook voorkomt",
+                ADRES_EU_LIDSTAAT_VAN_HERKOMST.getDescrAndCode());
+          }
+        }
+
+        if (!elems.isAllBlank(PLAATS_EU_LIDSTAAT_VAN_HERKOMST)) {
+          if (elem.getElemType().is(LAND_EU_LIDSTAAT_VAN_HERKOMST)) {
+            return msg("Is verplicht omdat %s ook voorkomt",
+                PLAATS_EU_LIDSTAAT_VAN_HERKOMST.getDescrAndCode());
           }
         }
       }

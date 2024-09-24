@@ -23,8 +23,8 @@ import java.util.Arrays;
 
 public enum DMSStorageType {
 
-  DEFAULT("default", "Documenten folder"),
-  OBJECTSTORE("objectstore", "Database");
+  DEFAULT("default", "Interne opslag"),
+  OBJECT_STORAGE("object-storage", "Documenten service");
 
   private final String code;
   private final String description;

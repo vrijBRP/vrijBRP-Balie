@@ -30,6 +30,7 @@ public class ProcuraDbWrapper {
   private String database       = "";
   private String sid            = "";
   private String server         = "";
+  private String schema         = "";
   private String port           = "";
   private String username       = "";
   private String password       = "";

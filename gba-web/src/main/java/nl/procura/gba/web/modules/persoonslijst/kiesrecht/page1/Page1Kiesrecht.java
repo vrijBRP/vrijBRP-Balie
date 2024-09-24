@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1;
 
-import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.*;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.DOCUMENT;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.GELDIGHEID;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.ONTLENING;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -51,17 +53,16 @@ public class Page1Kiesrecht extends PlDataPage {
         if (!aand.getCode().isEmpty()) {
           b.setAanduidingUitgeslotenKiesrecht(aand.getCode() + " (" + aand.getDescr() + ")");
         }
-
         b.setEinddatumUitsluiting(getElementW(GBAElem.EINDDATUM_UITSLUIT_KIESR).getDescr());
-
         if (!aandE.getCode().isEmpty()) {
           b.setAanduidingEuropeesKiesrecht(aandE.getCode() + " (" + aandE.getDescr() + ")");
         }
+        b.setDatumVerzoekMededeling(getElementW(GBAElem.DATUM_VERZ_OF_MED_EURO_KIESR).getDescr());
+        b.setEinddatumUitsluitingEuropeesKiesrecht(getElementW(GBAElem.EINDDATUM_UITSL_EURO_KIESR).getDescr());
 
-        b.setDatumVerzoekMededeling(
-            getElementW(GBAElem.DATUM_VERZ_OF_MED_EURO_KIESR).getDescr());
-        b.setEinddatumUitsluitingEuropeesKiesrecht(
-            getElementW(GBAElem.EINDDATUM_UITSL_EURO_KIESR).getDescr());
+        b.setAdresEULidstaatVanHerkomst(getElementW(GBAElem.ADRES_EU_LIDSTAAT_VAN_HERKOMST).getDescr());
+        b.setPlaatsEULidstaatVanHerkomst(getElementW(GBAElem.PLAATS_EU_LIDSTAAT_VAN_HERKOMST).getDescr());
+        b.setLandEULidstaatVanHerkomst(getElementW(GBAElem.LAND_EU_LIDSTAAT_VAN_HERKOMST).getDescr());
 
         super.setBean(b);
       }

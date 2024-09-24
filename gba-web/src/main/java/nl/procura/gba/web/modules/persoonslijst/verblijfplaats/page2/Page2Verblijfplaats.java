@@ -19,7 +19,13 @@
 
 package nl.procura.gba.web.modules.persoonslijst.verblijfplaats.page2;
 
-import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.*;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.DATUMEINDE;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.DATUMINGANG;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.GELDIGHEID;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.INDDOCUMENT;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.INONDERZOEK;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.ONJUIST;
+import static nl.procura.gba.web.modules.persoonslijst.overig.data.PlDataBean.OPNAME;
 import static nl.procura.standard.Globalfunctions.trim;
 
 import com.vaadin.ui.Field;
@@ -115,8 +121,7 @@ public class Page2Verblijfplaats extends PlDataPage {
 
       @Override
       public String[] getOrder() {
-
-        return new String[]{ GELDIGHEID, OPNAME, INDDOCUMENT, ONJUIST, INONDERZOEK, DATUMINGANG, DATUMEINDE };
+        return new String[]{ GELDIGHEID, OPNAME, ONJUIST, INONDERZOEK, DATUMINGANG, DATUMEINDE };
       }
 
       @Override

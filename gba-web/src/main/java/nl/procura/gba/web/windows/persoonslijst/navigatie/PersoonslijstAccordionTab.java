@@ -19,7 +19,23 @@
 
 package nl.procura.gba.web.windows.persoonslijst.navigatie;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.CONTACT;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.GEZAG;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KLADBLOK;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.LOK_AF_IND;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.NATIO;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OVERL;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.TIJD_VBA;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VBTITEL;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -34,6 +50,7 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.EmbeddedResource;
 import nl.procura.gba.web.modules.persoonslijst.afnIndicaties.ModuleAfnIndicaties;
+import nl.procura.gba.web.modules.persoonslijst.contact.ModuleContact;
 import nl.procura.gba.web.modules.persoonslijst.gezag.ModuleGezag;
 import nl.procura.gba.web.modules.persoonslijst.huwelijk.ModuleHuwelijk;
 import nl.procura.gba.web.modules.persoonslijst.inschrijving.ModuleInschrijving;
@@ -48,6 +65,7 @@ import nl.procura.gba.web.modules.persoonslijst.ouder.ModuleOuder2;
 import nl.procura.gba.web.modules.persoonslijst.overlijden.ModuleOverlijden;
 import nl.procura.gba.web.modules.persoonslijst.persoon.ModulePersoon;
 import nl.procura.gba.web.modules.persoonslijst.reisdocument.ModuleReisdocument;
+import nl.procura.gba.web.modules.persoonslijst.tvba.ModuleTvba;
 import nl.procura.gba.web.modules.persoonslijst.verblijfplaats.ModuleVerblijfplaats;
 import nl.procura.gba.web.modules.persoonslijst.verblijfstitel.ModuleVerblijfstitel;
 import nl.procura.gba.web.theme.GbaWebTheme;
@@ -67,10 +85,7 @@ public class PersoonslijstAccordionTab extends PlAccordionTab {
     if (pl != null) {
 
       // Als er sprake is van GBA-V plus dan afnemers zoeken in de GBA-V
-      boolean heeftAfnemerIndicaties = false;
-      if (application.getServices().getPersonenWsService().heeftGbavPlus()) {
-        heeftAfnemerIndicaties = true;
-      }
+      boolean heeftAfnemerIndicaties = application.getServices().getPersonenWsService().heeftGbavPlus();
 
       addLink(ModulePersoon.class, getSoort(pl, PERSOON));
       addLink(ModuleOuder1.class, getSoort(pl, OUDER_1));
@@ -85,6 +100,8 @@ public class PersoonslijstAccordionTab extends PlAccordionTab {
       addLink(ModuleGezag.class, getSoort(pl, GEZAG));
       addLink(ModuleReisdocument.class, getSoort(pl, REISDOC));
       addLink(ModuleKiesrecht.class, getSoort(pl, KIESR));
+      addLink(ModuleTvba.class, getSoort(pl, TIJD_VBA));
+      addLink(ModuleContact.class, getSoort(pl, CONTACT));
       addLink(ModuleAfnIndicaties.class, heeftAfnemerIndicaties, false);
       addLink(ModuleKladblok.class, getSoort(pl, KLADBLOK));
       addLink(ModuleLokAfn.class, getSoort(pl, LOK_AF_IND));

@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.collect.ComparisonChain;
 
 import lombok.Builder;
@@ -30,31 +33,35 @@ import lombok.Data;
 public class DMSDocument implements Comparable<DMSDocument> {
 
   @Default
-  private DMSContent content                 = null;
+  private DMSContent          content                 = null;
   @Default
-  private String     uuid                    = "";
+  private String              collection              = "";
   @Default
-  private String     customerId              = "";
+  private String              uuid                    = "";
   @Default
-  private long       date                    = -1;
+  private String              customerId              = "";
   @Default
-  private long       time                    = -1;
+  private long                date                    = -1;
   @Default
-  private String     alias                   = "";
+  private long                time                    = -1;
   @Default
-  private String     title                   = "";
+  private String              alias                   = "";
   @Default
-  private String     user                    = "";
+  private String              title                   = "";
   @Default
-  private String     datatype                = "";
+  private String              user                    = "";
   @Default
-  private String     zaakId                  = "";
+  private String              datatype                = "";
   @Default
-  private String     documentTypeDescription = "";
+  private String              zaakId                  = "";
   @Default
-  private String     confidentiality         = "";
+  private String              documentTypeDescription = "";
   @Default
-  private DMSStorageType storage                 = DMSStorageType.DEFAULT;
+  private String              confidentiality         = "";
+  @Default
+  private DMSStorageType      storage                 = DMSStorageType.DEFAULT;
+  @Default
+  private Map<String, String> otherProperties         = new HashMap<>();
 
   public static DMSDocumentBuilder builder() {
     return hiddenBuilder();

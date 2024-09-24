@@ -130,6 +130,7 @@ public class Page2Geheim extends PageGeheim {
 
     getAanvraag().setDatumTijdInvoer(new DateTime());
     getAanvraag().setDatumIngang(new DateTime(form.getBean().getDatumWijz()));
+    getAanvraag().getPersonen().clear();
 
     for (Entry<BasePLExt, GeheimType> e : geheimList.entrySet()) {
 

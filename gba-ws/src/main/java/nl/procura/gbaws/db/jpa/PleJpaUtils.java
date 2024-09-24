@@ -48,6 +48,7 @@ public class PleJpaUtils {
       jpaImpl.setDatabase(database);
       jpaImpl.setSid(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.SID));
       jpaImpl.setServer(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.SERVER));
+      jpaImpl.setSchema(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.SCHEMA));
       jpaImpl.setPort(aval(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.PORT)));
       jpaImpl.setTnsAdminDir(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.TNS_ADMIN_DIR));
       jpaImpl.setCustomUrl(ParmDao.getParameterWaarde(ParmValues.PROCURA.DB.CUSTOM_URL));

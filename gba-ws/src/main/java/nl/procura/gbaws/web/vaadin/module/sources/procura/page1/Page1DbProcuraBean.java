@@ -42,6 +42,7 @@ public class Page1DbProcuraBean implements Serializable {
   public static final String DATABASE      = "database";
   public static final String SID           = "sid";
   public static final String SERVER        = "server";
+  public static final String SCHEMA        = "schema";
   public static final String PORT          = "port";
   public static final String USERNAME      = "username";
   public static final String PW            = "pw";
@@ -87,6 +88,13 @@ public class Page1DbProcuraBean implements Serializable {
   @TextField(nullRepresentation = "",
       maxLength = 250)
   private String server = "";
+
+  @Field(customTypeClass = ProTextField.class,
+      width = "200px",
+      caption = "Schema")
+  @TextField(nullRepresentation = "",
+      maxLength = 250)
+  private String schema = "";
 
   @Field(customTypeClass = NumberField.class,
       width = "50px",

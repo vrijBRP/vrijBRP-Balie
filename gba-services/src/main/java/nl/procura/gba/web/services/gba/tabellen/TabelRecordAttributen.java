@@ -27,8 +27,9 @@ import java.util.Map;
 
 public class TabelRecordAttributen {
 
-  public static String EU = "eu";
-  public static String ID = "id";
+  public static String EU  = "eu";
+  public static String EER = "eer";
+  public static String ID  = "id";
 
   private Map<String, String> map;
 
@@ -43,20 +44,28 @@ public class TabelRecordAttributen {
     return map;
   }
 
-  public boolean isEu() {
-    return pos(get(EU));
+  public void setId() {
+    set(ID, "1");
   }
 
   public boolean isId() {
     return pos(get(ID));
   }
 
-  public void setEu() {
+  public void setEU() {
     set(EU, "1");
   }
 
-  public void setId() {
-    set(ID, "1");
+  public boolean isEU() {
+    return pos(get(EU));
+  }
+
+  public void setEER() {
+    set(EU, "1");
+  }
+
+  public boolean isEER() {
+    return pos(get(EER));
   }
 
   private String get(String key) {

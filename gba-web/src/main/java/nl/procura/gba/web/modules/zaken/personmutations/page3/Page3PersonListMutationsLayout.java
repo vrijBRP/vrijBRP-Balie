@@ -64,6 +64,7 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.common.validators.GbaDatumValidator;
 import nl.procura.gba.web.components.containers.AutoriteitReisdocumentContainer;
+import nl.procura.gba.web.components.containers.EULandContainer;
 import nl.procura.gba.web.components.containers.TabelContainer;
 import nl.procura.gba.web.components.fields.DateReference;
 import nl.procura.gba.web.components.fields.GbaTextField;
@@ -241,6 +242,11 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       select.setItemCaptionPropertyId(TabelContainer.OMSCHRIJVING);
       select.setFilteringMode(AbstractSelect.Filtering.FILTERINGMODE_CONTAINS);
       field = select;
+
+      // Alleen europese landen
+      if (mutElem.getElemType() == GBAElem.LAND_EU_LIDSTAAT_VAN_HERKOMST) {
+        select.setContainerDataSource(new EULandContainer());
+      }
 
       // Bij geboorteland of gemeente van inschrijving
       // listeners toevoegen.
@@ -451,6 +457,8 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     addCountryMunicipalityListener(elements, GBAElem.LAND_VERBINTENIS, GBAElem.PLAATS_VERBINTENIS);
     addCountryMunicipalityListener(elements, GBAElem.LAND_ONTBINDING, GBAElem.PLAATS_ONTBINDING);
     addCountryMunicipalityListener(elements, GBAElem.LAND_OVERL, GBAElem.PLAATS_OVERL);
+    addCountryMunicipalityListener(elements, GBAElem.LAND_EU_LIDSTAAT_VAN_HERKOMST,
+        GBAElem.PLAATS_EU_LIDSTAAT_VAN_HERKOMST);
   }
 
   private void addCountryMunicipalityListener(PersonListMutElems elements, GBAElem country, GBAElem municipality) {

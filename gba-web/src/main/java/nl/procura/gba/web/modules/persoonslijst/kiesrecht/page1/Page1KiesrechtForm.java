@@ -19,7 +19,14 @@
 
 package nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1;
 
-import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.*;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.AANDUIDINGEUROPEESKIESRECHT;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.AANDUIDINGUITGESLOTENKIESRECHT;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.ADRES_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.DATUMVERZOEKMEDEDELING;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.EINDDATUMUITSLUITING;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.EINDDATUMUITSLUITINGEUROPEESKIESRECHT;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.LAND_EU_LIDSTAAT_VAN_HERKOMST;
+import static nl.procura.gba.web.modules.persoonslijst.kiesrecht.page1.Page1KiesrechtBean.PLAATS_EU_LIDSTAAT_VAN_HERKOMST;
 
 import com.vaadin.ui.Field;
 
@@ -31,7 +38,8 @@ public class Page1KiesrechtForm extends PlForm {
   public Page1KiesrechtForm() {
 
     setOrder(AANDUIDINGUITGESLOTENKIESRECHT, EINDDATUMUITSLUITING, AANDUIDINGEUROPEESKIESRECHT,
-        DATUMVERZOEKMEDEDELING, EINDDATUMUITSLUITINGEUROPEESKIESRECHT);
+        DATUMVERZOEKMEDEDELING, EINDDATUMUITSLUITINGEUROPEESKIESRECHT,
+        ADRES_EU_LIDSTAAT_VAN_HERKOMST, PLAATS_EU_LIDSTAAT_VAN_HERKOMST, LAND_EU_LIDSTAAT_VAN_HERKOMST);
     setColumnWidths("200px", "");
   }
 
@@ -42,8 +50,7 @@ public class Page1KiesrechtForm extends PlForm {
 
   @Override
   public void setColumn(Column column, Field field, Property property) {
-
-    if (property.is(AANDUIDINGEUROPEESKIESRECHT)) {
+    if (property.is(AANDUIDINGEUROPEESKIESRECHT, ADRES_EU_LIDSTAAT_VAN_HERKOMST)) {
       getLayout().addBreak();
     }
   }

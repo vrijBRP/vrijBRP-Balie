@@ -4,6 +4,7 @@ app_db_name=
 app_db_username=
 app_db_password=
 app_db_port=
+app_db_schema=
 app_db_server=
 app_db_sid=personen_ws
 
@@ -27,6 +28,7 @@ PARM_procura.db.db=
 PARM_procura.db.sid=
 PARM_procura.db.server=
 PARM_procura.db.port=
+PARM_procura.db.schema=
 PARM_procura.db.username=
 PARM_procura.db.password=
 PARM_procura.db.connections.read.min=2

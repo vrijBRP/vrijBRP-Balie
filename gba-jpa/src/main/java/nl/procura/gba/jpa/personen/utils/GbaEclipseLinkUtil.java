@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -170,8 +171,10 @@ public final class GbaEclipseLinkUtil {
           .keepalive(StringUtils.isNotBlank(keepalive))
           .build()
           .toString();
+
       if (databaseType.equals(DB_POSTGRES)) {
         finalUrl = String.format("jdbc:postgresql://%s:%s/%s%s", server, port, database, parameters);
+
       } else if (databaseType.equals(DB_ORACLE)) {
         finalUrl = String.format("jdbc:oracle:thin:@%s:%s:%s", server, port, database);
       }
@@ -186,7 +189,7 @@ public final class GbaEclipseLinkUtil {
     }
 
     log.info("JPA connection: " + finalUrl);
-    configuration.put(PersistenceUnitProperties.SESSION_NAME, finalUrl);
+    configuration.put(PersistenceUnitProperties.SESSION_NAME, String.format("%s (%s)", finalUrl, UUID.randomUUID()));
     configuration.put(PersistenceUnitProperties.JDBC_URL, finalUrl);
     configuration.put(PersistenceUnitProperties.JDBC_DRIVER, finalDriver);
 

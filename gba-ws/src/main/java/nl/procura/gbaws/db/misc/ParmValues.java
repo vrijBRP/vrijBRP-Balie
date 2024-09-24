@@ -31,6 +31,7 @@ public class ParmValues {
       public static final String DB                    = "procura.db.db";
       public static final String SID                   = "procura.db.sid";
       public static final String SERVER                = "procura.db.server";
+      public static final String SCHEMA                = "procura.db.schema";
       public static final String PORT                  = "procura.db.port";
       public static final String USERNAME              = "procura.db.username";
       public static final String PW                    = "procura.db.password";

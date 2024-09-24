@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Objects;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
@@ -60,14 +61,9 @@ public class PLEElementFormatter {
     BasePLValue waarden = getFormat(catCode, elementCode, input);
     GBAElem gbaElement = GBAElem.getByCode(elementCode);
 
-    switch (gbaElement) {
-      case STRAATNAAM:
-        getTemplate().addElem(GBAElem.STRAATNAAM_OFFIC, waarden);
-        getTemplate().addElem(GBAElem.STRAATNAAM_NEN, waarden);
-        break;
-
-      default:
-        break;
+    if (Objects.requireNonNull(gbaElement) == GBAElem.STRAATNAAM) {
+      getTemplate().addElem(GBAElem.STRAATNAAM_OFFIC, waarden);
+      getTemplate().addElem(GBAElem.STRAATNAAM_NEN, waarden);
     }
 
     return waarden;
@@ -235,6 +231,11 @@ public class PLEElementFormatter {
         onbekendeWaardeOmschrijving(waarden);
         break;
 
+      case PLAATS_EU_LIDSTAAT_VAN_HERKOMST:
+        diacriet(waarden, input, Diacs.PLAATS, isLandelijkeTabel);
+        onbekendeWaardeOmschrijving(waarden);
+        break;
+
       case REDEN_ONTBINDING:
         expand(waarden, input, "Rdn", "Oms", isLandelijkeTabel);
         break;
@@ -270,6 +271,7 @@ public class PLEElementFormatter {
     // Buitenlands adres
     if (input instanceof BAdres) {
       waarden.setVal(getDiac().merge(input, Diacs.B_ADRES, astr(get(input, "Adr"))));
+      onbekendeWaardeOmschrijving(waarden);
     }
 
     if (aval(waarden.getVal()) >= 0) {

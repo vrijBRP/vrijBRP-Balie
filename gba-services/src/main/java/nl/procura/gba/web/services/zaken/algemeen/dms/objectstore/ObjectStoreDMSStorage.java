@@ -30,20 +30,20 @@ import static nl.procura.gba.web.services.zaken.algemeen.dms.objectstore.ObjectS
 import static nl.procura.gba.web.services.zaken.algemeen.dms.objectstore.ObjectStoreFieldName.DOSSIER_ID;
 import static nl.procura.gba.web.services.zaken.algemeen.dms.objectstore.ObjectStoreFieldName.TITLE;
 import static nl.procura.gba.web.services.zaken.algemeen.dms.objectstore.ObjectStoreFieldName.USER;
-import static nl.procura.objectstore.rest.domain.object.search.QueryOperator.EQUALS;
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64;
-
-import com.vaadin.service.FileTypeResolver;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
@@ -51,18 +51,17 @@ import nl.procura.gba.web.services.zaken.algemeen.dms.AbstractDmsStorage;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSStorageType;
-import nl.procura.objectstore.rest.client.StorageClient;
-import nl.procura.objectstore.rest.domain.file.FileRequest;
-import nl.procura.objectstore.rest.domain.object.add.AddObject;
-import nl.procura.objectstore.rest.domain.object.add.AddObjectRequest;
-import nl.procura.objectstore.rest.domain.object.add.StorageFile;
-import nl.procura.objectstore.rest.domain.object.delete.DeleteObjectRequest;
-import nl.procura.objectstore.rest.domain.object.search.FieldName;
-import nl.procura.objectstore.rest.domain.object.search.Fields;
-import nl.procura.objectstore.rest.domain.object.search.Query;
-import nl.procura.objectstore.rest.domain.object.search.SearchObjectRequest;
-import nl.procura.objectstore.rest.domain.object.search.StorageObject;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.storage.client.StorageClient;
+import nl.procura.storage.client.StorageClientConfig;
+import nl.procura.storage.client.model.AddObjectRequest;
+import nl.procura.storage.client.model.FindObjectQuery;
+import nl.procura.storage.client.model.Metadata;
+import nl.procura.storage.client.model.SearchOptions;
+import nl.procura.storage.client.model.StorageFile;
+import nl.procura.storage.client.model.StorageObject;
+import nl.procura.storage.client.model.UpdateObjectRequest;
+import nl.procura.storage.queryparser.Query;
+import nl.procura.storage.queryparser.QueryParser;
 
 public class ObjectStoreDMSStorage extends AbstractDmsStorage {
 
@@ -72,98 +71,112 @@ public class ObjectStoreDMSStorage extends AbstractDmsStorage {
 
   @Override
   public DMSResult getDocumentsByPL(BasePLExt pl) {
-    return toDmsResult(getClient().getObjects()
-        .search(getSearchByPL(pl))
-        .getResults().stream()
+    return toDmsResult(getClient().objects()
+        .find(getCollection(), getSearchByPL(pl))
+        .getElements().stream()
         .map(this::toDmsDocument)
         .collect(Collectors.toList()));
   }
 
   @Override
   public DMSResult getDocumentsByZaak(Zaak zaak) {
-    return toDmsResult(getClient().getObjects()
-        .search(getSearchByZaak(zaak))
-        .getResults().stream()
+    return toDmsResult(getClient().objects()
+        .find(getCollection(), getSearchByZaak(zaak))
+        .getElements().stream()
         .map(this::toDmsDocument)
         .collect(Collectors.toList()));
   }
 
   @Override
   public DMSResult getDocumentsById(String id) {
-    return toDmsResult(getClient().getObjects()
-        .search(getSearchById(id))
-        .getResults().stream()
+    return toDmsResult(getClient().objects()
+        .find(getCollection(), getSearchById(id))
+        .getElements().stream()
+        .map(this::toDmsDocument)
+        .collect(Collectors.toList()));
+  }
+
+  @Override
+  public DMSResult getDocumentsByQuery(String query) {
+    return toDmsResult(getClient().objects()
+        .find(getCollection(), getSearchByQuery(query))
+        .getElements().stream()
         .map(this::toDmsDocument)
         .collect(Collectors.toList()));
   }
 
   @Override
   public int countDocumentsById(String id) {
-    return getClient().getObjects().search(getSearchById(id).setPageSize(0)).getTotalCount();
+    return getClient().objects().find(getCollection(), getSearchById(id)).getTotalElements();
   }
 
   @Override
   public int countDocumentsByPL(BasePLExt pl) {
-    return getClient().getObjects().search(getSearchByPL(pl).setPageSize(0)).getTotalCount();
+    return getClient().objects().find(getCollection(), getSearchByPL(pl)).getTotalElements();
   }
 
   @Override
   public int countDocumentsByZaak(Zaak zaak) {
-    return getClient().getObjects().search(getSearchByZaak(zaak).setPageSize(0)).getTotalCount();
+    return getClient().objects().find(getCollection(), getSearchByZaak(zaak)).getTotalElements();
   }
 
   @Override
   public DMSDocument save(DMSDocument dmsDocument) {
-    AddObjectRequest request = new AddObjectRequest(getCollection());
-    String dataAsBase64 = Base64.encodeBase64String(dmsDocument.getContent().getBytes());
+    Metadata metadata = new Metadata()
+        .add(ALIAS.getCode(), dmsDocument.getAlias())
+        .add(TITLE.getCode(), defaultIfBlank(dmsDocument.getTitle(), dmsDocument.getContent().getFilename()))
+        .add(USER.getCode(), dmsDocument.getUser())
+        .add(DATA_TYPE.getCode(), dmsDocument.getDatatype())
+        .add(CUSTOMER_ID.getCode(), dmsDocument.getCustomerId())
+        .add(DOSSIER_ID.getCode(), dmsDocument.getZaakId())
+        .add(CONFIDENTIALITY.getCode(), dmsDocument.getConfidentiality())
+        .add(DOCUMENT_TYPE_DESCRIPTION.getCode(), dmsDocument.getDocumentTypeDescription());
 
-    Fields fields = new Fields();
-    fields.set(ALIAS.getCode(), dmsDocument.getAlias());
-    fields.set(TITLE.getCode(), defaultIfBlank(dmsDocument.getTitle(), dmsDocument.getContent().getFilename()));
-    fields.set(USER.getCode(), dmsDocument.getUser());
-    fields.set(DATA_TYPE.getCode(), dmsDocument.getDatatype());
-    fields.set(CUSTOMER_ID.getCode(), dmsDocument.getCustomerId());
-    fields.set(DOSSIER_ID.getCode(), dmsDocument.getZaakId());
-    fields.set(CONFIDENTIALITY.getCode(), dmsDocument.getConfidentiality());
-    fields.set(DOCUMENT_TYPE_DESCRIPTION.getCode(), dmsDocument.getDocumentTypeDescription());
+    AddObjectRequest request = new AddObjectRequest();
+    request.setMetadata(metadata);
+    request.setFile(new StorageFile()
+        .setFilename(dmsDocument.getContent().getFilename())
+        .setBase64(Base64.encodeBase64String(dmsDocument.getContent().getBytes())));
 
-    request.addObject(new AddObject()
-        .setFields(fields)
-        .setFile(new StorageFile()
-            .setFilename(dmsDocument.getContent().getFilename())
-            .setMediaType(FileTypeResolver.getMIMEType(dmsDocument.getContent().getFilename()))
-            .setDataAsBase64(dataAsBase64)));
-    getClient().getObjects().add(request);
+    getClient().objects().add(getCollection(), request);
     return dmsDocument;
   }
 
   @Override
   public void delete(DMSDocument dmsDocument) {
-    int results = getClient().getObjects().delete(new DeleteObjectRequest(new SearchObjectRequest()
-        .setCollection(getCollection())
-        .setUuid(dmsDocument.getUuid())))
-        .getResult();
-    if (results < 0) {
-      throw new ProException(INFO, "Er zijn geen documenten verwijderd.");
-    }
+    getClient().objects().delete(getCollection(), dmsDocument.getUuid()).getDetails();
+  }
+
+  @Override
+  public void updateMetadata(String collection, String id, Map<String, String> data) {
+    UpdateObjectRequest request = new UpdateObjectRequest();
+    Metadata metadata = new Metadata();
+    metadata.putAll(data);
+    request.setMetadata(metadata);
+    getClient().objects().update(collection, id, request).getDetails();
   }
 
   private StorageClient getClient() {
     String baseUrl = getServices().getAantekeningService().getSysteemParm(DOC_OBJECT_STORAGE_URL, true);
     String un = getServices().getAantekeningService().getSysteemParm(DOC_OBJECT_STORAGE_USERNAME, true);
     String pw = getServices().getAantekeningService().getSysteemParm(DOC_OBJECT_STORAGE_PW, true);
-    return new StorageClient(baseUrl, un, pw);
+    return StorageClient.builder().config(StorageClientConfig.builder()
+        .baseUrl(baseUrl)
+        .username(un)
+        .password(pw)
+        .build()).build();
   }
 
   private String getCollection() {
-    return "vrijbrp-documents";
+    return "vrijbrp-file-archive";
   }
 
   private DMSDocument toDmsDocument(StorageObject object) {
-    String created = getField(object, FieldName.CREATED.getName());
+    String created = object.getMetadata().getCreated();
     LocalDateTime dateTime = LocalDateTime.parse(created);
     return DMSDocument.builder()
-        .uuid(object.getUuid())
+        .collection(getCollection())
+        .uuid(object.getId())
         .content(ObjectStoreContent.from(object, this::getFileByStorageObject))
         .alias(getField(object, ALIAS.getCode()))
         .title(getField(object, TITLE.getCode()))
@@ -175,43 +188,56 @@ public class ObjectStoreDMSStorage extends AbstractDmsStorage {
         .time(along(dateTime.format(DateTimeFormatter.ofPattern("HHmmss"))))
         .documentTypeDescription(getField(object, DOCUMENT_TYPE_DESCRIPTION.getCode()))
         .confidentiality(getField(object, CONFIDENTIALITY.getCode()))
-        .storage(DMSStorageType.OBJECTSTORE)
+        .storage(DMSStorageType.OBJECT_STORAGE)
+        .otherProperties(getOtherProperties(object))
         .build();
   }
 
+  private Map<String, String> getOtherProperties(StorageObject object) {
+    Map<String, String> properties = new HashMap<>();
+    METADATA_LOOP: for (Entry<String, Object> entry : object.getMetadata().entrySet()) {
+      for (ObjectStoreFieldName fieldName : ObjectStoreFieldName.values()) {
+        if (fieldName.getCode().equals(entry.getKey()) || entry.getKey().startsWith("_")) {
+          continue METADATA_LOOP;
+        }
+      }
+      properties.put(entry.getKey(), entry.getValue().toString());
+    }
+    return properties;
+  }
+
   private String getField(StorageObject object, String code) {
-    return object.getFields().getAsString(code);
+    return object.getMetadata().getAsString(code);
   }
 
   private InputStream getFileByStorageObject(StorageObject object) {
-    String fileUUID = getField(object, FieldName.FILE_UUID.getName());
-    return getClient().getFiles().getFile(new FileRequest()
-        .setSearch(new SearchObjectRequest()
-            .setCollection(getCollection())
-            .setQuery(Query.is(FieldName.FILE_UUID.getName(), EQUALS, fileUUID))));
+    return new ByteArrayInputStream(getClient().objects().getFile(getCollection(), object.getId()));
   }
 
-  private SearchObjectRequest getSearchById(String id) {
-    return new SearchObjectRequest()
-        .setCollection(getCollection())
-        .setQuery(Query.or(Arrays.asList(id)
-            .stream()
-            .map(val -> Query.is(DOSSIER_ID.getCode(), EQUALS, val))
+  private FindObjectQuery getSearchById(String id) {
+    return new FindObjectQuery()
+        .setQuery(Query.or(Stream.of(id)
+            .map(val -> Query.is(DOSSIER_ID.getCode(), val))
             .toArray(Query[]::new)));
   }
 
-  private SearchObjectRequest getSearchByPL(BasePLExt pl) {
-    return new SearchObjectRequest()
-        .setCollection(getCollection())
+  private FindObjectQuery getSearchByPL(BasePLExt pl) {
+    return new FindObjectQuery()
         .setQuery(Query.or(getCustomerIds(pl)
             .stream()
-            .map(id -> Query.is(CUSTOMER_ID.getCode(), EQUALS, id))
+            .map(id -> Query.is(CUSTOMER_ID.getCode(), id))
             .toArray(Query[]::new)));
   }
 
-  private SearchObjectRequest getSearchByZaak(Zaak zaak) {
-    return new SearchObjectRequest()
-        .setCollection(getCollection())
-        .setQuery(Query.is(DOSSIER_ID.getCode(), EQUALS, zaak.getZaakId()));
+  private FindObjectQuery getSearchByZaak(Zaak zaak) {
+    return getSearchByQuery(Query.is(DOSSIER_ID.getCode(), zaak.getZaakId()));
+  }
+
+  private FindObjectQuery getSearchByQuery(Query query) {
+    return new FindObjectQuery(query, new SearchOptions(0, 100));
+  }
+
+  private FindObjectQuery getSearchByQuery(String query) {
+    return getSearchByQuery(QueryParser.parse(query));
   }
 }

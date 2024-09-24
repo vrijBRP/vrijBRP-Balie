@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.bs.naturalisatie.page50;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
 import static nl.procura.gba.common.ZaakStatusType.INCOMPLEET;
 
+import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.modules.bs.naturalisatie.BsPageNaturalisatie;
 import nl.procura.vaadin.component.dialog.OkDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -68,6 +69,12 @@ public class Page50Naturalisatie extends BsPageNaturalisatie {
       getZaakDossier().setBehDAanvr(bean.getDatumAanvraag());
       getZaakDossier().setBehTermDEnd(bean.getEindeTermijn());
       getZaakDossier().setBehTermToel(bean.getToelichting2());
+
+      // Een ID opvragen in het Zaak-DMS
+      if (bean.getDatumAanvraag() != null) {
+        getDossier().setDatumIngang(new DateTime(bean.getDatumAanvraag()));
+        getApplication().getServices().getZaakIdentificatieService().getDmsZaakId(getDossier());
+      }
 
       getServices().getNaturalisatieService().save(getDossier());
 

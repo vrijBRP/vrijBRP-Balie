@@ -84,6 +84,7 @@ public class LandTabJsonRecord {
   private String c_rni_dn     = "";
   private String netw         = "";
   private String eu           = "";
+  private String eer          = "";
   private String id           = "";
   private String gezag        = "";
 

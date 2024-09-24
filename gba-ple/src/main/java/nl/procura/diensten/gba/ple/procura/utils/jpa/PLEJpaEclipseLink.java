@@ -21,6 +21,7 @@ package nl.procura.diensten.gba.ple.procura.utils.jpa;
 
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +47,7 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
 
   private final HashMap<String, String> propertyMap = new HashMap<>();
   private String                        tnsAdminDir, customUrl, customDriver, database = "";
-  private String                        sid, username, password, server = "";
+  private String                        sid, username, password, server, schema = "";
   private String                        loglevel    = DB_LOG_INFO;
   private int                           port, maxConnections, minConnections = 0;
 
@@ -56,7 +58,6 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     propertyMap.put(key, value);
   }
 
-  @Override
   public String getDatabase() {
     return database;
   }
@@ -73,7 +74,6 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     this.loglevel = loglevel;
   }
 
-  @Override
   public int getMaxConnections() {
     return maxConnections;
   }
@@ -82,7 +82,6 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     this.maxConnections = maxConnections;
   }
 
-  @Override
   public int getMinConnections() {
     return minConnections;
   }
@@ -91,17 +90,14 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     this.minConnections = minConnections;
   }
 
-  @Override
   public String getPassword() {
     return password;
   }
 
-  @Override
   public void setPassword(String password) {
     this.password = password;
   }
 
-  @Override
   public int getPort() {
     return port;
   }
@@ -110,14 +106,21 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     this.port = port;
   }
 
+  public String getSchema() {
+    return schema;
+  }
+
+  public void setSchema(String schema) {
+    this.schema = schema;
+  }
+
   public String getProperty(Properties properties, String key) {
     return (properties.containsKey(key) ? properties.getProperty(key) : "");
   }
 
-  @SuppressWarnings("deprecation")
   @Override
+  @SuppressWarnings("deprecation")
   public Map<String, String> getPropertyMap() {
-
     addProperty(PersistenceUnitProperties.LOGGING_LEVEL, getLoglevel());
     addProperty(PersistenceUnitProperties.ID_VALIDATION, "NONE");
     addProperty(PersistenceUnitProperties.PESSIMISTIC_LOCK_TIMEOUT, "30000");
@@ -143,7 +146,8 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     String finalUrl = customUrl;
     if (StringUtils.isBlank(finalUrl)) {
       if (getDatabase().equals(DB_POSTGRES)) {
-        finalUrl = String.format("jdbc:postgresql://%s:%s/%s", getServer(), getPort(), getSid());
+        String currentSchema = isNotBlank(schema) ? "?currentSchema=" + schema : "";
+        finalUrl = String.format("jdbc:postgresql://%s:%s/%s%s", getServer(), getPort(), getSid(), currentSchema);
       } else if (getDatabase().equals(DB_ORACLE)) {
         finalUrl = String.format("jdbc:oracle:thin:@%s:%s:%s", getServer(), getPort(), getSid());
       }
@@ -162,6 +166,8 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     if (StringUtils.isNotBlank(tnsAdminDir)) {
       sessionName.append(" (Oracle TNS dir: ");
       sessionName.append(tnsAdminDir);
+      sessionName.append(" - ");
+      sessionName.append(UUID.randomUUID());
       sessionName.append(")");
     }
 
@@ -173,7 +179,6 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     return propertyMap;
   }
 
-  @Override
   public String getServer() {
     return server;
   }
@@ -182,7 +187,6 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     this.server = server;
   }
 
-  @Override
   public String getSid() {
     return sid;
   }
@@ -191,17 +195,14 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
     this.sid = sid;
   }
 
-  @Override
   public String getUsername() {
     return username;
   }
 
-  @Override
   public void setUsername(String username) {
     this.username = username;
   }
 
-  @Override
   public String getCustomUrl() {
     return customUrl;
   }
@@ -227,11 +228,8 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
   }
 
   public void setProperyFile(File file) {
-
     FileInputStream fis = null;
-
     try {
-
       fis = new FileInputStream(file);
       Properties properties = new Properties();
       properties.load(fis);
@@ -245,6 +243,7 @@ public class PLEJpaEclipseLink implements PLEJpaInterface {
       setPassword(getProperty(properties, "password"));
       setPort(aval(getProperty(properties, "port")));
       setServer(getProperty(properties, "server"));
+      setSchema(getProperty(properties, "schema"));
       setLoglevel(getProperty(properties, "loglevel"));
       setMinConnections(aval(getProperty(properties, "connections.min")));
       setMaxConnections(aval(getProperty(properties, "connections.max")));

@@ -29,7 +29,7 @@ public class EuDocumentNatioContainer extends NatioContainer {
     addContainerProperty(OMSCHRIJVING, String.class, "");
     TabelRecordAttributen attributen = new TabelRecordAttributen();
     attributen.setId();
-    attributen.setEu();
-    setValueContainer(new GBATableList(GBATable.NATIO, attributen), false, false);
+    attributen.setEU();
+    setValueContainer(new GBATableList(GBATable.NATIO, attributen), false, true);
   }
 }

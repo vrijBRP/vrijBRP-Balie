@@ -78,6 +78,7 @@ public class ParmDao implements Serializable {
     db.setDatabase(ParmDao.getParameter(ParmValues.PROCURA.DB.DB).getWaarde());
     db.setSid(ParmDao.getParameter(ParmValues.PROCURA.DB.SID).getWaarde());
     db.setServer(ParmDao.getParameter(ParmValues.PROCURA.DB.SERVER).getWaarde());
+    db.setSchema(ParmDao.getParameter(ParmValues.PROCURA.DB.SCHEMA).getWaarde());
     db.setPort(ParmDao.getParameter(ParmValues.PROCURA.DB.PORT).getWaarde());
     db.setTnsAdminDir(ParmDao.getParameter(ParmValues.PROCURA.DB.TNS_ADMIN_DIR).getWaarde());
     db.setUrl(ParmDao.getParameter(ParmValues.PROCURA.DB.CUSTOM_URL).getWaarde());
@@ -99,6 +100,7 @@ public class ParmDao implements Serializable {
     addParameter(em, ParmValues.PROCURA.DB.DB, procuraDb.getDatabase());
     addParameter(em, ParmValues.PROCURA.DB.SID, procuraDb.getSid());
     addParameter(em, ParmValues.PROCURA.DB.SERVER, procuraDb.getServer());
+    addParameter(em, ParmValues.PROCURA.DB.SCHEMA, procuraDb.getSchema());
     addParameter(em, ParmValues.PROCURA.DB.PORT, procuraDb.getPort());
     addParameter(em, ParmValues.PROCURA.DB.TNS_ADMIN_DIR, procuraDb.getTnsAdminDir());
     addParameter(em, ParmValues.PROCURA.DB.CUSTOM_URL, procuraDb.getUrl());

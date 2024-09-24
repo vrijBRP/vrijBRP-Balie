@@ -46,7 +46,8 @@ public enum DmsParameterType {
   RIJBEWIJS(ParameterConstant.ZAKEN_DMS_RIJBEWIJS, ZaakType.RIJBEWIJS),
   UITTREKSEL(ParameterConstant.ZAKEN_DMS_UITTREKSEL, ZaakType.UITTREKSEL),
   VERHUIZING(ParameterConstant.ZAKEN_DMS_VERHUIZING, ZaakType.VERHUIZING),
-  NAAMGEBRUIK(ParameterConstant.ZAKEN_DMS_NAAMGEBRUIK, ZaakType.NAAMGEBRUIK);
+  NAAMGEBRUIK(ParameterConstant.ZAKEN_DMS_NAAMGEBRUIK, ZaakType.NAAMGEBRUIK),
+  NATURALISATIE(ParameterConstant.ZAKEN_DMS_NATURALISATIE, ZaakType.NATURALISATIE);
 
   private final ParameterType parameterType;
   private final ZaakType      zaakType;

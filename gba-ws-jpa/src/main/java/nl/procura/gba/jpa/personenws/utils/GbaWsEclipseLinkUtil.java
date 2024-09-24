@@ -19,13 +19,18 @@
 
 package nl.procura.gba.jpa.personenws.utils;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pad_right;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.eclipse.persistence.config.PersistenceUnitProperties.LOGGING_LOGGER;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -49,6 +54,7 @@ public final class GbaWsEclipseLinkUtil {
   public static final String  PW                    = "app_db_password";
   public static final String  PORT                  = "app_db_port";
   public static final String  SERVER                = "app_db_server";
+  public static final String  SCHEMA                = "app_db_schema";
   public static final String  USERNAME              = "app_db_username";
   public static final String  PERSISTENCE_UNIT_NAME = "persistenceUnitName";
   public static final String  LOG_LEVEL             = "loglevel";
@@ -59,8 +65,6 @@ public final class GbaWsEclipseLinkUtil {
   private static final String DB_ORACLE             = "oracle";
   private static final String DB_POSTGRES           = "postgres";
   private static final String TCP_KEEPALIVE         = "tcpKeepAlive";
-
-  private static final String ONE = "1";
 
   // EntityManagerFactories
   private static final Map<String, EntityManagerFactory> factories = new HashMap<>();
@@ -73,6 +77,7 @@ public final class GbaWsEclipseLinkUtil {
     // Instellingen
     String databaseType = getProperty(properties, DATABASE_TYPE);
     String server = getProperty(properties, SERVER);
+    String schema = getProperty(properties, SCHEMA);
     String port = getProperty(properties, PORT);
     String database = getProperty(properties, DATABASE);
     String username = getProperty(properties, USERNAME);
@@ -84,8 +89,8 @@ public final class GbaWsEclipseLinkUtil {
       persistenceUnitName = getProperty(properties, PERSISTENCE_UNIT_NAME);
     }
 
-    String minConnections = "" + getNonNegatieveInteger(getProperty(properties, MIN_CONNECTIONS));
-    String maxConnections = "" + getNonNegatieveInteger(getProperty(properties, MAX_CONNECTIONS));
+    String minConnections = String.valueOf(getNonNegatieveInteger(getProperty(properties, MIN_CONNECTIONS)));
+    String maxConnections = String.valueOf(getNonNegatieveInteger(getProperty(properties, MAX_CONNECTIONS)));
 
     if (log.isDebugEnabled()) {
       log.debug(pad_right("Persistence unit", ".", LOG_LINE_LENGTH) + ": " + persistenceUnitName);
@@ -131,7 +136,8 @@ public final class GbaWsEclipseLinkUtil {
 
     if (StringUtils.isBlank(finalUrl)) {
       if (databaseType.equals(DB_POSTGRES)) {
-        finalUrl = String.format("jdbc:postgresql://%s:%s/%s", server, port, database);
+        String currentSchema = isNotBlank(schema) ? "?currentSchema=" + schema : "";
+        finalUrl = String.format("jdbc:postgresql://%s:%s/%s%s", server, port, database, currentSchema);
       } else if (databaseType.equals(DB_ORACLE)) {
         finalUrl = String.format("jdbc:oracle:thin:@%s:%s:%s", server, port, database);
       }
@@ -145,13 +151,13 @@ public final class GbaWsEclipseLinkUtil {
       }
     }
 
-    if (StringUtils.isNotBlank(keepalive)) {
+    if (isNotBlank(keepalive)) {
       configuration.put(TCP_KEEPALIVE, keepalive);
       log.info("TCP keepalive enabled");
     }
 
     log.info("JPA connection: " + finalUrl);
-    configuration.put(PersistenceUnitProperties.SESSION_NAME, finalUrl);
+    configuration.put(PersistenceUnitProperties.SESSION_NAME, String.format("%s (%s)", finalUrl, UUID.randomUUID()));
     configuration.put(PersistenceUnitProperties.JDBC_URL, finalUrl);
     configuration.put(PersistenceUnitProperties.JDBC_DRIVER, finalDriver);
 

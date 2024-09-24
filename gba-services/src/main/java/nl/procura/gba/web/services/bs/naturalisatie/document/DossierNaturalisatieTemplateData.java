@@ -76,6 +76,8 @@ public class DossierNaturalisatieTemplateData extends DocumentTemplateData {
         // Behandeling
         put("andereOuderAkkoord", toFieldValue(gegevens.getAndereOuderAkkoordType()));
         put("advies", toFieldValue(gegevens.getAdviesBurgermeesterType()));
+        put("datumKoninklijkBesluit", toFieldValue(gegevens.getBehDKoningBesluit()));
+        put("nummerKoninklijkBesluit", gegevens.getBehNrKoningBesluit());
         put("beslissing", toFieldValue(gegevens.getBeslissingType()));
         put("datumBevestiging", toFieldValue(gegevens.getBehDBevest()));
         put("ceremonies", new Ceremonies(gegevens));
