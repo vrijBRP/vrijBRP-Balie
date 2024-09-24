@@ -217,10 +217,11 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
     boolean isCuratele = !idkaart && this.getPl().getGezag().staatOnderCuratele();
 
     ReisdocumentService service = getApplication().getServices().getReisdocumentService();
-    service.save(getAanvraag());
 
     // Een ID opvragen in het Zaak-DMS
     getApplication().getServices().getZaakIdentificatieService().getDmsZaakId(getAanvraag());
+
+    service.save(getAanvraag());
 
     if (isLeeftijdToestemming || isCuratele) {
       // Naar toestemmingenscherm

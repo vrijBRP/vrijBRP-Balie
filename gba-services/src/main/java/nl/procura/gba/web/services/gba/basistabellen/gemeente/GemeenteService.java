@@ -152,11 +152,9 @@ public class GemeenteService extends AbstractService {
         bestaandeGemeente.setAdres(gemeente.getAdres());
         bestaandeGemeente.setPc(gemeente.getPc());
         bestaandeGemeente.setPlaats(gemeente.getPlaats());
-
         save(bestaandeGemeente);
 
       } else {
-
         save(gemeente);
       }
     }

@@ -19,6 +19,7 @@
 
 package nl.procura.diensten.gba.ple.base;
 
+import static nl.procura.burgerzaken.gba.StringUtils.isBlank;
 import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.CURRENT;
 import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.MUTATION;
 import static nl.procura.standard.Globalfunctions.astr;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
+import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
 
 public class BasePLSet implements Serializable {
@@ -37,8 +39,8 @@ public class BasePLSet implements Serializable {
   private GBACat                catType       = GBACat.UNKNOWN;
   private int                   extIndex      = 1;                 // External index
   private int                   intIndex      = 1;                 // Internal index in Procura DB
-  private boolean               mostRecentSet = false;             // Used for marriage category
-  private BasePLList<BasePLRec> recs          = new BasePLList<>();
+  private boolean                     mostRecentSet = false;             // Used for marriage category
+  private final BasePLList<BasePLRec> recs          = new BasePLList<>();
 
   public BasePLSet(GBACat catType, int index) {
     setCatType(catType);
@@ -96,6 +98,12 @@ public class BasePLSet implements Serializable {
    */
   public BasePLRec getLatestRec() {
     return getRec(MUTATION, CURRENT);
+  }
+
+  public List<BasePLRec> getOfficialHistRecs() {
+    return getHistRecs().stream()
+        .filter(rec -> isBlank(rec.getElemVal(GBAElem.IND_ONJUIST).getVal()))
+        .collect(Collectors.toList());
   }
 
   public List<BasePLRec> getHistRecs() {

@@ -19,13 +19,25 @@
 
 package nl.procura.gba.web.components.layouts.page;
 
-import static com.vaadin.event.ShortcutAction.KeyCode.*;
+import static com.vaadin.event.ShortcutAction.KeyCode.ENTER;
+import static com.vaadin.event.ShortcutAction.KeyCode.F1;
+import static com.vaadin.event.ShortcutAction.KeyCode.F10;
+import static com.vaadin.event.ShortcutAction.KeyCode.F12;
+import static com.vaadin.event.ShortcutAction.KeyCode.F2;
+import static com.vaadin.event.ShortcutAction.KeyCode.F3;
+import static com.vaadin.event.ShortcutAction.KeyCode.F7;
+import static com.vaadin.event.ShortcutAction.KeyCode.F8;
+import static com.vaadin.event.ShortcutAction.KeyCode.F9;
 
 import java.util.Set;
 
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.Window;
 
 import nl.procura.gba.web.common.exceptions.ExceptionHandler;
 import nl.procura.gba.web.components.layouts.page.buttons.ButtonDelete;
@@ -173,6 +185,8 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
       onClose();
     } else if (isKeyCode(null, keyCode, ENTER)) {
       onEnter();
+    } else if (isKeyCode(null, keyCode, F10)) {
+      onMenu();
     } else if (isKeyCode(null, keyCode, F12)) {
       onHome();
     }
@@ -208,6 +222,9 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
   public void onPrint() {
   }
 
+  public void onMenu() {
+  }
+
   public void removeButton(Component... cs) {
 
     for (Component c : cs) {
@@ -226,7 +243,6 @@ public class ButtonPageTemplate extends GbaPageTemplate implements ClickListener
 
     // Controle of corresponderende button wel 'aanstaat'.
     for (Button pressedButton : pressedButtons) {
-
       boolean buttonIsPressed = button == pressedButton;
       boolean keyCodeUsed = keyCode > 0 && keyCode == functionKey;
       boolean buttonIsAvailable = pressedButton.getParent() != null && pressedButton.isEnabled()

@@ -19,6 +19,10 @@
 
 package nl.procura.gba.web.modules.bs.erkenning.page40;
 
+import static nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType.KIND_EN_RECHTBANK;
+import static nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType.MOEDER_EN_RECHTBANK;
+import static nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType.RECHTBANK;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +32,9 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNav
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.erkenning.ErkenningService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -106,5 +112,30 @@ public class Page40Erkenning extends BsPrintPage<DossierErkenning> {
     }
 
     return types.toArray(new DocumentType[0]);
+  }
+
+  @Override
+  public boolean onSelectDocument(DocumentRecord doc, boolean isPreSelect) {
+    if (doc.getDocumentKenmerken().get(DocumentKenmerkType.ERKENNING_1) != null) {
+      if (isSpecifiekeToestemminggever(getZaakDossier())) {
+        return true;
+      }
+    }
+
+    if (doc.getDocumentKenmerken().get(DocumentKenmerkType.ERKENNING_2) != null) {
+      if (isGezagOpJaGezet(getZaakDossier())) {
+        return true;
+      }
+    }
+
+    return super.onSelectDocument(doc, isPreSelect);
+  }
+
+  private boolean isSpecifiekeToestemminggever(DossierErkenning erkenning) {
+    return erkenning.getToestemminggeverType().is(RECHTBANK, KIND_EN_RECHTBANK, MOEDER_EN_RECHTBANK);
+  }
+
+  private boolean isGezagOpJaGezet(DossierErkenning erkenning) {
+    return erkenning.isVerklaringGezag();
   }
 }

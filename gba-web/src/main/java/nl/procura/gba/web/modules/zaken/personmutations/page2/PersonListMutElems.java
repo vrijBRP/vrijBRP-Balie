@@ -24,10 +24,29 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import com.vaadin.event.FieldEvents;
+import com.vaadin.ui.AbstractField;
+
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
 
 public class PersonListMutElems extends ArrayList<PersonListMutElem> {
+
+  private PersonListMutElem focusedElement;
+
+  public void setField(PersonListMutElem mutElem, AbstractField field) {
+    mutElem.setField(field);
+    if (field instanceof FieldEvents.FocusNotifier) {
+      ((FieldEvents.FocusNotifier) field).addListener(event -> {
+        focusedElement = mutElem;
+      });
+    }
+    if (field instanceof FieldEvents.BlurNotifier) {
+      ((FieldEvents.BlurNotifier) field).addListener(event -> {
+        focusedElement = null;
+      });
+    }
+  }
 
   public boolean isAllBlank(GBAElem... elems) {
     return Arrays.stream(elems)
@@ -60,5 +79,9 @@ public class PersonListMutElems extends ArrayList<PersonListMutElem> {
 
   public void validateAll() {
     this.forEach(mutElem -> mutElem.getField().validate());
+  }
+
+  public PersonListMutElem getFocusedElement() {
+    return focusedElement;
   }
 }

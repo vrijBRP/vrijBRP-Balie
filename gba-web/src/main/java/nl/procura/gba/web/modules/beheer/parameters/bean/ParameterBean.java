@@ -115,7 +115,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RAA
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RAAS_IDENT_BEWIJS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_PV_NR;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_SIGNAL_INFO;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_TERMIJN_WIJZIGING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_WIJZIGING_GEZAG;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REMEMBER_ME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RISKANALYSIS_RELOCATION_IND;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_AANPASSINGEN;
@@ -1361,12 +1361,12 @@ public class ParameterBean implements Serializable {
       width = "400px")
   private String reisdocumentPvNr = "";
 
-  @ParameterAnnotation(REISD_TERMIJN_WIJZIGING)
+  @ParameterAnnotation(REISD_WIJZIGING_GEZAG)
   @Position(order = "02")
   @Field(customTypeClass = DatumVeld.class,
-      caption = "Ingangsdatum nieuwe reglementen",
+      caption = "Ingangsdatum wijziging afleiding gezag",
       width = "80px")
-  private String reisdocumentReglementenWijziging = "";
+  private String reisdocumentGezagsRegels = "";
 
   @ParameterAnnotation(REISD_SIGNAL_INFO)
   @Position(order = "03")

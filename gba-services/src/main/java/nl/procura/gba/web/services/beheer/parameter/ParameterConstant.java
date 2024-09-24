@@ -476,8 +476,8 @@ public enum ParameterConstant implements ParameterType {
   REISD_PV_NR("reisd_pv_nr", "Standaard proces-verbaalnummer",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  REISD_TERMIJN_WIJZIGING("reisd_termijn_wijziging", "Ingangsdatum nieuwe reglementen",
-      GROUP_REISDOCUMENTEN, true, false, false, "20140309"),
+  REISD_WIJZIGING_GEZAG("reisd_wijziging_gezag", "Ingangsdatum nieuwe reglementen",
+      GROUP_REISDOCUMENTEN, true, false, false, "20230101"),
 
   REISD_SIGNAL_INFO("reisd_signal_info", "Toelichting bij signalering",
       GROUP_REISDOCUMENTEN, true, false, false,

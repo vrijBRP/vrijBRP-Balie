@@ -33,6 +33,7 @@ public class Page35GeboorteBeanErk implements Serializable {
   public static final String DATUM                = "datum";
   public static final String AKTENR               = "aktenr";
   public static final String TOESTEMMINGGEVER     = "toestemminggever";
+  public static final String VERKLARING_GEZAG     = "verklaringGezag";
   public static final String NAAMSKEUZE           = "naamskeuze";
   public static final String NAAMSAANDUIDING_TYPE = "naamsAanduidingType";
   public static final String RECHT                = "recht";
@@ -52,6 +53,10 @@ public class Page35GeboorteBeanErk implements Serializable {
   @Field(type = FieldType.LABEL,
       caption = "Toestemminggever")
   private String toestemminggever = "";
+
+  @Field(type = FieldType.LABEL,
+      caption = "Verklaring moeder+erkenner m.b.t gezag bij moeder?")
+  private String verklaringGezag = "";
 
   @Field(type = FieldType.LABEL,
       caption = "Naamskeuze")
@@ -119,5 +124,13 @@ public class Page35GeboorteBeanErk implements Serializable {
 
   public void setToestemminggever(String toestemminggever) {
     this.toestemminggever = toestemminggever;
+  }
+
+  public String getVerklaringGezag() {
+    return verklaringGezag;
+  }
+
+  public void setVerklaringGezag(String verklaringGezag) {
+    this.verklaringGezag = verklaringGezag;
   }
 }

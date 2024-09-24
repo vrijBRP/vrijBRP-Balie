@@ -60,6 +60,7 @@ public class KoppelKenmerkTabel<K extends KoppelbaarAanDocumentKenmerk> extends 
     addColumn("Status", 100).setUseHTML(true);
     addColumn("ID", 50);
     addColumn("Naam");
+    addColumn("Omschrijving");
   }
 
   @Override
@@ -75,6 +76,7 @@ public class KoppelKenmerkTabel<K extends KoppelbaarAanDocumentKenmerk> extends 
       r.addValue(KoppelActie.get(isKoppelObjectenGekoppeld).getStatus());
       r.addValue(kenmerk.getCode());
       r.addValue(kenmerk.getKenmerkType());
+      r.addValue(kenmerk.getKenmerkType().getToel());
     }
   }
 }

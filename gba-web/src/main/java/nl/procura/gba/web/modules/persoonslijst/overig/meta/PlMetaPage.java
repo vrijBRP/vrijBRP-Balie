@@ -20,7 +20,11 @@
 package nl.procura.gba.web.modules.persoonslijst.overig.meta;
 
 import static java.lang.String.format;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.UNKNOWN;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.DELETE_MUT;
 import static nl.procura.standard.Globalfunctions.fil;
@@ -28,7 +32,11 @@ import static nl.procura.standard.Globalfunctions.fil;
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
@@ -225,6 +233,11 @@ public class PlMetaPage extends PlPage {
 
     if (getGbaRecord().isBagChange()) {
       value.append(setClass(false, "DUBBEL IVM BAG WIJZIGING"));
+      value.append(" - ");
+    }
+
+    if (getGbaRecord().isInOnderzoek()) {
+      value.append(setClass(false, "IN ONDERZOEK"));
       value.append(" - ");
     }
 

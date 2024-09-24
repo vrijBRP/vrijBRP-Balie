@@ -125,6 +125,7 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
           bp.setLandErkenning(bean.getLand());
           bp.setBuitenlandsePlaats(bean.getPlaats());
           bp.setToestemminggeverType(bean.getToestemminggeverType());
+          bp.setVerklaringGezag(bean.isVerklaringGezag());
           bp.setRechtbank(RECHTBANK.equals(bean.getToestemminggeverType()) ? bean.getRechtbank().getCode() : "");
           bp.setNaamskeuzeType(bean.getNaamskeuzeType());
           bp.setNaamskeuzePersoon(JA.equals(bean.getNaamskeuzeType()) ? ERKENNER : bean.getNaamsPersoonType());

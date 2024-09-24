@@ -19,10 +19,6 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
-import java.util.Comparator;
-
-import org.apache.commons.lang3.builder.CompareToBuilder;
-
 import com.vaadin.ui.Embedded;
 
 import nl.procura.diensten.gba.ple.base.BasePL;
@@ -42,8 +38,8 @@ public class Page2PersonListMutationsTable extends AbstractPersonMutationsTable 
 
   @Override
   public void setColumns() {
-    addColumn("Groep", 160).setUseHTML(true);
-    addColumn("Element", 400);
+    addColumn("Groep", 210).setUseHTML(true);
+    addColumn("Element", 340);
     addColumn("Admin.", 45).setClassType(Embedded.class);
     addColumn("Huidige waarde");
 
@@ -87,32 +83,6 @@ public class Page2PersonListMutationsTable extends AbstractPersonMutationsTable 
   }
 
   private void sort(PersonListMutElems list) {
-    list.sort(new Sorter());
-  }
-
-  private static class Sorter implements Comparator<PersonListMutElem> {
-
-    @Override
-    public int compare(PersonListMutElem o1, PersonListMutElem o2) {
-
-      int cat1 = o1.getTypes().getCat().getCode();
-      int cat2 = o2.getTypes().getCat().getCode();
-
-      int grp1 = o1.getTypes().getGroup().getCode();
-      int grp2 = o2.getTypes().getGroup().getCode();
-
-      int set1 = o1.getSet().getExtIndex();
-      int set2 = o2.getSet().getExtIndex();
-
-      int elem1 = o1.getElem().getElemCode();
-      int elem2 = o2.getElem().getElemCode();
-
-      return new CompareToBuilder()
-          .append(cat1, cat2)
-          .append(grp1, grp2)
-          .append(set1, set2)
-          .append(elem1, elem2)
-          .toComparison();
-    }
+    list.sort(new PersonListMutElemSorter());
   }
 }

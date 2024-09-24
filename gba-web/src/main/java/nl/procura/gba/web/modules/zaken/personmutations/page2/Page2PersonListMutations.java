@@ -20,12 +20,12 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
 import static com.vaadin.event.ShortcutAction.KeyCode.F4;
-import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.NO_ACTION_INCORRECT_HIST;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
 
 import com.vaadin.ui.Button;
+
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -41,6 +41,8 @@ import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.standard.exceptions.ProException;
+import nl.procura.vaadin.component.dialog.ConfirmDialog;
+import nl.procura.vaadin.theme.twee.ProcuraTheme.ICOON_24;
 
 public class Page2PersonListMutations extends NormalPageTemplate {
 
@@ -66,11 +68,9 @@ public class Page2PersonListMutations extends NormalPageTemplate {
     form = new Page2PersonListMutationsForm(getNewPL(), layout);
     bcmCheckResultLayout = new Page2BCMCheckResultLayout();
 
-    addComponent(bcmCheckResultLayout);
-    bcmCheckResultLayout.setVisible(false);
     addComponent(form);
-    addComponent(layout);
-    setExpandRatio(layout, 1.0F);
+    addExpandComponent(layout);
+    setHeight(getWindow().getBrowserWindowHeight() - 50, UNITS_PIXELS);
 
     super.initPage();
   }
@@ -133,17 +133,42 @@ public class Page2PersonListMutations extends NormalPageTemplate {
 
     } else if (record == null) {
       throw new ProException(INFO, "Geen record geselecteerd");
+    }
 
-    } else if (NO_ACTION_INCORRECT_HIST == action.getItem()) {
-      throw new ProException(INFO, action.getItem().getDescription());
+    PersonListMutElems elements = layout.getTable().getElementRecords();
+    if (elements.isEmpty()) {
+      throw new ProException(NO_RESULTS, WARNING, "Er zijn geen BRP elementen geselecteerd");
     }
 
     if (!action.getItem().isSuperuser() && getPl().getCat(GBACat.INSCHR)
         .getLatestRec()
         .getElemVal(GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD)
         .isNotBlank()) {
-      throw new ProException(WARNING, "Deze actie is niet mogelijk omdat de persoonslijst is opgeschort");
+
+      getApplication().getParentWindow()
+          .addWindow(new ConfirmDialog("Deze persoonslijst is opgeschort",
+              "Alleen wijzigingen met een datum geldigheid vóór de datum opschorting zijn toegestaan. Doorgaan?",
+              "400px", ICOON_24.WARNING) {
+
+            @Override
+            public void buttonYes() {
+              doNextPage(category, action, set, record, elements);
+              super.buttonYes();
+            }
+          });
+
+    } else {
+      doNextPage(category, action, set, record, elements);
     }
+
+    super.onNextPage();
+  }
+
+  private void doNextPage(ContainerItem<GBACat> category,
+      ContainerItem<PersonListActionType> action,
+      ContainerItem<BasePLSet> set,
+      ContainerItem<BasePLRec> record,
+      PersonListMutElems elements) {
 
     // Create a new mutation record
     PersonListMutation mutation = getServices().getPersonListMutationService().getNewZaak();
@@ -153,19 +178,12 @@ public class Page2PersonListMutations extends NormalPageTemplate {
     mutation.setDescrSet(set.toString());
     mutation.setDescrRec(record.toString());
 
-    PersonListMutElems elements = layout.getTable().getElementRecords();
-    if (elements.isEmpty()) {
-      throw new ProException(NO_RESULTS, WARNING, "Er zijn geen BRP elementen geselecteerd");
-    }
-
-    if (action.getItem().is(PersonListActionType.DELETE_MUT)) {
-      getNavigation().goToPage(new Page4PersonListMutations(mutation, new PersonListMutElems()));
+    if (action.getItem().isSkipElements()) {
+      getNavigation().goToPage(new Page4PersonListMutations(mutation, elements));
 
     } else {
       getNavigation().goToPage(new Page3PersonListMutations(elements, mutation));
     }
-
-    super.onNextPage();
   }
 
   @Override
@@ -191,7 +209,8 @@ public class Page2PersonListMutations extends NormalPageTemplate {
     Page2BCMCheckResultLayout newBcmCheckResultLayout = new BCMCheckResultLayoutBuilder(
         getPL().getPersoon().getAnr().getDescr(),
         getApplication()).getBcmCheckResultLayout();
-    replaceComponent(bcmCheckResultLayout, newBcmCheckResultLayout);
+    removeComponent(bcmCheckResultLayout);
+    addComponent(newBcmCheckResultLayout, getComponentIndex(form));
     bcmCheckResultLayout = newBcmCheckResultLayout;
   }
 

@@ -19,7 +19,16 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.*;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.BIJZONDERHEDEN;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.LAND;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.NAAMS_PERSOON_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.PLAATS;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.TITEL;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanNk.VOORV;
 
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -31,7 +40,7 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanNk> {
 
   public Page35GeboorteFormNk(DossierGeboorte geboorte) {
-    setColumnWidths("140px", "");
+    setColumnWidths("200px", "");
     setOrder(LAND, GEMEENTE, PLAATS, DATUM, AKTENR, NAAMS_PERSOON_TYPE, GESLACHTSNAAM, VOORV, TITEL, BIJZONDERHEDEN);
     setGeboorte(geboorte);
     setCaptionAndOrder();

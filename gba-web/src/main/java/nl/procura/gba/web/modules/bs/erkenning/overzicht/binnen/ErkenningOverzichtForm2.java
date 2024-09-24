@@ -24,16 +24,19 @@ import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.Erkenning
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
 
+import com.vaadin.ui.Field;
+
 import nl.procura.diensten.gba.ple.openoffice.formats.Geboorteformats;
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
+import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class ErkenningOverzichtForm2 extends ReadOnlyForm<ErkenningOverzichtBean2> {
 
   public ErkenningOverzichtForm2(DossierErkenning erkenning) {
 
-    setColumnWidths("180px", "250px", "60px", "");
+    setColumnWidths("180px", "300px", "60px", "");
 
     setCaptionAndOrder();
 
@@ -58,6 +61,7 @@ public class ErkenningOverzichtForm2 extends ReadOnlyForm<ErkenningOverzichtBean
       bean.setKeuzegeslachtsnaam(erkenning.getKeuzeGeslachtsnaam());
       bean.setKeuzevoorv(erkenning.getKeuzeVoorvoegsel());
       bean.setKeuzetitel(erkenning.getKeuzeTitel());
+      bean.setVerklaringGezag(erkenning.isVerklaringGezag() ? "Ja" : "Nee");
     }
 
     setBean(bean);
@@ -90,6 +94,14 @@ public class ErkenningOverzichtForm2 extends ReadOnlyForm<ErkenningOverzichtBean
       getField(TOESTEMMING_RECHT_KIND).setVisible(pos(getBean().getToestemmingrechtKind().getValue()));
       repaint();
     }
+  }
+
+  @Override
+  public void setColumn(Column column, Field field, Property property) {
+    if (property.is(TOESTEMMING_RECHT_MOEDER, TOESTEMMING_RECHT_KIND)) {
+      column.setColspan(3);
+    }
+    super.setColumn(column, field, property);
   }
 
   @Override

@@ -19,7 +19,21 @@
 
 package nl.procura.gba.web.modules.bs.erkenning.overzicht;
 
-import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.*;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.AFSTAMMINGS_RECHT;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.GEBOREN_ERKENNER;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.GEBOREN_MOEDER;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.KEUZE_GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.KEUZE_TITEL;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.KEUZE_VOORV;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.NAAMSKEUZE;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.NAAMSKEUZE_PERSOON;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.NAAM_ERKENNER;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.NAAM_MOEDER;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.NAMENRECHT;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.TOESTEMMING_GEVER;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.TOESTEMMING_RECHT_KIND;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.TOESTEMMING_RECHT_MOEDER;
+import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.VERKLARING_GEZAG;
 import static nl.procura.standard.Globalfunctions.pos;
 
 import com.vaadin.ui.VerticalLayout;
@@ -52,7 +66,6 @@ public class ErkenningOverzichtLayout extends VerticalLayout {
 
       @Override
       public void setCaptionAndOrder() {
-
         setCaption("Moeder");
         setOrder(NAAM_MOEDER, GEBOREN_MOEDER);
       }
@@ -62,7 +75,6 @@ public class ErkenningOverzichtLayout extends VerticalLayout {
 
       @Override
       public void setCaptionAndOrder() {
-
         setCaption("Erkenner");
         setOrder(NAAM_ERKENNER, GEBOREN_ERKENNER);
       }
@@ -72,7 +84,6 @@ public class ErkenningOverzichtLayout extends VerticalLayout {
 
       @Override
       public void setCaptionAndOrder() {
-
         setCaption("Afstamming");
         setOrder(AFSTAMMINGS_RECHT);
         setColumnWidths("180px", "");
@@ -83,10 +94,9 @@ public class ErkenningOverzichtLayout extends VerticalLayout {
 
       @Override
       public void setCaptionAndOrder() {
-
-        setCaption("Toestemming");
-        setColumnWidths("180px", "");
-        setOrder(TOESTEMMING_GEVER, TOESTEMMING_RECHT_MOEDER, TOESTEMMING_RECHT_KIND);
+        setCaption("Toestemming & gezag");
+        setColumnWidths("180px", "300px", "180px", "");
+        setOrder(TOESTEMMING_GEVER, VERKLARING_GEZAG, TOESTEMMING_RECHT_MOEDER, TOESTEMMING_RECHT_KIND);
       }
     };
 
@@ -94,9 +104,8 @@ public class ErkenningOverzichtLayout extends VerticalLayout {
 
       @Override
       public void setCaptionAndOrder() {
-
         setCaption("Namenrecht");
-        setColumnWidths("180px", "250px", "120px", "");
+        setColumnWidths("180px", "300px", "120px", "");
         setOrder(KEUZE_GESLACHTSNAAM, NAMENRECHT, KEUZE_VOORV, NAAMSKEUZE, KEUZE_TITEL, NAAMSKEUZE_PERSOON);
       }
     };

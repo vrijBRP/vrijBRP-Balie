@@ -19,7 +19,16 @@
 
 package nl.procura.gba.web.modules.beheer.verkiezing.page2;
 
-import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.*;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_AANTAL_STEMPASSEN;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_AANTAL_VOlMACHTEN;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_AFK_VERK;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_BRIEFSTEMBEWIJS;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_DATUM_KAND;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_DATUM_VERK;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_GEMACHTIGDE_KIESREGISTER;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_GEMEENTE;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_KIEZERSPAS;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page2.Page2VerkiezingBean.F_VERK;
 
 import nl.procura.gba.jpa.personen.db.KiesrVerk;
 import nl.procura.gba.web.common.tables.GbaTables;
@@ -30,7 +39,7 @@ public class Page2VerkiezingForm extends GbaForm<Page2VerkiezingBean> {
   public Page2VerkiezingForm(KiesrVerk verkiezing) {
     setCaption("Verkiezing");
     setOrder(F_GEMEENTE, F_AFK_VERK, F_VERK, F_DATUM_KAND, F_DATUM_VERK, F_KIEZERSPAS, F_BRIEFSTEMBEWIJS,
-        F_AANTAL_VOlMACHTEN, F_AANTAL_STEMPASSEN);
+        F_AANTAL_VOlMACHTEN, F_GEMACHTIGDE_KIESREGISTER, F_AANTAL_STEMPASSEN);
     setColumnWidths("180px", "");
 
     Page2VerkiezingBean bean = new Page2VerkiezingBean();
@@ -41,6 +50,7 @@ public class Page2VerkiezingForm extends GbaForm<Page2VerkiezingBean> {
     bean.setDatumVerkiezing(verkiezing.getdVerk());
     bean.setKiezerspas(verkiezing.isIndKiezerspas());
     bean.setBriefstembewijs(verkiezing.isIndBriefstembewijs());
+    bean.setGemachtigdeKiesregister(verkiezing.isIndGemachtKiesr());
     bean.setAantalVolmachten(verkiezing.getAantalVolm());
     setBean(bean);
   }

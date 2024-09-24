@@ -19,7 +19,10 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
-import static nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutationsBean.*;
+import static nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutationsBean.ACTION;
+import static nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutationsBean.CAT;
+import static nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutationsBean.RECORD;
+import static nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutationsBean.SET;
 
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Field;
@@ -30,7 +33,12 @@ import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
-import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.*;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.ActionContainer;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.CategoryContainer;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.ContainerItem;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.MutationFieldContainer;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.RecordContainer;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.SetContainer;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.vaadin.component.layout.table.TableLayout;
 
@@ -172,6 +180,7 @@ public class Page2PersonListMutationsForm extends GbaForm<Page2PersonListMutatio
     if (cat != null && rec != null) {
       ActionContainer container = new ActionContainer(getApplication(), pl, cat, set, rec);
       getActField().setContainerDataSource(container);
+      getActField().setValue(container.getFirstItem());
       actNav.update(container.size());
       recNav.setCurrent(rec);
     }

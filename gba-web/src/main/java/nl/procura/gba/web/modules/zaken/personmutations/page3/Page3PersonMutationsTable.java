@@ -36,12 +36,14 @@ class Page3PersonMutationsTable extends AbstractPersonMutationsTable {
   @Override
   public void setColumns() {
     addStyleName("tmv_table");
+    addStyleName("hide-required-field-indicator");
 
-    addColumn("Groep", 160).setUseHTML(true);
-    addColumn("Element", 400);
+    addColumn("Groep", 210).setUseHTML(true);
+    addColumn("Element", 340);
     addColumn("Admin.", 45).setClassType(Component.class);
     addColumn("Huidige waarde", 330);
     addColumn("Nieuwe waarde").setClassType(Component.class);
+    addColumn("&nbsp;", 30).setClassType(Component.class);
 
     super.setColumns();
   }
@@ -57,7 +59,8 @@ class Page3PersonMutationsTable extends AbstractPersonMutationsTable {
             record.addValue(mutElem.getElemType().getDescrAndCode());
             record.addValue(getCheckbox(mutElem.getElemType().isAdmin()));
             record.addValue(mutElem.getCurrentValue().getDescr());
-            record.addValue(mutElem.getField());
+            record.addValue(mutElem.getTableComponent());
+            record.addValue(new ClearButton(mutElem));
           }
         }
       }

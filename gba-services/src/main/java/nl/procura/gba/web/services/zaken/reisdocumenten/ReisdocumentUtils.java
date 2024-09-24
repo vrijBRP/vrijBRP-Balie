@@ -22,8 +22,20 @@ package nl.procura.gba.web.services.zaken.reisdocumenten;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
 import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
-import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.EERSTE_NATIONAAL_PASPOORT;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.EERSTE_ZAKENPASPOORT;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.FACILITEITEN_PASPOORT;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.NEDERLANDSE_IDENTITEITSKAART;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.TWEEDE_NATIONAAL_PASPOORT;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.TWEEDE_ZAKENPASPOORT;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VLUCHTELINGEN_PASPOORT;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VREEMDELINGEN_PASPOORT;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.str2date;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,7 +268,7 @@ public class ReisdocumentUtils {
    * Zijn de nieuwe regels van 09-03-2014 van toepassing
    */
   public static boolean isNieuweReisdocumentenRegelsVanToepassing(ReisdocumentService reisdocumenten) {
-    String datumIngang = str2date(reisdocumenten.getParm(ParameterConstant.REISD_TERMIJN_WIJZIGING));
+    String datumIngang = str2date(reisdocumenten.getParm(ParameterConstant.REISD_WIJZIGING_GEZAG));
     return pos(datumIngang) && aval(new ProcuraDate().diffInDays(astr(datumIngang))) <= 0;
   }
 
@@ -278,8 +290,8 @@ public class ReisdocumentUtils {
       partnerPl = ouder1Pl;
     }
 
+    t.getConstateringen().clear();
     switch (t.getType()) {
-
       case OUDER_1:
       case OUDER_2:
         if (ouderPl.getLatestRec(PERSOON).hasElems()) {
@@ -297,7 +309,8 @@ public class ReisdocumentUtils {
         if (leeftijdToestemming) {
           GezagAfleiding gafleiding = GezagUtils.getGezagsStatusOuder(pl, ouderPl, partnerPl,
               t.getConstateringen(),
-              t.getType().getCode());
+              t.getType().getCode(),
+              db);
           GezagStatus gs = gafleiding.getGezagStatus();
           t.setGezagStatus(gs);
         } else {

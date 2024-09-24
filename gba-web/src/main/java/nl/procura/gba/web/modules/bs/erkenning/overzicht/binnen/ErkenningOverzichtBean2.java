@@ -38,6 +38,7 @@ public class ErkenningOverzichtBean2 implements Serializable {
   public static final String TOESTEMMING_GEVER        = "toestemminggever";
   public static final String TOESTEMMING_RECHT_MOEDER = "toestemmingrechtMoeder";
   public static final String TOESTEMMING_RECHT_KIND   = "toestemmingrechtKind";
+  public static final String VERKLARING_GEZAG         = "verklaringGezag";
 
   public static final String AFSTAMMINGS_RECHT   = "afstammingsRecht";
   public static final String KEUZE_GESLACHTSNAAM = "keuzegeslachtsnaam";
@@ -70,6 +71,10 @@ public class ErkenningOverzichtBean2 implements Serializable {
   @Field(type = FieldType.LABEL,
       caption = "Toegepast recht op het kind")
   private FieldValue toestemmingrechtKind = new FieldValue();
+
+  @Field(type = FieldType.LABEL,
+      caption = "Verklaring moeder+erkenner m.b.t gezag bij moeder?")
+  private String verklaringGezag = "";
 
   @Field(type = FieldType.LABEL,
       caption = "Toestemming gegeven door")
@@ -215,4 +220,11 @@ public class ErkenningOverzichtBean2 implements Serializable {
     this.toestemmingrechtMoeder = toestemmingrechtMoeder;
   }
 
+  public String getVerklaringGezag() {
+    return verklaringGezag;
+  }
+
+  public void setVerklaringGezag(String verklaringGezag) {
+    this.verklaringGezag = verklaringGezag;
+  }
 }

@@ -19,7 +19,24 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page21;
 
-import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.*;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONCLUSIE1;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONCLUSIE2;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONCLUSIE3;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONCLUSIE4;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONSTATERING1;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONSTATERING2;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONSTATERING3;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CONSTATERING4;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CURATOR_LABEL;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.CURATOR_TEXT;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.DERDE_LABEL;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.DERDE_TEXT;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.OUDER1_LABEL;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.OUDER2_LABEL;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.TOESTEMMING1;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.TOESTEMMING2;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.TOESTEMMING3;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21ReisdocumentBean.TOESTEMMING4;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ToestemmingGegevenType.JA;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ToestemmingGegevenType.VERVANGENDE;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;

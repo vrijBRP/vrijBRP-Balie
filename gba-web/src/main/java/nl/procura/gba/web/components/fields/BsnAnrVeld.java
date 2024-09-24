@@ -37,9 +37,7 @@ public class BsnAnrVeld extends GbaTextField implements BlurListener {
   }
 
   private BsnAnrVeld(String naam) {
-
     super(naam);
-
     addValidator(new BsnAnrValidator());
     setValidationVisible(true);
     addListener((BlurListener) this);
@@ -61,11 +59,9 @@ public class BsnAnrVeld extends GbaTextField implements BlurListener {
 
   @Override
   protected void fireEvent(Event event) {
-
     String value = event.getSource().toString();
 
     if (fil(value)) {
-
       FieldValue fv = new FieldValue(value);
       setValue(fv.getStringValue(), fv.getDescription());
     }
@@ -88,19 +84,16 @@ public class BsnAnrVeld extends GbaTextField implements BlurListener {
   class Val extends FieldValue {
 
     private Val(Object value) {
-
       Bsn bsn = new Bsn(astr(value));
 
       if (bsn.isCorrect()) {
-
         setValue(bsn.getLongBsn());
         setDescription(bsn.getFormatBsn());
-      } else {
 
+      } else {
         Anummer anr = new Anummer(astr(value));
 
         if (anr.isCorrect()) {
-
           setValue(anr.getLongAnummer());
           setDescription(anr.getFormatAnummer());
         } else {

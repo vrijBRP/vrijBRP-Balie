@@ -22,7 +22,14 @@ package nl.procura.gba.jpa.personen.db;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "doss_erk")
@@ -69,6 +76,10 @@ public class DossErk extends BaseEntity {
   @Column(name = "b_geboorte",
       precision = 131089)
   private BigDecimal bGeboorte;
+
+  @Column(name = "b_verklaring_gezag",
+      precision = 131089)
+  private BigDecimal bVerklaringGezag;
 
   @Column(name = "c_land_naam_recht",
       precision = 131089)
@@ -281,5 +292,13 @@ public class DossErk extends BaseEntity {
 
   public void setDossErkGebs(List<DossGeb> dossErkGebs) {
     this.dossErkGebs = dossErkGebs;
+  }
+
+  public BigDecimal getbVerklaringGezag() {
+    return bVerklaringGezag;
+  }
+
+  public void setbVerklaringGezag(BigDecimal bVerklaringGezag) {
+    this.bVerklaringGezag = bVerklaringGezag;
   }
 }

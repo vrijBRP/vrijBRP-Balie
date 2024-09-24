@@ -19,7 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.*;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.GESLACHTSNAAM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.NAAMSKEUZE_PERSOON;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.TITEL;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanNk.VOORVOEGSEL;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.util.List;
@@ -34,7 +40,7 @@ public class Page35GeboorteFormNk extends ReadOnlyForm<Page35GeboorteBeanNk> {
 
   public Page35GeboorteFormNk(DossierGeboorte geboorte) {
 
-    setColumnWidths("140px", "");
+    setColumnWidths("200px", "");
     setOrder(GEMEENTE, DATUM, AKTENR, GESLACHTSNAAM, VOORVOEGSEL, TITEL, NAAMSKEUZE_PERSOON);
     setGeboorte(geboorte);
   }

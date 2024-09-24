@@ -60,7 +60,7 @@ public class Tab7DocumentenPage1 extends DocumentenTabPage {
         setMultiSelect(true);
 
         addColumn("Id", 50);
-        addColumn("Type", 200);
+        addColumn("Type", 300);
         addColumn("Omschrijving");
       }
 

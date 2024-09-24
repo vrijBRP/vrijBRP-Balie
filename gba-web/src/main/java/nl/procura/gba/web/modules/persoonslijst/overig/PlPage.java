@@ -32,7 +32,15 @@ import com.vaadin.ui.PopupView;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.Cat1PersoonExt;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
-import nl.procura.gba.web.components.layouts.page.*;
+import nl.procura.gba.web.components.layouts.page.AantekeningButton;
+import nl.procura.gba.web.components.layouts.page.ContactButton;
+import nl.procura.gba.web.components.layouts.page.GbavLabel;
+import nl.procura.gba.web.components.layouts.page.IdentificatieButton;
+import nl.procura.gba.web.components.layouts.page.IndicatieLabel;
+import nl.procura.gba.web.components.layouts.page.KassaButton;
+import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.components.layouts.page.PersonListMutationsButton;
+import nl.procura.gba.web.components.layouts.page.StatusButton;
 import nl.procura.gba.web.components.layouts.page.relaties.ZoekRelatiesLayout;
 import nl.procura.gba.web.components.layouts.page.relaties.ZoekRelatiesPopup;
 import nl.procura.gba.web.components.layouts.page.zoekhistorie.ZoekHistorieLayout;
@@ -74,16 +82,13 @@ public class PlPage extends NormalPageTemplate {
         if (property.is(STATUS)) {
 
           PersoonStatusOpslagEntry status = PersoonslijstStatus.getStoredStatus(getServices(), getPl());
-
           final StatusButton button = new StatusButton(status != null ? status.getStatus() : "", getPl());
 
           if (status != null) {
-
             column.addComponent(button);
+
           } else {
-
             button.setCaption(PersoonslijstStatus.getStatus(getServices(), getPl()));
-
             column.addComponent(button);
           }
         }

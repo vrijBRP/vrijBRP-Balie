@@ -19,7 +19,16 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.zoeken.personmutations;
 
-import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ACTIE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.CATEGORIE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DOORVERWERKEN_RELATIES;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEWIJZIGD;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.HUIDIG;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.MUTATIE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NIEUW;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NUMMER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.OMSCHRIJVING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.SET;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
@@ -44,11 +53,16 @@ public class GbaRestPersonMutationHandler extends GbaRestElementHandler {
     GbaRestElement mutElement = gbaZaak.add(MUTATIE);
     int cat = zaak.getCat().intValue();
     int action = zaak.getAction().intValue();
+    Boolean processRelations = zaak.getProcessRelations();
 
     mutElement.add(ACTIE).set(action, PersonListActionType.get(action).getDescription());
     mutElement.add(CATEGORIE).set(cat, GBACat.getByCode(cat).getDescr());
     mutElement.add(SET).set(zaak.getSet().toString());
     mutElement.add(OMSCHRIJVING).set(zaak.getExplanation());
+
+    if (processRelations != null) {
+      mutElement.add(DOORVERWERKEN_RELATIES).set(processRelations);
+    }
 
     for (PlMutRec mutationRecord : zaak.getPlMutRecs()) {
       GbaRestElement recElement = mutElement.add(GbaRestElementType.ELEMENT);

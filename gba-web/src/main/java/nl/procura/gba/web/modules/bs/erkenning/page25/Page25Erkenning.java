@@ -19,11 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.erkenning.page25;
 
-import static nl.procura.gba.web.modules.bs.erkenning.page25.Page25ErkenningBean2.*;
+import static nl.procura.gba.web.modules.bs.erkenning.page25.Page25ErkenningBean2.RECHT_KIND;
+import static nl.procura.gba.web.modules.bs.erkenning.page25.Page25ErkenningBean2.RECHT_MOEDER;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
 import static nl.procura.gba.web.services.bs.algemeen.functies.BsNatioUtils.heeftAsiel;
 import static nl.procura.gba.web.services.bs.algemeen.functies.BsNatioUtils.heeftNederlandseNationaliteit;
+import static nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType.KIND_EN_RECHTBANK;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
@@ -49,10 +51,11 @@ public class Page25Erkenning extends BsPageErkenning {
 
   private Page25ErkenningForm1 form1 = null;
   private Page25ErkenningForm2 form2 = null;
+  private Page25ErkenningForm3 form3 = null;
 
   public Page25Erkenning() {
 
-    super("Erkenning - toestemming");
+    super("Erkenning - toestemming & gezag");
 
     addButton(buttonPrev);
     addButton(buttonNext);
@@ -63,6 +66,7 @@ public class Page25Erkenning extends BsPageErkenning {
 
     form1.commit();
     form2.commit();
+    form3.commit();
 
     DossierErkenning dossier = getZaakDossier();
 
@@ -71,8 +75,11 @@ public class Page25Erkenning extends BsPageErkenning {
     dossier.setToestemminggeverType(form2.getBean().getToestemminggeverType());
     dossier.setToestemmingStap(toBigDecimal(0));
 
-    RechtbankLocatie rechtbank = form2.getBean().getRechtbank();
-    dossier.setRechtbank(rechtbank != null ? rechtbank.getCode() : null);
+    dossier.setRechtbank(null);
+    if (form2.getField(Page25ErkenningBean2.RECHTBANK).isVisible()) {
+      RechtbankLocatie rechtbank = form2.getBean().getRechtbank();
+      dossier.setRechtbank(rechtbank != null ? rechtbank.getCode() : null);
+    }
 
     // Als veld uitstaat dan niet opslaan
     if (!form2.getField(RECHT_KIND).isVisible()) {
@@ -82,6 +89,8 @@ public class Page25Erkenning extends BsPageErkenning {
     if (!form2.getField(RECHT_MOEDER).isVisible()) {
       dossier.setLandToestemmingsRechtMoeder(new FieldValue());
     }
+
+    dossier.setVerklaringGezag(form3.getBean().isVerklaring());
 
     getServices().getErkenningService().save(getDossier());
 
@@ -104,6 +113,11 @@ public class Page25Erkenning extends BsPageErkenning {
       addComponent(form1);
       addComponent(new Fieldset("Conclusie toestemmingsrecht"));
       addComponent(form2);
+      addComponent(new Fieldset("Gezag"));
+      addComponent(new InfoLayout("",
+          "De moeder en de persoon die een kind heeft erkend oefenen het gezag over hun kind "
+              + "gezamenlijk uit tenzij anders wordt verklaard."));
+      addComponent(form3);
 
       initWaarden();
     }
@@ -140,21 +154,23 @@ public class Page25Erkenning extends BsPageErkenning {
       @Override
       protected void onChangeToestemminggever(ToestemminggeverType toestemminggeverType) {
 
-        getField(RECHTBANK).setVisible(
-            toestemminggeverType.is(ToestemminggeverType.RECHTBANK, ToestemminggeverType.KIND_EN_RECHTBANK,
+        getField(Page25ErkenningBean2.RECHTBANK).setVisible(
+            toestemminggeverType.is(ToestemminggeverType.RECHTBANK, KIND_EN_RECHTBANK,
                 ToestemminggeverType.MOEDER_EN_RECHTBANK));
 
         getField(RECHT_MOEDER).setVisible(toestemminggeverType.is(ToestemminggeverType.MOEDER_EN_RECHTBANK,
             ToestemminggeverType.MOEDER_EN_KIND,
             ToestemminggeverType.MOEDER));
 
-        getField(RECHT_KIND).setVisible(toestemminggeverType.is(ToestemminggeverType.KIND_EN_RECHTBANK,
+        getField(RECHT_KIND).setVisible(toestemminggeverType.is(KIND_EN_RECHTBANK,
             ToestemminggeverType.MOEDER_EN_KIND,
             ToestemminggeverType.KIND));
 
         repaint();
       }
     };
+
+    form3 = new Page25ErkenningForm3(getZaakDossier());
   }
 
   private void initWaarden() {

@@ -36,8 +36,13 @@ import nl.procura.gba.web.services.bs.algemeen.enums.RechtbankLocatie;
 import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
 import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
 import nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
+import nl.procura.vaadin.component.container.NLBooleanContainer;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
@@ -49,6 +54,7 @@ public class Page35GeboorteBeanErk implements Serializable {
   public static final String AKTENR                 = "aktenr";
   public static final String DATUM                  = "datum";
   public static final String TOESTEMMINGGEVER_TYPE  = "toestemminggeverType";
+  public static final String VERKLARING_GEZAG       = "verklaringGezag";
   public static final String RECHTBANK              = "rechtbank";
   public static final String NAAMSKEUZE_TYPE        = "naamskeuzeType";
   public static final String NAAMS_PERSOON_TYPE     = "naamsPersoonType";
@@ -79,6 +85,14 @@ public class Page35GeboorteBeanErk implements Serializable {
       nullSelectionAllowed = false)
   @Immediate
   private ToestemminggeverType toestemminggeverType = null;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Verklaring moeder+erkenner m.b.t gezag bij moeder?")
+  @Select(nullSelectionAllowed = false,
+      containerDataSource = NLBooleanContainer.class,
+      itemCaptionPropertyId = NLBooleanContainer.JA_NEE)
+  @Immediate
+  private boolean verklaringGezag = false;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Rechtbank",
@@ -234,5 +248,13 @@ public class Page35GeboorteBeanErk implements Serializable {
 
   public void setToestemminggeverType(ToestemminggeverType toestemminggeverType) {
     this.toestemminggeverType = toestemminggeverType;
+  }
+
+  public boolean isVerklaringGezag() {
+    return verklaringGezag;
+  }
+
+  public void setVerklaringGezag(boolean verklaringGezag) {
+    this.verklaringGezag = verklaringGezag;
   }
 }

@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.beheer.documenten.page1.tab7.page2;
 
 import static nl.procura.gba.web.modules.beheer.documenten.page1.tab7.page2.Tab7DocumentenPage2Bean.KENMERK;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab7.page2.Tab7DocumentenPage2Bean.LABEL;
 import static nl.procura.gba.web.modules.beheer.documenten.page1.tab7.page2.Tab7DocumentenPage2Bean.TYPE;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -29,21 +30,18 @@ import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
 public abstract class Tab7DocumentenPage2Form extends GbaForm<Tab7DocumentenPage2Bean> {
 
   public Tab7DocumentenPage2Form(DocumentKenmerk documentKenmerk) {
-
-    setOrder(KENMERK, TYPE);
-
+    setOrder(KENMERK, TYPE, LABEL);
     setColumnWidths(WIDTH_130, "");
-
     initFields(documentKenmerk);
+    setReadonlyAsText(false);
   }
 
   @Override
   public void afterSetBean() {
 
     getField(Tab7DocumentenPage2Bean.TYPE).addListener((ValueChangeListener) event -> {
-
       DocumentKenmerkType type = (DocumentKenmerkType) event.getProperty().getValue();
-
+      getField(LABEL).setValue(type.getToel());
       setOnChangeType(type);
     });
 
@@ -59,6 +57,7 @@ public abstract class Tab7DocumentenPage2Form extends GbaForm<Tab7DocumentenPage
     if (documentKenmerk.isStored()) {
       bean.setKenmerk(documentKenmerk.getDocumentKenmerk());
       bean.setType(documentKenmerk.getKenmerkType());
+      bean.setLabel(documentKenmerk.getKenmerkType().getToel());
     }
 
     setBean(bean);

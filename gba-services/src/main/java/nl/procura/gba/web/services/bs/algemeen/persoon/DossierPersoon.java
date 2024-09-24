@@ -21,7 +21,13 @@ package nl.procura.gba.web.services.bs.algemeen.persoon;
 
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.EXPARTNER;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -41,13 +47,19 @@ import nl.procura.gba.jpa.personen.db.DossAkte;
 import nl.procura.gba.jpa.personen.db.DossPer;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
-import nl.procura.gba.web.services.bs.algemeen.functies.*;
+import nl.procura.gba.web.services.bs.algemeen.functies.BsAkteUtils;
+import nl.procura.gba.web.services.bs.algemeen.functies.BsNatioHandler;
+import nl.procura.gba.web.services.bs.algemeen.functies.BsNatioUtils;
+import nl.procura.gba.web.services.bs.algemeen.functies.BsPersonenHandler;
+import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.nationaliteit.DossierNationaliteit;
 import nl.procura.gba.web.services.bs.algemeen.nationaliteit.DossierNationaliteiten;
 import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
+import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.standard.ProcuraDate;
@@ -575,6 +587,10 @@ public class DossierPersoon extends DossPer implements DossierPersonen, DossierN
   public void setWoongemeente(FieldValue woongemeente) {
     this.woongemeente = FieldValue.from(woongemeente);
     setCWoonGemeente(this.woongemeente.getBigDecimalValue());
+  }
+
+  public Gemeente getGemeente() {
+    return Services.getInstance().getGemeenteService().getGemeente(getCWoonGemeente());
   }
 
   public String getWoonlandAkte() {

@@ -21,12 +21,13 @@ package nl.procura.gba.web.services.zaken.reisdocumenten;
 
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_FAM_RECHT_BETREK;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
-import static nl.procura.standard.Globalfunctions.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.eq;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
@@ -36,6 +37,7 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.formats.Naam;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
+import nl.procura.standard.ProcuraDate;
 
 import lombok.Data;
 
@@ -46,7 +48,7 @@ public class GezagUtils {
    */
   public static GezagAfleiding getGezagsStatusOuder(BasePLExt kindPl, BasePLExt ouderPl,
       BasePLExt partnerPl,
-      ToestemmingConstateringen constateringen, int ouderNr) {
+      ToestemmingConstateringen constateringen, int ouderNr, Services services) {
 
     if (isPersoonInBrp(ouderPl)) {
       constateringen.getPersoon().add("is gevonden in de BRP");
@@ -66,7 +68,6 @@ public class GezagUtils {
     }
 
     if (kindPl.getGezag().heeftGezag()) {
-
       String ind = kindPl.getGezag().getIndicatieGezag().getVal();
       boolean isOuder1 = ouderNr == 1 && ind.matches("1|1D|12");
       boolean isOuder2 = ouderNr == 2 && ind.matches("2|2D|12");
@@ -91,13 +92,11 @@ public class GezagUtils {
     }
 
     if (isPersoonInBrp(ouderPl)) {
-
       if (kindPl.getOuders().getAantalOuders() == 1) {
         constateringen.getPersoon().add("is de enige ouder");
         return new GezagAfleiding(GezagStatus.JA);
 
       } else if (kindPl.getOuders().getAantalOuders() == 2) {
-
         boolean isOuderVrouw = Geslacht.VROUW.getAfkorting().equalsIgnoreCase(
             ouderPl.getPersoon().getGeslacht().getVal());
 
@@ -109,6 +108,11 @@ public class GezagUtils {
 
         String ouderType = ouderNr == 1 ? "ouder 2" : "ouder 1";
         String naamPartner = verbintenis.getNaamPartner();
+
+        if (isNieuwGezagVanToepassing(kindPl, ouderNr, services)) {
+          constateringen.getPersoon().add("nieuwe afleiding van rechtswege gezag van toepassing");
+          return new GezagAfleiding(GezagStatus.JA);
+        }
 
         if (verbintenis.isMomenteelZekerVerbintenis()) {
           constateringen.getPersoon().add("is huidige partner van " + ouderType + naamPartner);
@@ -172,6 +176,15 @@ public class GezagUtils {
     return new GezagAfleiding(GezagStatus.NEE);
   }
 
+  private static boolean isNieuwGezagVanToepassing(BasePLExt pl, int ouderNr, Services services) {
+    String famRechtBetrek = pl.getOuders().getOuder(ouderNr)
+        .getRecord()
+        .getElemVal(DATUM_INGANG_FAM_RECHT_BETREK)
+        .getVal();
+    return fil(famRechtBetrek) && services.getReisdocumentService()
+        .isNieuwGezagReglement(new ProcuraDate(famRechtBetrek));
+  }
+
   private static boolean heeftMomenteelVerbintenis(BasePLExt ouderPl) {
     return fil(getPartner(ouderPl));
   }
@@ -204,23 +217,6 @@ public class GezagUtils {
     }
 
     return (pl != null) ? pl : new BasePLExt();
-  }
-
-  /**
-   * Persoonslijsten van de ouders
-   */
-  public static List<BasePLExt> getOuders(BasePLExt kindPl, Services db) {
-
-    List<BasePLExt> l = new ArrayList<>();
-
-    l.add(getOuder(kindPl, 1, db));
-    l.add(getOuder(kindPl, 2, db));
-
-    return l;
-  }
-
-  public static boolean heeftOuder(BasePLExt kindPl, BasePLExt ouderPl) {
-    return getOuderNr(kindPl, ouderPl) > 0;
   }
 
   private static int getOuderNr(BasePLExt kindPl, BasePLExt ouderPl) {

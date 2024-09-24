@@ -25,7 +25,11 @@ import java.util.Date;
 
 import nl.procura.gba.web.components.containers.actueel.PlaatsActueelContainer;
 import nl.procura.gba.web.components.fields.GbaComboBox;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.container.NLBooleanContainer;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.ProDateField;
@@ -39,15 +43,16 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class Page2VerkiezingBean implements Serializable {
 
-  public static final String F_GEMEENTE          = "gemeente";
-  public static final String F_AFK_VERK          = "afkVerkiezing";
-  public static final String F_VERK              = "verkiezing";
-  public static final String F_DATUM_KAND        = "datumKandidaatstelling";
-  public static final String F_DATUM_VERK        = "datumVerkiezing";
-  public static final String F_KIEZERSPAS        = "kiezerspas";
-  public static final String F_BRIEFSTEMBEWIJS   = "briefstembewijs";
-  public static final String F_AANTAL_VOlMACHTEN = "aantalVolmachten";
-  public static final String F_AANTAL_STEMPASSEN = "aantalStempassen";
+  public static final String F_GEMEENTE                 = "gemeente";
+  public static final String F_AFK_VERK                 = "afkVerkiezing";
+  public static final String F_VERK                     = "verkiezing";
+  public static final String F_DATUM_KAND               = "datumKandidaatstelling";
+  public static final String F_DATUM_VERK               = "datumVerkiezing";
+  public static final String F_KIEZERSPAS               = "kiezerspas";
+  public static final String F_BRIEFSTEMBEWIJS          = "briefstembewijs";
+  public static final String F_GEMACHTIGDE_KIESREGISTER = "gemachtigdeKiesregister";
+  public static final String F_AANTAL_VOlMACHTEN        = "aantalVolmachten";
+  public static final String F_AANTAL_STEMPASSEN        = "aantalStempassen";
 
   @Field(customTypeClass = GbaComboBox.class,
       caption = "Gemeente",
@@ -103,6 +108,16 @@ public class Page2VerkiezingBean implements Serializable {
       itemCaptionPropertyId = NLBooleanContainer.JA_NEE)
   @Immediate
   private boolean briefstembewijs;
+
+  @Field(customTypeClass = ProNativeSelect.class,
+      caption = "Gemachtigde in eigen kiesregister",
+      width = "70px",
+      required = true)
+  @Select(nullSelectionAllowed = false,
+      containerDataSource = NLBooleanContainer.class,
+      itemCaptionPropertyId = NLBooleanContainer.JA_NEE)
+  @Immediate
+  private boolean gemachtigdeKiesregister;
 
   @Field(customTypeClass = NumberField.class,
       caption = "Aantal volmachten toegestaan",

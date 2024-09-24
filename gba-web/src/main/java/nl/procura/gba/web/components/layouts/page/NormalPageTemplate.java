@@ -26,6 +26,7 @@ import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.components.layouts.ModuleTemplate;
+import nl.procura.gba.web.components.layouts.ShortCutMenu;
 import nl.procura.gba.web.components.layouts.page.buttons.ActieButton;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
@@ -56,7 +57,6 @@ public class NormalPageTemplate extends ButtonPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
       initPage();
     }
@@ -83,6 +83,11 @@ public class NormalPageTemplate extends ButtonPageTemplate {
   @Override
   public Services getServices() {
     return getApplication().getServices();
+  }
+
+  @Override
+  public void onMenu() {
+    ShortCutMenu.handleEvent(getApplication());
   }
 
   @Override

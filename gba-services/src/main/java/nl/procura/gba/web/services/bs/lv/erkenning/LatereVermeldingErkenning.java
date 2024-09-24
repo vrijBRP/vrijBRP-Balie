@@ -94,6 +94,7 @@ public class LatereVermeldingErkenning implements LatereVermelding<LvErkenning> 
     akte.setVoorvoegsel(erkenning.getKeuzeVoorvoegsel());
     akte.setGeslachtsnaam(erkenning.getKeuzeGeslachtsnaam());
     akte.setToestemminggeverType(erkenning.getToestemminggeverType());
+    akte.setVerklaringGezag(erkenning.isVerklaringGezag());
     akte.setAfstammingsrecht(erkenning.getLandAfstammingsRecht());
     akte.setAkte(dossierAkte);
 

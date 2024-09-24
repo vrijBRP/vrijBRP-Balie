@@ -21,16 +21,109 @@ package nl.procura.gba.web.modules.zaken.personmutations;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
-import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OVERL;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AANDUIDING_EURO_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_UITGESLOTEN_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_VBT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ADRES_BUITENL_3;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AKTENR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ANR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AUTORIT_VAN_AFGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BSN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_AANVANG_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_GELDIG_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_OPSCH_BIJHOUD;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_UITGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERZ_OF_MED_EURO_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.FUNCTIE_ADRES;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IDCODE_NUMMERAAND;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.ID_VERBLIJFPLAATS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDATUM_VBT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.INGANGSDAT_GELDIG;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERTREK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.NR_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OPENB_RUIMTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REGIST_GEM_AKTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.STRAATNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.WPL_NAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.ADRES;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.ADRESAANGIFTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.ADRESHUISHOUDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.AKTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.ANUMMERVERWIJZINGEN;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.BIJZ_NED_SCHAP;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.BUITENL_PERSOONSNR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.CURATELE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.DOCUMENT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.DOCUMENTINDICATIE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.EMIGRATIE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.EUROPEES_KIESRECHT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.FAM_RECHT_BETREK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GEBOORTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GEHEIM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GELDIGHEID;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GEMEENTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GESLACHT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GEZAG_MINDERJARIGE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.IDNUMMERS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.IMMIGRATIE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.LOCATIE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.NAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.NAAMGEBRUIK;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.NATIONALITEIT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.NED_REISDOCUMENT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.ONJUIST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.ONTBIND_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.OPNAME;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.OPNEMING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.OPSCHORTING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.PROCEDURE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.RDN_EINDE_NATIO;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.REG_AFSTAMMING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.RND_OPN_NATIO;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.SIGNALERING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.SLUITING_VERBINTENIS;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.SOORT_VERBINTENIS;
-import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.SYNCHRONICITEIT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.UITSL_KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.VERBLIJFSTITEL;
+import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.HIST;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CATEGORY;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CURRENT_ADMIN;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_HISTORIC_ADMIN;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_HISTORIC_GENERAL;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.OVERWRITE_CURRENT;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.OVERWRITE_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.SUPER_OVERWRITE_CURRENT;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.SUPER_OVERWRITE_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.pos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,9 +135,12 @@ import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
 import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
+import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElem;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElems;
+import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.standard.ProcuraDate;
+import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.TabelFieldValue;
 
 public class PersonListMutationsChecks {
@@ -57,6 +153,48 @@ public class PersonListMutationsChecks {
   private final static String MUTUAL_EXCLUSIVE = "%s en %s mogen niet tegelijkertijd voorkomen.";
   private final static String NOT_ALLOWED      = "Als %s niet voorkomt mag %s ook niet voorkomen.";
 
+  /*
+  - Clear whole group if one element in a group is cleared or
+  - Clear other group if one element of a group is filled
+   */
+  public static void checkCleared(PersonListMutElem mutElem, boolean isBlank, PersonListMutElems elems) {
+    if (isBlank) { // If the field is cleared, made blank
+      if (mutElem.getGroup().is(
+          GEBOORTE, AKTE, DOCUMENT,
+          SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS,
+          IMMIGRATIE, EMIGRATIE)) {
+        for (PersonListMutElem elem : elems) {
+          if (elem.getGroup().is(mutElem.getGroup())) {
+            elem.getField().setValue(null);
+          }
+        }
+      }
+    } else {
+      clearOtherGroup(mutElem, elems, NATIONALITEIT, BIJZ_NED_SCHAP); // 5 / 65
+      clearOtherGroup(mutElem, elems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS); // 6 / 7
+      clearOtherGroup(mutElem, elems, EMIGRATIE, ADRESHUISHOUDING, ADRES, LOCATIE); // 13 / 10,11,12
+      clearOtherGroup(mutElem, elems, EMIGRATIE, IMMIGRATIE); // 13 / 14
+      clearOtherGroup(mutElem, elems, GEZAG_MINDERJARIGE, CURATELE); // 32 / 33
+      clearOtherGroup(mutElem, elems, RND_OPN_NATIO, RDN_EINDE_NATIO); // 63 / 64
+      clearOtherGroup(mutElem, elems, AKTE, DOCUMENT); // 81 / 82
+    }
+  }
+
+  private static void clearOtherGroup(PersonListMutElem mutElem, PersonListMutElems elems,
+      GBAGroup group1, GBAGroup... group2) {
+    clearGroup(mutElem, elems, new GBAGroup[]{ group1 }, group2);
+    clearGroup(mutElem, elems, group2, group1);
+  }
+
+  private static void clearGroup(PersonListMutElem mutElem, PersonListMutElems elems,
+      GBAGroup[] group1, GBAGroup... group2) {
+    if (Arrays.asList(group1).contains(mutElem.getGroup())) {
+      elems.stream()
+          .filter(elem -> Arrays.asList(group2).contains(elem.getGroup()))
+          .forEach(elem -> elem.getField().setValue(null));
+    }
+  }
+
   public static Optional<String> getRequiredError(PersonListMutElem elem, PersonListMutElems elems) {
     Optional<String> req = Optional.empty();
     if (!elem.getElemType().isNational() || elem.getAction().isSuperuser()) {
@@ -64,7 +202,7 @@ public class PersonListMutationsChecks {
     }
 
     // Groepen
-    if (elem.getCat().is(PERSOON, HUW_GPS, OVERL, KINDEREN)) {
+    if (elem.getCat().is(PERSOON, HUW_GPS, OVERL, KINDEREN, REISDOC)) {
       if (elem.getGroup().is(AKTE, DOCUMENT)
           && elems.isAllBlank(AKTE, DOCUMENT)) {
         req = msg(ANY_IS_REQUIRED, AKTE, DOCUMENT);
@@ -153,9 +291,9 @@ public class PersonListMutationsChecks {
 
     // checks for category 9
     if (elem.getCat().is(KINDEREN)) {
-      if (elem.getGroup().is(NAAM, REG_AFSTAMMING)) {
-        if (elems.isAllBlank(NAAM, REG_AFSTAMMING)) {
-          req = msg(ANY_IS_REQUIRED, NAAM, REG_AFSTAMMING);
+      if (elem.getGroup().is(NAAM)) {
+        if (!elems.isAllBlank(REG_AFSTAMMING)) {
+          req = msg(REQUIRED_WITH, NAAM, REG_AFSTAMMING);
         }
       }
     }
@@ -196,7 +334,7 @@ public class PersonListMutationsChecks {
 
     // Specifieke elementen
     if (elem.getElem().isElement(BSN)
-        && (elem.getRec().getStatus().is(GBARecStatus.HIST)
+        && (elem.getRec().getStatus().is(HIST)
             || elem.getAction().is(ADD_HISTORIC, CORRECT_HISTORIC_GENERAL, CORRECT_HISTORIC_ADMIN))) {
       return Optional.empty();
     }
@@ -248,6 +386,42 @@ public class PersonListMutationsChecks {
         .anyMatch(e -> e.is(elem.getElemType()));
   }
 
+  public static boolean isReadonly(PersonListMutElem mutElem) {
+    PersonListActionType action = mutElem.getAction();
+    GBAElem elem = mutElem.getElemType();
+    GBACat cat = mutElem.getCat();
+    GBAGroup group = mutElem.getTypes().getGroup();
+    GBARecStatus status = mutElem.getRec().getStatus();
+
+    if (action.is(SUPER_OVERWRITE_CURRENT, SUPER_OVERWRITE_HISTORIC)) {
+      return false;
+
+    } else if (action.is(CORRECT_CATEGORY)) {
+      return true;
+
+    } else if (action.is(CORRECT_CURRENT_ADMIN) && !elem.isAdmin()) {
+      return true;
+
+    } else if (action.is(OVERWRITE_CURRENT, OVERWRITE_HISTORIC)) {
+
+      if (group.is(EMIGRATIE, IMMIGRATIE, DOCUMENTINDICATIE, PROCEDURE)) {
+        return false;
+      }
+
+      if (group.is(ONJUIST) && status.is(HIST)) {
+        return false;
+      }
+
+      // Voor overschrijven voor gegevens voor adoptie/geslachtswijz.
+      boolean histNaam = status.is(HIST) && group.is(NAAM, GESLACHT, NAAMGEBRUIK);
+      return !cat.is(PERSOON, OUDER_1, OUDER_2, HUW_GPS, KINDEREN) || (!histNaam && !elem.is(AKTENR));
+
+    } else if (!action.is(ADD_HISTORIC) && elem.is(GBAElem.IND_ONJUIST)) {
+      return true;
+    }
+    return GBAElem.DATUM_VAN_OPNEMING == elem;
+  }
+
   public static Optional<String> getValueError(PersonListMutElem elem, PersonListMutElems elems) {
     if (!elem.getElemType().isNational() || elem.getAction().isSuperuser()) {
       return Optional.empty();
@@ -293,7 +467,7 @@ public class PersonListMutationsChecks {
       return msg(MUTUAL_EXCLUSIVE, AKTE, DOCUMENT);
     }
 
-    if (!elem.getRec().getStatus().is(GBARecStatus.HIST) && GBAElem.IND_ONJUIST == elem.getElemType()) {
+    if (!elem.getRec().getStatus().is(HIST) && GBAElem.IND_ONJUIST == elem.getElemType()) {
       return msg("%s kan uitsluitend in historie voorkomen.", ONJUIST);
     }
 
@@ -311,8 +485,9 @@ public class PersonListMutationsChecks {
       if (elem.getGroup().is(BUITENL_PERSOONSNR)) {
         Optional<PersonListMutElem> natio = elems.getElem(GBAElem.NATIONALITEIT);
         if (natio.isPresent() && !natio.get().isBlank()) {
-          TabelFieldValue tabelFieldValue = (TabelFieldValue) natio.get().getField().getValue();
-          if (!pos(tabelFieldValue.getAttributes().get("eu"))) {
+          FieldValue fieldValue = (FieldValue) natio.get().getField().getValue();
+          TabelFieldValue natioValue = GbaTables.NATIO.get(fieldValue.getBigDecimalValue());
+          if (!pos(natioValue.getAttributes().get("eu"))) {
             return msg("%s kan uitsluitend voorkomen als %s voorkomt en uitsluitend als " +
                 "de betreffende stapel betrekking heeft op een EU nationaliteit",
                 BUITENL_PERSOONSNR, NATIONALITEIT);

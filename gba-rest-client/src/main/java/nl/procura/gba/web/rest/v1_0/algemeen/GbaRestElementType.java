@@ -41,6 +41,7 @@ public class GbaRestElementType {
   public static final String DEELZAKEN                    = "deelzaken";
   public static final String DEELZAAK                     = "deelzaak";
   public static final String ACTIE                        = "actie";
+  public static final String DOORVERWERKEN_RELATIES       = "doorverwerken_relaties";
   public static final String INDICATIE                    = "indicatie";
   public static final String INDICATIE_PROBEV             = "indicatie_PROBEV";
   public static final String TOELICHTING                  = "toelichting";

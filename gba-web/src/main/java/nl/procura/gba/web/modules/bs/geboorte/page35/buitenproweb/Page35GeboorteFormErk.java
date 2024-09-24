@@ -19,7 +19,18 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.*;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.AFSTAMMINGSRECHT;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.LAND;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.NAAMSKEUZE_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.NAAMS_PERSOON_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.NAAMS_PERSOON_TYPE_ERK;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.PLAATS;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.RECHTBANK;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.TOESTEMMINGGEVER_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanErk.VERKLARING_GEZAG;
 
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -35,9 +46,9 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
 
   public Page35GeboorteFormErk(DossierGeboorte geboorte) {
 
-    setColumnWidths("140px", "");
-    setOrder(LAND, GEMEENTE, PLAATS, DATUM, AKTENR, TOESTEMMINGGEVER_TYPE, RECHTBANK, NAAMSKEUZE_TYPE,
-        NAAMS_PERSOON_TYPE, NAAMS_PERSOON_TYPE_ERK, AFSTAMMINGSRECHT);
+    setColumnWidths("200px", "");
+    setOrder(LAND, GEMEENTE, PLAATS, DATUM, AKTENR, TOESTEMMINGGEVER_TYPE, VERKLARING_GEZAG,
+        RECHTBANK, NAAMSKEUZE_TYPE, NAAMS_PERSOON_TYPE, NAAMS_PERSOON_TYPE_ERK, AFSTAMMINGSRECHT);
 
     setGeboorte(geboorte);
     setCaptionAndOrder();
@@ -83,6 +94,7 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanErk> {
       bean.setLand(erkenningBuitenProweb.getLandErkenning());
       bean.setPlaats(erkenningBuitenProweb.getBuitenlandsePlaats());
       bean.setToestemminggeverType(erkenningBuitenProweb.getToestemminggeverType());
+      bean.setVerklaringGezag(erkenningBuitenProweb.isVerklaringGezag());
       bean.setRechtbank(RechtbankLocatie.get(erkenningBuitenProweb.getRechtbank()));
       bean.setNaamskeuzeType(erkenningBuitenProweb.getNaamskeuzeType());
       bean.setNaamsPersoonType(erkenningBuitenProweb.getNaamskeuzePersoon());

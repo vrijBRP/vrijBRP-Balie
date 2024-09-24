@@ -22,10 +22,23 @@ package nl.procura.gba.jpa.personen.db;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
+
+import nl.procura.gba.jpa.personen.converters.BigDecimalBooleanConverter;
 
 @Entity
 @Table(name = "pl_mut")
@@ -112,6 +125,10 @@ public class PlMut extends BaseEntity<Long> {
 
   @Column(name = "leverancier")
   private String leverancier;
+
+  @Column(name = "process_relations")
+  @Convert(converter = BigDecimalBooleanConverter.class)
+  private Boolean processRelations;
 
   @ManyToOne
   @BatchFetch(BatchFetchType.IN)
@@ -291,5 +308,13 @@ public class PlMut extends BaseEntity<Long> {
 
   public void setLeverancier(String leverancier) {
     this.leverancier = leverancier;
+  }
+
+  public Boolean getProcessRelations() {
+    return processRelations;
+  }
+
+  public void setProcessRelations(Boolean processRelations) {
+    this.processRelations = processRelations;
   }
 }

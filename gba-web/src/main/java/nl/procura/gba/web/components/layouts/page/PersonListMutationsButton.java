@@ -28,7 +28,7 @@ public class PersonListMutationsButton extends MainButton<PersonListMutationsSer
   protected void doCheck() {
     setStyleName("link buttonlink indicatie");
     if (getApplication() != null) {
-      setCaption("PL mutaties");
+      setCaption("PL mutaties (F10)");
       addStyleName("no");
     }
   }

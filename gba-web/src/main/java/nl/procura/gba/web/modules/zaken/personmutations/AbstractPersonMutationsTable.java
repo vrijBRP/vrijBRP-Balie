@@ -19,8 +19,12 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.*;
-import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.DOCUMENT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GELDIGHEID;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.RDN_EINDE_NATIO;
+import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.ADMIN;
+import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.CHANGED;
+import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.REQUIRED_GROUPS;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CATEGORY;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
@@ -83,10 +87,8 @@ public abstract class AbstractPersonMutationsTable extends GbaTable {
     if (CHANGED == filter && !elem.isChanged()) {
       return false;
 
-    } else if (ADMIN == filter && !elem.getElemType().isAdmin()) {
-      return false;
-    }
-    return true;
+    } else
+      return ADMIN != filter || elem.getElemType().isAdmin();
   }
 
   public String getDescr(int elem, String val, String descr) {

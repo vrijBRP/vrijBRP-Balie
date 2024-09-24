@@ -33,6 +33,7 @@ import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.common.ZaakStatusType.VERWERKT;
 import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REISD_WIJZIGING_GEZAG;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
@@ -80,6 +81,7 @@ import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.Clausules;
 import nl.procura.raas.rest.domain.aanvraag.FindAanvraagRequest;
+import nl.procura.standard.ProcuraDate;
 import nl.procura.validation.Bsn;
 
 public class ReisdocumentService extends AbstractZaakContactService<ReisdocumentAanvraag>
@@ -332,6 +334,11 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
 
   public boolean isVrsEnabled() {
     return new VrsService(getServices().getParameterService()).isEnabled();
+  }
+
+  public boolean isNieuwGezagReglement(ProcuraDate date) {
+    return date.isExpired(new ProcuraDate(getServices().getParameterService()
+        .getSysteemParameter(REISD_WIJZIGING_GEZAG).getValue()));
   }
 
   public Optional<SignaleringResult> checkAanvraag(Aanvraagnummer aanvraagnummer, BasePLExt pl) {

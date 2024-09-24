@@ -19,9 +19,12 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page95;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.modules.bs.common.pages.printpage.BsPrintPage;
 import nl.procura.gba.web.modules.bs.geboorte.page90.Page90Geboorte;
@@ -31,6 +34,7 @@ import nl.procura.gba.web.services.bs.geboorte.GeboorteService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -99,6 +103,18 @@ public class Page95Geboorte<T extends DossierGeboorte> extends BsPrintPage<T> {
       return true;
     }
 
+    if (document.getDocumentKenmerken().get(DocumentKenmerkType.GEBOORTE_1) != null) {
+      if (isGezagMoederErkenningOpJaGezet(getZaakDossier())) {
+        return true;
+      }
+    }
+
+    if (document.getDocumentKenmerken().get(DocumentKenmerkType.GEBOORTE_2) != null) {
+      if (isErkenningIn2022Gedaan(getZaakDossier())) {
+        return true;
+      }
+    }
+
     return super.onSelectDocument(document, isPreSelect);
   }
 
@@ -126,5 +142,34 @@ public class Page95Geboorte<T extends DossierGeboorte> extends BsPrintPage<T> {
     }
 
     return types.toArray(new DocumentType[0]);
+  }
+
+  private boolean isGezagMoederErkenningOpJaGezet(DossierGeboorte geboorte) {
+    if (geboorte.getVragen().heeftErkenningBuitenProweb()) {
+      if (geboorte.getErkenningBuitenProweb().isVerklaringGezag()) {
+        return true;
+      }
+    }
+    if (geboorte.getVragen().heeftErkenningVoorGeboorte()) {
+      return geboorte.getErkenningVoorGeboorte().isVerklaringGezag();
+    }
+    return false;
+  }
+
+  private boolean isErkenningIn2022Gedaan(DossierGeboorte geboorte) {
+    if (geboorte.getVragen().heeftErkenningBuitenProweb()) {
+      return isIn2022(geboorte.getErkenningBuitenProweb().getDatumErkenning());
+    }
+
+    if (geboorte.getVragen().heeftErkenningVoorGeboorte()) {
+      return isIn2022(geboorte.getErkenningVoorGeboorte().getDossier().getDatumTijdInvoer());
+    }
+    return false;
+  }
+
+  private boolean isIn2022(DateTime date) {
+    return Instant.ofEpochMilli(date.getDate().getTime())
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate().getYear() == 2022;
   }
 }

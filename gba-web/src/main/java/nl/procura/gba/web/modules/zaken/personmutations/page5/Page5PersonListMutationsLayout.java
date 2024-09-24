@@ -20,7 +20,12 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page5;
 
 import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsTravelDocUtils.getInfoLayout;
-import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.*;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.CAT;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.EXPLANATION;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.OPERATION;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.PROCESS_RELATIONS;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.RECORD;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.SET;
 
 import com.vaadin.ui.CheckBox;
 
@@ -40,7 +45,7 @@ public class Page5PersonListMutationsLayout extends GbaVerticalLayout {
   public Page5PersonListMutationsLayout(PlMut mutation) {
     table = new Page5PersonListMutationsTable(mutation);
     PersonMutationOverviewForm form = new PersonMutationOverviewForm(mutation,
-        EXPLANATION, CAT, RECORD, SET, OPERATION);
+        EXPLANATION, PROCESS_RELATIONS, CAT, RECORD, SET, OPERATION);
 
     addComponent(new Fieldset("Gegevens"));
     getInfoLayout(mutation.getPlMutRecs()).ifPresent(this::addComponent);

@@ -19,9 +19,16 @@
 
 package nl.procura.gba.web.services.bs.erkenning;
 
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.ERKENNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.VADER_DUO_MOEDER;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -314,6 +321,14 @@ public class DossierErkenning extends DossErk
 
   public boolean isAfstammingsRechtBepaald() {
     return getLandAfstammingsRecht() != null && pos(getLandAfstammingsRecht().getValue());
+  }
+
+  public boolean isVerklaringGezag() {
+    return pos(getbVerklaringGezag());
+  }
+
+  public void setVerklaringGezag(boolean verklaring) {
+    setbVerklaringGezag(BigDecimal.valueOf(verklaring ? 1L : 0L));
   }
 
   @Override

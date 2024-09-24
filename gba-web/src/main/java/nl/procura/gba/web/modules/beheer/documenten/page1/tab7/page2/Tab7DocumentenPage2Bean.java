@@ -29,7 +29,9 @@ import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Immediate;
 import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextArea;
 import nl.procura.vaadin.component.field.ProNativeSelect;
+import nl.procura.vaadin.component.field.ProTextArea;
 
 import lombok.Data;
 
@@ -39,18 +41,26 @@ public class Tab7DocumentenPage2Bean implements Serializable {
 
   public static final String KENMERK = "kenmerk";
   public static final String TYPE    = "type";
+  public static final String LABEL   = "label";
 
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Kenmerk",
       required = true,
-      width = "200px")
+      width = "300px")
   private String kenmerk = "";
 
   @Field(customTypeClass = ProNativeSelect.class,
       caption = "Type",
       required = true,
-      width = "200px")
+      width = "300px")
   @Select(containerDataSource = DocumentKenmerkTypeContainer.class)
   @Immediate
   private DocumentKenmerkType type = null;
+
+  @Field(customTypeClass = ProTextArea.class,
+      readOnly = true,
+      width = "500px",
+      caption = "Omschrijving")
+  @TextArea(rows = 5)
+  private String label = null;
 }

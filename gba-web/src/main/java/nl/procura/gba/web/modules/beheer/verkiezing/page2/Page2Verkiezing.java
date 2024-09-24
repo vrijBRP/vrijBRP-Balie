@@ -143,6 +143,7 @@ public class Page2Verkiezing extends NormalPageTemplate {
     verkiezing.setdVerk(new DateTime(bean.getDatumVerkiezing()).getDate());
     verkiezing.setIndKiezerspas(bean.isKiezerspas());
     verkiezing.setIndBriefstembewijs(bean.isBriefstembewijs());
+    verkiezing.setIndGemachtKiesr(bean.isGemachtigdeKiesregister());
     verkiezing.setAantalVolm(bean.getAantalVolmachten());
     getServices().getKiezersregisterService().save(verkiezing);
     checkVerkiezingButtons();

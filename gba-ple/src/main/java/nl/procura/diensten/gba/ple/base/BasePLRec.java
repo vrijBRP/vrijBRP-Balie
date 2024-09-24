@@ -20,6 +20,8 @@
 package nl.procura.diensten.gba.ple.base;
 
 import static java.util.Arrays.asList;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_ONDERZ;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_ONJUIST;
 import static nl.procura.standard.Globalfunctions.fil;
 
@@ -37,9 +39,9 @@ public class BasePLRec implements Serializable {
 
   private GBACat                 catType = GBACat.UNKNOWN;
   private GBARecStatus           status  = GBARecStatus.UNKNOWN;
-  private BasePLSet              set     = new BasePLSet(GBACat.UNKNOWN, 1);
-  private BasePLList<BasePLElem> elems   = new BasePLList<>();
-  private int                    index   = 0;
+  private BasePLSet                    set     = new BasePLSet(GBACat.UNKNOWN, 1);
+  private final BasePLList<BasePLElem> elems   = new BasePLList<>();
+  private int                          index   = 0;
 
   public BasePLRec() {
   }
@@ -90,6 +92,10 @@ public class BasePLRec implements Serializable {
     return returnValue;
   }
 
+  public boolean isCorrect() {
+    return !isIncorrect();
+  }
+
   public boolean isIncorrect() {
     try {
       return fil(getElemVal(IND_ONJUIST).getCode());
@@ -109,6 +115,14 @@ public class BasePLRec implements Serializable {
   public boolean isConflicting() {
     try {
       return "S".equals(getElemVal(IND_ONJUIST).getCode());
+    } catch (UnknownGBAElementException e) {
+      return false;
+    }
+  }
+
+  public boolean isInOnderzoek() {
+    try {
+      return getElemVal(AAND_GEG_IN_ONDERZ).isNotBlank() && !getElemVal(DATUM_EINDE_ONDERZ).isNotBlank();
     } catch (UnknownGBAElementException e) {
       return false;
     }

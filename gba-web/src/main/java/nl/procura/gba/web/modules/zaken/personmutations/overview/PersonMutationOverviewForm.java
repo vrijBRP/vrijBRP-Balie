@@ -19,16 +19,14 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.overview;
 
-import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.EXPLANATION;
+import static java.util.Optional.ofNullable;
 
 import nl.procura.gba.jpa.personen.db.PlMut;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
-import nl.procura.vaadin.component.layout.table.TableLayout;
 
 public class PersonMutationOverviewForm extends GbaForm<PersonMutationOverviewBean> {
 
   public PersonMutationOverviewForm(PlMut mutation, String... fields) {
-
     setColumnWidths("100px", "400px", "100px", "");
     setOrder(fields);
 
@@ -39,20 +37,15 @@ public class PersonMutationOverviewForm extends GbaForm<PersonMutationOverviewBe
       bean.setExplanation(explanation.replaceAll("\n", "</br>"));
     }
 
+    bean.setProcessRelations(ofNullable(mutation.getProcessRelations())
+        .map(value -> value ? "Ja" : "Nee")
+        .orElse("Niet van toepassing"));
     bean.setCategory(setFieldHeight(mutation.getDescrCat()));
     bean.setOperation(setFieldHeight(mutation.getDescrAction()));
     bean.setSet(setFieldHeight(mutation.getDescrSet()));
     bean.setRecord(setFieldHeight(mutation.getDescrRec()));
 
     setBean(bean);
-  }
-
-  @Override
-  public void setColumn(TableLayout.Column column, com.vaadin.ui.Field field, Property property) {
-    if (property.is(EXPLANATION)) {
-      column.setColspan(3);
-    }
-    super.setColumn(column, field, property);
   }
 
   /**

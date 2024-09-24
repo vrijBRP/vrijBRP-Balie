@@ -54,7 +54,7 @@ public class ErkenningProcessen extends BsProcessen {
     addProces("Erkenner", Page15Erkenning.class);
     addProces("Vereisten", Page45Erkenning.class);
     addProces("Afstamming", Page20Erkenning.class);
-    addProces("Toestemming", Page25Erkenning.class);
+    addProces("Toestemming & gezag", Page25Erkenning.class);
     addProces("Namenrecht", Page30Erkenning.class);
     addProces("Aktenummers", Page32Erkenning.class);
     addProces("Overzicht", Page35Erkenning.class);

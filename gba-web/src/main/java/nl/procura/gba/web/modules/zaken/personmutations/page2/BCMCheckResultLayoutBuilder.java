@@ -19,8 +19,9 @@ public class BCMCheckResultLayoutBuilder {
 
   private static final String QUERY_ID = "procura.personen.probev.bcm.check";
   private static final String PL_OK    = "pl_ok";
-  private String              anummer;
-  private GbaApplication      application;
+
+  private final String         anummer;
+  private final GbaApplication application;
 
   private String get(BsmRestElement mut) {
     return mut.getWaarde();
@@ -30,7 +31,8 @@ public class BCMCheckResultLayoutBuilder {
     MutationApproveRequestRestElement requestRestElement = new MutationApproveRequestRestElement();
     requestRestElement.setAnummer(anummer);
 
-    BsmRestClientResponse<BsmRestElementAntwoord> clientResponse = application.getServices().getBsmService()
+    BsmRestClientResponse<BsmRestElementAntwoord> clientResponse = application.getServices()
+        .getBsmService()
         .getBsmClient(false).getAlgemeen()
         .get(QUERY_ID, requestRestElement);
 
@@ -70,15 +72,12 @@ public class BCMCheckResultLayoutBuilder {
       }
 
       bcmCheckResultLayout.addComponentsWithHeader(header);
-      bcmCheckResultLayout.setVisible(true);
+      return bcmCheckResultLayout;
 
     } catch (PathNotFoundException e) {
       throw new ProException(WEBSERVICE, ERROR, responseOutput);
     } catch (Exception e) {
       throw new ProException(WEBSERVICE, ERROR, e.getMessage(), e.getCause());
     }
-
-    return bcmCheckResultLayout;
   }
-
 }

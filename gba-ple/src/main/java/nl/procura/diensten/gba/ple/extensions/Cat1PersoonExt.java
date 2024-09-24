@@ -20,16 +20,27 @@
 package nl.procura.diensten.gba.ple.extensions;
 
 import static nl.procura.gba.common.MiscUtils.isNrEquals;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.defaultNul;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.Arrays;
 import java.util.List;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
-import nl.procura.diensten.gba.ple.base.*;
-import nl.procura.diensten.gba.ple.extensions.formats.*;
+import nl.procura.diensten.gba.ple.base.BasePLCat;
+import nl.procura.diensten.gba.ple.base.BasePLElem;
+import nl.procura.diensten.gba.ple.base.BasePLRec;
+import nl.procura.diensten.gba.ple.base.BasePLSet;
+import nl.procura.diensten.gba.ple.base.BasePLValue;
+import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaat;
+import nl.procura.diensten.gba.ple.extensions.formats.Geboorte;
+import nl.procura.diensten.gba.ple.extensions.formats.Naam;
+import nl.procura.diensten.gba.ple.extensions.formats.Onderzoek;
 import nl.procura.diensten.gba.ple.extensions.formats.Onderzoek.OnderzoeksGeval;
+import nl.procura.diensten.gba.ple.extensions.formats.Status;
 
 public class Cat1PersoonExt extends BasePLCatExt {
 
@@ -130,9 +141,9 @@ public class Cat1PersoonExt extends BasePLCatExt {
 
     List<OnderzoeksGeval> onderzoekCats = getOnderzoek().getHuidigeInOnderzoek();
 
-    if ((onderzoekCats.size() == 1) && (onderzoekCats.get(
-        0).getCatCode() == GBACat.VB.getCode())) {
+    if ((onderzoekCats.size() == 1) && (onderzoekCats.get(0).getCatCode() == GBACat.VB.getCode())) {
       status.setAdresInOnderzoek(true);
+
     } else if (pos(onderzoekCats.size())) {
       status.setInOnderzoek(true);
     }

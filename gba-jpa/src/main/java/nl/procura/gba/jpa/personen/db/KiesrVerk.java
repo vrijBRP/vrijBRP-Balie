@@ -22,7 +22,16 @@ package nl.procura.gba.jpa.personen.db;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 
 import nl.procura.gba.jpa.personen.converters.BigDecimalDateConverter;
 
@@ -58,6 +67,9 @@ public class KiesrVerk extends BaseEntity<Long> {
 
   @Column(name = "ind_briefstem")
   private boolean indBriefstembewijs;
+
+  @Column(name = "ind_gemacht_kiesr")
+  private boolean indGemachtKiesr;
 
   @Column(name = "afk_verk")
   private String afkVerkiezing;
@@ -159,6 +171,14 @@ public class KiesrVerk extends BaseEntity<Long> {
 
   public void setIndBriefstembewijs(boolean indBriefstembewijs) {
     this.indBriefstembewijs = indBriefstembewijs;
+  }
+
+  public boolean isIndGemachtKiesr() {
+    return indGemachtKiesr;
+  }
+
+  public void setIndGemachtKiesr(boolean indGemachtigdeBuiten) {
+    this.indGemachtKiesr = indGemachtigdeBuiten;
   }
 
   public Long getAantalVolm() {

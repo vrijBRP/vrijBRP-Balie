@@ -19,9 +19,24 @@
 
 package nl.procura.diensten.gba.ple.extensions.formats;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.GEZAG;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.NATIO;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OVERL;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VBTITEL;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +45,7 @@ import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
 import nl.procura.diensten.gba.ple.base.BasePLCat;
+import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 
@@ -59,12 +75,14 @@ public class Onderzoek {
         OVERL, VB, KINDEREN, VBTITEL, GEZAG, REISDOC)) {
 
       for (BasePLSet set : soort.getSets()) {
-        String aand = set.getLatestRec().getElemVal(AAND_GEG_IN_ONDERZ).getDescr();
-        String d_in = set.getLatestRec().getElemVal(DATUM_INGANG_ONDERZ).getDescr();
-        String d_end = set.getLatestRec().getElemVal(DATUM_EINDE_ONDERZ).getDescr();
+        for (BasePLRec rec : set.getRecs()) {
+          String aand = rec.getElemVal(AAND_GEG_IN_ONDERZ).getDescr();
+          String dIn = rec.getElemVal(DATUM_INGANG_ONDERZ).getDescr();
+          String dEnd = rec.getElemVal(DATUM_EINDE_ONDERZ).getDescr();
 
-        if (fil(aand)) {
-          list.add(new OnderzoeksGeval(d_in, d_end, aand));
+          if (rec.isCorrect() && fil(aand) && emp(dEnd)) {
+            list.add(new OnderzoeksGeval(dIn, dEnd, aand));
+          }
         }
       }
     }
@@ -72,7 +90,7 @@ public class Onderzoek {
     return list;
   }
 
-  public class OnderzoeksGeval {
+  public static class OnderzoeksGeval {
 
     private String d_in       = "";
     private String d_end      = "";

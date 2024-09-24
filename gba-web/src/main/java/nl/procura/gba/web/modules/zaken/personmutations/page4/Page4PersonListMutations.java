@@ -19,12 +19,18 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page4;
 
+import static java.lang.Boolean.TRUE;
 import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsTravelDocUtils.getInfoLayout;
-import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.*;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.CAT;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.OPERATION;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.RECORD;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.SET;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.commons.core.utils.ProStringUtils;
@@ -50,6 +56,7 @@ public class Page4PersonListMutations extends NormalPageTemplate {
   private final PersonListMutation mutation;
 
   private Page4PersonListMutationsLayout layout;
+  private Page4PersonRelationCheckbox    personRelationCheckbox;
 
   public Page4PersonListMutations(PersonListMutation mutation, PersonListMutElems mutations) {
     super("Nieuwe mutatie toevoegen");
@@ -60,7 +67,6 @@ public class Page4PersonListMutations extends NormalPageTemplate {
 
   @Override
   protected void initPage() {
-
     addButton(buttonPrev);
 
     ZaakStatusType initieleStatus = getServices().getZaakStatusService().getInitieleStatus(mutation);
@@ -79,15 +85,24 @@ public class Page4PersonListMutations extends NormalPageTemplate {
     getInfoLayout(mutations).ifPresent(this::addComponent);
     addComponent(new PersonMutationOverviewForm(mutation, CAT, RECORD, SET, OPERATION));
 
+    addComponent(new Fieldset("Wijzigingen in gerelateerde persoonslijsten"));
+
     PersonenWsService personenWsService = getServices().getPersonenWsService();
     List<PersonListRelationMutation> list = new ArrayList<>();
-    if (mutation.getCatType().is(GBACat.PERSOON)) {
+
+    if (mutation.getActionType().is(UPDATE_SET) && mutation.getCatType().is(GBACat.PERSOON)) {
       String anr = personenWsService.getHuidige().getPersoon().getAnr().getVal();
       list.addAll(PersonListRelationMutationHandler.getNew(anr, personenWsService::getPersoonslijst));
+    } else {
+      setInfo("", "Alleen van toepassing bij actualisering van categorie 1: persoon");
     }
 
-    addComponent(new Fieldset("Wijzigingen in gerelateerde persoonslijsten",
-        new Page4PersonRelationMutationsTable(list)));
+    if (!list.isEmpty()) {
+      personRelationCheckbox = new Page4PersonRelationCheckbox();
+      addComponent(personRelationCheckbox);
+    }
+
+    addComponent(new Page4PersonRelationMutationsTable(list));
 
     layout = new Page4PersonListMutationsLayout(mutations);
     addComponent(layout);
@@ -147,6 +162,9 @@ public class Page4PersonListMutations extends NormalPageTemplate {
     layout.getForm().commit();
     String explanation = layout.getForm().getBean().getExplanation();
     mutation.setExplanation(ProStringUtils.toString(explanation));
+    mutation.setProcessRelations(Optional.ofNullable(personRelationCheckbox)
+        .map(checkbox -> TRUE.equals(checkbox.getValue()))
+        .orElse(null));
 
     // Add elements
     List<PlMutRec> mutationRecords = new ArrayList<>();

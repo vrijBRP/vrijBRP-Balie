@@ -185,11 +185,15 @@ public class Page1Verblijfplaats extends PlListPage {
         List<String> statusses = new ArrayList<>();
         if (record.isAdmHistory()) {
           statusses.add("ADMIN. HISTORIE");
+
         } else if (record.isIncorrect()) {
           statusses.add("ONJUIST");
         }
         if (record.isBagChange()) {
           statusses.add("DUBBEL IVM BAG WIJZIGING");
+        }
+        if (record.isInOnderzoek()) {
+          statusses.add("IN ONDERZOEK");
         }
 
         return statusses.isEmpty() ? "" : (" - " + setClass(false, StringUtils.join(statusses, " - ")));

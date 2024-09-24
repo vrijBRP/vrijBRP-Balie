@@ -19,7 +19,11 @@
 
 package nl.procura.diensten.gba.ple.procura.utils;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -165,7 +169,7 @@ public class PLEElementFormatter {
     }
 
     if (gbaElement.getTable() == GBATable.OPENBARE_RUIMTE) {
-      diacriet(waarden, input, Diacs.PLAATS, isLandelijkeTabel);
+      diacriet(waarden, input, Diacs.OBR, isLandelijkeTabel);
     }
 
     if (gbaElement.getTable() == GBATable.PLAATS) {

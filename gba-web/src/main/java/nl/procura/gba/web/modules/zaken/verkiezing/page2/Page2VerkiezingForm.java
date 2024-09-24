@@ -19,12 +19,18 @@
 
 package nl.procura.gba.web.modules.zaken.verkiezing.page2;
 
-import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.*;
+import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.F_AAND;
+import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.F_ACTIE;
+import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.F_MACHT_NAAM;
+import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.F_OPM;
+import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.F_STEMPAS;
+import static nl.procura.gba.web.modules.zaken.verkiezing.page2.Page2VerkiezingBean.F_VERKIEZING;
 
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
 
+import nl.procura.gba.jpa.personen.db.KiesrVerk;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonWindow;
@@ -142,7 +148,9 @@ public class Page2VerkiezingForm extends GbaForm<Page2VerkiezingBean> {
     public boolean isValid(Object o) {
       if (anrGemachtigde != null && anrGemachtigde.isCorrect()) {
         KiezersregisterService service = getApplication().getServices().getKiezersregisterService();
-        return !service.getStempassenByAnr(stempas.getStem().getKiesrVerk(), anrGemachtigde).isEmpty();
+        KiesrVerk verk = stempas.getStem().getKiesrVerk();
+        boolean gemachtigdeAltijdInKiesregister = verk.isIndGemachtKiesr();
+        return !gemachtigdeAltijdInKiesregister || !service.getStempassenByAnr(verk, anrGemachtigde).isEmpty();
       }
       return true;
     }

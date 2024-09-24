@@ -19,8 +19,20 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page3;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.*;
+import static com.vaadin.event.ShortcutAction.KeyCode.F6;
+import static com.vaadin.event.ShortcutAction.KeyCode.F8;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.CAT;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.OPERATION;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.RECORD;
+import static nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBean.SET;
+
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
@@ -30,6 +42,7 @@ import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElems
 import nl.procura.gba.web.modules.zaken.personmutations.page4.Page4PersonListMutations;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.vaadin.component.layout.Fieldset;
+import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class Page3PersonListMutations extends NormalPageTemplate {
 
@@ -55,13 +68,13 @@ public class Page3PersonListMutations extends NormalPageTemplate {
     }
 
     addButton(buttonClose);
+    addButton(buttonClose);
 
     addComponent(new Fieldset("Gegevens"));
     addComponent(new PersonMutationOverviewForm(mutation, CAT, RECORD, SET, OPERATION));
 
     layout = new Page3PersonListMutationsLayout(elements, mutation);
-    addComponent(layout);
-    setExpandRatio(layout, 1.0F);
+    addExpandComponent(layout);
   }
 
   @Override
@@ -69,7 +82,17 @@ public class Page3PersonListMutations extends NormalPageTemplate {
     if (isRelativeMutation(mutation) && elements.isAllBlank(GBAGroup.IDNUMMERS)) {
       onSearch();
     }
+    setHeight(getWindow().getBrowserWindowHeight() - 50, UNITS_PIXELS);
     super.initPage();
+  }
+
+  @Override
+  public void event(PageEvent event) {
+    super.event(event);
+
+    if (!elements.isEmpty()) { // Focus on first field
+      elements.get(0).getField().focus();
+    }
   }
 
   @Override
@@ -87,6 +110,26 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   public void onSearch() {
     getParentWindow().addWindow(new QuickSearchPersonWindow(layout::updatePl));
     super.onSearch();
+  }
+
+  @Override
+  public void handleEvent(Button button, int keyCode) {
+    if (isKeyCode(button, keyCode, F6)) {
+      if (elements.getFocusedElement() != null) {
+        Component tableComponent = elements.getFocusedElement().getTableComponent();
+        if (tableComponent instanceof CustomValueLayout) {
+          ((CustomValueLayout) tableComponent).setDefault();
+        }
+      }
+    }
+    if (isKeyCode(button, keyCode, F8)) {
+      if (elements.getFocusedElement() != null) {
+        Field field = elements.getFocusedElement().getField();
+        field.setValue(null);
+        field.focus();
+      }
+    }
+    super.handleEvent(button, keyCode);
   }
 
   @Override

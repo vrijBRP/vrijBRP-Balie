@@ -19,23 +19,45 @@
 
 package nl.procura.gba.web.services.zaken.documenten.kenmerk;
 
+import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+
 /**
  * Documentkenmerk type
  */
 public enum DocumentKenmerkType {
 
-  MIJN_OVERHEID("mijnoverheid", "Mijn overheid"),
-  POST("post", "Post"),
-  VERVOLGBLAD("vervolgblad", "Vervolgblad"),
-  OPHALEN_BEWONERS("bewoners", "Ophalen bewoners"),
-  ONBEKEND("", "Onbekend");
+  MIJN_OVERHEID("mijnoverheid", "Mijn overheid", ""),
+  POST("post", "Post", ""),
+  VERVOLGBLAD("vervolgblad", "Vervolgblad", ""),
+  OPHALEN_BEWONERS("bewoners", "Ophalen bewoners", ""),
+  ERKENNING_1("erkenning_1", "Autom. selectie document (erkenning 1)",
+      "Sprake van erkenning bestaand kind en toestemminggever is rechtbank, kind en rechtbank (tot 16 jr.) of moeder uit wie het kind is geboren en rechtbank",
+      DocumentType.ERKENNING),
+  ERKENNING_2("erkenning_2", "Autom. selectie document (erkenning 2)",
+      "Sprake van erkenning bestaand kind en gezag is op ja gezet",
+      DocumentType.ERKENNING),
+  GEBOORTE_1("geboorte_1", "Autom. selectie document (geboorte 1)",
+      "Sprake van erkenning ongeboren vrucht en gezag is op ja gezet",
+      DocumentType.GEBOORTE),
+  GEBOORTE_2("geboorte_2", "Autom. selectie document (geboorte 2)",
+      "De erkenning vóór geboorte is gedaan in 2022",
+      DocumentType.GEBOORTE),
+  ONBEKEND("", "Onbekend", "");
 
-  private String code;
-  private String oms;
+  private final String       code;
+  private final String       oms;
+  private final DocumentType documentType;
+  private final String       toel;
 
-  DocumentKenmerkType(String code, String oms) {
+  DocumentKenmerkType(String code, String oms, String toel) {
+    this(code, oms, toel, null);
+  }
+
+  DocumentKenmerkType(String code, String oms, String toel, DocumentType documentType) {
     this.code = code;
     this.oms = oms;
+    this.toel = toel;
+    this.documentType = documentType;
   }
 
   public static DocumentKenmerkType get(String code) {
@@ -53,16 +75,16 @@ public enum DocumentKenmerkType {
     return code;
   }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-
   public String getOms() {
     return oms;
   }
 
-  public void setOms(String oms) {
-    this.oms = oms;
+  public String getToel() {
+    return toel;
+  }
+
+  public DocumentType getDocumentType() {
+    return documentType;
   }
 
   @Override

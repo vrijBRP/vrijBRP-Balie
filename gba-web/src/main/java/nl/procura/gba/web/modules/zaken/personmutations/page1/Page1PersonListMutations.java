@@ -60,7 +60,6 @@ public class Page1PersonListMutations extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
       table = new Page1PersonListMutationsTable() {
 

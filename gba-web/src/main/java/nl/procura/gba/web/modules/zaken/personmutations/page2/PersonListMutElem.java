@@ -20,8 +20,10 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
 import static java.util.EnumSet.of;
-import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.*;
-import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.AKTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.DOCUMENT;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.GELDIGHEID;
+import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.OPNEMING;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.util.ArrayList;
@@ -34,12 +36,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Component;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
-import nl.procura.diensten.gba.ple.base.*;
+import nl.procura.diensten.gba.ple.base.BasePL;
+import nl.procura.diensten.gba.ple.base.BasePLElem;
+import nl.procura.diensten.gba.ple.base.BasePLRec;
+import nl.procura.diensten.gba.ple.base.BasePLSet;
+import nl.procura.diensten.gba.ple.base.BasePLValue;
+import nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsChecks;
+import nl.procura.gba.web.modules.zaken.personmutations.page3.TablePersonListMutContainer;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -54,6 +63,8 @@ public class PersonListMutElem {
 
   private Supplier<FieldValue> defaultValue;
   private AbstractField        field;
+  private Component            tableComponent;
+  private int                  tabIndex = 0;
 
   public PersonListMutElem(BasePL pl, BasePLRec rec, BasePLElem elem, PersonListActionType action) {
     this.pl = pl;
@@ -75,22 +86,8 @@ public class PersonListMutElem {
     return !list.contains(type.getGroup());
   }
 
-  public boolean isChangeble() {
-    if (action.is(SUPER_CHANGE)) {
-      return true;
-    }
-
-    if (action.is(CORRECT_CATEGORY)) {
-      return false;
-    }
-    if (action.is(CORRECT_CURRENT_ADMIN) && !type.getElem().isAdmin()) {
-      return false;
-
-    } else if (!action.is(ADD_HISTORIC, SUPER_CHANGE) && GBAElem.IND_ONJUIST == type.getElem()) {
-      return false;
-
-    } else
-      return GBAElem.DATUM_VAN_OPNEMING != type.getElem();
+  public boolean isReadonly() {
+    return PersonListMutationsChecks.isReadonly(this);
   }
 
   public boolean isRequiredGroup() {
@@ -138,6 +135,9 @@ public class PersonListMutElem {
   }
 
   public String getNewValue() {
+    if (field == null) {
+      return "";
+    }
     if (field.getValue() instanceof FieldValue) {
       FieldValue val = (FieldValue) field.getValue();
       return astr(val.getValue());
@@ -146,6 +146,9 @@ public class PersonListMutElem {
   }
 
   public String getNewDescription() {
+    if (field == null) {
+      return "";
+    }
     if (field.getValue() instanceof FieldValue) {
       FieldValue fv = (FieldValue) field.getValue();
       return fv.getDescription();
@@ -154,6 +157,9 @@ public class PersonListMutElem {
   }
 
   public boolean isChanged() {
+    if (field == null || field.isReadOnly()) {
+      return false;
+    }
     // Workaround voor datums die soms 0 of soms 00000000 hebben.
     long currentNr = NumberUtils.toLong(getNewValue(), -1L);
     long newNr = NumberUtils.toLong(getCurrentValue().getVal(), -1L);
@@ -162,6 +168,11 @@ public class PersonListMutElem {
     } else {
       return !Objects.equals(getNewValue(), getCurrentValue().getVal());
     }
+  }
+
+  public void setTabIndex(int tabIndex) {
+    this.tabIndex = tabIndex;
+    field.setTabIndex(tabIndex);
   }
 
   @Override
@@ -181,6 +192,16 @@ public class PersonListMutElem {
 
   public void setField(AbstractField field) {
     this.field = field;
+    this.field.setTabIndex(tabIndex);
+    this.tableComponent = TablePersonListMutContainer.get(this);
+  }
+
+  public Component getTableComponent() {
+    return tableComponent;
+  }
+
+  public void setTableComponent(Component tableComponent) {
+    this.tableComponent = tableComponent;
   }
 
   public Optional<Supplier<FieldValue>> getDefaultValue() {

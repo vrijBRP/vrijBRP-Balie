@@ -21,6 +21,8 @@ package nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb;
 
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
+import java.math.BigDecimal;
+
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.services.bs.erkenning.NaamsPersoonType;
 import nl.procura.gba.web.services.bs.erkenning.NaamskeuzeVanToepassingType;
@@ -127,11 +129,20 @@ public class ErkenningBuitenProweb {
         toestemminggever != null ? toestemminggever.getCode() : ToestemminggeverType.ONBEKEND.getCode());
   }
 
+  public boolean isVerklaringGezag() {
+    return dg.getVerklaringGezagErk().intValue() > 0;
+  }
+
+  public void setVerklaringGezag(boolean verklaringGezag) {
+    dg.setVerklaringGezagErk(BigDecimal.valueOf(verklaringGezag ? 1L : 0L));
+  }
+
   public void reset() {
     setAktenummer("");
     setDatumErkenning(null);
     setGemeente(new FieldValue());
     setToestemminggeverType(ToestemminggeverType.ONBEKEND);
+    setVerklaringGezag(false);
     setRechtbank("");
     setNaamskeuzeType(NaamskeuzeVanToepassingType.NEE);
     setNaamskeuzePersoon(NaamsPersoonType.ONBEKEND);

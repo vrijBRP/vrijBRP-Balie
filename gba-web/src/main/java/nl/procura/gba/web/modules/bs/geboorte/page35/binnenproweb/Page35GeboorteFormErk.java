@@ -19,7 +19,14 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb;
 
-import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.*;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.AKTENR;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.DATUM;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.GEMEENTE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.NAAMSAANDUIDING_TYPE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.NAAMSKEUZE;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.RECHT;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.TOESTEMMINGGEVER;
+import static nl.procura.gba.web.modules.bs.geboorte.page35.binnenproweb.Page35GeboorteBeanErk.VERKLARING_GEZAG;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.util.List;
@@ -33,8 +40,8 @@ public class Page35GeboorteFormErk extends ReadOnlyForm<Page35GeboorteBeanErk> {
 
   public Page35GeboorteFormErk(DossierGeboorte geboorte) {
 
-    setColumnWidths("140px", "");
-    setOrder(GEMEENTE, DATUM, AKTENR, TOESTEMMINGGEVER, NAAMSKEUZE, NAAMSAANDUIDING_TYPE, RECHT);
+    setColumnWidths("200px", "");
+    setOrder(GEMEENTE, DATUM, AKTENR, TOESTEMMINGGEVER, VERKLARING_GEZAG, NAAMSKEUZE, NAAMSAANDUIDING_TYPE, RECHT);
     setGeboorte(geboorte);
   }
 
@@ -55,6 +62,7 @@ public class Page35GeboorteFormErk extends ReadOnlyForm<Page35GeboorteBeanErk> {
       bean.setGemeente(erkenning.getGemeente().getDescription());
       bean.setDatum(astr(erkenning.getDossier().getDatumTijdInvoer().getFormatDate()));
       bean.setToestemminggever(erkenning.getToestemminggeverType().getOms() + " " + erkenning.getRechtbank());
+      bean.setVerklaringGezag(erkenning.isVerklaringGezag() ? "Ja" : "Nee");
       bean.setNaamskeuze(erkenning.getNaamskeuzeType().getType());
       bean.setNaamsAanduidingType(erkenning.getKeuzeVoorvoegsel() + " " + erkenning.getKeuzeGeslachtsnaam());
       bean.setRecht(astr(erkenning.getLandAfstammingsRecht()));

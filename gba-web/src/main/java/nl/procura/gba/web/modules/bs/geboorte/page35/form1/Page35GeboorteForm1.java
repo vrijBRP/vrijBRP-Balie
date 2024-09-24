@@ -52,7 +52,7 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
 
     setCaption("Gezinssituatie");
     setOrder(GEZIN, ERKENNINGS_TYPE, ERKENNINGS_APP, NAAMSKEUZE_TYPE, NAAMSKEUZE_APP);
-    setColumnWidths("140px", "");
+    setColumnWidths("200px", "");
     setGeboorte(services, geboorte);
   }
 

@@ -20,11 +20,26 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page3;
 
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD;
-import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.*;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_SET;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CURRENT_ADMIN;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CURRENT_GENERAL;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_HISTORIC_ADMIN;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_HISTORIC_GENERAL;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.OVERWRITE_CURRENT;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.OVERWRITE_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.SUPER_OVERWRITE_CURRENT;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.SUPER_OVERWRITE_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -78,7 +93,11 @@ public class Page3PersonListValidationErrorsLayout extends VLayout {
   public void addActionTypeMessages() {
     getSuspendedMessage().ifPresent(this::addInfo);
 
-    if (actionType.is(SUPER_CHANGE)) {
+    if (actionType.is(
+        OVERWRITE_CURRENT,
+        OVERWRITE_HISTORIC,
+        SUPER_OVERWRITE_CURRENT,
+        SUPER_OVERWRITE_HISTORIC)) {
       if (isNotChanged(elems, personListMutElem -> true)) {
         addError("Er dient minimaal één gegeven te worden gewijzigd.");
       }
@@ -86,8 +105,7 @@ public class Page3PersonListValidationErrorsLayout extends VLayout {
       getDuplicateRecordMessage().ifPresent(this::addInfo);
     }
 
-    if (actionType.is(ADD_SET, UPDATE_SET, CORRECT_CURRENT_GENERAL, ADD_HISTORIC,
-        CORRECT_HISTORIC_GENERAL)) {
+    if (actionType.is(ADD_SET, UPDATE_SET, CORRECT_CURRENT_GENERAL, ADD_HISTORIC, CORRECT_HISTORIC_GENERAL)) {
       if (isNotChanged(elems, PersonListMutElem::isGeneralField)) {
         addError("Er dient minimaal één algemeen gegeven te worden gewijzigd.");
       }

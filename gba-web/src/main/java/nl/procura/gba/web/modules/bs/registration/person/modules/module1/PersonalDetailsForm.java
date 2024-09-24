@@ -36,6 +36,7 @@ import com.vaadin.data.Buffered;
 import com.vaadin.data.Validator.InvalidValueException;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.modules.bs.registration.person.modules.module1.ExistingIdNumberValidator.TYPE;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.standard.Globalfunctions;
 import nl.procura.standard.exceptions.ProException;
@@ -88,8 +89,14 @@ public class PersonalDetailsForm extends GbaForm<PersonBean> {
   }
 
   @Override
-  public void commit() throws Buffered.SourceException, InvalidValueException {
+  public void afterSetBean() {
+    super.afterSetBean();
+    getField(F_BSN).addValidator(new ExistingIdNumberValidator(TYPE.BSN, () -> getApplication().getServices()));
+    getField(F_ANR).addValidator(new ExistingIdNumberValidator(TYPE.ANR, () -> getApplication().getServices()));
+  }
 
+  @Override
+  public void commit() throws Buffered.SourceException, InvalidValueException {
     final String bsn = astr(getField(F_BSN).getValue());
     if (StringUtils.isBlank(bsn)) {
       throw new ProException(ENTRY, WARNING, "Vraag eerst een nieuw BSN op");

@@ -60,14 +60,14 @@ public class Page2PersonListMutationsBean implements Serializable {
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Record",
-      width = "300px")
+      width = "430px")
   @Immediate
   @Select(nullSelectionAllowed = false)
   private ContainerItem<BasePLRec> record;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Actie",
-      width = "300px")
+      width = "430px")
   @Immediate
   @Select(nullSelectionAllowed = false)
   private ContainerItem<PersonListActionType> action;

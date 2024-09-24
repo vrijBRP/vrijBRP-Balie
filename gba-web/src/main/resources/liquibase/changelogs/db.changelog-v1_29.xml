@@ -46,4 +46,40 @@
       referencedColumnNames="c_fileimport"
       referencedTableName="fileimport"/>
   </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_29_4">
+    <comment>Add process_relations field</comment>
+    <addColumn tableName="pl_mut">
+      <column name="process_relations" type="numeric" defaultValue="0">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_29_5">
+    <comment>Add process_relations field</comment>
+    <addColumn tableName="doss_erk">
+      <column name="b_verklaring_gezag" type="numeric" defaultValue="0">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_29_6">
+    <comment>Add verklaring gezag field to doss_geb</comment>
+    <addColumn tableName="doss_geb">
+      <column name="verklaring_gezag_erk" type="numeric" defaultValue="0">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_29_7">
+    <comment>Add ind_gemacht_buiten</comment>
+    <addColumn tableName="kiesr_verk">
+      <column name="ind_gemacht_kiesr" type="BOOLEAN" defaultValue="false">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>

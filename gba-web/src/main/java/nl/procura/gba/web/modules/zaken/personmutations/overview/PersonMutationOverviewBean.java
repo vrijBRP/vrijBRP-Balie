@@ -30,16 +30,22 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class PersonMutationOverviewBean {
 
-  public static final String EXPLANATION = "explanation";
-  public static final String CAT         = "category";
-  public static final String OPERATION   = "operation";
-  public static final String SET         = "set";
-  public static final String RECORD      = "record";
+  public static final String PROCESS_RELATIONS = "processRelations";
+  public static final String EXPLANATION       = "explanation";
+  public static final String CAT               = "category";
+  public static final String OPERATION         = "operation";
+  public static final String SET               = "set";
+  public static final String RECORD            = "record";
 
   @Field(type = Field.FieldType.LABEL,
       caption = "Redenen",
       width = "350px")
   private Object explanation;
+
+  @Field(type = Field.FieldType.LABEL,
+      caption = "Doorverwerking gerelateerden",
+      width = "350px")
+  private Object processRelations;
 
   @Field(type = Field.FieldType.LABEL,
       caption = "Categorie",

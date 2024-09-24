@@ -45,7 +45,7 @@ public class IndicatieOnjuistField extends GbaComboBox {
 
   @Override
   public Object getValue() {
-    return new Val(super.getValue(), "");
+    return super.getValue() != null ? new Val(super.getValue(), "") : null;
   }
 
   class Values extends ArrayList {

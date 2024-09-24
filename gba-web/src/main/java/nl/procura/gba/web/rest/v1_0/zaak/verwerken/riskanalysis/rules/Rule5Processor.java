@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_GEG_IN_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_ONDERZ;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
 import static nl.procura.commons.core.utils.ProNumberUtils.isNotNeg;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -54,7 +56,7 @@ public class Rule5Processor extends AbstractRuleProcessor {
     BasePLValue aand = actueel.getElemVal(AAND_GEG_IN_ONDERZ);
     long dIn = actueel.getElemVal(DATUM_INGANG_ONDERZ).toLong();
     long dEnd = actueel.getElemVal(DATUM_EINDE_ONDERZ).toLong();
-    boolean isAddressInResearch = (isNotBlank(aand.getVal()) || (isNotNeg(dIn) && !isNotNeg(dEnd)));
+    boolean isAddressInResearch = isNotBlank(aand.getVal()) && isNotNeg(dIn) && !isNotNeg(dEnd);
 
     if (isAddressInResearch) {
       info("Categorie 08 (verblijfplaats) staat in onderzoek met aanduiding {0} ",

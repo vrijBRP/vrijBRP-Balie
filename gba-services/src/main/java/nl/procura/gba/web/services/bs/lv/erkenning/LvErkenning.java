@@ -55,6 +55,7 @@ public class LvErkenning implements Lv {
   private NaamskeuzeVanToepassingType naamskeuzeType       = NaamskeuzeVanToepassingType.ONBEKEND;
   private DateTime                    datum                = null;
   private DossierAktePersoon          kind                 = null;
+  private boolean                     verklaringGezag;
 
   public FieldValue getAfstammingsrecht() {
     return afstammingsrecht;
@@ -223,5 +224,13 @@ public class LvErkenning implements Lv {
 
   public boolean isNaamskeuze() {
     return NaamskeuzeVanToepassingType.JA.equals(getNaamskeuzeType());
+  }
+
+  public boolean isVerklaringGezag() {
+    return verklaringGezag;
+  }
+
+  public void setVerklaringGezag(boolean verklaringGezag) {
+    this.verklaringGezag = verklaringGezag;
   }
 }

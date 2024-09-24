@@ -22,13 +22,14 @@ package nl.procura.gba.web.modules.zaken.personmutations;
 import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.web.components.fields.GbaTextField;
+import nl.procura.standard.Globalfunctions;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class UnknownValueField extends GbaTextField {
 
   public UnknownValueField() {
     addListener((ValueChangeListener) event -> {
-      FieldValue newValue = new FieldValue(event.getProperty().getValue());
+      FieldValue newValue = new FieldValue(Globalfunctions.astr(event.getProperty().getValue()));
       String newValueValue = newValue.getValue().toString().toLowerCase();
       if (newValueValue.equals(".") || StringUtils.containsAny(newValueValue, "onbekend", "standaardwaarde")) {
         setValue(new FieldValue(".", "Onbekend (standaardwaarde)"));

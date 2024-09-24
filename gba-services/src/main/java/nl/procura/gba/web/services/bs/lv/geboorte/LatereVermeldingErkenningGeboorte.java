@@ -130,6 +130,7 @@ public class LatereVermeldingErkenningGeboorte implements LatereVermelding<LvErk
     akte.setVoorvoegsel(erkenning.getKeuzeVoorvoegsel());
     akte.setGeslachtsnaam(erkenning.getKeuzeGeslachtsnaam());
     akte.setToestemminggeverType(erkenning.getToestemminggeverType());
+    akte.setVerklaringGezag(erkenning.isVerklaringGezag());
     akte.setAfstammingsrecht(erkenning.getLandAfstammingsRecht());
     akte.setAkte(dossierAkte);
 
@@ -160,6 +161,7 @@ public class LatereVermeldingErkenningGeboorte implements LatereVermelding<LvErk
       akte.setGemeente(erkenning.getGemeente());
       akte.setBuitenlandsePlaats(erkenning.getBuitenlandsePlaats());
       akte.setToestemminggeverType(erkenning.getToestemminggeverType());
+      akte.setVerklaringGezag(erkenning.isVerklaringGezag());
       akte.setAfstammingsrecht(erkenning.getLandAfstamming());
       akte.setNaamskeuzeType(erkenning.getNaamskeuzeType());
 

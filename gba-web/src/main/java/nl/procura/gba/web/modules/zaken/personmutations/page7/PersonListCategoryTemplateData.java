@@ -1,6 +1,11 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page7;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KIESR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
 import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.HIST;
 
 import java.util.LinkedHashSet;
@@ -171,6 +176,11 @@ public class PersonListCategoryTemplateData extends DocumentTemplateData {
 
     if (record.isBagChange()) {
       value.append("Dubbel ivm bag wijziging");
+      value.append(" - ");
+    }
+
+    if (record.isInOnderzoek()) {
+      value.append("In Onderzoek");
       value.append(" - ");
     }
 
