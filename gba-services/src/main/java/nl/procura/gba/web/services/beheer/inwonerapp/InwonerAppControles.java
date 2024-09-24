@@ -19,8 +19,6 @@
 
 package nl.procura.gba.web.services.beheer.inwonerapp;
 
-import static nl.procura.gba.common.ZaakStatusType.VERWERKT;
-import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
 import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.INWONER_AFSLUITEN_ZAAK;
 import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.INWONER_APP_SAMENV;
 import static nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdType.INWONER_APP;
@@ -113,7 +111,7 @@ public class InwonerAppControles extends ControlesTemplate<InwonerAppService> {
     query.setParameter("attr1", INWONER_APP_SAMENV.getCode());
     query.setParameter("attr2", INWONER_AFSLUITEN_ZAAK.getCode());
     query.setParameter("statusses", Arrays.stream(ZaakStatusType.values())
-        .filter(type -> type.is(VERWERKT, VERWERKT_IN_GBA))
+        .filter(ZaakStatusType::isEindStatus)
         .map(ZaakStatusType::getCode)
         .collect(Collectors.toList()));
 
@@ -136,7 +134,7 @@ public class InwonerAppControles extends ControlesTemplate<InwonerAppService> {
     query.setParameter("type", INWONER_APP.getCode());
     query.setParameter("attr", INWONER_APP_SAMENV.getCode());
     query.setParameter("statusses", Arrays.stream(ZaakStatusType.values())
-        .filter(type -> type.is(VERWERKT, VERWERKT_IN_GBA))
+        .filter(ZaakStatusType::isEindStatus)
         .map(ZaakStatusType::getCode)
         .collect(Collectors.toList()));
 
