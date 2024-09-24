@@ -19,8 +19,10 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.tasks;
 
+import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType.EVENT_ADD_HUW;
+import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType.EVENT_ADD_NAT;
+import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType.EVENT_ADD_OVERL;
 import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType.EVENT_MISC;
-import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType.EVENT_MUT_OVERL;
 import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType.EVENT_ZAAK;
 import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskExecutionType.MANUAL;
 import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskExecutionType.SKIP;
@@ -49,12 +51,14 @@ public enum TaskType implements EnumWithCode<Integer> {
   TASK_ZAAK(2, "Overige",
       true, EVENT_ZAAK, MANUAL),
 
-  // overlijden registreren in categorie 06,
-  TASK_100(100, "Opschorting wegens overlijden in categorie 07",
-      false, EVENT_MUT_OVERL, MANUAL, SKIP),
+  TASK_BERICHT_OVERL_PARTNER(3, "Zorgdragen voor verwerken van overlijden op PL partner",
+      false, EVENT_ADD_OVERL, MANUAL, SKIP),
 
-  TASK_101(101, "Verwerk overlijden bij partner",
-      false, EVENT_MUT_OVERL, MANUAL, SKIP);
+  TASK_BERICHT_HUW_PARTNER(4, "Zorgdragen voor verwerken verbintenis op PL partner",
+      false, EVENT_ADD_HUW, MANUAL, SKIP),
+
+  TASK_EU_KIESR(5, "Verwijder cat. 13 (kiesrecht) vanwege aanduiding europees kiesrecht",
+      false, EVENT_ADD_NAT, MANUAL, SKIP);
 
   private final Integer                 code;
   private final String                  description;

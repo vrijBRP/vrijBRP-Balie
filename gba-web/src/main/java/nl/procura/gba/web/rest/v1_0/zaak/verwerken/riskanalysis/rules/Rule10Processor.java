@@ -21,6 +21,8 @@ package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
 import static nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService.SIGNALTYPE.ADDRESS;
 
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
@@ -46,7 +48,12 @@ public class Rule10Processor extends AbstractRuleProcessor {
       DossRiskAnalysisSubject subject,
       RiskProfileRule rule) {
 
-    for (RiskProfileSig sig : getServices().getRiskAnalysisService().getSignals(ADDRESS)) {
+    for (RiskProfileSig sig : getServices().getRiskAnalysisService()
+        .getSignals(ADDRESS)
+        .stream()
+        .filter(RiskProfileSig::isEnabled)
+        .collect(Collectors.toList())) {
+
       String varPc = Postcode.getCompact(sig.getPc());
       String varHnr = sig.getHnr().toString();
       String varHnrL = sig.getHnrL();

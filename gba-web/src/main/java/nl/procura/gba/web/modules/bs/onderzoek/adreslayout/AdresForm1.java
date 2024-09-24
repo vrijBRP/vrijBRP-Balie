@@ -56,7 +56,7 @@ import com.vaadin.ui.Field;
 
 import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
 import nl.procura.gba.web.common.misc.SelectListener;
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.listeners.FieldChangeListener;
 import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.types.OnderzoekAddress;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres.BewonerWindow;
@@ -122,12 +122,12 @@ public class AdresForm1 extends BagAdresForm<AdresBean1> {
           setFields(value);
         }
       });
-      BagSuggestionBox suggestionBox = getField(F_BAG_ADDRESS, BagSuggestionBox.class);
-      if (suggestionBox != null) {
+      BagPopupField bagAddressField = getField(F_BAG_ADDRESS, BagPopupField.class);
+      if (bagAddressField != null) {
         String gemCode = Services.getInstance().getGebruiker().getGemeenteCode();
-        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+        bagAddressField.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
             .setRequestListener(value -> new LocationServerRequest()
-                .setRequestorName("BRP-suggestionbox")
+                .setRequestorName("VrijBRP")
                 .setServiceType(SUGGEST)
                 .setOffset(0).setRows(10)
                 .search(TYPE, "adres")

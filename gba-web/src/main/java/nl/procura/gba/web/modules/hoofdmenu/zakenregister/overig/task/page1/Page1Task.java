@@ -72,6 +72,14 @@ public class Page1Task extends NormalPageTemplate {
   }
 
   @Override
+  public void attach() {
+    if (table != null) {
+      table.init();
+    }
+    super.attach();
+  }
+
+  @Override
   public void onClose() {
     getWindow().closeWindow();
   }
@@ -95,7 +103,7 @@ public class Page1Task extends NormalPageTemplate {
   @Override
   public void onNew() {
     TaskService taskService = getServices().getTaskService();
-    Task task = taskService.newTask(zaakId, TaskType.TASK_ZAAK);
+    Task task = taskService.newTask(zaakId, TaskType.TASK_ZAAK, "");
     getApplication().getParentWindow().addWindow(new TaskWindow(task, () -> {
       table.init();
       listener.run();

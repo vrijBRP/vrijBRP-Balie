@@ -30,6 +30,7 @@ import com.vaadin.ui.Button;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.zaken.personmutations.WindowPersonListRelationMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.Page2PersonListMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.page5.Page5PersonListMutations;
@@ -37,6 +38,7 @@ import nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.Person
 import nl.procura.gba.web.modules.zaken.personmutationsindex.WindowMutationsIndex;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
+import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -66,7 +68,8 @@ public class Page1PersonListMutations extends NormalPageTemplate {
         @Override
         public void onDoubleClick(Record record) {
           PersonListMutation mutation = record.getObject(PersonListMutation.class);
-          getNavigation().goToPage(new Page5PersonListMutations(mutation));
+          Page5PersonListMutations page = new Page5PersonListMutations(mutation);
+          getApplication().getParentWindow().addWindow(new PersonListMutationsWindow(page, () -> table.init()));
         }
       };
 
@@ -128,5 +131,26 @@ public class Page1PersonListMutations extends NormalPageTemplate {
   public void onNew() {
     getNavigation().goToPage(Page2PersonListMutations.class);
     super.onNew();
+  }
+
+  public static class PersonListMutationsWindow extends GbaModalWindow {
+
+    private final Page5PersonListMutations page;
+
+    public PersonListMutationsWindow(Page5PersonListMutations page) {
+      super("Mutaties van de persoonslijst (Escape om te sluiten)", "1400px");
+      this.page = page;
+    }
+
+    public PersonListMutationsWindow(Page5PersonListMutations page, Runnable closeListener) {
+      this(page);
+      addListener((CloseListener) closeEvent -> closeListener.run());
+    }
+
+    @Override
+    public void attach() {
+      super.attach();
+      addComponent(new MainModuleContainer(false, page));
+    }
   }
 }

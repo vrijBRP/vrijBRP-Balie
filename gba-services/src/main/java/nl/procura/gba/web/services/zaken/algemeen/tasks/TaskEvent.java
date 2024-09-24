@@ -8,12 +8,10 @@ import lombok.Data;
 @Data
 public class TaskEvent {
 
-  private String              zaakId;
-  private List<TaskEventType> eventTypes;
-  private List<Task>          tasks = new ArrayList<>();
+  private String     zaakId;
+  private List<Task> tasks = new ArrayList<>();
 
-  public TaskEvent(String zaakId, List<TaskEventType> eventTypes) {
+  public TaskEvent(String zaakId) {
     this.zaakId = zaakId;
-    this.eventTypes = eventTypes;
   }
 }

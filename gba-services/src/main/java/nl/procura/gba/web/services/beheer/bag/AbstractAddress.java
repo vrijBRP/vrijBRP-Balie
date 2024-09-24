@@ -246,4 +246,9 @@ public abstract class AbstractAddress implements Address {
   public String getRemarks() {
     return remarks;
   }
+
+  @Override
+  public String toString() {
+    return getLabel();
+  }
 }

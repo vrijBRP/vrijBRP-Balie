@@ -31,7 +31,7 @@ public class Page1Marking extends NormalPageTemplate {
 
   protected final Button buttonAll = new Button("Overige personen / adressen");
 
-  private BasePLExt         pl;
+  private final BasePLExt   pl;
   private Page1MarkingTable table;
 
   public Page1Marking(BasePLExt pl) {

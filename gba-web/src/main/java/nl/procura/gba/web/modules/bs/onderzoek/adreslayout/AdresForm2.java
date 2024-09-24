@@ -51,7 +51,7 @@ import java.util.function.Consumer;
 
 import com.vaadin.ui.Field;
 
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.listeners.FieldChangeListener;
 import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.types.OnderzoekAddress;
 import nl.procura.gba.web.services.Services;
@@ -121,11 +121,11 @@ public class AdresForm2 extends BagAdresForm<AdresBean2> {
           setFields(value);
         }
       });
-      BagSuggestionBox suggestionBox = getField(F_BAG_ADDRESS, BagSuggestionBox.class);
-      if (suggestionBox != null) {
-        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+      BagPopupField bagAddressField = getField(F_BAG_ADDRESS, BagPopupField.class);
+      if (bagAddressField != null) {
+        bagAddressField.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
             .setRequestListener(value -> new LocationServerRequest()
-                .setRequestorName("BRP-suggestionbox")
+                .setRequestorName("VrijBRP")
                 .setServiceType(SUGGEST)
                 .setOffset(0).setRows(10)
                 .search(TYPE, "adres")

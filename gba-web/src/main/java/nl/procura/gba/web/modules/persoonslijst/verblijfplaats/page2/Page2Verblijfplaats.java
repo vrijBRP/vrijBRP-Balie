@@ -121,7 +121,7 @@ public class Page2Verblijfplaats extends PlDataPage {
 
       @Override
       public String[] getOrder() {
-        return new String[]{ GELDIGHEID, OPNAME, ONJUIST, INONDERZOEK, DATUMINGANG, DATUMEINDE };
+        return new String[]{ GELDIGHEID, OPNAME, INDDOCUMENT, ONJUIST, INONDERZOEK, DATUMINGANG, DATUMEINDE };
       }
 
       @Override

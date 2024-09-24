@@ -19,18 +19,20 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.mark;
 
-import nl.procura.gba.web.components.layouts.tabsheet.GbaTabsheet;
+import nl.procura.gba.jpa.personen.db.RiskProfileSig;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.components.listeners.ChangeListener;
-import nl.procura.gba.web.modules.persoonslijst.overig.mark.page2.Page2Marking1;
-import nl.procura.gba.web.modules.persoonslijst.overig.mark.page2.Page2Marking2;
+import nl.procura.gba.web.modules.persoonslijst.overig.mark.page2.Page2Marking3;
+import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
-public class ProfileMarkingsWindow extends GbaModalWindow {
+public class ProfileMarkCommentWindow extends GbaModalWindow {
 
+  private final RiskProfileSig sig;
   private final ChangeListener changeListener;
 
-  public ProfileMarkingsWindow(ChangeListener changeListener) {
-    super("Markeren voor risicoanalyses (Escape om te sluiten)", "900px");
+  public ProfileMarkCommentWindow(RiskProfileSig sig, ChangeListener changeListener) {
+    super("Markeren voor risicoanalyses (Escape om te sluiten)", "700px");
+    this.sig = sig;
     this.changeListener = changeListener;
   }
 
@@ -43,15 +45,6 @@ public class ProfileMarkingsWindow extends GbaModalWindow {
   @Override
   public void attach() {
     super.attach();
-
-    GbaTabsheet tabsheet = new GbaTabsheet();
-    tabsheet.addStyleName("zoektab");
-    tabsheet.setNoBorderTop();
-    tabsheet.setSizeFull();
-
-    tabsheet.addTab(new Page2Marking1(), "Personen");
-    tabsheet.addTab(new Page2Marking2(), "Adressen");
-
-    addComponent(tabsheet);
+    addComponent(new MainModuleContainer(false, new Page2Marking3(sig)));
   }
 }

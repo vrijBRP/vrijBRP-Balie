@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.bs.common.pages.zoekpage;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
@@ -90,7 +90,7 @@ public class BsZoekBean implements Serializable {
       width = "150px")
   private String voornamen = "";
 
-  @Field(customTypeClass = BagSuggestionBox.class,
+  @Field(customTypeClass = BagPopupField.class,
       caption = "BAG-adres",
       description = "Adres",
       width = "482px")

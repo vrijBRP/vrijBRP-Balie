@@ -28,14 +28,16 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.inject.servlet.RequestScoped;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.MiscUtils;
-import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
 import nl.procura.gba.web.rest.v2.GbaRestInfoResourceV2;
 import nl.procura.gba.web.rest.v2.model.info.GbaRestInfo;
+import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.Services.TYPE;
 
 @RequestScoped
 @Path(BASE_INFO_URI)
-public class GbaRestInfoResource extends GbaRestServiceResource implements GbaRestInfoResourceV2 {
+public class GbaRestInfoResource implements GbaRestInfoResourceV2 {
 
   @Override
   @GET
@@ -44,6 +46,16 @@ public class GbaRestInfoResource extends GbaRestServiceResource implements GbaRe
     GbaRestInfo info = new GbaRestInfo();
     info.setVersion(MiscUtils.getVersion());
     info.setBuildDate(MiscUtils.getBuilddate());
+
+    // Load cached data
+    try {
+      Services services = new Services(TYPE.REST);
+      services.getTabellenService().laadTabellen();
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new ProException("Fout bij laden tabellen");
+    }
+
     return info;
   }
 }

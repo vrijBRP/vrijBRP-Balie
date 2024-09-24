@@ -51,9 +51,8 @@ import nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.Person
 import nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.PersonListRelationMutationHandler;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
+import nl.procura.gba.web.services.zaken.algemeen.tasks.Task;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEvent;
-import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType;
-import nl.procura.gba.web.services.zaken.algemeen.tasks.events.ZaakTaskEvents;
 import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
@@ -132,9 +131,10 @@ public class Page4PersonListMutations extends NormalPageTemplate {
   }
 
   private void initTasks() {
-    List<TaskEventType> eventTypes = ZaakTaskEvents.getEvents(mutation);
-    taskEvent = new TaskEvent(mutation.getZaakId(), eventTypes);
-    tasksButton.setEnabled(!eventTypes.isEmpty());
+    taskEvent = new TaskEvent(mutation.getZaakId());
+    List<Task> tasks = ZaakTaskEvents.getEvents(getServices(), mutation, mutations);
+    taskEvent.getTasks().addAll(tasks);
+    tasksButton.setEnabled(!tasks.isEmpty());
   }
 
   private void onTasks() {

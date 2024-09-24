@@ -28,6 +28,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet.Tab;
 
+import java.util.Collections;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabLayout;
@@ -71,9 +72,7 @@ public class ZaakStatusLayout extends GbaVerticalLayout implements ZaakTabLayout
 
   @Override
   public void reloadLayout(GbaApplication application, Zaak zaak) {
-
     this.zaak = zaak;
-
     tabel.setZaak(zaak);
     tabel.init();
     tab.setCaption(getHeader());
@@ -96,7 +95,7 @@ public class ZaakStatusLayout extends GbaVerticalLayout implements ZaakTabLayout
 
   private void onStatusToevoegen() {
 
-    new ZaakStatusUpdater(getWindow(), asList(zaak)) {
+    new ZaakStatusUpdater(getWindow(), Collections.singletonList(zaak)) {
 
       @Override
       protected void reload() {

@@ -35,6 +35,9 @@ public class NaamformatsTest {
     Naamformats nf3 = new Naamformats("Cle-xaïs Ruth -Maria Sigmélie Migdailine Amelia", "Terlouw", "de", "Jonkvrouw",
         "E",
         pnf);
+    Naamformats nf4 = new Naamformats("Ïsmaël Álbert", "Terlouw", "de", "Jonkheer",
+        "E",
+        pnf);
 
     System.out.println("Met Baron\n");
     log(nf1);
@@ -43,6 +46,8 @@ public class NaamformatsTest {
     log(nf2);
 
     log(nf3);
+
+    log(nf4);
   }
 
   private static void log(Naamformats nf) {//

@@ -30,6 +30,7 @@ import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.GuiceServletContextListener;
+import com.google.inject.servlet.ServletScopes;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
@@ -46,6 +47,7 @@ import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakBestandResources;
 import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakIdentificatieResources;
 import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakRelatieResources;
 import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakTaakResources;
 import nl.procura.gba.web.rest.v2.resources.GbaRestDataImportResource;
 import nl.procura.gba.web.rest.v2.resources.GbaRestEventLogResourceV2Server;
 import nl.procura.gba.web.rest.v2.resources.GbaRestGebruikerResourceV2Server;
@@ -92,6 +94,7 @@ public class GbaRestListener extends GuiceServletContextListener {
       bind(GbaRestZaakBestandResources.class);
       bind(GbaRestZaakAantekeningResources.class);
       bind(GbaRestZaakAttribuutResources.class);
+      bind(GbaRestZaakTaakResources.class);
       bind(GbaRestZaakIdentificatieResources.class);
       bind(GbaRestZaakRelatieResources.class);
 
@@ -101,7 +104,7 @@ public class GbaRestListener extends GuiceServletContextListener {
       bind(GbaRestVerhuizingResourceV2Server.class);
       bind(GbaRestEventLogResourceV2Server.class);
       bind(GbaRestGebruikerResourceV2Server.class);
-      bind(GbaRestInfoResource.class);
+      bind(GbaRestInfoResource.class).in(ServletScopes.REQUEST);
       bind(GbaRestDataImportResource.class);
 
       bind(GbaRestServices.class);

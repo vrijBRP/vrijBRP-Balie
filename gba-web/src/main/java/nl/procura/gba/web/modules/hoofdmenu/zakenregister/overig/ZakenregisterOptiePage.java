@@ -19,8 +19,11 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig;
 
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.ZakenregisterUtils.getZakenregisterAccordionTab;
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.TabSheet.Tab;
 
 import nl.procura.gba.common.ZaakStatusType;
@@ -32,9 +35,6 @@ import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.layout.tabsheet.LazyTabsheet.LazyTab;
-import nl.procura.vaadin.functies.VaadinUtils;
-
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.ZakenregisterUtils.getZakenregisterAccordionTab;
 
 public class ZakenregisterOptiePage<T extends Zaak> extends ZakenregisterPage<T> {
 
@@ -69,6 +69,19 @@ public class ZakenregisterOptiePage<T extends Zaak> extends ZakenregisterPage<T>
       };
 
       addComponent(tabsheet);
+
+      // Refresh specific tab
+      tabsheet.addListener((SelectedTabChangeListener) tabChangeEvent -> {
+        Component selectedTab = tabChangeEvent.getTabSheet().getSelectedTab();
+        for (LazyTab lazytab : tabsheet.getLazyTabs()) {
+          if (lazytab.getLayout() == selectedTab) {
+            if (lazytab.getComponent() instanceof Component) {
+              tabsheet.refreshTab((Component) lazytab.getComponent());
+            }
+          }
+        }
+      });
+
       LazyTab lazyTab = tabsheet.getLazyTab(getSelectedTab());
       if (lazyTab != null) {
         tabsheet.setSelectedTab(lazyTab.getLayout());

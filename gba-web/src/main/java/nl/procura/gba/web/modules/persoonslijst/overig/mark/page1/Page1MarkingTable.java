@@ -19,12 +19,16 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.mark.page1;
 
-import static nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService.SIGNALTYPE.ADDRESS;
-import static nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService.SIGNALTYPE.BSN;
+import static org.apache.commons.lang3.StringUtils.abbreviate;
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
+
+import com.vaadin.ui.Embedded;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
-import nl.procura.gba.common.MiscUtils;
+import nl.procura.gba.jpa.personen.db.RiskProfileSig;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
+import nl.procura.gba.web.modules.persoonslijst.overig.mark.MarkedTableImage;
+import nl.procura.gba.web.modules.persoonslijst.overig.mark.ProfileMarkCommentWindow;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.bag.ProcuraPersonListAddress;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
@@ -32,7 +36,7 @@ import nl.procura.gba.web.theme.GbaWebTheme;
 
 public class Page1MarkingTable extends GbaTable {
 
-  private BasePLExt pl;
+  private final BasePLExt pl;
 
   public Page1MarkingTable(BasePLExt pl) {
     this.pl = pl;
@@ -46,57 +50,52 @@ public class Page1MarkingTable extends GbaTable {
     addStyleName(GbaWebTheme.TABLE.NEWLINE_WRAP);
     addStyleName(GbaWebTheme.TABLE.ALIGN_TOP);
 
-    addColumn("Gemarkeerd", 90).setUseHTML(true);
+    addColumn("&nbsp", 15).setClassType(Embedded.class);
     addColumn("Gegeven", 100);
     addColumn("Waarde");
+    addColumn("Opmerking", 200);
 
     super.setColumns();
   }
 
   @Override
   public void onDoubleClick(Record record) {
-
-    RiskAnalysisService service = Services.getInstance().getRiskAnalysisService();
-
-    if (BSN.equals(record.getObject())) {
-      service.switchSignaling(service.buildBsnSignal(pl));
-    }
-
-    if (ADDRESS.equals(record.getObject())) {
-      service.switchSignaling(service.buildAddressSignal(pl));
-    }
-
+    RiskProfileSig sig = record.getObject(RiskProfileSig.class);
+    getApplication().getParentWindow().addWindow(new ProfileMarkCommentWindow(sig, this::init));
     init();
-
     super.onDoubleClick(record);
   }
 
   @Override
   public void setRecords() {
 
-    boolean markedByBsn = isSignaledByBsn();
-    boolean markedByAddress = isSignaledByAddress();
+    RiskProfileSig markedByBsn = getSignaledByBsn();
+    RiskProfileSig markedByAddress = getSignaledByAddress();
 
-    Record record1 = addRecord(BSN);
-    record1.addValue(markedByBsn ? MiscUtils.setClass(false, "Ja") : "Nee");
+    Record record1 = addRecord(markedByBsn);
+    record1.addValue(new MarkedTableImage(markedByBsn.isEnabled()));
     record1.addValue("Persoon");
     record1.addValue(pl.getPersoon().getNaam().getNaamNaamgebruikEersteVoornaam());
+    record1.addValue(abbreviate(normalizeSpace(markedByBsn.getRemarks()), 30));
 
-    Record record2 = addRecord(ADDRESS);
-    record2.addValue(markedByAddress ? MiscUtils.setClass(false, "Ja") : "Nee");
+    Record record2 = addRecord(markedByAddress);
+    record2.addValue(new MarkedTableImage(markedByAddress.isEnabled()));
     record2.addValue("Adres");
     record2.addValue(new ProcuraPersonListAddress(pl).getLabel());
+    record2.addValue(abbreviate(normalizeSpace(markedByAddress.getRemarks()), 30));
 
     super.setRecords();
   }
 
-  private boolean isSignaledByBsn() {
+  private RiskProfileSig getSignaledByBsn() {
     RiskAnalysisService service = Services.getInstance().getRiskAnalysisService();
-    return service.getSignal(service.buildBsnSignal(pl)).isPresent();
+    RiskProfileSig sig = service.buildBsnSignal(pl);
+    return service.getSignal(sig).orElse(sig);
   }
 
-  private boolean isSignaledByAddress() {
+  private RiskProfileSig getSignaledByAddress() {
     RiskAnalysisService service = Services.getInstance().getRiskAnalysisService();
-    return service.getSignal(service.buildAddressSignal(pl)).isPresent();
+    RiskProfileSig sig = service.buildAddressSignal(pl);
+    return service.getSignal(sig).orElse(sig);
   }
 }

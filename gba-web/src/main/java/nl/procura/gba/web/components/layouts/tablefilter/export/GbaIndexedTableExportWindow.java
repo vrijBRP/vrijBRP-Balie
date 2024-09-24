@@ -93,11 +93,11 @@ public class GbaIndexedTableExportWindow extends ModalWindow {
     @Override
     public void setRecords() {
 
-      List<Spreadsheet> spList = new ArrayList<>();
-
-      spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.CSV_SEMICOLON));
-      spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.CSV));
-      spList.addAll(spreadsheets);
+      List<Spreadsheet> spList = new ArrayList<>(spreadsheets);
+      if (spList.isEmpty()) {
+        spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.CSV_SEMICOLON));
+        spList.add(new StandaardTabelSpreadsheet(table, "Standaarduitvoer", UitvoerformaatType.CSV));
+      }
 
       for (Spreadsheet spreadsheet : spList) {
         Record record = addRecord(spreadsheet);

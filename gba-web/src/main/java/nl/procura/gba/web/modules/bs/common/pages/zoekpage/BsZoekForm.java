@@ -42,7 +42,7 @@ import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.Field;
 
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
@@ -113,12 +113,12 @@ public class BsZoekForm extends GbaForm<BsZoekBean> {
   @Override
   public void afterSetBean() {
     super.afterSetBean();
-    BagSuggestionBox suggestionBox = getField(BsZoekBean.F_ADRES, BagSuggestionBox.class);
-    if (suggestionBox != null) {
+    BagPopupField bagAddressField = getField(BsZoekBean.F_ADRES, BagPopupField.class);
+    if (bagAddressField != null) {
       if (Services.getInstance().getGeoService().isGeoServiceActive()) {
-        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+        bagAddressField.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
             .setRequestListener(value -> new LocationServerRequest()
-                .setRequestorName("BRP-suggestionbox")
+                .setRequestorName("VrijBRP")
                 .setServiceType(SUGGEST)
                 .setOffset(0).setRows(10)
                 .search(TYPE, "adres")
@@ -126,7 +126,7 @@ public class BsZoekForm extends GbaForm<BsZoekBean> {
                 .filters(WEERGAVENAAM, ADRESSEERBAAROBJECTID,
                     POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
       } else {
-        suggestionBox.setVisible(false);
+        bagAddressField.setVisible(false);
       }
     }
   }

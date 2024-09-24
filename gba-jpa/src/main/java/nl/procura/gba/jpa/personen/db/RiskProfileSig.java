@@ -21,7 +21,13 @@ package nl.procura.gba.jpa.personen.db;
 
 import java.math.BigDecimal;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import lombok.Data;
 
@@ -76,6 +82,14 @@ public class RiskProfileSig extends BaseEntity<BigDecimal> {
   @Column(name = "label",
       nullable = false)
   private String label;
+
+  @Column(name = "enabled",
+      nullable = false)
+  private boolean enabled;
+
+  @Column(name = "remarks",
+      nullable = false)
+  private String remarks;
 
   public RiskProfileSig() {
   }

@@ -22,17 +22,17 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.log;
 import java.util.List;
 
 import nl.procura.bsm.rest.v1_0.objecten.log.BsmRestLog;
-import nl.procura.gba.web.components.layouts.ModuleTemplate;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
-import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class BsmLogWindow extends GbaModalWindow {
 
   private final List<BsmRestLog> logs;
+  private final BsmUitvoerenBean progressBean;
 
-  public BsmLogWindow(List<BsmRestLog> logs) {
+  public BsmLogWindow(List<BsmRestLog> logs, BsmUitvoerenBean progressBean) {
+    this.progressBean = progressBean;
     setCaption("Informatie over de uitgevoerde taak (Escape om te sluiten)");
     setWidth("900px");
     this.logs = logs;
@@ -40,30 +40,8 @@ public class BsmLogWindow extends GbaModalWindow {
 
   @Override
   public void attach() {
-
     super.attach();
-
-    MainModuleContainer mainModule = new MainModuleContainer();
-
+    MainModuleContainer mainModule = new MainModuleContainer(false, new BsmLogPage(logs, progressBean));
     addComponent(mainModule);
-
-    mainModule.getNavigation().addPage(new Module());
-  }
-
-  public class Module extends ModuleTemplate {
-
-    public Module() {
-      setMargin(false);
-    }
-
-    @Override
-    public void event(PageEvent event) {
-
-      if (event.isEvent(InitPage.class)) {
-        getPages().getNavigation().goToPage(new BsmLogPage(logs));
-      }
-
-      super.event(event);
-    }
   }
 }

@@ -24,7 +24,7 @@ import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.containers.actueel.PlaatsActueelContainer;
 import nl.procura.gba.web.components.containers.actueel.WoonplaatsActueelContainer;
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
@@ -68,7 +68,7 @@ public class AdresBean2 implements Serializable {
       nullSelectionAllowed = false)
   private AddressSourceType source;
 
-  @Field(customTypeClass = BagSuggestionBox.class,
+  @Field(customTypeClass = BagPopupField.class,
       caption = "Adres",
       description = "Adres",
       width = "436px",

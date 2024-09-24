@@ -334,4 +334,15 @@
     <sql>delete
          from event_log</sql>
   </changeSet>
+  <changeSet author="Procura" id="v1_31_3">
+    <comment>Add remarks to signals</comment>
+    <addColumn tableName="rp_sig">
+      <column name="enabled" type="boolean" defaultValue="true">
+        <constraints nullable="false"/>
+      </column>
+      <column name="remarks" type="text" defaultValue="''">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>

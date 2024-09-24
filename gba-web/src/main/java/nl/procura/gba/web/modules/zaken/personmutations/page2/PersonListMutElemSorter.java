@@ -22,8 +22,10 @@ package nl.procura.gba.web.modules.zaken.personmutations.page2;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTELAND;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GEBOORTEPLAATS;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_OVERL;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERBINTENIS;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_OVERL;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_VERBINTENIS;
 
 import java.util.Comparator;
@@ -48,8 +50,8 @@ public class PersonListMutElemSorter implements Comparator<PersonListMutElem> {
     int elem2 = o2.getElem().getElemCode();
 
     // Uitzondering voor land en plaats. Hier wil je eerst land hebben
-    if (o1.getElemType().is(GEBOORTELAND, LAND_VERBINTENIS, LAND_ONTBINDING)
-        && o2.getElemType().is(GEBOORTEPLAATS, PLAATS_VERBINTENIS, PLAATS_ONTBINDING)) {
+    if (o1.getElemType().is(GEBOORTELAND, LAND_VERBINTENIS, LAND_ONTBINDING, LAND_OVERL)
+        && o2.getElemType().is(GEBOORTEPLAATS, PLAATS_VERBINTENIS, PLAATS_ONTBINDING, PLAATS_OVERL)) {
       return -1;
     }
 

@@ -19,7 +19,12 @@
 
 package nl.procura.gba.web.services.gba.templates;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PERSONEN_PROFIEL2_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PERSONEN_PROFIEL2_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_USERNAME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PROFIEL;
 import static nl.procura.gba.web.services.gba.templates.ZoekProfielType.PROFIEL_GBAV_PLUS;
 
 import java.net.ConnectException;
@@ -53,10 +58,10 @@ public class GbaTemplateService extends AbstractService {
 
   protected String getPassword(ZoekProfielType type) {
     if (ZoekProfielType.PROFIEL_GBAV_PLUS == type && heeftGbavPlus()) {
-      return getParm(ZOEK_PERSONEN_PROFIEL2_PW);
+      return getSysteemParm(ZOEK_PERSONEN_PROFIEL2_PW, false);
     }
 
-    return getParm(ZOEK_PLE_JAVA_SERVER_PW);
+    return getSysteemParm(ZOEK_PLE_JAVA_SERVER_PW, false);
   }
 
   protected String getURL() {
@@ -65,9 +70,9 @@ public class GbaTemplateService extends AbstractService {
 
   protected String getUsername(ZoekProfielType type) {
     if (ZoekProfielType.PROFIEL_GBAV_PLUS == type && heeftGbavPlus()) {
-      return getParm(ZOEK_PERSONEN_PROFIEL2_USERNAME);
+      return getSysteemParm(ZOEK_PERSONEN_PROFIEL2_USERNAME, false);
     }
 
-    return getParm(ZOEK_PLE_JAVA_SERVER_USERNAME);
+    return getSysteemParm(ZOEK_PLE_JAVA_SERVER_USERNAME, false);
   }
 }

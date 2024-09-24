@@ -406,8 +406,7 @@ public class Naamformats {
   private String getInitPart(String vn, boolean nen) {
 
     if (fil(vn)) {
-      // replace first and last non-alpha characters
-      vn = vn.replaceAll("^[^a-zA-Z]+", "").replaceAll("[^a-zA-Z]+$", "");
+      vn = vn.replaceAll("^-", "");
     }
 
     if (emp(vn)) {

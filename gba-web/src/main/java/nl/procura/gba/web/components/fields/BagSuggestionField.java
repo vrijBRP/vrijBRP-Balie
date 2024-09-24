@@ -42,9 +42,12 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Autocompletefield for BAG addresses
+ *
+ * Replaced with BagPopupField
  */
 @Slf4j
-public class BagSuggestionBox extends ComboBox {
+@Deprecated
+public class BagSuggestionField extends ComboBox {
 
   private static final String LABEL = "propertyId";
 
@@ -56,7 +59,7 @@ public class BagSuggestionBox extends ComboBox {
   @Accessors(chain = true)
   private RequestListener requestListener;
 
-  public BagSuggestionBox() {
+  public BagSuggestionField() {
     setImmediate(true);
     setTextInputAllowed(true);
     setNullSelectionAllowed(false);

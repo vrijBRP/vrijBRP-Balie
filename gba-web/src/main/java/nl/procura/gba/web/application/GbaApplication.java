@@ -19,8 +19,15 @@
 
 package nl.procura.gba.web.application;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REMEMBER_ME;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SCHERMOPBOUWTYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SESSIE_TIMEOUT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.X_UA_COMPATIBLE;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
 
@@ -428,7 +435,6 @@ public class GbaApplication extends ProcuraApplication {
    * Wordt steeds een nieuwe gemaakt.
    */
   private void removeAddedWindow(Window window) {
-
     Window w = getWindow(window.getName());
 
     if (w != null) {
@@ -442,7 +448,6 @@ public class GbaApplication extends ProcuraApplication {
    * Timeout
    */
   private void setSessionTimeout() {
-
     int timeout = aval(getServices().getParameterService().getParm(SESSIE_TIMEOUT)) * 60;
     if (timeout >= 60) {
       getSession().setMaxInactiveInterval(timeout);

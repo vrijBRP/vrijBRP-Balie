@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.HuisnummerVeld;
@@ -84,7 +84,7 @@ public class Page1QuickSearchBean implements Serializable {
       description = "Huisnummer")
   private String hnr = "";
 
-  @Field(customTypeClass = BagSuggestionBox.class,
+  @Field(customTypeClass = BagPopupField.class,
       caption = "BAG-adres",
       description = "Adres",
       width = "482px")

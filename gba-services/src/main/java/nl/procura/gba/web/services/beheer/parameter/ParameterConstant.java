@@ -609,16 +609,16 @@ public enum ParameterConstant implements ParameterType {
       GROUP_ZOEKEN_ALGEMEEN, true, true, true, ""),
 
   ZOEK_PLE_JAVA_SERVER_USERNAME("java_ple_server_username", "Gebruikersnaam profiel",
-      GROUP_ZOEKEN_PROFIEL_STANDAARD, true, false, true, ""),
+      GROUP_ZOEKEN_PROFIEL_STANDAARD, true, false, false, ""),
 
   ZOEK_PLE_JAVA_SERVER_PW("java_ple_server_password", "Wachtwoord profiel",
-      GROUP_ZOEKEN_PROFIEL_STANDAARD, true, false, true, ""),
+      GROUP_ZOEKEN_PROFIEL_STANDAARD, true, false, false, ""),
 
   ZOEK_PERSONEN_PROFIEL2_USERNAME("zoek_personen_profiel2_username", "Gebruikersnaam profiel",
-      GROUP_ZOEKEN_PROFIEL_GBAV_PLUS, true, false, true, ""),
+      GROUP_ZOEKEN_PROFIEL_GBAV_PLUS, true, false, false, ""),
 
   ZOEK_PERSONEN_PROFIEL2_PW("zoek_personen_profiel2_password", "Wachtwoord profiel",
-      GROUP_ZOEKEN_PROFIEL_GBAV_PLUS, true, false, true, ""),
+      GROUP_ZOEKEN_PROFIEL_GBAV_PLUS, true, false, false, ""),
 
   ZOEK_PLE_BRON_GEMEENTE("zoek_ple_bron_gemeente", "Zoeken in gemeente database",
       GROUP_ZOEKEN_ALGEMEEN, true, true, true, ""),

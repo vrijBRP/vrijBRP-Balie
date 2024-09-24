@@ -25,6 +25,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
+import nl.procura.gba.jpa.personen.db.RiskProfileSig;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
@@ -58,6 +59,8 @@ public class Rule1Processor extends AbstractRuleProcessor {
 
     BasePLExt pl = getUtils().getPL(subject);
     RiskAnalysisService service = getServices().getRiskAnalysisService();
-    return service.getSignal(service.buildBsnSignal(pl)).isPresent();
+    return service.getSignal(service.buildBsnSignal(pl))
+        .filter(RiskProfileSig::isEnabled)
+        .isPresent();
   }
 }

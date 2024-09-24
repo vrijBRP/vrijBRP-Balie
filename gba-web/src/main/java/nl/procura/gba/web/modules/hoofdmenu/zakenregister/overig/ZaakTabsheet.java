@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig;
 
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
@@ -92,8 +93,14 @@ public class ZaakTabsheet<T extends Zaak> extends GbaTabsheet {
     return zaak;
   }
 
-  public void reloadTabs() {
+  public void refreshTab(Component component) {
+    if (component instanceof ZaakTabLayout) {
+      ZaakTabLayout taskLayout = (ZaakTabLayout) component;
+      taskLayout.reloadLayout(getApplication(), zaak);
+    }
+  }
 
+  public void reloadTabs() {
     reloadZaak();
 
     // Update Zaak in ZakenPage

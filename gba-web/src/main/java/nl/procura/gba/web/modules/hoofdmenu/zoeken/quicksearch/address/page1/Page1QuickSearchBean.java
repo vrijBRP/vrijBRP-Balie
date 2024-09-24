@@ -24,12 +24,20 @@ import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.containers.StraatContainer;
 import nl.procura.gba.web.components.containers.actueel.WoonplaatsActueelContainer;
-import nl.procura.gba.web.components.fields.*;
+import nl.procura.gba.web.components.fields.BagPopupField;
+import nl.procura.gba.web.components.fields.GbaComboBox;
+import nl.procura.gba.web.components.fields.GbaNativeSelect;
+import nl.procura.gba.web.components.fields.GbaTextField;
+import nl.procura.gba.web.components.fields.HuisnummerVeld;
 import nl.procura.gba.web.modules.bs.common.layouts.relocation.AddressSourceTypeContainer;
 import nl.procura.gba.web.modules.bs.common.layouts.relocation.DesignationContainer;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.PostalcodeField;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -58,7 +66,7 @@ public class Page1QuickSearchBean implements Serializable {
       nullSelectionAllowed = false)
   private AddressSourceType source;
 
-  @Field(customTypeClass = BagSuggestionBox.class,
+  @Field(customTypeClass = BagPopupField.class,
       caption = "Adres",
       description = "Adres",
       width = "436px",

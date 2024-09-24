@@ -47,6 +47,8 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INGANG_ONDERZ;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_OPSCH_BIJHOUD;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_UITGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERTREK_UIT_NL;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERZ_OF_MED_EURO_KIESR;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.FUNCTIE_ADRES;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSNAAM;
@@ -109,6 +111,7 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.UITSL_KIESR;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.VERBLIJFSTITEL;
 import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.HIST;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_SET;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CATEGORY;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CURRENT_ADMIN;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_HISTORIC_ADMIN;
@@ -174,12 +177,16 @@ public class PersonListMutationsChecks {
       }
     } else {
       clearOtherGroup(mutElem, elems, NATIONALITEIT, BIJZ_NED_SCHAP); // 5 / 65
-      clearOtherGroup(mutElem, elems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS); // 6 / 7
       clearOtherGroup(mutElem, elems, EMIGRATIE, ADRESHUISHOUDING, ADRES, LOCATIE); // 13 / 10,11,12
       clearOtherGroup(mutElem, elems, EMIGRATIE, IMMIGRATIE); // 13 / 14
       clearOtherGroup(mutElem, elems, GEZAG_MINDERJARIGE, CURATELE); // 32 / 33
       clearOtherGroup(mutElem, elems, RND_OPN_NATIO, RDN_EINDE_NATIO); // 63 / 64
       clearOtherGroup(mutElem, elems, AKTE, DOCUMENT); // 81 / 82
+
+      // Adding sets allows both groups when adding new set
+      if (!mutElem.getAction().is(ADD_SET)) {
+        clearOtherGroup(mutElem, elems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS); // 6 / 7
+      }
     }
   }
 
@@ -259,6 +266,11 @@ public class PersonListMutationsChecks {
           req = msg(THIRD_REQUIRED, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS, elem.getGroup());
         }
       }
+      if (elem.getAction().is(ADD_SET)) {
+        if (elem.getGroup().is(SLUITING_VERBINTENIS) && !elems.isAllBlank(ONTBIND_VERBINTENIS)) {
+          req = msg("Is verplicht in combinatie groep %s bij aanleggen van een nieuwe set", ONTBIND_VERBINTENIS);
+        }
+      }
     }
 
     // checks for category 7
@@ -285,6 +297,9 @@ public class PersonListMutationsChecks {
       }
 
       if (elem.getGroup().is(EMIGRATIE)) {
+        if (!elems.isAllBlank(EMIGRATIE) && elem.getElemType().is(LAND_VERTREK, DATUM_VERTREK_UIT_NL)) {
+          return Optional.of("Indien de groep voorkomt is dit element verplicht");
+        }
         if (!elems.isAllBlank(EMIGRATIE) && !elems.isAllBlank(ADRESHUISHOUDING, ADRES, LOCATIE)) {
           req = msg("%s kan niet voorkomen in combinatie met %s, en of %s of %s.",
               EMIGRATIE, ADRESHUISHOUDING, ADRES, LOCATIE);
@@ -530,8 +545,24 @@ public class PersonListMutationsChecks {
 
     // checks for category 5
     if (elem.getCat().is(HUW_GPS)) {
-      if (isNotMutual(elem, elems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS)) {
-        return msg(MUTUAL_EXCLUSIVE, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS);
+      if (elem.getAction().is(ADD_SET)) {
+        if (elem.getElemType().is(DATUM_VERBINTENIS) && !elem.isBlank()) {
+          String datumOntbinding = elems.getElem(DATUM_ONTBINDING)
+              .map(PersonListMutElem::getNewValue)
+              .orElse("");
+          if (StringUtils.isNotBlank(datumOntbinding)) {
+            boolean ontbindingIsBeforeMarriageDate = new ProcuraDate(elem.getNewValue())
+                .isExpired(new ProcuraDate(datumOntbinding));
+            if (ontbindingIsBeforeMarriageDate) {
+              return msg("Moet vóór de %s liggen", ONTBIND_VERBINTENIS);
+            }
+          }
+        }
+
+      } else {
+        if (isNotMutual(elem, elems, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS)) {
+          return msg(MUTUAL_EXCLUSIVE, SLUITING_VERBINTENIS, ONTBIND_VERBINTENIS);
+        }
       }
       if (REGIST_GEM_AKTE.is(elem.getElemType())) {
         Optional<BasePLValue> gemeente = getRegisterGemeenteVerbintenis(elems, elem);

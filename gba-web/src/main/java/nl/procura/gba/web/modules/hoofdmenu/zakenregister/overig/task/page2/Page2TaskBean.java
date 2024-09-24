@@ -90,7 +90,7 @@ public class Page2TaskBean implements Serializable {
   private UsrFieldValue uitvoerder;
 
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "Status",
+      caption = "Status taak",
       width = "100px",
       required = true)
   @Select(nullSelectionAllowed = false,

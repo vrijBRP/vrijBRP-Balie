@@ -4,7 +4,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.31.4</version>
+    <version>1.32.0</version>
   </parent>
 
   <artifactId>gba-services</artifactId>
@@ -186,7 +186,7 @@
     <dependency>
       <groupId>nl.vrijbrp.vaadin</groupId>
       <artifactId>vaadin6-componenten</artifactId>
-      <version>${vrijbrp-libs.version}</version>
+      <version>${vaadin6.version}</version>
       <scope>provided</scope>
     </dependency>
 

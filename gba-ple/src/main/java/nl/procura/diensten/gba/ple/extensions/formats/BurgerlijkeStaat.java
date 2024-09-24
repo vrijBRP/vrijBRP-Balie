@@ -19,9 +19,18 @@
 
 package nl.procura.diensten.gba.ple.extensions.formats;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
-import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.GESLACHTSNAAM;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_ONTBINDING;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.ACHTERGEBLEVEN;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.GESCHEIDEN;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.HUWELIJK;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.ONBEKEND;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.ONGEHUWD;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.ONTBONDEN;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.PARTNERSCHAP;
+import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.WEDUWE;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.fil;
 
@@ -38,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BurgerlijkeStaat {
 
-  private BasePLExt pl;
+  private final BasePLExt pl;
 
   public BurgerlijkeStaat(BasePLExt pl) {
     this.pl = pl;

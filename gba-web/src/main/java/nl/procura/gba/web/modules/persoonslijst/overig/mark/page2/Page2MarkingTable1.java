@@ -19,10 +19,17 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.mark.page2;
 
+import static org.apache.commons.lang3.StringUtils.abbreviate;
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
+
 import java.util.List;
+
+import com.vaadin.ui.Embedded;
 
 import nl.procura.gba.jpa.personen.db.RiskProfileSig;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
+import nl.procura.gba.web.modules.persoonslijst.overig.mark.MarkedTableImage;
+import nl.procura.gba.web.modules.persoonslijst.overig.mark.ProfileMarkCommentWindow;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
 import nl.procura.gba.web.theme.GbaWebTheme;
@@ -36,32 +43,42 @@ public class Page2MarkingTable1 extends GbaTable {
 
   @Override
   public void setColumns() {
-
     setSelectable(true);
     setMultiSelect(true);
     addStyleName(GbaWebTheme.TABLE.NEWLINE_WRAP);
     addStyleName(GbaWebTheme.TABLE.ALIGN_TOP);
 
     addColumn("Nr.", 50);
+    addColumn("&nbsp;", 15).setClassType(Embedded.class);
     addColumn("Bsn", 100);
     addColumn("Naam");
+    addColumn("Opmerking", 200);
 
     super.setColumns();
   }
 
   @Override
   public void setRecords() {
-
     RiskAnalysisService service = Services.getInstance().getRiskAnalysisService();
     List<RiskProfileSig> signals = service.getSignals(RiskAnalysisService.SIGNALTYPE.BSN);
     int nr = 0;
     for (RiskProfileSig signal : signals) {
       Record record = addRecord(signal);
       record.addValue(++nr);
+      record.addValue(new MarkedTableImage(signal.isEnabled()));
       record.addValue(new Bsn(signal.getBsn().longValue()).getFormatBsn());
       record.addValue(signal.getLabel());
+      record.addValue(abbreviate(normalizeSpace(signal.getRemarks()), 30));
     }
 
     super.setRecords();
+  }
+
+  @Override
+  public void onDoubleClick(Record record) {
+    RiskProfileSig sig = record.getObject(RiskProfileSig.class);
+    ProfileMarkCommentWindow window = new ProfileMarkCommentWindow(sig, this::init);
+    getApplication().getParentWindow().addWindow(window);
+    super.onDoubleClick(record);
   }
 }

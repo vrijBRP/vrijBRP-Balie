@@ -23,10 +23,12 @@ import java.util.Arrays;
 
 import nl.procura.gba.jpa.personen.db.TaskEntity;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 
 public class Task extends TaskEntity {
 
   private Gebruiker user;
+  private Zaak      zaak;
 
   public Task() {
   }
@@ -66,6 +68,14 @@ public class Task extends TaskEntity {
 
   public Gebruiker getUser() {
     return user;
+  }
+
+  public void setZaak(Zaak zaak) {
+    this.zaak = zaak;
+  }
+
+  public Zaak getZaak() {
+    return zaak;
   }
 
   public boolean hasNoUser() {

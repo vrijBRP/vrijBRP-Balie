@@ -144,7 +144,7 @@ public class BagService extends AbstractService {
    */
   private List<Address> searchLocationService(List<Address> addresses, AddressRequest request) {
     LocationServerRequest req = new LocationServerRequest()
-        .setRequestorName("BRP-suggestionbox")
+        .setRequestorName("VrijBRP")
         .setServiceType(ServiceType.FREE)
         .setOffset(0)
         .setRows(10)

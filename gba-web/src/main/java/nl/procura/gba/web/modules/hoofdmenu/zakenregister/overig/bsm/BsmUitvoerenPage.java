@@ -21,10 +21,13 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.common.MiscUtils.to;
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.*;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.MELDING;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.RESULTAAT;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.STATUS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.github.wolfie.refresher.Refresher;
 import com.github.wolfie.refresher.Refresher.RefreshListener;
@@ -79,8 +82,8 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
       getButtonLayout().setExpandRatio(progressLabel, 1f);
 
       betreftForm = getBetreftForm();
-      progressForm = new BsmUitvoerenForm("Verwerking door de taakplanner", false, STATUS, RESULTAAT,
-          MELDING);
+      progressForm = new BsmUitvoerenForm("Verwerking door de taakplanner", false,
+          STATUS, RESULTAAT, MELDING);
 
       startVerwerking();
       addRefresher();
@@ -120,9 +123,14 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
 
   @Override
   public void onNextPage() {
-
     if (logs != null && !logs.isEmpty()) {
-      getParentWindow().addWindow(new BsmLogWindow(logs));
+      List<BsmRestLog> filteredLogs = logs.stream()
+          .filter(log -> logs.size() == 1)
+          .map(log -> logs.get(0).getSubLogs())
+          .filter(Objects::nonNull)
+          .findFirst()
+          .orElse(logs);
+      getParentWindow().addWindow(new BsmLogWindow(filteredLogs, progressBean));
     }
 
     super.onNextPage();
@@ -131,7 +139,6 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
   public abstract void reloadZaak();
 
   protected void addRefresher() {
-
     refresher.addListener(new ActionRefreshListener());
     refresher.setRefreshInterval(REFRESH_INTERVAL);
     addComponent(refresher);
@@ -144,7 +151,6 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
       progressBean.setMelding("");
 
       if (exception != null) {
-
         progressBean.set("Onbekend", "Niets uitgevoerd", exception.getMessage(), false);
         progressLabel.refresh(BsmRestTaakStatus.ONDERBROKEN);
         removeComponent(refresher);
@@ -153,9 +159,8 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
         BsmRestTaak bsmRestTaak = getBsmRestTaak();
 
         if (bsmRestTaak == null) {
-
-          progressBean.set("Onbekend", "Niets uitgevoerd", "Geen taak gevonden die deze zaak kan verwerken.",
-              false);
+          progressBean.set("Onbekend", "Niets uitgevoerd",
+              "Geen taak gevonden die deze zaak kan verwerken.", false);
           progressLabel.refresh(BsmRestTaakStatus.ONDERBROKEN);
           isDone = true;
         } else {
@@ -164,11 +169,10 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
           progressLabel.refresh(bsmRestTaak.getStatus());
 
           if (!isDone) {
-
             if (bsmRestTaak.getStatus() == BsmRestTaakStatus.GEBLOKKEERD) {
               progressBean.setStatus("Bezig ...");
-            } else {
 
+            } else {
               if (bsmRestTaak.getStatus() == BsmRestTaakStatus.ONDERBROKEN) {
                 if (bsmRestTaak.isUitgezet()) {
                   progressBean.setStatus("Uitgezet");
@@ -182,11 +186,8 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
               isDone = true;
             }
           } else {
-
             verwerkTaakLogs(getServices().getBsmService().getBsmTaakLog(sessie));
-
             progressLabel.refresh(BsmRestTaakStatus.VOLTOOID);
-
             reloadZaak();
           }
         }
@@ -217,15 +218,13 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
   private void verwerkTaakLogs(List<BsmRestTaakLog> taakLogs) {
 
     if (taakLogs.isEmpty()) {
-
       progressBean.setResultaat("Niets uitgevoerd");
       progressBean.setMelding("Geen zaken gevonden die verwerkt kunnen worden.");
-    } else {
 
+    } else {
       buttonNext.setEnabled(true);
 
       for (BsmRestTaakLog taakLog : taakLogs) {
-
         logs = taakLog.getLog().getSubLogs();
 
         switch (taakLog.getLog().getResultaat()) {
@@ -249,6 +248,9 @@ public abstract class BsmUitvoerenPage extends NormalPageTemplate {
           case ONBEKEND:
         }
       }
+
+      // Autoclick
+      buttonNext.click();
     }
 
     removeComponent(refresher);

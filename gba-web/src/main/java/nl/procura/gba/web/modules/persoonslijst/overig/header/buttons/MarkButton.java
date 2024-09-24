@@ -34,23 +34,35 @@ import nl.procura.gba.web.theme.GbaWebTheme;
 
 public class MarkButton extends NativeButton {
 
-  private boolean  checked = false;
-  private Services services;
+  private final RiskProfileSig signal;
+  private boolean              checked = false;
+  private final Services       services;
 
   public MarkButton(Services services) {
+    this(services, null);
+  }
+
+  public MarkButton(Services services, RiskProfileSig newSignal) {
+    super("");
     this.services = services;
+    this.signal = newSignal;
     setStyleName(GbaWebTheme.BUTTON_LINK);
     addStyleName("pl-url-button");
     setMarked(false);
 
-    addListener((Button.ClickListener) event -> {
-      openMarkWindow();
-    });
+    if (newSignal == null) {
+      addListener((Button.ClickListener) event -> openMarkWindow());
+    } else {
+      setMarked(newSignal.isEnabled());
+      addListener((ClickListener) clickEvent -> {
+        services.getRiskAnalysisService().switchSignaling(signal);
+        setMarked(signal.isEnabled());
+      });
+    }
   }
 
   @Override
   public void attach() {
-
     if (!checked) {
       checkMarking();
       checked = true;
@@ -71,14 +83,18 @@ public class MarkButton extends NativeButton {
 
   private void openMarkWindow() {
     BasePLExt pl = services.getPersonenWsService().getHuidige();
-    getWindow().addWindow(new ProfileMarkWindow(pl, () -> checkMarking()));
+    getWindow().addWindow(new ProfileMarkWindow(pl, this::checkMarking));
   }
 
   private void checkMarking() {
-    RiskAnalysisService service = services.getRiskAnalysisService();
-    BasePLExt pl = services.getPersonenWsService().getHuidige();
-    RiskProfileSig bsnSignal = service.buildBsnSignal(pl);
-    RiskProfileSig addressSignal = service.buildAddressSignal(pl);
-    setMarked(service.getSignal(Arrays.asList(bsnSignal, addressSignal)).isPresent());
+    if (signal == null) {
+      RiskAnalysisService service = services.getRiskAnalysisService();
+      BasePLExt pl = services.getPersonenWsService().getHuidige();
+      RiskProfileSig bsnSignal = service.buildBsnSignal(pl);
+      RiskProfileSig addressSignal = service.buildAddressSignal(pl);
+      setMarked(service.getSignal(Arrays.asList(bsnSignal, addressSignal))
+          .filter(RiskProfileSig::isEnabled)
+          .isPresent());
+    }
   }
 }

@@ -50,6 +50,7 @@ public class TaskLayout extends GbaVerticalLayout implements ZaakTabLayout {
     return format("Taken ({0})", aantal);
   }
 
+
   @Override
   public void reloadLayout(GbaApplication application, Zaak zaak) {
     this.zaak = zaak;

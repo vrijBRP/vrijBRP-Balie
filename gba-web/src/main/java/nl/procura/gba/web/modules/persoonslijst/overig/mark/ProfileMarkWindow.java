@@ -27,11 +27,11 @@ import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
 public class ProfileMarkWindow extends GbaModalWindow {
 
-  private BasePLExt      pl;
-  private ChangeListener changeListener;
+  private final BasePLExt      pl;
+  private final ChangeListener changeListener;
 
   public ProfileMarkWindow(BasePLExt pl, ChangeListener changeListener) {
-    super("Markeren voor risicoanalyses (Escape om te sluiten)", "700px");
+    super("Markeren voor risicoanalyses (Escape om te sluiten)", "850px");
     this.pl = pl;
     this.changeListener = changeListener;
   }

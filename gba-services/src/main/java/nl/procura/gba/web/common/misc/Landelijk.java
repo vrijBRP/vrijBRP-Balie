@@ -41,6 +41,7 @@ public class Landelijk {
   public static final int  RNI                                     = 1999;
 
   public static final long REDEN_ONTERECHT_OPGENOMEN_CAT = 405;
+  public static final long EUKIESRECHT_ONTVANG_OPROEP    = 2L;
 
   /**
    * Geeft Nederland terug in FieldValue formaat

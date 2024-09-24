@@ -81,6 +81,7 @@ public class ExceptionHandler {
    * Opslaan in meldingenscherm
    */
   private static void store(Window w, Throwable e, ExceptionMessage m) {
+    e.printStackTrace();
     LOGGER.error("Error!", e);
     if (w instanceof GbaWindow) {
       Services services = ((GbaWindow) w).getGbaApplication().getServices();

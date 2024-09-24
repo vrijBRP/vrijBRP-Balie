@@ -67,7 +67,11 @@ public class PersonListMutationsService extends AbstractZaakService<PersonListMu
 
   @Override
   public PersonListMutation getNewZaak() {
-    return aanvullenZaak(new PersonListMutation());
+    PersonListMutation zaak = new PersonListMutation();
+    BasePLExt pl = getServices().getPersonenWsService().getHuidige();
+    zaak.setAnr(BigDecimal.valueOf(pl.getPersoon().getAnr().toLong()));
+    zaak.setBsn(BigDecimal.valueOf(pl.getPersoon().getBsn().toLong()));
+    return aanvullenZaak(zaak);
   }
 
   @Override

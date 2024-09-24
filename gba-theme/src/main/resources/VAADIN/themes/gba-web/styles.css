@@ -357,3 +357,7 @@
 	white-space: nowrap;
 	width: 1%;
 }
+
+.raas-textarea {
+	line-height: 20px !important;
+}

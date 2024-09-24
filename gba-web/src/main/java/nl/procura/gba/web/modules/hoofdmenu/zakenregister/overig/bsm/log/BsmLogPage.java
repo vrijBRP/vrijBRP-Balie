@@ -19,10 +19,16 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.log;
 
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.MELDING;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.RESULTAAT;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean.STATUS;
+
 import java.util.List;
 
 import nl.procura.bsm.rest.v1_0.objecten.log.BsmRestLog;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenBean;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.BsmUitvoerenForm;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -31,24 +37,30 @@ public class BsmLogPage extends NormalPageTemplate {
 
   protected static final int     DEFAULT_SET_SIZE = 25;
   private final List<BsmRestLog> logs;
+  private final BsmUitvoerenBean progressBean;
 
-  public BsmLogPage(List<BsmRestLog> logs) {
+  public BsmLogPage(List<BsmRestLog> logs, BsmUitvoerenBean progressBean) {
     this.logs = logs;
+    this.progressBean = progressBean;
   }
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
+      if (getNavigation().getPreviousPage() == null) {
+        addButton(buttonClose);
+
+      } else {
+        addButton(buttonPrev);
+      }
 
       if (!logs.isEmpty()) {
-
         if (logs.get(0).getSubLogs() != null) {
-
-          addButton(buttonClose);
+          addComponent(getProgressForm());
           addComponent(new InfoLayout("Ter informatie", "Klik op een regel voor meer informatie"));
+
         } else {
-          addButton(buttonPrev);
+          addComponent(getProgressForm());
         }
       }
 
@@ -62,7 +74,7 @@ public class BsmLogPage extends NormalPageTemplate {
 
         @Override
         protected void goToPage(List<BsmRestLog> logs) {
-          getNavigation().goToPage(new BsmLogPage(logs));
+          getNavigation().goToPage(new BsmLogPage(logs, progressBean));
         }
       };
 
@@ -80,5 +92,12 @@ public class BsmLogPage extends NormalPageTemplate {
   @Override
   public void onPreviousPage() {
     getNavigation().goBackToPreviousPage();
+  }
+
+  private BsmUitvoerenForm getProgressForm() {
+    BsmUitvoerenForm progressForm = new BsmUitvoerenForm("Verwerking door de taakplanner", false,
+        STATUS, RESULTAAT, MELDING);
+    progressForm.setBean(progressBean);
+    return progressForm;
   }
 }

@@ -70,6 +70,7 @@ public enum BasisVerzoekType implements EnumWithCode<Integer> {
   OPTIE_212(212, "o: in het Koninkrijk door adoptie door een in i of j bedoelde persoon", true, true),
   OPTIE_213(213, "p: van rechtswege NL-schap verloren incl. Unieburgerschap waarbij de "
       + "onevenredige gevolgen voorzienbaar waren", true, true),
+  OPTIE_406(406, "q: geboren in koninkrijk, <21 jaar oud, staatloos en minstens 5 jaar stabiel hoofdverblijf", true, true),
   OPTIE_214(214, "art 28: herkrijgen na verlies NL-schap door huwelijk met niet-NL", true, true),
   // ==========================
   // Minderjarig, naturalisatie

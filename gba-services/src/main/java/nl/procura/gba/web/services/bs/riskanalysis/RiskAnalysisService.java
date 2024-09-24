@@ -28,7 +28,7 @@ import static nl.procura.standard.NaturalComparator.compareTo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -385,35 +385,11 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
     return list;
   }
 
-  public void switchSignaling(RiskProfileSig sig) {
-    if (getSignal(sig).isPresent()) {
-      this.removeSignal(sig);
-    } else {
-      addSignal(sig);
-    }
-  }
-
-  @Transactional
-  public void addSignal(RiskProfileSig signal) {
-    saveEntity(signal);
-  }
-
-  @Transactional
-  public void removeSignal(RiskProfileSig sig) {
-    removeEntity(findEntity(stripForSearchSignal(sig)).get(0));
-  }
-
-  /**
-   * Returns the stored signal
-   */
   @ThrowException("Fout bij zoeken van de gemarkeerde personen en of adressen")
   public Optional<RiskProfileSig> getSignal(RiskProfileSig signal) {
-    return getSignal(Arrays.asList(signal));
+    return getSignal(Collections.singletonList(signal));
   }
 
-  /**
-   * Returns the first signal instance
-   */
   @ThrowException("Fout bij zoeken van de gemarkeerde personen en of adressen")
   public Optional<RiskProfileSig> getSignal(List<RiskProfileSig> signals) {
     return signals.stream()
@@ -421,6 +397,22 @@ public class RiskAnalysisService extends AbstractZaakService<Dossier>
         .filter(sig -> !sig.isEmpty())
         .findFirst()
         .map(sig -> sig.get(0));
+  }
+
+  @Transactional
+  public void switchSignaling(RiskProfileSig sig) {
+    sig.setEnabled(!sig.isEnabled());
+    saveEntity(sig);
+  }
+
+  @Transactional
+  public void saveSignal(RiskProfileSig signal) {
+    saveEntity(signal);
+  }
+
+  @Transactional
+  public void removeSignal(RiskProfileSig sig) {
+    removeEntity(findEntity(stripForSearchSignal(sig)).get(0));
   }
 
   public RiskProfileSig buildBsnSignal(BasePLExt pl) {

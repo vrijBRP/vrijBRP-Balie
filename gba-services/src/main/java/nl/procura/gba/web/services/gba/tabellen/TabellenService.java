@@ -73,6 +73,15 @@ public class TabellenService extends GbaTemplateService {
 
   @Override
   public void init() {
+    try {
+      laadTabellen();
+    } catch (Exception e) {
+      log.error("Fout bij controleren tabellen", e);
+    }
+    super.init();
+  }
+
+  public void laadTabellen() {
     synchronized (loadLock) {
       if (!getServices().getPersonenWsService().isInitiated()) {
         addMessage(false, FAULT, ERROR, "De basistabellen konden niet worden geladen.",
@@ -80,41 +89,31 @@ public class TabellenService extends GbaTemplateService {
       }
 
       // Landelijk
-      try {
-        add("Nationaliteiten", GBATable.NATIO);
-        add("Plaatsen", GBATable.PLAATS);
-        add("Landen", GBATable.LAND);
-        add("Voorvoegselsel", GBATable.VOORVOEGSEL);
-        add("Redenen opnemen / beëindigen nationaliteit", GBATable.REDEN_NATIO);
-        add("Titels / predikaten", GBATable.TITEL_PREDIKAAT);
-        add("Akte aanduidingen", GBATable.AKTE_AANDUIDING);
-        add("Redenen huwelijks ontbinding", GBATable.REDEN_HUW_ONTB);
-        add("Nederlands reisdocumenten", GBATable.NED_REISDOC);
-        add("Aut. verstrekking nederlandse reisd.", GBATable.AUT_VERSTREK_NED_REISD);
-        add("verblijfstitels", GBATable.VERBLIJFSTITEL);
-        add("Indicaties gezag minderjarige", GBATable.IND_GEZAG_MINDERJ);
+      add("Nationaliteiten", GBATable.NATIO);
+      add("Plaatsen", GBATable.PLAATS);
+      add("Landen", GBATable.LAND);
+      add("Voorvoegselsel", GBATable.VOORVOEGSEL);
+      add("Redenen opnemen / beëindigen nationaliteit", GBATable.REDEN_NATIO);
+      add("Titels / predikaten", GBATable.TITEL_PREDIKAAT);
+      add("Akte aanduidingen", GBATable.AKTE_AANDUIDING);
+      add("Redenen huwelijks ontbinding", GBATable.REDEN_HUW_ONTB);
+      add("Nederlands reisdocumenten", GBATable.NED_REISDOC);
+      add("Aut. verstrekking nederlandse reisd.", GBATable.AUT_VERSTREK_NED_REISD);
+      add("verblijfstitels", GBATable.VERBLIJFSTITEL);
+      add("Indicaties gezag minderjarige", GBATable.IND_GEZAG_MINDERJ);
 
-        // Gemeentelijk
-        add("Woonplaatsen", new Woonplaats());
-        add("Straten", new Straat());
-        add("Openbare ruimtes", new OpenbareRuimte());
-        add("Locaties", new Locatie());
-        add("Gemeentedelen", new GemDeel());
-        add("Wijken", new Wijk());
-        add("Buurten", new Buurt());
-        add("Subbuurten", new Subbuurt());
+      // Gemeentelijk
+      add("Woonplaatsen", new Woonplaats());
+      add("Straten", new Straat());
+      add("Openbare ruimtes", new OpenbareRuimte());
+      add("Locaties", new Locatie());
+      add("Gemeentedelen", new GemDeel());
+      add("Wijken", new Wijk());
+      add("Buurten", new Buurt());
+      add("Subbuurten", new Subbuurt());
 
-        GbaTables.loadIfNeeded();
-      } catch (Exception e) {
-        log.error("Fout bij controleren tabellen", e);
-      }
-
-      super.init();
+      GbaTables.loadIfNeeded();
     }
-  }
-
-  public static synchronized void load() {
-
   }
 
   public static TabelResultaat getTabel(GBATable tabel) {

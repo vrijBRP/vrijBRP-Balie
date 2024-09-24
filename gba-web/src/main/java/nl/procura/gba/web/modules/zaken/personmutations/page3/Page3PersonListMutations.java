@@ -34,8 +34,12 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 
+import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
+import nl.procura.burgerzaken.gba.core.enums.GBAGroupElements;
+import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
 import nl.procura.diensten.gba.ple.base.BasePLElem;
+import nl.procura.diensten.gba.ple.base.BasePLList;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -112,11 +116,27 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   }
 
   private BasePLSet getBasePLSet(PersonListMutation mutation) {
-    return mutation.getBasisPersoon().getCat(mutation.getCatType()).getSets()
+    BasePLList<BasePLSet> sets = mutation.getBasisPersoon().getCat(mutation.getCatType()).getSets();
+    if (sets.isEmpty()) {
+      return getEmptySet(mutation.getCatType(), mutation.getSet().intValue());
+    }
+    return sets
         .stream()
         .filter(set -> set.getIntIndex() == mutation.getSet().intValue())
         .findFirst()
         .orElseThrow(() -> new ProException("Geen set met code " + mutation.getSet()));
+  }
+
+  private BasePLSet getEmptySet(GBACat category, int volgCode) {
+    BasePLSet set = new BasePLSet(category, volgCode);
+    BasePLRec record = new BasePLRec(category, set, GBARecStatus.CURRENT);
+    record.setIndex(1);
+    for (GBAGroupElements.GBAGroupElem type : GBAGroupElements.getByCat(category.getCode())) {
+      BasePLElem gbaElement = new BasePLElem(type.getCat().getCode(), type.getElem().getCode(), "");
+      record.getElems().add(gbaElement);
+    }
+    set.getRecs().add(record);
+    return set;
   }
 
   @Override

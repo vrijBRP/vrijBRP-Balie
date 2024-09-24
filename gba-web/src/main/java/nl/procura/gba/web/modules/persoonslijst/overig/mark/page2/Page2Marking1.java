@@ -19,10 +19,20 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.mark.page2;
 
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.procura.gba.jpa.personen.db.RiskProfileSig;
+import nl.procura.gba.web.common.misc.spreadsheets.Spreadsheet;
+import nl.procura.gba.web.common.misc.spreadsheets.SpreadsheetTemplate;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonWindow;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
+import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService.SIGNALTYPE;
+import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -45,10 +55,13 @@ public class Page2Marking1 extends NormalPageTemplate {
       buttonNew.setCaption("Toevoegen (F7)");
       addButton(buttonNew);
       addButton(buttonDel, 1f);
-      addButton(buttonClose);
 
       table = new Page2MarkingTable1();
       addComponent(table);
+      List<Spreadsheet> spreadsheets = new ArrayList<>();
+      spreadsheets.add(new PersonsSpreadsheet());
+      getButtonLayout().addComponent(new GbaIndexedTableFilterLayout(table, spreadsheets));
+      addButton(buttonClose);
     }
 
     super.event(event);
@@ -62,7 +75,7 @@ public class Page2Marking1 extends NormalPageTemplate {
       if (service.getSignal(bsnSignal).isPresent()) {
         throw new ProException(ProExceptionSeverity.INFO, "Deze persoon is al toegevoegd");
       }
-      service.addSignal(bsnSignal);
+      service.saveSignal(bsnSignal);
       table.init();
     }));
     super.onNew();
@@ -80,5 +93,36 @@ public class Page2Marking1 extends NormalPageTemplate {
   @Override
   public void onClose() {
     getWindow().closeWindow();
+  }
+
+  private class PersonsSpreadsheet extends SpreadsheetTemplate {
+
+    public PersonsSpreadsheet() {
+      super("Gemarkeerde personen", UitvoerformaatType.CSV_SEMICOLON);
+    }
+
+    @Override
+    public void compose() {
+      clear();
+
+      add("Gemarkeerd");
+      add("BSN");
+      add("Naam");
+      add("Opmerking");
+      store();
+
+      RiskAnalysisService service = Page2Marking1.this.getServices().getRiskAnalysisService();
+      List<RiskProfileSig> signals = service.getSignals(SIGNALTYPE.BSN);
+
+      for (RiskProfileSig signal : signals) {
+        add(signal.isEnabled() ? "Ja" : "Nee");
+        add(signal.getBsn());
+        add(signal.getLabel());
+        add(normalizeSpace(signal.getRemarks()));
+        store();
+      }
+
+      super.compose();
+    }
   }
 }

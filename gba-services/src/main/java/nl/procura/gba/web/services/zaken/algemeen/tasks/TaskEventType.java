@@ -37,8 +37,14 @@ public enum TaskEventType implements EnumWithCode<Integer> {
   EVENT_UNKNOWN(-1, "Onbekend", ""),
   EVENT_MISC(1, "Overige", ""),
   EVENT_ZAAK(2, "Zaakgerelateerd", ""),
-  EVENT_MUT_OVERL(100, "Registratie overlijden in categorie 06",
-      "De mutatie betreft de registratie van een overlijden in categorie 06");
+  EVENT_ADD_OVERL(3, "Registratie van overlijden",
+      "De mutatie betreft de registratie van een overlijden"),
+  EVENT_ADD_HUW(4, "Registratie huwelijk",
+      "De mutatie betreft de registratie van een huwelijk"),
+  EVENT_ADD_NAT(5, "Registratie nationaliteit",
+      "De mutatie betreft de registratie van een Nederlandse nationaliteit"),
+  EVENT_ADD_ONTB_VERB(6, "Registratie ontbinding van een verbintenis",
+      "De mutatie betreft de registratie van een ontbinding van een verbintenis");
 
   private final Integer code;
   private final String  description;

@@ -68,16 +68,13 @@ public class ZaakBijlageLayout extends GbaVerticalLayout implements ZaakTabLayou
 
     @Override
     public void event(PageEvent event) {
-
       super.event(event);
 
       if (event.isEvent(InitPage.class)) {
-
         getPages().getNavigation().goToPage(new Page1ZaakBijlage(zaak) {
 
           @Override
           public void onReload() {
-
             reloadLayout(ZaakBijlageLayout.this.getApplication(), zaak);
           }
         });

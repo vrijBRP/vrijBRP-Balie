@@ -37,7 +37,8 @@ import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST
 
 import com.vaadin.ui.Field;
 
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import javax.ws.rs.HEAD;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.Services;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
@@ -62,12 +63,12 @@ public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
   @Override
   public void afterSetBean() {
     super.afterSetBean();
-    BagSuggestionBox suggestionBox = getField(F_ADRES, BagSuggestionBox.class);
-    if (suggestionBox != null) {
+    BagPopupField bagAddressField = getField(F_ADRES, BagPopupField.class);
+    if (bagAddressField != null) {
       if (Services.getInstance().getGeoService().isGeoServiceActive()) {
-        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+        bagAddressField.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
             .setRequestListener(value -> new LocationServerRequest()
-                .setRequestorName("BRP-suggestionbox")
+                .setRequestorName("VrijBRP")
                 .setServiceType(SUGGEST)
                 .setOffset(0).setRows(10)
                 .search(TYPE, "adres")
@@ -75,7 +76,7 @@ public class Page1QuickSearchForm extends GbaForm<Page1QuickSearchBean> {
                 .filters(WEERGAVENAAM, ADRESSEERBAAROBJECTID,
                     POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
       } else {
-        suggestionBox.setVisible(false);
+        bagAddressField.setVisible(false);
       }
     }
   }

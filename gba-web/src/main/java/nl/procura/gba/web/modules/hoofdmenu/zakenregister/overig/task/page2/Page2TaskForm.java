@@ -47,7 +47,7 @@ import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class Page2TaskForm extends GbaForm<Page2TaskBean> {
 
-  private Task task;
+  private final Task task;
 
   public Page2TaskForm(Task task) {
     this.task = task;
@@ -62,8 +62,11 @@ public class Page2TaskForm extends GbaForm<Page2TaskBean> {
 
     if (task.getZaakId() != null) {
       bean.setEvent(task.getEventType().getDescription());
-      bean.setZaak(task.getZaakId());
-
+      String zaakOms = task.getZaakId();
+      if (task.getZaak() != null) {
+        zaakOms += " (status: " + task.getZaak().getStatus().getOms() + ")";
+      }
+      bean.setZaak(zaakOms);
     } else {
       bean.setEvent("N.v.t.");
       bean.setZaak("");
@@ -74,6 +77,7 @@ public class Page2TaskForm extends GbaForm<Page2TaskBean> {
 
     setBean(bean);
 
+    getField(TASK_TYPE).setReadOnly(task.isStored());
     getField(OMS).setReadOnly(!task.getTaskType().isChangeDescription());
   }
 

@@ -20,14 +20,17 @@
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.task;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
 import com.vaadin.data.Validator;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeButton;
 
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
@@ -39,14 +42,13 @@ import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEvent;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskExecutionType;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskType;
+import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.table.TableLayout;
 import nl.procura.vaadin.theme.ProcuraWindow;
-
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import nl.procura.vaadin.theme.twee.ProcuraTheme.ICOON_24;
 
 public class TaskSelectieWindow extends GbaModalWindow {
 
@@ -57,7 +59,7 @@ public class TaskSelectieWindow extends GbaModalWindow {
   private boolean               saved;
 
   public static void init(ProcuraWindow window, TaskEvent taskEvent, Runnable runnable) {
-    if (taskEvent.getEventTypes().isEmpty()) {
+    if (taskEvent.getTasks().isEmpty()) {
       runnable.run();
     } else {
       TaskSelectieWindow taskSelectieWindow = new TaskSelectieWindow(taskEvent, runnable);
@@ -70,7 +72,7 @@ public class TaskSelectieWindow extends GbaModalWindow {
     this.runnable = runnable;
     setClosable(false);
     setCaption("Taken");
-    setWidth("600px");
+    setWidth("800px");
   }
 
   @Override
@@ -89,19 +91,10 @@ public class TaskSelectieWindow extends GbaModalWindow {
     protected void initPage() {
       addButton(buttonSave);
 
-      if (taskEvent.getTasks().isEmpty()) {
-        for (TaskType taskType : TaskType.getByEventTypes(taskEvent.getEventTypes())) {
-          Task task = getServices().getTaskService().newTask(taskEvent.getZaakId(), taskType);
-          GbaNativeSelect field = newField(task);
-          field.setValue(taskType.getExecutionTypes().get(0));
-          taskFields.add(new TaskField(task, field));
-        }
-      } else {
-        for (Task task : taskEvent.getTasks()) {
-          GbaNativeSelect field = newField(task);
-          field.setValue(TaskExecutionType.get(task.getExecution()));
-          taskFields.add(new TaskField(task, field));
-        }
+      for (Task task : taskEvent.getTasks()) {
+        GbaNativeSelect field = newField(task);
+        field.setValue(TaskExecutionType.get(task.getExecution()));
+        taskFields.add(new TaskField(task, field));
       }
 
       for (Entry<TaskEventType, List<TaskField>> entry : taskFields
@@ -111,11 +104,12 @@ public class TaskSelectieWindow extends GbaModalWindow {
 
         TableLayout tasksLayout = new TableLayout();
         tasksLayout.addStyleName("v-form tableform v-form-error");
-        tasksLayout.setColumnWidths("350px", "");
+        tasksLayout.setColumnWidths("500px", "", "30px");
 
         for (TaskField taskField : entry.getValue()) {
           tasksLayout.addLabel(taskField.getTask().getTaskType().getDescription());
           tasksLayout.addData(taskField.getField());
+          tasksLayout.addData(getInfoButton(taskField.getTask().getTaskType(), taskField.getTask().getRemarks()));
         }
         addComponent(new Fieldset(entry.getKey().getDescription()));
         addComponent(new InfoLayout(entry.getKey().getInfo()));
@@ -125,6 +119,19 @@ public class TaskSelectieWindow extends GbaModalWindow {
       updateTasks();
       addComponent(errorLabel);
       super.initPage();
+    }
+
+    private Button getInfoButton(TaskType taskType, String remarks) {
+      NativeButton button = new NativeButton("");
+      button.setHeight("23px");
+      button.setWidth("20px");
+      button.setStyleName(GbaWebTheme.BUTTON_LINK);
+      button.addStyleName("pl-url-button");
+      button.setIcon(new ThemeResource(ICOON_24.INFORMATION));
+      button.setDescription("Informatie over deze taak");
+      button.addListener((ClickListener) event -> getApplication().getParentWindow()
+          .addWindow(new TaskInfoWindow(taskType, remarks)));
+      return button;
     }
 
     @Override
@@ -162,7 +169,6 @@ public class TaskSelectieWindow extends GbaModalWindow {
     }
 
     private void updateTasks() {
-      taskEvent.setTasks(taskFields.stream().map(TaskField::getTask).collect(toList()));
       runnable.run();
     }
   }
@@ -183,16 +189,26 @@ public class TaskSelectieWindow extends GbaModalWindow {
     select.setContainerDataSource(new TaskUitvoerderContainer(task.getTaskType()));
     select.setValidationVisible(true);
     select.setNullSelectionAllowed(false);
-    select.setWidth("150px");
-    select.setRequired(true);
+    select.setWidth("130px");
     return select;
   }
 
-  @Data
-  @RequiredArgsConstructor
   private static class TaskField {
 
     private final Task            task;
     private final GbaNativeSelect field;
+
+    public TaskField(Task task, GbaNativeSelect field) {
+      this.task = task;
+      this.field = field;
+    }
+
+    public Task getTask() {
+      return task;
+    }
+
+    public GbaNativeSelect getField() {
+      return field;
+    }
   }
 }

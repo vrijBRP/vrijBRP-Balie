@@ -26,7 +26,6 @@ import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
 public class BsmUitvoerenForm extends ReadOnlyForm {
 
   public BsmUitvoerenForm(String caption, boolean isVisible, String... fields) {
-
     setCaption(caption);
     setReadThrough(true);
     setOrder(fields);

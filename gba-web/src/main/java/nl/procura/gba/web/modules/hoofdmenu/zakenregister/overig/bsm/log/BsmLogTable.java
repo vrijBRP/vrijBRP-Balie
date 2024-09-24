@@ -40,11 +40,9 @@ public abstract class BsmLogTable extends GbaTable {
 
   @Override
   public void onClick(Record record) {
-
     Object object = record.getObject();
 
     if (object != null) {
-
       List<BsmRestLog> logs = new ArrayList<>();
       logs.addAll((Collection<? extends BsmRestLog>) object);
       goToPage(logs);
@@ -68,23 +66,18 @@ public abstract class BsmLogTable extends GbaTable {
 
   @Override
   public void setRecords() {
-
     addLogs(logs);
-
     super.setRecords();
   }
 
   protected abstract void goToPage(List<BsmRestLog> logs);
 
   private void addLog(BsmRestLog log) {
-
     addLogRegels(log);
   }
 
   private void addLogRegels(BsmRestLog log) {
-
     for (BsmRestLogRegel regel : log.getLogRegels()) {
-
       Record r = addRecord(log.getSubLogs());
       r.addValue(getRecords().size());
       r.addValue(getTypeTekst(regel.getType()));
@@ -93,18 +86,12 @@ public abstract class BsmLogTable extends GbaTable {
   }
 
   private void addLogs(List<BsmRestLog> logs) {
-
     if (logs != null && logs.size() > 0) {
-
       for (BsmRestLog log : logs) {
-
         if (log.getSubLogs() != null && !log.getSubLogs().isEmpty()) {
-
           setClickable(true);
-
           addLog(log);
         } else {
-
           addLog(log);
         }
       }

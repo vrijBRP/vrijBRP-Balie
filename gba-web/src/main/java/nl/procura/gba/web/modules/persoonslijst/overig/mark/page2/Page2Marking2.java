@@ -19,10 +19,20 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.mark.page2;
 
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.procura.gba.jpa.personen.db.RiskProfileSig;
+import nl.procura.gba.web.common.misc.spreadsheets.Spreadsheet;
+import nl.procura.gba.web.common.misc.spreadsheets.SpreadsheetTemplate;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.QuickSearchAddressWindow;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
+import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService.SIGNALTYPE;
+import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -43,10 +53,13 @@ public class Page2Marking2 extends NormalPageTemplate {
       buttonNew.setCaption("Toevoegen (F7)");
       addButton(buttonNew);
       addButton(buttonDel, 1f);
-      addButton(buttonClose);
 
       table = new Page2MarkingTable2();
       addComponent(table);
+      List<Spreadsheet> spreadsheets = new ArrayList<>();
+      spreadsheets.add(new AddressSpreadsheet());
+      getButtonLayout().addComponent(new GbaIndexedTableFilterLayout(table, spreadsheets));
+      addButton(buttonClose);
     }
 
     super.event(event);
@@ -79,5 +92,35 @@ public class Page2Marking2 extends NormalPageTemplate {
   @Override
   public void onClose() {
     getWindow().closeWindow();
+  }
+
+  private class AddressSpreadsheet extends SpreadsheetTemplate {
+
+    public AddressSpreadsheet() {
+      super("Gemarkeerde adressen", UitvoerformaatType.CSV_SEMICOLON);
+    }
+
+    @Override
+    public void compose() {
+
+      clear();
+
+      add("Gemarkeerd");
+      add("Adres");
+      add("Opmerking");
+      store();
+
+      RiskAnalysisService service = Page2Marking2.this.getServices().getRiskAnalysisService();
+      List<RiskProfileSig> signals = service.getSignals(SIGNALTYPE.ADDRESS);
+
+      for (RiskProfileSig signal : signals) {
+        add(signal.isEnabled() ? "Ja" : "Nee");
+        add(signal.getLabel());
+        add(normalizeSpace(signal.getRemarks()));
+        store();
+      }
+
+      super.compose();
+    }
   }
 }

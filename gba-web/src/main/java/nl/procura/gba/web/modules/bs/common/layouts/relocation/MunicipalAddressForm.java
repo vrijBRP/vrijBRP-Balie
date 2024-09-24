@@ -47,7 +47,7 @@ import static nl.procura.standard.Globalfunctions.isTru;
 
 import com.vaadin.ui.Field;
 
-import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.fields.BagPopupField;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.components.listeners.FieldChangeListener;
 import nl.procura.gba.web.modules.zaken.common.ToelichtingButton;
@@ -149,12 +149,12 @@ public class MunicipalAddressForm extends GbaForm<MunicipalAddressBean> {
           setFields(value);
         }
       });
-      BagSuggestionBox suggestionBox = getField(F_BAG_ADDRESS, BagSuggestionBox.class);
-      if (suggestionBox != null) {
+      BagPopupField bagAddressField = getField(F_BAG_ADDRESS, BagPopupField.class);
+      if (bagAddressField != null) {
         String gemCode = Services.getInstance().getGebruiker().getGemeenteCode();
-        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+        bagAddressField.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
             .setRequestListener(value -> new LocationServerRequest()
-                .setRequestorName("BRP-suggestionbox")
+                .setRequestorName("VrijBRP")
                 .setServiceType(SUGGEST)
                 .setOffset(0).setRows(10)
                 .search(TYPE, "adres")
