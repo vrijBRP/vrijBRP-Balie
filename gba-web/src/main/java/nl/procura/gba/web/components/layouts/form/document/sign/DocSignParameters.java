@@ -17,16 +17,21 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.zynyo;
+package nl.procura.gba.web.components.layouts.form.document.sign;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.components.layouts.form.document.PrintRecord;
+import nl.procura.gba.web.services.beheer.zynyo.SignedDocument;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 @Data
-@Accessors(chain = true, fluent = true)
-public class SignedDocument {
+public class DocSignParameters {
 
-  private String name;
-  private String documentUUID;
-  private String documentContent = "";
+  private List<PrintRecord>    printRecords    = new ArrayList<>();
+  private List<SignedDocument> signedDocuments = new ArrayList<>();
+  private List<BasePLExt>      persons;
 }

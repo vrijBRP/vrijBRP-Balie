@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,12 +19,14 @@
 
 package nl.procura.gba.web.components.layouts.form.document.sign;
 
+import java.util.List;
+
+import nl.procura.gba.web.components.layouts.form.document.sign.DocSignForm.SignPerson;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 
-import java.util.Arrays;
+public class DocSignPersonContainer extends ArrayListContainer {
 
-public class DocumentSignLanguageContainer extends ArrayListContainer {
-  public DocumentSignLanguageContainer() {
-    Arrays.stream(SignInterfaceLanguage.values()).forEach(this::addItem);
+  public DocSignPersonContainer(List<SignPerson> persons) {
+    addItems(persons);
   }
 }

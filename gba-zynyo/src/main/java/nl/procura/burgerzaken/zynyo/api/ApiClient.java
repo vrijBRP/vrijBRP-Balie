@@ -41,25 +41,14 @@ import lombok.Getter;
 
 public abstract class ApiClient {
 
-  private final String apiKey;
-  private final String baseUri;
+  private final ApiClientConfig config;
 
-  public ApiClient(String apiKey, String baseUri) {
-    this.apiKey = apiKey;
-    this.baseUri = baseUri;
+  public ApiClient(ApiClientConfig config) {
+    this.config = config;
   }
 
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  /**
-   * Get the base URI to resolve the endpoint paths against.
-   *
-   * @return The complete base URI that the rest of the API parameters are resolved against.
-   */
-  public String getBaseUri() {
-    return baseUri;
+  public ApiClientConfig config() {
+    return config;
   }
 
   public abstract <T, R> R get(Request<T> request, Class<R> type);

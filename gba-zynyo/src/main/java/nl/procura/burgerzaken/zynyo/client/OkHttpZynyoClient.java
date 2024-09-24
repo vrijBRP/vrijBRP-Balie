@@ -24,27 +24,37 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import nl.procura.burgerzaken.zynyo.api.ApiClient;
+import nl.procura.burgerzaken.zynyo.api.ApiClientConfig;
 
 import okhttp3.Call;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request.Builder;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
 
 public class OkHttpZynyoClient extends ApiClient {
 
   private final OkHttpClient client;
   private final Gson         gson;
 
-  public OkHttpZynyoClient(final String basePath, final String apiKey, Duration timeout) {
-    super(apiKey, basePath);
-    client = new OkHttpClient.Builder()
+  public OkHttpZynyoClient(final ApiClientConfig config, Duration timeout) {
+    super(config);
+    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+    if (config.debug()) {
+      builder.addInterceptor(new HttpLoggingInterceptor());
+    }
+    client = builder
         .connectTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
         .readTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
         .callTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
@@ -90,12 +100,47 @@ public class OkHttpZynyoClient extends ApiClient {
   }
 
   private <T> Builder getRequestBuilder(Request<T> request) {
-    HttpUrl httpUrl = HttpUrl.parse(getBaseUri() + request.getPath());
+    HttpUrl httpUrl = HttpUrl.parse(config().baseUrl() + request.getPath());
     HttpUrl.Builder urlBuilder = Objects.requireNonNull(httpUrl).newBuilder();
     request.getParameters()
         .forEach(parameter -> urlBuilder.addQueryParameter(parameter.getName(), parameter.getValue()));
     Builder requestBuilder = new Builder().url(urlBuilder.build());
     request.getHeaders().forEach(requestBuilder::header);
     return requestBuilder;
+  }
+
+  private class HttpLoggingInterceptor implements Interceptor {
+
+    @NotNull
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+      okhttp3.Request request = chain.request();
+      System.out.println("\nREQUEST");
+      System.out.println("Method: " + request.method());
+      System.out.println("URL: " + request.url());
+
+      if (request.body() != null) {
+        Buffer buffer = new Buffer();
+        request.body().writeTo(buffer);
+        System.out.println("Request Body: " + buffer.readUtf8());
+      }
+
+      try (Response response = chain.proceed(request)) {
+        System.out.println("\nRESPONSE");
+        System.out.println("Status: " + response.code() + " " + response.message());
+        System.out.println("Headers: " + response.headers());
+
+        ResponseBody responseBody = response.body();
+        if (responseBody != null) {
+          byte[] bytes = responseBody.bytes();
+          if (Objects.requireNonNull(responseBody.contentType()).toString().toLowerCase().contains("json")) {
+            System.out.println("Response Body: " + gson.toJson(gson.fromJson(new String(bytes), Object.class)));
+          }
+          responseBody = ResponseBody.create(bytes, responseBody.contentType());
+        }
+
+        return response.newBuilder().body(responseBody).build();
+      }
+    }
   }
 }

@@ -17,16 +17,14 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.zynyo;
+package nl.procura.burgerzaken.zynyo.api.model;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true, fluent = true)
-public class SignedDocument {
+public class SignedDocumentResponse {
 
-  private String name;
-  private String documentUUID;
-  private String documentContent = "";
+  private String documentContent;
 }

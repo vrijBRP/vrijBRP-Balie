@@ -98,8 +98,9 @@ public class Page1Contact extends NormalPageTemplate {
 
       ContactVerplichtMate verplichtMate = ContactVerplichtMate.get(
           along(getApplication().getParmValue(ParameterConstant.CONTACT_VERPLICHT)));
-      buttonNext.setVisible(
-          succesListener != null && verplichtMate == ContactVerplichtMate.NIET_VERPLICHT_WEL_TONEN);
+
+      buttonNext.setVisible(succesListener != null
+          && verplichtMate == ContactVerplichtMate.NIET_VERPLICHT_WEL_TONEN);
 
     } else if (event.isEvent(AfterReturn.class)) {
 
@@ -124,7 +125,6 @@ public class Page1Contact extends NormalPageTemplate {
 
   @Override
   public void onNextPage() {
-
     if (!getServices().getContactgegevensService().isVastGesteld(contact)) {
       throw new ProException(INFO, "Geef minimaal één telefoonnummer of e-mailadres in.");
     }
@@ -136,9 +136,7 @@ public class Page1Contact extends NormalPageTemplate {
 
   @Override
   public void onPreviousPage() {
-
     setStatus(false);
-
     super.onPreviousPage();
   }
 

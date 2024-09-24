@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.components.layouts.form.document;
 
+import static java.util.Collections.singletonList;
 import static java.util.Optional.ofNullable;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
@@ -63,13 +64,13 @@ import nl.procura.vaadin.functies.downloading.DownloadHandlerImpl;
 
 public class PrintMultiLayout extends GbaVerticalLayout {
 
-  public final Button      buttonPreview = new Button("Voorbeeld / e-mailen");
-  public final Button      buttonPrint   = new Button("Afdrukken (F3)");
-  private final InfoLayout infoLayout    = new InfoLayout("", "Selecteer het document om af te drukken.");
+  private final InfoLayout infoLayout = new InfoLayout("", "Selecteer het document om af te drukken.");
 
-  private Zaak                         zaak;
+  private Zaak   zaak;
+  private Object model;
+
+  private final PrintButtons           printButtons;
   private final PrintMultiLayoutConfig config;
-  private Object                       model;
   private final PrintSoortForm         form;
   private final PrintTable             table;
 
@@ -105,6 +106,14 @@ public class PrintMultiLayout extends GbaVerticalLayout {
     this.config = config;
 
     setSizeFull();
+
+    printButtons = new PrintButtons();
+    printButtons.getButtonSign().setParameterConsumer(parameters -> {
+      List<PrintRecord> records = getPrintRecords(true);
+      records.forEach(record -> printRecord(record, true, null));
+      parameters.setPrintRecords(records);
+      parameters.setPersons(singletonList(records.get(0).getZaak().getBasisPersoon()));
+    });
 
     table = new PrintTable(config);
     form = new PrintSoortForm(config.getDocumentSoorten(), config.getDocumentTypes(), soorten -> {
@@ -143,7 +152,11 @@ public class PrintMultiLayout extends GbaVerticalLayout {
    * Retourneert de print buttons
    */
   public Button[] getButtons() {
-    return new Button[]{ buttonPreview, buttonPrint };
+    return printButtons.getButtons(zaak);
+  }
+
+  public PrintButtons getPrintButtons() {
+    return printButtons;
   }
 
   public Object getModel() {
@@ -159,10 +172,10 @@ public class PrintMultiLayout extends GbaVerticalLayout {
   }
 
   public void handleActions(Button button, int keyCode) {
-    if (button == buttonPrint || keyCode == KeyCode.F3) {
+    if (button == printButtons.getButtonPrint() || keyCode == KeyCode.F3) {
       doPrint(false);
 
-    } else if (button == buttonPreview) {
+    } else if (button == printButtons.getButtonPreview()) {
       doPrint(true);
     }
   }
@@ -189,23 +202,12 @@ public class PrintMultiLayout extends GbaVerticalLayout {
     form.commit();
 
     List<PrintRecord> records = getPrintRecords(isPreview);
-
-    for (PrintRecord record : records) {
-      printRecord(record, isPreview, new DownloadHandlerImpl(getParentWindow()));
-    }
+    records.forEach(record -> printRecord(record, isPreview, new DownloadHandlerImpl(getParentWindow())));
 
     if (isPreview) {
       getParentWindow().addWindow(new PrintPreviewWindow(records));
     } else {
       getParentWindow().addWindow(new PrintSummaryWindow(records));
-    }
-
-    // Gooi eerste exceptie op
-
-    for (PrintRecord dr : records) {
-      if (dr.getException() != null) {
-        throw dr.getException();
-      }
     }
   }
 
@@ -258,7 +260,6 @@ public class PrintMultiLayout extends GbaVerticalLayout {
   }
 
   private void printRecord(PrintRecord record, boolean isPreview, DownloadHandler downloadHandler) {
-
     DocumentService service = getApplication().getServices().getDocumentService();
     record.setStatus(Status.DEFAULT);
     record.setException(null);
@@ -304,11 +305,12 @@ public class PrintMultiLayout extends GbaVerticalLayout {
 
       // Functie voor na het printen
       afterPrintRecord(record, isPreview);
-
       record.setStatus(Status.PRINTED);
+
     } catch (RuntimeException e) {
       record.setStatus(Status.ERROR);
       record.setException(e);
+      throw e;
     }
   }
 

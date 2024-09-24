@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,7 +21,10 @@ package nl.procura.gba.common;
 
 import static nl.procura.gba.common.NormalNumberConverter.VertaalType.MAAND;
 import static nl.procura.gba.common.NormalNumberConverter.VertaalType.NUMMER;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.pad_left;
+import static nl.procura.standard.Globalfunctions.pad_right;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -96,10 +99,18 @@ public class NormalNumberConverter {
           // 1e getal + 2e getal
           String w1 = n(taal, s(nr, 1));
           String w2 = n(taal, s(nr, 0));
-          if (w1.endsWith("e")) {
-            t.append(w1 + "ën" + w2);
+          if (taal == Taal.FRIES) {
+            if (w1.endsWith("e")) {
+              t.append(w1 + "n" + w2);
+            } else {
+              t.append(w1 + "en" + w2);
+            }
           } else {
-            t.append(w1 + "en" + w2);
+            if (w1.endsWith("e")) {
+              t.append(w1 + "ën" + w2);
+            } else {
+              t.append(w1 + "en" + w2);
+            }
           }
         }
 

@@ -288,23 +288,19 @@ public class PageGvTemplate extends NormalPageTemplate {
       record.setPrintActie(printActie);
 
       if (isPreview) {
-
         PrintOptie printOptie = new PrintOptie();
         printOptie.setUitvoerformaatType(UitvoerformaatType.PDF); // Altijd als PDF
         printActie.setPrintOptie(printOptie);
-
         record.setPreviewArray(service.preview(printActie));
-      } else {
 
+      } else {
         printActie.setPrintOptie((PrintOptie) record.getUitvoer().getValue());
         printActie.setZaak(record.getZaak());
-
         service.print(printActie, !isTabelMode(), downloadHandler);
       }
-
       record.setStatus(Status.PRINTED);
-    } catch (RuntimeException e) {
 
+    } catch (RuntimeException e) {
       record.setStatus(Status.ERROR);
       record.setException(e);
     }

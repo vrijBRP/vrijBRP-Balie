@@ -27,6 +27,7 @@ import static nl.procura.standard.Globalfunctions.pos;
 import java.time.Duration;
 
 import nl.procura.burgerzaken.zynyo.api.ApiClient;
+import nl.procura.burgerzaken.zynyo.api.ApiClientConfig;
 import nl.procura.burgerzaken.zynyo.api.SigningApi;
 import nl.procura.burgerzaken.zynyo.client.OkHttpZynyoClient;
 import nl.procura.gba.web.services.AbstractService;
@@ -52,6 +53,9 @@ public class ZynyoService extends AbstractService {
     String baseUrl = getSysteemParm(ZYNYO_API_ENDPOINT, true);
     String apiKey = getSysteemParm(ZYNYO_API_KEY, true);
 
-    return new OkHttpZynyoClient(baseUrl, apiKey, Duration.ofSeconds(15));
+    ApiClientConfig config = new ApiClientConfig()
+        .baseUrl(baseUrl)
+        .apiKey(apiKey);
+    return new OkHttpZynyoClient(config, Duration.ofSeconds(15));
   }
 }

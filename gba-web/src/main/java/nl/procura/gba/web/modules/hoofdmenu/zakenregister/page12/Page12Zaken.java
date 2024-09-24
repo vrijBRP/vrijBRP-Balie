@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -31,6 +31,8 @@ import java.util.List;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord;
@@ -51,8 +53,6 @@ import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaakArgume
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.gba.web.windows.home.navigatie.ZakenregisterAccordionTab;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.functies.VaadinUtils;
@@ -102,11 +102,10 @@ public class Page12Zaken extends ZakenregisterPage<Zaak> {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
-    if (button == buttonPrint || keyCode == KeyCode.F3) {
-      doPrePrint(false);
-    } else if (button == buttonPreview) {
+    if (button == buttonPreview) {
       doPrePrint(true);
+    } else if (button == buttonPrint || keyCode == KeyCode.F3) {
+      doPrePrint(false);
     } else if (button == buttonStatus) {
       wijzigStatus();
     } else if (button == buttonRefresh || keyCode == KeyCode.F5) {
@@ -161,8 +160,7 @@ public class Page12Zaken extends ZakenregisterPage<Zaak> {
 
     List<PrintRecord> printRecords = toPrintRecords(records);
 
-    if (printRecords.size() > 0) {
-
+    if (!printRecords.isEmpty()) {
       if (isPreview) {
         getWindow().addWindow(new PrintPreviewWindow(printRecords));
       } else {
@@ -205,9 +203,7 @@ public class Page12Zaken extends ZakenregisterPage<Zaak> {
   }
 
   protected List<PrintRecord> toPrintRecords(List<CorrespondentiePrintRecord> objects) {
-
     List<PrintRecord> list = new ArrayList<>();
-
     for (CorrespondentiePrintRecord printRecord : objects) {
       if (printRecord.getPrintRecord() != null) {
         list.add(printRecord.getPrintRecord());

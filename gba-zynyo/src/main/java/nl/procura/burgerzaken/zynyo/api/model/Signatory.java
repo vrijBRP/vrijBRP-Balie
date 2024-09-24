@@ -26,13 +26,13 @@ import lombok.Data;
 @Data
 public class Signatory {
 
-  private String name;
-  private String email;
-  private String locale;
+  private String                     name;
+  private String                     email;
+  private String                     locale;
   private List<AuthenticationMethod> authenticationMethods;
-  private String priority;
-  private String signatoryRole;
-  private boolean disableEmail;
-  private boolean disableInvitation;
-  private boolean disableStatusChange;
+  private String                     priority;
+  private String                     signatoryRole;
+  private boolean                    disableEmail;
+  private boolean                    disableInvitation;
+  private boolean                    disableStatusChange;
 }

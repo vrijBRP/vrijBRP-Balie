@@ -19,19 +19,19 @@
 
 package nl.procura.burgerzaken.zynyo.client;
 
-import nl.procura.burgerzaken.zynyo.api.SignDocumentRequestBody;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import nl.procura.burgerzaken.zynyo.api.model.ZynyoSignedDocument;
-import nl.procura.burgerzaken.zynyo.api.model.ZynyoSignDocumentRequest;
+import nl.procura.burgerzaken.zynyo.api.model.SignDocumentResponse;
+import nl.procura.burgerzaken.zynyo.api.model.SignSingleDocumentRequest;
+import nl.procura.burgerzaken.zynyo.api.model.SignedDocumentResponse;
 
 public class SigningApiTest extends AbstractTestWireMockClient {
 
   @Test
   public void mustReturnSignDocumentRequest() {
-    SignDocumentRequestBody body = new SignDocumentRequestBody();
-    ZynyoSignDocumentRequest signDocumentRequest = getSigningApi().postSignDocumentRequest(body);
+    SignSingleDocumentRequest body = new SignSingleDocumentRequest();
+    SignDocumentResponse signDocumentRequest = getSigningApi().postSignDocumentRequest(body);
 
     Assertions.assertEquals("74e65b2c-fc2a-4272-b438-f766cfe936c1", signDocumentRequest.documentUUID());
     Assertions.assertEquals(1, signDocumentRequest.signatoryLink().get(0).getSequence());
@@ -43,7 +43,7 @@ public class SigningApiTest extends AbstractTestWireMockClient {
   @Test
   public void mustReturnDocumentContent() {
     String id = "74e65b2c-fc2a-4272-b438-f766cfe936c1";
-    ZynyoSignedDocument document = getSigningApi().getSignedDocument(id);
+    SignedDocumentResponse document = getSigningApi().getSignedDocument(id);
     Assertions.assertNotNull(document.documentContent());
   }
 }

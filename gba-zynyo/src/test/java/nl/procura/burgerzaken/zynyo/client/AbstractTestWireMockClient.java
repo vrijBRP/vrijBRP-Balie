@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeAll;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
 
+import nl.procura.burgerzaken.zynyo.api.ApiClientConfig;
 import nl.procura.burgerzaken.zynyo.api.SigningApi;
 
 public abstract class AbstractTestWireMockClient {
@@ -51,6 +52,9 @@ public abstract class AbstractTestWireMockClient {
   }
 
   protected SigningApi getSigningApi() {
-    return new SigningApi(new OkHttpZynyoClient(wireMockServer.baseUrl(), "", Duration.ofSeconds(10)));
+    ApiClientConfig config = new ApiClientConfig()
+        .baseUrl(wireMockServer.baseUrl())
+        .apiKey("");
+    return new SigningApi(new OkHttpZynyoClient(config, Duration.ofSeconds(10)));
   }
 }

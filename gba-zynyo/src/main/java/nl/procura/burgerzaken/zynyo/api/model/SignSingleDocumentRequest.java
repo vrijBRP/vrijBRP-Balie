@@ -17,17 +17,16 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.burgerzaken.zynyo.api;
+package nl.procura.burgerzaken.zynyo.api.model;
+
+import java.util.List;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import java.util.List;
-
-import nl.procura.burgerzaken.zynyo.api.model.*;
 
 @Data
 @Accessors(chain = true, fluent = true)
-public class SignDocumentRequestBody {
+public class SignSingleDocumentRequest {
 
   private DocumentInfo    documentInfo;
   private List<Signatory> signatories;

@@ -62,12 +62,13 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 public class AanschrijvingPage extends NormalPageTemplate {
 
   private AanschrijvingForm      form1;
-  private final VLayout          soortLayout   = new VLayout();
+  private final VLayout          soortLayout = new VLayout();
   private PrintLayout            printLayout;
   private MotiveringLayout       motiveringLayout;
-  public final Button            buttonPreview = new Button("Voorbeeld / e-mailen");
-  public final Button            buttonPrint   = new Button("Afdrukken (F3)");
   private final DossierOnderzoek zaakDossier;
+
+  public final Button buttonPreview = new Button("Voorbeeld / e-mailen");
+  public final Button buttonPrint   = new Button("Afdrukken (F3)");
 
   public AanschrijvingPage(DossierOnderzoek zaakDossier) {
     this.zaakDossier = zaakDossier;

@@ -31,8 +31,10 @@
 
 package nl.procura.burgerzaken.zynyo.api;
 
-import nl.procura.burgerzaken.zynyo.api.model.ZynyoSignDocumentRequest;
-import nl.procura.burgerzaken.zynyo.api.model.ZynyoSignedDocument;
+import nl.procura.burgerzaken.zynyo.api.model.SignDocumentResponse;
+import nl.procura.burgerzaken.zynyo.api.model.SignMultiDocumentRequest;
+import nl.procura.burgerzaken.zynyo.api.model.SignSingleDocumentRequest;
+import nl.procura.burgerzaken.zynyo.api.model.SignedDocumentResponse;
 
 public class SigningApi {
 
@@ -42,21 +44,28 @@ public class SigningApi {
     this.apiClient = apiClient;
   }
 
-  public ZynyoSignDocumentRequest postSignDocumentRequest(SignDocumentRequestBody request) throws ApiException {
+  public SignDocumentResponse postSignDocumentRequest(SignSingleDocumentRequest request) throws ApiException {
     ApiClient.Request<Object> apiRequest = new ApiClient.Request<>("/sign/signdocumentrequest");
     apiRequest.body(request);
     defaultHeaders(apiRequest);
-    return apiClient.post(apiRequest, ZynyoSignDocumentRequest.class);
+    return apiClient.post(apiRequest, SignDocumentResponse.class);
   }
 
-  public ZynyoSignedDocument getSignedDocument(String documentUuid) throws ApiException {
+  public SignDocumentResponse postSignDocumentRequest(SignMultiDocumentRequest request) throws ApiException {
+    ApiClient.Request<Object> apiRequest = new ApiClient.Request<>("/sign/multi/signdocumentrequest");
+    apiRequest.body(request);
+    defaultHeaders(apiRequest);
+    return apiClient.post(apiRequest, SignDocumentResponse.class);
+  }
+
+  public SignedDocumentResponse getSignedDocument(String documentUuid) throws ApiException {
     ApiClient.Request<Object> apiRequest = new ApiClient.Request<>("/sign/getsigned/" + documentUuid);
     defaultHeaders(apiRequest);
-    return apiClient.get(apiRequest, ZynyoSignedDocument.class);
+    return apiClient.get(apiRequest, SignedDocumentResponse.class);
   }
 
   protected void defaultHeaders(ApiClient.Request<Object> apiRequest) {
-    apiRequest.header("apikey", apiClient.getApiKey());
+    apiRequest.header("apikey", apiClient.config().apiKey());
     apiRequest.header("Accept", "application/json");
     apiRequest.header("Content-Type", "application/json");
   }

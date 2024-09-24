@@ -17,14 +17,31 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.burgerzaken.zynyo.api.model;
+package nl.procura.gba.web.components.layouts.form.document.sign;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+public enum DocSignInterfaceLanguage {
 
-@Data
-@Accessors(chain = true, fluent = true)
-public class ZynyoSignedDocument {
+  NL("nl_NL", "Nederlands"),
+  EN("en_US", "Engels");
 
-  private String documentContent;
+  private final String value;
+  private final String label;
+
+  DocSignInterfaceLanguage(String value, String label) {
+    this.value = value;
+    this.label = label;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  @Override
+  public String toString() {
+    return label;
+  }
 }

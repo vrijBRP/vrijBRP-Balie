@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,6 +25,7 @@ import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.removeS
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_BEGELEIDENDE_BRIEF;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_UITTREKSEL;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -43,7 +44,11 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page8.Page8ZakenTab;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page8.Page8ZakenTabTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page8.tab3.Page8ZakenTab3Table;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.gba.web.services.zaken.documenten.*;
+import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
+import nl.procura.gba.web.services.zaken.documenten.DocumentService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentSoort;
+import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
@@ -140,7 +145,7 @@ public abstract class Page8ZakenAfdrukTab extends Page8ZakenTabTemplate<Zaak> {
         printActie.setDocument(document);
         printActie.setZaak(printRecord.getZaak());
 
-        List<DocumentPL> dps = convert(asList(zaak.getBasisPersoon()), null);
+        List<DocumentPL> dps = convert(Collections.singletonList(zaak.getBasisPersoon()), null);
         dps.stream().filter(dp -> !document.isStillbornAllowed()).forEach(dpl -> removeStillborns(dpl));
 
         ConditionalMap modelMap = new ConditionalMap();
@@ -228,14 +233,13 @@ public abstract class Page8ZakenAfdrukTab extends Page8ZakenTabTemplate<Zaak> {
       record.setPrintActie(printActie);
 
       if (isPreview) {
-
         PrintOptie printOptie = new PrintOptie();
         printOptie.setUitvoerformaatType(UitvoerformaatType.PDF); // Altijd als PDF
         printActie.setPrintOptie(printOptie);
 
         record.setPreviewArray(service.preview(printActie));
-      } else {
 
+      } else {
         printActie.setPrintOptie((PrintOptie) record.getUitvoer().getValue());
         printActie.setZaak(record.getZaak());
 
@@ -243,8 +247,8 @@ public abstract class Page8ZakenAfdrukTab extends Page8ZakenTabTemplate<Zaak> {
       }
 
       record.setStatus(Status.PRINTED);
-    } catch (RuntimeException e) {
 
+    } catch (RuntimeException e) {
       record.setStatus(Status.ERROR);
       record.setException(e);
     }

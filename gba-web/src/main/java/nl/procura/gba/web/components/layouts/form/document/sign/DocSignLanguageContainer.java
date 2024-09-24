@@ -17,16 +17,15 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.services.beheer.zynyo;
+package nl.procura.gba.web.components.layouts.form.document.sign;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import java.util.Arrays;
 
-@Data
-@Accessors(chain = true, fluent = true)
-public class SignedDocument {
+import nl.procura.vaadin.component.container.ArrayListContainer;
 
-  private String name;
-  private String documentUUID;
-  private String documentContent = "";
+public class DocSignLanguageContainer extends ArrayListContainer {
+
+  public DocSignLanguageContainer() {
+    Arrays.stream(DocSignInterfaceLanguage.values()).forEach(this::addItem);
+  }
 }

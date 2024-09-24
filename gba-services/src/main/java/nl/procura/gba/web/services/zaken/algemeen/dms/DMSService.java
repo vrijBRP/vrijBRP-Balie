@@ -22,6 +22,7 @@ package nl.procura.gba.web.services.zaken.algemeen.dms;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_MAX_GROOTTE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLED;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid.ONBEKEND;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid.VERTROUWELIJK;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.isTru;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -121,6 +122,26 @@ public class DMSService extends AbstractService {
     }
   }
 
+  public void saveSignedDocumentWithZaak(Zaak zaak, SignedDocument signedDocument) {
+    DMSDocument dmsDocument;
+    try {
+      String documentName = signedDocument.name() + " (ondertekend document)";
+      DocumentVertrouwelijkheid vertrouwelijkheid = getServices().getDocumentService()
+          .getStandaardVertrouwelijkheid(ONBEKEND, VERTROUWELIJK);
+      byte[] documentBytes = Base64.decode(signedDocument.documentContent());
+      dmsDocument = DMSDocument.builder()
+          .content(DMSBytesContent.fromFilename(signedDocument.documentUUID() + ".pdf", documentBytes))
+          .title(documentName)
+          .user(Services.getInstance().getGebruiker().getNaam())
+          .zaakId(zaak.getZaakId())
+          .confidentiality(vertrouwelijkheid.getNaam())
+          .build();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Services.getInstance().getDmsService().save(zaak, dmsDocument);
+  }
+
   public long getMaxFileSizeUploadsInMB() {
     return along(getSysteemParm(DOC_MAX_GROOTTE, false));
   }
@@ -135,24 +156,6 @@ public class DMSService extends AbstractService {
 
   public ObjectStoreDMSStorage getObjectStore() {
     return objectStore;
-  }
-
-  public void saveSignedDocumentWithZaak(Zaak zaak, SignedDocument signedDocument, int index) {
-    DMSDocument dmsDocument;
-    try {
-      String documentName = signedDocument.name() + " (ondertekend document " + index + ")";
-      dmsDocument = DMSDocument.builder()
-              .content(DMSBytesContent.fromFilename(signedDocument.documentUUID() + ".pdf", Base64.decode(signedDocument.documentContent())))
-              .title(documentName)
-              .alias(documentName)
-              .user(Services.getInstance().getGebruiker().getNaam())
-              .zaakId(zaak.getZaakId())
-              .confidentiality(DocumentVertrouwelijkheid.ONBEKEND.getNaam())
-              .build();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    Services.getInstance().getDmsService().save(zaak, dmsDocument);
   }
 
   @Override

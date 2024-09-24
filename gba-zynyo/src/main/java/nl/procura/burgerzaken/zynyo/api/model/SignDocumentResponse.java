@@ -19,14 +19,14 @@
 
 package nl.procura.burgerzaken.zynyo.api.model;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Data
 @Accessors(chain = true, fluent = true)
-public class ZynyoSignDocumentRequest {
+public class SignDocumentResponse {
 
   private String documentUUID;
   private List<SignatoryLink> signatoryLink;
