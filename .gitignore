@@ -44,6 +44,12 @@ target/
 ehthumbs.db
 Thumbs.db
 
+# Maven release plugin #
+########################
+pom.xml.release*
+release.properties
+pom.xml.versionsBackup
+
 # GBA #
 #######
 git.properties

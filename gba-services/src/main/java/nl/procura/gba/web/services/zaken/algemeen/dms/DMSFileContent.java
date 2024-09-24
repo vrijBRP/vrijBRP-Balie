@@ -24,8 +24,10 @@ import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import nl.procura.standard.exceptions.ProException;
@@ -52,6 +54,15 @@ public class DMSFileContent implements DMSContent {
     try {
       return new FileInputStream(file);
     } catch (FileNotFoundException exception) {
+      throw new ProException(WARNING, "Fout bij laden bestand", exception);
+    }
+  }
+
+  @Override
+  public byte[] getBytes() {
+    try {
+      return FileUtils.readFileToByteArray(file);
+    } catch (IOException exception) {
       throw new ProException(WARNING, "Fout bij laden bestand", exception);
     }
   }

@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres;
 
 import nl.procura.gba.web.common.misc.SelectListener;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
@@ -31,8 +31,8 @@ public class BewonerWindow extends GbaModalWindow {
     this(null, listener);
   }
 
-  public BewonerWindow(SelectieAdres adres, SelectListener<DossierPersoon> listener) {
-    super("Selecteer personen op basis van adres", "1000px");
-    addComponent(new MainModuleContainer(false, new BewonerPage(adres, listener)));
+  public BewonerWindow(ProcuraInhabitantsAddress address, SelectListener<DossierPersoon> listener) {
+    super("Selecteer personen op basis van address", "1000px");
+    addComponent(new MainModuleContainer(false, new BewonerPage(address, listener)));
   }
 }

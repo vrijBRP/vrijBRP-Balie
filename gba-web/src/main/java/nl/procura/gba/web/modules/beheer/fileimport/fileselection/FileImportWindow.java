@@ -27,7 +27,7 @@ public class FileImportWindow extends GbaModalWindow {
   private final FileImportHandler fileImportHandler;
 
   public FileImportWindow(FileImportHandler fileImportHandler) {
-    super("Importeer uit bestand", "450px");
+    super("Selecteer uit bestand", "450px");
     this.fileImportHandler = fileImportHandler;
   }
 

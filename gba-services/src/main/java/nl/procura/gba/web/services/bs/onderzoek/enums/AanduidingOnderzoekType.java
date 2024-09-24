@@ -57,9 +57,9 @@ public enum AanduidingOnderzoekType {
   AAND_081420("081420", "08.14.20 (datum vestiging in Nederland)", false),
   AAND_089999("089999", "08.99.99 (betrokkene niet meer woonachtig op adres)", true);
 
-  private String  code = "";
-  private String  oms  = "";
-  private boolean deelresultaat;
+  private final String  code;
+  private final String  oms;
+  private final boolean deelresultaat;
 
   AanduidingOnderzoekType(String code, String oms, boolean deelresultaat) {
     this.code = code;

@@ -31,6 +31,7 @@ public enum ZaakContactpersoonType {
   VADER_ERKENNER("Vader / Erkenner"),
   MEEVERHUIZER("Meeverhuizer"),
   BETROKKENE_ONDERZOEK("Betrokkene bij onderzoek"),
+  WETTELIJKE_VERTEGENWOORDIGER("Wettelijke vertegenwoordiger"),
   INSCHRIJVER("Inschrijver"),
   CONTACTPERSOON("Correspondentie contactpersoon"),
   ONBEKEND("Onbekend");

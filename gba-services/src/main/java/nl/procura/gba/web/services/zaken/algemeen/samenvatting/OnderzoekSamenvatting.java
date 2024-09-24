@@ -89,6 +89,9 @@ public class OnderzoekSamenvatting extends ZaakSamenvattingTemplate<DossierOnder
       case INSTANTIE:
         addInstantieData(rubriek, zaak);
         break;
+      case LAA:
+        rubriek.add("Toelichting", zaak.getAanlKenmerk());
+        break;
       case ONBEKEND:
         break;
     }
@@ -189,7 +192,7 @@ public class OnderzoekSamenvatting extends ZaakSamenvattingTemplate<DossierOnder
         rubriek.add("Datum einde", zaak.getDatumEindeOnderzoek());
         break;
       case IMMIGRATIE:
-      case BINNEN:
+      case BINNEN_INTER:
         rubriek.add("Nogmaals aanschrijven", getBooleanValue(zaak.getNogmaalsAanschrijven()));
         addResultaatAdres(zaak, "Adresgegevens binnen de gemeente");
         break;
@@ -241,7 +244,7 @@ public class OnderzoekSamenvatting extends ZaakSamenvattingTemplate<DossierOnder
   private String getTermijn(DateTime datumIngang, DateTime datumEinde) {
 
     if (fil(datumIngang.toString())) {
-      return "Van " + datumIngang.toString() + " - t/m " + datumEinde.toString();
+      return "Van " + datumIngang + " - t/m " + datumEinde.toString();
     }
     return "";
   }

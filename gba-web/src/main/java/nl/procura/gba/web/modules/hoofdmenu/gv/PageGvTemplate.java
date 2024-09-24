@@ -19,11 +19,14 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.gv;
 
-import static java.util.Arrays.asList;
-import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.*;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.BG_JA;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.BG_NEE;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.VP_JA;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.VP_NEE;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +36,10 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.common.ConditionalMap;
+import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayoutConfig;
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord;
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord.Status;
-import nl.procura.gba.web.components.layouts.form.document.PrintSelectListener;
+import nl.procura.gba.web.components.layouts.form.document.PrintSelectRecordFilter;
 import nl.procura.gba.web.components.layouts.form.document.PrintSummaryWindow;
 import nl.procura.gba.web.components.layouts.form.document.PrintTableTemplate;
 import nl.procura.gba.web.components.layouts.form.document.preview.PrintPreviewWindow;
@@ -45,7 +49,11 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratie;
 import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType;
 import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType;
-import nl.procura.gba.web.services.zaken.documenten.*;
+import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
+import nl.procura.gba.web.services.zaken.documenten.DocumentService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentSoort;
+import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
@@ -131,7 +139,8 @@ public class PageGvTemplate extends NormalPageTemplate {
     //      System.out.println ("Binnengemeentelijk: " + bg);
     //      System.out.println ("Verstrekkingsbep. : " + vp);
 
-    printTable.updateSoort(asList(getDocumentSoort(grondslag, toekenning, procesActie, reactie, bg, vp)));
+    printTable.updateSoort(
+        Collections.singletonList(getDocumentSoort(grondslag, toekenning, procesActie, reactie, bg, vp)));
   }
 
   protected void doPrint(GvAanvraag aanvraag, boolean isPreview) {
@@ -269,7 +278,7 @@ public class PageGvTemplate extends NormalPageTemplate {
 
       ConditionalMap modelMap = new ConditionalMap();
       modelMap.put(record.getSoort().getType().getDoc(), record.getModel());
-      modelMap.put(DocumentType.PL_UITTREKSEL.getDoc(), asList(aanvraag.getPersoon()));
+      modelMap.put(DocumentType.PL_UITTREKSEL.getDoc(), Collections.singletonList(aanvraag.getPersoon()));
 
       PrintActie printActie = new PrintActie();
       printActie.setModel(modelMap);
@@ -303,8 +312,10 @@ public class PageGvTemplate extends NormalPageTemplate {
 
   public class PrintTable extends PrintTableTemplate {
 
-    public PrintTable(PrintSelectListener selectListener) {
-      super(selectListener);
+    public PrintTable(PrintSelectRecordFilter selectListener) {
+      super(PrintMultiLayoutConfig.builder()
+          .selectRecordFilter(selectListener)
+          .build());
     }
 
     public void reset() {

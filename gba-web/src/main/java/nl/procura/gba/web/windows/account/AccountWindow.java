@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.windows.account;
 
-import nl.procura.gba.web.components.layouts.ToolBar;
+import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
 import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.gba.web.windows.account.layouts.AccountContent;
 import nl.procura.gba.web.windows.account.layouts.AccountNavigation;

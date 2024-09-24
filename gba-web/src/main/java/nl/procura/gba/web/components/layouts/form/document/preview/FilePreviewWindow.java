@@ -20,7 +20,13 @@
 package nl.procura.gba.web.components.layouts.form.document.preview;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.*;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getDownloadLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getImageLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getPdfLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getPropertiesLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getTxtLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getXmlLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getnoBytesLayout;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -56,7 +62,6 @@ public class FilePreviewWindow extends ModalWindow {
     this.files = files;
 
     setCaption("Bestanden");
-
     setWidth("900px");
     setHeight("80%");
     setStyleName("download-window");
@@ -79,16 +84,11 @@ public class FilePreviewWindow extends ModalWindow {
 
   @Override
   public void attach() {
-
-    for (PreviewFile file : files) {
-      addDownload(getWindow(), file);
-    }
-
+    files.forEach(file -> addDownload(getWindow(), file));
     super.attach();
   }
 
   private void addDownload(Window window, final PreviewFile file) {
-
     final byte[] bytes = file.getBytes();
     final String fileName = file.getFileName();
 
@@ -119,7 +119,7 @@ public class FilePreviewWindow extends ModalWindow {
     contentTabSheet.setSizeFull();
     contentLayout.add(contentTabSheet);
 
-    Component content = new VLayout();
+    Component content;
     if (bytes == null) {
       content = getnoBytesLayout();
     } else {
@@ -177,7 +177,6 @@ public class FilePreviewWindow extends ModalWindow {
     private Map<String, String> properties = new LinkedHashMap<>();
 
     public PreviewFile(byte[] bytes, String title, String fileName, BestandType fileType) {
-
       super();
       this.bytes = bytes;
       this.title = title;
@@ -185,9 +184,10 @@ public class FilePreviewWindow extends ModalWindow {
       this.fileType = fileType;
     }
 
-    public PreviewFile(InputStream inputStream, String titel, String bestandsnaam, BestandType type)
-        throws IOException {
-      this(IOUtils.toByteArray(inputStream), titel, bestandsnaam, type);
+    private static byte[] getBytes(InputStream inputStream) throws IOException {
+      byte[] bytes = IOUtils.toByteArray(inputStream);
+      IOUtils.closeQuietly(inputStream);
+      return bytes;
     }
 
     public void setProperty(String key, String value) {

@@ -27,7 +27,11 @@ import org.apache.commons.io.FilenameUtils;
 import com.vaadin.Application;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.StreamResource.StreamSource;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Window;
 
 import nl.procura.gba.common.StreamUtils;
 import nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewWindow.PreviewFile;
@@ -49,11 +53,11 @@ public class FilePreviewLayouts {
    * Component voor tonen van PNG afbeeldingen
    */
   public static Component getImageLayout(Window window, final PreviewFile file) {
-
     StreamResource streamResource = getStreamResource(file.getBytes(), file.getFileName(), window.getApplication());
     Embedded embedded = new Embedded(null, streamResource);
-
     embedded.setType(Embedded.TYPE_IMAGE);
+    embedded.setWidth("100%");
+
     VLayout layout = new VLayout(embedded).sizeFull();
     layout.setStyleName("text");
     layout.setExpandRatio(embedded, 1f);
@@ -73,23 +77,17 @@ public class FilePreviewLayouts {
    * Component voor tonen van PDF bestanden
    */
   public static Component getPdfLayout(Window window, final PreviewFile file) {
-
     StreamResource streamResource = getStreamResource(file.getBytes(), file.getFileName(), window.getApplication());
     Embedded embedded = new Embedded(null, streamResource);
-
     embedded.setType(Embedded.TYPE_BROWSER);
     embedded.setSizeFull();
 
-    VLayout layout = new VLayout(embedded).sizeFull();
+    VLayout layout = new VLayout(embedded).sizeFull().margin(true);
     layout.setExpandRatio(embedded, 1f);
 
     return layout;
   }
 
-  /**
-   * @param properties
-   * @return
-   */
   public static Component getPropertiesLayout(Map<String, String> properties) {
     PropertiesLabel propertiesLabel = new PropertiesLabel(new PropertiesLayout(properties));
     propertiesLabel.setMargin(true);
@@ -120,9 +118,7 @@ public class FilePreviewLayouts {
   }
 
   private static StreamResource getStreamResource(final byte[] bytes, String fileName, Application application) {
-
-    StreamSource streamSource = (StreamSource) () -> new ByteArrayInputStream(bytes);
-
+    StreamSource streamSource = () -> new ByteArrayInputStream(bytes);
     StreamResource streamResource = new StreamResource(streamSource, fileName, application);
     streamResource.setCacheTime(0);
     return streamResource;
@@ -140,7 +136,7 @@ public class FilePreviewLayouts {
     public LucidaConsoleLabel(String value, int contentType, boolean usePre) {
       setStyleName(ProcuraTheme.AUTOSCROLL);
       addStyleName("text");
-      setMargin(false);
+      setMargin(true);
       setSizeUndefined();
       Label label = usePre ? new Label("<pre>" + value + "</pre>", contentType) : new Label(value, contentType);
       label.setSizeUndefined();
@@ -155,7 +151,7 @@ public class FilePreviewLayouts {
 
     public PropertiesLabel(PropertiesLayout layout) {
       setStyleName(ProcuraTheme.AUTOSCROLL);
-      setMargin(false);
+      setMargin(true);
       setSizeFull();
       addComponent(layout);
     }

@@ -25,10 +25,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
+
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.beheer.verkiezing.Verkiezing;
-import org.jetbrains.annotations.NotNull;
 
 public class Page1VerkiezingForm1 extends GbaForm<Page1VerkiezingBean> {
 
@@ -57,7 +58,10 @@ public class Page1VerkiezingForm1 extends GbaForm<Page1VerkiezingBean> {
 
   @NotNull
   private Optional<Verkiezing> setVerkiezing(List<Verkiezing> verkiezingen, Verkiezing verkiezing) {
-    return verkiezingen.stream().filter(v -> v.equals(verkiezing)).findFirst();
+    return verkiezingen.stream().filter(v -> verkiezing != null
+        ? v.equals(verkiezing)
+        : !v.getStempassen().isEmpty())
+        .findFirst();
   }
 
   @Override

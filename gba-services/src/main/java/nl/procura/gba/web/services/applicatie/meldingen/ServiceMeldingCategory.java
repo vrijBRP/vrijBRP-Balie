@@ -22,5 +22,6 @@ package nl.procura.gba.web.services.applicatie.meldingen;
 public enum ServiceMeldingCategory {
   WORK,
   SYSTEM,
-  FAULT
+  FAULT,
+  TASK
 }

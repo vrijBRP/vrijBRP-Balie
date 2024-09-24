@@ -41,18 +41,18 @@ public class GbaWebNormalFooterLayout extends GbaWebFooterTemplate {
     HorizontalLayout h = new HorizontalLayout();
     h.setWidth("100%");
 
-    Label buildLabel = new Label(getCopyright(), Label.CONTENT_XHTML);
-    buildLabel.addStyleName(ProcuraTheme.LAYOUT_LEFT);
-    buildLabel.setSizeUndefined();
-
-    Label copyrightLabel = new Label(getBuildText(), Label.CONTENT_XHTML);
-    copyrightLabel.addStyleName(ProcuraTheme.LAYOUT_RIGHT);
+    Label copyrightLabel = new Label(getCopyright(), Label.CONTENT_XHTML);
+    copyrightLabel.addStyleName(ProcuraTheme.LAYOUT_LEFT);
     copyrightLabel.setSizeUndefined();
 
-    h.addComponent(buildLabel);
+    Label buildLabel = new Label(getBuildText(), Label.CONTENT_XHTML);
+    buildLabel.addStyleName(ProcuraTheme.LAYOUT_RIGHT);
+    buildLabel.setSizeUndefined();
+
     h.addComponent(copyrightLabel);
-    h.setComponentAlignment(buildLabel, Alignment.MIDDLE_LEFT);
-    h.setComponentAlignment(copyrightLabel, Alignment.MIDDLE_RIGHT);
+    h.addComponent(buildLabel);
+    h.setComponentAlignment(copyrightLabel, Alignment.MIDDLE_LEFT);
+    h.setComponentAlignment(buildLabel, Alignment.MIDDLE_RIGHT);
     addComponent(h);
 
     super.attach();

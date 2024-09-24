@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+  <changeSet author="Procura" id="v1_30_1">
+    <createTable tableName="doss_natur">
+      <column name="c_doss_natur" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <!-- procedurekeuze -->
+      <column name="bevoegd_indienen" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bevoegd_indienen_toel" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="optie" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="optie_toel" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <!-- optie / naturalisatie -->
+      <column name="aangever_minderj" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="basis_verzoek" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="dossiernr" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <!-- toetsing -->
+      <column name="toets_verkl_ondertekend" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_bereid_verkl" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_betrokk_bekend" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_bereid_afstand" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_bewijs_id_aanw" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_bewijs_nat_aanw" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_bewijsnood" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_bewijsnood_toel" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_geld_verblijfs_aanw" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="naamst_nodig" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="naamst_gesl_gew_toel" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <!-- behandeling -->
+      <column name="beh_bot_opgevraagd" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_minderj_kind1" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_minderj_kind2" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_andere_vert_toel" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_opgevr_justis" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_d_aanvr" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <!-- Termijn / beslissing / advies -->
+      <column name="beh_term_d_end" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_term_toel" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="c_doss_natur"
+      constraintName="doss_natur_pkey"
+      tableName="doss_natur"/>
+
+    <addForeignKeyConstraint baseColumnNames="c_doss_natur"
+      baseTableName="doss_natur"
+      constraintName="doss_natur_c_doss_natur_fkey"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_doss"
+      referencedTableName="doss"/>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_30_2" dbms="postgresql">
+    <sql>
+    <![CDATA[
+      create unique index doss_natur_dossiernr_idx
+        on doss_natur (dossiernr) where dossiernr != '';
+      ]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_30_3">
+    <createTable tableName="doss_natur_verz">
+      <column name="c_doss_natur_verz" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="c_doss_natur" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bsn" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="vnr" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <!-- Toetsing -->
+      <column name="naamst_gesl" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="naamst_voorn" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="naamst_gesl_gew" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="naamst_voorn_gew" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="toets_inburgering" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_d_bevest" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <!-- Behandeling -->
+      <column name="beh_andere_vert_akk" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_andere_vert_bsn" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_besliss_optie" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_advies_natur" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_d_koning_besluit" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="beh_nr_koning_besluit" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <!-- Ceremonie -->
+      <column name="ceremonie1_d_in" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie1_bijgewoond" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie2_d_in" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie2_bijgewoond" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie3_d_in" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie3_bijgewoond" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie_d_uitreik" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie_d_verval" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="c_doss_natur_verz"
+      constraintName="doss_natur_verz_pkey"
+      tableName="doss_natur_verz"/>
+
+    <addForeignKeyConstraint baseColumnNames="c_doss_natur"
+      baseTableName="doss_natur_verz"
+      constraintName="doss_natur_verz_fkey1"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_doss_natur"
+      referencedTableName="doss_natur"/>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_30_4">
+    <comment>Add database source</comment>
+    <addColumn tableName="doss_onderz">
+      <column name="aanl_address_source" type="VARCHAR(255)" defaultValue="brp">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+    <addColumn tableName="doss_onderz">
+      <column name="res_address_source" type="VARCHAR(255)" defaultValue="brp">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_30_5">
+    <comment>Add database source to doss_onderz_bron</comment>
+    <addColumn tableName="doss_onderz_bron">
+      <column name="address_source" type="VARCHAR(255)" defaultValue="brp">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_30_6">
+    <comment>Add ceremonie time doss_natur_verz</comment>
+    <addColumn tableName="doss_natur_verz">
+      <column name="ceremonie1_t_in" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie2_t_in" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ceremonie3_t_in" type="numeric" defaultValueComputed="-1">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura" id="v1_30_7">
+    <createTable tableName="task">
+      <column name="c_task" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="type" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="event" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="zaak_id" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="c_usr" type="numeric" defaultValueComputed="0">
+        <constraints nullable="false"/>
+      </column>
+      <column name="execution" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="descr" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="remarks" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="c_task"
+      constraintName="task_pkey"
+      tableName="task"/>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_30_8">
+    <comment>Add uuid to filerecord</comment>
+    <addColumn tableName="filerecord">
+      <column name="uuid" type="TEXT" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_30_9">
+    <addColumn tableName="fileimport">
+      <column name="closed" type="BOOLEAN" defaultValueBoolean="false">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_30_10">
+    <addColumn tableName="doss_registration">
+      <column name="c_filerecord" type="numeric">
+      </column>
+    </addColumn>
+
+    <addForeignKeyConstraint baseColumnNames="c_filerecord"
+      baseTableName="doss_registration"
+      constraintName="doss_registration_fk"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="SET NULL"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_filerecord"
+      referencedTableName="filerecord"/>
+  </changeSet>
+</databaseChangeLog>

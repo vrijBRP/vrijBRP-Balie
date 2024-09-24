@@ -24,7 +24,6 @@ import static nl.procura.standard.Globalfunctions.isTru;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.procura.gba.web.services.beheer.fileimport.FileImportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +36,7 @@ import nl.procura.gba.web.services.applicatie.onderhoud.OnderhoudService;
 import nl.procura.gba.web.services.beheer.bag.BagService;
 import nl.procura.gba.web.services.beheer.bsm.BsmService;
 import nl.procura.gba.web.services.beheer.email.EmailService;
+import nl.procura.gba.web.services.beheer.fileimport.FileImportService;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoService;
@@ -60,6 +60,7 @@ import nl.procura.gba.web.services.bs.geboorte.GeboorteService;
 import nl.procura.gba.web.services.bs.huwelijk.HuwelijkService;
 import nl.procura.gba.web.services.bs.levenloos.LevenloosService;
 import nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeService;
+import nl.procura.gba.web.services.bs.naturalisatie.NaturalisatieService;
 import nl.procura.gba.web.services.bs.omzetting.OmzettingService;
 import nl.procura.gba.web.services.bs.onderzoek.OnderzoekService;
 import nl.procura.gba.web.services.bs.ontbinding.OntbindingService;
@@ -84,6 +85,7 @@ import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutService
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatieService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
+import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakconfiguraties.ZaakConfiguratieService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieService;
 import nl.procura.gba.web.services.zaken.algemeen.zkndms.ZaakDmsService;
@@ -211,6 +213,7 @@ public class Services {
     add(BagService.class);
     add(RaasService.class);
     add(OnderzoekService.class);
+    add(NaturalisatieService.class);
     add(RiskAnalysisService.class);
     add(SelectieService.class);
     add(RegistrationService.class);
@@ -218,6 +221,7 @@ public class Services {
     add(PersonListMutationsService.class);
     add(ZaakConfiguratieService.class);
     add(FileImportService.class);
+    add(TaskService.class);
   }
 
   public static Services getInstance() {
@@ -355,6 +359,10 @@ public class Services {
 
   public OnderzoekService getOnderzoekService() {
     return get(OnderzoekService.class);
+  }
+
+  public NaturalisatieService getNaturalisatieService() {
+    return get(NaturalisatieService.class);
   }
 
   public RiskAnalysisService getRiskAnalysisService() {
@@ -507,6 +515,10 @@ public class Services {
 
   public FileImportService getFileImportService() {
     return get(FileImportService.class);
+  }
+
+  public TaskService getTaskService() {
+    return get(TaskService.class);
   }
 
   public List<AbstractService> getServices() {

@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
-import nl.procura.gba.web.modules.zaken.verhuizing.VerhuisAdres;
+import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
 public class AddressSelectionWindow extends GbaModalWindow {
 
-  public AddressSelectionWindow(final List<VerhuisAdres> addresses, Consumer<VerhuisAdres> listener) {
+  public AddressSelectionWindow(final List<Address> addresses, Consumer<Address> listener) {
     super("Controle op ingevoerd adres", "500px");
     addComponent(new MainModuleContainer(false, new AddressSelectionPage(addresses, true, listener)));
   }

@@ -66,7 +66,7 @@ public class Page2VerkiezingBean implements Serializable {
       caption = "Afkorting",
       width = "50px",
       required = true)
-  @TextField(nullRepresentation = "", maxLength = 2)
+  @TextField(nullRepresentation = "")
   private String afkVerkiezing = "";
 
   @Field(customTypeClass = ProTextField.class,

@@ -163,8 +163,8 @@ public class PersonListMutElem {
     // Workaround voor datums die soms 0 of soms 00000000 hebben.
     long currentNr = NumberUtils.toLong(getNewValue(), -1L);
     long newNr = NumberUtils.toLong(getCurrentValue().getVal(), -1L);
-    if (currentNr >= 0 && newNr >= 0) {
-      return currentNr != newNr;
+    if (currentNr == 0 && newNr == 0) {
+      return false;
     } else {
       return !Objects.equals(getNewValue(), getCurrentValue().getVal());
     }

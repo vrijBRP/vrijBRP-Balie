@@ -35,9 +35,16 @@ public class GbaModalWindow extends ModalWindow {
   }
 
   public GbaModalWindow(boolean margin, String caption, String width) {
+    this(margin, caption, width, null);
+  }
+
+  public GbaModalWindow(boolean margin, String caption, String width, Runnable listener) {
     this(margin);
     setCaption(caption);
     setWidth(width);
+    if (listener != null) {
+      addListener((CloseListener) closeEvent -> listener.run());
+    }
   }
 
   public GbaModalWindow(String caption, String width) {

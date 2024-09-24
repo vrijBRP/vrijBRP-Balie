@@ -50,6 +50,13 @@ public class IdentificatieContactUtils {
     start(page, nextWindow, startProcess);
   }
 
+  /**
+   * Combineert het identificeren van de aanvrager en invullen van de contactgegevens.
+   */
+  public static void startProcess(final GbaPageTemplate page, final Runnable runnable, boolean startProcess) {
+    start(page, runnable, startProcess);
+  }
+
   public static void checkContactAkkoord(Window window, Window contactWindow,
       ContactStatusListener succesListener) {
 
@@ -99,8 +106,12 @@ public class IdentificatieContactUtils {
 
         if (next instanceof GbaPageTemplate) {
           page.getNavigation().goToPage((PageLayout) next);
+
         } else if (next instanceof Window) {
           window.addWindow((Window) next);
+
+        } else if (next instanceof Runnable) {
+          ((Runnable) next).run();
         }
       };
 

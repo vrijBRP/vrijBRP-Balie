@@ -24,7 +24,12 @@ import java.lang.annotation.ElementType;
 import java.util.Date;
 
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextArea;
 import nl.procura.vaadin.component.container.NLBooleanContainer;
 import nl.procura.vaadin.component.field.ProDateField;
 import nl.procura.vaadin.component.field.ProTextArea;
@@ -35,18 +40,20 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class Page20OnderzoekBean implements Serializable {
 
-  public static final String DATUM_ONTVANGST             = "datumOntvangst";
-  public static final String DATUM_EINDE                 = "datumEinde";
-  public static final String AFHANDELINGSTERMIJN         = "afhandelingstermijn";
-  public static final String REDEN                       = "reden";
-  public static final String DATUM_AANVANG_ONDERZOEK     = "datumAanvangOnderzoek";
-  public static final String AANDUIDING_GEG_ONDERZOEK    = "aanduidingGegevensOnderzoek";
-  public static final String DEELRESULTAAT               = "deelresultaat";
-  public static final String DATUM_AANVANG_DEELRESULTAAT = "datumAanvangDeelresultaat";
-  public static final String AAND_GEG_DEELRESULTAAT      = "aanduidingGegevensDeelresultaat";
-  public static final String ONDERZOEK_DOOR_ANDER_GEDAAN = "onderzoekDoorAnderGedaan";
-  public static final String VOLDOENDE_REDEN             = "voldoendeReden";
-  public static final String TOELICHTING                 = "toelichting";
+  public static final String DATUM_ONTVANGST              = "datumOntvangst";
+  public static final String DATUM_EINDE                  = "datumEinde";
+  public static final String AFHANDELINGSTERMIJN          = "afhandelingstermijn";
+  public static final String REDEN                        = "reden";
+  public static final String DATUM_AANVANG_ONDERZOEK      = "datumAanvangOnderzoek";
+  public static final String DATUM_AANVANG_ONDERZOEK_NVT  = "datumAanvangOnderzoekNvt";
+  public static final String AANDUIDING_GEG_ONDERZOEK     = "aanduidingGegevensOnderzoek";
+  public static final String AANDUIDING_GEG_ONDERZOEK_NVT = "aanduidingGegevensOnderzoekNvt";
+  public static final String DEELRESULTAAT                = "deelresultaat";
+  public static final String DATUM_AANVANG_DEELRESULTAAT  = "datumAanvangDeelresultaat";
+  public static final String AAND_GEG_DEELRESULTAAT       = "aanduidingGegevensDeelresultaat";
+  public static final String ONDERZOEK_DOOR_ANDER_GEDAAN  = "onderzoekDoorAnderGedaan";
+  public static final String VOLDOENDE_REDEN              = "voldoendeReden";
+  public static final String TOELICHTING                  = "toelichting";
 
   @Field(type = Field.FieldType.LABEL,
       caption = "Datum ontvangst",
@@ -80,6 +87,10 @@ public class Page20OnderzoekBean implements Serializable {
       required = true)
   private Date datumAanvangOnderzoek = null;
 
+  @Field(type = FieldType.LABEL,
+      caption = "Datum aanvang onderzoek")
+  private String datumAanvangOnderzoekNvt = "N.v.t.";
+
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Aanduiding gegevens in onderzoek",
       required = true,
@@ -87,6 +98,10 @@ public class Page20OnderzoekBean implements Serializable {
   @Select(containerDataSource = AanduidingOnderzoekContainer.class,
       itemCaptionPropertyId = AanduidingOnderzoekContainer.OMSCHRIJVING)
   private String aanduidingGegevensOnderzoek;
+
+  @Field(type = FieldType.LABEL,
+      caption = "Aanduiding gegevens in onderzoek")
+  private String aanduidingGegevensOnderzoekNvt = "N.v.t.";
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Deelresultaat vastleggen?",

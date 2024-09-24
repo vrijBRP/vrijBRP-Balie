@@ -43,19 +43,17 @@ import nl.procura.standard.exceptions.ProException;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class CsvParser {
 
-  private static final String UNKNOWN_HEADER = "Kolom '%s' hoort in niet het bestand";
-  private static final String MISSING_HEADER = "Kolom '%s' ontbreekt in het bestand";
+  public static final String UNKNOWN_HEADER = "Veld '%s' is onbekend";
+  public static final String MISSING_HEADER = "Veld '%s' ontbreekt";
 
   public static Csv parse(CsvConfig config) {
     Csv csv = new Csv();
-    csv.headers.addAll(config.getHeaders());
+    csv.getHeaders().addAll(config.getHeaders());
     CSVReader reader = null;
     try {
       // Account for the byte order mark
@@ -68,7 +66,7 @@ public class CsvParser {
         if (lineIndex == 1) {
           toHeaders(csv, lineHeaders, line);
         } else {
-          csv.lines.add(toCsvLine(csv, lineHeaders, line));
+          csv.getLines().add(toCsvLine(csv, lineHeaders, line));
         }
         lineIndex++;
       }
@@ -84,6 +82,9 @@ public class CsvParser {
   public static byte[] export(Csv csv) {
     ByteArrayOutputStream csvOs = new ByteArrayOutputStream();
     try (OutputStreamWriter writer = new OutputStreamWriter(csvOs, UTF_8)) {
+      // Specify the BOM (Byte order Mask) for UTF-8 so that Excel can identify the encoding
+      // and open it in the correct format
+      csvOs.write(new byte[]{ (byte) 0xEF, (byte) 0xBB, (byte) 0xBF });
       CSVWriter csvWriter = new CSVWriter(writer, ';');
       try {
         writeHeaders(csvWriter, csv);
@@ -98,7 +99,7 @@ public class CsvParser {
     return csvOs.toByteArray();
   }
 
-  private static void writeValues(CSVWriter csvWriter, CsvLine line) {
+  private static void writeValues(CSVWriter csvWriter, CsvRow line) {
     List<String> values = line.getValues()
         .stream()
         .map(CsvValue::getOriginalValue)
@@ -117,99 +118,33 @@ public class CsvParser {
     csvWriter.writeNext(headers.toArray(new String[0]));
   }
 
-  @Getter
-  public static class Csv {
-
-    private final CsvHeaders    headers = new CsvHeaders();
-    private final List<CsvLine> lines   = new ArrayList<>();
-    private final List<String>  remarks = new ArrayList<>();
-
-    public boolean isValid() {
-      return remarks.isEmpty();
-    }
-  }
-
-  public static class CsvHeaders extends ArrayList<CsvHeader> {
-
-    public CsvHeader getByName(String header) {
-      return findByName(header)
-          .orElseThrow(() -> new ProException(ERROR, format(MISSING_HEADER,
-              CsvParser.cleanHeader(header))));
-    }
-
-    public Optional<CsvHeader> findByName(String header) {
-      return stream()
-          .filter(h -> h.isName(header))
-          .findFirst();
-    }
-  }
-
-  @Getter
-  public static class CsvLine {
-
-    private final List<CsvValue> values  = new ArrayList<>();
-    private final List<String>   remarks = new ArrayList<>();
-
-    public CsvValue getValue(String header) {
-      return values.stream()
-          .filter(column -> column.header.isName(header))
-          .findFirst()
-          .orElseThrow(() -> new ProException(ERROR, format(MISSING_HEADER,
-              CsvParser.cleanHeader(header))));
-    }
-
-    public boolean isValid() {
-      return remarks.isEmpty();
-    }
-  }
-
-  @Getter
-  @AllArgsConstructor
-  public static class CsvValue {
-
-    private CsvHeader header;
-    private String    originalValue;
-    private String    value;
-    private String    remark;
-
-    public CsvValue(CsvHeader header, String value) {
-      this.header = header;
-      this.originalValue = value;
-    }
-
-    @Override
-    public String toString() {
-      return value;
-    }
-  }
-
   private static void toHeaders(Csv csv, CsvHeaders lineHeaders, String[] line) {
     // Check unknown headers
     for (String header : line) {
       lineHeaders.add(CsvHeader.builder().name(header).build());
-      if (!csv.headers.findByName(header).isPresent()) {
-        csv.remarks.add(format(UNKNOWN_HEADER, cleanHeader(header)));
+      if (!csv.getHeaders().findByName(header).isPresent()) {
+        csv.getRemarks().add(format(UNKNOWN_HEADER, cleanHeader(header)));
       }
     }
 
     // Check missing headers
-    csv.headers.forEach(csvHeader -> {
+    csv.getHeaders().forEach(csvHeader -> {
       Optional<CsvHeader> header = lineHeaders.findByName(csvHeader.getName());
       if (!header.isPresent()) {
-        csv.remarks.add(format(MISSING_HEADER, cleanHeader(csvHeader.getName())));
+        csv.getRemarks().add(format(MISSING_HEADER, cleanHeader(csvHeader.getName())));
       }
     });
   }
 
-  private static CsvLine toCsvLine(Csv csv, CsvHeaders lineHeaders, String[] line) {
-    CsvLine csvLine = new CsvLine();
+  private static CsvRow toCsvLine(Csv csv, CsvHeaders lineHeaders, String[] line) {
+    CsvRow csvLine = new CsvRow();
     int colIndex = 0;
     for (String linevalue : line) {
       String header = lineHeaders.get(colIndex).getName();
-      Optional<CsvHeader> csvHeader = csv.headers.findByName(header);
+      Optional<CsvHeader> csvHeader = csv.getHeaders().findByName(header);
       if (csvHeader.isPresent()) {
         CsvValue value = new CsvValue(csvHeader.get(), linevalue.trim());
-        csvLine.values.add(value);
+        csvLine.getValues().add(value);
         checkValue(csvLine, value);
       }
       colIndex++;
@@ -217,16 +152,16 @@ public class CsvParser {
     return csvLine;
   }
 
-  private static void checkValue(CsvLine csvLine, CsvValue value) {
+  private static void checkValue(CsvRow csvLine, CsvValue value) {
     try {
-      List<Function<String, String>> converters = value.header.getConverters();
-      value.value = value.getOriginalValue();
+      List<Function<String, String>> converters = value.getHeader().getConverters();
+      value.setValue(value.getOriginalValue());
       if (converters != null) {
-        converters.forEach(converter -> value.value = converter.apply(value.getValue()));
+        converters.forEach(converter -> value.setValue(converter.apply(value.getValue())));
       }
     } catch (RuntimeException e) {
-      value.remark = e.getMessage();
-      csvLine.remarks.add(e.getMessage());
+      value.setRemark(e.getMessage());
+      csvLine.getRemarks().add(e.getMessage());
     }
   }
 

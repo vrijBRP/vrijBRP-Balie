@@ -19,151 +19,281 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.adreslayout;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_AANT_PERS;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_BAG_ADDRESS;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_HNR;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_HNR_A;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_HNR_L;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_HNR_T;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_PC;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_SOURCE;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_STRAAT;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_WPL;
+import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BAG;
+import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.BRP;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.ADRESSEERBAAROBJECTID;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.GEMEENTE_CODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISLETTER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMER;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMERTOEVOEGING;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.POSTCODE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
+import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.WEERGAVENAAM;
+import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.vaadin.ui.Field;
 
-import nl.procura.diensten.gba.wk.baseWK.BaseWKValue;
-import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
 import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
 import nl.procura.gba.web.common.misc.SelectListener;
+import nl.procura.gba.web.components.fields.BagSuggestionBox;
+import nl.procura.gba.web.components.listeners.FieldChangeListener;
+import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.types.OnderzoekAddress;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres.BewonerWindow;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoWindow;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.selectie.AdresSelectieWindow;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
+import nl.procura.gba.web.modules.bs.registration.page10.adresselectie.selectie.AddressSelectionWindow;
 import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.gba.web.services.gba.ple.PersonenWsService;
+import nl.procura.gba.web.services.interfaces.address.Address;
+import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
+import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.table.TableLayout;
 import nl.procura.vaadin.component.window.Message;
 
-public class AdresForm1 extends AdresForm<AdresBean1> {
+public class AdresForm1 extends BagAdresForm<AdresBean1> {
 
+  private final OnderzoekAdres                 adres;
   private final SelectListener<DossierPersoon> listener;
 
-  public AdresForm1(Adres adres, SelectListener<DossierPersoon> listener) {
-    super();
+  public AdresForm1(OnderzoekAdres adres, SelectListener<DossierPersoon> listener) {
+    this.adres = adres;
     this.listener = listener;
-    setOrder(STRAAT, HNR, HNR_L, HNR_T, HNR_A, PC, WPL, AANT_PERS);
+  }
 
-    AdresBean1 bean = new AdresBean1();
-    bean.setStraat(adres.getAdres());
-    bean.setHnr(adres.getHnr());
-    bean.setHnrL(adres.getHnrL());
-    bean.setHnrT(adres.getHnrT());
-    bean.setHnrA(adres.getHnrA());
-    bean.setPc(adres.getPc());
-    bean.setWoonplaats(adres.getPlaats());
-    bean.setAantalPersonen(adres.getAantalPersonen());
+  @Override
+  public void attach() {
+    if (getBean() == null) {
+      AdresBean1 bean = new AdresBean1();
+      bean.setSource(getDefaultAddressSource(adres.getSource()));
+      getFields(bean.getSource());
 
-    setBean(bean);
+      if (BAG.is(bean.getSource())) {
+        bean.setBagAddress(getBagAddress(new OnderzoekAddress(adres)));
+
+      } else {
+        bean.setStraat(adres.getAdres());
+        bean.setHnr(adres.getHnr());
+        bean.setHnrL(adres.getHnrL());
+        bean.setHnrT(adres.getHnrT());
+        bean.setHnrA(adres.getHnrA());
+        bean.setPc(adres.getPc());
+        bean.setWoonplaats(adres.getPlaats());
+      }
+
+      bean.setAantalPersonen(adres.getAantalPersonen());
+      setBean(bean);
+    }
+
+    super.attach();
+  }
+
+  @Override
+  public void afterSetBean() {
+    super.afterSetBean();
+    Field source = getField(F_SOURCE);
+    if (source != null) {
+      source.addListener(new FieldChangeListener<AddressSourceType>() {
+
+        @Override
+        public void onChange(AddressSourceType value) {
+          setFields(value);
+        }
+      });
+      BagSuggestionBox suggestionBox = getField(F_BAG_ADDRESS, BagSuggestionBox.class);
+      if (suggestionBox != null) {
+        String gemCode = Services.getInstance().getGebruiker().getGemeenteCode();
+        suggestionBox.setGeoRestClient(Services.getInstance().getGeoService().getGeoClient())
+            .setRequestListener(value -> new LocationServerRequest()
+                .setRequestorName("BRP-suggestionbox")
+                .setServiceType(SUGGEST)
+                .setOffset(0).setRows(10)
+                .search(TYPE, "adres")
+                .search(GEMEENTE_CODE, gemCode)
+                .search(value)
+                .filters(WEERGAVENAAM, ADRESSEERBAAROBJECTID,
+                    POSTCODE, HUISNUMMER, HUISLETTER, HUISNUMMERTOEVOEGING));
+      }
+    }
+  }
+
+  private void setFields(AddressSourceType type) {
+    if (AddressSourceType.UNKNOWN.is(type)) {
+      type = getDefaultAddressSource(type);
+    }
+    if (isGeoServiceActive() && AddressSourceType.BAG == type) {
+      showBagFields();
+    } else {
+      showBrpFields();
+    }
   }
 
   @Override
   public void setColumn(TableLayout.Column column, Field field, Property property) {
-
-    if (property.is(HNR, HNR_L, HNR_T, HNR_A)) {
+    if (property.is(F_HNR, F_HNR_L, F_HNR_T, F_HNR_A, F_WPL)) {
       column.setAppend(true);
     }
 
     super.setColumn(column, field, property);
   }
 
-  public void selectAdres(final boolean bewoners, final boolean objectInfo) {
+  public void toonBewoners() {
+    checkAddress(selectedAddress -> {
+      ProcuraInhabitantsAddress brpAddress = getBrpAddress(selectedAddress);
+      if (brpAddress != null) {
+        getApplication().getParentWindow()
+            .addWindow(new BewonerWindow(brpAddress, listener));
+      } else {
+        new Message(getWindow(),
+            "Adres kan niet gevonden worden in de lokale BRP.",
+            Message.TYPE_WARNING_MESSAGE);
+      }
+    });
+  }
 
-    String hnrT = astr(getField(HNR_T).getValue());
-    String hnrA = astr(getField(HNR_A).getValue());
-    String pc = astr(getField(PC).getValue());
+  public void toonObjectInfo() {
+    checkAddress(selectedAddress -> {
+      ProcuraInhabitantsAddress brpAddress = getBrpAddress(selectedAddress);
+      if (brpAddress != null) {
+        getApplication().getParentWindow()
+            .addWindow(new ObjectInfoWindow(brpAddress));
+      } else {
+        new Message(getWindow(),
+            "Adres kan niet gevonden worden in de lokale BRP.",
+            Message.TYPE_WARNING_MESSAGE);
+      }
+    });
+  }
 
-    ZoekArgumenten adresZ = new ZoekArgumenten();
-    adresZ.setStraatnaam(astr(getField(STRAAT).getValue()));
-    adresZ.setHuisnummer(astr(getField(HNR).getValue()));
-    adresZ.setHuisletter(astr(getField(HNR_L).getValue()));
+  public boolean checkAddress() {
+    return checkAddress(address -> new Message(getWindow(), "Dit is een bestaand adres.", Message.TYPE_INFO));
+  }
 
-    if (fil(hnrT)) {
-      adresZ.setHuisnummertoevoeging(hnrT);
-    }
+  public boolean checkAddress(Consumer<Address> callback) {
+    repaint();
+    commit();
 
-    if (fil(hnrA)) {
-      adresZ.setHuisnummeraanduiding(hnrA);
-    }
+    AdresBean1 bean = getBean();
+    AddressSourceType type = bean.getSource();
 
-    if (fil(pc)) {
-      adresZ.setPostcode(pc);
-    }
+    return Optional.ofNullable(type.is(BAG)
+        ? getBagAddress(bean.getBagAddress())
+        : findBrpAddress(bean))
+        .map(address -> {
+          callback.accept(address);
+          return true;
+        }).orElse(false);
+  }
 
-    adresZ.setDatum_einde("-1");
+  private Address findBrpAddress(AdresBean1 bean) {
+    ZoekArgumenten z = new ZoekArgumenten();
+    z.setStraatnaam(astr(bean.getStraat()));
+    z.setPostcode(astr(bean.getPc().getValue()));
+    z.setHuisnummer(bean.getHnr());
+    z.setHuisletter(bean.getHnrL());
+    z.setHuisnummertoevoeging(bean.getHnrT());
+    z.setHuisnummeraanduiding(astr(bean.getHnrA()));
+    z.setDatum_einde("-1");
 
-    if (!adresZ.isGevuld()) {
+    if (!z.isGevuld()) {
       throw new ProException(ENTRY, INFO, "Geen adres ingegeven.");
     }
 
-    PersonenWsService wsService = Services.getInstance().getPersonenWsService();
-    List<BaseWKExt> wkWrappers = wsService.getAdres(adresZ, false).getBasisWkWrappers();
-    List<SelectieAdres> adr = getWkAdressen(wkWrappers);
+    List<Address> vAddress = getServices().getPersonenWsService()
+        .getAdres(z, false)
+        .getBasisWkWrappers()
+        .stream()
+        .map(wk1 -> completeLocalAddress(new ProcuraInhabitantsAddress(wk1)))
+        .collect(Collectors.toList());
 
-    switch (adr.size()) {
-      case 0:
-        throw new ProException(ENTRY, INFO, "Geen adres gevonden.");
+    if (vAddress.isEmpty()) {
+      throw new ProException(WARNING, "Het ingegeven adres kan niet worden gevonden in de gemeentelijke BRP");
 
-      case 1:
-        SelectieAdres selectieAdres = updateAdresFields(adr.get(0));
+    } else if (vAddress.size() == 1) {
+      return vAddress.get(0);
 
-        if (bewoners) { // Toone bewoners
-          getApplication().getParentWindow().addWindow(new BewonerWindow(selectieAdres, listener));
+    } else {
+      // Open window
+      if (getApplication() != null) {
+        getApplication().getMainWindow().addWindow(new AddressSelectionWindow(vAddress, selAddress -> {
+          ProcuraInhabitantsAddress mapAddress = (ProcuraInhabitantsAddress) selAddress;
+          ZoekArgumenten uz = new ZoekArgumenten();
+          uz.setCode_object(astr(mapAddress.getInternalId()));
+          uz.setDatum_einde(astr(mapAddress.getEndDate()));
+          uz.setVolgcode_einde(astr(mapAddress.getEndDateNumber()));
 
-        } else if (objectInfo) {
-          getApplication().getParentWindow().addWindow(new ObjectInfoWindow(wkWrappers.get(0)));
-
-        } else {
-          new Message(getWindow(), "Dit adres is gevonden in de gemeente", Message.TYPE_SUCCESS);
-        }
-        break;
-
-      default:
-        getApplication().getParentWindow().addWindow(new AdresSelectieWindow(adr, (SelectieAdres adres) -> {
-
-          ZoekArgumenten args = new ZoekArgumenten();
-          args.setCode_object(adres.getCode_object().getValue());
-          args.setVolgcode_einde(adres.getVolgcode_einde().getValue());
-          args.setDatum_einde(astr(adres.getDatum_einde().getValue()));
-
-          // Zoek specifiek adres zodat de personen
-          // worden teruggegeven
-
-          List<BaseWKExt> basisWkWrappers = wsService.getAdres(args, false).getBasisWkWrappers();
-          getWkAdressen(basisWkWrappers).forEach(this::updateAdresFields);
+          getServices().getPersonenWsService()
+              .getAdres(uz, false)
+              .getBasisWkWrappers()
+              .forEach(wk -> completeLocalAddress(new ProcuraInhabitantsAddress(wk)));
         }));
+      }
     }
+    return null;
   }
 
-  private SelectieAdres updateAdresFields(SelectieAdres adres) {
-    AdresBean1 bean = new AdresBean1();
-    if (adres != null) {
-      bean.setStraat(new FieldValue(adres.getStraat().getValue()));
-      bean.setHnr(adres.getHuisnummer().getValue());
-      bean.setHnrL(adres.getHuisletter().getValue());
-      bean.setHnrT(adres.getToevoeging().getValue());
-      bean.setHnrA(new FieldValue(adres.getAanduiding().getValue()));
-      bean.setPc(new FieldValue(adres.getPostcode().getValue()));
-
-      BaseWKValue wpl = adres.getWoonplaats();
-      bean.setWoonplaats(new FieldValue(wpl.getCode(), wpl.getDescr()));
+  private Address completeLocalAddress(Address address) {
+    Field streetField = getField(F_STRAAT);
+    if (streetField != null) {
+      streetField.setValue(new FieldValue(address.getStreet()));
+      getField(F_HNR).setValue(address.getHnr());
+      getField(F_HNR_L).setValue(address.getHnrL());
+      getField(F_HNR_T).setValue(address.getHnrT());
+      getField(F_HNR_A).setValue(new FieldValue(address.getHnrA()));
+      getField(F_PC).setValue(new FieldValue(address.getPostalCode()));
+      getField(F_WPL).setValue(new FieldValue(address.getResidenceName()));
     }
-    setBean(bean);
-    return adres;
+    return address;
   }
 
-  private List<SelectieAdres> getWkAdressen(List<BaseWKExt> wks) {
-    return wks.stream().map(SelectieAdres::new).collect(Collectors.toList());
+  private void showBagFields() {
+    getFields(BAG);
+    getBean().setSource(AddressSourceType.BAG);
+    setBean(getBean());
+  }
+
+  private void showBrpFields() {
+    getFields(BRP);
+    getBean().setSource(AddressSourceType.BRP);
+    setBean(getBean());
+  }
+
+  private void getFields(AddressSourceType type) {
+    List<String> columns = new ArrayList<>();
+    if (isGeoServiceActive()) {
+      columns.add(F_SOURCE);
+      if (type == BAG) {
+        columns.add(F_BAG_ADDRESS);
+      }
+    }
+    if (type == BRP) {
+      columns.addAll(Arrays.asList(F_STRAAT, F_HNR, F_HNR_L, F_HNR_T, F_HNR_A, F_PC, F_WPL));
+    }
+    if (adres.getAantalPersonen() != null) {
+      columns.add(F_AANT_PERS);
+    }
+    setOrder(columns.toArray(new String[0]));
   }
 }

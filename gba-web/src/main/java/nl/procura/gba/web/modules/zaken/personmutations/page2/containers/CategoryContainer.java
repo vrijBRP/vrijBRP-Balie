@@ -19,20 +19,26 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page2.containers;
 
-import java.util.ArrayList;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.AFNEMERS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.DIV;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KLADBLOK;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.LOK_AF_IND;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VERW;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.WK;
+
 import java.util.Arrays;
-import java.util.List;
 
 import com.vaadin.data.Item;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 
 public class CategoryContainer extends MutationFieldContainer {
 
-  public CategoryContainer() {
+  public CategoryContainer(BasePLExt pl) {
     Arrays.stream(GBACat.values())
         .filter(cat -> cat.getCode() > 0)
-        .filter(cat -> !isIgnoreCategory(cat))
+        .filter(cat -> isCategorie(pl, cat))
         .forEach(this::addItem);
   }
 
@@ -43,14 +49,11 @@ public class CategoryContainer extends MutationFieldContainer {
     return super.addItem(new ContainerItem<>(category, label));
   }
 
-  private boolean isIgnoreCategory(GBACat category) {
-    List<GBACat> list = new ArrayList<>();
-    list.add(GBACat.AFNEMERS);
-    list.add(GBACat.DIV);
-    list.add(GBACat.WK);
-    list.add(GBACat.KLADBLOK);
-    list.add(GBACat.LOK_AF_IND);
-    list.add(GBACat.VERW);
-    return list.contains(category);
+  private boolean isCategorie(BasePLExt pl, GBACat cat) {
+    if (pl.heeftVerwijzing()) {
+      return cat.is(VERW);
+    } else {
+      return !cat.is(AFNEMERS, DIV, WK, KLADBLOK, LOK_AF_IND, VERW);
+    }
   }
 }

@@ -39,8 +39,20 @@ import nl.procura.gba.web.rest.v1_0.gebruiker.GbaRestAuthenticatieResources;
 import nl.procura.gba.web.rest.v1_0.gebruiker.GbaRestAuthenticatieValidator;
 import nl.procura.gba.web.rest.v1_0.persoon.GbaRestPersoonResources;
 import nl.procura.gba.web.rest.v1_0.persoon.contact.GbaRestPersoonContactgegevensResources;
-import nl.procura.gba.web.rest.v1_0.zaak.*;
-import nl.procura.gba.web.rest.v2.resources.*;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestKlapperResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakAantekeningResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakAttribuutResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakBestandResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakIdentificatieResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakRelatieResources;
+import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakResources;
+import nl.procura.gba.web.rest.v2.resources.GbaRestDataImportResource;
+import nl.procura.gba.web.rest.v2.resources.GbaRestEventLogResourceV2Server;
+import nl.procura.gba.web.rest.v2.resources.GbaRestGebruikerResourceV2Server;
+import nl.procura.gba.web.rest.v2.resources.GbaRestInfoResource;
+import nl.procura.gba.web.rest.v2.resources.GbaRestVerhuizingResourceV2Server;
+import nl.procura.gba.web.rest.v2.resources.GbaRestZaakDmsResourceV2Server;
+import nl.procura.gba.web.rest.v2.resources.GbaRestZaakResourceV2Server;
 import nl.procura.gba.web.rest.v2.services.GbaRestAbstractService;
 import nl.procura.gba.web.rest.v2.services.GbaRestServices;
 import nl.procura.gba.web.services.aop.Transactional;
@@ -90,6 +102,7 @@ public class GbaRestListener extends GuiceServletContextListener {
       bind(GbaRestEventLogResourceV2Server.class);
       bind(GbaRestGebruikerResourceV2Server.class);
       bind(GbaRestInfoResource.class);
+      bind(GbaRestDataImportResource.class);
 
       bind(GbaRestServices.class);
 

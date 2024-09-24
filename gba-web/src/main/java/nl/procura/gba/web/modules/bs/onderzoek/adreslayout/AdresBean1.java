@@ -24,12 +24,20 @@ import java.lang.annotation.ElementType;
 
 import nl.procura.gba.web.components.containers.StraatContainer;
 import nl.procura.gba.web.components.containers.actueel.WoonplaatsActueelContainer;
+import nl.procura.gba.web.components.fields.BagSuggestionBox;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.fields.HuisnummerVeld;
+import nl.procura.gba.web.modules.bs.common.layouts.relocation.AddressSourceTypeContainer;
 import nl.procura.gba.web.modules.bs.common.layouts.relocation.DesignationContainer;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.gba.web.services.interfaces.address.Address;
+import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.PostalcodeField;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -39,28 +47,46 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class AdresBean1 implements Serializable {
 
-  public static final String STRAAT    = "straat";
-  public static final String HNR       = "hnr";
-  public static final String HNR_L     = "hnrL";
-  public static final String HNR_T     = "hnrT";
-  public static final String HNR_A     = "hnrA";
-  public static final String PC        = "pc";
-  public static final String WPL       = "woonplaats";
-  public static final String AANT_PERS = "aantalPersonen";
+  public static final String F_SOURCE      = "source";
+  public static final String F_BAG_ADDRESS = "bagAddress";
+  public static final String F_STRAAT      = "straat";
+  public static final String F_HNR         = "hnr";
+  public static final String F_HNR_L       = "hnrL";
+  public static final String F_HNR_T       = "hnrT";
+  public static final String F_HNR_A       = "hnrA";
+  public static final String F_PC          = "pc";
+  public static final String F_WPL         = "woonplaats";
+  public static final String F_AANT_PERS   = "aantalPersonen";
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Bron gegevens",
+      width = "200px",
+      required = true,
+      description = "Bron van de verblijfsobjectgegevens")
+  @Select(containerDataSource = AddressSourceTypeContainer.class,
+      nullSelectionAllowed = false)
+  private AddressSourceType source;
+
+  @Field(customTypeClass = BagSuggestionBox.class,
+      caption = "Adres",
+      description = "Adres",
+      width = "436px",
+      required = true,
+      writeThrough = true)
+  @Immediate()
+  private Address bagAddress = null;
 
   @Field(customTypeClass = GbaComboBox.class,
       caption = "Adres",
       width = "200px",
-      description = "Straat",
-      required = true)
+      description = "Straat")
   @Select(containerDataSource = StraatContainer.class)
   private FieldValue straat = new FieldValue();
 
   @Field(customTypeClass = HuisnummerVeld.class,
       caption = "Hnr",
-      width = "30px",
-      description = "Huisnummer",
-      required = true)
+      width = "50px",
+      description = "Huisnummer")
   private String hnr = "";
 
   @Field(customTypeClass = GbaTextField.class,
@@ -85,13 +111,12 @@ public class AdresBean1 implements Serializable {
 
   @Field(customTypeClass = PostalcodeField.class,
       caption = "Postcode",
-      required = true)
+      width = "120px")
   private FieldValue pc = new FieldValue();
 
   @Field(customTypeClass = GbaComboBox.class,
       caption = "Woonplaats",
-      width = "300px",
-      required = true)
+      width = "312px")
   @Select(containerDataSource = WoonplaatsActueelContainer.class)
   @Immediate
   private FieldValue woonplaats = null;

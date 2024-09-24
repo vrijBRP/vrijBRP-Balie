@@ -19,8 +19,13 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page1;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.isTru;
 
 import nl.procura.diensten.gba.ple.extensions.PLResultComposite;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
@@ -29,10 +34,10 @@ import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.SelectList
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page2.Page2QuickSearch;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.interfaces.address.Address;
-import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.window.Message;
+import nl.procura.vaadin.functies.VaadinUtils;
 
 public class Page1QuickSearch extends NormalPageTemplate {
 
@@ -46,19 +51,21 @@ public class Page1QuickSearch extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
       addButton(buttonSearch);
       addButton(buttonReset, 1f);
-      addButton(buttonClose);
       addComponent(form);
-
-    } else if (event.isEvent(AfterReturn.class)) {
-      getWindow().setWidth("700px");
-      getWindow().center();
     }
 
     super.event(event);
+  }
+
+  @Override
+  public void attach() {
+    super.attach();
+    VaadinUtils.resetHeight(getWindow());
+    getWindow().setWidth("700px");
+    getWindow().center();
   }
 
   @Override
@@ -84,7 +91,7 @@ public class Page1QuickSearch extends NormalPageTemplate {
     Page1QuickSearchBean b = form.getBean();
 
     PLEArgs args = new PLEArgs();
-    args.setMaxFindCount(50);
+    args.setMaxFindCount(10);
     args.addNummer(b.getBsn().getStringValue());
     args.addNummer(b.getAnr().getStringValue());
     args.setGeboortedatum(b.getGeboortedatum().getStringValue());
@@ -102,9 +109,9 @@ public class Page1QuickSearch extends NormalPageTemplate {
 
     args.setShowHistory(false);
     args.setShowArchives(false);
-    args.addCat(PERSOON, VB, INSCHR, VERW);
-    args.setCat(HUW_GPS, isTru(getApplication().getServices().getGebruiker().getParameters().get(
-        ParameterConstant.ZOEK_PLE_NAAMGEBRUIK).getValue()));
+    args.addCat(PERSOON, VB, INSCHR);
+    args.setCat(HUW_GPS, isTru(getApplication().getServices().getGebruiker().getParameters()
+        .get(ParameterConstant.ZOEK_PLE_NAAMGEBRUIK).getValue()));
 
     int maxFindCount = aval(getApplication().getServices().getGebruiker().getParameters()
         .get(ParameterConstant.ZOEK_MAX_FOUND_COUNT).getValue());

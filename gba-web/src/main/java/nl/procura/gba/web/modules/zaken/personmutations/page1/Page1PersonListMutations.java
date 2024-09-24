@@ -45,7 +45,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 public class Page1PersonListMutations extends NormalPageTemplate {
 
   private final Button                     buttonMutations     = new Button("Zaken gerelateerden");
-  private final Button                     buttonMutationIndex = new Button("Mutatie overzicht");
+  private final Button                     buttonMutationIndex = new Button("Mutatie overzicht (F10)");
   private Page1PersonListMutationsTable    table               = null;
   private List<PersonListRelationMutation> mutations           = new ArrayList<>();
 
@@ -97,6 +97,11 @@ public class Page1PersonListMutations extends NormalPageTemplate {
       getParentWindow().addWindow(new WindowMutationsIndex(pl));
     }
     super.handleEvent(button, keyCode);
+  }
+
+  @Override
+  public void onMenu() {
+    buttonMutationIndex.click();
   }
 
   public void reload() {

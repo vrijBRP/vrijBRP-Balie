@@ -159,19 +159,19 @@
     </wsdl:binding>
     <wsdl:service name="WoningkaartWS">
         <wsdl:port name="WoningkaartWSSOAP11port_http" binding="axis2:WoningkaartWSSOAP11Binding">
-            <soap:address location="http://192.0.1.26:28080/personen-ws/services/WoningkaartWS" />
+            <soap:address location="http://0.0.0.0:28080/personen-ws/services/WoningkaartWS" />
         </wsdl:port>
         <wsdl:port name="WoningkaartWSSOAP11port_tcp1" binding="axis2:WoningkaartWSSOAP11Binding">
-            <soap:address location="tcp://192.0.1.26:6062/axis2/services/WoningkaartWS" />
+            <soap:address location="tcp://0.0.0.0:6062/axis2/services/WoningkaartWS" />
         </wsdl:port>
         <wsdl:port name="WoningkaartWSSOAP12port_http" binding="axis2:WoningkaartWSSOAP12Binding">
-            <soap12:address location="http://192.0.1.26:28080/personen-ws/services/WoningkaartWS" />
+            <soap12:address location="http://0.0.0.0:28080/personen-ws/services/WoningkaartWS" />
         </wsdl:port>
         <wsdl:port name="WoningkaartWSSOAP12port_tcp1" binding="axis2:WoningkaartWSSOAP12Binding">
-            <soap12:address location="tcp://192.0.1.26:6062/axis2/services/WoningkaartWS" />
+            <soap12:address location="tcp://0.0.0.0:6062/axis2/services/WoningkaartWS" />
         </wsdl:port>
         <wsdl:port name="WoningkaartWSHttpport" binding="axis2:WoningkaartWSHttpBinding">
-            <http:address location="http://192.0.1.26:28080/personen-ws/services/WoningkaartWS" />
+            <http:address location="http://0.0.0.0:28080/personen-ws/services/WoningkaartWS" />
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

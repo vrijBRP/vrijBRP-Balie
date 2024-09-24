@@ -19,7 +19,11 @@
 
 package nl.procura.gba.web.modules.beheer.verkiezing.page3.exporting;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -122,6 +126,9 @@ public class ROSExportWindow extends GbaModalWindow {
       CSVWriter csv;
 
       try {
+        // Specify the BOM (Byte order Mask) for UTF-8 so that Excel can identify the encoding
+        // and open it in the correct format
+        bos.write(new byte[]{ (byte) 0xEF, (byte) 0xBB, (byte) 0xBF });
         csv = new CSVWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8), scheidingsteken.getKarakter(), '"');
         lines.forEach(csv::writeNext);
         try {

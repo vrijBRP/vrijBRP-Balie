@@ -26,8 +26,13 @@ import java.util.List;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.StreamResource.StreamSource;
 import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord;
 import nl.procura.gba.web.components.layouts.form.document.email.PrintEmailWindow;
@@ -52,7 +57,6 @@ public class PrintPreviewWindow extends ModalWindow {
     this.withEmail = withEmail;
 
     setCaption("Afdrukvoorbeelden");
-
     setWidth("900px");
     setHeight("80%");
     setStyleName("download-window");
@@ -67,7 +71,6 @@ public class PrintPreviewWindow extends ModalWindow {
 
   @Override
   public void attach() {
-
     for (PrintRecord record : records) {
       addDownload(record.getPreviewArray(), getWindow(), record.getDocument().getDocument());
     }

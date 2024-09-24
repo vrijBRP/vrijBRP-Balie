@@ -145,6 +145,12 @@ public enum ParameterConstant implements ParameterType {
   ZAKEN_INIT_STATUS_ONDERZOEK("zaken_init_onderzoek", "Onderzoek",
       GROUP_ZAKEN_STATUS, true, true, true, "1"),
 
+  ZAKEN_DMS_NATURALISATIE("zaken_dms_naturalisatie", "Nationaliteit",
+      GROUP_ZAKEN_DMS_TYPES, true, true, true, ""),
+
+  ZAKEN_INIT_STATUS_NATURALISATIE("zaken_init_naturalisatie", "Nationaliteit",
+      GROUP_ZAKEN_STATUS, true, true, true, "1"),
+
   ZAKEN_DMS_RISK_ANALYSIS("zaken_dms_risicoanalyse", "Risicoanalyse",
       GROUP_ZAKEN_DMS_TYPES, true, true, true, ""),
 
@@ -571,6 +577,9 @@ public enum ParameterConstant implements ParameterType {
 
   ONDERZ_REDEN_OVERSLAAN("onderz_reden_overslaan", "Voldoende reden om stap(pen) over te slaan?",
       GROUP_ONDERZOEK, true, false, false, ""),
+
+  ONDERZ_AANSCHR_TEKST("onderz_aanschr_tekst", "Tekst bij aanschrijving",
+      GROUP_ONDERZOEK, false, false, false, ""),
 
   VERHUIS_DATUM_LIMIET_TOEKOMST("verhuis_datum_limiet", "Verhuistermijn in dagen (toekomst)",
       GROUP_VERHUIZING, true, true, true, ""),

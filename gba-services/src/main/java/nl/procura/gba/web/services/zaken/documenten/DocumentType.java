@@ -24,8 +24,8 @@ import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
 public enum DocumentType {
 
   PL_UITTREKSEL(1, "pl", Constants.PERSOONSLIJSTEN, "Uittreksel"),
-  PL_OPTIE(2, "pl_optie", Constants.PERSOONSLIJSTEN, "Optie"),
-  PL_NATURALISATIE(3, "pl_nat", Constants.PERSOONSLIJSTEN, "Naturalisatie"),
+  PL_OPTIE(2, "pl_optie", Constants.PERSOONSLIJSTEN, "Optie (PL)"),
+  PL_NATURALISATIE(3, "pl_nat", Constants.PERSOONSLIJSTEN, "Nationaliteit (PL)"),
   PL_FORMULIER(4, "pl_form", Constants.PERSOONSLIJSTEN, "Formulier"),
   PL_BEGELEIDENDE_BRIEF(5, "pl_beg", Constants.PERSOONSLIJSTEN, "Begeleidende brief"),
   PL_BEWONER_BRIEF(6, "pl_bew", Constants.PERSOONSLIJSTEN, "Brief aan de bewoners"),
@@ -65,6 +65,8 @@ public enum DocumentType {
   ONDERZOEK_FASE_EXTRA("onderzoek_fase_extra", "data", "Onderzoek (extra aanschrijving)"),
   ONDERZOEK_VOORNEMEN("onderzoek_fase3", "data", "Onderzoek (voornemen ambtshalve wijziging)"),
   ONDERZOEK_BESLUIT("onderzoek_fase_besluit", "data", "Onderzoek (besluit)"),
+  OPTIE("optie", "data", "Optie (Zaak)"),
+  NATURALISATIE("naturalisatie", "data", "Naturalisatie (Zaak)"),
   REGISTRATION("eerste_registratie", "data", "Eerste inschrijving"),
   ZAAK("zaak", "zaak", "Zaak (algemeen)"),
   RISK_ANALYSE("risico_analyse", "data", "Risicoanalyse"),

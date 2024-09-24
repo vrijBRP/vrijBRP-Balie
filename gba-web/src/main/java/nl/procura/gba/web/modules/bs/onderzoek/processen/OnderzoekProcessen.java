@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.processen;
 
-import static nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus.*;
+import static nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus.COMPLETE;
+import static nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus.DISABLED;
+import static nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus.EMPTY;
 
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.modules.bs.common.BsProcessen;
@@ -68,7 +70,7 @@ public class OnderzoekProcessen extends BsProcessen {
     boolean isResultaat = !BetrokkeneType.ONBEKEND.equals(zd.getResultaatOnderzoekBetrokkene());
 
     getProces(Page1Onderzoek.class).setStatus(isAanleiding ? COMPLETE : EMPTY);
-    getProces(Page10Onderzoek.class).setStatus(isBetreft ? COMPLETE : EMPTY);
+    getProces(Page10Onderzoek.class).setStatus(isAanleiding && isBetreft ? COMPLETE : EMPTY);
     getProces(Page20Onderzoek.class).setStatus(isBeoordeling ? COMPLETE : EMPTY);
     getProces(Page30Onderzoek.class).setStatus(isOnderzoek ? (isUitbreiding ? COMPLETE : EMPTY) : DISABLED);
     getProces(Page40Onderzoek.class).setStatus(isResultaat ? COMPLETE : EMPTY);

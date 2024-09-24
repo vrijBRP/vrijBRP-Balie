@@ -20,19 +20,40 @@
 package nl.procura.gba.jpa.personen.dao;
 
 import static java.util.Arrays.asList;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakType;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.Doss;
+import nl.procura.gba.jpa.personen.db.DossAkte;
+import nl.procura.gba.jpa.personen.db.DossErk;
+import nl.procura.gba.jpa.personen.db.DossGeb;
+import nl.procura.gba.jpa.personen.db.DossHuw;
+import nl.procura.gba.jpa.personen.db.DossNatur;
+import nl.procura.gba.jpa.personen.db.DossNk;
+import nl.procura.gba.jpa.personen.db.DossOmzet;
+import nl.procura.gba.jpa.personen.db.DossOnderz;
+import nl.procura.gba.jpa.personen.db.DossOntb;
+import nl.procura.gba.jpa.personen.db.DossOverl;
+import nl.procura.gba.jpa.personen.db.DossPer;
+import nl.procura.gba.jpa.personen.db.DossRegistration;
+import nl.procura.gba.jpa.personen.db.DossRiskAnalysis;
 import nl.procura.gba.jpa.personen.utils.CriteriaWrapper;
 
 public class DossDao extends ZaakDao {
@@ -50,17 +71,21 @@ public class DossDao extends ZaakDao {
   public static final String DOSS_PER        = "dossPer";
   public static final String TYPE_PERSOON    = "typePersoon";
 
-  private static final BigDecimal TYPE_AANGEVER         = toBigDecimal(10);
-  private static final BigDecimal TYPE_OVERLEDENE       = toBigDecimal(15);
-  private static final BigDecimal TYPE_VADER_DUO_MOEDER = toBigDecimal(30);
-  private static final BigDecimal TYPE_MOEDER           = toBigDecimal(40);
-  private static final BigDecimal TYPE_PARTNER          = toBigDecimal(50);
-  private static final BigDecimal TYPE_ERKENNER         = toBigDecimal(60);
-  private static final BigDecimal TYPE_PARTNER1         = toBigDecimal(70);
-  private static final BigDecimal TYPE_PARTNER2         = toBigDecimal(71);
-  private static final BigDecimal TYPE_BETROKKENE       = toBigDecimal(75);
-  private static final BigDecimal TYPE_INSCHRIJVER      = toBigDecimal(80);
-  private static final BigDecimal TYPE_GERELATEERDE_BRP = toBigDecimal(81);
+  private static final BigDecimal TYPE_AANGEVER              = toBigDecimal(10);
+  private static final BigDecimal TYPE_OVERLEDENE            = toBigDecimal(15);
+  private static final BigDecimal TYPE_VADER_DUO_MOEDER      = toBigDecimal(30);
+  private static final BigDecimal TYPE_MOEDER                = toBigDecimal(40);
+  private static final BigDecimal TYPE_PARTNER               = toBigDecimal(50);
+  private static final BigDecimal TYPE_ERKENNER              = toBigDecimal(60);
+  private static final BigDecimal TYPE_PARTNER1              = toBigDecimal(70);
+  private static final BigDecimal TYPE_PARTNER2              = toBigDecimal(71);
+  private static final BigDecimal TYPE_BETROKKENE            = toBigDecimal(75);
+  private static final BigDecimal TYPE_INSCHRIJVER           = toBigDecimal(80);
+  private static final BigDecimal TYPE_GERELATEERDE_BRP      = toBigDecimal(81);
+  private static final BigDecimal TYPE_VERTEGENWOORDIGER     = toBigDecimal(83);
+  private static final BigDecimal TYPE_TOESTEMMINGGEVER      = toBigDecimal(84);
+  private static final BigDecimal TYPE_MEDEVERZOEKER_KIND    = toBigDecimal(85);
+  private static final BigDecimal TYPE_MEDEVERZOEKER_PARTNER = toBigDecimal(86);
 
   private static final long TYPE_GEBOORTE      = ZaakType.GEBOORTE.getCode();
   private static final long TYPE_ERKENNING     = ZaakType.ERKENNING.getCode();
@@ -73,6 +98,7 @@ public class DossDao extends ZaakDao {
   private static final long TYPE_ONTBINDING    = ZaakType.ONTBINDING_GEMEENTE.getCode();
   private static final long TYPE_NAAMSKEUZE    = ZaakType.NAAMSKEUZE.getCode();
   private static final long TYPE_ONDERZOEK     = ZaakType.ONDERZOEK.getCode();
+  private static final long TYPE_NATURALISATIE = ZaakType.NATURALISATIE.getCode();
   private static final long TYPE_RISK_ANALYSIS = ZaakType.RISK_ANALYSIS.getCode();
   private static final long TYPE_REGISTRATION  = ZaakType.REGISTRATION.getCode();
 
@@ -176,6 +202,10 @@ public class DossDao extends ZaakDao {
       zakenPredicates.add(getSubZaak(builder, query, table, DossOnderz.class, TYPE_ONDERZOEK));
     }
 
+    if (isType(map, TYPE_NATURALISATIE)) {
+      zakenPredicates.add(getSubZaak(builder, query, table, DossNatur.class, TYPE_NATURALISATIE));
+    }
+
     if (isType(map, TYPE_RISK_ANALYSIS)) {
       zakenPredicates.add(getSubZaak(builder, query, table, DossRiskAnalysis.class, TYPE_RISK_ANALYSIS));
     }
@@ -251,6 +281,12 @@ public class DossDao extends ZaakDao {
       if (isType(map, TYPE_ONDERZOEK)) {
         persoonPredicates.add(getPersoon(builder, query, table, map,
             TYPE_ONDERZOEK, TYPE_AANGEVER, TYPE_BETROKKENE));
+      }
+
+      if (isType(map, TYPE_NATURALISATIE)) {
+        persoonPredicates.add(getPersoon(builder, query, table, map,
+            TYPE_NATURALISATIE, TYPE_AANGEVER, TYPE_TOESTEMMINGGEVER, TYPE_VERTEGENWOORDIGER,
+            TYPE_MEDEVERZOEKER_KIND, TYPE_MEDEVERZOEKER_PARTNER));
       }
 
       if (isType(map, TYPE_RISK_ANALYSIS)) {

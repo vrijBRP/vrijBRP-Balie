@@ -33,6 +33,7 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.onderzoek.OnderzoekService;
 import nl.procura.standard.exceptions.ProException;
+import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -87,10 +88,13 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
 
     if (buttonReload.equals(button)) {
       reload();
+
     } else if (buttonOnderz.equals(button)) {
       verwerk(Actie.ONDERZOEK);
+
     } else if (buttonDeelres.equals(button)) {
       verwerk(Actie.DEELRESULTAAT);
+
     } else if (buttonUit.equals(button)) {
       verwerk(Actie.VERWIJDER);
     }
@@ -105,12 +109,16 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
     }
     OnderzoekService onderzoekService = getServices().getOnderzoekService();
     personen.forEach(dossierPersoon -> {
+      BsnFieldValue bsn = dossierPersoon.getBurgerServiceNummer();
+      if (!bsn.isCorrect()) {
+        throw new ProException("Deze persoon is niet ingeschreven in de BRP");
+      }
       if (actie == Actie.ONDERZOEK) {
-        onderzoekService.setInOnderzoek(zaakDossier, dossierPersoon.getBurgerServiceNummer());
+        onderzoekService.setInOnderzoek(zaakDossier, bsn);
       } else if (actie == Actie.DEELRESULTAAT) {
-        onderzoekService.setDeelresultaat(zaakDossier, dossierPersoon.getBurgerServiceNummer());
+        onderzoekService.setDeelresultaat(zaakDossier, bsn);
       } else {
-        onderzoekService.haalUitOnderzoek(zaakDossier, dossierPersoon.getBurgerServiceNummer());
+        onderzoekService.haalUitOnderzoek(zaakDossier, bsn);
       }
     });
 
@@ -128,12 +136,11 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
   }
 
   public boolean checkPage() {
-    List<DossierPersoon> personen = table.getAllValues(DossierPersoon.class);
-    for (DossierPersoon dossierPersoon : personen) {
-      if (dossierPersoon.isVolledig()) {
-        zaakDossier.getDossier().toevoegenPersoon(dossierPersoon);
-      }
-    }
+    table.getAllValues(DossierPersoon.class)
+        .stream()
+        .filter(DossierPersoon::isVolledig)
+        .forEach(dossierPersoon -> zaakDossier.getDossier()
+            .toevoegenPersoon(dossierPersoon));
 
     getApplication().getServices().getOnderzoekService().save(zaakDossier.getDossier());
     return true;
@@ -142,7 +149,6 @@ public class OnderzoekStellingPage extends NormalPageTemplate {
   private void reload() {
     // Clear alle cached PL
     getServices().getPersonenWsService().getOpslag().clear();
-
     // Load the table
     table.init();
   }

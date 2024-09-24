@@ -25,7 +25,16 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.Properties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
 import nl.procura.standard.Globalfunctions;
@@ -139,7 +148,7 @@ public class RiskProfileRule extends BaseEntity<BigDecimal> {
 
   @Transient
   public void setRuleType(RiskProfileRuleType type) {
-    setType(Globalfunctions.toBigDecimal(type.getId()));
+    setType(Globalfunctions.toBigDecimal(type.getCode()));
   }
 
   @Transient

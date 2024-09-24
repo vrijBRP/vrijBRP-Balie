@@ -27,7 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.procura.bsm.rest.v1_0.objecten.algemeen.BsmRestElementAntwoord;
-import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.*;
+import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationApproveRequestRestElement;
+import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationApproveResponseRestElement;
+import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationRestElement;
+import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationSearchRequestRestElement;
+import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationSearchResponseRestElement;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.personmutationsindex.WindowMutationsApproval;
@@ -76,6 +80,7 @@ public class Page1MutationsIndex extends NormalPageTemplate {
       addComponent(form);
       addExpandComponent(table);
       table.setMutations(findMutations(indexbean));
+      form.focus();
 
     } else if (event.isEvent(AfterReturn.class)) {
       getWindow().setWidth("1200px");

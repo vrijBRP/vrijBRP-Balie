@@ -45,6 +45,7 @@ public class ZakenAantalDao {
   public static final long C_RIJB           = ZaakType.RIJBEWIJS.getCode();
   public static final long C_TMV            = ZaakType.TERUGMELDING.getCode();
   public static final long C_GEB            = ZaakType.GEBOORTE.getCode();
+  public static final long C_NAT            = ZaakType.NATURALISATIE.getCode();
   public static final long C_ERK            = ZaakType.ERKENNING.getCode();
   public static final long C_NK             = ZaakType.NAAMSKEUZE.getCode();
   public static final long C_HUW            = ZaakType.HUWELIJK_GPS_GEMEENTE.getCode();
@@ -86,6 +87,7 @@ public class ZakenAantalDao {
     sql.append(groupBy(dIn(selectU("terugmelding"), "d_in"), C_TMV));
     sql.append(groupBy(dIn(selectU("pl_mut"), "d_in"), C_PL_MUT));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_GEB, C_GEB));
+    sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_NAT, C_NAT));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_ERK, C_ERK));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_NK, C_NK));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_HUW, C_HUW));
@@ -123,13 +125,12 @@ public class ZakenAantalDao {
   }
 
   private static String dIn(String sql, String date) {
-    StringBuilder rsql = new StringBuilder();
-    rsql.append(" ");
-    rsql.append(sql);
-    rsql.append(sql.contains("where") ? " and " : " where ");
-    rsql.append(date);
-    rsql.append(" >=  " + getYear());
-    return rsql.toString();
+    String rsql = " "
+        + sql
+        + (sql.contains("where") ? " and " : " where ")
+        + date
+        + " >=  " + getYear();
+    return rsql;
   }
 
   private static long getYear() {

@@ -23,6 +23,7 @@ import static java.lang.Long.parseLong;
 import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_VERVANGEN;
 import static nl.procura.standard.Globalfunctions.date2str;
 import static nl.procura.standard.Globalfunctions.time2str;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.db.KiesrStem;
@@ -160,7 +161,7 @@ public class Stempas {
   }
 
   public String getNaam() {
-    return stem.getNaam() + ", " + stem.getVoorn();
+    return trim(stem.getNaam() + ", " + stem.getVoorn());
   }
 
   public Geslacht getGeslacht() {

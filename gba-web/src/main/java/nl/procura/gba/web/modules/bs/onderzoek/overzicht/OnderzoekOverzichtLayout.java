@@ -19,7 +19,49 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.overzicht;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.AAND_GEG_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.AARD;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.ADRES;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.AFDELING;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.BETROKKENEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.BINNEN_5_DAGEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.BRON;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.DATUM_AANVANG_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.DATUM_EINDE_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.DATUM_ONTVANGST;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.DOORLOOPTIJD;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.DOSSIER_NR_TMV;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.EXTERNE_BRON1;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.EXTERNE_BRON2;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.INSTANTIE;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.KENMERK;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.NAAM;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.ONDERZOEK_DOOR_ANDERGEDAAN;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.ONDERZOEK_TER_PLAATSE;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.PC;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.PLAATS;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.REACTIE_ONTVANGEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_ADRES;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_BUITENL1;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_BUITENL2;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_BUITENL3;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_LAND;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_NOGMAALS;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_PC;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_PCGEM;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.RESULTAAT_TOEL;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.START_FASE1_OP;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.START_FASE1_TM;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.START_FASE2_OP;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.START_FASE2_TM;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.TAV;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.TOELICHTING;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.TOELICHTING1;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.TOELICHTING2;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.TOELICHTING3;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.VERMOED_ADRES;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.VERVOLGACTIES;
+import static nl.procura.gba.web.modules.bs.onderzoek.overzicht.OnderzoekOverzichtBean.VOLDOENDE_REDEN;
 import static nl.procura.standard.Globalfunctions.fil;
 
 import com.vaadin.ui.VerticalLayout;
@@ -72,6 +114,10 @@ public class OnderzoekOverzichtLayout extends VerticalLayout {
             break;
           case AMBTSHALVE:
             setOrder(AFDELING, KENMERK);
+            break;
+          case LAA:
+            setColumnWidths("200px", "");
+            setOrder(TOELICHTING);
             break;
         }
       }
@@ -129,7 +175,7 @@ public class OnderzoekOverzichtLayout extends VerticalLayout {
             setOrder(BETROKKENEN, DATUM_EINDE_ONDERZOEK);
             break;
           case IMMIGRATIE:
-          case BINNEN:
+          case BINNEN_INTER:
             setOrder(BETROKKENEN, RESULTAAT_NOGMAALS, RESULTAAT_ADRES, RESULTAAT_PC);
             break;
           case NAAR_ANDERE:

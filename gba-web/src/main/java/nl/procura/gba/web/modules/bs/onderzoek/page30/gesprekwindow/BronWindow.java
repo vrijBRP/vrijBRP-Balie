@@ -40,7 +40,7 @@ public class BronWindow extends GbaModalWindow {
 
   private final DossierOnderzoek     zaakDossier;
   private final DossierOnderzoekBron bron;
-  private VLayout                    contentLayout = new VLayout();
+  private final VLayout              contentLayout = new VLayout();
 
   private PersonLayout      personLayout;
   private RelativeLayout    relativeLayout;

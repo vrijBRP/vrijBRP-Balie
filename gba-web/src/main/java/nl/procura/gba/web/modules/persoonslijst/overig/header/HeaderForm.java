@@ -19,7 +19,13 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.header;
 
-import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.*;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.ADRES;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.ANR;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.BURGSTAAT;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.GEBOORTEDATUM;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.GESLACHT;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.NAAM;
+import static nl.procura.gba.web.modules.persoonslijst.overig.header.HeaderBean.STATUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ACCESS_RISK_PROFILE_SIGNALS;
 import static nl.procura.standard.Globalfunctions.pos;
 
@@ -39,7 +45,6 @@ import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 public class HeaderForm extends PlForm {
 
   public HeaderForm() {
-
     setOrder(NAAM, HeaderBean.BSN, ADRES, BURGSTAAT, ANR, STATUS, GEBOORTEDATUM, GESLACHT);
     setColumnWidths("50px", "", "100px", "100px", "100px", "100px");
     addStyleName("headerform");

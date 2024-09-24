@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.bs.common.pages.printpage;
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
-import nl.procura.gba.web.components.layouts.form.document.PrintSelectListener;
+import nl.procura.gba.web.components.layouts.form.document.PrintSelectRecordFilter;
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
 import nl.procura.gba.web.modules.bs.common.utils.DossierKennisgevingSituaties;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
@@ -125,7 +125,7 @@ public abstract class BsPrintPage<T extends ZaakDossier> extends BsPage<T> {
   protected void setButtons() {
   }
 
-  private class DocumentSelectListener implements PrintSelectListener {
+  private class DocumentSelectListener implements PrintSelectRecordFilter {
 
     @Override
     public boolean select(DocumentRecord document, boolean isPreSelect) {

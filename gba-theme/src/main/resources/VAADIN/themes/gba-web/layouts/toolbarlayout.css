@@ -1,48 +1,59 @@
 .toolbarLayout .melding-layout {
-	padding: 0 5px;
+  padding: 0 5px;
 }
+
 .toolbarLayout .melding-button {
-	padding: 0 5px;
+  padding: 0 5px;
 }
 
 .toolbarLayout .test-warning {
-	background: #efdd00;
-	color: #000;
-	margin: 0px 10px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	line-height: 20px;
-	text-shadow: none;
-	font-weight: 700;
+  background: #efdd00;
+  color: #000;
+  margin: 0px 10px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  line-height: 20px;
+  text-shadow: none;
+  font-weight: 700;
 }
 
 .toolbarLayout .melding-error {
-	background: #C00000;
-	padding: 2px 8px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	text-shadow: none;
-	font-weight: 700;
-	font-size: 12px;
+  background: #C00000;
+  padding: 2px 8px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-shadow: none;
+  font-weight: 700;
+  font-size: 12px;
 }
 
 .toolbarLayout .melding-warning {
-	background: #FFA500;
-	padding: 2px 8px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	text-shadow: none;
-	font-weight: 700;
-	color: #1a4061;
-	font-size: 12px;
+  background: #FFA500;
+  padding: 2px 8px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-shadow: none;
+  font-weight: 700;
+  color: #1a4061;
+  font-size: 12px;
 }
 
 .toolbarLayout .melding-ok {
-	background: #4783B5;
-	padding: 2px 8px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	text-shadow: none;
-	font-weight: 700;
-	font-size: 12px;
+  background: #5079a0;
+  padding: 2px 8px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-shadow: none;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.toolbarLayout .melding-taak {
+  background: #5079a0;
+  margin: 0px 10px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  line-height: 20px;
+  text-shadow: none;
+  font-weight: 700;
 }

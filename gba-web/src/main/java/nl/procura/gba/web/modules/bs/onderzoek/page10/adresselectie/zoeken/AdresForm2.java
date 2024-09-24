@@ -19,28 +19,33 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.HNR;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.HNRL;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.HNRT;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.PC;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.STRAAT;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class AdresForm2 extends GbaForm<AdresBean> {
 
-  public AdresForm2(SelectieAdres adres) {
+  public AdresForm2(Address adres) {
     setCaption("Selecteer adres");
     setColumnWidths(WIDTH_130, "");
     setOrder(STRAAT, HNR, HNRL, HNRT, PC);
     update(adres);
   }
 
-  public void update(SelectieAdres adres) {
+  public void update(Address adres) {
     AdresBean bean = new AdresBean();
     if (adres != null) {
-      bean.setStraat(new FieldValue(adres.getStraat().getValue()));
-      bean.setHnr(adres.getHuisnummer().getValue());
-      bean.setHnrL(adres.getHuisletter().getValue());
-      bean.setHnrT(adres.getToevoeging().getValue());
-      bean.setPc(new FieldValue(adres.getPostcode().getValue()));
+      bean.setStraat(new FieldValue(adres.getStreet()));
+      bean.setHnr(adres.getHnr());
+      bean.setHnrL(adres.getHnrL());
+      bean.setHnrT(adres.getHnrT());
+      bean.setPc(new FieldValue(adres.getPostalCode()));
     }
     setBean(bean);
   }

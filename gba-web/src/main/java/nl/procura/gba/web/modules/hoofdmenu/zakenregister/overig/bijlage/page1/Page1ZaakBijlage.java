@@ -31,6 +31,7 @@ import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLa
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.BijlageReferentieType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.BijlageReferentieTypeContainer;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.ZaakBestandenUploadWindow;
+import nl.procura.gba.web.modules.zaken.common.ButtonDownloadAttachments;
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
@@ -62,6 +63,8 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
       }
       if (getApplication().isProfielActie(ProfielActie.DELETE_ZAAK_DOCUMENT_ARCHIEF)) {
         addButton(buttonDel);
+        addButton(new ButtonDownloadAttachments(() -> table));
+
       }
 
       setInfo("Bijlagen", "De documenten die zijn gekoppeld aan de zaak");

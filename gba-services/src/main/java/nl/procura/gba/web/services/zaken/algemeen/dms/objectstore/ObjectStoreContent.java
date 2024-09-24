@@ -19,14 +19,19 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms.objectstore;
 
+import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.objectstore.rest.domain.object.search.FieldName;
 import nl.procura.objectstore.rest.domain.object.search.StorageObject;
+import nl.procura.standard.exceptions.ProException;
 
 import lombok.Data;
 
@@ -49,6 +54,18 @@ public class ObjectStoreContent implements DMSContent {
   @Override
   public InputStream getInputStream() {
     return contentFetcher.get(storageObject);
+  }
+
+  @Override
+  public byte[] getBytes() {
+    InputStream inputStream = contentFetcher.get(storageObject);
+    try {
+      return IOUtils.toByteArray(inputStream);
+    } catch (IOException exception) {
+      throw new ProException(WARNING, "Fout bij laden bestand", exception);
+    } finally {
+      IOUtils.closeQuietly(inputStream);
+    }
   }
 
   @Override

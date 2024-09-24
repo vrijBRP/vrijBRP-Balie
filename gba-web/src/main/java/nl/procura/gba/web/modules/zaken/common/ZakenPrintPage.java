@@ -24,7 +24,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
-import nl.procura.gba.web.components.layouts.form.document.PrintSelectListener;
+import nl.procura.gba.web.components.layouts.form.document.PrintSelectRecordFilter;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
@@ -93,7 +93,7 @@ public class ZakenPrintPage<M, Z extends Zaak> extends ZakenPage<Z> {
   protected void setButtons() {
   }
 
-  private class DocumentSelectListener implements PrintSelectListener {
+  private class DocumentSelectListener implements PrintSelectRecordFilter {
 
     @Override
     public boolean select(DocumentRecord document, boolean isPreSelect) {

@@ -283,31 +283,25 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
 
     @SuppressWarnings("unchecked")
     private PageNavigation goToPage(Class<?> pageClass, boolean doCheck) {
-
       if (getCurrentPage() != null) {
-
         BsPage<ZaakDossier> currentPage = (BsPage<ZaakDossier>) getCurrentPage();
         BsProces currentProces = processen.getProces(currentPage.getClass());
         BsProces nextProces = processen.getProces(pageClass);
 
         try {
           if (doCheck) {
-
             if (!currentPage.checkPage()) {
               return null;
             }
-
             if (currentProces != null) {
               processen.updateStatus();
             }
-
             checkButtons();
           }
 
           processen.setCurrentProces(nextProces);
         } catch (RuntimeException e) {
           // Bij fout en check dan done op False
-
           if (doCheck && currentProces != null) {
             currentProces.setStatus(BsProcesStatus.EMPTY);
           }
@@ -318,7 +312,6 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
 
       // Verwijder de huidige pagina uit de stack
       removePage(pageClass);
-
       return super.goToPage(pageClass);
     }
   }

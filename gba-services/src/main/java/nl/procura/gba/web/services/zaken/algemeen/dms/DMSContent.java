@@ -25,6 +25,8 @@ public interface DMSContent {
 
   InputStream getInputStream();
 
+  byte[] getBytes();
+
   Long getSize();
 
   String getFilename();

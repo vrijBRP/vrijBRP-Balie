@@ -23,6 +23,7 @@ import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.components.listeners.ChangeListener;
 import nl.procura.gba.web.modules.bs.common.pages.documentpage.page2.Page2BsDocument;
+import nl.procura.gba.web.modules.zaken.common.ButtonDownloadAttachments;
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
@@ -46,9 +47,9 @@ public class Page1BsDocument extends ButtonPageTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
-      addButton(buttonNew, buttonDel, buttonClose);
-      getButtonLayout().setExpandRatio(buttonDel, 1f);
+      ButtonDownloadAttachments downloadButton = new ButtonDownloadAttachments(() -> table);
+      addButton(buttonNew, buttonDel, downloadButton, buttonClose);
+      getButtonLayout().setExpandRatio(downloadButton, 1f);
       getButtonLayout().setWidth("100%");
 
       setInfo("Dubbelklik op een regel van de tabel om het document te bekijken.");
@@ -59,7 +60,6 @@ public class Page1BsDocument extends ButtonPageTemplate {
       table.focus();
 
     } else if (event.isEvent(AfterBackwardReturn.class)) {
-
       table.init();
     }
 
@@ -73,7 +73,6 @@ public class Page1BsDocument extends ButtonPageTemplate {
 
   @Override
   public void onDelete() {
-
     new DeleteProcedure<DMSDocument>(table) {
 
       @Override

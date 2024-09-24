@@ -23,7 +23,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import nl.procura.gba.jpa.personen.converters.BigDecimalBooleanConverter;
 import nl.procura.gba.jpa.personen.converters.BigDecimalDateConverter;
@@ -137,6 +145,9 @@ public class DossOnderz extends BaseEntity {
 
   @Column(name = "aanl_aant_pers")
   private BigDecimal aanlAantPers;
+
+  @Column(name = "aanl_address_source")
+  private String aanlAddressSource;
 
   @Column(name = "beoord_d_end_term")
   @Convert(converter = BigDecimalDateConverter.class)
@@ -269,6 +280,9 @@ public class DossOnderz extends BaseEntity {
 
   @Column(name = "res_aant_pers")
   private BigDecimal resAantPers;
+
+  @Column(name = "res_address_source")
+  private String resAddressSource;
 
   @Column(name = "aanschr_fase")
   private BigDecimal aanschrFase;
@@ -954,5 +968,21 @@ public class DossOnderz extends BaseEntity {
 
   public void setDeelresAandGeg(String deelresAandGeg) {
     this.deelresAandGeg = deelresAandGeg;
+  }
+
+  public String getAanlAddressSource() {
+    return aanlAddressSource;
+  }
+
+  public void setAanlAddressSource(String aanlAddressSource) {
+    this.aanlAddressSource = aanlAddressSource;
+  }
+
+  public String getResAddressSource() {
+    return resAddressSource;
+  }
+
+  public void setResAddressSource(String resAddressSource) {
+    this.resAddressSource = resAddressSource;
   }
 }

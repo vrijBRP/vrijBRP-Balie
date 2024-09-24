@@ -41,14 +41,17 @@ public class DossierOnderzoekTemplateData extends DocumentTemplateData {
     put("items", Stream.of(onderzoek).map(DossierOnderzoekData::new).collect(Collectors.toList()));
   }
 
-  public DossierOnderzoekTemplateData(DossierOnderzoek onderzoek, DossierPersoon aanschrijfpersoon) {
+  public DossierOnderzoekTemplateData(DossierOnderzoek onderzoek, String aanschrijftekst,
+      DossierPersoon aanschrijfpersoon) {
     this(onderzoek);
     put("aanschrijfpersoon", aanschrijfpersoon);
+    put("aanschrijftekst", aanschrijftekst);
   }
 
-  public DossierOnderzoekTemplateData(DossierOnderzoek onderzoek, DossierOnderzoekBron bron) {
+  public DossierOnderzoekTemplateData(DossierOnderzoek onderzoek, String aanschrijftekst, DossierOnderzoekBron bron) {
     this(onderzoek);
     put("bron", new AanschrijfBron(bron));
+    put("aanschrijftekst", aanschrijftekst);
   }
 
   private class AanschrijfBron extends DocumentTemplateData {
@@ -96,6 +99,7 @@ public class DossierOnderzoekTemplateData extends DocumentTemplateData {
       put("bron", p.getOnderzoekBron());
       put("relatie", p.getAanlRelatie());
       put("kenmerk", p.getAanlKenmerk());
+      put("toelichting", p.getAanlKenmerk());
       put("burger", p.getAangever());
       put("tmv", new TmvData(p));
       put("instantie", new InstantieData(p));

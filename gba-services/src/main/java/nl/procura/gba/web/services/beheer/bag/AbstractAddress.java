@@ -28,6 +28,7 @@ public abstract class AbstractAddress implements Address {
   protected String            inaId                 = "";
   protected String            buildingId            = "";
   protected String            street                = "";
+  protected String            publicSpace           = "";
   protected String            hnr                   = "";
   protected String            hnrL                  = "";
   protected String            hnrT                  = "";
@@ -84,6 +85,11 @@ public abstract class AbstractAddress implements Address {
   @Override
   public String getStreet() {
     return street;
+  }
+
+  @Override
+  public String getPublicSpace() {
+    return publicSpace;
   }
 
   @Override

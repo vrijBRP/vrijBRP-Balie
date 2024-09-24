@@ -36,9 +36,9 @@ public class BasePLSet implements Serializable {
 
   private static final long serialVersionUID = 4170097904066447514L;
 
-  private GBACat                catType       = GBACat.UNKNOWN;
-  private int                   extIndex      = 1;                 // External index
-  private int                   intIndex      = 1;                 // Internal index in Procura DB
+  private GBACat                      catType       = GBACat.UNKNOWN;
+  private int                         extIndex      = 1;                 // External index
+  private int                         intIndex      = 1;                 // Internal index in Procura DB
   private boolean                     mostRecentSet = false;             // Used for marriage category
   private final BasePLList<BasePLRec> recs          = new BasePLList<>();
 

@@ -23,9 +23,12 @@ import java.util.Arrays;
 
 import com.vaadin.data.util.IndexedContainer;
 
-public class GbaContainer extends IndexedContainer {
+import nl.procura.vaadin.component.container.ProcuraContainer;
+
+public abstract class GbaContainer extends IndexedContainer implements ProcuraContainer {
 
   public GbaContainer() {
+    addContainerProperty(OMSCHRIJVING, String.class, "");
   }
 
   public GbaContainer(Object[] types) {
@@ -34,5 +37,9 @@ public class GbaContainer extends IndexedContainer {
 
   protected void addItems(Object... types) {
     Arrays.stream(types).forEach(this::addItem);
+  }
+
+  public void addItem(Object item, String description) {
+    super.addItem(item).getItemProperty(OMSCHRIJVING).setValue(description);
   }
 }

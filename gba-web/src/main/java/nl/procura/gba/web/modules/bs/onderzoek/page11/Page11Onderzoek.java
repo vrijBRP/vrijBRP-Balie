@@ -33,6 +33,7 @@ public class Page11Onderzoek extends BsPersoonPage<DossierHuwelijk> {
   public Page11Onderzoek(DossierPersoon dossierPersoon) {
     super("Onderzoek - betrokkene");
     setDossierPersoon(dossierPersoon);
+    buttonNext.setCaption("Opslaan (F2)");
   }
 
   @Override
@@ -46,13 +47,14 @@ public class Page11Onderzoek extends BsPersoonPage<DossierHuwelijk> {
   @Override
   public void onNextPage() {
     if (checkPage()) {
+      getDossier().toevoegenPersoon(getDossierPersoon());
       onPreviousPage();
     }
   }
 
   @Override
   public void onPreviousPage() {
-    getNavigation().goToPage(getNavigation().getPage(Page10Onderzoek.class));
+    getNavigation().goBackToPage(Page10Onderzoek.class);
   }
 
   @Override

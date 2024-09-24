@@ -37,8 +37,8 @@ public class BasePLRec implements Serializable {
 
   private static final long serialVersionUID = -8777827670983531163L;
 
-  private GBACat                 catType = GBACat.UNKNOWN;
-  private GBARecStatus           status  = GBARecStatus.UNKNOWN;
+  private GBACat                       catType = GBACat.UNKNOWN;
+  private GBARecStatus                 status  = GBARecStatus.UNKNOWN;
   private BasePLSet                    set     = new BasePLSet(GBACat.UNKNOWN, 1);
   private final BasePLList<BasePLElem> elems   = new BasePLList<>();
   private int                          index   = 0;

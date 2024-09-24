@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.services.interfaces.address;
 
+import nl.procura.diensten.gba.ple.openoffice.formats.Adresformats;
+
 /**
  * Generic interface for multiple Address implementations
  */
@@ -35,6 +37,8 @@ public interface Address {
   String getLabel();
 
   String getStreet();
+
+  String getPublicSpace();
 
   String getHnr();
 
@@ -95,4 +99,26 @@ public interface Address {
   String getSubNeighborhood(); // Dutch: Subbuurt
 
   String getRemarks();
+
+  default String getAddressLabel() {
+    Adresformats af = new Adresformats();
+    af.setValues(getStreet(),
+        getHnr(),
+        getHnrL(),
+        getHnrT(),
+        getHnrA(),
+        "",
+        getPostalCode(),
+        "",
+        getResidenceName(),
+        getMunicipalityName(),
+        "",
+        getCountryName(),
+        "",
+        getForeignAddress1(),
+        getForeignAddress2(),
+        getForeignAddress3());
+
+    return af.getAdres_pc_wpl();
+  }
 }

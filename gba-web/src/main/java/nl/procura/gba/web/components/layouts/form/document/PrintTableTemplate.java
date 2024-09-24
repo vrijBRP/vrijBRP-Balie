@@ -34,11 +34,11 @@ import nl.procura.vaadin.component.container.ArrayListContainer;
 
 public class PrintTableTemplate extends GbaTable {
 
-  private List<DocumentSoort>       soorten = null;
-  private final PrintSelectListener selectListener;
+  private List<DocumentSoort>          soorten = null;
+  private final PrintMultiLayoutConfig config;
 
-  public PrintTableTemplate(PrintSelectListener selectListener) {
-    this.selectListener = selectListener;
+  public PrintTableTemplate(PrintMultiLayoutConfig config) {
+    this.config = config;
   }
 
   @Override
@@ -49,25 +49,20 @@ public class PrintTableTemplate extends GbaTable {
 
   @Override
   public void setColumns() {
-
     setSizeFull();
     setSelectable(true);
     setMultiSelect(true);
 
     addColumn("Soort");
-    addColumn("Document");
+    addColumn("Document", 400);
     addColumn("Uitvoer naar", 250).setClassType(Component.class);
   }
 
   @Override
   public void setRecords() {
-
     if (soorten != null) {
-
       for (DocumentSoort soort : soorten) {
-
         for (DocumentRecord document : soort.getDocumenten()) {
-
           PrintRecord docRecord = new PrintRecord();
           docRecord.setSoort(soort);
           docRecord.setDocument(document);
@@ -91,22 +86,22 @@ public class PrintTableTemplate extends GbaTable {
   }
 
   public void updateSoort(List<DocumentSoort> soorten) {
-    this.soorten = soorten;
-    init();
+    if (getParent() != null) {
+      this.soorten = soorten;
+      init();
+    }
   }
 
   /**
    * Controleer of er documenten standaard geselecteerd moet worden
    */
   private void checkPreSelectie() {
-
     for (Record record : getRecords()) {
-
       PrintRecord printRecord = (PrintRecord) record.getObject();
       boolean isPreSelect = printRecord.getDocument().isStandaardDocument();
 
-      if (selectListener != null) {
-        isPreSelect = selectListener.select(printRecord.getDocument(), isPreSelect);
+      if (config.getSelectRecordFilter() != null) {
+        isPreSelect = config.getSelectRecordFilter().select(printRecord.getDocument(), isPreSelect);
       }
 
       if (isPreSelect) {
@@ -118,7 +113,6 @@ public class PrintTableTemplate extends GbaTable {
   private class UitvoerContainer extends ArrayListContainer {
 
     private UitvoerContainer(DocumentRecord document) {
-
       try {
         addItems(document.getPrintOpties());
       } catch (Exception e) {
@@ -130,7 +124,6 @@ public class PrintTableTemplate extends GbaTable {
   private class UitvoerField extends GbaNativeSelect {
 
     private UitvoerField(DocumentRecord document) {
-
       setWidth("100%");
       setNullSelectionAllowed(false);
       setContainerDataSource(new UitvoerContainer(document));

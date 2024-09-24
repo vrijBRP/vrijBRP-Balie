@@ -59,6 +59,7 @@ public enum ZaakType {
   REGISTRATION(1700, "Eerste inschrijving", true),
   RISK_ANALYSIS(1800, "Risicoanalyse", false),
   PL_MUTATION(1900, "Persoonslijst mutaties", false),
+  NATURALISATIE(2000, "Nationaliteit", true),
   ONBEKEND(0, "Onbekend", false);
 
   private final long    code;

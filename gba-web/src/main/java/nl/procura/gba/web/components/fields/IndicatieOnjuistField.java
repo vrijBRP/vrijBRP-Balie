@@ -62,6 +62,11 @@ public class IndicatieOnjuistField extends GbaComboBox {
 
       // Add elements
       getByCat(gbaCat.getCode()).forEach(elemGroup -> add(gbaCat, elemGroup.getElem()));
+
+      // Handmatig toegevoegd voor cat. 8
+      if (gbaCat.is(GBACat.VB)) {
+        add(new Val("089999", "betrokkene niet meer woonachtig op adres"));
+      }
     }
 
     private void add(GBACat cat) {

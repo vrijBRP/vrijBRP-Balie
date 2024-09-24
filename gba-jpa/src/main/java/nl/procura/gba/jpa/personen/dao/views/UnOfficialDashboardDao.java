@@ -21,7 +21,9 @@ package nl.procura.gba.jpa.personen.dao.views;
 
 import static nl.procura.gba.common.ZaakStatusType.VERWERKT;
 import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
-import static nl.procura.gba.common.ZaakType.*;
+import static nl.procura.gba.common.ZaakType.GEGEVENSVERSTREKKING;
+import static nl.procura.gba.common.ZaakType.ONDERZOEK;
+import static nl.procura.gba.common.ZaakType.RISK_ANALYSIS;
 import static nl.procura.gba.jpa.personen.db.QDoss.doss;
 import static nl.procura.gba.jpa.personen.db.QDossOnderz.dossOnderz;
 import static nl.procura.gba.jpa.personen.db.QDossRiskAnalysis.dossRiskAnalysis;
@@ -29,16 +31,17 @@ import static nl.procura.gba.jpa.personen.db.QDossRiskAnalysisSubject.dossRiskAn
 import static nl.procura.gba.jpa.personen.db.QGv.gv;
 import static nl.procura.gba.jpa.personen.db.QGvProce.gvProce;
 import static nl.procura.gba.jpa.personen.db.QIndVerwerkt.indVerwerkt1;
-import static nl.procura.gba.jpa.personen.db.QNrd.nrd;
-import static nl.procura.gba.jpa.personen.db.QNrdStatus.nrdStatus;
-import static nl.procura.gba.jpa.personen.db.QRiskProfile.riskProfile;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
@@ -63,10 +66,10 @@ public class UnOfficialDashboardDao extends DashboardDao {
   private static final int NIET_VERSTREKKEN = 202;
   private static final int NU_VERSTREKKEN   = 204;
 
-  private static int RES_ONDERZ_IMMIGRATIE    = 2; //Vanuit het buitenland gevestigd in de gemeente
-  private static int RES_ONDERZ_VERHUISD      = 3; //Verhuisd binnen de gemeente
-  private static int RES_ONDERZ_EMIGRATIE     = 5; //Vertrokken naar het buitenland
-  private static int RES_ONDERZ_EMIGRATIE_ONB = 6; //Vertrokken met onbekende bestemming
+  private static final int RES_ONDERZ_IMMIGRATIE = 2; //Vanuit het buitenland gevestigd in de gemeente
+  private static final int RES_ONDERZ_VERHUISD   = 3; //Verhuisd binnen de gemeente
+  private static final int RES_ONDERZ_EMIGRATIE  = 5; //Vertrokken naar het buitenland
+  private static final int RES_ONDERZ_EMIGRATIE_ONB = 6; //Vertrokken met onbekende bestemming
 
   /**
    * Gegevensverstrekking (totaal aantal aanvragen)
@@ -288,15 +291,15 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis142(DashboardPeriode periode) {
 
+    JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+        .from(dossRiskAnalysisSubject)
+        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
-        .from(doss, dossRiskAnalysis, riskProfile)
-        .where(doss.eq(dossRiskAnalysis.doss)
-            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
-            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode()))
             .and(period(doss.dAanvr, periode))
-            .and(doss.cDoss.notIn(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
-                .from(dossRiskAnalysisSubject)
-                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold)))))
+            .and(doss.cDoss.notIn(subQuery)))
         .fetch();
 
     return toZaakKeys(results, RISK_ANALYSIS);
@@ -307,15 +310,15 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis143(DashboardPeriode periode) {
 
+    JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+        .from(dossRiskAnalysisSubject)
+        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
-        .from(doss, dossRiskAnalysis, riskProfile)
-        .where(doss.eq(dossRiskAnalysis.doss)
-            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
-            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode()))
             .and(period(doss.dAanvr, periode))
-            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
-                .from(dossRiskAnalysisSubject)
-                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold)))))
+            .and(doss.cDoss.in(subQuery)))
         .fetch();
 
     return toZaakKeys(results, RISK_ANALYSIS);
@@ -326,15 +329,15 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis144(DashboardPeriode periode) {
 
+    JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+        .from(dossRiskAnalysisSubject)
+        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
-        .from(doss, dossRiskAnalysis, riskProfile)
-        .where(doss.eq(dossRiskAnalysis.doss)
-            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
-            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode()))
             .and(period(doss.dAanvr, periode))
-            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
-                .from(dossRiskAnalysisSubject)
-                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold))))
+            .and(doss.cDoss.in(subQuery))
             .and(doss.zaakId.in(JPAExpressions.select(indVerwerkt1.zaakId)
                 .from(indVerwerkt1)
                 .where(indVerwerkt1.indVerwerkt.in(VERWERKT.getCode())))))
@@ -348,15 +351,15 @@ public class UnOfficialDashboardDao extends DashboardDao {
    */
   public static List<ZaakKey> getRiskAnalysis145(DashboardPeriode periode) {
 
+    JPQLQuery<Long> subQuery = JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
+        .from(dossRiskAnalysisSubject)
+        .where(dossRiskAnalysisSubject.score.gt(dossRiskAnalysisSubject.dossRiskAnalysis.riskProfile.threshold));
+
     List<String> results = getJpaQueryFactory().select(doss.zaakId)
-        .from(doss, dossRiskAnalysis, riskProfile)
-        .where(doss.eq(dossRiskAnalysis.doss)
-            .and(dossRiskAnalysis.riskProfile.eq(riskProfile))
-            .and(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode())))
+        .from(doss)
+        .where(doss.typeDoss.eq(BigDecimal.valueOf(RISK_ANALYSIS.getCode()))
             .and(period(doss.dAanvr, periode))
-            .and(doss.cDoss.in(JPAExpressions.select(dossRiskAnalysisSubject.dossRiskAnalysis.cDossRa)
-                .from(dossRiskAnalysisSubject)
-                .where(dossRiskAnalysisSubject.score.gt(riskProfile.threshold))))
+            .and(doss.cDoss.in(subQuery))
             .and(doss.zaakId.in(JPAExpressions.select(indVerwerkt1.zaakId)
                 .from(indVerwerkt1)
                 .where(indVerwerkt1.indVerwerkt.in(

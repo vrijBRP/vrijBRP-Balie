@@ -21,9 +21,27 @@ package nl.procura.gba.web.modules.bs.onderzoek.aanschrijving;
 
 import static nl.procura.gba.web.modules.bs.common.utils.BsOnderzoekUtils.getDate;
 import static nl.procura.gba.web.modules.bs.common.utils.BsOnderzoekUtils.setDateListener;
-import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.*;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
-import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_AANSCHRIJFPERSOON;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_BESLUIT;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_EXTRA;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_EXTRA_END;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_FASE1;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_FASE1_END;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_FASE2;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_FASE2_END;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_VOORNEMEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_DATUM_VOORNEMEN_END;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_EXTERNE_BRON;
+import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_SOORT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_EXTRA_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_FASE1_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_FASE2_TERMIJN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_VOORNEMEN_TERMIJN;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_1;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_2;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_BESLUIT;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_EXTRA;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_VOORNEMEN;
 
 import java.util.Date;
 
@@ -56,22 +74,18 @@ public abstract class AanschrijvingForm extends GbaForm<AanschrijvingBean> {
 
     bean.setSoort(zaakDossier.getAanschrijvingFase());
 
-    bean.setDatumFase1(
-        getDate(zaakDossier.getAanschrDatumInFase1().getDate(), zaakDossier.getFase1DatumIngang().getDate()));
+    bean.setDatumFase1(zaakDossier.getFase1DatumIngang().getDate());
+    bean.setDatumFase1End(zaakDossier.getFase1DatumEinde().getDate());
 
-    bean.setDatumFase1End(
-        getDate(zaakDossier.getAanschrDatumEindFase1().getDate(), zaakDossier.getFase1DatumEinde().getDate()));
-
-    bean.setDatumFase2(
-        getDate(zaakDossier.getAanschrDatumInFase2().getDate(), zaakDossier.getFase2DatumIngang().getDate()));
-
-    bean.setDatumFase2End(
-        getDate(zaakDossier.getAanschrDatumEindFase2().getDate(), zaakDossier.getFase2DatumEinde().getDate()));
+    bean.setDatumFase2(zaakDossier.getFase2DatumIngang().getDate());
+    bean.setDatumFase2End(zaakDossier.getFase2DatumEinde().getDate());
 
     bean.setDatumExtra(zaakDossier.getAanschrDatumInExtra().getDate());
     bean.setDatumExtraEnd(zaakDossier.getAanschrDatumEindExtra().getDate());
+
     bean.setDatumVoornemen(zaakDossier.getAanschrDatumInVoornemen().getDate());
     bean.setDatumVoornemenEnd(zaakDossier.getAanschrDatumEindVoornemen().getDate());
+
     bean.setDatumBesluit(zaakDossier.getAanschrDatumBesluit().getDate());
 
     setBean(bean);

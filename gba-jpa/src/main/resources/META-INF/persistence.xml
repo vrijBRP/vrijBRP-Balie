@@ -150,5 +150,8 @@
         <class>nl.procura.gba.jpa.personen.db.KiesrVerkInfo</class>
         <class>nl.procura.gba.jpa.personen.db.FileImport</class>
         <class>nl.procura.gba.jpa.personen.db.FileRecord</class>
+        <class>nl.procura.gba.jpa.personen.db.DossNatur</class>
+        <class>nl.procura.gba.jpa.personen.db.DossNaturVerz</class>
+        <class>nl.procura.gba.jpa.personen.db.TaskEntity</class>
     </persistence-unit>
 </persistence>

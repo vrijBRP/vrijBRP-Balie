@@ -38,15 +38,14 @@ import nl.procura.gba.jpa.personen.db.FileImport;
 import nl.procura.gba.jpa.personen.db.FileRecord;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
-import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportProcess;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
 import nl.procura.gba.web.modules.beheer.fileimport.fileselection.FileImportHandler;
 import nl.procura.gba.web.modules.beheer.fileimport.page2.Page2FileImportWindow;
+import nl.procura.gba.web.modules.beheer.fileimport.types.AbstractFileImport;
 import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTable;
-import nl.procura.gba.web.modules.beheer.fileimport.types.FileImporter;
-import nl.procura.gba.web.modules.beheer.fileimport.types.FileImporterDataWindow;
+import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTableFilter;
 import nl.procura.gba.web.modules.zaken.document.page4.DocUploader;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportResult;
@@ -110,7 +109,7 @@ public class Page3BestandImportWindow extends GbaModalWindow {
       List<FileRecord> fileRecords = new ArrayList<>();
       for (FileImportRecord record : result.getRecords()) {
         FileRecord fileRecord = new FileRecord();
-        fileRecord.setcFileImport(fileImport.getcCFileImport());
+        fileRecord.setCFileImport(fileImport.getCFileImport());
         fileRecord.setContent(new Gson().toJson(record).getBytes());
         fileRecords.add(fileRecord);
       }
@@ -119,11 +118,14 @@ public class Page3BestandImportWindow extends GbaModalWindow {
     }
 
     private void onShowContent() {
-      getApplication().getParentWindow().addWindow(new Page2FileImportWindow(new FileImportHandler() {
+      FileImportHandler fileImportHandler = new FileImportHandler() {
+
+        private FileImportTable       table;
+        private FileImportTableFilter filter;
 
         @Override
         public FileImportProcess getFileImportProcess() {
-          return null;
+          return FileImportProcess.FIRST_REGISTRATION;
         }
 
         @Override
@@ -132,19 +134,22 @@ public class Page3BestandImportWindow extends GbaModalWindow {
         }
 
         @Override
-        public GbaTable getTable(FileImport fileImport) {
+        public FileImportTable getTable(FileImport fileImport) {
           return FileImportType.getById(fileImport.getTemplate())
               .map(type -> {
-                FileImportTable table = type.getTable().apply(this::selectFileImportRecord);
+                table = type.getImporter().createTable(null);
                 table.update(result.getRecords());
+                filter = type.getImporter().createFilter(fileImport, table);
                 return table;
               }).orElseThrow(() -> new ProException("Dit bestand is verouderd"));
         }
 
-        private void selectFileImportRecord(FileImportRecord record) {
-          getParentWindow().addWindow(new FileImporterDataWindow(record));
+        @Override
+        public FileImportTableFilter getTableFilter() {
+          return filter;
         }
-      }, fileImport));
+      };
+      getApplication().getParentWindow().addWindow(new Page2FileImportWindow(fileImportHandler, fileImport));
     }
 
     public class Uploader extends DocUploader {
@@ -159,10 +164,10 @@ public class Page3BestandImportWindow extends GbaModalWindow {
 
         FileImportType.getById(fileImport.getTemplate())
             .ifPresent(type -> {
-              FileImporter converter = type.getConverter();
+              AbstractFileImport converter = type.getImporter();
               try {
                 result = converter.convert(toByteArray(getFile()), getApplication().getServices());
-                buttonImport.setEnabled(result.isValid() && !result.getRecords().isEmpty());
+                buttonImport.setEnabled(!result.getRecords().isEmpty());
                 buttonContent.setEnabled(!result.getRecords().isEmpty());
                 bean.setValidation(getValidation(result.isValid(), result.isValid()
                     ? "Bestand is correct"

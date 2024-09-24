@@ -19,7 +19,25 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.zoeken.riskanalysis;
 
-import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ANR;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.BSN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.CODE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DEELZAAK;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DEELZAKEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DREMPEL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.LOG;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NAAM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.PERSONEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.PERSOON;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RELATIE_ZAAK_ID;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RELATIE_ZAAK_TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RISICOANALYSE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RISICOPROFIEL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RISICOPROFIEL_REGEL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.SCORE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.VARIABELEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.WAARDE;
 
 import java.util.Map;
 
@@ -75,7 +93,7 @@ public class GbaRestRiskAnalysisHandler extends GbaRestElementHandler {
       GbaRestElement ruleElement = riskProfileElement.add(RISICOPROFIEL_REGEL);
       add(ruleElement, NAAM, rule.getName());
       add(ruleElement, SCORE, rule.getScore().longValue());
-      add(ruleElement, TYPE, rule.getRuleType().getId(), rule.getRuleType().getDescr());
+      add(ruleElement, TYPE, rule.getRuleType().getCode(), rule.getRuleType().getDescr());
 
       if (!rule.getAttributes().isEmpty()) {
         GbaRestElement vars = risicoAnalyse.add(VARIABELEN);

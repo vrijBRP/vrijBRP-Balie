@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.document.page3;
 
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
+import nl.procura.gba.web.modules.zaken.common.ButtonDownloadAttachments;
 import nl.procura.gba.web.modules.zaken.document.DocumentenPage;
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
@@ -44,6 +45,7 @@ public class Page3Document extends DocumentenPage {
       // Als je geen document mag verwijderen dan button uitzetten.
       if (getApplication().isProfielActie(ProfielActie.DELETE_ZAAK_DOCUMENT_ARCHIEF)) {
         addButton(buttonDel);
+        addButton(new ButtonDownloadAttachments(() -> table));
       } else {
         buttonDel.setVisible(false);
       }

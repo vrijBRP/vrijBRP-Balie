@@ -19,10 +19,29 @@
 
 package nl.procura.gba.jpa.personen.dao.views.verwijderzaken;
 
-import static nl.procura.gba.common.ZaakType.*;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_BUITENLAND;
+import static nl.procura.gba.common.ZaakType.PL_MUTATION;
+import static nl.procura.gba.common.ZaakType.REGISTRATION;
+import static nl.procura.gba.common.ZaakType.RISK_ANALYSIS;
 
 import nl.procura.gba.common.ZaakType;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.BaseEntity;
+import nl.procura.gba.jpa.personen.db.BvhPark;
+import nl.procura.gba.jpa.personen.db.Correspondentie;
+import nl.procura.gba.jpa.personen.db.DocInh;
+import nl.procura.gba.jpa.personen.db.Doss;
+import nl.procura.gba.jpa.personen.db.Geheimhouding;
+import nl.procura.gba.jpa.personen.db.Gpk;
+import nl.procura.gba.jpa.personen.db.Gv;
+import nl.procura.gba.jpa.personen.db.Inbox;
+import nl.procura.gba.jpa.personen.db.Indicatie;
+import nl.procura.gba.jpa.personen.db.Naamgebruik;
+import nl.procura.gba.jpa.personen.db.Nrd;
+import nl.procura.gba.jpa.personen.db.PlMut;
+import nl.procura.gba.jpa.personen.db.Rdm01;
+import nl.procura.gba.jpa.personen.db.Terugmelding;
+import nl.procura.gba.jpa.personen.db.UittAanvr;
+import nl.procura.gba.jpa.personen.db.VogAanvr;
 
 import lombok.Getter;
 
@@ -59,6 +78,7 @@ public enum VerwijderZaakType {
   ONTBINDING_HUW_GPS("ontbinding_huwelijk_gps", "Ontbindingen huwelijk/GPS", Doss.class, ZaakType.ONTBINDING_GEMEENTE),
   INBOX("inbox", "Inbox zaken", Inbox.class, ZaakType.INBOX),
   ONDERZOEK("onderzoek", "Onderzoeken", Doss.class, ZaakType.ONDERZOEK),
+  NATURALISATIE("naturalisatie", "Naturalisaties", Doss.class, ZaakType.NATURALISATIE),
   EERSTE_INSCHRIJVING("eerste_inschrijving", "Eerste inschrijvingen", Doss.class, REGISTRATION),
   RISICOANALYSE("risicoanalyse", "Risicoanalyses", Doss.class, RISK_ANALYSIS),
   PL_MUTATIE("pl_mutatie", "PL Mutaties", PlMut.class, PL_MUTATION);

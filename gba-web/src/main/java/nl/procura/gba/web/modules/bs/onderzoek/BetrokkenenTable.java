@@ -20,7 +20,9 @@
 package nl.procura.gba.web.modules.bs.onderzoek;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.date2str;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.onderzoek.enums.AanduidingOnderzoekType;
+import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
 public class BetrokkenenTable extends GbaTable {
 
@@ -97,16 +100,21 @@ public class BetrokkenenTable extends GbaTable {
     PLEArgs args = new PLEArgs();
     args.setShowArchives(false);
     args.setShowRemoved(false);
-    args.setDatasource(PLEDatasource.PROCURA);
+    args.setDatasource(PLEDatasource.STANDAARD);
 
     List<DossierPersoon> personen = zaakDossier.getBetrokkenen();
     Services services = getApplication().getServices();
 
     if (!personen.isEmpty()) {
       for (DossierPersoon dossierPersoon : personen) {
-        args.addNummer(dossierPersoon.getBurgerServiceNummer().getStringValue());
+        BsnFieldValue bsn = dossierPersoon.getBurgerServiceNummer();
+        if (bsn.isCorrect()) {
+          args.addNummer(bsn.getStringValue());
+        }
       }
-      out.addAll(services.getPersonenWsService().getPersoonslijsten(args, false).getBasisPLWrappers());
+      if (!args.getNumbers().isEmpty()) {
+        out.addAll(services.getPersonenWsService().getPersoonslijsten(args, false).getBasisPLWrappers());
+      }
     }
 
     zaakDossier.setAantalOnderzoek(services.getOnderzoekService().getAantalInhoudingen(zaakDossier));

@@ -19,7 +19,10 @@
 
 package nl.procura.diensten.gba.ple.openoffice.formats;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.eq;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import nl.procura.gba.common.MiscUtils;
 
@@ -66,7 +69,7 @@ public class Geboorteformats {
   }
 
   public String getDatum_leeftijd() {
-    return fil(geboortedatum) ? (geboortedatum + " (" + getLeeftijd() + ")") : "";
+    return fil(geboortedatum) ? (geboortedatum + ", " + getLeeftijd() + " jaar") : "";
   }
 
   public String getGeboortedatum() {

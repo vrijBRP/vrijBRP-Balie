@@ -24,37 +24,31 @@ import static nl.procura.gba.web.modules.beheer.fileimport.FileImportProcess.FIR
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTable;
-import nl.procura.gba.web.modules.beheer.fileimport.types.FileImporter;
-import nl.procura.gba.web.modules.beheer.fileimport.types.RegistrantImporter;
-import nl.procura.gba.web.modules.beheer.fileimport.types.RegistrantImporterTable;
-import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTableListener;
+import nl.procura.gba.web.modules.beheer.fileimport.types.AbstractFileImport;
+import nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport;
 
 public enum FileImportType {
 
-  FIRST_REGISTRANTS("first_registrants_2022", "Eerste inschrijvingen 2022",
-      FIRST_REGISTRATION, new RegistrantImporter(),
-      RegistrantImporterTable::new);
+  FIRST_REGISTRANTS("first_registrants_2022",
+      "Eerste inschrijvingen 2022",
+      FIRST_REGISTRATION,
+      new RegistrantImport());
 
-  private final String                                             id;
-  private final String                                             descr;
-  private final FileImportProcess                                  process;
-  private final FileImporter                                       converter;
-  private final Function<FileImportTableListener, FileImportTable> table;
+  private final String             id;
+  private final String             descr;
+  private final FileImportProcess  process;
+  private final AbstractFileImport importer;
 
   FileImportType(String id,
       String descr,
       FileImportProcess process,
-      FileImporter converter,
-      Function<FileImportTableListener, FileImportTable> table) {
+      AbstractFileImport importer) {
     this.id = id;
     this.descr = descr;
     this.process = process;
-    this.converter = converter;
-    this.table = table;
+    this.importer = importer;
   }
 
   public static Optional<FileImportType> getById(String id) {
@@ -81,12 +75,8 @@ public enum FileImportType {
     return process;
   }
 
-  public FileImporter getConverter() {
-    return converter;
-  }
-
-  public Function<FileImportTableListener, FileImportTable> getTable() {
-    return table;
+  public AbstractFileImport getImporter() {
+    return importer;
   }
 
   @Override

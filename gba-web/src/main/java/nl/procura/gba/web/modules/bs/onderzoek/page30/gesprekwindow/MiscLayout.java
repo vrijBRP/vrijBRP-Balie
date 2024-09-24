@@ -28,13 +28,13 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class MiscLayout extends AbstractBronLayout {
 
-  private MiscForm             form2;
-  private AdresLayout          adresLayout;
-  private DossierOnderzoekBron bron;
+  private final MiscForm             form2;
+  private final AdresLayout          adresLayout;
+  private final DossierOnderzoekBron bron;
 
   public MiscLayout(DossierOnderzoekBron bron, ChangeListener successListener) {
     this.bron = bron;
-    form2 = new MiscForm(bron, type -> setAdresType(type));
+    form2 = new MiscForm(bron, this::setAdresType);
 
     adresLayout = new AdresLayout(new BronAdres(bron), persoon -> {
       form2.setPersoon(persoon);
@@ -62,16 +62,19 @@ public class MiscLayout extends AbstractBronLayout {
     bron.setInstVoorl(form2.getBean().getTavVoorl());
     bron.setInstNaam(form2.getBean().getTavNaam());
     bron.setInstEmail(form2.getBean().getEmail());
-    adresLayout.save();
+    adresLayout.isSaved();
   }
 
   private void setAdresType(VermoedAdresType type) {
     if (VermoedAdresType.IN_GEMEENTE.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.BINNEN_GEM);
+
     } else if (VermoedAdresType.ANDERE_GEMEENTE.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.BUITEN_GEM);
+
     } else if (VermoedAdresType.BUITENLAND.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.LAND);
+
     } else {
       adresLayout.setForm(null);
     }

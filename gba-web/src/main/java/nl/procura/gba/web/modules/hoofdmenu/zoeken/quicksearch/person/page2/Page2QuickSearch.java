@@ -27,6 +27,7 @@ import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
+import nl.procura.vaadin.functies.VaadinUtils;
 
 public class Page2QuickSearch extends NormalPageTemplate {
 
@@ -41,15 +42,7 @@ public class Page2QuickSearch extends NormalPageTemplate {
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
-
-      addButton(buttonPrev);
-      addButton(buttonClose);
-
-      getWindow().setWidth("1200px");
-      getWindow().center();
-
       setInfo("Selecteer een persoon. Pijltjetoetsen en enter kunnen hierbij gebruikt worden.");
       setResult(result);
 
@@ -65,6 +58,14 @@ public class Page2QuickSearch extends NormalPageTemplate {
     }
 
     super.event(event);
+  }
+
+  @Override
+  public void attach() {
+    super.attach();
+    VaadinUtils.resetHeight(getWindow());
+    getWindow().setWidth("900px");
+    getWindow().center();
   }
 
   @Override
@@ -90,11 +91,9 @@ public class Page2QuickSearch extends NormalPageTemplate {
     if (result.getTotaalAantal() > result.getMaxAantal()) {
 
       InfoLayout info = new InfoLayout();
-
       info.setHeader("Meer zoekresultaten dan maximum.");
-      info.setMessage(
-          "Er zijn meer dan <b>%s</b> persoonslijsten gevonden. "
-              + "Daarvan worden er <b>%s</b> getoond. Specifieer de zoekopdracht verder.",
+      info.setMessage("Er zijn meer dan <b>%s</b> persoonslijsten gevonden. "
+          + "Daarvan worden er <b>%s</b> getoond. Specifieer de zoekopdracht verder.",
           result.getTotaalAantal(), result.getMaxAantal());
 
       addComponent(info, getComponentIndex(getButtonLayout()) + 1);

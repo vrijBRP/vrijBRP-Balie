@@ -29,6 +29,7 @@ import nl.procura.gba.jpa.personen.db.DossOnderz;
 import nl.procura.gba.jpa.personen.db.DossOnderzBron;
 import nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingBronType;
 import nl.procura.gba.web.services.bs.onderzoek.enums.VermoedAdresType;
+import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
@@ -158,5 +159,13 @@ public class DossierOnderzoekBron extends DossOnderzBron {
 
   public String getInstTav() {
     return trim(StringUtils.uncapitalize(getInstAanhef()) + " " + getInstVoorl() + " " + getInstNaam());
+  }
+
+  public AddressSourceType getSource() {
+    return AddressSourceType.valueOfCode(getAddressSource());
+  }
+
+  public void setSource(AddressSourceType source) {
+    setAddressSource(source.getCode());
   }
 }

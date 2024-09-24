@@ -20,19 +20,19 @@
 package nl.procura.gba.jpa.personen.types;
 
 import nl.procura.gba.common.EnumUtils;
-import nl.procura.gba.common.EnumWithId;
+import nl.procura.gba.common.EnumWithCode;
 
-public enum RiskProfilesSuccessType implements EnumWithId<Integer> {
+public enum RiskProfilesSuccessType implements EnumWithCode<Integer> {
 
   DO_NOTHING(1, "Doe niets"),
   STATUS_ACCEPTED(2, "Zet de status van de gerelateerde zaak op opgenomen"),
   UNKNOWN(0, "Onbekend");
 
-  private final int    id;
+  private final int    code;
   private final String descr;
 
-  RiskProfilesSuccessType(int id, String descr) {
-    this.id = id;
+  RiskProfilesSuccessType(int code, String descr) {
+    this.code = code;
     this.descr = descr;
   }
 
@@ -41,12 +41,12 @@ public enum RiskProfilesSuccessType implements EnumWithId<Integer> {
   }
 
   public boolean is(RiskProfilesSuccessType... types) {
-    return EnumUtils.is(types, id);
+    return EnumUtils.is(types, code);
   }
 
   @Override
-  public Integer getId() {
-    return id;
+  public Integer getCode() {
+    return code;
   }
 
   public String getDescr() {

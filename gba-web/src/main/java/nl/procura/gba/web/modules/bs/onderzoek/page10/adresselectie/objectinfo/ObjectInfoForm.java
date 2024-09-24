@@ -19,39 +19,39 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.*;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.ADRESINDICATIE;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.AON;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.BUURTCODE;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.DATUMINGANG;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.INA;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.PANDCODE;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.PPDCODE;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.STEMDISTRICT;
+import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.SUBBUURTCODE;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.WONINGINDICATIE;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo.ObjectInfoBean.WOONPLAATS;
-import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.*;
 import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.ADRES;
 import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.DATUMEINDE;
 import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.OPENBARE_RUIMTE;
 import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.OPMERKING;
+import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.WIJK;
 import static nl.procura.gba.web.modules.zaken.woningkaart.window.WoningObjectBean.WONINGSOORT;
 
 import com.vaadin.ui.Field;
 
-import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.vaadin.component.layout.table.TableLayout;
 
 public class ObjectInfoForm extends GbaForm<ObjectInfoBean> {
 
-  public ObjectInfoForm(BaseWKExt adres) {
-
+  public ObjectInfoForm(ProcuraInhabitantsAddress address) {
     setOrder(ADRES, OPMERKING, OPENBARE_RUIMTE, AON, WOONPLAATS, INA, WONINGSOORT, WONINGINDICATIE, ADRESINDICATIE,
         PPDCODE, STEMDISTRICT, PANDCODE, WIJK, BUURTCODE, SUBBUURTCODE, DATUMINGANG, DATUMEINDE);
 
     setColumnWidths("160px", "", "150px", "250px");
     setReadonlyAsText(true);
-    setBean(new ObjectInfoBean(adres));
+    setBean(new ObjectInfoBean(address));
   }
 
   @Override

@@ -35,9 +35,7 @@ public class GbaApplicationRequestHandler extends ApplicationRequestHandler {
 
   @Override
   public void handleRequest(ProcuraApplication application) {
-
     super.handleRequest(application);
-
     removeTicketParameter(application);
   }
 
@@ -45,9 +43,7 @@ public class GbaApplicationRequestHandler extends ApplicationRequestHandler {
    * Removes the ticket parameter from the url
    */
   private void removeTicketParameter(ProcuraApplication application) {
-
     if (!isInternalRequest()) {
-
       HttpServletRequest request = getApplication().getHttpRequest();
       HttpServletResponse response = getApplication().getHttpResponse();
       GbaApplication gbaApplication = (GbaApplication) application;

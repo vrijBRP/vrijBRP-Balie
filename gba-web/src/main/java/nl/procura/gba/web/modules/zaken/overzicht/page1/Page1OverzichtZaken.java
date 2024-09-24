@@ -46,6 +46,7 @@ import nl.procura.gba.web.modules.zaken.huwelijk.ModuleHuwelijk;
 import nl.procura.gba.web.modules.zaken.indicatie.ModuleIndicatie;
 import nl.procura.gba.web.modules.zaken.inhouding.ModuleInhouding;
 import nl.procura.gba.web.modules.zaken.naamgebruik.ModuleNaamgebruik;
+import nl.procura.gba.web.modules.zaken.naturalisatie.ModuleNaturalisatie;
 import nl.procura.gba.web.modules.zaken.onderzoek.ModuleOnderzoek;
 import nl.procura.gba.web.modules.zaken.overlijden.ModuleOverlijden;
 import nl.procura.gba.web.modules.zaken.protocol.ModuleProtocol;
@@ -109,6 +110,7 @@ public class Page1OverzichtZaken extends ZakenPage {
       addZaak(new Zaak(ModuleIndicatie.class, false));
       addZaak(new Zaak(ModuleInhouding.class, false));
       addZaak(new Zaak(ModuleNaamgebruik.class, false));
+      addZaak(new Zaak(ModuleNaturalisatie.class, false));
       addZaak(new Zaak(ModuleOnderzoek.class, false));
       addZaak(new Zaak(ModuleRiskAnalysis.class, false));
       addZaak(new Zaak(ModuleOverlijden.class, false));

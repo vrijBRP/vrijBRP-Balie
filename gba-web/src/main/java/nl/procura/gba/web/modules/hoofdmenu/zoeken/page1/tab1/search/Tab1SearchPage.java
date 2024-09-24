@@ -19,8 +19,15 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab1.search;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VERW;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
@@ -53,7 +60,6 @@ public class Tab1SearchPage extends ZoekTabPage {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       setInlogOpmerking();
 
       addButton(buttonSearch);
@@ -61,9 +67,7 @@ public class Tab1SearchPage extends ZoekTabPage {
       addButton(buttonFavorieten);
 
       buttonSearch.setCaption("Zoeken (Enter)");
-
       addComponent(getForm());
-
       getForm().getField(ZoekBean.BSN).focus();
     }
 

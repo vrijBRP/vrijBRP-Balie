@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.selectie;
 
+import static nl.procura.standard.Globalfunctions.date2str;
 import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.List;
 import nl.procura.gba.web.common.misc.SelectListener;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 
 /**
@@ -35,28 +36,29 @@ import nl.procura.vaadin.component.dialog.ModalWindow;
  */
 public class AdresSelectiePage extends NormalPageTemplate {
 
-  private final Table                         table    = new Table();
-  private List<SelectieAdres>                 adressen = new ArrayList<>();
-  private final SelectListener<SelectieAdres> listener;
+  private final Table                                     table    = new Table();
+  private List<ProcuraInhabitantsAddress>                 adressen = new ArrayList<>();
+  private final SelectListener<ProcuraInhabitantsAddress> listener;
 
-  public AdresSelectiePage(List<SelectieAdres> adressen, SelectListener<SelectieAdres> listener) {
+  public AdresSelectiePage(List<ProcuraInhabitantsAddress> adressen,
+      SelectListener<ProcuraInhabitantsAddress> listener) {
     this.listener = listener;
     setInfo("Selecteer een adres.");
     setAdressen(adressen);
     addExpandComponent(table);
   }
 
-  public List<SelectieAdres> getAdressen() {
+  public List<ProcuraInhabitantsAddress> getAdressen() {
     return adressen;
   }
 
-  public void setAdressen(List<SelectieAdres> adressen) {
+  public void setAdressen(List<ProcuraInhabitantsAddress> adressen) {
     this.adressen = adressen;
   }
 
   @Override
   public void onEnter() {
-    listener.select(table.getSelectedRecord().getObject(SelectieAdres.class));
+    listener.select(table.getSelectedRecord().getObject(ProcuraInhabitantsAddress.class));
     super.onEnter();
   }
 
@@ -71,21 +73,19 @@ public class AdresSelectiePage extends NormalPageTemplate {
 
     @Override
     public void onClick(Record record) {
-      listener.select(record.getObject(SelectieAdres.class));
+      listener.select(record.getObject(ProcuraInhabitantsAddress.class));
       super.onClick(record);
       ((ModalWindow) getWindow()).closeWindow();
     }
 
     @Override
     public void setRecords() {
-
-      for (SelectieAdres a : getAdressen()) {
-
+      for (ProcuraInhabitantsAddress a : getAdressen()) {
         Record r = addRecord(a);
-        String adres = a.getAdres();
+        String adres = a.getAddressLabel();
 
-        if (pos(a.getDatum_einde().getValue())) {
-          adres += " - beëindigd op " + a.getDatum_einde().getDescr();
+        if (pos(a.getEndDate())) {
+          adres += " - beëindigd op " + date2str(a.getEndDate());
         }
 
         r.addValue(adres);

@@ -34,18 +34,19 @@ import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
 import nl.procura.gba.web.common.misc.SelectListener;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.selectie.AdresSelectieWindow;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class AdresPage extends NormalPageTemplate {
 
-  private AdresForm1                          form1;
-  private AdresForm2                          form2;
-  private final SelectieAdres                 oldAdres;
-  private final SelectListener<SelectieAdres> listener;
+  private AdresForm1                                      form1;
+  private AdresForm2                                      form2;
+  private final ProcuraInhabitantsAddress                 oldAdres;
+  private final SelectListener<ProcuraInhabitantsAddress> listener;
 
-  public AdresPage(SelectieAdres oldAdres, SelectListener<SelectieAdres> listener) {
+  public AdresPage(ProcuraInhabitantsAddress oldAdres, SelectListener<ProcuraInhabitantsAddress> listener) {
     this.oldAdres = oldAdres;
     this.listener = listener;
   }
@@ -54,7 +55,6 @@ public class AdresPage extends NormalPageTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       addButton(buttonSearch);
       addButton(buttonReset, 1f);
       addButton(buttonClose);
@@ -129,7 +129,7 @@ public class AdresPage extends NormalPageTemplate {
 
   private void setAdres(ZoekArgumenten adresZ) {
     List<BaseWKExt> wkAdressen = getServices().getPersonenWsService().getAdres(adresZ, false).getBasisWkWrappers();
-    List<SelectieAdres> adressen = getWkAdressen(wkAdressen);
+    List<ProcuraInhabitantsAddress> adressen = getWkAdressen(wkAdressen);
 
     switch (adressen.size()) {
       case 0:
@@ -140,15 +140,15 @@ public class AdresPage extends NormalPageTemplate {
         break;
 
       default:
-        getParentWindow().addWindow(new AdresSelectieWindow(adressen, (SelectieAdres adres) -> {
+        getParentWindow().addWindow(new AdresSelectieWindow(adressen, (ProcuraInhabitantsAddress adres) -> {
 
           // Zoek specifiek adres zodat de personen
           // worden teruggegeven
 
           ZoekArgumenten args = new ZoekArgumenten();
-          args.setCode_object(adres.getCode_object().getValue());
-          args.setVolgcode_einde(adres.getVolgcode_einde().getValue());
-          args.setDatum_einde(astr(adres.getDatum_einde().getValue()));
+          args.setCode_object(astr(adres.getInternalId()));
+          args.setVolgcode_einde(astr(adres.getEndDateNumber()));
+          args.setDatum_einde(astr(adres.getEndDate()));
 
           List<BaseWKExt> basisWkWrappers = getServices().getPersonenWsService()
               .getAdres(args, false)
@@ -159,13 +159,13 @@ public class AdresPage extends NormalPageTemplate {
     }
   }
 
-  private void selectAdres(SelectieAdres adres) {
+  private void selectAdres(ProcuraInhabitantsAddress adres) {
     form2.update(adres);
     listener.select(adres);
     AdresPage.this.getWindow().closeWindow();
   }
 
-  private List<SelectieAdres> getWkAdressen(List<BaseWKExt> wks) {
-    return wks.stream().map(SelectieAdres::new).collect(Collectors.toList());
+  private List<ProcuraInhabitantsAddress> getWkAdressen(List<BaseWKExt> wks) {
+    return wks.stream().map(ProcuraInhabitantsAddress::new).collect(Collectors.toList());
   }
 }

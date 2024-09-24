@@ -21,13 +21,26 @@ package nl.procura.gba.web.modules.zaken.personmutations.overview;
 
 import com.vaadin.ui.VerticalLayout;
 
+import nl.procura.gba.web.application.GbaApplication;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabLayout;
 import nl.procura.gba.web.modules.zaken.personmutations.page5.Page5PersonListMutationsLayout;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 
-public class PersonMutationOverviewLayout extends VerticalLayout {
+public class PersonMutationOverviewLayout extends VerticalLayout implements ZaakTabLayout {
 
   public PersonMutationOverviewLayout(final PersonListMutation mutation) {
     setSpacing(true);
+    setLayout(mutation);
+  }
+
+  @Override
+  public void reloadLayout(GbaApplication application, Zaak zaak) {
+    setLayout((PersonListMutation) zaak);
+  }
+
+  private void setLayout(PersonListMutation mutation) {
+    removeAllComponents();
     addComponent(new Page5PersonListMutationsLayout(mutation));
   }
 }

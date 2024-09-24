@@ -19,23 +19,31 @@
 
 package nl.procura.gba.web.services.bs.algemeen;
 
-import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
-import static nl.procura.gba.web.common.tables.GbaTables.*;
+import static nl.procura.gba.web.common.tables.GbaTables.LAND;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
+import static nl.procura.gba.web.common.tables.GbaTables.REDEN_HUW_ONTB;
+import static nl.procura.gba.web.common.tables.GbaTables.REDEN_NATIO;
+import static nl.procura.gba.web.common.tables.GbaTables.TITEL;
+import static nl.procura.gba.web.common.tables.GbaTables.VBT;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType;
+import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
@@ -61,6 +69,7 @@ import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.levenloos.DossierLevenloos;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
+import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.ontbinding.DossierOntbinding;
@@ -148,6 +157,10 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
 
       case ONDERZOEK:
         classImplType = DossierOnderzoek.class;
+        break;
+
+      case NATURALISATIE:
+        classImplType = DossierNaturalisatie.class;
         break;
 
       case HUWELIJK_GPS_GEMEENTE:
@@ -322,14 +335,19 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
     }
   }
 
+  public void herlaadDossierPersoonPLen(Dossier dossier) {
+    dossier.getAllePersonen().stream()
+        .filter(persoon -> persoon.getBurgerServiceNummer().isCorrect())
+        .forEach(persoon -> persoon.setPersoon(new DocumentPL(getPersoonslijst(persoon
+            .getBurgerServiceNummer().getStringValue()))));
+  }
+
   protected ConditionalMap getArgumentenToMap(ZaakArgumenten zaakArgumenten) {
-
     ConditionalMap map = getAlgemeneArgumentenToMap(zaakArgumenten);
-
     Set<ZaakType> typen = zaakArgumenten.getTypen();
 
     if (getZaakType() != null) { // Alle andere typen weghalen
-      map.putList(DossDao.TYPE, asList(getZaakType().getCode()));
+      map.putList(DossDao.TYPE, Collections.singletonList(getZaakType().getCode()));
     } else {
       if (typen != null) {
         map.putList(DossDao.TYPE, zaakArgumenten.getTypeCodes());
@@ -337,7 +355,6 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
     }
 
     if (!zaakArgumenten.isAll()) {
-
       map.putString(DossDao.DOSS_ID, zaakArgumenten.getZaakKey().getZaakId());
       map.putString(DossDao.AKTE_VNR, zaakArgumenten.getAkteVolgnr());
     }
@@ -358,9 +375,7 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
    * Herlaad een object
    */
   protected <T> List<T> herladen(List<T> records) {
-
     List<T> list = new ArrayList<>();
-
     for (Object record : records) {
       list.add((T) herladen(record));
     }
@@ -369,7 +384,6 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
   }
 
   protected <T> T herladen(T object) {
-
     if (object instanceof DossierPersoon) {
       return (T) herlaadPersoon((DossierPersoon) object);
     } else if (object instanceof DossierNationaliteit) {
@@ -387,53 +401,6 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
     removeEntity(dossier);
     deleteZaakRelaties(dossier);
     callListeners(ServiceEvent.CHANGE);
-  }
-
-  /**
-   * Voegt een aantal afgeleide gegevens toe aan DossierPersoon
-   */
-  private DossierPersoon aanvullen(DossierPersoon d) {
-
-    DossierPersoon impl = d;
-
-    // Plaatsen
-    impl.setWoonplaats(new FieldValue(impl.getWoonPlaats()));
-    impl.setGeboorteplaats(PLAATS.get(impl.getCGebPlaats(), impl.getGebPlaats()));
-    impl.setWoongemeente(PLAATS.get(impl.getCWoonGemeente(), astr(impl.getWoongemeente())));
-    impl.setGeboorteAktePlaats(PLAATS.get(impl.getcGebAktePlaats()));
-    impl.setInGemeente(getServices().getGebruiker().isGemeente(along(impl.getCWoonGemeente())));
-
-    // Landen
-    impl.setLand(LAND.get(impl.getCLand()));
-    impl.setGeboorteland(LAND.get(impl.getCGebLand()));
-
-    BigDecimal cSluitPlaats = impl.getcHuwSluitPlaats();
-    BigDecimal sOntbPlaats = impl.getcHuwOntbPlaats();
-
-    FieldValue ontbPlaats = PLAATS.get(sOntbPlaats, impl.getHuwOntbPlaats());
-
-    impl.getVerbintenis().getSluiting().setPlaats(PLAATS.get(cSluitPlaats, impl.getHuwSluitPlaats()));
-    impl.getVerbintenis().getSluiting().setLand(LAND.get(impl.getcHuwSluitLand()));
-
-    impl.getVerbintenis().getOntbinding().setPlaats(ontbPlaats);
-    impl.getVerbintenis().getOntbinding().setLand(LAND.get(impl.getcHuwOntbLand()));
-    impl.getVerbintenis().getOntbinding().setReden(REDEN_HUW_ONTB.get(impl.getHuwOntbRdn()));
-    impl.getVerbintenis().setSoort(SoortVerbintenis.get(impl.getSrtHuw()));
-
-    impl.setTitel(TITEL.get(impl.getTp()));
-    impl.setPartnerTitel(TITEL.get(impl.getpTp()));
-    impl.setBurgerlijkeStaat(BurgerlijkeStaatType.get(impl.getBurgStaat()));
-    impl.setVerblijfstitel(VBT.get(impl.getCVbt()));
-
-    // Nationaliteiten
-    impl.getNationaliteiten().clear();
-    impl.getNationaliteiten().addAll(herladen(copyList(impl.getDossNats(), DossierNationaliteit.class)));
-
-    // Gerelateerde personen
-    impl.getPersonen().clear();
-    impl.getPersonen().addAll(copyList(impl.getDossPers(), DossierPersoon.class));
-
-    return impl;
   }
 
   /**
@@ -494,6 +461,51 @@ public class DossierService extends AbstractZaakService<Dossier> implements Zaak
     for (DossierPersoon relatiePersoon : persoon.getPersonen()) {
       herlaadPersoon(relatiePersoon);
     }
+
+    return persoon;
+  }
+
+  /**
+   * Voegt een aantal afgeleide gegevens toe aan DossierPersoon
+   */
+  private DossierPersoon aanvullen(DossierPersoon persoon) {
+
+    // Plaatsen
+    persoon.setWoonplaats(new FieldValue(persoon.getWoonPlaats()));
+    persoon.setGeboorteplaats(PLAATS.get(persoon.getCGebPlaats(), persoon.getGebPlaats()));
+    persoon.setWoongemeente(PLAATS.get(persoon.getCWoonGemeente(), astr(persoon.getWoongemeente())));
+    persoon.setGeboorteAktePlaats(PLAATS.get(persoon.getcGebAktePlaats()));
+    persoon.setInGemeente(getServices().getGebruiker().isGemeente(along(persoon.getCWoonGemeente())));
+
+    // Landen
+    persoon.setLand(LAND.get(persoon.getCLand()));
+    persoon.setGeboorteland(LAND.get(persoon.getCGebLand()));
+
+    BigDecimal cSluitPlaats = persoon.getcHuwSluitPlaats();
+    BigDecimal sOntbPlaats = persoon.getcHuwOntbPlaats();
+
+    FieldValue ontbPlaats = PLAATS.get(sOntbPlaats, persoon.getHuwOntbPlaats());
+
+    persoon.getVerbintenis().getSluiting().setPlaats(PLAATS.get(cSluitPlaats, persoon.getHuwSluitPlaats()));
+    persoon.getVerbintenis().getSluiting().setLand(LAND.get(persoon.getcHuwSluitLand()));
+
+    persoon.getVerbintenis().getOntbinding().setPlaats(ontbPlaats);
+    persoon.getVerbintenis().getOntbinding().setLand(LAND.get(persoon.getcHuwOntbLand()));
+    persoon.getVerbintenis().getOntbinding().setReden(REDEN_HUW_ONTB.get(persoon.getHuwOntbRdn()));
+    persoon.getVerbintenis().setSoort(SoortVerbintenis.get(persoon.getSrtHuw()));
+
+    persoon.setTitel(TITEL.get(persoon.getTp()));
+    persoon.setPartnerTitel(TITEL.get(persoon.getpTp()));
+    persoon.setBurgerlijkeStaat(BurgerlijkeStaatType.get(persoon.getBurgStaat()));
+    persoon.setVerblijfstitel(VBT.get(persoon.getCVbt()));
+
+    // Nationaliteiten
+    persoon.getNationaliteiten().clear();
+    persoon.getNationaliteiten().addAll(herladen(copyList(persoon.getDossNats(), DossierNationaliteit.class)));
+
+    // Gerelateerde personen
+    persoon.getPersonen().clear();
+    persoon.getPersonen().addAll(copyList(persoon.getDossPers(), DossierPersoon.class));
 
     return persoon;
   }

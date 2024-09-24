@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.common.database.checks;
 
+import static nl.procura.commons.liquibase.objecten.LbTable.DATABASECHANGELOG;
+import static nl.procura.commons.liquibase.objecten.LbTable.DATABASECHANGELOGLOCK;
+
 import javax.persistence.EntityManager;
 
 import nl.procura.commons.liquibase.objecten.LbColumn;
@@ -40,7 +43,7 @@ public class DBCheckPost1 extends DBCheckTemplateLb {
   public void init() {
     LbSchemaParameters parameters = new LbSchemaParameters();
     parameters.setDatabase(getDatabase());
-    parameters.setExcludeTables("PROT", DATABASECHANGELOGLOCK, DATABASECHANGELOG);
+    parameters.setExcludeTables(DATABASECHANGELOG, DATABASECHANGELOGLOCK, "PROT");
 
     for (LbTable table : LbObjectUtils.getSchema(parameters).getTables()) {
       for (LbColumn column : table.getColumns()) {

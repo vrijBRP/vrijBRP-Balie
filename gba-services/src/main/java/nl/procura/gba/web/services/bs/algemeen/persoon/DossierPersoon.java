@@ -279,6 +279,10 @@ public class DossierPersoon extends DossPer implements DossierPersonen, DossierN
     setcGebAktePlaats(geboorteAktePlaats.getBigDecimalValue());
   }
 
+  public Gemeente getGemeenteGeboorte() {
+    return Services.getInstance().getGemeenteService().getGemeente(geboortegemeente);
+  }
+
   public FieldValue getGeboortegemeente() {
     return geboortegemeente;
   }

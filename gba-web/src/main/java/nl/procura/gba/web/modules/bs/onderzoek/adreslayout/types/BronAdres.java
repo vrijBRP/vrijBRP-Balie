@@ -19,12 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.adreslayout.types;
 
-import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.Adres;
+import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.OnderzoekAdres;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoekBron;
 import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
+import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
-public class BronAdres implements Adres {
+public class BronAdres implements OnderzoekAdres {
 
   private final DossierOnderzoekBron bron;
 
@@ -163,5 +164,15 @@ public class BronAdres implements Adres {
 
   @Override
   public void setAantalPersonen(FieldValue aantalPersonen) {
+  }
+
+  @Override
+  public AddressSourceType getSource() {
+    return bron.getSource();
+  }
+
+  @Override
+  public void setSource(AddressSourceType sourceType) {
+    bron.setSource(sourceType);
   }
 }

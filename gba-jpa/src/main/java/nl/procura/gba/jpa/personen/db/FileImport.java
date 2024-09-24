@@ -27,6 +27,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "fileimport")
 public class FileImport extends BaseEntity<Long> {
@@ -54,27 +59,14 @@ public class FileImport extends BaseEntity<Long> {
   @Column(name = "template")
   private String template;
 
-  public Long getcCFileImport() {
-    return cFileImport;
+  @Column(name = "closed")
+  private boolean closed;
+
+  public FileImport() {
   }
 
-  public void setcCFileImport(Long cFileimport) {
-    this.cFileImport = cFileimport;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
+  public FileImport(String name, String template) {
     this.name = name;
-  }
-
-  public String getTemplate() {
-    return template;
-  }
-
-  public void setTemplate(String template) {
     this.template = template;
   }
 }

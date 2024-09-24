@@ -46,12 +46,20 @@ public class DMSService extends AbstractService {
     super("DMS");
   }
 
+  public int countDocumentsById(String id) {
+    return getStorageService().countDocumentsById(id);
+  }
+
   public int countDocumentsByPL(BasePLExt pl) {
     return getStorageService().countDocumentsByPL(pl);
   }
 
   public int countDocumentsByZaak(Zaak zaak) {
-    return zaak != null ? getStorageService().countDocumentByZaak(zaak) : 0;
+    return zaak != null ? getStorageService().countDocumentsByZaak(zaak) : 0;
+  }
+
+  public DMSResult getDocumentsById(String id) {
+    return id != null ? getStorageService().getDocumentsById(id) : new DMSResult();
   }
 
   public DMSResult getDocumentsByPL(BasePLExt pl) {

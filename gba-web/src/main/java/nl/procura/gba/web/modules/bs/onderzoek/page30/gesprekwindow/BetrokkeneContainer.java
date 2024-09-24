@@ -30,8 +30,8 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 
 public class BetrokkeneContainer extends GbaContainer {
 
-  public static final String   OMSCHRIJVING = "Omschrijving";
-  private List<DossierPersoon> personen;
+  public static final String               OMSCHRIJVING = "Omschrijving";
+  private final       List<DossierPersoon> personen;
 
   public BetrokkeneContainer(List<DossierPersoon> personen) {
     this.personen = personen;
@@ -44,7 +44,9 @@ public class BetrokkeneContainer extends GbaContainer {
 
   public DossierPersoon getByBsn(BigDecimal bsn) {
     return personen.stream()
-        .filter(p -> bsn != null && Objects.equals(p.getBurgerServiceNummer().getLongValue(), bsn.longValue()))
+        .filter(p -> bsn != null
+            && p.getBurgerServiceNummer().getLongValue() > 0
+            && Objects.equals(p.getBurgerServiceNummer().getLongValue(), bsn.longValue()))
         .findFirst()
         .orElse(null);
   }

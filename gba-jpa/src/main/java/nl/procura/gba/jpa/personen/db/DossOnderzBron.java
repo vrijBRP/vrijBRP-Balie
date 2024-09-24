@@ -21,7 +21,16 @@ package nl.procura.gba.jpa.personen.db;
 
 import java.math.BigDecimal;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
@@ -124,6 +133,9 @@ public class DossOnderzBron extends BaseEntity<Long> {
 
   @Column(name = "inst_aanschr")
   private String instAanschr;
+
+  @Column(name = "address_source")
+  private String addressSource;
 
   @ManyToOne
   @BatchFetch(BatchFetchType.IN)
@@ -347,5 +359,13 @@ public class DossOnderzBron extends BaseEntity<Long> {
 
   public void setSummType(BigDecimal summType) {
     this.summType = summType;
+  }
+
+  public String getAddressSource() {
+    return addressSource;
+  }
+
+  public void setAddressSource(String addressSource) {
+    this.addressSource = addressSource;
   }
 }

@@ -20,7 +20,9 @@
 package nl.procura.gba.web.services.zaken.algemeen.dms.filesystem;
 
 import static java.util.Collections.singletonList;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.eq;
+import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import static nl.procura.standard.Globalfunctions.fil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,7 +93,6 @@ public class FilesystemDMSUtils {
   public static List<DMSDocument> getFilesByZaakId(File folder, String zaakId) {
     List<DMSDocument> dmsDocuments = new ArrayList<>();
     if (folder.exists() && folder.isDirectory()) {
-
       IndexFile indexFile = new IndexFile(folder);
       List<IndexLine> rowsByZaakId = indexFile.getRowsByZaakId(zaakId);
 

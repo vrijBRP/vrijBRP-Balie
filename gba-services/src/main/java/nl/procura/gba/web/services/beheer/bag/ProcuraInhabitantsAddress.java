@@ -25,6 +25,7 @@ import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import nl.procura.diensten.gba.wk.baseWK.BaseWKPerson;
 import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
@@ -60,12 +61,15 @@ public class ProcuraInhabitantsAddress extends AbstractAddress {
     hnrA = defaultIfBlank(wk.getBasisWk().getAanduiding().getValue(), " ");
     pc = wk.getBasisWk().getPostcode().getValue();
     street = wk.getBasisWk().getStraat().getValue();
+    publicSpace = wk.getBasisWk().getOpenbareRuimte().getDescr();
     recidenceCode = wk.getBasisWk().getWoonplaats().getCode();
     recidenceName = wk.getBasisWk().getWoonplaats().getDescr();
     suitableForLiving = aval(wk.getBasisWk().getWoning_indicatie().getCode()) == 0;
     String hnrString = normalizeSpace(hnr + hnrL + " " + hnrT);
     label = normalizeSpace(street + " " + hnrString + ", " + Postcode.getFormat(pc) + " " + recidenceName);
-    persons.addAll(wk.getBasisWk().getPersonen());
+    persons.addAll(wk.getBasisWk().getPersonen().stream()
+        .filter(BaseWKPerson::isCurrentResident)
+        .collect(Collectors.toList()));
 
     // Specific fields
     internalId = aval(wk.getBasisWk().getCode_object().getCode());
@@ -80,5 +84,6 @@ public class ProcuraInhabitantsAddress extends AbstractAddress {
     district = wk.getBasisWk().getWijk().getDescr();
     neighborhood = wk.getBasisWk().getBuurt().getDescr();
     subNeighborhood = wk.getBasisWk().getSub_buurt().getDescr();
+    buildingId = wk.getBasisWk().getPnd().getValue();
   }
 }

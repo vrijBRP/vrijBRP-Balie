@@ -36,8 +36,14 @@ import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoonFilter;
-import nl.procura.gba.web.services.bs.onderzoek.enums.*;
+import nl.procura.gba.web.services.bs.onderzoek.enums.AanduidingOnderzoekType;
+import nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType;
+import nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType;
+import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekAardType;
+import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType;
+import nl.procura.gba.web.services.bs.onderzoek.enums.VermoedAdresType;
 import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
+import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakStatus;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
@@ -558,6 +564,22 @@ public class DossierOnderzoek extends DossOnderz implements ZaakDossier {
 
   public void setResultaatAantalPersonen(FieldValue value) {
     super.setResAantPers(value.getBigDecimalValue());
+  }
+
+  public AddressSourceType getResultaatSource() {
+    return AddressSourceType.valueOfCode(getResAddressSource());
+  }
+
+  public void setResultaatSource(AddressSourceType source) {
+    setResAddressSource(source.getCode());
+  }
+
+  public AddressSourceType getAanleidingSource() {
+    return AddressSourceType.valueOfCode(getAanlAddressSource());
+  }
+
+  public void setAanleidingSource(AddressSourceType source) {
+    setAanlAddressSource(source.getCode());
   }
 
   public AanschrijvingFaseType getAanschrijvingFase() {

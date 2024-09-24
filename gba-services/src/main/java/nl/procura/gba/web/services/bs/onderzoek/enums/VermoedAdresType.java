@@ -22,13 +22,13 @@ package nl.procura.gba.web.services.bs.onderzoek.enums;
 public enum VermoedAdresType {
 
   ONBEKEND(0, "Onbekend", BetrokkeneType.ONBEKEND),
-  IN_GEMEENTE(1, "In deze gemeente", BetrokkeneType.BINNEN),
+  IN_GEMEENTE(1, "In deze gemeente", BetrokkeneType.BINNEN_INTER),
   ANDERE_GEMEENTE(2, "In andere gemeente", BetrokkeneType.NAAR_ANDERE),
   BUITENLAND(3, "In buitenland", BetrokkeneType.EMIGRATIE);
 
   private int            code = 0;
-  private String         oms  = "";
-  private BetrokkeneType betrokkeneType;
+  private       String         oms  = "";
+  private final BetrokkeneType betrokkeneType;
 
   VermoedAdresType(int code, String oms, BetrokkeneType betrokkeneType) {
     this.code = code;

@@ -29,7 +29,7 @@ public final class EnumUtils {
   /**
    * Returns the enum where the id matches the id of the enum   *
    */
-  public static <T extends EnumWithId<?>> T get(T[] values, Number id, T defaultValue) {
+  public static <T extends EnumWithCode<?>> T get(T[] values, Number id, T defaultValue) {
     if (id != null) {
       return get(values, id.toString(), defaultValue);
     }
@@ -39,11 +39,11 @@ public final class EnumUtils {
   /**
    * Returns the enum where the id matches the id of the enum
    */
-  public static <T extends EnumWithId<?>> T get(T[] values, String id, T defaultValue) {
+  public static <T extends EnumWithCode<?>> T get(T[] values, String id, T defaultValue) {
     if (id != null) {
       return Arrays.stream(values)
-          .filter(et -> et.getId() != null)
-          .filter(et -> et.getId().toString().equals(id))
+          .filter(et -> et.getCode() != null)
+          .filter(et -> et.getCode().toString().equals(id))
           .findFirst()
           .orElse(defaultValue);
     }
@@ -53,7 +53,7 @@ public final class EnumUtils {
   /**
    * Returns true if id matches the id of one of the enums
    */
-  public static boolean is(EnumWithId[] types, long id) {
+  public static boolean is(EnumWithCode[] types, long id) {
     return get(types, id, null) != null;
   }
 }

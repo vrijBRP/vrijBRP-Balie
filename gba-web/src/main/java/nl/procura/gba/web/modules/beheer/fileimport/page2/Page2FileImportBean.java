@@ -22,12 +22,15 @@ package nl.procura.gba.web.modules.beheer.fileimport.page2;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
+import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportTypeContainer;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextField;
+import nl.procura.vaadin.component.container.NLBooleanContainer;
 import nl.procura.vaadin.component.field.ProNativeSelect;
 import nl.procura.vaadin.component.field.ProTextField;
 
@@ -39,6 +42,7 @@ public class Page2FileImportBean implements Serializable {
 
   public static final String F_NAME            = "name";
   public static final String F_FILE_IMPORTTYPE = "fileImportType";
+  public static final String F_CLOSED          = "closed";
 
   @Field(customTypeClass = ProTextField.class,
       caption = "Naam",
@@ -53,4 +57,12 @@ public class Page2FileImportBean implements Serializable {
       width = "300px")
   @Select(containerDataSource = FileImportTypeContainer.class)
   private FileImportType fileImportType;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Afgesloten")
+  @Select(nullSelectionAllowed = false,
+      containerDataSource = NLBooleanContainer.class,
+      itemCaptionPropertyId = NLBooleanContainer.JA_NEE)
+  @Immediate
+  private boolean closed = false;
 }

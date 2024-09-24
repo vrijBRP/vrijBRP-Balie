@@ -20,8 +20,44 @@
 package nl.procura.gba.web.services.zaken.algemeen;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.common.ZaakStatusType.*;
-import static nl.procura.gba.common.ZaakType.*;
+import static nl.procura.gba.common.ZaakStatusType.DOCUMENT_ONTVANGEN;
+import static nl.procura.gba.common.ZaakStatusType.GEANNULEERD;
+import static nl.procura.gba.common.ZaakStatusType.GEWEIGERD;
+import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
+import static nl.procura.gba.common.ZaakStatusType.INCOMPLEET;
+import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
+import static nl.procura.gba.common.ZaakStatusType.VERWERKT;
+import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
+import static nl.procura.gba.common.ZaakStatusType.WACHTKAMER;
+import static nl.procura.gba.common.ZaakType.CORRESPONDENTIE;
+import static nl.procura.gba.common.ZaakType.COVOG;
+import static nl.procura.gba.common.ZaakType.ERKENNING;
+import static nl.procura.gba.common.ZaakType.GEBOORTE;
+import static nl.procura.gba.common.ZaakType.GEGEVENSVERSTREKKING;
+import static nl.procura.gba.common.ZaakType.GPK;
+import static nl.procura.gba.common.ZaakType.HUWELIJK_GPS_GEMEENTE;
+import static nl.procura.gba.common.ZaakType.INBOX;
+import static nl.procura.gba.common.ZaakType.INDICATIE;
+import static nl.procura.gba.common.ZaakType.INHOUD_VERMIS;
+import static nl.procura.gba.common.ZaakType.LEVENLOOS;
+import static nl.procura.gba.common.ZaakType.LIJKVINDING;
+import static nl.procura.gba.common.ZaakType.NAAMGEBRUIK;
+import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
+import static nl.procura.gba.common.ZaakType.NATURALISATIE;
+import static nl.procura.gba.common.ZaakType.OMZETTING_GPS;
+import static nl.procura.gba.common.ZaakType.ONDERZOEK;
+import static nl.procura.gba.common.ZaakType.ONTBINDING_GEMEENTE;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_BUITENLAND;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_GEMEENTE;
+import static nl.procura.gba.common.ZaakType.PL_MUTATION;
+import static nl.procura.gba.common.ZaakType.REGISTRATION;
+import static nl.procura.gba.common.ZaakType.REISDOCUMENT;
+import static nl.procura.gba.common.ZaakType.RIJBEWIJS;
+import static nl.procura.gba.common.ZaakType.RISK_ANALYSIS;
+import static nl.procura.gba.common.ZaakType.TERUGMELDING;
+import static nl.procura.gba.common.ZaakType.UITTREKSEL;
+import static nl.procura.gba.common.ZaakType.VERHUIZING;
+import static nl.procura.gba.common.ZaakType.VERSTREKKINGSBEPERKING;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +78,7 @@ public class ZaakTypeStatussen {
     add(ERKENNING, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(GEBOORTE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(ONDERZOEK, INCOMPLEET, INBEHANDELING, VERWERKT, GEANNULEERD);
+    add(NATURALISATIE, INCOMPLEET, INBEHANDELING, VERWERKT, GEANNULEERD);
     add(RISK_ANALYSIS, OPGENOMEN, VERWERKT, GEANNULEERD);
     add(REGISTRATION, INCOMPLEET, WACHTKAMER, OPGENOMEN, INBEHANDELING, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(GEGEVENSVERSTREKKING, INBEHANDELING, GEWEIGERD, VERWERKT, GEANNULEERD);
@@ -52,6 +89,7 @@ public class ZaakTypeStatussen {
     add(INDICATIE, WACHTKAMER, OPGENOMEN, VERWERKT, GEANNULEERD);
     add(INBOX, WACHTKAMER, OPGENOMEN, VERWERKT, GEANNULEERD);
     add(NAAMGEBRUIK, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
+    add(NATURALISATIE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(NAAMSKEUZE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(OVERLIJDEN_IN_BUITENLAND, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
     add(OVERLIJDEN_IN_GEMEENTE, INCOMPLEET, WACHTKAMER, OPGENOMEN, GEWEIGERD, VERWERKT, GEANNULEERD);
@@ -136,8 +174,8 @@ public class ZaakTypeStatussen {
 
   private static class ZaakTypeStatus {
 
-    private List<ZaakStatusType> statussen;
-    private ZaakType             type;
+    private final List<ZaakStatusType> statussen;
+    private final ZaakType             type;
 
     public ZaakTypeStatus(ZaakType type, ZaakStatusType... statussen) {
       this.type = type;

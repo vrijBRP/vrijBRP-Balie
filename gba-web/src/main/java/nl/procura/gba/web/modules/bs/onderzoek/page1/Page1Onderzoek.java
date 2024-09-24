@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.bs.onderzoek.page1;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.common.misc.GbaDatumUtils.addWerkdagen;
 import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.RELATIE;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.BURGER;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
@@ -93,7 +94,7 @@ public class Page1Onderzoek extends BsPageOnderzoek {
 
       zoekTable = new ZoekTable();
 
-      addComponent(new BsStatusForm(getDossier()));
+      addComponent(new BsStatusForm(getDossier(), BETROKKENE));
       setInfo("Vul de aangiftegegevens in en druk op Volgende (F2) om verder te gaan.");
 
       addComponent(form1);
@@ -134,6 +135,11 @@ public class Page1Onderzoek extends BsPageOnderzoek {
           form2 = new Page1OnderzoekForm2(getZaakDossier(), bron);
           burgerLayout.addComponent(form2);
           break;
+
+        case LAA:
+          form2 = new Page1OnderzoekForm2(getZaakDossier(), bron);
+          burgerLayout.addComponent(form2);
+          break;
       }
 
       form3 = new Page1OnderzoekForm3(getZaakDossier()) {
@@ -150,10 +156,13 @@ public class Page1Onderzoek extends BsPageOnderzoek {
   public void setVermoedAdres(VermoedAdresType type) {
     if (VermoedAdresType.IN_GEMEENTE.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.BINNEN_GEM);
+
     } else if (VermoedAdresType.ANDERE_GEMEENTE.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.BUITEN_GEM);
+
     } else if (VermoedAdresType.BUITENLAND.equals(type)) {
       adresLayout.setForm(AdresLayout.FormType.LAND);
+
     } else {
       adresLayout.setForm(null);
     }
@@ -164,8 +173,8 @@ public class Page1Onderzoek extends BsPageOnderzoek {
 
     if (button == buttonGba) {
       openZoekWindow();
-    } else if (button == buttonZoek) {
 
+    } else if (button == buttonZoek) {
       final String anr = getZaakDossier().getAangever().getAnummer().getStringValue();
       final String bsn = getZaakDossier().getAangever().getBurgerServiceNummer().getStringValue();
 
@@ -181,9 +190,7 @@ public class Page1Onderzoek extends BsPageOnderzoek {
 
   @Override
   public boolean checkPage() {
-
     if (super.checkPage()) {
-
       form1.commit();
       adresLayout.commit();
 
@@ -246,6 +253,9 @@ public class Page1Onderzoek extends BsPageOnderzoek {
             getZaakDossier().setAanlAfdeling(bean.getAfdeling());
             getZaakDossier().setAanlKenmerk(bean.getKenmerk());
             break;
+          case LAA:
+            getZaakDossier().setAanlKenmerk(bean.getToelichting());
+            break;
         }
       }
 
@@ -259,10 +269,10 @@ public class Page1Onderzoek extends BsPageOnderzoek {
         getZaakDossier().setVermoedelijkAdres(form3.getBean().getVermoedAdres());
       }
 
-      adresLayout.save();
-
-      getServices().getOnderzoekService().save(getDossier());
-      return true;
+      if (adresLayout.isSaved()) {
+        getServices().getOnderzoekService().save(getDossier());
+        return true;
+      }
     }
 
     return false;
@@ -300,7 +310,6 @@ public class Page1Onderzoek extends BsPageOnderzoek {
 
       DossierPersoon persoon = getZaakDossier().getAangever();
       if (persoon != null && persoon.isVolledig()) {
-
         IndexedTable.Record row = addRecord(persoon);
         row.addValue(persoon.getNaam().getNaam_naamgebruik_eerste_voornaam());
         row.addValue(persoon.getGeslacht().getNormaal());

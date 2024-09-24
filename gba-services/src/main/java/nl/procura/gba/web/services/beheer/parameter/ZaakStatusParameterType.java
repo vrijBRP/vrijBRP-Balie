@@ -19,7 +19,43 @@
 
 package nl.procura.gba.web.services.beheer.parameter;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_ERK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_GEB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_NK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_CORRES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_COVOG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_GPK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_GV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_HUW_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INBOX;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INDICATIE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INH_VERMIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INH_VERMIS_RYB;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_NAAMGEBRUIK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_NATURALISATIE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OMZET_GPS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_ONDERZOEK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_ONTBINDING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OVERL_GEM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OVERL_LEVENLOOS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OVERL_LIJKV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_PL_MUTATIE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_REGISTRATION_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_REGISTRATION_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_REISDOC;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_RISK_ANALYSIS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_TMV;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_UITTREKSEL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BINNEN_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BINNEN_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BUITEN_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_BUITEN_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_EMIGR_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_EMIGR_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_HERV_BA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERH_HERV_WA;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_VERSTREK;
 import static nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres.BRIEFADRES;
 import static nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres.WOONADRES;
 
@@ -68,13 +104,15 @@ public enum ZaakStatusParameterType {
   REGISTRATION_WA(ZAKEN_INIT_STATUS_REGISTRATION_WA, ZaakType.REGISTRATION, WOONADRES, null),
   REGISTRATION_BA(ZAKEN_INIT_STATUS_REGISTRATION_BA, ZaakType.REGISTRATION, BRIEFADRES, null),
   NAAMGEBRUIK(ZAKEN_INIT_STATUS_NAAMGEBRUIK, ZaakType.NAAMGEBRUIK),
+  NATURALISATIE(ZAKEN_INIT_STATUS_NATURALISATIE, ZaakType.NATURALISATIE),
   PL_MUTATIE(ZAKEN_INIT_STATUS_PL_MUTATIE, ZaakType.PL_MUTATION);
 
-  private ParameterType parameterType;
-  private ZaakType      zaakType;
-  private FunctieAdres  functieAdres       = FunctieAdres.ONBEKEND;
-  private VerhuisType   verhuisType;
-  private boolean       inhoudingRijbewijs = false;
+  private final ParameterType parameterType;
+  private final ZaakType      zaakType;
+
+  private FunctieAdres functieAdres       = FunctieAdres.ONBEKEND;
+  private VerhuisType  verhuisType;
+  private boolean      inhoudingRijbewijs = false;
 
   ZaakStatusParameterType(ParameterType parameterType, ZaakType zaakType) {
     this.parameterType = parameterType;

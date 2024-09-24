@@ -21,11 +21,12 @@ package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken;
 
 import nl.procura.gba.web.common.misc.SelectListener;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
 public class AdresWindow extends GbaModalWindow {
 
-  public AdresWindow(SelectieAdres adres, SelectListener<SelectieAdres> listener) {
+  public AdresWindow(ProcuraInhabitantsAddress adres, SelectListener<ProcuraInhabitantsAddress> listener) {
     super("Selecteer het adres", "550px");
     addComponent(new MainModuleContainer(false, new AdresPage(adres, listener)));
   }

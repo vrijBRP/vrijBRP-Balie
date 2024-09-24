@@ -20,14 +20,19 @@
 package nl.procura.gba.web.modules.bs.onderzoek.page30;
 
 import static nl.procura.gba.web.modules.bs.common.utils.BsOnderzoekUtils.getDateByTerm;
-import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.ONDERZOEK_TER_PLAATSE;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.START_FASE1_OP;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.START_FASE1_TM;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.START_FASE2_OP;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.START_FASE2_TM;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.TOELICHTING2;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.UITGEVOERD_OP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_FASE2_TERMIJN;
 
 import java.util.Date;
 
 import com.vaadin.ui.Field;
 
-import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.components.validators.DatumVolgordeValidator;
 import nl.procura.gba.web.modules.bs.common.utils.BsOnderzoekUtils;
@@ -94,9 +99,6 @@ public class Page30OnderzoekForm2 extends GbaForm<Page30OnderzoekBean> {
       repaint();
     });
 
-    datumStart.addListener((ValueChangeListener) event -> onChangeDates());
-    datumEinde.addListener((ValueChangeListener) event -> onChangeDates());
-
     BsOnderzoekUtils.setDateListener(datumStart, datumEinde, ONDERZ_FASE2_TERMIJN);
     onChangeOnderzoekTerPlaatse(getBean().getOnderzoekTerPlaatse());
   }
@@ -119,11 +121,5 @@ public class Page30OnderzoekForm2 extends GbaForm<Page30OnderzoekBean> {
     }
 
     super.afterSetColumn(column, field, property);
-  }
-
-  private void onChangeDates() {
-    commit();
-    zaakDossier.setFase2DatumIngang(new DateTime(getBean().getStartFase2Op()));
-    zaakDossier.setFase2DatumEinde(new DateTime(getBean().getStartFase2Tm()));
   }
 }

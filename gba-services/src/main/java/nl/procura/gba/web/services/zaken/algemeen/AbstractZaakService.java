@@ -19,7 +19,10 @@
 
 package nl.procura.gba.web.services.zaken.algemeen;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +40,10 @@ import nl.procura.gba.web.services.zaken.algemeen.aantekening.AantekeningService
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutService;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatieService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
+import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieService;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
+import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
@@ -68,11 +73,15 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
   /**
    * De volledige zaak inclusief persoonsgegevens van de aanvrager
    */
-  @ThrowException("Het is niet mogelijk om de volledige zaak op te vragen")
   public T getCompleteZaak(T zaak) {
-    T standaardZaak = getStandardZaak(zaak);
-    LOGGER.debug("ZaakService - zoek volledige zaak");
-    return setVolledigeZaakExtra(standaardZaak);
+    try {
+      T standaardZaak = getStandardZaak(zaak);
+      LOGGER.debug("ZaakService - zoek volledige zaak");
+      return setVolledigeZaakExtra(standaardZaak);
+    } catch (RuntimeException e) {
+      e.printStackTrace();
+      throw new ProException(ERROR, "Het is niet mogelijk om de volledige zaak ({0}) op te vragen", zaak.getZaakId());
+    }
   }
 
   public ZaakStatusService getZaakStatussen() {
@@ -131,6 +140,7 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
       getZaakIdentificaties().delete(zaak);
       getZaakAttributen().delete(zaak);
       getZaakRelaties().delete(zaak);
+      getTasks().delete(zaak);
 
       log.info(String.format("Zaak: %s - %s verwijderd door gebruiker %s.",
           zaak.getType().getOms(),
@@ -242,5 +252,9 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
 
   private ZaakRelatieService getZaakRelaties() {
     return getServices().getZaakRelatieService();
+  }
+
+  private TaskService getTasks() {
+    return getServices().getTaskService();
   }
 }

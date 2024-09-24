@@ -40,7 +40,7 @@ public class Page2QuickSearchTable extends GbaTable {
     setSelectFirst(true);
 
     addColumn("Nr", 30);
-    addColumn("Naam", 200);
+    addColumn("Naam", 250);
     addColumn("Geslacht", 60);
     addColumn("Geboortedatum", 100);
     addColumn("Adres");

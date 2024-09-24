@@ -26,15 +26,12 @@ import com.vaadin.ui.Button;
 import nl.procura.gba.jpa.personen.db.FileImport;
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
-import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
 import nl.procura.gba.web.modules.beheer.fileimport.page3.Page3BestandImportWindow;
 import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTable;
-import nl.procura.gba.web.modules.beheer.fileimport.types.FileImporterDataWindow;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportService;
 import nl.procura.vaadin.component.layout.Fieldset;
-import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -120,14 +117,11 @@ public class Page2FileImport extends NormalPageTemplate {
             FileImportService service = getApplication().getServices().getFileImportService();
             List<FileImportRecord> fileImportRecords = service.getFileImportRecords(fileImport);
             if (table == null) {
-              table = type.getTable().apply(record -> {
-                getParentWindow().addWindow(new FileImporterDataWindow(record));
-              });
+              table = type.getImporter().createTable(null);
               table.setSelectable(true);
               table.setMultiSelect(true);
-              getButtonLayout().addComponent(new GbaIndexedTableFilterLayout(table));
-              addComponent(new Fieldset("Geïmporteerde gegevens"));
-              addComponent(new InfoLayout("Dubbelklik voor meer gegevens", ""));
+              addComponent(new Fieldset("Geselecteerde gegevens"));
+              addComponent(type.getImporter().createFilter(fileImport, table));
               addExpandComponent(table);
             }
             table.update(fileImportRecords);
@@ -142,6 +136,7 @@ public class Page2FileImport extends NormalPageTemplate {
     Page2FileImportBean bean = form.getBean();
     fileImport.setName(bean.getName());
     fileImport.setTemplate(bean.getFileImportType().getId());
+    fileImport.setClosed(bean.isClosed());
     getServices().getFileImportService().save(fileImport);
   }
 }

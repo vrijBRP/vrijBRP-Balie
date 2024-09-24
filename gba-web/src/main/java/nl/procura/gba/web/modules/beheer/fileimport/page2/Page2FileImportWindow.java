@@ -20,20 +20,22 @@
 package nl.procura.gba.web.modules.beheer.fileimport.page2;
 
 import com.vaadin.ui.Button;
+
 import nl.procura.gba.jpa.personen.db.FileImport;
-import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.beheer.fileimport.fileselection.FileImportHandler;
-import nl.procura.gba.web.modules.beheer.fileimport.fileselection.FileImportSearchFilter;
+import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTable;
 import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.VLayout;
 
 public class Page2FileImportWindow extends GbaModalWindow {
 
-  private final GbaTable table;
+  private final FileImportTable   table;
+  private final FileImportHandler fileImportHandler;
 
   public Page2FileImportWindow(FileImportHandler fileImportHandler, FileImport fileImport) {
     super("Geïmporteerde gegevens", "1200px");
+    this.fileImportHandler = fileImportHandler;
     fileImportHandler.setFinishImportListener(this::closeAllModalWindows);
     table = fileImportHandler.getTable(fileImport);
     table.setClickable(true);
@@ -48,7 +50,7 @@ public class Page2FileImportWindow extends GbaModalWindow {
   public void attach() {
     VLayout vLayout = new VLayout(true);
     Button closeButton = new Button("Sluiten (Esc)", event -> closeWindow());
-    vLayout.add(new HLayout(new FileImportSearchFilter(table), closeButton));
+    vLayout.add(new HLayout(fileImportHandler.getTableFilter(), closeButton));
     vLayout.add(table);
     setContent(vLayout);
     super.attach();

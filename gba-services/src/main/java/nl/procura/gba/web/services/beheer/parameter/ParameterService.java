@@ -27,6 +27,7 @@ import static nl.procura.standard.Globalfunctions.pos;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +64,7 @@ public class ParameterService extends AbstractService {
   public Parameters getGebruikerParameters(Gebruiker gebruiker) {
     List<Long> cProfiles = gebruiker.getProfielen().getAlle().stream().map(Profile::getCProfile)
         .collect(Collectors.toList());
-    List<Parm> findParameters = ParmDao.findParameters(asList(gebruiker.getCUsr()), cProfiles, null);
+    List<Parm> findParameters = ParmDao.findParameters(Collections.singletonList(gebruiker.getCUsr()), cProfiles, null);
     Parameters params = new Parameters();
     for (Parm parm : addDefaultParameters(findParameters)) {
       Parameter parameter = copy(parm, Parameter.class);
@@ -91,13 +92,28 @@ public class ParameterService extends AbstractService {
   @ThrowException(ERROR_RETRIEVING_PARMS)
   public Parameter getSysteemParameter(ParameterType parameterType) {
 
-    List<Parm> parameters = ParmDao.findParameters(asList(BaseEntity.DEFAULT),
-        asList(BaseEntity.DEFAULT), parameterType.getKey());
+    List<Parm> parameters = ParmDao.findParameters(Collections.singletonList(BaseEntity.DEFAULT),
+        Collections.singletonList(BaseEntity.DEFAULT), parameterType.getKey());
 
     return parameters.stream()
         .findFirst()
         .map(p -> copy(p, Parameter.class))
         .orElse(copy(getDefault(parameterType), Parameter.class));
+  }
+
+  /**
+   * returns a system wide parameter directly from the database
+   */
+  @ThrowException(ERROR_RETRIEVING_PARMS)
+  public Parameter getSysteemParameter(String parameterType) {
+
+    List<Parm> parameters = ParmDao.findParameters(Collections.singletonList(BaseEntity.DEFAULT),
+        Collections.singletonList(BaseEntity.DEFAULT), parameterType);
+
+    return parameters.stream()
+        .findFirst()
+        .map(p -> copy(p, Parameter.class))
+        .orElse(new Parameter());
   }
 
   /**

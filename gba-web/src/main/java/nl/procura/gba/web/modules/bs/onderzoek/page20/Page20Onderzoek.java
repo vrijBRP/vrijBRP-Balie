@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.bs.onderzoek.page20;
 
 import static nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus.DISABLED;
 import static nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus.EMPTY;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.modules.bs.common.BsProces;
@@ -63,7 +64,7 @@ public class Page20Onderzoek extends BsPageOnderzoek {
         }
       };
 
-      addComponent(new BsStatusForm(getDossier()));
+      addComponent(new BsStatusForm(getDossier(), BETROKKENE));
       setInfo("Beoordeel of de melding binnen 5 werkdagen kan worden afgedaan en geef aan waarom (niet).</br> " +
           "Als dit niet kan, start het onderzoek door op Volgende (F2) te drukken en verder te gaan.</br> " +
           "Vergeet niet als dit van toepassing is om de TMV bij te werken!");
@@ -125,7 +126,7 @@ public class Page20Onderzoek extends BsPageOnderzoek {
         form4.commit();
         if (form4.getBean().getDeelresultaat()) {
           getZaakDossier().setDatumAanvangDeelresultaat(new DateTime(form4.getBean().getDatumAanvangDeelresultaat()));
-          getZaakDossier().setAanduidingGegevensDeelresultaat(AanduidingOnderzoekType.ONBEKEND.get(form4.getBean()
+          getZaakDossier().setAanduidingGegevensDeelresultaat(AanduidingOnderzoekType.get(form4.getBean()
               .getAanduidingGegevensDeelresultaat()));
         } else {
           getZaakDossier().setDatumAanvangDeelresultaat(null);

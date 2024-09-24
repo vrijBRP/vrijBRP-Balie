@@ -19,11 +19,14 @@
 
 package nl.procura.gba.web.windows.home.navigatie;
 
-import nl.procura.gba.common.ZaakStatusType;
+import static nl.procura.gba.common.ZaakStatusType.INCOMPLEET;
+import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
+
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.navigation.GbaAccordionTab;
 import nl.procura.gba.web.modules.hoofdmenu.bsm.ModuleBsm;
+import nl.procura.gba.web.modules.hoofdmenu.aanmelding.ModuleAanmelding;
 import nl.procura.gba.web.modules.hoofdmenu.kassa.ModuleKassa;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.ModuleZoeken;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
@@ -36,16 +39,15 @@ public class HoofdAccordionTab extends GbaAccordionTab {
 
     addLink(ModuleZoeken.class);
     addLink(ModuleKassa.class);
+    addLink(ModuleAanmelding.class);
     addLink(ModuleBsm.class);
   }
 
   @Override
   protected String getCount(ZaakType[] zaakTypes, ZaakNumbers zdb) {
-
-    ZaakArgumenten z = new ZaakArgumenten(ZaakStatusType.INCOMPLEET, ZaakStatusType.OPGENOMEN);
-    z.addTypen(zaakTypes);
-
-    int count = zdb.getZakenCount(z);
+    ZaakArgumenten args = new ZaakArgumenten(INCOMPLEET, OPGENOMEN);
+    args.addTypen(zaakTypes);
+    int count = zdb.getZakenCount(args);
     return (count > 0) ? ("<b>" + count + "</b>") : "0";
   }
 }

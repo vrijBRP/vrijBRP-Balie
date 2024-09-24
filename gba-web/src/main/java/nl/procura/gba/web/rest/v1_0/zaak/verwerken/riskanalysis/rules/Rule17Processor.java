@@ -53,9 +53,12 @@ public class Rule17Processor extends AbstractRuleProcessor {
       DossRiskAnalysisSubject subject,
       RiskProfileRule rule) {
 
-    return getAnrHoofdbewoner(relatedCase.getRelocation())
-        .map(anr -> checkAnumbers(relatedCase, anr))
-        .orElse(false);
+    if (relatedCase.isRelocation()) {
+      return getAnrHoofdbewoner(relatedCase.getRelocation())
+          .map(anr -> checkAnumbers(relatedCase, anr))
+          .orElse(false);
+    }
+    return false;
   }
 
   private Boolean checkAnumbers(RiskAnalysisRelatedCase relatedCase, Anummer anr) {

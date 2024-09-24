@@ -19,12 +19,15 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.adreslayout;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean3.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean3.ADRES1;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean3.ADRES2;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean3.ADRES3;
+import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean3.LAND;
 import static nl.procura.standard.Globalfunctions.pos;
 
 public class AdresForm3 extends AdresForm<AdresBean3> {
 
-  public AdresForm3(Adres adres) {
+  public AdresForm3(OnderzoekAdres adres) {
 
     super();
     setOrder(ADRES1, ADRES2, ADRES3, LAND);

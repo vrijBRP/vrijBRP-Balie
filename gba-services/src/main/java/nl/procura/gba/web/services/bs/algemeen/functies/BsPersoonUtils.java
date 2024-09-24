@@ -20,12 +20,22 @@
 package nl.procura.gba.web.services.bs.algemeen.functies;
 
 import static ch.lambdaj.Lambda.joinFrom;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_EINDE_NATIO;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_OPN_NATIO;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_VERBINTENIS;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.HUWELIJK;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.PARTNERSCHAP;
 import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierNationaliteitDatumVanafType.ANDERS;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
@@ -38,7 +48,12 @@ import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
-import nl.procura.diensten.gba.ple.extensions.*;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.diensten.gba.ple.extensions.Cat10VbtExt;
+import nl.procura.diensten.gba.ple.extensions.Cat11GezagExt;
+import nl.procura.diensten.gba.ple.extensions.Cat1PersoonExt;
+import nl.procura.diensten.gba.ple.extensions.Cat6OverlExt;
+import nl.procura.diensten.gba.ple.extensions.Cat8VbExt;
 import nl.procura.diensten.gba.ple.extensions.formats.Adres;
 import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaat.BurgerlijkeStandStatus;
 import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType;
@@ -297,17 +312,18 @@ public class BsPersoonUtils extends BsUtils {
     return kopiePersoon;
   }
 
+  public static DossierPersoon kopieDossierPersoon(BasePLExt pl) {
+    return kopieDossierPersoon(pl, new DossierPersoon());
+  }
+
   /**
    * Kopieert basispl naar persoon
    */
   public static DossierPersoon kopieDossierPersoon(BasePLExt pl, DossierPersoon persoon) {
-
     reset(persoon);
 
     if (pl != null) {
-
       Cat1PersoonExt p = pl.getPersoon();
-      Cat5HuwExt h = pl.getHuwelijk();
       Cat6OverlExt overl = pl.getOverlijding();
       Cat8VbExt vb = pl.getVerblijfplaats();
       Cat10VbtExt vbt = pl.getVerblijfstitel();

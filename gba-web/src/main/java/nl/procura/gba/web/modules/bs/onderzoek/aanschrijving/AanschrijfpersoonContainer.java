@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.aanschrijving;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.util.List;
 
 import com.vaadin.data.Item;
@@ -37,7 +39,8 @@ public class AanschrijfpersoonContainer extends IndexedContainer implements Proc
       Item item = addItem(persoon);
       String naam = persoon.getNaam().getNaam_naamgebruik_eerste_voornaam();
       String geboorte = persoon.getGeboorte().getGeboortedatum();
-      item.getItemProperty(OMSCHRIJVING).setValue(naam + " (" + geboorte + ")");
+      String geboorteString = " (" + geboorte + ")";
+      item.getItemProperty(OMSCHRIJVING).setValue(naam + (isNotBlank(geboorte) ? geboorteString : ""));
     }
   }
 }

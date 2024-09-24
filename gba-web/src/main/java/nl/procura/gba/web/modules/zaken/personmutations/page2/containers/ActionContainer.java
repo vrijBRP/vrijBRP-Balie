@@ -26,6 +26,7 @@ import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VERW;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.AKTE;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.DOCUMENT;
 import static nl.procura.burgerzaken.gba.core.enums.GBAGroup.DOCUMENTINDICATIE;
@@ -110,29 +111,34 @@ public class ActionContainer extends MutationFieldContainer {
           }
 
           // Category already exists
-          addOperationType(UPDATE_SET);
+          if (!cat.getItem().is(VERW)) {
+            addOperationType(UPDATE_SET);
+          }
 
-          // Cat 7 has no history
-          if (!cat.getItem().is(INSCHR, REISDOC, KIESR)) {
+          if (cat.getItem().is(VERW)) {
+            addOperationType(CORRECT_CURRENT_GENERAL);
+
+          } else if (!cat.getItem().is(INSCHR, REISDOC, KIESR)) {
+            // Cat 7 has no history
             addOperationType(ADD_HISTORIC);
             addOperationType(CORRECT_CURRENT_GENERAL);
             addOperationType(CORRECT_CURRENT_ADMIN);
           }
 
         } else if (record.getItem().getStatus().is(HIST)
-            && !cat.getItem().is(INSCHR, REISDOC, KIESR)) {
+            && !cat.getItem().is(INSCHR, REISDOC, KIESR, VERW)) {
           addOperationType(ADD_HISTORIC);
           addOperationType(CORRECT_HISTORIC_GENERAL);
           addOperationType(CORRECT_HISTORIC_ADMIN);
         }
 
         if (!cat.getItem().isRequired()
-            && !cat.getItem().is(REISDOC, KIESR)) {
+            && !cat.getItem().is(REISDOC, KIESR, VERW)) {
           addOperationType(CORRECT_CATEGORY);
         }
 
         // Overwrite actions        
-        if (isOverwriteCategory(cat.getItem())) {
+        if (isOverwriteCategoryByGroups(cat.getItem()) && !cat.getItem().is(VERW)) {
           addOperationType(isCurrent ? OVERWRITE_CURRENT : OVERWRITE_HISTORIC);
         }
 
@@ -141,7 +147,7 @@ public class ActionContainer extends MutationFieldContainer {
           addOperationType(isCurrent ? SUPER_OVERWRITE_CURRENT : SUPER_OVERWRITE_HISTORIC);
 
           // Cannot delete current cat 07 because it has no format history
-          if (!cat.getItem().is(INSCHR)) {
+          if (!cat.getItem().is(INSCHR, VERW)) {
             if (record.getItem().isStatus(GBARecStatus.CURRENT)) {
               // Cannot delete current cat 1,2,3,8 if no hist
               if (!(cat.getItem().is(PERSOON, OUDER_1, OUDER_2, VB)
@@ -161,7 +167,7 @@ public class ActionContainer extends MutationFieldContainer {
     }
   }
 
-  private boolean isOverwriteCategory(GBACat cat) {
+  private boolean isOverwriteCategoryByGroups(GBACat cat) {
     EnumSet<GBAGroup> groups = EnumSet.of(NAAM, GESLACHT, EMIGRATIE, IMMIGRATIE,
         NAAMGEBRUIK, DOCUMENTINDICATIE, AKTE, DOCUMENT, ONJUIST);
     return GBAGroupElements.getByCat(cat.getCode())

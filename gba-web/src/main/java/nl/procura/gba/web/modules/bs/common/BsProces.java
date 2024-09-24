@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.bs.common;
 
+import java.util.Arrays;
+
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
 import nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
@@ -106,13 +108,8 @@ public class BsProces {
   }
 
   public boolean isStatus(BsProcesStatus... statussen) {
-    for (BsProcesStatus s : statussen) {
-      if (s == status) {
-        return true;
-      }
-    }
 
-    return false;
+    return Arrays.stream(statussen).anyMatch(s -> s == status);
   }
 
   public void setStatus(BsProcesStatus status, String message) {

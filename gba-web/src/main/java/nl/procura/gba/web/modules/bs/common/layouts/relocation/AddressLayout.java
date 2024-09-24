@@ -304,11 +304,12 @@ public class AddressLayout extends VLayout {
     }
 
     if (getApplication() != null) {
-      getApplication().getMainWindow().addWindow(new AddressSelectionWindow(vAddress, selAddress -> {
+      List<Address> addresses = vAddress.stream().map(VerhuisAdres::getAddress).collect(Collectors.toList());
+      getApplication().getMainWindow().addWindow(new AddressSelectionWindow(addresses, selAddress -> {
 
         // Search specific address based on the code key
         ZoekArgumenten uz = new ZoekArgumenten();
-        ProcuraInhabitantsAddress mapAddress = (ProcuraInhabitantsAddress) selAddress.getAddress();
+        ProcuraInhabitantsAddress mapAddress = (ProcuraInhabitantsAddress) selAddress;
         uz.setCode_object(astr(mapAddress.getInternalId()));
         uz.setDatum_einde(astr(mapAddress.getEndDate()));
         uz.setVolgcode_einde(astr(mapAddress.getEndDateNumber()));

@@ -165,7 +165,7 @@ public class PersonenWsService extends GbaTemplateService {
   public WKResultWrapper getAdres(ZoekArgumenten searchArgumenten, boolean isZoekSpecifiek) {
 
     if (searchArgumenten == null || !searchArgumenten.isGevuld()) {
-      throw new ProException(ENTRY, INFO, "Geen zoekargumenten voor zoeken adres");
+      throw new ProException(ENTRY, ERROR, "Geen zoekargumenten voor zoeken adres");
     }
 
     if (isZoekSpecifiek) {
@@ -317,7 +317,7 @@ public class PersonenWsService extends GbaTemplateService {
     PLEArgs argumenten = new PLEArgs();
     argumenten.setDatasource(databron);
 
-    if (nummers != null && nummers.length > 0) {
+    if (nummers != null) {
       for (String nummer : nummers) {
         if (fil(nummer)) {
           if (Bsn.isCorrect(nummer)) {
@@ -527,7 +527,7 @@ public class PersonenWsService extends GbaTemplateService {
     boolean isOverigeArgs = args.isNawGevuld();
 
     if (!isNummers && !isOverigeArgs) {
-      throw new ProException(ENTRY, INFO, "Geen zoekargumenten ingegeven.");
+      throw new ProException(ENTRY, WARNING, "Geen zoekargumenten ingegeven.");
     }
 
     return (isNummers && !isOverigeArgs) ? PROFIEL_GBAV_PLUS : PROFIEL_STANDAARD;

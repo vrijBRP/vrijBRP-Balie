@@ -45,6 +45,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page250.Page250Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page260.Page260Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page270.Page270Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page280.Page280Zaken;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page290.Page290Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page30.Page30Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page40.Page40Zaken;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page50.Page50Zaken;
@@ -60,6 +61,7 @@ import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.levenloos.DossierLevenloos;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
+import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.ontbinding.DossierOntbinding;
@@ -171,6 +173,8 @@ public class ZaakregisterNavigator {
             nav.goToPage(new Page150Zaken((Dossier) zaak));
           } else if (dossier.getZaakDossier() instanceof DossierNaamskeuze) {
             nav.goToPage(new Page280Zaken((Dossier) zaak));
+          } else if (dossier.getZaakDossier() instanceof DossierNaturalisatie) {
+            nav.goToPage(new Page290Zaken((Dossier) zaak));
           } else if (dossier.getZaakDossier() instanceof DossierOnderzoek) {
             nav.goToPage(new Page240Zaken((Dossier) zaak));
           } else if (dossier.getZaakDossier() instanceof DossierRiskAnalysis) {

@@ -19,12 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.adreslayout.types;
 
-import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.Adres;
+import nl.procura.gba.web.modules.bs.onderzoek.adreslayout.OnderzoekAdres;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
+import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
-public class AanleidingToResultaatAdres implements Adres {
+public class AanleidingToResultaatAdres implements OnderzoekAdres {
 
   private final DossierOnderzoek onderzoek;
 
@@ -165,5 +166,15 @@ public class AanleidingToResultaatAdres implements Adres {
   @Override
   public void setAantalPersonen(FieldValue aantalPersonen) {
     onderzoek.setResultaatAantalPersonen(aantalPersonen);
+  }
+
+  @Override
+  public AddressSourceType getSource() {
+    return onderzoek.getAanleidingSource();
+  }
+
+  @Override
+  public void setSource(AddressSourceType sourceType) {
+    onderzoek.setResultaatSource(sourceType);
   }
 }

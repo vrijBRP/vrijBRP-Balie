@@ -33,9 +33,6 @@ import liquibase.database.Database;
 
 public abstract class DBCheckTemplateLb {
 
-  protected static final String DATABASECHANGELOGLOCK = "DATABASECHANGELOGLOCK";
-  protected static final String DATABASECHANGELOG     = "DATABASECHANGELOG";
-
   private final static Logger LOGGER = LoggerFactory.getLogger(DBCheckTemplateLb.class.getName());
   private final EntityManager entityManager;
   private final Database      database;

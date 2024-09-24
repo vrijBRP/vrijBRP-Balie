@@ -25,8 +25,10 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Label;
 
 import nl.procura.gba.web.application.GbaApplication;
+import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportDataWindow;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.layout.HLayout;
+import nl.procura.vaadin.theme.ProcuraWindow;
 
 public class FileImportRegistrantLayout extends HLayout {
 
@@ -37,20 +39,21 @@ public class FileImportRegistrantLayout extends HLayout {
     setStyleName("registrant-import-layout");
   }
 
-  public FileImportRegistrantLayout(FileImportRegistrant importRegistrant) {
+  public FileImportRegistrantLayout(FileImportRegistrant registrant) {
     this();
-    setFileImportRegistrant(importRegistrant);
+    setRegistrant(registrant);
   }
 
-  public void setFileImportRegistrant(FileImportRegistrant importRegistrant) {
+  public void setRegistrant(FileImportRegistrant importRegistrant) {
     setVisible(true);
     removeAllComponents();
     Label label = new Label(importRegistrant.getSummary());
     label.setSizeUndefined();
     addComponent(label);
     Button button = new Button("(Toon alle gegevens)", (ClickListener) clickEvent -> {
-      ((GbaApplication) getApplication()).getParentWindow()
-          .addWindow(new FileImportRegistrantDataWindow(importRegistrant));
+      ProcuraWindow parentWindow = ((GbaApplication) getApplication()).getParentWindow();
+      parentWindow.addWindow(new FileImportDataWindow(importRegistrant.getType().getImporter()
+          .createLayout(importRegistrant.getRecord(), null)));
     });
     button.setStyleName(GbaWebTheme.BUTTON_LINK);
     addComponent(button);

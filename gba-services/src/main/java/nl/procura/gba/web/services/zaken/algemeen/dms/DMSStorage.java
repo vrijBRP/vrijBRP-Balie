@@ -24,13 +24,17 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 
 public interface DMSStorage {
 
+  DMSResult getDocumentsById(String id);
+
   DMSResult getDocumentsByPL(BasePLExt pl);
 
   DMSResult getDocumentsByZaak(Zaak zaak);
 
+  int countDocumentsById(String id);
+
   int countDocumentsByPL(BasePLExt pl);
 
-  int countDocumentByZaak(Zaak zaak);
+  int countDocumentsByZaak(Zaak zaak);
 
   DMSDocument save(DMSDocument dmsDocument);
 

@@ -50,6 +50,14 @@ public class DmsCombinedStorage extends AbstractDmsStorage {
   }
 
   @Override
+  public DMSResult getDocumentsById(String id) {
+    List<DMSDocument> documentList = new ArrayList<>();
+    documentList.addAll(localStore.getDocumentsById(id).getDocuments());
+    documentList.addAll(objectStore.getDocumentsById(id).getDocuments());
+    return toDmsResult(documentList);
+  }
+
+  @Override
   public DMSResult getDocumentsByZaak(Zaak zaak) {
     List<DMSDocument> documentList = new ArrayList<>();
     documentList.addAll(localStore.getDocumentsByZaak(zaak).getDocuments());
@@ -58,13 +66,18 @@ public class DmsCombinedStorage extends AbstractDmsStorage {
   }
 
   @Override
+  public int countDocumentsById(String id) {
+    return localStore.countDocumentsById(id) + objectStore.countDocumentsById(id);
+  }
+
+  @Override
   public int countDocumentsByPL(BasePLExt pl) {
     return localStore.countDocumentsByPL(pl) + objectStore.countDocumentsByPL(pl);
   }
 
   @Override
-  public int countDocumentByZaak(Zaak zaak) {
-    return localStore.countDocumentByZaak(zaak) + objectStore.countDocumentByZaak(zaak);
+  public int countDocumentsByZaak(Zaak zaak) {
+    return localStore.countDocumentsByZaak(zaak) + objectStore.countDocumentsByZaak(zaak);
   }
 
   @Override

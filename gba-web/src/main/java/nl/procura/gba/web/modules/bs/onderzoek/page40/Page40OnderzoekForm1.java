@@ -19,7 +19,11 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page40;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.BETROKKENEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.DATUM_EINDE_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.HETZELFDE;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.NOGMAALS_AANSCHRIJVEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.TOELICHTING;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
@@ -91,7 +95,7 @@ public abstract class Page40OnderzoekForm1 extends GbaForm<Page40OnderzoekBean1>
           onShowWarning(true);
           break;
         case IMMIGRATIE:
-        case BINNEN:
+        case BINNEN_INTER:
         case NAAR_ANDERE:
         case EMIGRATIE:
           getField(NOGMAALS_AANSCHRIJVEN).setVisible(true);

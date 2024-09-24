@@ -38,7 +38,6 @@ import nl.procura.vaadin.component.table.indexed.IndexedTable;
 public class MeldingenTab3 extends AbstractMeldingenTab {
 
   public MeldingenTab3() {
-
     addButton(buttonDel);
     addButton(buttonExport, 1f);
     addButton(buttonClose);

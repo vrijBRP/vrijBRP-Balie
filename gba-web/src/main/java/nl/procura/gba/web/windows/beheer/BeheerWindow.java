@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.windows.beheer;
 
-import nl.procura.gba.web.components.layouts.ToolBar;
+import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
 import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.gba.web.windows.beheer.layouts.BeheerContent;
 import nl.procura.gba.web.windows.beheer.layouts.BeheerNavigation;

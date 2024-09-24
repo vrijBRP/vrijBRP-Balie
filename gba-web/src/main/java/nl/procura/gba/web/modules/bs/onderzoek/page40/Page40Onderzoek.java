@@ -19,8 +19,14 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page40;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.*;
-import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.DATUM_EINDE_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.NOGMAALS_AANSCHRIJVEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.page40.Page40OnderzoekBean1.TOELICHTING;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.EMIGRATIE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.IMMIGRATIE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.NAAR_ANDERE;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
@@ -86,7 +92,7 @@ public class Page40Onderzoek extends BsPageOnderzoek {
         }
       };
 
-      addComponent(new BsStatusForm(getDossier()));
+      addComponent(new BsStatusForm(getDossier(), BETROKKENE));
       setInfo("Bepaal aan de hand van de beschikbare informatie wat het resultaat is van het onderzoek. <br/>" +
           "Geef - indien van toepassing - aan of nogmaals aanschrijven van toepassing is. <br/>" +
           "Druk op Volgende (F2) om verder te gaan.");
@@ -101,12 +107,15 @@ public class Page40Onderzoek extends BsPageOnderzoek {
   }
 
   private void setBetrokkene(BetrokkeneType betrokkeneType) {
-    if (BINNEN.equals(betrokkeneType) || IMMIGRATIE.equals(betrokkeneType)) {
+    if (BINNEN_INTER.equals(betrokkeneType) || IMMIGRATIE.equals(betrokkeneType)) {
       adresLayout.setForm(AdresLayout.FormType.BINNEN_GEM);
+
     } else if (NAAR_ANDERE.equals(betrokkeneType)) {
       adresLayout.setForm(AdresLayout.FormType.BUITEN_GEM);
+
     } else if (EMIGRATIE.equals(betrokkeneType)) {
       adresLayout.setForm(AdresLayout.FormType.LAND);
+
     } else {
       adresLayout.setForm(null);
     }
@@ -151,11 +160,10 @@ public class Page40Onderzoek extends BsPageOnderzoek {
         getZaakDossier().setResultaatToelichting(form1.getBean().getToelichting());
       }
 
-      adresLayout.save();
-
-      getServices().getOnderzoekService().save(getDossier());
-
-      return true;
+      if (adresLayout.isSaved()) {
+        getServices().getOnderzoekService().save(getDossier());
+        return true;
+      }
     }
 
     return false;

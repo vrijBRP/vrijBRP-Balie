@@ -21,8 +21,18 @@ package nl.procura.gba.web.modules.bs.onderzoek.aanschrijving;
 
 import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_AANSCHRIJFPERSOON;
 import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_EXTERNE_BRON;
-import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.*;
-import static nl.procura.gba.web.services.zaken.documenten.DocumentType.*;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_1;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_2;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_BESLUIT;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_EXTRA;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_OVERIG;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_VOORNEMEN;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_BESLUIT;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_FASE1;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_FASE2_EXTERNE_BRON;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_FASE_EXTRA;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_VOORNEMEN;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.event.ShortcutAction;
@@ -30,7 +40,7 @@ import com.vaadin.ui.Button;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
-import nl.procura.gba.web.components.layouts.form.document.PrintSelectListener;
+import nl.procura.gba.web.components.layouts.form.document.PrintSelectRecordFilter;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
@@ -41,6 +51,7 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
+import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -50,10 +61,10 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
  */
 public class AanschrijvingPage extends NormalPageTemplate {
 
-  private AanschrijvingForm form1;
-  private final VLayout     soortLayout = new VLayout();
-  private PrintLayout       printLayout;
-
+  private AanschrijvingForm      form1;
+  private final VLayout          soortLayout   = new VLayout();
+  private PrintLayout            printLayout;
+  private MotiveringLayout       motiveringLayout;
   public final Button            buttonPreview = new Button("Voorbeeld / e-mailen");
   public final Button            buttonPrint   = new Button("Afdrukken (F3)");
   private final DossierOnderzoek zaakDossier;
@@ -71,17 +82,21 @@ public class AanschrijvingPage extends NormalPageTemplate {
       addButton(buttonPrint, 1f);
       addButton(buttonClose);
 
+      motiveringLayout = new MotiveringLayout(getServices());
+
       form1 = new AanschrijvingForm(zaakDossier) {
 
         @Override
         protected void onChangeSoort(AanschrijvingFaseType soort) {
+          motiveringLayout.load(soort);
           setSoort(soort);
         }
       };
 
-      setInfo(
-          "Selecteer de persoon en het document. Druk het document af. <br/>Druk op Volgende (F2) om verder te gaan.");
-      addComponent(form1);
+      setInfo("Selecteer de persoon en het document. Druk het document af. "
+          + "<br/>Druk op Volgende (F2) om verder te gaan.");
+
+      addComponent(new HLayout(form1, motiveringLayout).widthFull().heightFull());
       addComponent(soortLayout);
       setSoort(zaakDossier.getAanschrijvingFase());
     }
@@ -96,14 +111,19 @@ public class AanschrijvingPage extends NormalPageTemplate {
 
     if (FASE_1.equals(fase)) {
       soortLayout.addComponent(getFase1Layout());
+
     } else if (FASE_2.equals(fase)) {
       soortLayout.addComponent(getFase2Layout());
+
     } else if (FASE_EXTRA.equals(fase)) {
       soortLayout.addComponent(getFaseExtraLayout());
+
     } else if (FASE_VOORNEMEN.equals(fase)) {
       soortLayout.addComponent(getFaseVoornemenLayout());
+
     } else if (FASE_BESLUIT.equals(fase)) {
       soortLayout.addComponent(getFaseBesluitLayout());
+
     } else if (FASE_OVERIG.equals(fase)) {
       soortLayout.addComponent(getFaseOverigLayout());
     }
@@ -155,7 +175,6 @@ public class AanschrijvingPage extends NormalPageTemplate {
   }
 
   public boolean checkPage() {
-
     form1.commit();
     zaakDossier.setAanschrijvingFase(form1.getBean().getSoort());
 
@@ -181,6 +200,7 @@ public class AanschrijvingPage extends NormalPageTemplate {
         break;
     }
 
+    motiveringLayout.save();
     getServices().getOnderzoekService().save(zaakDossier.getDossier());
     return false;
   }
@@ -202,6 +222,8 @@ public class AanschrijvingPage extends NormalPageTemplate {
     if (button == buttonPrint || keyCode == ShortcutAction.KeyCode.F3) {
       setModel();
       printLayout.doPrint(false);
+      getWindow().closeWindow();
+
     } else if (button == buttonPreview) {
       setModel();
       printLayout.doPrint(true);
@@ -215,20 +237,21 @@ public class AanschrijvingPage extends NormalPageTemplate {
 
     DossierPersoon aanschrijfpersoon = (DossierPersoon) form1.getField(F_AANSCHRIJFPERSOON).getValue();
     DossierOnderzoekBron externeBron = (DossierOnderzoekBron) form1.getField(F_EXTERNE_BRON).getValue();
+    String msg = motiveringLayout.getMessage();
 
     if (form1.getField(F_EXTERNE_BRON).isVisible()) {
       form1.getField(F_EXTERNE_BRON).commit();
-      printLayout.setModel(new DossierOnderzoekTemplateData(zaakDossier, externeBron));
+      printLayout.setModel(new DossierOnderzoekTemplateData(zaakDossier, msg, externeBron));
 
     } else {
       form1.getField(F_AANSCHRIJFPERSOON).commit();
-      printLayout.setModel(new DossierOnderzoekTemplateData(zaakDossier, aanschrijfpersoon));
+      printLayout.setModel(new DossierOnderzoekTemplateData(zaakDossier, msg, aanschrijfpersoon));
     }
   }
 
   private static class PrintLayout extends PrintMultiLayout {
 
-    public PrintLayout(Object model, Zaak zaak, PrintSelectListener selectListener, DocumentType... types) {
+    public PrintLayout(Object model, Zaak zaak, PrintSelectRecordFilter selectListener, DocumentType... types) {
       super(model, zaak, selectListener, types);
     }
 

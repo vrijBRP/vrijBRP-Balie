@@ -29,7 +29,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 public class QuickSearchAddressWindow extends GbaModalWindow {
 
   private final SelectListener selectListener;
-  private CheckListener        checkListener;
+  private final CheckListener  checkListener;
   private MainModuleContainer  mainModule = null;
 
   public QuickSearchAddressWindow(SelectListener selectListener, CheckListener checkListener) {

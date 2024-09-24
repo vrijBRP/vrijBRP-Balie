@@ -168,7 +168,6 @@
 
 .download-window .download-layout .text {
     background-color: #fff;
-    padding: 10px;
 }
 
 .download-window .v-tabsheet-tabitem .v-caption .v-icon {
@@ -330,12 +329,31 @@
 
 .zaak-behandelaar-button {
     float: right;
-    height: 24px;
-    line-height: 24px;
-    vertical-align: middle;
+	height: 24px;
+	line-height: 24px;
+	vertical-align: middle;
 }
 
 .registrant-import-layout {
 	background-color: #fefef2;
 	padding: 10px;
+}
+
+/* Voor naturalisatie */
+.valuechoicewindow .tableform .label {
+	text-align: left;
+}
+
+.valuechoicewindow .tableform .label {
+	white-space: nowrap;
+	padding-right: 20px;
+}
+
+.valuechoicewindow .tableform .label:first-of-type {
+	width: 1%;
+}
+
+.valuechoicewindow .tableform .data {
+	white-space: nowrap;
+	width: 1%;
 }

@@ -35,7 +35,6 @@ import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.Globalfunctions.str2date;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,6 @@ import nl.procura.diensten.gba.ple.extensions.Cat10VbtExt;
 import nl.procura.diensten.gba.ple.extensions.formats.Naam;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
@@ -268,8 +266,7 @@ public class ReisdocumentUtils {
    * Zijn de nieuwe regels van 09-03-2014 van toepassing
    */
   public static boolean isNieuweReisdocumentenRegelsVanToepassing(ReisdocumentService reisdocumenten) {
-    String datumIngang = str2date(reisdocumenten.getParm(ParameterConstant.REISD_WIJZIGING_GEZAG));
-    return pos(datumIngang) && aval(new ProcuraDate().diffInDays(astr(datumIngang))) <= 0;
+    return true;
   }
 
   public static boolean isToonJaar(ReisdocumentService reisdocumenten, ReisdocumentType type, BasePLExt pl) {

@@ -59,21 +59,24 @@ public class AanschrijvingBean implements Serializable {
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Aanschrijfpersoon",
-      required = true)
+      required = true,
+      width = "300px")
   @Select(itemCaptionPropertyId = AanschrijfpersoonContainer.OMSCHRIJVING,
       nullSelectionAllowed = false)
   private DossierPersoon aanschrijfpersoon;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Externe bron",
-      required = true)
+      required = true,
+      width = "300px")
   @Select(itemCaptionPropertyId = ExterneBronContainer.OMSCHRIJVING,
       nullSelectionAllowed = false)
   private DossierOnderzoekBron externeBron;
 
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Soort document",
-      required = true)
+      required = true,
+      width = "300px")
   @Select(nullSelectionAllowed = false)
   private AanschrijvingFaseType soort;
 

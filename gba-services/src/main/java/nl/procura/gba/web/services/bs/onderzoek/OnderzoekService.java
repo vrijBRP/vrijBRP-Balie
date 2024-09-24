@@ -50,7 +50,11 @@ import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.gba.basistabellen.gemeente.GemeenteService;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.standard.exceptions.ProException;
@@ -268,14 +272,19 @@ public class OnderzoekService extends AbstractZaakContactService<Dossier> implem
 
     if (!personen.isEmpty()) {
       for (DossierPersoon dossierPersoon : personen) {
-        args.addNummer(dossierPersoon.getBurgerServiceNummer().getStringValue());
+        BsnFieldValue bsn = dossierPersoon.getBurgerServiceNummer();
+        if (bsn.isCorrect()) {
+          args.addNummer(bsn.getStringValue());
+        }
       }
-      count = getServices().getPersonenWsService()
-          .getPersoonslijsten(args, false)
-          .getBasisPLWrappers()
-          .stream()
-          .filter(this::isIngehouden)
-          .count();
+      if (!args.getNumbers().isEmpty()) {
+        count = getServices().getPersonenWsService()
+            .getPersoonslijsten(args, false)
+            .getBasisPLWrappers()
+            .stream()
+            .filter(this::isIngehouden)
+            .count();
+      }
     }
     return count;
   }

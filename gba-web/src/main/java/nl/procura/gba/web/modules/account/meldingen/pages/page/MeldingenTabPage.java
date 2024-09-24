@@ -19,13 +19,18 @@
 
 package nl.procura.gba.web.modules.account.meldingen.pages.page;
 
-import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.*;
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.TASK;
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.WORK;
 
 import nl.procura.gba.web.components.layouts.page.GbaPageTemplate;
 import nl.procura.gba.web.components.layouts.tabsheet.GbaTabsheet;
 import nl.procura.gba.web.modules.account.meldingen.pages.page.tab1.MeldingenTab1;
 import nl.procura.gba.web.modules.account.meldingen.pages.page.tab2.MeldingenTab2;
 import nl.procura.gba.web.modules.account.meldingen.pages.page.tab3.MeldingenTab3;
+import nl.procura.gba.web.modules.account.meldingen.pages.page.tab4.MeldingenTab4;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.applicatie.meldingen.MeldingService;
 import nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -52,33 +57,30 @@ public class MeldingenTabPage extends GbaPageTemplate {
       tabs.setSizeFull();
       tabs.setNoBorderTop();
 
-      MeldingService meldingService = getApplication().getServices().getMeldingService();
+      Services services = getApplication().getServices();
+
+      MeldingService meldingService = services.getMeldingService();
       int countM = meldingService.getMeldingen(WORK).size();
       int countS = meldingService.getMeldingen(SYSTEM).size();
       int countF = meldingService.getMeldingen(FAULT).size();
+      int countT = services.getTaskService().getOpenUserTasks().size();
 
       tabs.addTab(MeldingenTab3.class, "Foutmeldingen (" + countF + ")", null);
       tabs.addTab(MeldingenTab2.class, "Systeemmeldingen (" + countS + ")", null);
       tabs.addTab(MeldingenTab1.class, "Herinneringen (" + countM + ")", null);
-
-      boolean isWerkmeldingen = true;
-      boolean isSysteemmeldingen = true;
-      boolean isFoutmeldingen = true;
-
-      tabs.getTab(0).setVisible(isFoutmeldingen);
-      tabs.getTab(1).setVisible(isSysteemmeldingen);
-      tabs.getTab(2).setVisible(isWerkmeldingen);
+      tabs.addTab(MeldingenTab4.class, "Taken (" + countT + ")", null);
 
       if (FAULT.equals(category)) {
         tabs.setSelectedTab(0);
-      }
 
-      if (SYSTEM.equals(category)) {
+      } else if (SYSTEM.equals(category)) {
         tabs.setSelectedTab(1);
-      }
 
-      if (WORK.equals(category)) {
+      } else if (WORK.equals(category)) {
         tabs.setSelectedTab(2);
+
+      } else if (TASK.equals(category)) {
+        tabs.setSelectedTab(3);
       }
 
       addComponent(tabs);

@@ -20,7 +20,11 @@
 package nl.procura.gba.web.modules.bs.onderzoek.page30;
 
 import static nl.procura.gba.web.modules.bs.common.utils.BsOnderzoekUtils.getDateByTerm;
-import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.REACTIE_ONTVANGEN;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.START_FASE1_OP;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.START_FASE1_TM;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.TOELICHTING1;
+import static nl.procura.gba.web.modules.bs.onderzoek.page30.Page30OnderzoekBean.VERVOLGACTIES;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_FASE1_TERMIJN;
 
 import java.util.Date;
@@ -87,21 +91,7 @@ public abstract class Page30OnderzoekForm1 extends GbaForm<Page30OnderzoekBean> 
         "Datum einde termijn 1e fase",
         () -> (Date) datumEinde.getValue()));
 
-    datumStart.addListener((ValueChangeListener) event -> {
-      onChangeDates();
-    });
-
-    datumEinde.addListener((ValueChangeListener) event -> {
-      onChangeDates();
-    });
-
     BsOnderzoekUtils.setDateListener(datumStart, datumEinde, ONDERZ_FASE1_TERMIJN);
-  }
-
-  private void onChangeDates() {
-    commit();
-    zaakDossier.setFase1DatumIngang(new DateTime(getBean().getStartFase1Op()));
-    zaakDossier.setFase1DatumEinde(new DateTime(getBean().getStartFase1Tm()));
   }
 
   protected abstract void onChangeVervolg(Boolean binnen);

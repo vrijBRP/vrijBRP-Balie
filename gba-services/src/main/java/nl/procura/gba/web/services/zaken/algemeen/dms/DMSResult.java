@@ -22,16 +22,18 @@ package nl.procura.gba.web.services.zaken.algemeen.dms;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class DMSResult {
 
   private List<DMSDocument> documents = new ArrayList<>();
 
-  public List<DMSDocument> getDocuments() {
-    return documents;
+  public DMSResult() {
   }
 
-  public void setDocuments(List<DMSDocument> records) {
-    this.documents = records;
+  public DMSResult(List<DMSDocument> documents) {
+    this.documents = documents;
   }
 
   public int size() {

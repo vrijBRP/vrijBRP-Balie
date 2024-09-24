@@ -45,7 +45,7 @@ public class Page5PersonListMutationsLayout extends GbaVerticalLayout {
   public Page5PersonListMutationsLayout(PlMut mutation) {
     table = new Page5PersonListMutationsTable(mutation);
     PersonMutationOverviewForm form = new PersonMutationOverviewForm(mutation,
-        EXPLANATION, PROCESS_RELATIONS, CAT, RECORD, SET, OPERATION);
+        CAT, RECORD, SET, OPERATION, EXPLANATION, PROCESS_RELATIONS);
 
     addComponent(new Fieldset("Gegevens"));
     getInfoLayout(mutation.getPlMutRecs()).ifPresent(this::addComponent);

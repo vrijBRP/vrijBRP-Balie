@@ -109,14 +109,11 @@ public class BsZoekPage extends ButtonPageTemplate {
   public void onEnter() {
 
     if (getTable().getRecords().isEmpty()) {
-
       doSearch();
+
     } else {
-
       Record record = getTable().getSelectedRecord();
-
       if (record != null) {
-
         onSearchOrClick(record);
       }
     }

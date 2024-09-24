@@ -21,13 +21,10 @@ package nl.procura.gba.web.modules.bs.onderzoek.overzicht;
 
 import static nl.procura.standard.Globalfunctions.trim;
 
-import com.vaadin.ui.Field;
-
 import nl.procura.diensten.gba.ple.openoffice.formats.Adresformats;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
-import nl.procura.vaadin.component.layout.table.TableLayout;
 
 public abstract class OnderzoekOverzichtForm extends GbaForm<OnderzoekOverzichtBean> {
 
@@ -71,6 +68,7 @@ public abstract class OnderzoekOverzichtForm extends GbaForm<OnderzoekOverzichtB
     bean.setNaam(BsPersoonUtils.getNaam(onderzoek.getAangever()));
     bean.setDossiernrTmv(onderzoek.getAanlTmvNr());
     bean.setKenmerk(onderzoek.getAanlKenmerk());
+    bean.setToelichting(onderzoek.getAanlKenmerk());
     bean.setInstantie(onderzoek.getAanlInst());
     bean.setTav(trim(onderzoek.getAanlInstAanhef() + " " + onderzoek.getAanlInstVoorl() + " " +
         onderzoek.getAanlInstNaam()));

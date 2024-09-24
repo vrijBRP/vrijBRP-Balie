@@ -132,6 +132,9 @@ public class DocumentenPrintenService extends AbstractService {
     CSVWriter csv;
 
     try {
+      // Specify the BOM (Byte order Mask) for UTF-8 so that Excel can identify the encoding
+      // and open it in the correct format
+      csvOs.write(new byte[]{ (byte) 0xEF, (byte) 0xBB, (byte) 0xBF });
       OutputStreamWriter writer = new OutputStreamWriter(csvOs, StandardCharsets.UTF_8);
       csv = new CSVWriter(writer, format.getSeparator(), '"');
       for (String[] line : lines) {

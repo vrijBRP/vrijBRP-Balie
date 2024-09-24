@@ -122,7 +122,7 @@ public class ZaakTable extends TreeTable {
       setColumnExpandRatio(OMSCHRIJVING, 1f);
       setColumnAlignment(AANTAL, TreeTable.ALIGN_RIGHT);
       setColumnHeaderMode(TreeTable.COLUMN_HEADER_MODE_HIDDEN);
-      setColumnWidth(AANTAL, 40);
+      setColumnWidth(AANTAL, 35);
 
       initOpenItems(true);
 

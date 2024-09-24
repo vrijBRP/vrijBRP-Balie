@@ -25,6 +25,8 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOptiePage;
 import nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBuilder;
+import nl.procura.gba.web.modules.zaken.personmutations.page3.Page3PersonListMutations;
+import nl.procura.gba.web.modules.zaken.personmutations.page5.Page5PersonListMutations.WindowPersonListMutations;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 
 /**
@@ -39,7 +41,9 @@ public class Page270Zaken extends ZakenregisterOptiePage<PersonListMutation> {
 
   @Override
   protected void addOptieButtons() {
+    addOptieButton(buttonAanpassen);
     addOptieButton(buttonPersonen);
+    addOptieButton(buttonFiat);
     addOptieButton(buttonVerwerken);
   }
 
@@ -51,6 +55,12 @@ public class Page270Zaken extends ZakenregisterOptiePage<PersonListMutation> {
   @Override
   protected void goToPersoon(ZaakPersoonType type) {
     goToPersoon("pl", getZaak().getAnummer(), getZaak().getBurgerServiceNummer());
+  }
+
+  @Override
+  protected void goToZaak() {
+    Page3PersonListMutations page = new Page3PersonListMutations(getZaak());
+    getApplication().getParentWindow().addWindow(new WindowPersonListMutations(page, this::reloadTabs));
   }
 
   @Override

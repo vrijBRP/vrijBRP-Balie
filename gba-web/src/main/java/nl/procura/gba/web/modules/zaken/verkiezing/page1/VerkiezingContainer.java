@@ -21,12 +21,30 @@ package nl.procura.gba.web.modules.zaken.verkiezing.page1;
 
 import java.util.List;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
+import com.vaadin.data.Item;
+
 import nl.procura.gba.web.components.containers.GbaContainer;
 import nl.procura.gba.web.services.beheer.verkiezing.Verkiezing;
+import nl.procura.vaadin.component.container.ProcuraContainer;
 
-public class VerkiezingContainer extends GbaContainer {
+public class VerkiezingContainer extends GbaContainer implements ProcuraContainer {
 
   public VerkiezingContainer(List<Verkiezing> verkiezingen) {
-    verkiezingen.forEach(this::addItem);
+    addContainerProperty(OMSCHRIJVING, String.class, "");
+    verkiezingen.sort((o1, o2) -> new CompareToBuilder()
+        .append(o1.getVerk().getdVerk(), o2.getVerk().getdVerk())
+        .append(o1.getVerk().getVerkiezing(), o2.getVerk().getVerkiezing())
+        .build());
+
+    verkiezingen.forEach(verkiezing -> {
+      Item item = addItem(verkiezing);
+      String descr = verkiezing.toString();
+      if (verkiezing.getStempassen().isEmpty()) {
+        descr += " (niet ingedeeld)";
+      }
+      item.getItemProperty(OMSCHRIJVING).setValue(descr);
+    });
   }
 }

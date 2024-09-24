@@ -30,9 +30,9 @@ import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.Y;
 import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.Z;
 
 import nl.procura.gba.common.EnumUtils;
-import nl.procura.gba.common.EnumWithId;
+import nl.procura.gba.common.EnumWithCode;
 
-public enum RiskProfileRuleType implements EnumWithId<Integer> {
+public enum RiskProfileRuleType implements EnumWithCode<Integer> {
 
   RULE_1(1, "Verhuizing van persoon waarvan het BSN is gemarkeerd (algemeen)"),
 
@@ -86,7 +86,7 @@ public enum RiskProfileRuleType implements EnumWithId<Integer> {
 
   UNKNOWN(0, "Onbekend");
 
-  private final int          id;
+  private final int                code;
   private final String             descr;
   private final RiskProfileRuleMap variables;
 
@@ -94,8 +94,8 @@ public enum RiskProfileRuleType implements EnumWithId<Integer> {
     this(code, descr, new RiskProfileRuleMap());
   }
 
-  RiskProfileRuleType(int id, String descr, RiskProfileRuleMap variables) {
-    this.id = id;
+  RiskProfileRuleType(int code, String descr, RiskProfileRuleMap variables) {
+    this.code = code;
     this.descr = descr;
     this.variables = variables;
   }
@@ -105,12 +105,12 @@ public enum RiskProfileRuleType implements EnumWithId<Integer> {
   }
 
   public boolean is(RiskProfileRuleType... types) {
-    return EnumUtils.is(types, id);
+    return EnumUtils.is(types, code);
   }
 
   @Override
-  public Integer getId() {
-    return id;
+  public Integer getCode() {
+    return code;
   }
 
   public String getDescr() {

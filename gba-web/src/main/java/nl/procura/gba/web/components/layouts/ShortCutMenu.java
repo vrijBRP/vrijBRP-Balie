@@ -33,7 +33,14 @@ public class ShortCutMenu {
 
   private static void openMutationsMenu(GbaApplication application) {
     if (getChild(application.getParentWindow(), PersonListMutationsButton.class) != null) {
-      application.getParentWindow().addWindow(new WindowPersonListMutations());
+      if (!getPersonListMutations(application)) {
+        application.getParentWindow().addWindow(new WindowPersonListMutations());
+      }
     }
+  }
+
+  private static boolean getPersonListMutations(GbaApplication application) {
+    return application.getParentWindow().getChildWindows().stream()
+        .anyMatch(window -> window instanceof WindowPersonListMutations);
   }
 }

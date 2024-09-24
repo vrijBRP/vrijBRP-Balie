@@ -108,7 +108,11 @@ public class BsPage<T extends ZaakDossier> extends NormalPageTemplate {
   }
 
   protected BsProcessen getProcessen() {
-    return ((BsModule) getParentLayout()).getProcessen();
+    return getBsModule().getProcessen();
+  }
+
+  protected BsModule getBsModule() {
+    return (BsModule) getParentLayout();
   }
 
   /**

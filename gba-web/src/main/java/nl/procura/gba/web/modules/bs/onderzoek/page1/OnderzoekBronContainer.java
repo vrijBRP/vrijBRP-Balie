@@ -19,13 +19,17 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page1;
 
-import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.*;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.AMBTSHALVE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.BURGER;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.INSTANTIE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.LAA;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.TMV;
 
 import nl.procura.gba.web.components.containers.GbaContainer;
 
 public class OnderzoekBronContainer extends GbaContainer {
 
   public OnderzoekBronContainer() {
-    addItems(BURGER, TMV, INSTANTIE, AMBTSHALVE);
+    addItems(BURGER, TMV, INSTANTIE, AMBTSHALVE, LAA);
   }
 }

@@ -33,6 +33,7 @@ import nl.procura.gba.web.modules.zaken.huwelijk.ModuleHuwelijk;
 import nl.procura.gba.web.modules.zaken.indicatie.ModuleIndicatie;
 import nl.procura.gba.web.modules.zaken.inhouding.ModuleInhouding;
 import nl.procura.gba.web.modules.zaken.naamgebruik.ModuleNaamgebruik;
+import nl.procura.gba.web.modules.zaken.naturalisatie.ModuleNaturalisatie;
 import nl.procura.gba.web.modules.zaken.onderzoek.ModuleOnderzoek;
 import nl.procura.gba.web.modules.zaken.overlijden.ModuleOverlijden;
 import nl.procura.gba.web.modules.zaken.registration.ModuleRegistration;
@@ -62,6 +63,7 @@ public class ZakenAccordionTab extends PlAccordionTab {
     addLink(ModuleIndicatie.class);
     addLink(ModuleInhouding.class);
     addLink(ModuleNaamgebruik.class);
+    addLink(ModuleNaturalisatie.class);
     addLink(ModuleOnderzoek.class);
     addLink(ModuleOverlijden.class);
     addLink(ModuleReisdocument.class);

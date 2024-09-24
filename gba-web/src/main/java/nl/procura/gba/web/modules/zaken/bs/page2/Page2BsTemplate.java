@@ -145,13 +145,9 @@ public class Page2BsTemplate extends ZakenOverzichtPage<Dossier> {
 
       @Override
       public void onGoToZaak() {
-        goToHuwelijk();
-        close();
-      }
-
-      private void goToHuwelijk() {
         getGbaApplication().getServices().getMemoryService().setObject(Dossier.class, getZaak());
         getGbaApplication().openWindow(getParentWindow(), new HomeWindow(), fragment);
+        close();
       }
     };
 

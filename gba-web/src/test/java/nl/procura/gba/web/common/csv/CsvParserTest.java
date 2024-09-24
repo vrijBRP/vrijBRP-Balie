@@ -21,16 +21,16 @@ package nl.procura.gba.web.common.csv;
 
 import static org.junit.Assert.assertEquals;
 
-import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import nl.procura.gba.web.common.csv.CsvParser.Csv;
 import nl.procura.standard.Resource;
 import nl.procura.standard.exceptions.ProException;
+
+import lombok.SneakyThrows;
 
 /*
 Lower-, uppercase, leading, trailing spaces.
@@ -55,7 +55,7 @@ public class CsvParserTest {
   @Test
   public void mustNowAllowCaseWrongHeader() {
     exceptionRule.expect(ProException.class);
-    exceptionRule.expectMessage("Kolom 'Achternaam' ontbreekt");
+    exceptionRule.expectMessage("Veld 'Achternaam' ontbreekt");
     Csv csv = getCorrectCsv();
     assertEquals("Geslachtsnaam", csv.getHeaders().getByName("achternaam").toString());
   }
@@ -74,7 +74,7 @@ public class CsvParserTest {
   @Test
   public void mustNowAllowCaseUnknownValues() {
     exceptionRule.expect(ProException.class);
-    exceptionRule.expectMessage("Kolom 'Achternaam' ontbreekt");
+    exceptionRule.expectMessage("Veld 'Achternaam' ontbreekt");
     Csv csv = getCorrectCsv();
     assertEquals("Donald", csv.getLines().get(0).getValue("Achternaam").toString());
   }
@@ -92,8 +92,8 @@ public class CsvParserTest {
         .build());
 
     Assert.assertEquals(2, csv.getRemarks().size());
-    Assert.assertEquals("Kolom 'Geboortedatum' hoort in niet het bestand", csv.getRemarks().get(0));
-    Assert.assertEquals("Kolom 'Bla' ontbreekt in het bestand", csv.getRemarks().get(1));
+    Assert.assertEquals("Veld 'Geboortedatum' is onbekend", csv.getRemarks().get(0));
+    Assert.assertEquals("Veld 'Bla' ontbreekt", csv.getRemarks().get(1));
   }
 
   @Test

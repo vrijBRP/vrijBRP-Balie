@@ -43,6 +43,7 @@ public class OnderzoekOverzichtBean implements Serializable {
   public static final String PC                         = "pc";
   public static final String PLAATS                     = "plaats";
   public static final String KENMERK                    = "kenmerk";
+  public static final String TOELICHTING                = "toelichting";
   public static final String DATUM_ONTVANGST            = "datumOntvangst";
   public static final String AARD                       = "aard";
   public static final String VERMOED_ADRES              = "vermoedAdres";
@@ -123,6 +124,10 @@ public class OnderzoekOverzichtBean implements Serializable {
   @Field(type = LABEL,
       caption = "Kenmerk")
   private Object kenmerk = null;
+
+  @Field(type = LABEL,
+      caption = "Toelichting")
+  private Object toelichting = null;
 
   @Field(type = LABEL,
       caption = "Datum ontvangst")

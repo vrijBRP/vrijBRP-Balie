@@ -19,16 +19,17 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo;
 
+import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.date2str;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import nl.procura.diensten.gba.wk.baseWK.BaseWK;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKValue;
-import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
@@ -66,7 +67,7 @@ public class ObjectInfoBean implements Serializable {
   private String woningsoort = "";
 
   @Field(type = FieldType.LABEL,
-      caption = "Woningindicatie")
+      caption = "Geschikt voor bewoning")
   private String woningindicatie = "";
 
   @Field(type = FieldType.LABEL,
@@ -128,26 +129,25 @@ public class ObjectInfoBean implements Serializable {
   public ObjectInfoBean() {
   }
 
-  public ObjectInfoBean(BaseWKExt wk) {
+  public ObjectInfoBean(ProcuraInhabitantsAddress address) {
 
-    BaseWK bk = wk.getBasisWk();
-    setAdres(wk.getAdres());
-    setWoningsoort(get(bk.getWoning()));
-    setWoningindicatie(get(bk.getWoning_indicatie()));
-    setAdresindicatie(get(bk.getAdres_indicatie()));
-    setPpdcode(get(bk.getPpd()));
-    setStemdistrict(get(bk.getStemdistrict()));
-    setPandcode(bk.getPnd().getValue());
-    setWijkcode(get(bk.getWijk()));
-    setBuurtcode(get(bk.getBuurt()));
-    setSubbuurtcode(get(bk.getSub_buurt()));
-    setDatumIngang(bk.getDatum_ingang().getDescr());
-    setDatumEinde(bk.getDatum_einde().getDescr());
-    setOpmerking(bk.getOpmerking().getDescr());
-    setWoonplaats(bk.getWoonplaats().getDescr());
-    setOpenbareRuimte(bk.getOpenbareRuimte().getDescr());
-    setAon(bk.getAon().getDescr());
-    setIna(bk.getIna().getDescr());
+    setAdres(address.getAddressLabel());
+    setWoningsoort(address.getRecidenceType());
+    setWoningindicatie(address.isSuitableForLiving() ? "Ja" : "Nee");
+    setAdresindicatie(address.getAddressIndicationName());
+    setPpdcode(astr(address.getPPD()));
+    setStemdistrict(address.getVotingDistrict());
+    setPandcode(address.getBuildingId());
+    setWijkcode(address.getDistrict());
+    setBuurtcode(address.getNeighborhood());
+    setSubbuurtcode(address.getSubNeighborhood());
+    setDatumIngang(date2str(address.getStartDate()));
+    setDatumEinde(date2str(address.getEndDate()));
+    setOpmerking(address.getRemarks());
+    setWoonplaats(address.getResidenceName());
+    setOpenbareRuimte(address.getPublicSpace());
+    setAon(address.getAonId());
+    setIna(address.getInaId());
   }
 
   @Override

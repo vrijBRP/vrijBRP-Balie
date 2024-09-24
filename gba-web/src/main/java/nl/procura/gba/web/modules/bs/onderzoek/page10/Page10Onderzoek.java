@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
@@ -28,16 +31,14 @@ import java.util.List;
 import com.vaadin.ui.Button;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
-import nl.procura.diensten.gba.ple.openoffice.formats.Adresformats;
-import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
-import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.components.layouts.OptieLayout;
+import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
 import nl.procura.gba.web.modules.bs.onderzoek.BetrokkenenTable;
 import nl.procura.gba.web.modules.bs.onderzoek.BsPageOnderzoek;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres.BewonerWindow;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
 import nl.procura.gba.web.modules.bs.onderzoek.page11.Page11Onderzoek;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonConfig;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.SelectListener;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
@@ -45,36 +46,56 @@ import nl.procura.gba.web.services.bs.onderzoek.OnderzoekService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
+import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
+import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+import nl.procura.validation.Bsn;
 
 public class Page10Onderzoek extends BsPageOnderzoek {
 
-  private final Table  table;
-  private final Button buttonPersoon = new Button("Toevoegen");
+  private Table        table;
+  private final Button buttonToevoegen       = new Button("Toevoegen");
+  private final Button buttonMedeBetrokkenen = new Button("Gerelateerden");
 
   public Page10Onderzoek() {
-
     super("Onderzoek - betreft");
-
-    table = new Table();
-
     addButton(buttonPrev);
     addButton(buttonNext);
-
-    OptieLayout ol = new OptieLayout();
-    ol.getRight().setCaption("Personen");
-    ol.getRight().setWidth("160px");
-    ol.getRight().addButton(buttonPersoon, this);
-    ol.getRight().addButton(buttonDel, this);
-    ol.getLeft().addComponent(new Fieldset("Betreffende personen", table));
-    addComponent(ol);
   }
 
   @Override
   protected void initPage() {
     super.initPage();
-    if (table.getRecords().isEmpty()) {
-      openAdresWindow();
+
+    addComponent(new BsStatusForm(getDossier(), BETROKKENE));
+
+    setInfo("Voeg alleen personen toe die nu op hetzelfde adres staan ingeschreven");
+
+    OptieLayout ol = new OptieLayout();
+    ol.getRight().setCaption("Personen");
+    ol.getRight().setWidth("160px");
+    ol.getRight().addButton(buttonToevoegen, this);
+    ol.getRight().addButton(buttonMedeBetrokkenen, this);
+    ol.getRight().addButton(buttonDel, this);
+
+    table = new Table();
+    ol.getLeft().addComponent(new Fieldset("Betreffende personen", table));
+    addComponent(ol);
+
+    if (getZaakDossier().getBetrokkenen().isEmpty()) {
+      if (getNavigation().getPage(Page11Onderzoek.class) == null) {
+        persoonToevoegen();
+        return;
+      }
     }
+    getNavigation().removePage(Page11Onderzoek.class);
+  }
+
+  @Override
+  public void event(PageEvent event) {
+    if (event.isEvent(AfterReturn.class)) {
+      table.init();
+    }
+    super.event(event);
   }
 
   @Override
@@ -99,6 +120,10 @@ public class Page10Onderzoek extends BsPageOnderzoek {
       throw new ProException(WARNING, "Voeg eerst de betreffende personen toe.");
     }
 
+    if (areDifferent(personen)) {
+      throw new ProException(WARNING, "De personen hebben verschillende adressen.");
+    }
+
     for (DossierPersoon dossierPersoon : personen) {
       if (dossierPersoon.isVolledig()) {
         getZaakDossier().getDossier().toevoegenPersoon(dossierPersoon);
@@ -120,12 +145,16 @@ public class Page10Onderzoek extends BsPageOnderzoek {
     return true;
   }
 
+  private boolean areDifferent(List<DossierPersoon> personen) {
+    return personen.stream()
+        .collect(groupingBy(p -> p.getAdres().getAdres_pc_wpl_gem(), counting()))
+        .size() > 1;
+  }
+
   @Override
   public void onDelete() {
     List<DossierPersoon> personen = table.getSelectedValues(DossierPersoon.class);
-    for (DossierPersoon persoon : personen) {
-      getServices().getOnderzoekService().deleteBetrokkene(getZaakDossier(), persoon);
-    }
+    personen.forEach(persoon -> getServices().getOnderzoekService().deleteBetrokkene(getZaakDossier(), persoon));
 
     table.init();
     super.onDelete();
@@ -133,37 +162,49 @@ public class Page10Onderzoek extends BsPageOnderzoek {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-    if (button == buttonPersoon) {
-      openAdresWindow();
+    if (button == buttonToevoegen) {
+      persoonToevoegen();
+
+    } else if (button == buttonMedeBetrokkenen) {
+      openMedeBetrokkeneWindow();
     }
 
     super.handleEvent(button, keyCode);
   }
 
-  private void openAdresWindow() {
-    SelectieAdres adres = null;
-    ArrayList<DossierPersoon> personen = table.getAllValues(DossierPersoon.class);
-    if (!personen.isEmpty()) {
+  private void persoonToevoegen() {
+    DossierPersoon dossierPersoon = new DossierPersoon(DossierPersoonType.BETROKKENE);
+    getNavigation().goToPage(new Page11Onderzoek(dossierPersoon));
+  }
+
+  private void openMedeBetrokkeneWindow() {
+    ArrayList<DossierPersoon> personen = table.getSelectedValues(DossierPersoon.class);
+    if (personen.isEmpty()) {
+      throw new ProException("Selecteer eerst één betrokkene");
+    } else {
       DossierPersoon persoon = personen.get(0);
-      ZoekArgumenten args = new ZoekArgumenten();
-      Adresformats adresformats = persoon.getAdres();
-      args.setPostcode(adresformats.getPostcode());
-      args.setHuisnummer(adresformats.getHuisnummer());
-      args.setHuisletter(adresformats.getHuisletter());
-      args.setHuisnummertoevoeging(adresformats.getHuisnummertoev());
-      args.setDatum_einde("-1");
-      List<BaseWKExt> basisWkWrappers = getServices().getPersonenWsService().getAdres(args, true).getBasisWkWrappers();
-      if (!basisWkWrappers.isEmpty()) {
-        adres = new SelectieAdres(basisWkWrappers.get(0));
+      Bsn bsn = new Bsn(persoon.getBurgerServiceNummer().getStringValue());
+      if (bsn.isCorrect()) {
+        getParentWindow().addWindow(new Page10OnderzoekRelatieWindow(QuickSearchPersonConfig.builder()
+            .bsn(bsn)
+            .sameAddress(true)
+            .selectListener(getSelectListener())
+            .build()));
+      } else {
+        throw new ProException(WARNING, "Geselecteerde betrokkene is niet ingeschreven in de BRP");
       }
     }
+  }
 
-    getParentWindow().addWindow(new BewonerWindow(adres, dossierPersoon -> {
+  private SelectListener getSelectListener() {
+    return pl -> {
+      DossierPersoon dossierPersoon = new DossierPersoon(DossierPersoonType.BETROKKENE);
+      BsPersoonUtils.kopieDossierPersoon(pl, dossierPersoon);
       dossierPersoon.setDefinitief(true);
       getZaakDossier().getDossier().toevoegenPersoon(dossierPersoon);
-      successMessage("Personen zijn toegevoegd");
+      successMessage("Persoon is toegevoegd");
       table.init();
-    }));
+    };
   }
 
   public class Table extends BetrokkenenTable {
@@ -171,7 +212,7 @@ public class Page10Onderzoek extends BsPageOnderzoek {
     @Override
     public void setColumns() {
       setSelectable(true);
-      setMultiSelect(true);
+      setMultiSelect(false);
 
       addColumn("Nr.", 50);
       addColumn("Naam", 300);

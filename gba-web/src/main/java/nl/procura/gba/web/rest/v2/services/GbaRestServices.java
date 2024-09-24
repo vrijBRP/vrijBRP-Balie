@@ -58,6 +58,9 @@ public class GbaRestServices {
   @Inject
   private GbaRestGebruikerService gebruikerService;
 
+  @Inject
+  private GbaRestDataImportService dataImportService;
+
   private Services services;
 
   public GbaRestServices setServices(Services services) {
@@ -107,6 +110,10 @@ public class GbaRestServices {
 
   public GbaRestGebruikerService getGebruikerService() {
     return gebruikerService;
+  }
+
+  public GbaRestDataImportService getDataImportService() {
+    return dataImportService;
   }
 
   public Services getServices() {

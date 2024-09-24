@@ -20,7 +20,9 @@
 package nl.procura.gba.web.modules.bs.onderzoek.page20;
 
 import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.AANDUIDING_GEG_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.AANDUIDING_GEG_ONDERZOEK_NVT;
 import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.DATUM_AANVANG_ONDERZOEK;
+import static nl.procura.gba.web.modules.bs.onderzoek.page20.Page20OnderzoekBean.DATUM_AANVANG_ONDERZOEK_NVT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_DEFAULT_AAND;
 
 import java.util.Date;
@@ -29,6 +31,7 @@ import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.components.validators.DatumVolgordeValidator;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.parameter.ParameterService;
+import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.onderzoek.enums.AanduidingOnderzoekType;
 import nl.procura.vaadin.component.field.ProDateField;
@@ -56,7 +59,20 @@ public class Page20OnderzoekForm2 extends GbaForm<Page20OnderzoekBean> {
       bean.setAanduidingGegevensOnderzoek(AanduidingOnderzoekType.get(defaultAand).getCode());
     }
 
+    if (!isInLokaleBRP(zaakDossier)) {
+      setOrder(DATUM_AANVANG_ONDERZOEK_NVT, AANDUIDING_GEG_ONDERZOEK_NVT);
+      setCaption("Start onderzoek (persoon is niet ingeschreven in de gemeente)");
+      bean.setDatumAanvangOnderzoek(null);
+      bean.setAanduidingGegevensOnderzoek(null);
+    }
+
     setBean(bean);
+  }
+
+  private boolean isInLokaleBRP(DossierOnderzoek zaakDossier) {
+    return zaakDossier.getBetrokkenen().stream()
+        .filter(DossierPersoon::isInGemeente)
+        .anyMatch(DossierPersoon::isIngeschreven);
   }
 
   @Override
@@ -64,8 +80,10 @@ public class Page20OnderzoekForm2 extends GbaForm<Page20OnderzoekBean> {
     super.afterSetBean();
     Date datumOntvangst = zaakDossier.getDatumOntvangstMelding().getDate();
     ProDateField datumAanvangOnderzoek = getField(DATUM_AANVANG_ONDERZOEK, ProDateField.class);
-    datumAanvangOnderzoek.addValidator(
-        new DatumVolgordeValidator("Datum ontvangst melding", () -> datumOntvangst, "Datum aanvang onderzoek",
-            () -> (Date) datumAanvangOnderzoek.getValue()));
+    if (datumAanvangOnderzoek != null) {
+      datumAanvangOnderzoek.addValidator(
+          new DatumVolgordeValidator("Datum ontvangst melding", () -> datumOntvangst, "Datum aanvang onderzoek",
+              () -> (Date) datumAanvangOnderzoek.getValue()));
+    }
   }
 }

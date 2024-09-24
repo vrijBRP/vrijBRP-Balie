@@ -36,12 +36,12 @@ public enum BestandType {
   TXT("txt", "Tekstbestand", "file.png", true),
   PROPERTIES("properties", "Eigenschappen", "file.png", true),
   XML("xml", "XML bestand", "file.png", true),
-  PNG("png", "Afbeelding (PNG)", "file.png", true),
-  BMP("bmp", "Afbeelding (BMP)", "file.png", true),
-  TIF("tif", "Afbeelding (TIF)", "file.png", true),
-  TIFF("tiff", "Afbeelding (TIFF)", "file.png", true),
-  JPG("jpg", "Afbeelding (JPG)", "file.png", true),
-  JPEG("jpeg", "Afbeelding (JPG)", "file.png", true),
+  PNG("png", "Afbeelding (PNG)", "img.png", true),
+  BMP("bmp", "Afbeelding (BMP)", "img.png", true),
+  TIF("tif", "Afbeelding (TIF)", "img.png", true),
+  TIFF("tiff", "Afbeelding (TIFF)", "img.png", true),
+  JPG("jpg", "Afbeelding (JPG)", "img.png", true),
+  JPEG("jpeg", "Afbeelding (JPG)", "img.png", true),
   ONBEKEND("onb", "Onbekend", "file.png", false);
 
   private final String  type;

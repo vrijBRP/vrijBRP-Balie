@@ -21,64 +21,40 @@ package nl.procura.gba.web.modules.account.wachtwoord.pages.passwordlost;
 
 import static nl.procura.gba.web.modules.account.wachtwoord.pages.passwordlost.PasswordLostBean.EMAIL;
 
-import java.util.Optional;
-
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
-import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 
 public class PasswordLostForm extends GbaForm<PasswordLostBean> {
 
-  private Gebruiker gebruiker = null;
+    public PasswordLostForm() {
 
-  public PasswordLostForm() {
+        setOrder(EMAIL);
+        setColumnWidths("80px", "");
+        setBean(new PasswordLostBean());
+    }
 
-    setOrder(EMAIL);
-    setColumnWidths("80px", "");
-    setBean(new PasswordLostBean());
-  }
-
-  public Gebruiker getGebruiker() {
-    return gebruiker;
-  }
-
-  public void setGebruiker(Gebruiker gebruiker) {
-    this.gebruiker = gebruiker;
-  }
-
-  @Override
-  public void setBean(Object bean) {
-
-    super.setBean(bean);
-
-    getField(EMAIL).addValidator(new Validator());
-  }
-
-  protected Optional<Gebruiker> findGebruiker() {
-    return Optional.empty();
-  }
-
-  class Validator extends AbstractValidator {
-    public Validator() {
-      super("Fout");
+    public String getEmail() {
+        return getValue(EMAIL).toString();
     }
 
     @Override
-    public boolean isValid(Object value) {
-      if (new EmailValidator("").isValid(value)) {
-        Optional<Gebruiker> gebruiker = findGebruiker();
-        if (gebruiker.isPresent()) {
-          setGebruiker(gebruiker.get());
-          return true;
-        } else {
-          setErrorMessage("Dit e-mail adres is niet gekopppeld aan een account");
-          return false;
-        }
-      }
+    public void setBean(Object bean) {
 
-      return true;
+        super.setBean(bean);
+
+        getField(EMAIL).addValidator(new Validator());
     }
-  }
+
+    class Validator extends AbstractValidator {
+        public Validator() {
+            super("Fout");
+        }
+
+        @Override
+        public boolean isValid(Object value) {
+            return new EmailValidator("").isValid(value);
+        }
+    }
 }

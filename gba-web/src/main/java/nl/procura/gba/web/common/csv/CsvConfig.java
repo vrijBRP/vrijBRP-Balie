@@ -25,7 +25,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import nl.procura.gba.web.common.csv.CsvHeader.CsvHeaderBuilder;
-import nl.procura.gba.web.common.csv.CsvParser.CsvHeaders;
 
 import lombok.Builder;
 import lombok.Getter;

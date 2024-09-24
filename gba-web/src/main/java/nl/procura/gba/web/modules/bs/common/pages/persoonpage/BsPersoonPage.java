@@ -25,6 +25,7 @@ import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.emp;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.vaadin.data.Validator.InvalidValueException;
@@ -164,6 +165,7 @@ public class BsPersoonPage<T extends ZaakDossier> extends BsPage<T> {
       boolean isWoonNl = Landelijk.isNederland(b3.getWoonland());
       a.setWoonplaats(isWoonNl ? b3.getWoonplaatsNL() : new FieldValue(-1, b3.getWoonplaatsBuitenland()));
       a.setWoongemeente(b3.getWoongemeente());
+      a.setInGemeente(getServices().getGebruiker().isGemeente(along(a.getCWoonGemeente())));
       a.setLand(b3.getWoonland());
     }
 
@@ -371,7 +373,8 @@ public class BsPersoonPage<T extends ZaakDossier> extends BsPage<T> {
       @Override
       public void delete(DossierNationaliteit nationaliteit) {
 
-        getServices().getDossierService().deleteNationaliteiten(dossierPersoon, asList(nationaliteit));
+        getServices().getDossierService().deleteNationaliteiten(dossierPersoon,
+            Collections.singletonList(nationaliteit));
       }
     };
 

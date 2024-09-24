@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
+
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.commons.core.utils.ProStringUtils;
 import nl.procura.gba.common.ZaakStatusType;
@@ -39,6 +42,7 @@ import nl.procura.gba.jpa.personen.db.PlMutRec;
 import nl.procura.gba.jpa.personen.db.PlMutRecPK;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.verwerken.BsmVerwerkingWindow;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.task.TaskSelectieWindow;
 import nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewForm;
 import nl.procura.gba.web.modules.zaken.personmutations.page1.Page1PersonListMutations;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElem;
@@ -47,6 +51,10 @@ import nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.Person
 import nl.procura.gba.web.modules.zaken.personmutations.relatedcategories.PersonListRelationMutationHandler;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
+import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEvent;
+import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskEventType;
+import nl.procura.gba.web.services.zaken.algemeen.tasks.events.ZaakTaskEvents;
+import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 
@@ -54,7 +62,10 @@ public class Page4PersonListMutations extends NormalPageTemplate {
 
   private final PersonListMutElems mutations;
   private final PersonListMutation mutation;
+  private final Button             tasksButton = new Button("Taken / vervolgmutaties",
+      (ClickListener) clickEvent -> onTasks());
 
+  private TaskEvent                      taskEvent;
   private Page4PersonListMutationsLayout layout;
   private Page4PersonRelationCheckbox    personRelationCheckbox;
 
@@ -76,6 +87,10 @@ public class Page4PersonListMutations extends NormalPageTemplate {
       addButton(buttonNext);
     } else {
       buttonSave.setCaption("Opslaan (F9)");
+    }
+
+    if (!mutation.isStored()) {
+      addButton(tasksButton);
     }
 
     addButton(buttonSave, 1f);
@@ -108,7 +123,24 @@ public class Page4PersonListMutations extends NormalPageTemplate {
     addComponent(layout);
     setExpandRatio(layout, 1.0F);
 
+    if (!mutation.isStored()) {
+      initTasks();
+      onTasks();
+    }
+
     super.initPage();
+  }
+
+  private void initTasks() {
+    List<TaskEventType> eventTypes = ZaakTaskEvents.getEvents(mutation);
+    taskEvent = new TaskEvent(mutation.getZaakId(), eventTypes);
+    tasksButton.setEnabled(!eventTypes.isEmpty());
+  }
+
+  private void onTasks() {
+    TaskSelectieWindow.init(getWindow(), taskEvent,
+        () -> tasksButton.setCaption(String.format("Taken / vervolgmutaties (%d)",
+            taskEvent.getTasks().size())));
   }
 
   @Override
@@ -181,10 +213,16 @@ public class Page4PersonListMutations extends NormalPageTemplate {
 
     // Save the mutation
     getServices().getPersonListMutationService().save(mutation, mutationRecords);
+    getServices().getTaskService().save(taskEvent);
   }
 
   private void returnToList() {
-    getNavigation().removeOtherPages();
-    getNavigation().goToPage(Page1PersonListMutations.class);
+    if (getApplication().getParentWindow() instanceof HomeWindow) {
+      getWindow().closeWindow();
+
+    } else {
+      getNavigation().removeOtherPages();
+      getNavigation().goToPage(Page1PersonListMutations.class);
+    }
   }
 }

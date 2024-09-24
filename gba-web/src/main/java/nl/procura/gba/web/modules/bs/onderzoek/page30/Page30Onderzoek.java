@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page30;
 
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
+
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.common.DateTime;
@@ -69,7 +71,7 @@ public class Page30Onderzoek extends BsPageOnderzoek {
         }
       };
 
-      addComponent(new BsStatusForm(getDossier()));
+      addComponent(new BsStatusForm(getDossier(), BETROKKENE));
       setInfo("Bepaal aan de hand van de beschikbare informatie of uitbreiding van het onderzoek noodzakelijk is. " +
           "<br/>Vul - indien van toepassing - de vervolgactie(s) in. " +
           "<br/>Pas indien nodig de afhandeltermijn aan in de TMV. " +

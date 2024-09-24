@@ -19,7 +19,17 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page1;
 
-import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.*;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.ADRES;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.AFDELING;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.INSTANTIE;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.KENMERK;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.NR;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.PC;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.PLAATS;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.TAV_AANHEF;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.TAV_NAAM;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.TAV_VOORL;
+import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.TOELICHTING;
 
 import com.vaadin.ui.Field;
 
@@ -47,6 +57,10 @@ public class Page1OnderzoekForm2 extends GbaForm<Page1OnderzoekBean> {
         break;
       case AMBTSHALVE:
         setOrder(AFDELING, KENMERK);
+        break;
+      case LAA:
+        setCaption("Informatieknooppunt (IKP)");
+        setOrder(TOELICHTING);
         break;
       case ONBEKEND:
         break;
@@ -80,6 +94,7 @@ public class Page1OnderzoekForm2 extends GbaForm<Page1OnderzoekBean> {
     b.setPc(new FieldValue(zaakDossier.getAanlInstPc()));
     b.setPlaats(zaakDossier.getAanlInstPlaats());
     b.setKenmerk(zaakDossier.getAanlKenmerk());
+    b.setToelichting(zaakDossier.getAanlKenmerk());
     b.setAfdeling(zaakDossier.getAanlAfdeling());
     setBean(b);
   }

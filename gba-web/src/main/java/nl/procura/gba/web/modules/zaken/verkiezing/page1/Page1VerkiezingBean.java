@@ -47,7 +47,8 @@ public class Page1VerkiezingBean implements Serializable {
       caption = "Verkiezing",
       width = "600px",
       required = true)
-  @Select(nullSelectionAllowed = false)
+  @Select(nullSelectionAllowed = false,
+      itemCaptionPropertyId = VerkiezingContainer.OMSCHRIJVING)
   private Verkiezing verkiezing;
 
   @Field(customTypeClass = ProTextField.class,

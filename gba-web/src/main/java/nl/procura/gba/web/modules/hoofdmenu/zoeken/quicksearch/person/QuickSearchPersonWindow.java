@@ -33,29 +33,35 @@ import nl.procura.validation.Anummer;
 
 public class QuickSearchPersonWindow extends GbaModalWindow {
 
-  private final Anummer        anummer;
-  private final SelectListener selectListener;
+  private final QuickSearchPersonConfig config;
 
   public QuickSearchPersonWindow(SelectListener selectListener) {
-    this(null, selectListener);
+    this(QuickSearchPersonConfig.builder().selectListener(selectListener).build());
   }
 
   public QuickSearchPersonWindow(Anummer anummer, SelectListener selectListener) {
+    this(QuickSearchPersonConfig.builder()
+        .selectListener(selectListener)
+        .anummer(anummer)
+        .build());
+  }
+
+  public QuickSearchPersonWindow(QuickSearchPersonConfig config) {
     super("Zoek personen (Druk op escape om te sluiten)", "700px");
-    this.anummer = anummer;
-    this.selectListener = selectListener;
+    this.config = config;
   }
 
   @Override
   public void attach() {
     super.attach();
 
-    if (anummer != null && anummer.isCorrect()) {
+    if (config.hasBsnOrAnr()) {
       GbaTabsheet tabSheet = new GbaTabsheet();
       tabSheet.setSizeFull();
       tabSheet.setNoBorderTop();
       tabSheet.addTab(new Module(), "Zoeken");
-      tabSheet.addTab(new Page3QuickSearch(anummer, selectListener), "Gerelateerden");
+      tabSheet.addTab(new Page3QuickSearch(config), "Gerelateerden");
+      config.getPages().forEach((key, value) -> tabSheet.addTab(value, key));
       setContent(tabSheet);
 
     } else {
@@ -78,7 +84,7 @@ public class QuickSearchPersonWindow extends GbaModalWindow {
     public void event(PageEvent event) {
       super.event(event);
       if (event.isEvent(InitPage.class)) {
-        getPages().getNavigation().goToPage(new Page1QuickSearch(selectListener));
+        getPages().getNavigation().goToPage(new Page1QuickSearch(config.getSelectListener()));
       }
     }
   }

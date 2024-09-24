@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.29.5</version>
+    <version>1.30.0</version>
   </parent>
 
   <artifactId>gba-services</artifactId>
@@ -25,7 +23,6 @@
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-rest-client</artifactId>
-      <version>${project.parent.version}</version>
     </dependency>
 
     <dependency>
@@ -167,26 +164,9 @@
     </dependency>
 
     <dependency>
-      <groupId>nl.vrijbrp.gba.bsm.core</groupId>
+      <groupId>nl.vrijbrp.bsm</groupId>
       <artifactId>bsm-rest-client</artifactId>
-      <version>${bsm.version}</version>
-      <exclusions>
-        <!-- Removed these from BSM -->
-        <exclusion>
-          <groupId>nl.procura.proweb-rest</groupId>
-          <artifactId>proweb-rest-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>nl.procura.proweb-rest</groupId>
-          <artifactId>proweb-rest-shared</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>nl.vrijbrp.gba.bsm</groupId>
-      <artifactId>gba-bsm-shared</artifactId>
-      <version>${bsm.version}</version>
+      <version>${bsm-rest.version}</version>
     </dependency>
 
     <!-- Voor encryptie -->
@@ -222,6 +202,18 @@
       <groupId>nl.vrijbrp</groupId>
       <artifactId>ootools</artifactId>
       <version>${vrijbrp-libs.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.freemarker</groupId>
+          <artifactId>freemarker</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.31</version>
     </dependency>
 
     <!-- PDF -->

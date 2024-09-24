@@ -36,29 +36,34 @@ public class ExterneBronContainer extends IndexedContainer implements ProcuraCon
     addContainerProperty(OMSCHRIJVING, String.class, "");
     removeAllItems();
 
-    for (DossierOnderzoekBron bron : bronnen) {
+    if (bronnen.isEmpty()) {
+      Item item = addItem(new DossierOnderzoekBron());
+      item.getItemProperty(OMSCHRIJVING).setValue("<Geen externe bron>");
 
-      Item item = addItem(bron);
-      String inst = bron.getInst();
-      String tav = bron.getInstTav();
-      StringBuilder naam = new StringBuilder();
+    } else {
+      for (DossierOnderzoekBron bron : bronnen) {
+        Item item = addItem(bron);
+        String inst = bron.getInst();
+        String tav = bron.getInstTav();
+        StringBuilder naam = new StringBuilder();
 
-      if (isNotBlank(inst)) {
-        naam.append(inst);
+        if (isNotBlank(inst)) {
+          naam.append(inst);
+        }
+
+        if (isNotBlank(bron.getInstAfdeling())) {
+          naam.append(" ");
+          naam.append(bron.getInstAfdeling());
+        }
+
+        if (isNotBlank(tav)) {
+          naam.append(" (t.a.v. ");
+          naam.append(tav);
+          naam.append(")");
+        }
+
+        item.getItemProperty(OMSCHRIJVING).setValue(Globalfunctions.trim(naam.toString()));
       }
-
-      if (isNotBlank(bron.getInstAfdeling())) {
-        naam.append(" ");
-        naam.append(bron.getInstAfdeling());
-      }
-
-      if (isNotBlank(tav)) {
-        naam.append(" (t.a.v. ");
-        naam.append(tav);
-        naam.append(")");
-      }
-
-      item.getItemProperty(OMSCHRIJVING).setValue(Globalfunctions.trim(naam.toString()));
     }
   }
 }

@@ -173,6 +173,6 @@ public class GbaRestZaakResourceV2Server extends GbaRestServiceResource
       GbaRestZaakDocumentToevoegenVraag request) {
     return tryCall(() -> new GbaRestAntwoord<>(getGbaRestServices()
         .getDmsService()
-        .addDocument(zaakId, request)));
+        .addZaakDocument(zaakId, request)));
   }
 }

@@ -23,8 +23,8 @@ import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijk
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -85,13 +85,22 @@ public class GbaRestDmsService extends GbaRestAbstractService {
     return null;
   }
 
-  public GbaRestZaakDocument addDocument(String zaakId, GbaRestZaakDocumentToevoegenVraag request) throws IOException {
+  public GbaRestZaakDocument addDocument(String folderId, GbaRestZaakDocument document, byte[] content)
+      throws IOException {
+    File bestand = DocumentenPrintenService.newTijdelijkBestand(document.getBestandsnaam());
+    IOUtils.write(content, Files.newOutputStream(bestand.toPath()));
+    DMSDocument dmsDocument = toDmsDocument(document, bestand);
+    dmsDocument.setZaakId(folderId);
+    return toGbaRestZaakDocument(getServices().getDmsService().save(dmsDocument));
+  }
+
+  public GbaRestZaakDocument addZaakDocument(String zaakId, GbaRestZaakDocumentToevoegenVraag request)
+      throws IOException {
     Zaak zaak = getRestServices().getZaakService().getZaakByZaakId(zaakId);
     File bestand = DocumentenPrintenService.newTijdelijkBestand(request.getDocument().getBestandsnaam());
-    IOUtils.write(request.getInhoud(), new FileOutputStream(bestand));
+    IOUtils.write(request.getInhoud(), Files.newOutputStream(bestand.toPath()));
     DMSDocument dmsDocument = toDmsDocument(request.getDocument(), bestand);
-    DMSDocument document = getServices().getDmsService().save(zaak, dmsDocument);
-    return toGbaRestZaakDocument(document);
+    return toGbaRestZaakDocument(getServices().getDmsService().save(zaak, dmsDocument));
   }
 
   private DMSDocument toDmsDocument(GbaRestZaakDocument document, File bestand) {

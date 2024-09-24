@@ -19,14 +19,26 @@
 
 package nl.procura.gba.jpa.personen.db;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
+import org.eclipse.persistence.annotations.BatchFetch;
+import org.eclipse.persistence.annotations.BatchFetchType;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "filerecord")
 public class FileRecord extends BaseEntity<Long> {
@@ -51,30 +63,27 @@ public class FileRecord extends BaseEntity<Long> {
   @Column(name = "c_fileimport")
   private Long cFileImport;
 
+  @Column(name = "uuid")
+  private String uuid;
+
   @Column(name = "content")
   private byte[] content;
 
-  public Long getcFileRecord() {
-    return cFileRecord;
+  public FileRecord() {
+    setUuid("dataimport-" + UUID.randomUUID());
   }
 
-  public void setcFileRecord(Long cFileRecord) {
-    this.cFileRecord = cFileRecord;
-  }
-
-  public Long getcFileImport() {
-    return cFileImport;
-  }
-
-  public void setcFileImport(Long cFileImport) {
+  public FileRecord(Long cFileImport, byte[] content) {
+    this();
     this.cFileImport = cFileImport;
-  }
-
-  public byte[] getContent() {
-    return content;
-  }
-
-  public void setContent(byte[] content) {
     this.content = content;
   }
+
+  @ManyToOne
+  @BatchFetch(BatchFetchType.IN)
+  @JoinColumn(name = "c_fileimport",
+      nullable = false,
+      insertable = false,
+      updatable = false)
+  private FileImport fileImport;
 }

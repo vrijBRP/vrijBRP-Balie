@@ -19,11 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.registration;
 
+import java.util.Optional;
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 
-import java.util.Optional;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
+import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
 import nl.procura.gba.web.modules.bs.common.modules.BsModule;
 import nl.procura.gba.web.modules.bs.registration.fileimport.FileImportRegistrant;
 import nl.procura.gba.web.modules.bs.registration.page10.Page10Registration;
@@ -99,11 +101,22 @@ public class ModuleRegistration extends BsModule {
     super.event(event);
   }
 
-  public void setImportRegistrant(FileImportRegistrant importRegistrant) {
+  public FileImportRegistrant setImportRegistrant(FileImportRegistrant importRegistrant) {
     this.importRegistrant = importRegistrant;
+    return importRegistrant;
   }
 
   public Optional<FileImportRegistrant> getImportRegistrant() {
-    return Optional.ofNullable(importRegistrant);
+    Optional<FileImportRegistrant> registrant = Optional.ofNullable(importRegistrant);
+    if (registrant.isPresent()) {
+      return registrant;
+    } else {
+      DossierRegistration zaakDossier = (DossierRegistration) dossier.getZaakDossier();
+      return Optional.ofNullable(zaakDossier.getCFileRecord())
+          .map(id -> getApplication().getServices().getFileImportService().getFileImportRecord(id))
+          .flatMap(rec -> FileImportType.getById(rec.getTemplate())
+              .map(type -> setImportRegistrant(FileImportRegistrant.of(type, rec))));
+    }
   }
+
 }

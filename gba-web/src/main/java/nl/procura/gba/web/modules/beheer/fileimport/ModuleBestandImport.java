@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.beheer.fileimport;
 
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.components.layouts.ModuleTemplate;
-import nl.procura.gba.web.modules.beheer.fileimport.page1.Page1BestandImport;
+import nl.procura.gba.web.modules.beheer.fileimport.page1.Page1FileImport;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -39,7 +39,7 @@ public class ModuleBestandImport extends ModuleTemplate {
     super.event(event);
 
     if (event.isEvent(InitPage.class)) {
-      getPages().getNavigation().goToPage(Page1BestandImport.class);
+      getPages().getNavigation().goToPage(Page1FileImport.class);
     }
   }
 }

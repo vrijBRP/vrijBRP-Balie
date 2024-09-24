@@ -19,17 +19,65 @@
 
 package nl.procura.gba.web.modules.bs.registration.fileimport;
 
-import com.vaadin.ui.Label;
-import lombok.Getter;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.ACHTERNAAM;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.EMAIL;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.GEBOORTEDATUM;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.GEBOORTELAND;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.GEBOORTEPLAATS;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.GESLACHT;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.HUISLETTER;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.HUISNUMMER;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.LAND_VAN_VORIG_ADRES;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.NATIONALITEIT;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.POSTCODE;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.STRAATNAAM;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.TELEFOON;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.TOEVOEGING;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.VOORNAMEN;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.VOORVOEGSEL;
+import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.WOONPLAATS;
+import static nl.procura.standard.ProcuraDate.SYSTEMDATE_ONLY;
+
 import nl.procura.commons.misc.formats.naam.Naam;
 import nl.procura.commons.misc.formats.naam.NaamBuilder;
+import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
+import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.standard.ProcuraDate;
 
-import lombok.Builder;
+import lombok.Getter;
 
 @Getter
-@Builder
 public class FileImportRegistrant {
+
+  private FileImportType   type;
+  private FileImportRecord record;
+
+  public static FileImportRegistrant of(FileImportType type, FileImportRecord record) {
+    FileImportRegistrant registrant = new FileImportRegistrant();
+    registrant.type = type;
+    registrant.record = record;
+    registrant.lastname = record.getValue(ACHTERNAAM);
+    registrant.prefix = record.getValue(VOORVOEGSEL);
+    registrant.firstname = record.getValue(VOORNAMEN);
+    registrant.gender = record.getValue(GESLACHT);
+    registrant.birthDate = new ProcuraDate(record.getValue(GEBOORTEDATUM))
+        .setForceFormatType(SYSTEMDATE_ONLY)
+        .setAllowedFormatExceptions(true);
+    registrant.birthPlace = record.getValue(GEBOORTEPLAATS);
+    registrant.birthCountry = record.getValue(GEBOORTELAND);
+    registrant.street = record.getValue(STRAATNAAM);
+    registrant.postalcode = record.getValue(POSTCODE);
+    registrant.hnr = record.getValue(HUISNUMMER);
+    registrant.hnrL = record.getValue(HUISLETTER);
+    registrant.hnrT = record.getValue(TOEVOEGING);
+    registrant.place = record.getValue(WOONPLAATS);
+    registrant.nationality = record.getValue(NATIONALITEIT);
+    registrant.email = record.getValue(EMAIL);
+    registrant.tel = record.getValue(TELEFOON);
+    registrant.previousCountry = record.getValue(LAND_VAN_VORIG_ADRES);
+
+    return registrant;
+  }
 
   private String      lastname;
   private String      prefix;
@@ -46,6 +94,8 @@ public class FileImportRegistrant {
   private String      hnrT;
   private String      place;
   private String      email;
+  private String      tel;
+  private String      previousCountry;
 
   public String getSummary() {
     Naam naam = new NaamBuilder()

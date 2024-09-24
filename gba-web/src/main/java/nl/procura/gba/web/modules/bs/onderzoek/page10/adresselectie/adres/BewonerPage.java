@@ -19,7 +19,10 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 import static nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils.kopieDossierPersoon;
@@ -42,7 +45,7 @@ import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresWindow;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.java.collection.Collections;
@@ -63,23 +66,23 @@ public class BewonerPage extends NormalPageTemplate {
   private final BewonerForm1                   form1;
   private final BewonerForm2                   form2;
   private final SelectListener<DossierPersoon> listener;
-  private SelectieAdres                        adres;
+  private ProcuraInhabitantsAddress            adres;
 
-  public BewonerPage(SelectieAdres adres, SelectListener<DossierPersoon> listener) {
-    this.adres = adres;
+  public BewonerPage(ProcuraInhabitantsAddress address, SelectListener<DossierPersoon> listener) {
+    this.adres = address;
     this.listener = listener;
 
-    form1 = new BewonerForm1(adres);
+    form1 = new BewonerForm1(address);
     form2 = new BewonerForm2();
     table = new Table();
 
-    buttonNext.setCaption("Zoek een adres (F2)");
+    buttonNext.setCaption("Zoek een address (F2)");
     addButton(buttonNext, 1f);
     addButton(buttonClose);
 
     form2Layout = new OptieLayout();
     form2Layout.setVisible(false);
-    form2Layout.getLeft().addComponent(new Fieldset("Zoek een specifieke bewoner van dit adres"));
+    form2Layout.getLeft().addComponent(new Fieldset("Zoek een specifieke bewoner van dit address"));
     form2Layout.getLeft().addComponent(new InfoLayout("", "Zoek alle bewoners door de velden leeg " +
         "te laten of zoek een specifieke persoon door middel van onderstaande velden."));
     form2Layout.getLeft().addComponent(form2);
@@ -162,7 +165,7 @@ public class BewonerPage extends NormalPageTemplate {
     form2.commit();
     if (isGrootAantalBewoners() && form2.getBean().isEmpty()) {
       getParentWindow().addWindow(
-          new ConfirmDialog("Toon alle " + adres.getBewoners().size() + " personen van dit adres?", 300) {
+          new ConfirmDialog("Toon alle " + adres.getPersons().size() + " personen van dit adres?", 300) {
 
             @Override
             public void buttonYes() {
@@ -186,14 +189,13 @@ public class BewonerPage extends NormalPageTemplate {
     BewonerBean bean = form2.getBean();
 
     PLEArgs zArgs = new PLEArgs();
-    zArgs.setDatasource(PLEDatasource.PROCURA);
 
     // Adresvelden
-    zArgs.setStraat(adres.getStraat().getValue());
-    zArgs.setHuisnummer(adres.getHuisnummer().getValue());
-    zArgs.setHuisletter(adres.getHuisletter().getValue());
-    zArgs.setHuisnummertoevoeging(adres.getToevoeging().getValue());
-    zArgs.setPostcode(adres.getPostcode().getValue());
+    zArgs.setStraat(adres.getStreet());
+    zArgs.setPostcode(adres.getPostalCode());
+    zArgs.setHuisnummer(adres.getHnr());
+    zArgs.setHuisletter(adres.getHnrL());
+    zArgs.setHuisnummertoevoeging(adres.getHnrT());
 
     // Niet-adresvelden
     zArgs.addNummer(astr(bean.getBsn().getValue()));
@@ -277,6 +279,6 @@ public class BewonerPage extends NormalPageTemplate {
   }
 
   private boolean isGrootAantalBewoners() {
-    return adres != null && adres.getBewoners().size() > 10;
+    return adres != null && adres.getPersons().size() > 10;
   }
 }

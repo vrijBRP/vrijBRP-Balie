@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public enum NaamskeuzeType {
 
-  GEEN_NAAMSKEUZE("G", "Geen naamskeuze"),
+  GEEN_NAAMSKEUZE("G", "Geen naamskeuze vooraf"),
   NAAMSKEUZE_VOOR_GEBOORTE("P", "Naamskeuze voor geboorte"),
   NAAMSKEUZE_BESTAAND_KIND("B", "Naamskeuze bestaand kind"),
   ONBEKEND("", "Onbekend");

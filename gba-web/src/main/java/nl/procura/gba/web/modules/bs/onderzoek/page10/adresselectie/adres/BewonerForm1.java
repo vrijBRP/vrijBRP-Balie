@@ -22,28 +22,28 @@ package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.adres.BewonerBean.ADRES;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
-import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.SelectieAdres;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 
 public class BewonerForm1 extends GbaForm<BewonerBean> {
 
-  public BewonerForm1(SelectieAdres adres) {
+  public BewonerForm1(ProcuraInhabitantsAddress address) {
     setReadonlyAsText(true);
     setCaption("Adres");
     setColumnWidths(WIDTH_130, "");
     setOrder(ADRES);
-    update(adres);
+    update(address);
   }
 
-  public void update(SelectieAdres adres) {
+  public void update(ProcuraInhabitantsAddress address) {
     BewonerBean bean = new BewonerBean();
-    if (adres == null) {
-      bean.setAdres("Selecteer een adres");
+    if (address == null) {
+      bean.setAdres("Selecteer een address");
     } else {
-      String adresText = adres.getAdres();
-      if (adres.getBewoners().isEmpty()) {
+      String adresText = address.getAddressLabel();
+      if (address.getPersons().isEmpty()) {
         adresText += " (geen bewoners)";
       } else {
-        adresText += " (" + adres.getBewoners().size() + " bewoners)";
+        adresText += " (" + address.getPersons().size() + " bewoners)";
       }
       bean.setAdres(adresText);
     }

@@ -73,7 +73,7 @@ public class Page2PersonListMutationsForm extends GbaForm<Page2PersonListMutatio
   public void attach() {
 
     if (getActField().getContainerDataSource().getItemIds().isEmpty()) {
-      CategoryContainer catContainer = new CategoryContainer();
+      CategoryContainer catContainer = new CategoryContainer(pl);
       getCatField().setContainerDataSource(catContainer);
       catNav.update(catContainer.size());
       onCatFieldChange();

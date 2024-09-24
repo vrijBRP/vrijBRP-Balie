@@ -23,12 +23,12 @@ import static java.util.Objects.requireNonNull;
 import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.LIGPLAATS;
 import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.STANDPLAATS;
 import static nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType.VERBLIJFSOBJECT;
-import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.ADRESSEERBAAR_OBJECT_ID;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISLETTER;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMER;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.HUISNUMMERTOEVOEGING;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.POSTCODE;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
+import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.isTru;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
@@ -36,8 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.ThrowException;
@@ -113,27 +116,22 @@ public class BagService extends AbstractService {
         .setRows(10)
         .setFeatureType(type);
 
-    if (StringUtils.isNotBlank(request.getId())) {
-      req.search(SearchType.IDENTIFICATIE, request.getId());
+    requireNonNull(request.getPc(), "Postcode is verplicht"); // Minimal requirement
+    requireNonNull(request.getHnr(), "Huisnummer is verplicht"); // Minimal requirement
 
-    } else {
-      requireNonNull(request.getPc(), "Postcode is verplicht"); // Minimal requirement
-      requireNonNull(request.getHnr(), "Huisnummer is verplicht"); // Minimal requirement
-
-      if (StringUtils.isNotBlank(request.getPc())) {
-        req.search(SearchType.POSTCODE, request.getPc());
-      }
-
-      if (StringUtils.isNotBlank(request.getHnr())) {
-        req.search(SearchType.HUISNUMMER, request.getHnr());
-      }
-
-      req.search(new SearchParam(SearchType.HUISLETTER, request
-          .getHnrL()).setExclude(StringUtils.isBlank(request.getHnrL())));
-
-      req.search(new SearchParam(SearchType.TOEVOEGING, request
-          .getHnrT()).setExclude(StringUtils.isBlank(request.getHnrT())));
+    if (StringUtils.isNotBlank(request.getPc())) {
+      req.search(SearchType.POSTCODE, request.getPc());
     }
+
+    if (StringUtils.isNotBlank(request.getHnr())) {
+      req.search(SearchType.HUISNUMMER, request.getHnr());
+    }
+
+    req.search(new SearchParam(SearchType.HUISLETTER, request
+        .getHnrL()).setExclude(StringUtils.isBlank(request.getHnrL())));
+
+    req.search(new SearchParam(SearchType.TOEVOEGING, request
+        .getHnrT()).setExclude(StringUtils.isBlank(request.getHnrT())));
 
     List<WfsFeature> features = getGeoClient().getPdok().getWfs().search(req).getFeatures();
     for (WfsFeature feature : features) {
@@ -152,32 +150,28 @@ public class BagService extends AbstractService {
         .setRows(10)
         .search(TYPE, "adres");
 
-    if (StringUtils.isNotBlank(request.getId())) {
-      req.search(ADRESSEERBAAR_OBJECT_ID, request.getId());
+    Objects.nonNull(request.getPc()); // Minimal requirement
+    Objects.nonNull(request.getHnr()); // Minimal requirement
 
-    } else {
-      Objects.nonNull(request.getPc()); // Minimal requirement
-      Objects.nonNull(request.getHnr()); // Minimal requirement
-
-      if (StringUtils.isNotBlank(request.getPc())) {
-        req.search(POSTCODE, request.getPc());
-      }
-      if (StringUtils.isNotBlank(request.getHnr())) {
-        req.search(HUISNUMMER, request.getHnr());
-      }
-
-      req.search(new nl.procura.geo.rest.domain.pdok.locationserver.SearchParam(HUISLETTER, request.getHnrL())
-          .setExclude(StringUtils
-              .isBlank(request.getHnrL())));
-
-      req.search(new nl.procura.geo.rest.domain.pdok.locationserver.SearchParam(HUISNUMMERTOEVOEGING, request.getHnrT())
-          .setExclude(StringUtils.isBlank(request.getHnrT())));
+    if (StringUtils.isNotBlank(request.getPc())) {
+      req.search(POSTCODE, request.getPc());
     }
+    if (StringUtils.isNotBlank(request.getHnr())) {
+      req.search(HUISNUMMER, request.getHnr());
+    }
+
+    req.search(new nl.procura.geo.rest.domain.pdok.locationserver.SearchParam(HUISLETTER, request.getHnrL())
+        .setExclude(StringUtils
+            .isBlank(request.getHnrL())));
+
+    req.search(new nl.procura.geo.rest.domain.pdok.locationserver.SearchParam(HUISNUMMERTOEVOEGING, request.getHnrT())
+        .setExclude(StringUtils.isBlank(request.getHnrT())));
 
     LocationServerDocResponse resp = getGeoClient().getPdok().getLocationServer().search(req).getResponse();
     for (LocationServerDoc doc : resp.getDocs()) {
       Optional<Address> address = addresses.stream()
-          .filter(a -> a.getAonId().equals(doc.getAdresseerbaarobjectId())).findFirst();
+          .filter(isTheSameAddress(doc))
+          .findFirst();
       if (address.isPresent()) {
         PdokWfsServiceAddress wfsAddress = (PdokWfsServiceAddress) address.get();
         merge(new PdokLocationServiceAddress(doc), wfsAddress);
@@ -187,6 +181,16 @@ public class BagService extends AbstractService {
     }
 
     return addresses;
+  }
+
+  @NotNull
+  private static Predicate<Address> isTheSameAddress(LocationServerDoc doc) {
+    return address -> new EqualsBuilder()
+        .append(astr(address.getPostalCode()), doc.getPostcode())
+        .append(astr(address.getHnr()), astr(doc.getHuisnummer()))
+        .append(astr(address.getHnrL()), astr(doc.getHuisletter()))
+        .append(astr(address.getHnrT()), astr(doc.getToevoeging()))
+        .build();
   }
 
   /**

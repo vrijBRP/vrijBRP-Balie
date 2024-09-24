@@ -32,6 +32,8 @@ import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
+import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.containers.ContainerItem;
 import nl.procura.gba.web.modules.zaken.personmutations.page3.Page3PersonListMutations;
@@ -87,7 +89,20 @@ public class Page2PersonListMutations extends NormalPageTemplate {
   private BasePLExt getPL() {
     PersonenWsService personenWsService = getApplication().getServices().getPersonenWsService();
     personenWsService.getOpslag().clear();
-    return personenWsService.getPersoonslijst(personenWsService.getHuidige());
+    BasePLExt huidige = personenWsService.getHuidige();
+
+    if (huidige.heeftVerwijzing()) {
+      PLEArgs args = new PLEArgs();
+      args.setShowArchives(true);
+      args.setDatasource(PLEDatasource.PROCURA);
+      args.addNummer(huidige.getPersoon().getNummer().getVal());
+
+      PersonenWsService personenWs = getServices().getPersonenWsService();
+      return personenWs.getPersoonslijsten(args, false).getBasisPLWrappers().get(0);
+
+    } else {
+      return personenWsService.getPersoonslijst(huidige);
+    }
   }
 
   /**
@@ -135,8 +150,8 @@ public class Page2PersonListMutations extends NormalPageTemplate {
       throw new ProException(INFO, "Geen record geselecteerd");
     }
 
-    PersonListMutElems elements = layout.getTable().getElementRecords();
-    if (elements.isEmpty()) {
+    PersonListMutElems elems = layout.getTable().getElementRecords();
+    if (elems.isEmpty()) {
       throw new ProException(NO_RESULTS, WARNING, "Er zijn geen BRP elementen geselecteerd");
     }
 
@@ -152,13 +167,13 @@ public class Page2PersonListMutations extends NormalPageTemplate {
 
             @Override
             public void buttonYes() {
-              doNextPage(category, action, set, record, elements);
+              doNextPage(category, action, set, record, elems);
               super.buttonYes();
             }
           });
 
     } else {
-      doNextPage(category, action, set, record, elements);
+      doNextPage(category, action, set, record, elems);
     }
 
     super.onNextPage();
@@ -168,7 +183,7 @@ public class Page2PersonListMutations extends NormalPageTemplate {
       ContainerItem<PersonListActionType> action,
       ContainerItem<BasePLSet> set,
       ContainerItem<BasePLRec> record,
-      PersonListMutElems elements) {
+      PersonListMutElems elems) {
 
     // Create a new mutation record
     PersonListMutation mutation = getServices().getPersonListMutationService().getNewZaak();
@@ -179,10 +194,10 @@ public class Page2PersonListMutations extends NormalPageTemplate {
     mutation.setDescrRec(record.toString());
 
     if (action.getItem().isSkipElements()) {
-      getNavigation().goToPage(new Page4PersonListMutations(mutation, elements));
+      getNavigation().goToPage(new Page4PersonListMutations(mutation, elems));
 
     } else {
-      getNavigation().goToPage(new Page3PersonListMutations(elements, mutation));
+      getNavigation().goToPage(new Page3PersonListMutations(elems, mutation));
     }
   }
 

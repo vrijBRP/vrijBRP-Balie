@@ -19,9 +19,6 @@
 
 package nl.procura.gba.web.modules.account.wachtwoord.pages.passwordlost;
 
-import static nl.procura.gba.web.modules.account.wachtwoord.pages.passwordlost.PasswordLostBean.EMAIL;
-import static nl.procura.standard.Globalfunctions.astr;
-
 import java.util.Optional;
 
 import com.vaadin.ui.Alignment;
@@ -36,63 +33,65 @@ import nl.procura.vaadin.component.window.Message;
 
 public class PasswordLostPage extends ButtonPageTemplate {
 
-  private PasswordLostForm form = null;
+    private PasswordLostForm form = null;
 
-  public PasswordLostPage() {
+    public PasswordLostPage() {
 
-    buttonSave.setCaption("Versturen (F9)");
+        buttonSave.setCaption("Versturen (F9)");
 
-    addButton(buttonSave, 1f);
-    addButton(buttonClose, Alignment.MIDDLE_RIGHT);
-    setSpacing(true);
-  }
-
-  @Override
-  public void event(PageEvent event) {
-    if (event.isEvent(InitPage.class)) {
-      form = new PasswordLostForm() {
-
-        @Override
-        protected Optional<Gebruiker> findGebruiker() {
-          GebruikerService gebruikerService = getApplication().getServices().getGebruikerService();
-          return Optional.ofNullable(gebruikerService.getGebruikerByNaam(astr(getField(EMAIL).getValue())));
-        }
-      };
-
-      addComponent(form);
+        addButton(buttonSave, 1f);
+        addButton(buttonClose, Alignment.MIDDLE_RIGHT);
+        setSpacing(true);
     }
 
-    super.event(event);
-  }
+    @Override
+    public void event(PageEvent event) {
+        if (event.isEvent(InitPage.class)) {
+            form = new PasswordLostForm();
 
-  @Override
-  public void onClose() {
-    getWindow().closeWindow();
-  }
+            addComponent(form);
+        }
 
-  @Override
-  public void onNew() {
-    form.reset();
-  }
+        super.event(event);
+    }
 
-  @Override
-  public void onSave() {
+    @Override
+    public void onClose() {
+        getWindow().closeWindow();
+    }
 
-    form.commit();
+    @Override
+    public void onNew() {
+        form.reset();
+    }
 
-    sendEmail(form.getGebruiker());
+    @Override
+    public void onSave() {
 
-    onClose();
-  }
+        form.commit();
 
-  private void sendEmail(Gebruiker gebruiker) {
+        sendEmail(form.getEmail());
 
-    String url = getApplication().getURL().toString();
+        onClose();
+    }
 
-    getServices().getEmailService().getWachtwoordVergetenEmail(url, new Verzending(gebruiker)).send();
+    private Optional<Gebruiker> findGebruiker(String email) {
+        GebruikerService gebruikerService = getApplication().getServices().getGebruikerService();
+        return Optional.ofNullable(gebruikerService.getGebruikerByNaam(email));
+    }
 
-    String message = "Een e-mail is verstuurd naar <b>" + gebruiker.getEmail() + "</b>";
+    private void sendEmail(String email) {
 
-    new Message(getApplication().getLoginWindow(), message, Message.TYPE_SUCCESS);
-  }
+        String url = getApplication().getURL().toString();
+        Optional<Gebruiker> gebruikerOptional = findGebruiker(email);
+        if (gebruikerOptional.isPresent()) {
+            Gebruiker gebruiker = gebruikerOptional.get();
+            getServices().getEmailService().getWachtwoordVergetenEmail(url, new Verzending(gebruiker)).send();
+        }
+
+        // Always show this message, otherwise attackers can find out which emails are users
+        String message = "Een e-mail is verstuurd naar <b>" + email + "</b>";
+
+        new Message(getApplication().getLoginWindow(), message, Message.TYPE_SUCCESS);
+    }
 }

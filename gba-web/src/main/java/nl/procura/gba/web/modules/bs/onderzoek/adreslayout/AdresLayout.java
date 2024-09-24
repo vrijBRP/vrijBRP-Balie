@@ -47,20 +47,20 @@ public class AdresLayout extends VLayout {
   private AdresForm2                           form2;
   @Getter
   private AdresForm3                           form3;
-  private Adres                                adres;
+  private OnderzoekAdres                       adres;
   private final SelectListener<DossierPersoon> bewonerListener;
   private FormType                             type;
 
-  public AdresLayout(Adres adres) {
+  public AdresLayout(OnderzoekAdres adres) {
     this(adres, null);
   }
 
-  public AdresLayout(Adres adres, SelectListener<DossierPersoon> bewonerListener) {
+  public AdresLayout(OnderzoekAdres adres, SelectListener<DossierPersoon> bewonerListener) {
     this.adres = adres;
     this.bewonerListener = bewonerListener;
   }
 
-  public void setAdres(Adres adres) {
+  public void setAdres(OnderzoekAdres adres) {
     this.adres = adres;
     updateForm();
   }
@@ -70,7 +70,7 @@ public class AdresLayout extends VLayout {
     updateForm();
   }
 
-  public void save() {
+  public boolean isSaved() {
     commit();
 
     // set values to empty as default
@@ -88,39 +88,66 @@ public class AdresLayout extends VLayout {
     adres.setLand(new FieldValue());
     adres.setAantalPersonen(new FieldValue());
 
-    if (getForm1() != null) {
-      adres.setAdres(getForm1().getBean().getStraat());
-      adres.setHnr(getForm1().getBean().getHnr());
-      adres.setHnrL(getForm1().getBean().getHnrL());
-      adres.setHnrT(getForm1().getBean().getHnrT());
-      adres.setHnrA(getForm1().getBean().getHnrA());
-      adres.setPc(getForm1().getBean().getPc());
-      adres.setPlaats(getForm1().getBean().getWoonplaats());
-      adres.setAantalPersonen(getForm1().getBean().getAantalPersonen());
+    AdresForm1 form1 = getForm1();
+    AdresForm2 form2 = getForm2();
+    AdresForm3 form3 = getForm3();
+
+    if (form1 != null) {
+      adres.setAantalPersonen(form1.getBean().getAantalPersonen());
+      adres.setSource(form1.getBean().getSource());
+
+      boolean isAddressSelected = form1.checkAddress(address -> {
+        adres.setAdres(new FieldValue(address.getStreet()));
+        adres.setHnr(address.getHnr());
+        adres.setHnrL(address.getHnrL());
+        adres.setHnrT(address.getHnrT());
+        adres.setHnrA(new FieldValue(address.getHnrA()));
+        adres.setPc(new FieldValue(address.getPostalCode()));
+        adres.setPlaats(new FieldValue(address.getResidenceName()));
+      });
+      if (!isAddressSelected) {
+        return false;
+      }
     }
 
-    if (getForm2() != null) {
-      adres.setAdres(getForm2().getBean().getStraat());
-      adres.setHnr(getForm2().getBean().getHnr());
-      adres.setHnrL(getForm2().getBean().getHnrL());
-      adres.setHnrT(getForm2().getBean().getHnrT());
-      adres.setHnrA(getForm2().getBean().getHnrA());
-      adres.setPc(getForm2().getBean().getPc());
-      adres.setPlaats(getForm2().getBean().getWoonplaats());
-      adres.setGemeente(getForm2().getBean().getGemeente());
+    if (form2 != null) {
+      adres.setSource(form2.getBean().getSource());
+      boolean bagAddress = form2.checkAddress(address -> {
+        adres.setAdres(new FieldValue(address.getStreet()));
+        adres.setHnr(address.getHnr());
+        adres.setHnrL(address.getHnrL());
+        adres.setHnrT(address.getHnrT());
+        adres.setHnrA(new FieldValue(address.getHnrA()));
+        adres.setPc(new FieldValue(address.getPostalCode()));
+        adres.setPlaats(new FieldValue(address.getResidenceName()));
+        adres.setGemeente(new FieldValue(address.getMunicipalityCode(), address.getMunicipalityName()));
+      });
 
-      // Zet aGemeente postbussen
-      GemeenteService gemService = Services.getInstance().getGemeenteService();
-      FieldValue aGemeente = adres.getGemeente();
-      adres.setGemeentePostbus(gemService.getGemeente(aGemeente));
+      if (!bagAddress) {
+        adres.setAdres(form2.getBean().getStraat());
+        adres.setHnr(form2.getBean().getHnr());
+        adres.setHnrL(form2.getBean().getHnrL());
+        adres.setHnrT(form2.getBean().getHnrT());
+        adres.setHnrA(form2.getBean().getHnrA());
+        adres.setPc(form2.getBean().getPc());
+        adres.setPlaats(form2.getBean().getWoonplaats());
+        adres.setGemeente(form2.getBean().getGemeente());
+
+        // Zet aGemeente postbussen
+        GemeenteService gemService = Services.getInstance().getGemeenteService();
+        FieldValue aGemeente = adres.getGemeente();
+        adres.setGemeentePostbus(gemService.getGemeente(aGemeente));
+      }
     }
 
-    if (getForm3() != null) {
-      adres.setBuitenl1(getForm3().getBean().getAdres1());
-      adres.setBuitenl2(getForm3().getBean().getAdres2());
-      adres.setBuitenl3(getForm3().getBean().getAdres3());
-      adres.setLand(getForm3().getBean().getLand());
+    if (form3 != null) {
+      adres.setBuitenl1(form3.getBean().getAdres1());
+      adres.setBuitenl2(form3.getBean().getAdres2());
+      adres.setBuitenl3(form3.getBean().getAdres3());
+      adres.setLand(form3.getBean().getLand());
     }
+
+    return true;
   }
 
   private Layout getAdresLayout() {
@@ -170,8 +197,10 @@ public class AdresLayout extends VLayout {
 
     if (FormType.BINNEN_GEM.equals(type)) {
       addComponent(getAdresLayout());
+
     } else if (FormType.BUITEN_GEM.equals(type)) {
       addComponent(getBuitenGemeenteLayout());
+
     } else if (FormType.LAND.equals(type)) {
       addComponent(getBuitenlandLayout());
     }
@@ -184,23 +213,25 @@ public class AdresLayout extends VLayout {
 
       if (buttonBewoners.equals(event.getButton())) {
         onBewoners();
+
       } else if (buttonControle.equals(event.getButton())) {
         onControle();
+
       } else if (buttonObjectInfo.equals(event.getButton())) {
         onObjectInfo();
       }
     }
   }
 
-  private void onBewoners() {
-    form1.selectAdres(true, false);
+  private void onControle() {
+    form1.checkAddress();
   }
 
-  private void onControle() {
-    form1.selectAdres(false, false);
+  private void onBewoners() {
+    form1.toonBewoners();
   }
 
   private void onObjectInfo() {
-    form1.selectAdres(false, true);
+    form1.toonObjectInfo();
   }
 }

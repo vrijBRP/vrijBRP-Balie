@@ -19,14 +19,14 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo;
 
-import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
 public class ObjectInfoWindow extends GbaModalWindow {
 
-  public ObjectInfoWindow(BaseWKExt adres) {
+  public ObjectInfoWindow(ProcuraInhabitantsAddress address) {
     super("Objectinformatie", "1000px");
-    addComponent(new MainModuleContainer(false, new ObjectInfoPage(adres)));
+    addComponent(new MainModuleContainer(false, new ObjectInfoPage(address)));
   }
 }

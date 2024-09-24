@@ -259,7 +259,7 @@ public class Page20Registration extends AbstractRegistrationPage {
 
   private Consumer<DossierPersoon> getDossierPersoon() {
     return dossierPersoon -> {
-      getFileImportRegistrant().ifPresent(registrant -> {
+      getImportRegistrant().ifPresent(registrant -> {
         dossierPersoon.setGeslachtsnaam(registrant.getLastname());
         dossierPersoon.setVoornaam(registrant.getFirstname());
         dossierPersoon.setVoorvoegsel(registrant.getPrefix());
@@ -274,7 +274,7 @@ public class Page20Registration extends AbstractRegistrationPage {
   }
 
   private Supplier<PresentievraagZoekBean> getSearchBean() {
-    return () -> getFileImportRegistrant().map(registrant -> {
+    return () -> getImportRegistrant().map(registrant -> {
       PresentievraagZoekBean zb = new PresentievraagZoekBean();
       zb.setGeslachtsnaam(registrant.getLastname());
       zb.setVoorvoegsel(registrant.getPrefix());

@@ -19,10 +19,15 @@
 
 package nl.procura.gba.web.services.beheer.fileimport;
 
-import com.google.gson.Gson;
+import static java.util.stream.Collectors.toList;
+import static nl.procura.gba.jpa.personen.dao.FileImportDao.countAllFileRecords;
+import static nl.procura.gba.jpa.personen.dao.FileImportDao.countNewFileRecords;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import com.google.gson.Gson;
 
 import nl.procura.gba.jpa.personen.dao.FileImportDao;
 import nl.procura.gba.jpa.personen.db.FileImport;
@@ -30,6 +35,11 @@ import nl.procura.gba.jpa.personen.db.FileRecord;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 public class FileImportService extends AbstractService {
 
@@ -49,49 +59,115 @@ public class FileImportService extends AbstractService {
     saveEntity(fileImport);
     for (FileRecord fileRecord : fileRecords) {
       if (!fileRecord.isStored()) {
-        fileRecord.setcFileImport(fileImport.getcCFileImport());
+        fileRecord.setCFileImport(fileImport.getCFileImport());
         saveEntity(fileRecord);
       }
+    }
+  }
+
+  @ThrowException("Fout bij het opslaan")
+  @Transactional
+  public void save(FileImport fileImport, FileRecord fileRecord) {
+    saveEntity(fileImport);
+    if (!fileRecord.isStored()) {
+      fileRecord.setCFileImport(fileImport.getCFileImport());
+      saveEntity(fileRecord);
     }
   }
 
   @ThrowException("Fout bij het verwijderen")
   @Transactional
   public void delete(FileImport fileImport) {
+    getFileRecords(fileImport).forEach(this::delete);
     removeEntity(fileImport);
   }
 
   @ThrowException("Fout bij het verwijderen")
   @Transactional
   public void delete(List<FileImportRecord> fileRecords) {
-    for (FileImportRecord fileImportRecord : fileRecords) {
-      removeEntity(findEntity(FileRecord.class, fileImportRecord.getId()));
+    fileRecords.forEach(record -> delete(findEntity(FileRecord.class, record.getId())));
+  }
+
+  private void delete(FileRecord fileRecord) {
+    if (isNotBlank(fileRecord.getUuid())) {
+      DMSService dmsService = getServices().getDmsService();
+      List<DMSDocument> documents = dmsService.getDocumentsById(fileRecord.getUuid()).getDocuments();
+      documents.forEach(dmsService::delete);
     }
+    removeEntity(fileRecord);
   }
 
   public List<FileImport> getFileImports() {
     return FileImportDao.getFileImports();
   }
 
+  public Optional<FileImport> getFileImport(String name) {
+    return getFileImports().stream()
+        .filter(fi -> fi.getName().equals(name))
+        .findFirst();
+  }
+
   public List<FileImport> getFileImports(String type) {
     return getFileImports().stream()
-        .filter(fi -> Objects.equals(fi.getTemplate(), type))
-        .collect(Collectors.toList());
+        .filter(fi -> fi.getTemplate().equals(type))
+        .collect(toList());
   }
 
   public List<FileRecord> getFileRecords(FileImport fileImport) {
     return FileImportDao.getFileRecords(fileImport);
   }
 
+  public Optional<FileRecord> getFileRecordById(Long cFileRecord) {
+    return FileImportDao.getFileRecordById(cFileRecord);
+  }
+
+  public FileImportRecord getFileImportRecord(Long cFileRecord) {
+    Gson gson = new Gson();
+    return getFileRecordById(cFileRecord).map(fileRecord -> {
+      FileImportRecord record = gson.fromJson(new String(fileRecord.getContent()), FileImportRecord.class);
+      record.setId(fileRecord.getCFileRecord());
+      record.setFileImportId(fileRecord.getCFileImport());
+      record.setUuid(fileRecord.getUuid());
+      record.setTemplate(fileRecord.getFileImport().getTemplate());
+      return record;
+    }).orElse(null);
+  }
+
   public List<FileImportRecord> getFileImportRecords(FileImport fileImport) {
     Gson gson = new Gson();
-    return getFileRecords(fileImport)
-        .stream()
-        .map(record -> {
-          FileImportRecord fileImportRecord = gson.fromJson(new String(record.getContent()), FileImportRecord.class);
-          fileImportRecord.setId(record.getcFileRecord());
-          return fileImportRecord;
-        })
-        .collect(Collectors.toList());
+    List<Long> references = FileImportDao.getIdsWithReferenceToRegistration(fileImport);
+    return getFileRecords(fileImport).parallelStream()
+        .map(fileRecord -> {
+          FileImportRecord record = gson.fromJson(new String(fileRecord.getContent()), FileImportRecord.class);
+          record.setId(fileRecord.getCFileRecord());
+          record.setFileImportId(fileRecord.getCFileImport());
+          record.setUuid(fileRecord.getUuid());
+          record.setTemplate(fileRecord.getFileImport().getTemplate());
+          record.setReference(references.contains(fileRecord.getCFileRecord()));
+          return record;
+        }).collect(toList());
+  }
+
+  public List<String> getZaken(Long cFileRecord) {
+    return FileImportDao.getZaakIds(cFileRecord);
+  }
+
+  public Count countRecords(FileImport fileImport) {
+    return new Count(countNewFileRecords(fileImport), countAllFileRecords(fileImport));
+  }
+
+  @Data
+  @RequiredArgsConstructor
+  public static class Count {
+
+    private final long newRecords;
+
+    private final long totalRecords;
+
+    @Override
+    public String toString() {
+      return String.format(" (%d / %d)", getNewRecords(), getTotalRecords());
+    }
+
   }
 }

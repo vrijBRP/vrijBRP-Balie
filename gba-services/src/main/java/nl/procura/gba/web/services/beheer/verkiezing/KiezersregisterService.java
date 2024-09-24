@@ -185,7 +185,7 @@ public class KiezersregisterService extends AbstractService {
   private String getPasnummer(KiesrStem kiezer) {
     long cGem = kiezer.getKiesrVerk().getCodeGemeente();
     String formattedNr = String.format("%07d", kiezer.getVnr());
-    return String.format("%04d.%s.%s", cGem, formattedNr.substring(0, 3), formattedNr.substring(3, 7));
+    return String.format("%04d.%s", cGem, formattedNr);
   }
 
   private long getVolgnummer(KiesrStem kiezer) {
@@ -223,7 +223,7 @@ public class KiezersregisterService extends AbstractService {
     kiezer.setVnr(regel.getVStem());
     kiezer.setAnr(new Anummer(notBlank(regel.getAnr(), "A-nummer ontbreekt")).getLongAnummer());
     kiezer.setdGeb(parseLong(notBlank(regel.getDGeb(), "Geboortedatum ontbreekt")));
-    kiezer.setVoorn(notBlank(regel.getVoorn(), "initialen ontbreken"));
+    kiezer.setVoorn(regel.getVoorn());
     kiezer.setNaam(notBlank(regel.getNaam(), "Naam ontbreekt"));
     kiezer.setGeslacht(notBlank(regel.getGeslacht(), "Geslachtsaanduiding ontbreekt"));
     kiezer.setStraat(notBlank(regel.getStraat(), "Straatnaam ontbreekt"));

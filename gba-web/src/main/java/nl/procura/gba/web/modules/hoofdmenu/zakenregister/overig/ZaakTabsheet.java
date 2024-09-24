@@ -29,6 +29,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.aantekening.Zaa
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.ZaakBijlageLayout;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.overige.tree.ZaakOverigeLayout;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.status.ZaakStatusLayout;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.task.TaskLayout;
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
@@ -140,6 +141,10 @@ public class ZaakTabsheet<T extends Zaak> extends GbaTabsheet {
     // AantekeningenTab
     ZaakAantekeningLayout aantekeningLayout = new ZaakAantekeningLayout(getZaak());
     aantekeningLayout.setTab(addTab(aantekeningLayout, aantekeningLayout.getHeader(getApplication()), null));
+
+    // TakenTab
+    TaskLayout taakLayout = new TaskLayout(getZaak());
+    taakLayout.setTab(addTab(taakLayout, taakLayout.getHeader(getApplication()), null));
 
     // OverigeTab
     ZaakOverigeLayout attributenLayout = new ZaakOverigeLayout(getZaak());

@@ -19,10 +19,16 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page60;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNavigator.navigatoTo;
-import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.BINNEN_INTER;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.EMIGRATIE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.IMMIGRATIE;
+import static nl.procura.gba.web.services.bs.onderzoek.enums.BetrokkeneType.NAAR_ONBEKEND;
+import static nl.procura.gba.web.services.zaken.verhuizing.VerhuisType.BINNENGEMEENTELIJK;
+import static nl.procura.gba.web.services.zaken.verhuizing.VerhuisType.INTERGEMEENTELIJK;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.aval;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,14 +51,25 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieService;
-import nl.procura.gba.web.services.zaken.verhuizing.*;
+import nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAangever;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraagAdres;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuisEmigratie;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
+import nl.procura.gba.web.services.zaken.verhuizing.VerhuizingService;
+import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
-import nl.procura.vaadin.component.dialog.OkDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class Page60Onderzoek extends BsPageOnderzoek {
 
@@ -66,13 +83,14 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     try {
 
       if (event.isEvent(InitPage.class)) {
-
         buttonNext.setCaption("Proces voltooien (F2)");
         addButton(buttonPrev);
         addButton(buttonNext);
 
-        addComponent(new BsStatusForm(getDossier()));
-        setInfo("Controleer de gegevens. Druk op Volgende (F2) om verder te gaan.");
+        addComponent(new BsStatusForm(getDossier(), BETROKKENE));
+        ResultaatVerhuisMelding verhuismelding = getVerhuismelding();
+        setInfo("Controleer de gegevens. Druk op Volgende (F2) om verder te gaan. "
+            + (StringUtils.isNotBlank(verhuismelding.getMsg()) ? "<hr><b>" + verhuismelding.getMsg() + "</b>" : ""));
         addComponent(new OnderzoekOverzichtLayout(getZaakDossier()));
       }
     } finally {
@@ -92,7 +110,8 @@ public class Page60Onderzoek extends BsPageOnderzoek {
 
     service.save(getDossier());
 
-    checkVerhuizing(() -> navigatoTo(getDossier(), this, true));
+    //    checkVerhuizing(() -> navigatoTo(getDossier(), this, true));
+    checkVerhuizing(() -> {});
 
     super.onNextPage();
   }
@@ -102,33 +121,73 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     goToPreviousProces();
   }
 
-  private void checkVerhuizing(Runnable runnable) {
+  private ResultaatVerhuisMelding getVerhuismelding() {
     ZaakRelatieService zaakRelatieService = getServices().getZaakRelatieService();
     Zaak verhuizing = zaakRelatieService.getGerelateerdeZaakByType(getDossier(), ZaakType.VERHUIZING, false);
-    if (verhuizing == null && getZaakDossier().getResultaatOnderzoekBetrokkene().is(BINNEN, EMIGRATIE, NAAR_ONBEKEND)) {
-      if (StringUtils.isBlank(getZaakDossier().getAanschrDatumEindVoornemen().toString())) {
-        OkDialog window = new OkDialog("Er wordt geen verhuiszaak aangemaakt omdat " +
-            "datum voornemen niet is gevuld.", 350);
-        window.addListener((Window.CloseListener) closeEvent -> runnable.run());
-        getApplication().getParentWindow().addWindow(window);
-        return;
 
-      } else {
-        ConfirmDialog window = new ConfirmDialog("Wilt u een verhuiszaak maken op basis van dit onderzoek?", 400) {
+    if (verhuizing != null) {
+      return new ResultaatVerhuisMelding(false, "Er is al een verhuiszaak aangemaakt bij dit proces");
+    } else {
+      DossierOnderzoek zaakDossier = getZaakDossier();
+      if (zaakDossier.getResultaatOnderzoekBetrokkene().is(BINNEN_INTER, EMIGRATIE, NAAR_ONBEKEND)) {
+        if (isGeschiktvoorVerhuizing()) {
+          if (isNotBlank(zaakDossier.getAanschrDatumEindVoornemen().toString())) {
+            return new ResultaatVerhuisMelding(true,
+                "Bij voltooiing van dit proces zal eventueel een verhuiszaak worden aangemaakt");
 
-          @Override
-          public void buttonYes() {
-            addVerhuizing(getZaakDossier().getResultaatOnderzoekBetrokkene());
-            super.buttonYes();
+          } else {
+            return new ResultaatVerhuisMelding(false,
+                "Er zal geen verhuiszaak worden aangemaakt omdat 'datum voornemen' niet is gevuld");
           }
-        };
-
-        window.addListener((Window.CloseListener) closeEvent -> runnable.run());
-        getApplication().getParentWindow().addWindow(window);
-        return;
+        } else {
+          return new ResultaatVerhuisMelding(false,
+              "Er wordt geen verhuiszaak aangemaakt omdat de betrokkene niet in een Nederlandse gemeente is ingeschreven");
+        }
+      } else if (zaakDossier.getResultaatOnderzoekBetrokkene().is(IMMIGRATIE)) {
+        return new ResultaatVerhuisMelding(false,
+            "Er kan niet automatisch een hervestiging of eerste inschrijving worden gemaakt.");
       }
     }
+    return new ResultaatVerhuisMelding(false, "Er wordt geen verhuiszaak aangemaakt als gevolg van dit proces");
+  }
+
+  @Data
+  @Getter
+  @RequiredArgsConstructor
+  private static class ResultaatVerhuisMelding {
+
+    final boolean val;
+    final String  msg;
+  }
+
+  private void checkVerhuizing(Runnable runnable) throws ProException {
+    if (getVerhuismelding().isVal()) {
+      ConfirmDialog window = new ConfirmDialog("Wilt u een verhuiszaak maken op basis van dit onderzoek?", 400) {
+
+        @Override
+        public void buttonYes() {
+          addVerhuizing(getZaakDossier().getResultaatOnderzoekBetrokkene());
+          super.buttonYes();
+        }
+
+        @Override
+        public void buttonNo() {
+          runnable.run();
+          super.buttonNo();
+        }
+      };
+
+      window.addListener((Window.CloseListener) closeEvent -> runnable.run());
+      getApplication().getParentWindow().addWindow(window);
+      return;
+    }
     runnable.run();
+  }
+
+  private boolean isGeschiktvoorVerhuizing() {
+    return getZaakDossier().getBetrokkenen().stream()
+        .filter(p -> !p.isRNI())
+        .anyMatch(DossierPersoon::isIngeschreven);
   }
 
   private Zaak addVerhuizing(BetrokkeneType betrokkeneType) {
@@ -136,9 +195,8 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     VerhuisAanvraag va = (VerhuisAanvraag) service.getNewZaak();
 
     switch (betrokkeneType) {
-      case BINNEN:
-        va.setTypeVerhuizing(VerhuisType.BINNENGEMEENTELIJK);
-        toNieuwBinnenAdres(va, getZaakDossier());
+      case BINNEN_INTER:
+        toNieuwBinnenOfInterAdres(va, getZaakDossier());
         break;
       case EMIGRATIE:
         va.setTypeVerhuizing(VerhuisType.EMIGRATIE);
@@ -157,7 +215,7 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     va.setAangever(aangever);
 
     // Persoon toevoegen
-    for (DossierPersoon persoon : getDossier().getPersonen(DossierPersoonType.BETROKKENE)) {
+    for (DossierPersoon persoon : getZaakDossier().getBetrokkenen()) {
       VerhuisPersoon vp = new VerhuisPersoon();
       vp.setAangifte(AangifteSoort.AMBTSHALVE);
       vp.setAnummer(new AnrFieldValue(-1L));
@@ -182,7 +240,15 @@ public class Page60Onderzoek extends BsPageOnderzoek {
     return va;
   }
 
-  private void toNieuwBinnenAdres(VerhuisAanvraag va, DossierOnderzoek onderzoek) {
+  private boolean isBinnengemeentelijk() {
+    for (DossierPersoon persoon : getDossier().getPersonen(DossierPersoonType.BETROKKENE)) {
+      return getServices().getGebruiker().isGemeente(persoon.getWoongemeente().getLongValue());
+    }
+    throw new ProException("Deze zaak heeft geen betrokkenen");
+  }
+
+  private void toNieuwBinnenOfInterAdres(VerhuisAanvraag va, DossierOnderzoek onderzoek) {
+    va.setTypeVerhuizing(isBinnengemeentelijk() ? BINNENGEMEENTELIJK : INTERGEMEENTELIJK);
     va.setDatumIngang(getZaakDossier().getAanschrDatumInVoornemen());
     VerhuisAanvraagAdres nieuwAdres = va.getNieuwAdres();
     nieuwAdres.setFunctieAdres(FunctieAdres.WOONADRES);

@@ -26,9 +26,9 @@ public class ActieDescr {
   public static final String BEHEER_DMS                      = "(Beheer) dms";
   public static final String BEHEER_EMAIL                    = "(Beheer) e-mail";
   public static final String BEHEER_SMS                      = "(Beheer) sms";
-  public static final String BEHEER_VERKIEZING     = "(Beheer) verkiezing";
-  public static final String BEHEER_BESTAND_IMPORT = "(Beheer) bestanden importeren";
-  public static final String BEHEER_GEBRUIKERS     = "(Beheer) gebruikers";
+  public static final String BEHEER_VERKIEZING               = "(Beheer) verkiezing";
+  public static final String BEHEER_BESTAND_IMPORT           = "(Beheer) bestanden importeren";
+  public static final String BEHEER_GEBRUIKERS               = "(Beheer) gebruikers";
   public static final String BEHEER_ONDERHOUD                = "(Beheer) onderhoud";
   public static final String BEHEER_PROFIELEN                = "(Beheer) profielen";
   public static final String BEHEER_LICENTIE                 = "(Beheer) licentie";
@@ -48,6 +48,7 @@ public class ActieDescr {
   public static final String BASISTABEL_OVERLIJDEN_AANGEVERS = "(Basistabel) overlijdenaangevers";
   public static final String HOOFD_ZOEKEN                    = "(Hoofdscherm) zoeken";
   public static final String HOOFD_KASSA                     = "(Hoofdscherm) kassa";
+  public static final String HOOFD_AANMELDING                = "(Hoofdscherm) aanmelding";
   public static final String HOOFD_BSM                       = "(Hoofdscherm) bsm";
   public static final String HOOFD_INBOX                     = "(Hoofdscherm) inbox";
   public static final String HOOFD_ZAKENREGISTER             = "(Hoofdscherm) zakenregister";
@@ -62,6 +63,7 @@ public class ActieDescr {
   public static final String HOOFD_KLAPPER                   = "(Hoofdscherm) klapper";
   public static final String ZAAK_AFSTAMMING                 = "(Zaak) afstamming";
   public static final String ZAAK_ONDERZOEK                  = "(Zaak) onderzoek";
+  public static final String ZAAK_NATURALISATIE              = "(Zaak) naturalisatie";
   public static final String CASE_RISK_ANALYSIS              = "(Zaak) risicoanalyse";
   public static final String ZAAK_REGISTRATIE                = "(Zaak) eerste inschrijving";
   public static final String ZAAK_OVERLIJDEN                 = "(Zaak) overlijden";

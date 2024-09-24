@@ -20,11 +20,20 @@
 package nl.procura.diensten.gba.ple.openoffice;
 
 import static nl.procura.gba.common.MiscUtils.trimNr;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.eq;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -33,7 +42,29 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.formats.Adresformats;
 import nl.procura.diensten.gba.ple.openoffice.formats.Geboorteformats;
 import nl.procura.diensten.gba.ple.openoffice.formats.Naamformats;
-import nl.procura.diensten.zoekpersoon.objecten.*;
+import nl.procura.diensten.zoekpersoon.objecten.Afnemer;
+import nl.procura.diensten.zoekpersoon.objecten.Afnemergegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Gezaggegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Huwelijk;
+import nl.procura.diensten.zoekpersoon.objecten.Huwelijkgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Inschrijvinggegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Kiesrechtgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Kind;
+import nl.procura.diensten.zoekpersoon.objecten.Kindgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Kladblokaantekening;
+import nl.procura.diensten.zoekpersoon.objecten.Lokaleafnemersindicatie;
+import nl.procura.diensten.zoekpersoon.objecten.Nationaliteit;
+import nl.procura.diensten.zoekpersoon.objecten.Nationaliteitgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Oudergegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Overlijdengegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Persoonsgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Persoonslijst;
+import nl.procura.diensten.zoekpersoon.objecten.Reisdocument;
+import nl.procura.diensten.zoekpersoon.objecten.Reisdocumentgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Rijbewijsgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Verblijfplaatsgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Verblijfstitelgegevens;
+import nl.procura.diensten.zoekpersoon.objecten.Verwijzinggegevens;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.validation.Anummer;
 
@@ -53,6 +84,7 @@ public class DocumentPL implements Serializable {
   private List<OOAfnemer>                 afnemers         = new ArrayList<>();
   private List<OOLokaleafnemersindicatie> Lok_afn_ind      = new ArrayList<>();
   private OOGezag                         gezag;
+  private OOKiesrecht                     kiesrecht;
   private OOInschrijving                  inschrijving;
   private OOKladBlok                      kladblok;
   private OOOverlijden                    overlijden;
@@ -159,9 +191,9 @@ public class DocumentPL implements Serializable {
   public String getNationaliteit(Nationaliteit nationaliteit) {
 
     Nationaliteitgegevens geg = nationaliteit.getNationaliteit_actueel();
-    if (geg.getAanduiding_bijzonder_nederlanderschap().toLowerCase().equals("b")) {
+    if (geg.getAanduiding_bijzonder_nederlanderschap().equalsIgnoreCase("b")) {
       return "Behandeld als Nederlander";
-    } else if (geg.getAanduiding_bijzonder_nederlanderschap().toLowerCase().equals("v")) {
+    } else if (geg.getAanduiding_bijzonder_nederlanderschap().equalsIgnoreCase("v")) {
       return "Vastgesteld niet-Nederlander";
     }
 
@@ -246,6 +278,14 @@ public class DocumentPL implements Serializable {
 
   public void setGezag(OOGezag gezag) {
     this.gezag = gezag;
+  }
+
+  public OOKiesrecht getKiesrecht() {
+    return kiesrecht;
+  }
+
+  public void setKiesrecht(OOKiesrecht kiesrecht) {
+    this.kiesrecht = kiesrecht;
   }
 
   public OOKladBlok getKladblok() {
@@ -484,9 +524,7 @@ public class DocumentPL implements Serializable {
       if (pl.getVerblijfplaats().getVerblijfplaats_historie() != null) {
         for (Verblijfplaatsgegevens vb : pl.getVerblijfplaats().getVerblijfplaats_historie()) {
           oovb = new OOVerblijfplaats();
-
           copyValues(vb, oovb);
-
           getVerblijfplaatsen().add(oovb);
         }
       }
@@ -519,9 +557,7 @@ public class DocumentPL implements Serializable {
         for (Verblijfstitelgegevens vt : pl.getVerblijfstitel().getVerblijfstitel_historie()) {
           if (emp(vt.getIndicatie_onjuist())) {
             oovb = new OOVerblijfstitel();
-
             copyValues(vt, oovb);
-
             getVerblijfstitels().add(oovb);
           }
         }
@@ -536,6 +572,12 @@ public class DocumentPL implements Serializable {
       copyValues(pl.getGezag().getGezag_actueel(), gezag);
       getGezag().setCuratele(pos(gezag.getCuratele()) ? "Ja" : "Nee");
       getGezag().setGezag_minderjarige(getGezag().getGezag_minderjarige());
+    }
+
+    // Kiesrecht
+    if (pl.getKiesrecht() != null) {
+      setKiesrecht(new OOKiesrecht());
+      copyValues(pl.getKiesrecht().getKiesrecht_actueel(), kiesrecht);
     }
 
     // Reisdocumenten
@@ -623,17 +665,18 @@ public class DocumentPL implements Serializable {
     for (OONationaliteit n : getNationaliteiten()) {
       if (n.getNationaliteit().toLowerCase().matches("(.*)nederlandse(.*)|(.*)behandeld als nederlander(.*)")) {
         vbr = false;
+        break;
       }
     }
 
-    if ((getInschrijving() != null) && getInschrijving().getReden_opschorting_pl().toLowerCase().equals("m")) {
+    if ((getInschrijving() != null) && getInschrijving().getReden_opschorting_pl().equalsIgnoreCase("m")) {
       vbr = false;
     }
 
     if ((getVerblijfstitels() != null) && (getVerblijfstitels().size() > 0)) {
       for (OOVerblijfstitel vt : getVerblijfstitels()) {
         if (fil(vt.getAanduiding_verblijfstitel()) &&
-            !vt.getAanduiding_verblijfstitel().toLowerCase().equals("98")) {
+            !vt.getAanduiding_verblijfstitel().equalsIgnoreCase("98")) {
           String datumEinde = new ProcuraDate(vt.getDatum_einde_verblijfstitel()).getSystemDate();
           if (!pos(datumEinde) || !new ProcuraDate(datumEinde).isExpired()) {
             vbr = false;
@@ -714,6 +757,9 @@ public class DocumentPL implements Serializable {
   }
 
   public class OOGezag extends Gezaggegevens {
+  }
+
+  public class OOKiesrecht extends Kiesrechtgegevens {
   }
 
   public class OOHuwelijk extends Huwelijkgegevens {

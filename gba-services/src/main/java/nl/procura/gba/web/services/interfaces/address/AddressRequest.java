@@ -26,8 +26,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AddressRequest {
 
-  private String id     = "";
-  private String street = "";
   private String pc     = "";
   private String hnr    = "";
   private String hnrL   = "";

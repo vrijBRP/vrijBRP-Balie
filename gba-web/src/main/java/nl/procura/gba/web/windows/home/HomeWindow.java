@@ -21,7 +21,7 @@ package nl.procura.gba.web.windows.home;
 
 import com.vaadin.ui.UriFragmentUtility.FragmentChangedEvent;
 
-import nl.procura.gba.web.components.layouts.ToolBar;
+import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
 import nl.procura.gba.web.components.layouts.footer.GbaWebNormalFooterLayout;
 import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.gba.web.windows.home.layouts.HomeContent;

@@ -21,7 +21,13 @@ package nl.procura.gba.jpa.personen.db;
 
 import java.math.BigDecimal;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -112,4 +118,7 @@ public class DossRegistration extends BaseEntity {
 
   @Column(name = "interpreter_language")
   private String interpreterLanguage;
+
+  @Column(name = "c_filerecord")
+  private Long cFileRecord;
 }

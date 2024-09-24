@@ -21,6 +21,7 @@ package nl.procura.gba.web.windows.home.navigatie;
 
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.navigation.GbaAccordionTab;
+import nl.procura.gba.web.modules.bs.naturalisatie.ModuleNaturalisatie;
 import nl.procura.gba.web.modules.bs.onderzoek.ModuleOnderzoek;
 import nl.procura.gba.web.modules.bs.registration.ModuleRegistration;
 import nl.procura.gba.web.modules.bs.riskanalysis.ModuleRiskAnalysis;
@@ -37,6 +38,7 @@ public class OverigeAccordionTab extends GbaAccordionTab {
 
     addLink(ModuleGv.class);
     addLink(ModuleKlapper.class);
+    addLink(ModuleNaturalisatie.class);
     addLink(ModuleOnderzoek.class);
     addLink(ModuleRiskAnalysis.class);
     addLink(ModuleRegistration.class);

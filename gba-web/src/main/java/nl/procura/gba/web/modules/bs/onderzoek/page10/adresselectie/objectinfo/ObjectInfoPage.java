@@ -19,18 +19,18 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.objectinfo;
 
-import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
+import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class ObjectInfoPage extends NormalPageTemplate {
 
-  private ObjectInfoForm  form;
-  private final BaseWKExt adres;
+  private ObjectInfoForm                  form;
+  private final ProcuraInhabitantsAddress address;
 
-  public ObjectInfoPage(BaseWKExt adres) {
-    this.adres = adres;
+  public ObjectInfoPage(ProcuraInhabitantsAddress address) {
+    this.address = address;
   }
 
   @Override
@@ -38,7 +38,7 @@ public class ObjectInfoPage extends NormalPageTemplate {
 
     if (event.isEvent(InitPage.class)) {
       addButton(buttonClose);
-      form = new ObjectInfoForm(adres);
+      form = new ObjectInfoForm(address);
       addComponent(form);
     }
 

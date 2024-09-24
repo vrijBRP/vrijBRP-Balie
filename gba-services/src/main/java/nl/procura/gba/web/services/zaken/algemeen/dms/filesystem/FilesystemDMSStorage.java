@@ -19,16 +19,29 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms.filesystem;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static java.util.Collections.singletonList;
+import static nl.procura.gba.web.services.zaken.algemeen.dms.filesystem.FilesystemDMSUtils.countFilesByZaakId;
+import static nl.procura.gba.web.services.zaken.algemeen.dms.filesystem.FilesystemDMSUtils.countFilesInFolder;
+import static nl.procura.gba.web.services.zaken.algemeen.dms.filesystem.FilesystemDMSUtils.getFilesByFolder;
+import static nl.procura.gba.web.services.zaken.algemeen.dms.filesystem.FilesystemDMSUtils.getFilesByZaakId;
+import static nl.procura.gba.web.services.zaken.algemeen.dms.filesystem.FilesystemDMSUtils.normalizeFolders;
+import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.exceptions.ProExceptionType.DOCUMENTS;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -65,8 +78,13 @@ public class FilesystemDMSStorage extends AbstractDmsStorage {
   }
 
   @Override
-  public int countDocumentByZaak(Zaak zaak) {
+  public int countDocumentsByZaak(Zaak zaak) {
     return countDocuments(getFoldersFromZaak(zaak), zaak.getZaakId());
+  }
+
+  @Override
+  public int countDocumentsById(String id) {
+    return countDocuments(singletonList(id), null);
   }
 
   @Override
@@ -80,11 +98,15 @@ public class FilesystemDMSStorage extends AbstractDmsStorage {
   public DMSResult getDocumentsByZaak(Zaak zaak) {
     List<String> folders = getFoldersFromZaak(zaak);
     DMSResult resultaat = toDmsResult(getDocuments(folders, zaak.getZaakId()));
-    DMSResult filteredResult = new DMSResult();
-    filteredResult.setDocuments(resultaat.getDocuments().stream()
+    return new DMSResult(resultaat.getDocuments().stream()
         .filter(document -> equalsIgnoreCase(document.getZaakId(), zaak.getZaakId()))
         .collect(Collectors.toList()));
-    return filteredResult;
+  }
+
+  @Override
+  @ThrowException(type = DOCUMENTS, value = "Fout bij ophalen opgeslagen bestanden")
+  public DMSResult getDocumentsById(String id) {
+    return new DMSResult(getDocuments(singletonList(id), null));
   }
 
   @Override
@@ -109,6 +131,8 @@ public class FilesystemDMSStorage extends AbstractDmsStorage {
         if (!deleteFile.delete()) {
           throw new ProException(WARNING, "Fout bij verwijderen van het bestand");
         }
+        // Cleanup folder
+        getFilesByFolder(deleteFile.getParentFile());
       }
     }
   }
@@ -138,13 +162,13 @@ public class FilesystemDMSStorage extends AbstractDmsStorage {
     return new ArrayList<>(folders);
   }
 
-  private List<DMSDocument> getDocuments(List<String> subMappen, String subFolder) {
+  private List<DMSDocument> getDocuments(List<String> folders, String subFolder) {
     List<DMSDocument> files = new ArrayList<>();
-    for (File dir : FilesystemDMSUtils.normalizeFolders(getDocumentsFolder(), subMappen)) {
+    for (File dir : normalizeFolders(getDocumentsFolder(), folders)) {
       if (fil(subFolder)) {
-        files.addAll(FilesystemDMSUtils.getFilesByZaakId(dir, subFolder));
+        files.addAll(getFilesByZaakId(dir, subFolder));
       } else {
-        files.addAll(FilesystemDMSUtils.getFilesByFolder(dir));
+        files.addAll(getFilesByFolder(dir));
       }
     }
 
@@ -152,13 +176,13 @@ public class FilesystemDMSStorage extends AbstractDmsStorage {
     return files;
   }
 
-  private int countDocuments(List<String> folders, String zaakId) {
+  private int countDocuments(List<String> folders, String subFolder) {
     int count = 0;
-    for (File dir : FilesystemDMSUtils.normalizeFolders(getDocumentsFolder(), folders)) {
-      if (isNotBlank(zaakId)) {
-        count += FilesystemDMSUtils.countFilesByZaakId(dir, zaakId);
+    for (File dir : normalizeFolders(getDocumentsFolder(), folders)) {
+      if (isNotBlank(subFolder)) {
+        count += countFilesByZaakId(dir, subFolder);
       } else {
-        count += FilesystemDMSUtils.countFilesInFolder(dir);
+        count += countFilesInFolder(dir);
       }
     }
 

@@ -26,7 +26,7 @@ public enum BetrokkeneType {
   ONBEKEND(0, ""),
   ZELFDE(1, "Nog steeds woonachtig op het geregisteerde adres"),
   IMMIGRATIE(2, "Vanuit het buitenland gevestigd in de gemeente"),
-  BINNEN(3, "Verhuisd binnen de gemeente"),
+  BINNEN_INTER(3, "Verhuisd binnen/naar de gemeente"),
   NAAR_ANDERE(4, "Vertrokken naar een adres in een andere gemeente"),
   EMIGRATIE(5, "Vertrokken naar het buitenland"),
   NAAR_ONBEKEND(6, "Vertrokken met onbekende bestemming");

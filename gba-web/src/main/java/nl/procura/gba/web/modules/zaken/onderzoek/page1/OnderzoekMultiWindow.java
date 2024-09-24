@@ -21,8 +21,11 @@ package nl.procura.gba.web.modules.zaken.onderzoek.page1;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.modules.zaken.common.ZaakMultiWindow;
+import nl.procura.gba.web.modules.zaken.common.ZaakPersonChoiceWindow;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
+import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
+import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.DossierOnderzoek;
 import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType;
 
@@ -46,12 +49,30 @@ public class OnderzoekMultiWindow extends ZaakMultiWindow {
     @Override
     public void buttonClick(ClickEvent event) {
       Dossier dossier = (Dossier) getGbaApplication().getServices().getOnderzoekService().getNewZaak();
-      DossierOnderzoek zaakDossier = (DossierOnderzoek) dossier.getZaakDossier();
-      zaakDossier.setOnderzoekBron(OnderzoekBronType.BURGER);
       BasePLExt pl = getGbaApplication().getServices().getPersonenWsService().getHuidige();
-      BsPersoonUtils.kopieDossierPersoon(pl, zaakDossier.getAangever());
-      getGbaApplication().getServices().getMemoryService().setObject(Dossier.class, zaakDossier.getDossier());
-      super.buttonClick(event);
+      getGbaApplication().getParentWindow().addWindow(new PersonChoiceWindow(dossier, pl));
+    }
+  }
+
+  public static class PersonChoiceWindow extends ZaakPersonChoiceWindow {
+
+    public PersonChoiceWindow(Dossier dossier, BasePLExt pl) {
+      super("Selecteer de rol van de persoon (Escape om te sluiten)", "400px");
+
+      addChoice("Aangever / bron", () -> {
+        DossierOnderzoek zaakDossier = (DossierOnderzoek) dossier.getZaakDossier();
+        zaakDossier.setOnderzoekBron(OnderzoekBronType.BURGER);
+        BsPersoonUtils.kopieDossierPersoon(pl, zaakDossier.getAangever());
+        goToZaak(dossier);
+      });
+
+      addChoice("Betrokkene (te onderzoeken persoon)", () -> {
+        DossierPersoon betrokkene = new DossierPersoon(DossierPersoonType.BETROKKENE);
+        BsPersoonUtils.kopieDossierPersoon(pl, betrokkene);
+        betrokkene.setDefinitief(true);
+        dossier.toevoegenPersoon(betrokkene);
+        goToZaak(dossier);
+      });
     }
   }
 }

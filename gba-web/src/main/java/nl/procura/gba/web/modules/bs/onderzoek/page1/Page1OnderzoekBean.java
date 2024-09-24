@@ -29,10 +29,17 @@ import nl.procura.gba.web.modules.bs.ontbinding.page30.AanhefContainer;
 import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekAardType;
 import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType;
 import nl.procura.gba.web.services.bs.onderzoek.enums.VermoedAdresType;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.InputPrompt;
+import nl.procura.vaadin.annotation.field.Select;
+import nl.procura.vaadin.annotation.field.TextArea;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.PostalcodeField;
 import nl.procura.vaadin.component.field.ProDateField;
 import nl.procura.vaadin.component.field.ProNativeSelect;
+import nl.procura.vaadin.component.field.ProTextArea;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 import lombok.Data;
@@ -53,6 +60,7 @@ public class Page1OnderzoekBean implements Serializable {
   public static final String PC              = "pc";
   public static final String PLAATS          = "plaats";
   public static final String KENMERK         = "kenmerk";
+  public static final String TOELICHTING     = "toelichting";
   public static final String AFDELING        = "afdeling";
   public static final String DATUM_ONTVANGST = "datumOntvangst";
   public static final String AARD            = "aard";
@@ -147,6 +155,13 @@ public class Page1OnderzoekBean implements Serializable {
   @TextField(maxLength = 250,
       nullRepresentation = "")
   private String kenmerk = "";
+
+  @Field(customTypeClass = ProTextArea.class,
+      caption = "Toelichting",
+      width = "250px")
+  @TextArea(rows = 5,
+      nullRepresentation = "")
+  private String toelichting = "";
 
   @Field(customTypeClass = ProDateField.class,
       caption = "Datum ontvangst",

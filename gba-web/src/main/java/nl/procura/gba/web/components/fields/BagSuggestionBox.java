@@ -99,24 +99,28 @@ public class BagSuggestionBox extends ComboBox {
       }
       String value = ((BagFilter) filter).getFilterString();
       if (StringUtils.isNotBlank(value)) {
-        try {
-          LocationServerRequest request = requestListener.getRequest(value);
-          LocationServerResponse response = geoRestClient
-              .getPdok()
-              .getLocationServer()
-              .search(request);
+        if (value.trim().length() < 3) {
+          addError("Geef minimaal 3 tekens in ...");
+        } else {
+          try {
+            LocationServerRequest request = requestListener.getRequest(value);
+            LocationServerResponse response = geoRestClient
+                .getPdok()
+                .getLocationServer()
+                .search(request);
 
-          if (response != null) {
-            LocationServerDocResponse dr = response.getResponse();
-            if (dr.getDocs().isEmpty()) {
-              addError("Geen zoekresultaten ...");
-            } else {
-              dr.getDocs().forEach(doc -> addAddress(new PdokLocationServiceAddress(doc)));
+            if (response != null) {
+              LocationServerDocResponse dr = response.getResponse();
+              if (dr.getDocs().isEmpty()) {
+                addError("Geen zoekresultaten ...");
+              } else {
+                dr.getDocs().forEach(doc -> addAddress(new PdokLocationServiceAddress(doc)));
+              }
             }
+          } catch (RuntimeException e) {
+            log.error("Fout bij zoeken", e);
+            addError("Fout bij zoeken ... ");
           }
-        } catch (RuntimeException e) {
-          log.error("Fout bij zoeken", e);
-          addError("Fout bij zoeken ... ");
         }
       }
       super.addContainerFilter(filter);

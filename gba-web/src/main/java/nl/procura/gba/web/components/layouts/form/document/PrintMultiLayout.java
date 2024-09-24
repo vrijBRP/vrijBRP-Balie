@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.components.layouts.form.document;
 
-import static nl.procura.gba.web.components.layouts.form.document.PrintDocumentBean.*;
+import static java.util.Optional.ofNullable;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.vaadin.component.table.indexed.IndexedTable.LAZY_ACTION.FILTERING;
@@ -29,7 +29,11 @@ import java.util.List;
 
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.*;
+import com.vaadin.ui.AbstractTextField;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
 
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
@@ -37,7 +41,11 @@ import nl.procura.gba.web.components.layouts.form.document.PrintRecord.Status;
 import nl.procura.gba.web.components.layouts.form.document.preview.PrintPreviewWindow;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.gba.web.services.zaken.documenten.*;
+import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
+import nl.procura.gba.web.services.zaken.documenten.DocumentService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentSoort;
+import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintModelUtils;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
@@ -45,6 +53,7 @@ import nl.procura.standard.exceptions.ProException;
 import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.HLayout;
+import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.table.indexed.IndexedTableFilter;
 import nl.procura.vaadin.component.table.indexed.IndexedTableFilterLayout;
@@ -58,50 +67,60 @@ public class PrintMultiLayout extends GbaVerticalLayout {
   public final Button      buttonPrint   = new Button("Afdrukken (F3)");
   private final InfoLayout infoLayout    = new InfoLayout("", "Selecteer het document om af te drukken.");
 
-  private Zaak                      zaak;
-  private Object                    model;
-  private final PrintTable          table;
-  private final PrintSoortForm      soortForm;
-  private final DocumentType[]      documentTypes;
-  private final List<DocumentSoort> documentSoorten;
+  private Zaak                         zaak;
+  private final PrintMultiLayoutConfig config;
+  private Object                       model;
+  private final PrintSoortForm         form;
+  private final PrintTable             table;
 
-  public PrintMultiLayout(Object model, Zaak zaak, PrintSelectListener selectListener, DocumentType... types) {
-    this(model, zaak, selectListener, new ArrayList<>(), types);
+  public PrintMultiLayout(Object model,
+      Zaak zaak,
+      PrintSelectRecordFilter selectListener,
+      DocumentType... types) {
+    this(PrintMultiLayoutConfig.builder()
+        .model(model)
+        .zaak(zaak)
+        .selectRecordFilter(selectListener)
+        .documentTypes(types)
+        .build());
   }
 
-  public PrintMultiLayout(Object model, Zaak zaak, PrintSelectListener selectListener, List<DocumentSoort> soorten) {
-    this(model, zaak, selectListener, soorten, (DocumentType) null);
+  public PrintMultiLayout(Object model,
+      Zaak zaak,
+      PrintSelectRecordFilter selectListener,
+      List<DocumentSoort> documentSoorten,
+      DocumentType... documentTypes) {
+
+    this(PrintMultiLayoutConfig.builder()
+        .model(model)
+        .zaak(zaak)
+        .selectRecordFilter(selectListener)
+        .documentSoorten(documentSoorten)
+        .documentTypes(documentTypes)
+        .build());
   }
 
-  public PrintMultiLayout(Object model, Zaak zaak, PrintSelectListener selectListener,
-      List<DocumentSoort> documentSoorten, DocumentType... documentTypes) {
-
-    this.model = model;
-    this.zaak = zaak;
-    this.documentTypes = documentTypes;
-    this.documentSoorten = documentSoorten;
+  public PrintMultiLayout(PrintMultiLayoutConfig config) {
+    this.model = config.getModel();
+    this.zaak = config.getZaak();
+    this.config = config;
 
     setSizeFull();
-    addComponent(infoLayout);
 
-    table = new PrintTable(selectListener);
-
-    soortForm = new PrintSoortForm() {
-
-      @Override
-      protected void onChangeSoort(List<DocumentSoort> documentSoorten) {
-        if (isTabelAdded()) {
-          table.updateSoort(documentSoorten);
-        }
-      }
-    };
+    table = new PrintTable(config);
+    form = new PrintSoortForm(config.getDocumentSoorten(), config.getDocumentTypes(), soorten -> {
+      table.updateSoort(ofNullable(config.getShowRecordFilter())
+          .filter(listener -> !soorten.isEmpty())
+          .map(listener -> listener.apply(soorten))
+          .orElse(soorten));
+    });
   }
 
   @Override
   public void attach() {
-
     if (table.getParent() == null) {
-      addComponent(soortForm);
+      VLayout vLayout = new VLayout().add(infoLayout).add(form).margin(false);
+      vLayout.setVisible(!config.isFormHidden());
       Fieldset documentgegevens = new Fieldset("Documentgegevens");
       Filter filter = new Filter();
       HLayout h = new HLayout();
@@ -109,11 +128,13 @@ public class PrintMultiLayout extends GbaVerticalLayout {
       h.addComponent(documentgegevens);
       h.addComponent(filter);
       h.setExpandRatio(documentgegevens, 1f);
-      addComponent(h);
+      vLayout.addComponent(h);
+      addComponent(vLayout);
+
       addExpandComponent(table);
     }
 
-    table.updateSoort(soortForm.getSelectedSoorten());
+    table.updateSoort(form.getSelectedSoorten());
 
     super.attach();
   }
@@ -133,25 +154,17 @@ public class PrintMultiLayout extends GbaVerticalLayout {
     this.model = model;
   }
 
-  public Zaak getZaak() {
-    return zaak;
-  }
-
   public void setZaak(Zaak zaak) {
     this.zaak = zaak;
   }
 
   public void handleActions(Button button, int keyCode) {
-
     if (button == buttonPrint || keyCode == KeyCode.F3) {
       doPrint(false);
+
     } else if (button == buttonPreview) {
       doPrint(true);
     }
-  }
-
-  public boolean isTabelAdded() {
-    return table.getParent() != null;
   }
 
   /**
@@ -173,12 +186,12 @@ public class PrintMultiLayout extends GbaVerticalLayout {
    */
   protected void doPrint(boolean isPreview) {
 
-    soortForm.commit();
+    form.commit();
 
     List<PrintRecord> records = getPrintRecords(isPreview);
 
     for (PrintRecord record : records) {
-      printRecord(record, isPreview, new DownloadHandlerImpl(getWindow()));
+      printRecord(record, isPreview, new DownloadHandlerImpl(getParentWindow()));
     }
 
     if (isPreview) {
@@ -207,8 +220,8 @@ public class PrintMultiLayout extends GbaVerticalLayout {
 
     for (PrintRecord record : records) {
       record.setModel(getModel());
-      record.setZaak(getZaak());
-      record.setVervolgblad(soortForm.getBean().getVervolgblad());
+      record.setZaak(zaak);
+      record.setVervolgblad(form.getBean().getVervolgblad());
     }
 
     return getCopies(records);
@@ -278,14 +291,13 @@ public class PrintMultiLayout extends GbaVerticalLayout {
       record.setPrintActie(printActie);
 
       if (isPreview) {
-
         PrintOptie printOptie = new PrintOptie();
         printOptie.setUitvoerformaatType(UitvoerformaatType.PDF); // Altijd als PDF
         printActie.setPrintOptie(printOptie);
 
         record.setPreviewArray(service.preview(printActie));
-      } else {
 
+      } else {
         printActie.setPrintOptie((PrintOptie) record.getUitvoer().getValue());
         service.print(printActie, true, downloadHandler);
       }
@@ -300,24 +312,10 @@ public class PrintMultiLayout extends GbaVerticalLayout {
     }
   }
 
-  public class PrintSoortForm extends PrintSoortFormTemplate {
+  public static class PrintTable extends PrintTableTemplate {
 
-    public PrintSoortForm() {
-      setCaption("Soort");
-      setOrder(SOORT, SOORT_LEEG, VERVOLG_BLAD);
-      setColumnWidths(WIDTH_130, "");
-
-      setDocumentSoorten(documentSoorten);
-      setDocumentTypes(documentTypes);
-
-      setBean(new PrintDocumentBean());
-    }
-  }
-
-  public class PrintTable extends PrintTableTemplate {
-
-    public PrintTable(PrintSelectListener selectListener) {
-      super(selectListener);
+    public PrintTable(PrintMultiLayoutConfig config) {
+      super(config);
     }
   }
 

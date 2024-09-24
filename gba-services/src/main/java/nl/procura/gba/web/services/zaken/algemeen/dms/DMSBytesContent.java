@@ -58,6 +58,11 @@ public class DMSBytesContent implements DMSContent {
   }
 
   @Override
+  public byte[] getBytes() {
+    return bytes;
+  }
+
+  @Override
   public Long getSize() {
     return (long) bytes.length;
   }

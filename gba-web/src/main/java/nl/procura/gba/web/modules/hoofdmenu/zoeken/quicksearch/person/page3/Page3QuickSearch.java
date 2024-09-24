@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page3;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.SelectListener;
+import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonConfig;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.Relatie;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieLijst;
@@ -30,31 +30,34 @@ import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieType;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.table.indexed.IndexedTable;
-import nl.procura.validation.Anummer;
+import nl.procura.vaadin.functies.VaadinUtils;
 
 public class Page3QuickSearch extends NormalPageTemplate {
 
-  private final Anummer        anummer;
-  private final SelectListener selectListener;
+  private RelatieLijst                  lijst;
+  private final QuickSearchPersonConfig config;
 
-  private Table        table;
-  private RelatieLijst lijst;
-
-  public Page3QuickSearch(Anummer anummer, SelectListener selectListener) {
-    this.anummer = anummer;
-    this.selectListener = selectListener;
+  public Page3QuickSearch(QuickSearchPersonConfig config) {
+    this.config = config;
   }
 
   @Override
   public void event(PageEvent event) {
     if (event.isEvent(InitPage.class)) {
       PersonenWsService service = getServices().getPersonenWsService();
-      lijst = service.getRelatieLijst(service.getPersoonslijst(anummer.getAnummer()), false);
-      table = new Table();
-      addButton(buttonClose);
+      lijst = service.getRelatieLijst(service.getPersoonslijst(config.getId()), false);
+      Table table = new Table();
       addExpandComponent(table);
     }
     super.event(event);
+  }
+
+  @Override
+  public void attach() {
+    super.attach();
+    VaadinUtils.resetHeight(getWindow());
+    getWindow().setWidth("900px");
+    getWindow().center();
   }
 
   @Override
@@ -65,15 +68,16 @@ public class Page3QuickSearch extends NormalPageTemplate {
   class Table extends GbaTable {
 
     @Override
-    public void onClick(IndexedTable.Record record) {
-      selectListener.select(record.getObject(BasePLExt.class));
+    public void onDoubleClick(IndexedTable.Record record) {
+      config.getSelectListener().select(record.getObject(BasePLExt.class));
     }
 
     @Override
     public void setColumns() {
       setSelectable(true);
       addColumn("Relatie", 80);
-      addColumn("Persoon").setUseHTML(true);
+      addColumn("Persoon", 250);
+      addColumn("Adres");
       super.setColumns();
     }
 
@@ -81,9 +85,12 @@ public class Page3QuickSearch extends NormalPageTemplate {
     public void setRecords() {
       for (Relatie relatie : lijst.getSortedRelaties()) {
         if (relatie.getRelatieType() != RelatieType.AANGEVER) {
-          IndexedTable.Record record = addRecord(relatie.getPl());
-          record.addValue(relatie.getRelatieType().getOms());
-          record.addValue(relatie.getPl().getPersoon().getNaam().getNaamNaamgebruikEersteVoornaam());
+          if (!config.isSameAddress() || relatie.isHuisgenoot()) {
+            IndexedTable.Record record = addRecord(relatie.getPl());
+            record.addValue(relatie.getRelatieType().getOms());
+            record.addValue(relatie.getPl().getPersoon().getNaam().getNaamNaamgebruikEersteVoornaam());
+            record.addValue(relatie.getPl().getVerblijfplaats().getAdres().getAdres());
+          }
         }
       }
     }

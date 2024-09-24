@@ -22,6 +22,8 @@ package nl.procura.gba.web.services.bs.algemeen.enums;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.HUWELIJK;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.PARTNERSCHAP;
 
+import java.util.Arrays;
+
 import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType;
 
 public enum DossierPersoonType {
@@ -45,14 +47,18 @@ public enum DossierPersoonType {
   ONBEKEND(0, "Onbekend", "", true),
   INSCHRIJVER(80, "Inschrijver", "", false),
   GERELATEERDE_BRP(81, "Gerelateerde in BRP", "", true),
-  GERELATEERDE_NIET_BRP(82, "Gerelateerde niet in BRP", "", true);
+  GERELATEERDE_NIET_BRP(82, "Gerelateerde niet in BRP", "", true),
+  VERTEGENWOORDIGER(83, "Vertegenwoordiger", "", false),
+  TOESTEMMINGGEVER(84, "Toestemminggever", "", false),
+  MEDE_VERZOEKER_PARTNER(85, "Mede-verzoeker (partner)", "", false),
+  MEDE_VERZOEKER_KIND(86, "Mede-verzoeker (kind)", "", false);
 
-  private long                   code;
-  private String                 descr;
-  private String                 geslacht;
-  private boolean                magOverledenZijn;
-  private DossierPersoonType[]   subTypes;
-  private BurgerlijkeStaatType[] bsTypes;
+  private final long                   code;
+  private final String                 descr;
+  private final String                 geslacht;
+  private final boolean                magOverledenZijn;
+  private final DossierPersoonType[]   subTypes;
+  private final BurgerlijkeStaatType[] bsTypes;
 
   DossierPersoonType(long code, String descr, String geslacht, boolean magOverledenZijn) {
     this(code, descr, geslacht, magOverledenZijn, null, null);
@@ -80,37 +86,21 @@ public enum DossierPersoonType {
   }
 
   public static DossierPersoonType get(long code) {
-    for (final DossierPersoonType a : values()) {
-      if (a.getCode() == code) {
-        return a;
-      }
-    }
-
-    return ONBEKEND;
+    return Arrays.stream(values())
+        .filter(type -> type.getCode() == code)
+        .findFirst().orElse(ONBEKEND);
   }
 
   public BurgerlijkeStaatType[] getBsTypes() {
     return bsTypes;
   }
 
-  public void setBsTypes(BurgerlijkeStaatType[] bsTypes) {
-    this.bsTypes = bsTypes;
-  }
-
   public long getCode() {
     return code;
   }
 
-  public void setCode(long code) {
-    this.code = code;
-  }
-
   public String getDescr() {
     return descr;
-  }
-
-  public void setDescr(String descr) {
-    this.descr = descr;
   }
 
   public String getDescrExtra() {
@@ -121,23 +111,15 @@ public enum DossierPersoonType {
     return geslacht;
   }
 
-  public void setGeslacht(String geslacht) {
-    this.geslacht = geslacht;
-  }
-
   public DossierPersoonType[] getSubTypes() {
     return subTypes;
   }
 
   public boolean heeftMogelijkeBurgerlijkeStaat(BurgerlijkeStaatType burgerlijkeStaat) {
-
     if (getBsTypes() != null) {
-      for (final BurgerlijkeStaatType bsType : bsTypes) {
-        if (bsType == burgerlijkeStaat) {
-          return true;
-        }
-      }
-      return false;
+      return Arrays.stream(bsTypes)
+          .anyMatch(bsType -> bsType == burgerlijkeStaat);
+
     }
 
     return true;
@@ -165,10 +147,6 @@ public enum DossierPersoonType {
 
   public boolean isMagOverledenZijn() {
     return magOverledenZijn;
-  }
-
-  public void setMagOverledenZijn(boolean magOverledenZijn) {
-    this.magOverledenZijn = magOverledenZijn;
   }
 
   @Override

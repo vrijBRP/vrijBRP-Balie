@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.registration.page10.adresselectie.selectie;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.date2str;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,19 +33,19 @@ import com.vaadin.ui.Label;
 import nl.procura.gba.web.components.TableImage;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.gba.web.modules.zaken.verhuizing.VerhuisAdres;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
+import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.theme.twee.Icons;
 
 public class AddressSelectionPage extends NormalPageTemplate {
 
-  private final Table                  table;
-  private final Consumer<VerhuisAdres> listener;
-  private List<VerhuisAdres>           addresses;
-  private boolean                      gebruikPPDCodes;
+  private final Table             table;
+  private final Consumer<Address> listener;
+  private final List<Address>     addresses;
+  private final boolean           gebruikPPDCodes;
 
-  AddressSelectionPage(final List<VerhuisAdres> addresses, boolean gebruikPPDCodes, Consumer<VerhuisAdres> listener) {
+  AddressSelectionPage(final List<Address> addresses, boolean gebruikPPDCodes, Consumer<Address> listener) {
     this.addresses = addresses;
     this.listener = listener;
     this.table = new Table();
@@ -55,7 +57,7 @@ public class AddressSelectionPage extends NormalPageTemplate {
 
   @Override
   public void onEnter() {
-    listener.accept(this.table.getSelectedRecord().getObject(VerhuisAdres.class));
+    listener.accept(this.table.getSelectedRecord().getObject(Address.class));
     super.onEnter();
   }
 
@@ -63,7 +65,7 @@ public class AddressSelectionPage extends NormalPageTemplate {
 
     @Override
     public void onClick(final Record record) {
-      listener.accept(record.getObject(VerhuisAdres.class));
+      listener.accept(record.getObject(Address.class));
       super.onClick(record);
       ((ModalWindow) getWindow()).closeWindow();
     }
@@ -83,7 +85,7 @@ public class AddressSelectionPage extends NormalPageTemplate {
     public void setRecords() {
       int gebrPPD = aval(getApplication().getParmValue(ParameterConstant.GEBR_PPD));
 
-      for (VerhuisAdres a : addresses) {
+      for (Address a : addresses) {
         Record r = addRecord(a);
         if (a.isSuitableForLiving()) {
           r.addValue(new TableImage(Icons.getIcon(Icons.ICON_OK)));
@@ -92,7 +94,7 @@ public class AddressSelectionPage extends NormalPageTemplate {
         }
 
         if (gebruikPPDCodes && (gebrPPD >= 0)) {
-          if (gebrPPD == aval(a.getAddress().getPPD())) {
+          if (gebrPPD == aval(a.getPPD())) {
             r.addValue(new TableImage(Icons.getIcon(Icons.ICON_OK)));
           } else {
             r.addValue(new TableImage(Icons.getIcon(Icons.ICON_ERROR)));
@@ -102,8 +104,8 @@ public class AddressSelectionPage extends NormalPageTemplate {
         }
 
         String adres = a.getAddressLabel();
-        if (pos(a.getAddress().getEndDate())) {
-          adres += " - beëindigd op " + date2str(a.getAddress().getEndDate());
+        if (pos(a.getEndDate())) {
+          adres += " - beëindigd op " + date2str(a.getEndDate());
         }
 
         r.addValue(adres);

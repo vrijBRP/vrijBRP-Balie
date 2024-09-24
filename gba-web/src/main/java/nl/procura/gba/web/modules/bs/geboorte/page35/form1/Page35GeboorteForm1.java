@@ -153,10 +153,13 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
 
   private void bijWijzigingErkenningsType(ErkenningsType type, GezinssituatieType gezin) {
     getField(ERKENNINGS_APP).setVisible(ErkenningsType.ERKENNING_ONGEBOREN_VRUCHT.equals(type));
-    getField(NAAMSKEUZE_TYPE)
-        .setVisible(GEEN_ERKENNING.equals(type) && GezinssituatieType.BINNEN_HOMO_HUWELIJK.equals(gezin));
-    getField(NAAMSKEUZE_APP)
-        .setVisible(GEEN_ERKENNING.equals(type) && GezinssituatieType.BINNEN_HOMO_HUWELIJK.equals(gezin));
+
+    getField(NAAMSKEUZE_TYPE).setVisible(BINNEN_HETERO_HUWELIJK.is(gezin)
+        || (BINNEN_HOMO_HUWELIJK.is(gezin) && GEEN_ERKENNING.equals(type)));
+
+    getField(NAAMSKEUZE_APP).setVisible(BINNEN_HETERO_HUWELIJK.is(gezin)
+        || (BINNEN_HOMO_HUWELIJK.is(gezin) && GEEN_ERKENNING.equals(type)));
+
     repaint();
   } // Override
 

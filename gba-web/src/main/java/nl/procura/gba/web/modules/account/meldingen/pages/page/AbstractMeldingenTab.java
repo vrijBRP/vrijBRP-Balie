@@ -130,7 +130,7 @@ public abstract class AbstractMeldingenTab extends NormalPageTemplate {
   protected void selectRecord(Record record) {
     ServiceMelding melding = record.getObject(ServiceMelding.class);
     if (melding instanceof RdwMelding) {
-      rdwMelding(melding);
+      rdwMelding();
     } else if (melding instanceof GbavMelding) {
       gbavMelding(melding);
     } else if (melding instanceof SelectieMelding) {
@@ -150,7 +150,6 @@ public abstract class AbstractMeldingenTab extends NormalPageTemplate {
   }
 
   private void gbavMelding(ServiceMelding melding) {
-
     GbavMelding gbavNotification = (GbavMelding) melding;
     GbavWindowListener gbavWindowListener = new GbavWindowListener() {
 
@@ -182,8 +181,7 @@ public abstract class AbstractMeldingenTab extends NormalPageTemplate {
     getApplication().getParentWindow().addWindow(new GbavWindow(gbavNotification.getAccount(), gbavWindowListener));
   }
 
-  private void rdwMelding(ServiceMelding melding) {
-
+  private void rdwMelding() {
     RdwWindowListener rdwWindowListener = new RdwWindowListener() {
 
       @Override

@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.services.beheer.profiel.actie;
 
-import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType.*;
+import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType.DELETE;
+import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType.SELECT;
+import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType.UPDATE;
 import static nl.procura.standard.Globalfunctions.eq;
 import static nl.procura.standard.Globalfunctions.fil;
 
@@ -105,6 +107,7 @@ public enum ProfielActie {
   DELETE_BASISTABEL_KENNISBANKGEGEVENS(new Actie(DELETE, ActieDescr.BASISTABEL_KENNISBANKGEGEVENS)),
   SELECT_HOOFD_ZOEKEN(new Actie(SELECT, ActieDescr.HOOFD_ZOEKEN)),
   SELECT_HOOFD_KASSA(new Actie(SELECT, ActieDescr.HOOFD_KASSA)),
+  SELECT_HOOFD_AANMELDING(new Actie(SELECT, ActieDescr.HOOFD_AANMELDING)),
   SELECT_HOOFD_BSM(new Actie(SELECT, ActieDescr.HOOFD_BSM)),
   SELECT_HOOFD_INBOX(new Actie(SELECT, ActieDescr.HOOFD_INBOX)),
   SELECT_HOOFD_ZAKENREGISTER(new Actie(SELECT, ActieDescr.HOOFD_ZAKENREGISTER)),
@@ -132,6 +135,9 @@ public enum ProfielActie {
   SELECT_ZAAK_ONDERZOEK(new Actie(SELECT, ActieDescr.ZAAK_ONDERZOEK)),
   UPDATE_ZAAK_ONDERZOEK(new Actie(UPDATE, ActieDescr.ZAAK_ONDERZOEK)),
   DELETE_ZAAK_ONDERZOEK(new Actie(DELETE, ActieDescr.ZAAK_ONDERZOEK)),
+  SELECT_ZAAK_NATURALISATIE(new Actie(SELECT, ActieDescr.ZAAK_NATURALISATIE)),
+  UPDATE_ZAAK_NATURALISATIE(new Actie(UPDATE, ActieDescr.ZAAK_NATURALISATIE)),
+  DELETE_ZAAK_NATURALISATIE(new Actie(DELETE, ActieDescr.ZAAK_NATURALISATIE)),
   SELECT_CASE_RISK_ANALYSIS(new Actie(SELECT, ActieDescr.CASE_RISK_ANALYSIS)),
   UPDATE_CASE_RISK_ANALYSIS(new Actie(UPDATE, ActieDescr.CASE_RISK_ANALYSIS)),
   DELETE_CASE_RISK_ANALYSIS(new Actie(DELETE, ActieDescr.CASE_RISK_ANALYSIS)),

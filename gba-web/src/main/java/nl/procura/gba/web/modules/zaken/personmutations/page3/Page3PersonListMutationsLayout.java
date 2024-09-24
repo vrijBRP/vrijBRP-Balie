@@ -97,21 +97,21 @@ import nl.procura.vaadin.component.layout.Fieldset;
 
 public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
 
-  private final PersonListMutElems                    list;
+  private final PersonListMutElems                    elems;
   private final AbstractPersonMutationsTable          table;
   private final Page3PersonListValidationErrorsLayout validationLayout;
 
-  public Page3PersonListMutationsLayout(PersonListMutElems list, PersonListMutation mutation) {
-    this.list = list;
-    validationLayout = new Page3PersonListValidationErrorsLayout(list, mutation.getActionType());
-    list.forEach(mutElem -> list.setField(mutElem, getDefaultField(mutElem)));
-    addCountryMunicipalityListeners(list);
-    addDateRestrictions(list);
-    list.forEach(this::setDefaultValues);
-    list.forEach(this::setClearFieldValidator);
+  public Page3PersonListMutationsLayout(PersonListMutElems elems, PersonListMutation mutation) {
+    this.elems = elems;
+    validationLayout = new Page3PersonListValidationErrorsLayout(elems, mutation.getActionType());
+    elems.forEach(mutElem -> elems.setField(mutElem, getDefaultField(mutElem)));
+    addCountryMunicipalityListeners(elems);
+    addDateRestrictions(elems);
+    elems.forEach(this::setDefaultValues);
+    elems.forEach(this::setClearFieldValidator);
 
     addStyleName("v-form-error");
-    this.table = new Page3PersonMutationsTable(list);
+    this.table = new Page3PersonMutationsTable(elems);
 
     addComponent(new Fieldset("Overzicht elementen"));
     getFilter(mutation.getActionType()).ifPresent(this::addComponent);
@@ -126,7 +126,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
    */
   private void setTabIndex() {
     int tabIndex = 0;
-    for (PersonListMutElem elem : list) {
+    for (PersonListMutElem elem : elems) {
       if (!elem.isReadonly()) {
         elem.setTabIndex(++tabIndex);
       }
@@ -150,19 +150,19 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
   }
 
   public PersonListMutElems getNewRecords() {
-    list.validateAll();
+    elems.validateAll();
     validationLayout.getErrors().stream()
         .findFirst().ifPresent(error -> {
           throw new ProException(WARNING, error.getMsg());
         });
-    return list;
+    return elems;
   }
 
   /**
    * Als de gemeente van de inschrijving de huidige gemeente is dan de straten tonen
    */
   private void checkMunicipality() {
-    list.getElem(GBAElem.GEM_INSCHR)
+    elems.getElem(GBAElem.GEM_INSCHR)
         .ifPresent(gemeente -> {
           checkStreet(gemeente);
           checkOpenbareRuimte(gemeente);
@@ -170,12 +170,12 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
   }
 
   private void checkStreet(PersonListMutElem gemeente) {
-    list.getElem(GBAElem.STRAATNAAM).ifPresent(straat -> {
+    elems.getElem(GBAElem.STRAATNAAM).ifPresent(straat -> {
       FieldValue gem = (FieldValue) gemeente.getField().getValue();
       int plaatsCode = aval((gem != null) ? gem.getValue() : gemeente.getElem().getValue().getVal());
       boolean isGemeente = Services.getInstance().getGebruiker().isGemeente(plaatsCode);
       AbstractField field = isGemeente ? getDefaultField(straat) : new UnknownValueField();
-      list.setField(straat, setFieldStyle(field));
+      elems.setField(straat, setFieldStyle(field));
       setDefaultValues(straat);
       setEditableFieldProperties(field, straat);
       if (getTable() != null) {
@@ -185,12 +185,12 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
   }
 
   private void checkOpenbareRuimte(PersonListMutElem gemeente) {
-    list.getElem(GBAElem.OPENB_RUIMTE).ifPresent(obr -> {
+    elems.getElem(GBAElem.OPENB_RUIMTE).ifPresent(obr -> {
       FieldValue gem = (FieldValue) gemeente.getField().getValue();
       int plaatsCode = aval((gem != null) ? gem.getValue() : gemeente.getElem().getValue().getVal());
       boolean isGemeente = Services.getInstance().getGebruiker().isGemeente(plaatsCode);
       AbstractField field = isGemeente ? getDefaultField(obr) : new GbaTextField();
-      list.setField(obr, setFieldStyle(field));
+      elems.setField(obr, setFieldStyle(field));
       setDefaultValues(obr);
       setEditableFieldProperties(field, obr);
       if (getTable() != null) {
@@ -331,10 +331,10 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
 
   private <T extends AbstractField> T setEditableFieldProperties(T field, PersonListMutElem mutElem) {
     field.setImmediate(true);
-    field.addValidator(PersonListMutationsChecks.getValidator(mutElem, list));
+    field.addValidator(PersonListMutationsChecks.getValidator(mutElem, elems));
     field.addListener((ValueChangeListener) valueChangeEvent -> {
       validationLayout.clearMessages();
-      list.forEach(elem -> {
+      elems.forEach(elem -> {
         try {
           checkRequired(elem, elem.getField());
           elem.validate();
@@ -350,7 +350,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
   }
 
   private void checkRequired(PersonListMutElem mutElem, AbstractField field) {
-    Optional<String> requiredError = PersonListMutationsChecks.getRequiredError(mutElem, list);
+    Optional<String> requiredError = PersonListMutationsChecks.getRequiredError(mutElem, elems);
     field.setRequired(requiredError.isPresent());
     requiredError.ifPresent(field::setRequiredError);
   }
@@ -377,7 +377,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
   private void setClearFieldValidator(PersonListMutElem mutElem) {
     mutElem.getField().addListener((ValueChangeListener) event -> {
       boolean isBlank = StringUtils.isBlank(astr(event.getProperty().getValue()));
-      PersonListMutationsChecks.checkCleared(mutElem, isBlank, list);
+      PersonListMutationsChecks.checkCleared(mutElem, isBlank, elems);
     });
   }
 
@@ -403,7 +403,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
   }
 
   private void updateElement(BasePLExt pl, GBAElem gbaElem) {
-    list.getElem(gbaElem)
+    elems.getElem(gbaElem)
         .ifPresent(element -> {
           BasePLValue val = pl.getCat(GBACat.PERSOON).getCurrentRec().getElem(gbaElem).getValue();
           element.getField().setValue(new FieldValue(val.getVal(), val.getDescr()));
@@ -474,7 +474,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
 
   private AbstractField getMunicipalityComboBox(PersonListMutElem mutElem) {
     AbstractSelect field = (AbstractSelect) getDefaultField(mutElem);
-    list.getElem(mutElem.getElemType())
+    elems.getElem(mutElem.getElemType())
         .map(PersonListMutElem::getField)
         .ifPresent(dateField -> DateReference.setFieldWithValidator(field, dateField));
     return field;
@@ -491,7 +491,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     if (fieldClass.isAssignableFrom(municipality.getField().getClass())) {
       return;
     }
-    list.setField(municipality, fieldSupplier.get());
+    elems.setField(municipality, fieldSupplier.get());
     if (municipality.isReadonly()) {
       municipality.getField().setReadOnly(true);
     }

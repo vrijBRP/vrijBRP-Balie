@@ -35,7 +35,6 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 public class MeldingenTab2 extends AbstractMeldingenTab {
 
   public MeldingenTab2() {
-
     addButton(buttonDel, 1f);
     addButton(buttonClose);
     setInfo("Dubbelklik op een regel voor meer informatie.");

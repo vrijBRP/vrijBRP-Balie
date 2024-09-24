@@ -35,51 +35,93 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAGroup;
+import nl.procura.diensten.gba.ple.base.BasePLElem;
+import nl.procura.diensten.gba.ple.base.BasePLRec;
+import nl.procura.diensten.gba.ple.base.BasePLSet;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.jpa.personen.db.PlMutRec;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonWindow;
 import nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewForm;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElem;
+import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElemSorter;
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElems;
 import nl.procura.gba.web.modules.zaken.personmutations.page4.Page4PersonListMutations;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
+import nl.procura.standard.exceptions.ProException;
+import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class Page3PersonListMutations extends NormalPageTemplate {
 
-  private final Page3PersonListMutationsLayout layout;
-  private final PersonListMutation             mutation;
-  private final PersonListMutElems             elements;
+  private Page3PersonListMutationsLayout layout;
+  private final PersonListMutation       mutation;
+  private final PersonListMutElems       elems;
 
-  public Page3PersonListMutations(PersonListMutElems elements, PersonListMutation mutation) {
+  public Page3PersonListMutations(PersonListMutation mutation) {
     super("Nieuwe mutatie toevoegen");
     this.mutation = mutation;
-    this.elements = elements;
-    setHeight("800px");
+    this.elems = getElems(mutation, mutation.getBasisPersoon(), getBasePLSet(mutation));
+    create();
+  }
 
+  public Page3PersonListMutations(PersonListMutElems elems, PersonListMutation mutation) {
+    super("Nieuwe mutatie toevoegen");
+    this.mutation = mutation;
+    this.elems = elems;
+    create();
+  }
+
+  private void create() {
+    setHeight("800px");
     addButton(buttonPrev);
-    addButton(buttonNext, 1f);
 
     if (isRelativeMutation(mutation)) {
       addButton(buttonNext);
-      addButton(buttonSearch, 1f);
+      addButton(buttonSearch);
       buttonSearch.setCaption("Zoek persoon");
     } else {
-      addButton(buttonNext, 1f);
+      addButton(buttonNext);
     }
 
-    addButton(buttonClose);
+    addButton(new PersonButton(), 1f);
     addButton(buttonClose);
 
     addComponent(new Fieldset("Gegevens"));
     addComponent(new PersonMutationOverviewForm(mutation, CAT, RECORD, SET, OPERATION));
 
-    layout = new Page3PersonListMutationsLayout(elements, mutation);
+    layout = new Page3PersonListMutationsLayout(elems, mutation);
     addExpandComponent(layout);
+  }
+
+  private PersonListMutElems getElems(PersonListMutation mutation, BasePLExt pl, BasePLSet basePLSet) {
+    PersonListMutElems elems = new PersonListMutElems();
+    BasePLRec record = basePLSet.getCurrentRec();
+    for (BasePLElem elem : record.getElems()) {
+      for (PlMutRec mutationRecord : mutation.getPlMutRecs()) {
+        if (elem.getElemCode() == mutationRecord.getId().getElem()) {
+          PersonListMutElem mutElem = new PersonListMutElem(pl, record, elem, mutation.getActionType());
+          mutElem.setDefaultValue(() -> new FieldValue(mutationRecord.getValNew(), mutationRecord.getValNewDescr()));
+          elems.add(mutElem);
+        }
+      }
+    }
+    elems.sort(new PersonListMutElemSorter());
+    return elems;
+  }
+
+  private BasePLSet getBasePLSet(PersonListMutation mutation) {
+    return mutation.getBasisPersoon().getCat(mutation.getCatType()).getSets()
+        .stream()
+        .filter(set -> set.getIntIndex() == mutation.getSet().intValue())
+        .findFirst()
+        .orElseThrow(() -> new ProException("Geen set met code " + mutation.getSet()));
   }
 
   @Override
   protected void initPage() {
-    if (isRelativeMutation(mutation) && elements.isAllBlank(GBAGroup.IDNUMMERS)) {
+    if (isRelativeMutation(mutation) && elems.isAllBlank(GBAGroup.IDNUMMERS)) {
       onSearch();
     }
     setHeight(getWindow().getBrowserWindowHeight() - 50, UNITS_PIXELS);
@@ -89,9 +131,8 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   @Override
   public void event(PageEvent event) {
     super.event(event);
-
-    if (!elements.isEmpty()) { // Focus on first field
-      elements.get(0).getField().focus();
+    if (!elems.isEmpty()) { // Focus on first field
+      elems.get(0).getField().focus();
     }
   }
 
@@ -115,16 +156,16 @@ public class Page3PersonListMutations extends NormalPageTemplate {
   @Override
   public void handleEvent(Button button, int keyCode) {
     if (isKeyCode(button, keyCode, F6)) {
-      if (elements.getFocusedElement() != null) {
-        Component tableComponent = elements.getFocusedElement().getTableComponent();
+      if (elems.getFocusedElement() != null) {
+        Component tableComponent = elems.getFocusedElement().getTableComponent();
         if (tableComponent instanceof CustomValueLayout) {
           ((CustomValueLayout) tableComponent).setDefault();
         }
       }
     }
     if (isKeyCode(button, keyCode, F8)) {
-      if (elements.getFocusedElement() != null) {
-        Field field = elements.getFocusedElement().getField();
+      if (elems.getFocusedElement() != null) {
+        Field field = elems.getFocusedElement().getField();
         field.setValue(null);
         field.focus();
       }

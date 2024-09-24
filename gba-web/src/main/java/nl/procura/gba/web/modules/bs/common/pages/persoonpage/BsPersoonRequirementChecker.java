@@ -19,10 +19,39 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.persoonpage;
 
-import static nl.procura.gba.common.ZaakType.*;
-import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.*;
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
+import static nl.procura.gba.common.ZaakType.ERKENNING;
+import static nl.procura.gba.common.ZaakType.GEBOORTE;
+import static nl.procura.gba.common.ZaakType.HUWELIJK_GPS_GEMEENTE;
+import static nl.procura.gba.common.ZaakType.LEVENLOOS;
+import static nl.procura.gba.common.ZaakType.LIJKVINDING;
+import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
+import static nl.procura.gba.common.ZaakType.ONDERZOEK;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_BUITENLAND;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_GEMEENTE;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.BS;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.GEBOORTEDATUM;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.GEBOORTELAND;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.GEBOORTEPLAATS_BL;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.GEBOORTEPLAATS_NL;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.GESLACHT;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.NAAM;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.WOONLAND;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.WOONPLAATS_BL;
+import static nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsPersoonBean1.WOONPLAATS_NL;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AANGEVER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.ERKENNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.EXPARTNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.GETUIGE;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.ONBEKEND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.OUDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.OVERLEDENE;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER1;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER2;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.VADER_DUO_MOEDER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +108,11 @@ public class BsPersoonRequirementChecker {
     p = add(new BsPersoonRequirement(KIND, OUDER, VADER_DUO_MOEDER, MOEDER));
     p.setZaakTypes(OVERLIJDEN_IN_BUITENLAND, OVERLIJDEN_IN_GEMEENTE, LIJKVINDING, LEVENLOOS);
     p.setBeanFields(NAAM);
+
+    // Onderzoek
+    p = add(new BsPersoonRequirement(BETROKKENE));
+    p.setBeanFields(NAAM, GESLACHT);
+    p.setZaakTypes(ONDERZOEK);
 
     // Huwelijk
     p = add(new BsPersoonRequirement(PARTNER1, PARTNER2));

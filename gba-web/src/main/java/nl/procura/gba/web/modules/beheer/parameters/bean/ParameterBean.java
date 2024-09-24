@@ -161,6 +161,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAK
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_HUW_GPS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_INH_VERMIS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_NAAMGEBRUIK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_NATURALISATIE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_OMZET_GPS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_ONDERZOEK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_ONTB_HUW_GPS;
@@ -188,6 +189,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAK
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INH_VERMIS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_INH_VERMIS_RYB;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_NAAMGEBRUIK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_NATURALISATIE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_OMZET_GPS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_ONDERZOEK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_ONTBINDING;
@@ -478,6 +480,12 @@ public class ParameterBean implements Serializable {
       caption = "Onderzoek")
   private String dmsOnderzoek = "";
 
+  @ParameterAnnotation(ZAKEN_DMS_NATURALISATIE)
+  @Position(order = "Nationaliteit")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Nationaliteit")
+  private String dmsNaturalisatie = "";
+
   @ParameterAnnotation(ZAKEN_DMS_REGISTRATION)
   @Position(order = "Eerste inschrijving")
   @Field(customTypeClass = GbaNativeSelect.class,
@@ -681,6 +689,12 @@ public class ParameterBean implements Serializable {
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Naamgebruik")
   private String initieleStatusNaamgebruik = "";
+
+  @ParameterAnnotation(ZAKEN_INIT_STATUS_NATURALISATIE)
+  @Position(order = "Nationaliteit")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Nationaliteit")
+  private String initieleStatusNaturalisatie = "";
 
   @ParameterAnnotation(ZAKEN_INIT_STATUS_PL_MUTATIE)
   @Position(order = "PL mutatie")

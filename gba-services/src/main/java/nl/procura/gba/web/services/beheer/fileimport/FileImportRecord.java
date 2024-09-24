@@ -20,9 +20,11 @@
 package nl.procura.gba.web.services.beheer.fileimport;
 
 import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import lombok.Data;
@@ -31,7 +33,12 @@ import lombok.Data;
 public class FileImportRecord {
 
   private Long                         id;
+  private Long                         fileImportId;
+  private boolean                      reference;
+  private String                       template;
   private Map<String, FileImportValue> values;
+  private List<String>                 remarks = new ArrayList<>();
+  private String                       uuid;
 
   public FileImportValue get(String value) {
     return values.get(value);
@@ -48,10 +55,10 @@ public class FileImportRecord {
     return values.values().stream().allMatch(FileImportValue::isValid);
   }
 
-  public String getRemarks() {
-    return values.values().stream()
+  public String getRemarksAsString() {
+    return capitalize(values.values().stream()
         .filter(value -> !value.isValid())
         .map(FileImportValue::getRemark)
-        .collect(Collectors.joining(", "));
+        .collect(Collectors.joining(", ")).toLowerCase());
   }
 }

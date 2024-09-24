@@ -25,6 +25,7 @@ public enum OnderzoekBronType {
   TMV(2, "Terugmeldingvoorziening (TMV)"),
   INSTANTIE(3, "Instantie (niet via TMV)"),
   AMBTSHALVE(4, "Ambtshalve (incl. interne melding)"),
+  LAA(5, "Landelijke Aanpak Adreskwaliteit (LAA)"),
   ONBEKEND(0, "");
 
   private int    code = 0;

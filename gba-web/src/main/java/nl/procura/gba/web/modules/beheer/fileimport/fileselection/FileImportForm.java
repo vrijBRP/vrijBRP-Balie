@@ -21,16 +21,17 @@ package nl.procura.gba.web.modules.beheer.fileimport.fileselection;
 
 import static nl.procura.gba.web.modules.beheer.fileimport.fileselection.FileImportBean.F_FILE_IMPORT;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import nl.procura.gba.jpa.personen.db.FileImport;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
+import nl.procura.gba.web.services.beheer.fileimport.FileImportService.Count;
 import nl.procura.vaadin.component.container.ProcuraContainer;
 
 public class FileImportForm extends GbaForm<FileImportBean> {
@@ -57,7 +58,7 @@ public class FileImportForm extends GbaForm<FileImportBean> {
       }
     });
     // Automatically select first record if only 1
-    if (fileImports.size() == 1){
+    if (fileImports.size() == 1) {
       selectFileImport(fileImports.get(0));
     }
     super.afterSetBean();
@@ -83,8 +84,14 @@ public class FileImportForm extends GbaForm<FileImportBean> {
     public FileImportTypeContainer(List<FileImport> fileImports) {
       addContainerProperty(OMSCHRIJVING, String.class, "");
       fileImports.forEach(fileImport -> {
-        Item item = addItem(fileImport);
-        item.getItemProperty(OMSCHRIJVING).setValue(fileImport.getName());
+        if (!fileImport.isClosed()) {
+          Count count = handler.getApplication().getServices().getFileImportService().countRecords(fileImport);
+          Item item = addItem(fileImport);
+          item.getItemProperty(OMSCHRIJVING).setValue(String.format("%s (%d / %d)",
+              fileImport.getName(),
+              count.getNewRecords(),
+              count.getTotalRecords()));
+        }
       });
     }
   }

@@ -49,10 +49,10 @@ public abstract class DocumentenTabel extends GbaTable {
 
     try {
       DMSDocument dmsDocument = (DMSDocument) record.getObject();
-      DMSContent stream = dmsDocument.getContent();
+      DMSContent content = dmsDocument.getContent();
 
       BestandType type = BestandType.getType(dmsDocument.getContent().getExtension());
-      PreviewFile previewFile = new PreviewFile(stream.getInputStream(),
+      PreviewFile previewFile = new PreviewFile(content.getBytes(),
           dmsDocument.getTitle(),
           dmsDocument.getContent().getFilename(),
           type);

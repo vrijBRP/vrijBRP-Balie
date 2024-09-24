@@ -23,8 +23,9 @@ import static java.util.Optional.ofNullable;
 
 import nl.procura.gba.jpa.personen.db.FileImport;
 import nl.procura.gba.web.application.GbaApplication;
-import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportProcess;
+import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTable;
+import nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTableFilter;
 
 import lombok.Setter;
 
@@ -37,7 +38,9 @@ public abstract class FileImportHandler {
 
   public abstract GbaApplication getApplication();
 
-  public abstract GbaTable getTable(FileImport fileImport);
+  public abstract FileImportTable getTable(FileImport fileImport);
+
+  public abstract FileImportTableFilter getTableFilter();
 
   public void finishImport() {
     ofNullable(finishImportListener).ifPresent(Runnable::run);

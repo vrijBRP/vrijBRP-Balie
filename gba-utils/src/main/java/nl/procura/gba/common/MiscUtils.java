@@ -21,7 +21,14 @@ package nl.procura.gba.common;
 
 import static ch.lambdaj.Lambda.join;
 import static java.util.Arrays.asList;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.getSystemDate;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -29,12 +36,14 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import nl.procura.commons.misc.application.properties.GitFileParser;
 import nl.procura.java.reflection.ReflectionUtil;
@@ -46,6 +55,11 @@ public class MiscUtils {
 
   public static final String  LOCK_ICON   = "x";
   private static final String LEGE_STRING = "";
+
+  public static boolean isStackTrace(Exception ex, String... keywords) {
+    String stacktrace = ExceptionUtils.getStackTrace(ex);
+    return Arrays.stream(keywords).allMatch(stacktrace::contains);
+  }
 
   /**
    * Deze functie verkort een opsommingsstring van de vorm "item1, item2, item3, item4" tot de
@@ -321,7 +335,7 @@ public class MiscUtils {
   }
 
   public static String getBuildText() {
-    String version = new MiscUtils().getClass().getPackage().getImplementationVersion();
+    String version = MiscUtils.class.getPackage().getImplementationVersion();
     String date = GitFileParser.getProperty(GitFileParser.GIT_COMMIT_TIME);
     StringBuilder out = new StringBuilder("Versie <b>");
     if (date != null || version != null) {
