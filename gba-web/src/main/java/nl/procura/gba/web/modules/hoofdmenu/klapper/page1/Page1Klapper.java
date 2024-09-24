@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.klapper.page1;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import nl.procura.gba.web.modules.hoofdmenu.klapper.page4.Page4Klapper;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
 import nl.procura.gba.web.services.bs.algemeen.akte.KlapperUtils;
 import nl.procura.gba.web.services.bs.algemeen.akte.KlapperZoekargumenten;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

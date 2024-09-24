@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,9 +25,10 @@ import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.navigation.GbaAccordionTab;
-import nl.procura.gba.web.modules.hoofdmenu.bsm.ModuleBsm;
 import nl.procura.gba.web.modules.hoofdmenu.aanmelding.ModuleAanmelding;
+import nl.procura.gba.web.modules.hoofdmenu.bsm.ModuleBsm;
 import nl.procura.gba.web.modules.hoofdmenu.kassa.ModuleKassa;
+import nl.procura.gba.web.modules.hoofdmenu.requestinbox.ModuleRequestInbox;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.ModuleZoeken;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakNumbers;
@@ -41,6 +42,9 @@ public class HoofdAccordionTab extends GbaAccordionTab {
     addLink(ModuleKassa.class);
     addLink(ModuleAanmelding.class);
     addLink(ModuleBsm.class);
+    if (application.getServices().getRequestInboxService().isEnabled()) {
+      addLink(ModuleRequestInbox.class);
+    }
   }
 
   @Override

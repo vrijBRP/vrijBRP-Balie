@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.bs.overlijden;
 
 import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +34,7 @@ import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

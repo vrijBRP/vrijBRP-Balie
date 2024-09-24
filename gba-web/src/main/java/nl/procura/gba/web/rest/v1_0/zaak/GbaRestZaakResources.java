@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,12 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.inject.servlet.RequestScoped;
@@ -63,6 +68,14 @@ public class GbaRestZaakResources extends GbaRestServiceResource {
   @Path("/controles")
   public GbaRestZaakAntwoord controles() {
     return new GbaRestZaakAntwoord(new GbaRestZaakControlesHandler(getServices()).getControles());
+  }
+
+  @POST
+  @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+  @Path("/controles")
+  public GbaRestZaakAntwoord controles(GbaRestZaakControlesVraag vraag) {
+    return new GbaRestZaakAntwoord(new GbaRestZaakControlesHandler(getServices()).getControles(vraag));
   }
 
   @POST

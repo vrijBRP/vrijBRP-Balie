@@ -20,7 +20,7 @@
 package nl.procura.gba.web.services.beheer.raas;
 
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +42,7 @@ import nl.procura.raas.rest.domain.aanvraag.UpdateAanvraagRequest;
 import nl.procura.raas.rest.domain.raas.bestand.DeleteRaasBestandRequest;
 import nl.procura.raas.rest.domain.raas.bestand.FindRaasBestandRequest;
 import nl.procura.raas.rest.domain.raas.bestand.ProcessRaasBestandRequest;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class RaasService extends AbstractService {
 

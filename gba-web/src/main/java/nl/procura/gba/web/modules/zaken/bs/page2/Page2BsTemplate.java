@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.bs.page2;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonControleWindow;
 import nl.procura.gba.web.modules.bs.erkenning.overzicht.ErkenningOverzichtBuilder;
@@ -58,7 +58,7 @@ import nl.procura.gba.web.services.bs.registration.DossierRegistration;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.windows.home.HomeWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Inzage zaak scherm

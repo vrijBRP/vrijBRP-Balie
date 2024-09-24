@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.akte.*;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierMetAkte;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;

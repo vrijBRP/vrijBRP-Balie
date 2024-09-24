@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.relatie.page1;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelaties;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.VaadinUtils;
 
 public class Page1ZaakRelatieTable extends GbaTable {

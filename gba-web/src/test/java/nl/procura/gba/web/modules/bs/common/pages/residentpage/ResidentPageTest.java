@@ -48,7 +48,7 @@ import nl.procura.gba.web.services.TemporaryDatabase;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.Relatie;
 import nl.procura.gba.web.services.zaken.algemeen.consent.ConsentProvider;
 import nl.procura.gbaws.testdata.Testdata;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.table.indexed.IndexedTable;

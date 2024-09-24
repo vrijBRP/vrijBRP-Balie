@@ -33,7 +33,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakStatusType;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakType;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakSortering;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public final class GbaRestZaakZoekenVraagConverter {
@@ -67,7 +67,7 @@ public final class GbaRestZaakZoekenVraagConverter {
       if (bsn.isCorrect()) {
         za.setNummer(bsn.getDefaultBsn());
       } else {
-        Anummer anr = new Anummer(vraag.getPersoonId());
+        Anr anr = new Anr(vraag.getPersoonId());
         if (anr.isCorrect()) {
           za.setNummer(anr.getAnummer());
         } else {

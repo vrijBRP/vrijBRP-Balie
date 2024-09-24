@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -29,6 +29,7 @@ public class ColumnButton extends Button {
 
     super("Kolommen");
 
-    addListener((ClickListener) event -> table.getWindow().addWindow(new GbaIndexedTableColumnsWindow(table)));
+    addListener((ClickListener) event -> table.getApplication().getParentWindow()
+        .addWindow(new GbaIndexedTableColumnsWindow(table)));
   }
 }

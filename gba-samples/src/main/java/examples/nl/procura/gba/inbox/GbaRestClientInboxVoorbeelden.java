@@ -40,7 +40,7 @@ import nl.procura.proweb.rest.v1_0.meldingen.ProRestMelding;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMeldingType;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.standard.Resource;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 import examples.nl.procura.gba.GbaRestClientVoorbeelden;
 import examples.nl.procura.gba.GbaRestGuice;

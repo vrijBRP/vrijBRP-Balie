@@ -21,9 +21,9 @@ package nl.procura.gba.web.services.beheer.vrs;
 
 import static com.sun.jersey.api.json.JSONConfiguration.FEATURE_POJO_MAPPING;
 import static java.lang.String.format;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
 import java.net.URI;
 import java.time.Duration;
@@ -38,7 +38,7 @@ import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import nl.procura.burgerzaken.vrsclient.ApiClient;
 import nl.procura.burgerzaken.vrsclient.model.InvalidParam;
 import nl.procura.gba.web.common.jackson.ObjectMapperContextResolver;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class VrsClient extends ApiClient {
 

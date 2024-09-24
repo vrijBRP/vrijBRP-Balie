@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.common;
 
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.text.MessageFormat;
 
@@ -34,7 +34,7 @@ import nl.procura.gba.web.modules.persoonslijst.overig.PlPage;
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable.ZaakRecord;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.VaadinUtils;
 
 public class ZakenPage<Z extends Zaak> extends PlPage {

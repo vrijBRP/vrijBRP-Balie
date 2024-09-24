@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.components.dialogs;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 import com.vaadin.ui.Window;
 
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
 import nl.procura.vaadin.component.window.Message;
@@ -139,9 +139,7 @@ public class DeleteProcedure<T> {
     private final List<Record> records;
 
     private DeleteDialog(GbaTable table, String message, List<Record> records) {
-
       super(message);
-
       this.records = records;
       this.table = table;
     }
@@ -153,7 +151,6 @@ public class DeleteProcedure<T> {
       beforeDelete();
 
       List<T> list = new ArrayList<>();
-
       for (Record r : records) {
         list.add((T) r.getObject());
       }
@@ -169,7 +166,8 @@ public class DeleteProcedure<T> {
 
       afterDelete();
 
-      new Message(getWindow().getParent(), (records.size() > 1) ? RECORDS_ZIJN_VERWIJDERD : RECORD_IS_VERWIJDERD,
+      new Message(getWindow().getParent(),
+          (records.size() > 1) ? RECORDS_ZIJN_VERWIJDERD : RECORD_IS_VERWIJDERD,
           Message.TYPE_SUCCESS);
 
       close();

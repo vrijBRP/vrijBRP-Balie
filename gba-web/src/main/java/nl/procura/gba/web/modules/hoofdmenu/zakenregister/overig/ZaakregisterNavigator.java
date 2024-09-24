@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig;
 
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -72,13 +72,13 @@ import nl.procura.gba.web.services.bs.overlijden.gemeente.DossierOverlijdenGemee
 import nl.procura.gba.web.services.bs.overlijden.lijkvinding.DossierLijkvinding;
 import nl.procura.gba.web.services.bs.registration.DossierRegistration;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
-import nl.procura.gba.web.services.inbox.InboxRecord;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.correspondentie.CorrespondentieZaak;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 import nl.procura.gba.web.services.zaken.geheim.GeheimAanvraag;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxRecord;
 import nl.procura.gba.web.services.zaken.gpk.GpkAanvraag;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
 import nl.procura.gba.web.services.zaken.indicaties.IndicatieAanvraag;
@@ -89,7 +89,7 @@ import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraag;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.vog.VogAanvraag;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.PageNavigation;
 
 public class ZaakregisterNavigator {
@@ -122,8 +122,8 @@ public class ZaakregisterNavigator {
         } else if (zaak instanceof GpkAanvraag) {
           nav.goToPage(new Page30Zaken((GpkAanvraag) zaak));
 
-        } else if (zaak instanceof InboxRecord) {
-          nav.goToPage(new Page230Zaken((InboxRecord) zaak));
+        } else if (zaak instanceof GemeenteInboxRecord) {
+          nav.goToPage(new Page230Zaken((GemeenteInboxRecord) zaak));
 
         } else if (zaak instanceof VogAanvraag) {
           nav.goToPage(new Page40Zaken((VogAanvraag) zaak));

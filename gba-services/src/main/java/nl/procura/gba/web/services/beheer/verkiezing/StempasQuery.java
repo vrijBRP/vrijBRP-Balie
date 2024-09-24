@@ -20,10 +20,10 @@
 package nl.procura.gba.web.services.beheer.verkiezing;
 
 import nl.procura.gba.jpa.personen.db.KiesrVerk;
-import nl.procura.validation.Anummer;
 
 import lombok.Builder;
 import lombok.Getter;
+import nl.procura.validation.Anr;
 
 @Getter
 @Builder(builderMethodName = "internalBuilder")
@@ -36,8 +36,8 @@ public class StempasQuery {
   private Boolean               opgenomenInROS;
   private StempasAanduidingType aanduidingType;
   private KiesrVerk             verkiezing;
-  private Anummer               anrKiesgerechtigde;
-  private Anummer               anrGemachtigde;
+  private Anr                   anrKiesgerechtigde;
+  private Anr                   anrGemachtigde;
   private boolean               aflopend;
 
   public static StempasQueryBuilder builder(KiesrVerk kiesrVerk) {

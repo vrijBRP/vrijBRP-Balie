@@ -40,7 +40,7 @@ import nl.procura.gba.web.services.beheer.verkiezing.StempasQuery;
 import nl.procura.gba.web.services.beheer.verkiezing.StempasResult;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.component.container.ArrayListContainer;

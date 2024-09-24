@@ -20,9 +20,9 @@
 package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page1;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +35,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.address.page2.Pag
 import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Page1QuickSearch extends NormalPageTemplate {
 

@@ -34,8 +34,8 @@ import nl.procura.gba.web.components.fields.DateReference;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.bs.registration.MunicipalityEnabler;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class BirthDetailsForm extends GbaForm<PersonBean> {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -42,7 +42,7 @@ import nl.procura.vaadin.functies.task.VaadinTaskLogger;
 public abstract class ServiceControlesTask implements VaadinTask {
 
   private final static Logger  LOGGER  = LoggerFactory.getLogger(ServiceControlesTask.class.getName());
-  private final boolean        failed  = false;
+  private              boolean failed  = false;
   private final GbaApplication application;
   private final Controles      controles;
   private boolean              success = false;
@@ -72,6 +72,9 @@ public abstract class ServiceControlesTask implements VaadinTask {
 
       LOGGER.debug("Aantal: " + dbs.size());
 
+      success = false;
+      failed = false;
+
       for (ControleerbareService db : dbs) {
 
         if (abort) {
@@ -80,30 +83,36 @@ public abstract class ServiceControlesTask implements VaadinTask {
 
         long st = System.currentTimeMillis();
 
-        LOGGER.debug(pad_right("", "-", 50));
-        LOGGER.debug("Controle: " + db.getName());
-        LOGGER.debug(pad_right("", "-", 50));
+        try {
+          LOGGER.debug(pad_right("", "-", 50));
+          LOGGER.debug("Controle: " + db.getName());
+          LOGGER.debug(pad_right("", "-", 50));
 
-        ControleListener controleListener = new ControleListener();
-        Controles dbControles = db.getControles(controleListener);
+          ControleListener controleListener = new ControleListener();
+          Controles dbControles = db.getControles(controleListener);
 
-        LOGGER.debug("aantal controles uitgevoerd: " + dbControles.size());
-        LOGGER.debug("aantal wijzigingen uitgevoerd: " + dbControles.getGewijzigdeControles().size());
+          LOGGER.debug("Aantal controles uitgevoerd: " + dbControles.size());
+          LOGGER.debug("Aantal wijzigingen uitgevoerd: " + dbControles.getGewijzigdeControles().size());
 
-        controles.addAll(dbControles);
+          controles.addAll(dbControles);
 
-        i++;
+          i++;
 
-        setPercentage((100.00 / dbs.size()) * i);
-        long et = System.currentTimeMillis();
-        LOGGER.debug("Tijd: " + (et - st) + " ms.");
+          setPercentage((100.00 / dbs.size()) * i);
+          long et = System.currentTimeMillis();
+          LOGGER.debug("Tijd: " + (et - st) + " ms.");
+
+        } catch (Exception e) {
+          LOGGER.error("Fout bij controle: " + db.getName(), e);
+          failed = true;
+        }
       }
 
-      success = true;
       setPercentage(100.00);
 
-    } catch (Exception e) {
-      e.printStackTrace();
+      if (!failed) {
+        success = true;
+      }
 
     } finally {
       onFinished();
@@ -157,7 +166,7 @@ public abstract class ServiceControlesTask implements VaadinTask {
     System.out.println("Done!!!");
   }
 
-  public class ControleListener implements ControlesListener {
+  public static class ControleListener implements ControlesListener {
 
     @Override
     public void info(String message) {

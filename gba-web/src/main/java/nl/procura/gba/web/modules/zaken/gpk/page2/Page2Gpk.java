@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.zaken.gpk.page2;
 
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
@@ -30,7 +30,7 @@ import nl.procura.gba.web.modules.zaken.gpk.page3.Page3Gpk;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.gpk.GpkAanvraag;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

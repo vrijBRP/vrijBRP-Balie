@@ -20,14 +20,14 @@
 package nl.procura.gba.web.modules.zaken.indicatie.page2;
 
 import static nl.procura.gba.web.modules.zaken.indicatie.page2.Page2IndicatieBean.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.components.listeners.FieldChangeListener;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekeningIndicatie;
 import nl.procura.gba.web.services.zaken.indicaties.IndicatieActie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Page2IndicatieForm extends GbaForm<Page2IndicatieBean> {
 

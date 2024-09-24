@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.zaken.personmutationsindex.page1;
 
 import static java.util.Collections.singletonList;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +36,12 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.personmutationsindex.WindowMutationsApproval;
 import nl.procura.gba.web.modules.zaken.personmutationsindex.page2.Page2MutationsIndex;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -157,7 +157,7 @@ public class Page1MutationsIndex extends NormalPageTemplate {
 
   private boolean isCurrentPersonApproved() {
     return table.getSelectedValues(MutationRestElement.class).stream()
-        .anyMatch(mutation -> new Anummer(mutation.getAnr().getWaarde())
+        .anyMatch(mutation -> new Anr(mutation.getAnr().getWaarde())
             .eq(pl.getPersoon().getAnr().getVal()));
   }
 

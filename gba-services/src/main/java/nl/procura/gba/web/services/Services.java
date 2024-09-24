@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -51,6 +51,7 @@ import nl.procura.gba.web.services.beheer.persoonhistorie.PersoonHistorieService
 import nl.procura.gba.web.services.beheer.profiel.ProfielExtrasService;
 import nl.procura.gba.web.services.beheer.profiel.ProfielService;
 import nl.procura.gba.web.services.beheer.raas.RaasService;
+import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxService;
 import nl.procura.gba.web.services.beheer.sms.SmsService;
 import nl.procura.gba.web.services.beheer.verkiezing.KiezersregisterService;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
@@ -78,7 +79,6 @@ import nl.procura.gba.web.services.gba.presentievraag.PresentievraagService;
 import nl.procura.gba.web.services.gba.sql.ProbevSqlService;
 import nl.procura.gba.web.services.gba.tabellen.TabellenService;
 import nl.procura.gba.web.services.gba.verificatievraag.VerificatievraagService;
-import nl.procura.gba.web.services.inbox.InboxService;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenVerwijderService;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.AantekeningService;
@@ -100,6 +100,7 @@ import nl.procura.gba.web.services.zaken.documenten.kenmerk.KenmerkService;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptieService;
 import nl.procura.gba.web.services.zaken.documenten.stempel.StempelService;
 import nl.procura.gba.web.services.zaken.geheim.VerstrekkingsBeperkingService;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxService;
 import nl.procura.gba.web.services.zaken.gpk.GpkService;
 import nl.procura.gba.web.services.zaken.gv.GegevensVerstrekkingService;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieService;
@@ -209,7 +210,7 @@ public class Services {
     add(LinkService.class);
     add(GemeenteService.class);
     add(BelanghebbendeService.class);
-    add(InboxService.class);
+    add(GemeenteInboxService.class);
     add(SmsService.class);
     add(KiezersregisterService.class);
     add(BagService.class);
@@ -224,6 +225,7 @@ public class Services {
     add(ZaakConfiguratieService.class);
     add(FileImportService.class);
     add(TaskService.class);
+    add(RequestInboxService.class);
   }
 
   public static Services getInstance() {
@@ -343,8 +345,8 @@ public class Services {
     return get(IdentificatieService.class);
   }
 
-  public InboxService getInboxService() {
-    return get(InboxService.class);
+  public GemeenteInboxService getInboxService() {
+    return get(GemeenteInboxService.class);
   }
 
   public SmsService getSmsService() {
@@ -623,13 +625,17 @@ public class Services {
     return get(ZakenVerwijderService.class);
   }
 
+  public RequestInboxService getRequestInboxService() {
+    return get(RequestInboxService.class);
+  }
+
   public void init() {
     long startTimeContainer = System.currentTimeMillis();
     for (AbstractService db : services) {
       if (!db.isInitiated()) {
         long startTime = System.currentTimeMillis();
         db.init();
-        showTime(false, startTime, db.getName() + " geladen");
+        showTime(false, startTime, "Service: " + db.getName() + " geladen");
       }
     }
 

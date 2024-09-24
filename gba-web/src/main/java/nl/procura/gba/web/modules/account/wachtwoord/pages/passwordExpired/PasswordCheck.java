@@ -23,8 +23,8 @@ import static org.apache.commons.lang3.StringUtils.getLevenshteinDistance;
 
 import java.util.List;
 
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 /**
  * Deze klasse checkt of een nieuw ingevoerd wachtwoord aan de audit eisen voldoet

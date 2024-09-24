@@ -35,7 +35,7 @@ import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.formats.Naam;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 import lombok.AllArgsConstructor;
@@ -83,7 +83,7 @@ public class PersonListRelationMutationHandler {
           for (BasePLRec relatedRec : getRelatedRecords(relatedPL)) {
             String relatedAnr = getAnr(relatedRec);
             String relatedBsn = getBsn(relatedRec);
-            boolean isAnr = new Anummer(anr).eq(relatedAnr);
+            boolean isAnr = new Anr(anr).eq(relatedAnr);
             boolean isBsn = new Bsn(bsn).eq(relatedBsn);
             if (isAnr && isBsn) {
               results.add(new Result(pl, relatedPL, rec, relatedRec));

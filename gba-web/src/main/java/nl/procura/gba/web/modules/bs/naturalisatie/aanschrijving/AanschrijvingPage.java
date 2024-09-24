@@ -19,11 +19,11 @@
 
 package nl.procura.gba.web.modules.bs.naturalisatie.aanschrijving;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.web.modules.bs.naturalisatie.aanschrijving.AanschrijvingBean.F_AANSCHRIJFPERSOON;
 import static nl.procura.gba.web.modules.bs.naturalisatie.aanschrijving.AanschrijvingBean.F_CEREMONIE;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.NATURALISATIE;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.OPTIE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,7 @@ import java.util.List;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayoutConfig;
 import nl.procura.gba.web.components.layouts.form.document.PrintShowRecordFilter;
@@ -43,7 +44,6 @@ import nl.procura.gba.web.services.bs.naturalisatie.document.DossierNaturalisati
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentSoort;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

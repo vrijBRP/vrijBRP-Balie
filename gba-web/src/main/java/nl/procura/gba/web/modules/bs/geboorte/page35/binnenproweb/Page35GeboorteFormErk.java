@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -83,7 +83,7 @@ public class Page35GeboorteFormErk extends GbaForm<Page35GeboorteBeanBinnenErk> 
       bean.setTitel(erkenning.getKeuzeTitel());
       bean.setVoorv(new FieldValue(erkenning.getKeuzeVoorvoegsel()));
       bean.setGeslachtsnaam(erkenning.getKeuzeGeslachtsnaam());
-      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaam());
+      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaamDubbel());
     }
 
     setBean(bean);

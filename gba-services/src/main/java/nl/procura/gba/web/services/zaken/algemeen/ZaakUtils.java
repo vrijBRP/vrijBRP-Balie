@@ -23,7 +23,7 @@ import static java.util.Comparator.comparingInt;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 import nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 

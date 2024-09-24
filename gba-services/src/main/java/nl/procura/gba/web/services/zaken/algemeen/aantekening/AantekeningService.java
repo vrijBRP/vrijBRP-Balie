@@ -25,10 +25,17 @@ import static nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekeni
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.fil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 import nl.procura.diensten.gba.ple.base.BasePLCat;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
@@ -49,9 +56,6 @@ import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
-import nl.procura.standard.exceptions.ProExceptionType;
 
 public class AantekeningService extends AbstractService {
 

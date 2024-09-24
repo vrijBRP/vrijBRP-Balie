@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,7 @@ package nl.procura.gba.web.common.exceptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.window.Message;
 
 public class ExceptionMessage {
@@ -30,19 +30,13 @@ public class ExceptionMessage {
   private List<ExceptionCause> causes = new ArrayList<>();
 
   public ExceptionMessage(Throwable t) {
-
     Throwable firstCause = getCause(t);
-
     getCauses().add(new ExceptionCause(firstCause));
 
-    int i = 0;
-
     Throwable ct = firstCause.getCause();
-
+    int i = 0;
     while (ct != null && i < 5) { // De laatste 5 oorzaken
-
       getCauses().add(new ExceptionCause(ct));
-
       ct = ct.getCause();
     }
   }
@@ -51,7 +45,6 @@ public class ExceptionMessage {
    * Zoek de eerste oorzaak van de Exception. Als er een GBAExeption in voorkomt dan is dat de eerste.
    */
   private static Throwable getCause(Throwable t) {
-
     ProException ProException = getException(t, ProException.class);
 
     if (ProException != null) {
@@ -85,11 +78,8 @@ public class ExceptionMessage {
   public String getCauseMsg() {
 
     String msg = "";
-
     if (getWarningType() == Message.TYPE_ERROR_MESSAGE) {
-
       for (ExceptionCause ec : getCauses(false)) {
-
         msg += ec.getMsg() + "\n";
       }
     }
@@ -109,7 +99,6 @@ public class ExceptionMessage {
    * Geeft de zwaarste melding als type
    */
   public int getDelay() {
-
     switch (getWarningType()) {
       case Message.TYPE_INFO:
         return 1500;
@@ -124,19 +113,14 @@ public class ExceptionMessage {
    * Als er sprake is van een error dan meer tonen
    */
   public String getHtmlCauseMsg() {
-
     StringBuilder msg = new StringBuilder(getMsg());
-
     if (getWarningType() == Message.TYPE_ERROR_MESSAGE) {
-
       List<ExceptionCause> l = getCauses(false);
 
-      if (l.size() > 0) {
-
+      if (!l.isEmpty()) {
         msg.append("<hr/>");
 
         for (ExceptionCause ec : l) {
-
           msg.append("<p>");
           msg.append(ec.getMsg());
           msg.append("</p><br/>");
@@ -145,15 +129,12 @@ public class ExceptionMessage {
 
       msg.append("<hr/><p>Zie log voor meer informatie.</p>");
     } else {
-
       List<ExceptionCause> l = getCauses(false);
 
-      if (l.size() > 0) {
-
+      if (!l.isEmpty()) {
         msg.append(".<br/>");
 
         for (ExceptionCause ec : l) {
-
           msg.append(ec.getMsg());
           msg.append(".<br/>");
         }
@@ -168,12 +149,9 @@ public class ExceptionMessage {
    * Als er sprake is van een error dan meer tonen
    */
   public String getMsg() {
-
     for (ExceptionCause ec : getCauses(true)) {
-
       return ec.getMsg();
     }
-
     return "";
   }
 
@@ -204,7 +182,6 @@ public class ExceptionMessage {
   }
 
   public boolean hasException(Class<?> t) {
-
     for (ExceptionCause c : getCauses()) {
       if (t.isAssignableFrom(c.getThrowable().getClass())) {
         return true;
@@ -220,24 +197,17 @@ public class ExceptionMessage {
   public void map(Class<?> c, int typeWarningMessage) {
 
     for (ExceptionCause ec : causes) {
-
       if (c.isAssignableFrom(ec.getThrowable().getClass())) {
-
         ec.setWarningType(typeWarningMessage);
       }
     }
   }
 
   private List<ExceptionCause> getCauses(boolean first) {
-
     List<ExceptionCause> l = new ArrayList<>();
-
     if (causes.size() > 0) {
-
       for (int i = 0; i < causes.size(); i++) {
-
         if ((first && i == 0) || !first && i > 0) {
-
           l.add(causes.get(i));
         }
       }

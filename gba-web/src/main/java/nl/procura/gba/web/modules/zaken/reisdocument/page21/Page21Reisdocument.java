@@ -40,7 +40,7 @@ import static nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21Reisdoc
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ToestemmingGegevenType.JA;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ToestemmingGegevenType.VERVANGENDE;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
@@ -52,7 +52,7 @@ import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentUtils;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Toestemming;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

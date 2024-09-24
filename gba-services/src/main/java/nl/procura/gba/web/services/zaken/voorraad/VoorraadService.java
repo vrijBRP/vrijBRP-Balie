@@ -22,9 +22,9 @@ package nl.procura.gba.web.services.zaken.voorraad;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIN_VOORRAAD;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 import nl.procura.gba.jpa.personen.db.Voorraad;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 import nl.procura.gba.web.services.AbstractService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class VoorraadService extends AbstractService {
 

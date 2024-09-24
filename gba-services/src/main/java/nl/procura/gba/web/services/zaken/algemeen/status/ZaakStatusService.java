@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,8 +22,8 @@ package nl.procura.gba.web.services.zaken.algemeen.status;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
@@ -34,8 +34,12 @@ import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
-import nl.procura.gba.web.services.zaken.algemeen.*;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakHistorie;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakStatus;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakStatusHistorie;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakStatusUtils;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ZaakStatusService extends AbstractService {
 
@@ -108,7 +112,7 @@ public class ZaakStatusService extends AbstractService {
         return;
       }
 
-      if (huidigeStatus != null && !zh.getStatusHistorie().isInHistorieIngevoerd(huidigeStatus)) {
+      if (!zh.getStatusHistorie().isInHistorieIngevoerd(huidigeStatus)) {
         // Voeg huidige status als historie toe
         saveEntity(new ZaakStatus(zaak.getZaakId(), huidigeStatus));
       }

@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.beheer.email.page2;
 
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.beheer.email.EmailTemplate;
 import nl.procura.gba.web.services.beheer.email.EmailType;
 import nl.procura.gba.web.services.beheer.email.EmailTypeContent;
 import nl.procura.gba.web.services.beheer.email.EmailVariables;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

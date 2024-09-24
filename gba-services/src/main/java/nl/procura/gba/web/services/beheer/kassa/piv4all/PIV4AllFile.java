@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.services.beheer.kassa.piv4all;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import nl.procura.gba.web.services.beheer.kassa.KassaApplicationType;
 import nl.procura.gba.web.services.beheer.kassa.KassaFile;
 import nl.procura.gba.web.services.beheer.kassa.KassaParameters;
 import nl.procura.gba.web.services.beheer.kassa.KassaProductAanvraag;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class PIV4AllFile implements KassaFile {
 

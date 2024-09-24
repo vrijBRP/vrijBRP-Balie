@@ -51,8 +51,8 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 

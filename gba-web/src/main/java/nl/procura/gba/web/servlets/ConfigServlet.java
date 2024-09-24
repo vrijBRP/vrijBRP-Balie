@@ -19,9 +19,9 @@
 
 package nl.procura.gba.web.servlets;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import java.io.File;
 import java.net.URL;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 import nl.procura.gba.web.common.database.DatabaseUpdate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.standard.security.ProwebPath;
 
 public class ConfigServlet extends HttpServlet {

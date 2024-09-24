@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.config.GbaConfigProperty;
 import nl.procura.gbaws.db.enums.LandTabType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class LandTabExportUtils {
 

@@ -31,10 +31,10 @@ import static nl.procura.gba.web.services.zaken.documenten.stempel.PositieType.R
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DOCUMENTS;
-import static nl.procura.standard.exceptions.ProExceptionType.PRINT;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DOCUMENTS;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PRINT;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 import static org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode.APPEND;
 
 import java.io.ByteArrayInputStream;
@@ -94,7 +94,7 @@ import nl.procura.openoffice.OODocumentFormats;
 import nl.procura.openoffice.OOTools;
 import nl.procura.openoffice.jodconverter.DocumentFormat;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;
 
 import au.com.bytecode.opencsv.CSVWriter;

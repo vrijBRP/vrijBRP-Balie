@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.tabellen.huwelijksambtenaar.page2;
 
 import static nl.procura.gba.web.modules.tabellen.huwelijksambtenaar.page2.Page2HuwelijksAmbtenaarBean.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.services.gba.basistabellen.huwelijksambtenaar.HuwelijksAmbtenaar;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

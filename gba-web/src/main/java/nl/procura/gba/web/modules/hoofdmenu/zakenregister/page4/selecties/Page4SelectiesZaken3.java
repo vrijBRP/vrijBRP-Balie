@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.selecties;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
@@ -39,7 +39,7 @@ import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.services.zaken.selectie.Selectie;
 import nl.procura.gba.web.services.zaken.selectie.SelectieColumn;
 import nl.procura.standard.Globalfunctions;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.TextArea;

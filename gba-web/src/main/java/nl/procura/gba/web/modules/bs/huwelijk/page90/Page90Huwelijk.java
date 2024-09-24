@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.bs.huwelijk.page90;
 import static com.vaadin.event.ShortcutAction.KeyCode.F1;
 import static nl.procura.gba.web.modules.bs.huwelijk.page90.Page90HuwelijkBean1.AMBTENAAR3;
 import static nl.procura.gba.web.modules.bs.huwelijk.page90.Page90HuwelijkBean1.KEUZES;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.ui.Button;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.huwelijk.HuwelijkService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

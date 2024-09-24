@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.bs.registration.page20;
 
 import static java.util.Arrays.asList;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +45,8 @@ import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.DeclarationType;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.table.indexed.IndexedTable;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -29,6 +29,7 @@ public class ZaakAttribuutContainer extends ArrayListContainer {
     addItem(ZaakAttribuutType.MIJN_OVERHEID_NIET);
     addItem(ZaakAttribuutType.WACHT_OP_RISICOANALYSE);
     addItem(ZaakAttribuutType.FOUT_BIJ_VERWERKING);
+    addItem(ZaakAttribuutType.REQUEST_INBOX);
     addItem(ZaakAttribuutType.ANDERS);
   }
 }

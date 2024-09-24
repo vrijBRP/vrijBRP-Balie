@@ -41,7 +41,7 @@ import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.theme.twee.ProcuraTheme;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page1Verkiezing extends ZakenPage {
 
@@ -107,7 +107,7 @@ public class Page1Verkiezing extends ZakenPage {
     getParentWindow().addWindow(new Page4VerkiezingWindow(getWijzigingen(verkiezing)));
   }
 
-  private void onZoekPersoon(Anummer anr) {
+  private void onZoekPersoon(Anr anr) {
     getApplication().goToPl(getWindow(), "zaken.kiezersregister", STANDAARD, anr.getAnummer());
   }
 
@@ -149,7 +149,7 @@ public class Page1Verkiezing extends ZakenPage {
 
   private List<KiesrWijz> getWijzigingen(Verkiezing verkiezing) {
     if (verkiezing != null) {
-      Anummer anr = getAnummer();
+      Anr anr = getAnummer();
       return getServices().getKiezersregisterService().getWijzigingen(verkiezing.getVerk(), anr);
     }
     return new ArrayList<>();
@@ -162,13 +162,13 @@ public class Page1Verkiezing extends ZakenPage {
 
   private List<Stempas> getVolmachten(Verkiezing verkiezing) {
     if (verkiezing != null) {
-      Anummer anr = getAnummer();
+      Anr anr = getAnummer();
       return getServices().getKiezersregisterService().getStempassenByVolmachtAnr(verkiezing.getVerk(), anr);
     }
     return new ArrayList<>();
   }
 
-  private Anummer getAnummer() {
-    return new Anummer(getServices().getPersonenWsService().getHuidige().getPersoon().getAnr().getVal());
+  private Anr getAnummer() {
+    return new Anr(getServices().getPersonenWsService().getHuidige().getPersoon().getAnr().getVal());
   }
 }

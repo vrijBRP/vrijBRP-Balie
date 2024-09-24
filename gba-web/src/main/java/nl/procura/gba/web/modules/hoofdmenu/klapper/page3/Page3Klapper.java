@@ -25,7 +25,7 @@ import static nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType
 import static nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType.ONBEKEND;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ import nl.procura.gba.web.services.bs.algemeen.akte.*;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;

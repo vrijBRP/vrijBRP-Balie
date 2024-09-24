@@ -61,7 +61,7 @@ import nl.procura.gba.web.services.zaken.verhuizing.VerhuisEmigratie;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuizingService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;

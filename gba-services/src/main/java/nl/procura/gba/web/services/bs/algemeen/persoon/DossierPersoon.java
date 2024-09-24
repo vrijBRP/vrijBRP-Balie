@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -81,7 +81,6 @@ public class DossierPersoon extends DossPer implements DossierPersonen, DossierN
   private FieldValue                woongemeente         = new FieldValue();
   private FieldValue                geboorteplaats       = new FieldValue();
   private FieldValue                geboorteAktePlaats   = new FieldValue();
-  private FieldValue                geboortegemeente     = new FieldValue();
   private FieldValue                land                 = new FieldValue();
   private FieldValue                titel                = new FieldValue();
   private FieldValue                partnerTitel         = new FieldValue();
@@ -280,15 +279,11 @@ public class DossierPersoon extends DossPer implements DossierPersonen, DossierN
   }
 
   public Gemeente getGemeenteGeboorte() {
-    return Services.getInstance().getGemeenteService().getGemeente(geboortegemeente);
+    return Services.getInstance().getGemeenteService().getGemeente(getGeboorteplaats());
   }
 
   public FieldValue getGeboortegemeente() {
-    return geboortegemeente;
-  }
-
-  public void setGeboortegemeente(FieldValue geboortegemeente) {
-    this.geboortegemeente = FieldValue.from(geboortegemeente);
+    return getGeboorteplaats();
   }
 
   public FieldValue getGeboorteland() {

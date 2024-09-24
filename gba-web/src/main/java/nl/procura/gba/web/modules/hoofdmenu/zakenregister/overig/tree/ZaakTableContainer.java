@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -111,7 +111,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
   private static final String BULK_TMV       = "Terugmeldingen";
   private static final String BULK_UITT      = "Uittreksels";
   private static final String BULK_CORR      = "Correspondentie";
-  private static final String BULK_CONTROLE  = "Controles";
+  private static final String CONTROLES      = "Controles";
 
   private final List<ZaakAantalItem> zaakItems = new ArrayList<>();
   private Services                   serviceContainer;
@@ -136,6 +136,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     }
     addTreeItem(FAVORIETEN, false, true, Page16Zaken.class);
     addTreeItem(PROBLEMEN, false, true, Page13Zaken.class);
+    addTreeItem(CONTROLES, false, true, Page9Module.class);
     addTreeItem(FILTER, false, true, Page160Module.class);
     addTreeItem(STATUS, true, true, HorizontalLayout.class);
     addTreeItem(BULKACTIES, true, false, HorizontalLayout.class);
@@ -145,7 +146,6 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     addTreeItem(BULK_TMV, BULKACTIES, false, true, Page6Module.class);
     addTreeItem(new ZaakAantalItem().setCaption(BULK_UITT), BULKACTIES, false, true, Page8Module.class);
     addTreeItem(new ZaakAantalItem().setCaption(BULK_CORR), BULKACTIES, false, true, Page12Module.class);
-    addTreeItem(BULK_CONTROLE, BULKACTIES, false, true, Page9Module.class);
 
     ZaakType[] huwelijkTypes = { HUWELIJK_GPS_GEMEENTE, OMZETTING_GPS, ONTBINDING_GEMEENTE };
     ZaakType[] afstammingTypes = { GEBOORTE, ERKENNING, NAAMSKEUZE };
@@ -158,9 +158,9 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     addZaakItem(GEGEVENSVERSTREKKING, ZAAK, true, false, SubModuleZaken.class, "Geg. verstrekking");
     addZaakItem(GPK, ZAAK, true, false, SubModuleZaken.class, "");
     addZaakItem(huwelijkTypes, ZAAK, true, false, SubModuleZaken.class, "Huwelijk / GPS");
+    addZaakItem(INBOX, ZAAK, true, false, SubModuleZaken.class, "");
     addZaakItem(INHOUD_VERMIS, ZAAK, true, false, SubModuleZaken.class, "Inhoud. / vermis.");
     addZaakItem(INDICATIE, ZAAK, true, false, SubModuleZaken.class, "");
-    addZaakItem(INBOX, ZAAK, true, false, SubModuleZaken.class, "");
     addZaakItem(NAAMGEBRUIK, ZAAK, true, false, SubModuleZaken.class, "");
     addZaakItem(NATURALISATIE, ZAAK, true, false, SubModuleZaken.class, "");
     addZaakItem(ONDERZOEK, ZAAK, true, false, SubModuleZaken.class, "");
@@ -327,7 +327,6 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
 
   private void addZaakItem(ZaakType itemId, Object parentId, boolean childrenAllowed, boolean initOpen,
       Class<? extends Component> componentClass, String oms) {
-
     addZaakItem(new ZaakType[]{ itemId }, parentId, childrenAllowed, initOpen, componentClass, oms);
   }
 

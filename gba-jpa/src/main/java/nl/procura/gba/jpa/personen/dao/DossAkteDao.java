@@ -20,8 +20,8 @@
 package nl.procura.gba.jpa.personen.dao;
 
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import nl.procura.gba.jpa.personen.db.DossAkteRdCat;
 import nl.procura.gba.jpa.personen.db.DossAkte_;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class DossAkteDao extends ZaakDao {
 

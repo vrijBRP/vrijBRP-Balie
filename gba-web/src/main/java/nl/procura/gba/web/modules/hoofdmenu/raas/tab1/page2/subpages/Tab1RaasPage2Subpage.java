@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.hoofdmenu.raas.tab1.page2.subpages;
 
 import static java.lang.String.format;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.Optional;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.modules.hoofdmenu.raas.tab1.page2.windows.RaasUitreikW
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNavigator;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.PageLayout;
 import nl.procura.vaadin.functies.VaadinUtils;

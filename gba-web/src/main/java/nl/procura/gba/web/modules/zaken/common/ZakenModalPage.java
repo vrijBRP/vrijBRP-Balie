@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.common;
 
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.text.MessageFormat;
 
@@ -34,7 +34,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.status.ZaakStat
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable.ZaakRecord;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.VaadinUtils;
 
 public class ZakenModalPage<Z extends Zaak> extends NormalPageTemplate {
@@ -62,7 +62,6 @@ public class ZakenModalPage<Z extends Zaak> extends NormalPageTemplate {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     if (button == buttonStatus) {
       onStatus();
     } else if (button == buttonAant) {

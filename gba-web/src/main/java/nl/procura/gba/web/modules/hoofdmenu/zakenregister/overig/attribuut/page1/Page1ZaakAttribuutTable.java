@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -44,7 +44,7 @@ public class Page1ZaakAttribuutTable extends GbaTable {
     addStyleName(GbaWebTheme.TABLE.NEWLINE_WRAP);
 
     addColumn("Nr", 30);
-    addColumn("Attribuut", 200);
+    addColumn("Attribuut", 300);
     addColumn("Waarde");
 
     super.setColumns();

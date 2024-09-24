@@ -38,12 +38,12 @@ import nl.procura.gba.web.services.beheer.verkiezing.KiezersregisterActieType;
 import nl.procura.gba.web.services.beheer.verkiezing.KiezersregisterService;
 import nl.procura.gba.web.services.beheer.verkiezing.Stempas;
 import nl.procura.vaadin.component.layout.table.TableLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page2VerkiezingForm extends GbaForm<Page2VerkiezingBean> {
 
   private QuickSearchPersonWindow snelZoekWindow;
-  private Anummer                 anrGemachtigde;
+  private Anr                     anrGemachtigde;
 
   private final Button  selectButton = new Button("Zoek");
   private final Stempas stempas;
@@ -110,14 +110,14 @@ public class Page2VerkiezingForm extends GbaForm<Page2VerkiezingBean> {
     super.afterSetColumn(column, field, property);
   }
 
-  public Anummer getAnrGemachtigde() {
+  public Anr getAnrGemachtigde() {
     return anrGemachtigde;
   }
 
   private void onSelectPersoon() {
     if (snelZoekWindow == null) {
       snelZoekWindow = new QuickSearchPersonWindow(stempas.getAnr(), pl -> {
-        anrGemachtigde = new Anummer(pl.getPersoon().getAnr().getVal());
+        anrGemachtigde = new Anr(pl.getPersoon().getAnr().getVal());
         getField(F_MACHT_NAAM).setValue(pl.getPersoon().getNaam().getNaamNaamgebruikGeslachtsnaamVoornaamAanschrijf());
         repaint();
       });

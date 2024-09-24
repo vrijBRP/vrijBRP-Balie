@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -74,6 +74,10 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HAN
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_HUP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.HANDLEIDING_INSCHRIJVING;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ID_VERPLICHT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_PW;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_USERNAME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INLOGOPMERKING;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_CLEAR_LIST;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FILENAME;
@@ -1885,6 +1889,38 @@ public class ParameterBean implements Serializable {
   @Position(order = "30")
   @TextField(secret = true)
   private String smsPassword = "";
+
+  // Verzoek
+  @ParameterAnnotation(INBOX_ENABLED)
+  @Position(order = "1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Verzoek API actief",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String inboxEnabled = "";
+
+  @ParameterAnnotation(INBOX_ENDPOINT)
+  @Position(order = "10")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Verzoek API endpoint",
+      width = "400px")
+  private String inboxEndpoint = "";
+
+  @ParameterAnnotation(INBOX_USERNAME)
+  @Position(order = "20")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Verzoek API gebruikersnaam",
+      width = "200px")
+  private String inboxUsername = "";
+
+  @ParameterAnnotation(INBOX_PW)
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Verzoek API wachtwoord",
+      width = "200px")
+  @Position(order = "30")
+  @TextField(secret = true)
+  private String inboxPassword = "";
 
   // GEO
   @ParameterAnnotation(GEO_ENABLED)

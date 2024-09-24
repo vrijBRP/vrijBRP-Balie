@@ -31,7 +31,7 @@ import nl.procura.gba.web.modules.beheer.documenten.components.DocumentImportExp
 import nl.procura.gba.web.modules.beheer.documenten.components.ImportDocumentArguments;
 import nl.procura.gba.web.modules.zaken.document.page4.DocUploader;
 import nl.procura.gba.web.windows.GbaWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

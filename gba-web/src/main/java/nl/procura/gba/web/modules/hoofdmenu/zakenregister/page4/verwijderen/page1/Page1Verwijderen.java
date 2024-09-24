@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.verwijderen.page1;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.verwijderen.page
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.zaken.opschonen.VerwijderZakenActie;
 import nl.procura.gba.web.services.zaken.opschonen.VerwijderZakenOverzicht;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

@@ -49,7 +49,7 @@ import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.KoppelActie;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class LocatieService extends AbstractService {
 

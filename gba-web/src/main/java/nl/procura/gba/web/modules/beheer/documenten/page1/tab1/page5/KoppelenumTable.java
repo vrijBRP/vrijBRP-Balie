@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page5;
 
 import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.services.beheer.KoppelActie;
@@ -30,7 +30,7 @@ import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumera
 import nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class KoppelenumTable extends GbaTable {
 

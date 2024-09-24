@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.aanschrijving;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_AANSCHRIJFPERSOON;
 import static nl.procura.gba.web.modules.bs.onderzoek.aanschrijving.AanschrijvingBean.F_EXTERNE_BRON;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType.FASE_1;
@@ -33,11 +34,11 @@ import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOE
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_FASE2_EXTERNE_BRON;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_FASE_EXTRA;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.ONDERZOEK_VOORNEMEN;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
 import nl.procura.gba.web.components.layouts.form.document.PrintSelectRecordFilter;
@@ -49,7 +50,6 @@ import nl.procura.gba.web.services.bs.onderzoek.document.DossierOnderzoekTemplat
 import nl.procura.gba.web.services.bs.onderzoek.enums.AanschrijvingFaseType;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.VLayout;

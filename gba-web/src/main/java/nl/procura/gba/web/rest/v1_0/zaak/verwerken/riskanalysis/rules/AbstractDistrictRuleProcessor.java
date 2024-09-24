@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 
@@ -28,13 +28,13 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleVar;
 import nl.procura.gba.web.components.containers.TabelContainer;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
-import nl.procura.standard.exceptions.ProException;
 
 /**
  * Rule 7

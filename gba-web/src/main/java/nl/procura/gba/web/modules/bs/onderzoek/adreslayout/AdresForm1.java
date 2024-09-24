@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.adreslayout;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_AANT_PERS;
 import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_BAG_ADDRESS;
 import static nl.procura.gba.web.modules.bs.onderzoek.adreslayout.AdresBean1.F_HNR;
@@ -41,9 +44,6 @@ import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.WEERGAVENAAM;
 import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
 
 import com.vaadin.ui.Field;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
 import nl.procura.gba.web.common.misc.SelectListener;
 import nl.procura.gba.web.components.fields.BagPopupField;
@@ -68,7 +69,6 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.table.TableLayout;
 import nl.procura.vaadin.component.window.Message;

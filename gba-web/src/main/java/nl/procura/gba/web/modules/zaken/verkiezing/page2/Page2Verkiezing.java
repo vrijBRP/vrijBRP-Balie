@@ -30,7 +30,7 @@ import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.theme.twee.ProcuraTheme;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page2Verkiezing extends NormalPageTemplate {
 
@@ -75,7 +75,7 @@ public class Page2Verkiezing extends NormalPageTemplate {
       stempas.setAanduiding(bean.getActie().getAanduidingType());
       switch (bean.getActie()) {
         case ACT_VERWIJDEREN:
-          stempas.setAnrGemachtigde(new Anummer());
+          stempas.setAnrGemachtigde(new Anr());
           service.save(stempas.getStem(), wijziging);
           break;
         case ACT_TOEVOEGEN:

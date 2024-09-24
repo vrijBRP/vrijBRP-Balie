@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.tree;
 
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.tree.ZaakTableContainer.AANTAL;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 import static nl.procura.vaadin.component.container.ProcuraContainer.OMSCHRIJVING;
 
 import com.vaadin.data.Container;
@@ -34,7 +34,7 @@ import com.vaadin.ui.TreeTable;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.SubModuleZaken;
 import nl.procura.gba.web.theme.GbaWebTheme;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ZaakTable extends TreeTable {
 

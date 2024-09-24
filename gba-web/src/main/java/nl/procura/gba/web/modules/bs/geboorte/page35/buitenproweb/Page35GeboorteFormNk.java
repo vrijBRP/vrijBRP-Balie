@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -32,6 +32,7 @@ import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35G
 import static nl.procura.gba.web.modules.bs.geboorte.page35.buitenproweb.Page35GeboorteBeanBuitenNk.VOORV;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.trim;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
@@ -107,10 +108,10 @@ public class Page35GeboorteFormNk extends GbaForm<Page35GeboorteBeanBuitenNk> {
       bean.setPlaats(naamskeuzeBuitenProweb.getBuitenlandsePlaats());
       bean.setNaamsPersoonType(naamskeuzeBuitenProweb.getNaamskeuzePersoon());
       bean.setBijzonderheden(naamskeuzeBuitenProweb.getBijzonderheden());
-      bean.setTitel(geboorte.getKeuzeTitel());
-      bean.setVoorv(new FieldValue(geboorte.getKeuzeVoorvoegsel()));
-      bean.setGeslachtsnaam(geboorte.getKeuzeGeslachtsnaam());
-      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaam());
+      bean.setTitel(new FieldValue(defaultIfBlank(geboorte.getOrgKeuzeNaamTp(), geboorte.getKeuzeNaamTp())));
+      bean.setVoorv(new FieldValue(defaultIfBlank(geboorte.getOrgKeuzeNaamVoorv(), geboorte.getKeuzeVoorvoegsel())));
+      bean.setGeslachtsnaam(defaultIfBlank(geboorte.getOrgKeuzeNaam(), geboorte.getKeuzeGeslachtsnaam()));
+      bean.setDubbeleNaam(geboorte.getOrgKeuzeNaamDubbel());
     }
 
     setBean(bean);

@@ -47,10 +47,10 @@ import nl.procura.burgerzaken.vrsclient.model.ControleAanvraagVolledigResponseVi
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Aanvraagnummer;
-import nl.procura.standard.Anummer;
-import nl.procura.standard.Bsn;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
+import nl.procura.validation.Anr;
+import nl.procura.validation.Bsn;
 
 public class VrsAanvraagForm1 extends ReadOnlyForm<VrsAanvraagForm1> {
 
@@ -94,7 +94,7 @@ public class VrsAanvraagForm1 extends ReadOnlyForm<VrsAanvraagForm1> {
 
     ControleAanvraagVolledigResponsePersonalisatiegegevens persoon = response.getPersonalisatiegegevens();
     bean.setBsn(toString(persoon.getBsn(), bsn -> Bsn.format(astr(bsn))) + " / "
-        + toString(persoon.getAnummer(), anr -> Anummer.format(astr(anr))));
+        + toString(persoon.getAnummer(), anr -> Anr.format(astr(anr))));
     bean.setNaam(trim(join(" ",
         astr(persoon.getVoornamen()),
         astr(persoon.getVoorvoegselGeslachtsnaam()),

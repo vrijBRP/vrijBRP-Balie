@@ -20,9 +20,9 @@
 package nl.procura.gba.web.common.exceptions;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
+import static nl.procura.commons.core.exceptions.ProExceptionType.UNKNOWN;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.window.Message;
 
 public class ExceptionCause {

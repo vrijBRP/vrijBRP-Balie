@@ -33,8 +33,8 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterPa
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.status.ZaakStatusUpdater;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.windows.home.navigatie.ZakenregisterAccordionTab;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.functies.VaadinUtils;
 
 import ch.lambdaj.collection.LambdaList;

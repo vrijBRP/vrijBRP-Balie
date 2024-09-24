@@ -19,15 +19,15 @@
 
 package nl.procura.gba.web.modules.beheer.profielen.page6;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
 import nl.procura.gba.web.modules.beheer.profielen.ModuleProfielPageTemplate;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

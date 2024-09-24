@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.zaken.verhuizing.overzicht;
 
 import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.gba.web.windows.home.HomeWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;

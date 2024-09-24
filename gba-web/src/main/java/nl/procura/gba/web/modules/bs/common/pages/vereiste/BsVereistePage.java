@@ -37,7 +37,7 @@ import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.algemeen.vereiste.DossierVereisten;
-import nl.procura.standard.exceptions.NotSupportedException;
+import nl.procura.commons.core.exceptions.NotSupportedException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

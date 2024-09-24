@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.beheer.fileimport.types.registrant;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,7 +54,7 @@ import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportResult;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportValue;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.validator.PostcodeValidator;
 
 public class RegistrantImport extends AbstractFileImport {

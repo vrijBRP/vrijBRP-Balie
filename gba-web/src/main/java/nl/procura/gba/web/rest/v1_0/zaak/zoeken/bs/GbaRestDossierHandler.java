@@ -107,7 +107,7 @@ import static nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegisterso
 import static nl.procura.gba.web.services.bs.registration.relations.RelationDateStartUtils.getValidityDate;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.Optional;
 
@@ -138,7 +138,7 @@ import nl.procura.gba.web.services.bs.registration.SourceDocumentType;
 import nl.procura.gba.web.services.bs.registration.ValidityDateType;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.standard.Globalfunctions;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 
 public class GbaRestDossierHandler extends GbaRestElementHandler {

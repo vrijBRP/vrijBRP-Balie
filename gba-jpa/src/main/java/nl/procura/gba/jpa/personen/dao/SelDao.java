@@ -19,7 +19,7 @@
 
 package nl.procura.gba.jpa.personen.dao;
 
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import javax.persistence.TypedQuery;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personen.db.Sel;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

@@ -23,7 +23,7 @@ import static nl.procura.gba.web.modules.bs.omzetting.page40.Page40OmzettingBean
 import static nl.procura.gba.web.modules.bs.omzetting.page40.Page40OmzettingBean.GERELATEERDEN;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
 import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
@@ -31,7 +31,7 @@ import nl.procura.gba.web.modules.bs.omzetting.page45.Page45Omzetting;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

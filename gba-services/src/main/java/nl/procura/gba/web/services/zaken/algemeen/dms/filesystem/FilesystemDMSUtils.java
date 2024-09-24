@@ -44,7 +44,7 @@ import nl.procura.gba.web.services.zaken.algemeen.dms.DMSBytesContent;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSFileContent;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class FilesystemDMSUtils {
 

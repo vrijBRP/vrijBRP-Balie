@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.beheer.gebruikers.page11;
 import static ch.lambdaj.Lambda.*;
 import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.lang.reflect.Field;
@@ -49,7 +49,7 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterType;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

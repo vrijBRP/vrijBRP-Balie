@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,6 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page13;
 
-import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FOUT_BIJ_VERWERKING;
-
-import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.ZaakAttribuutPage;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumentenBuilder;

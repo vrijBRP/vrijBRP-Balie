@@ -48,7 +48,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import nl.procura.gba.web.services.zaken.documenten.stempel.DocumentStempel;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 import lombok.Data;
 

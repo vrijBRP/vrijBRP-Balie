@@ -19,15 +19,15 @@
 
 package nl.procura.gba.web.services.beheer.kassa;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.util.List;
 
 import nl.procura.gba.web.services.beheer.kassa.transports.KassaConnect;
 import nl.procura.gba.web.services.beheer.kassa.transports.KassaFtp;
 import nl.procura.gba.web.services.beheer.kassa.transports.KassaLocal;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class KassaSender {
 

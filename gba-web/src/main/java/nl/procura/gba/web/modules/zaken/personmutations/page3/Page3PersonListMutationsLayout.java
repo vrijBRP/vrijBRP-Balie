@@ -34,7 +34,7 @@ import static nl.procura.gba.web.services.beheer.personmutations.PersonListActio
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -88,7 +88,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.AnrField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;

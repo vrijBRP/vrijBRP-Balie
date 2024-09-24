@@ -19,7 +19,9 @@
 
 package nl.procura.diensten.gba.wk.procura.templates;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.pad_left;
 
 import java.util.Properties;
 
@@ -27,7 +29,7 @@ import nl.procura.diensten.gba.ple.procura.utils.diacrits.Diacrieten;
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpaManager;
 import nl.procura.diensten.gba.wk.baseWK.BaseWKBuilder;
 import nl.procura.standard.diacrieten.ProcuraDiacrieten;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class WKTemplateProcura {
@@ -86,7 +88,7 @@ public class WKTemplateProcura {
   }
 
   public String getAnrFormat(String val) {
-    return new Anummer(val).getFormatAnummer();
+    return new Anr(val).getFormatAnummer();
   }
 
   public String getFormatBsn(String val) {

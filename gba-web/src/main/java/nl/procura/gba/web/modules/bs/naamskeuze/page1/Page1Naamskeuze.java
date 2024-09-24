@@ -20,12 +20,12 @@
 package nl.procura.gba.web.modules.bs.naamskeuze.page1;
 
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsContactpersoonPage;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.label.Ruler;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

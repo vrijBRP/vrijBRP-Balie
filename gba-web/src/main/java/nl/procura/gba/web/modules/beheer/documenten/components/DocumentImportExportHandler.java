@@ -21,9 +21,9 @@ package nl.procura.gba.web.modules.beheer.documenten.components;
 
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
-import static nl.procura.standard.exceptions.ProExceptionType.DOCUMENTS;
-import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.*;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DOCUMENTS;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -54,7 +54,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.windows.GbaWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.downloading.DownloadHandlerImpl;
 
 import lombok.Setter;

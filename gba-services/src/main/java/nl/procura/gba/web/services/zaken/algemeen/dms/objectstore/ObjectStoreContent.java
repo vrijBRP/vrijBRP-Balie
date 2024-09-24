@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms.objectstore;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.storage.client.model.StorageObject;
 
 import lombok.Data;

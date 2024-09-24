@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.riskanalysis.page1;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -30,7 +30,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakregisterNav
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

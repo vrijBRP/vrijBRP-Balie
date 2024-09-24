@@ -21,7 +21,7 @@ package examples.nl.procura.gbaws;
 
 import static nl.procura.standard.Globalfunctions.pad_left;
 import static nl.procura.standard.Globalfunctions.pad_right;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import nl.procura.gba.web.rest.client.GbaRestClientResponse;
 import nl.procura.gbaws.web.rest.client.GbaWsRestClient;
 import nl.procura.proweb.rest.utils.JsonUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaWsRestClientVoorbeelden {
 

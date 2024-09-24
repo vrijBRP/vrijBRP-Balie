@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.sms.page2;
 
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.ui.Button;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraag;
 import nl.procura.sms.rest.domain.Message;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

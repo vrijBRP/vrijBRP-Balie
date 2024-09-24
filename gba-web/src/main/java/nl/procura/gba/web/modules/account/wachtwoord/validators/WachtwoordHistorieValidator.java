@@ -27,9 +27,9 @@ import nl.procura.gba.web.modules.account.wachtwoord.pages.passwordExpired.Passw
 import nl.procura.gba.web.modules.account.wachtwoord.pages.passwordExpired.PasswordExpired;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 
 public class WachtwoordHistorieValidator extends AbstractStringValidator {
 

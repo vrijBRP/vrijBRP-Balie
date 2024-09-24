@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.gebruikers.email.page2;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
 import nl.procura.gba.web.common.misc.email.Verzending;
 import nl.procura.gba.web.common.misc.email.Verzending.VerzendingStatus;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

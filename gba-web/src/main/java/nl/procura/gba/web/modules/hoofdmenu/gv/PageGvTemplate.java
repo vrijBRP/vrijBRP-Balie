@@ -23,7 +23,7 @@ import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.Koppel
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.BG_NEE;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.VP_JA;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.VP_NEE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,8 +57,8 @@ import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;

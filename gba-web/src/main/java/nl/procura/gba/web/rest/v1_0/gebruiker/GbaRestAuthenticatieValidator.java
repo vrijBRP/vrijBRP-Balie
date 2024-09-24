@@ -20,7 +20,7 @@
 package nl.procura.gba.web.rest.v1_0.gebruiker;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.Services.TYPE;
@@ -30,7 +30,7 @@ import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieValidator;
 import nl.procura.proweb.rest.v1_0.Rol;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruikerAntwoord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.theme.Credentials;
 
 public class GbaRestAuthenticatieValidator implements ProRestAuthenticatieValidator {

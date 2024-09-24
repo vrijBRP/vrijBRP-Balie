@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,8 +25,8 @@ import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.VERWERKIN
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElement;
 import nl.procura.gba.web.rest.v1_0.zaak.GbaRestElementHandler;
 import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.inbox.InboxRecord;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxRecord;
 
 public class GbaRestInboxHandler extends GbaRestElementHandler {
 
@@ -36,7 +36,7 @@ public class GbaRestInboxHandler extends GbaRestElementHandler {
 
   public void convert(GbaRestElement gbaZaak, Zaak zaakParm) {
 
-    InboxRecord zaak = (InboxRecord) zaakParm;
+    GemeenteInboxRecord zaak = (GemeenteInboxRecord) zaakParm;
     GbaRestElement inbox = gbaZaak.add(INBOX);
     add(inbox, VERWERKING_ID, zaak.getVerwerkingId());
   }

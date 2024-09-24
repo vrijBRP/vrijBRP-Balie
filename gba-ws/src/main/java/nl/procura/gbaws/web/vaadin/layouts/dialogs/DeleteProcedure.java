@@ -19,14 +19,14 @@
 
 package nl.procura.gbaws.web.vaadin.layouts.dialogs;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.ui.Window;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.table.indexed.IndexedTable;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;

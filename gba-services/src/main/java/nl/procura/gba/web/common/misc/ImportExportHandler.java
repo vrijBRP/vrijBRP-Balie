@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.common.misc;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
 
 import java.io.*;
 import java.util.Map;
@@ -30,7 +30,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 
 import nl.procura.gba.common.MiscUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;
 
 public class ImportExportHandler {

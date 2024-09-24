@@ -28,8 +28,8 @@ import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.M
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.VADER_DUO_MOEDER;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaren;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.validation.Bsn;
 

@@ -35,7 +35,7 @@ import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.TimeFieldValue;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class Page81GeboorteForm1 extends GbaForm<Page81GeboorteBean1> {
@@ -224,7 +224,7 @@ public class Page81GeboorteForm1 extends GbaForm<Page81GeboorteBean1> {
 
     DossierPersoon p = getDossierPersoon();
 
-    Anummer anr = new Anummer(p.getAnummer().getStringValue());
+    Anr anr = new Anr(p.getAnummer().getStringValue());
 
     if (anr.isCorrect()) {
       bean.setAnr(anr.getFormatAnummer());

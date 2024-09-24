@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.zaken.verhuizing.page11;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.modules.zaken.verhuizing.VerhuisRelatie;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.Relatie;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.java.collection.Collections;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
 import nl.procura.vaadin.theme.twee.Icons;

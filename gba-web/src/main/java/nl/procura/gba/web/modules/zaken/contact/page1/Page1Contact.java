@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.contact.page1;
 
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.contact.ContactTabel;
@@ -29,7 +29,7 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.contact.Contact;
 import nl.procura.gba.web.services.zaken.contact.ContactStatusListener;
 import nl.procura.gba.web.services.zaken.contact.ContactVerplichtMate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.label.H2;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

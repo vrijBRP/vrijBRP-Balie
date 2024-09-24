@@ -24,8 +24,8 @@ import static nl.procura.gba.web.components.containers.Container.PLAATS;
 import static nl.procura.gba.web.rest.v2.converters.GbaRestBaseTypeConverter.setIfPresent;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AANGEVER;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.OVERLEDENE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaren;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.validation.Bsn;
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -27,7 +27,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.jpa.personen.db.Inbox;
@@ -42,7 +47,7 @@ public class InboxDao extends ZaakDao {
   public static final String T_INVOER       = "tInvoer";
   public static final String ZAAK_ID_EXTERN = "zaakIdExtern";
 
-  public static final List<ZaakKey> findZaakKeys(ConditionalMap map) {
+  public static List<ZaakKey> findZaakKeys(ConditionalMap map) {
 
     CriteriaWrapper<Inbox, ZaakKey> w = new CriteriaWrapper<>(Inbox.class, ZaakKey.class, map);
 
@@ -73,7 +78,7 @@ public class InboxDao extends ZaakDao {
     return aval(list.get(0));
   }
 
-  public static final List<Inbox> find(ConditionalMap map) {
+  public static List<Inbox> find(ConditionalMap map) {
 
     CriteriaWrapper<Inbox, Inbox> w = new CriteriaWrapper<>(Inbox.class, Inbox.class, map);
 
@@ -90,7 +95,7 @@ public class InboxDao extends ZaakDao {
 
     CriteriaBuilder builder = w.getBuilder();
     Root<Inbox> table = w.getTable();
-    CriteriaQuery query = w.getCq();
+    CriteriaQuery<?> query = w.getCq();
     ConditionalMap map = w.getMap();
 
     List<Predicate> where = new ArrayList<>();
@@ -98,7 +103,6 @@ public class InboxDao extends ZaakDao {
     where.add(builder.greaterThan(table.get(C_INBOX), 0));
 
     if (map.containsKey(ZAAK_ID)) {
-
       Expression<Boolean> predicate1 = getZaakIds(builder, table, map);
       Expression<Boolean> predicate2 = getZaakIds(builder, table, map, ZAAK_ID_EXTERN);
       where.add(builder.and(builder.or(predicate1, predicate2)));

@@ -21,12 +21,12 @@ package nl.procura.gba.web.common.csv;
 
 import static java.lang.String.format;
 import static nl.procura.gba.web.common.csv.CsvParser.MISSING_HEADER;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class CsvHeaders extends ArrayList<CsvHeader> {
 

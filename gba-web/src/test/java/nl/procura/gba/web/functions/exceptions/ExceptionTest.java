@@ -19,16 +19,16 @@
 
 package nl.procura.gba.web.functions.exceptions;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.AUTHENTICATION;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.AUTHENTICATION;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import nl.procura.gba.web.common.exceptions.ExceptionMessage;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.window.Message;
 
 public class ExceptionTest {

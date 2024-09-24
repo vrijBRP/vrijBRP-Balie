@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.beheer.profielen.page6;
 
 import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import nl.procura.gba.web.services.beheer.KoppelActie;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.beheer.profiel.ProfielExtrasService;
 import nl.procura.gba.web.services.beheer.profiel.gba_element.PleElement;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GBAelementenTable extends GbaTable {
 

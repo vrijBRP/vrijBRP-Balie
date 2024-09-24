@@ -21,13 +21,13 @@ package nl.procura.gba.web.modules.bs.overlijden.gemeente.page40;
 
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.*;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType;
 import nl.procura.gba.web.modules.bs.overlijden.PageBsOverlijdenGerelateerde;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.overlijden.gemeente.DossierOverlijdenGemeente;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

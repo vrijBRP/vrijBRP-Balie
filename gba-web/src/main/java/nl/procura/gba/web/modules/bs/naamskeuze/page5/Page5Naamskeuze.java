@@ -22,8 +22,8 @@ package nl.procura.gba.web.modules.bs.naamskeuze.page5;
 import static java.util.Arrays.asList;
 import static nl.procura.gba.web.modules.bs.naamskeuze.page5.Page5NaamskeuzeForm1.NAAMSKEUZE_TYPE;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 
@@ -44,7 +44,7 @@ import nl.procura.gba.web.services.bs.algemeen.nationaliteit.DossierNationalitei
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;

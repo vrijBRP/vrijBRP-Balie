@@ -25,7 +25,11 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,7 +41,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpaManager;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class FindTableRecords extends AbstractLocalExample {
 
@@ -57,7 +61,7 @@ public class FindTableRecords extends AbstractLocalExample {
 
     Map<String, List<Map<String, Object>>> values = new LinkedHashMap<>();
     for (String table : tables) {
-      values.put(table, getRows(table, new Anummer(TEST_ANR)));
+      values.put(table, getRows(table, new Anr(TEST_ANR)));
     }
     URL resource = FindTableRecords.class.getClassLoader().getResource("ple.properties");
     if (resource != null) {
@@ -71,7 +75,7 @@ public class FindTableRecords extends AbstractLocalExample {
     }
   }
 
-  private List<Map<String, Object>> getRows(String table, Anummer anr) {
+  private List<Map<String, Object>> getRows(String table, Anr anr) {
     List<Map<String, Object>> valuesList = new ArrayList<>();
     List<String> columns = getColumns(table);
     String columnsString = String.join(", ", columns);

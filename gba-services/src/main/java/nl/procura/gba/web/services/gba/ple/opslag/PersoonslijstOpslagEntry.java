@@ -25,7 +25,7 @@ import static nl.procura.standard.Globalfunctions.pos;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.web.services.gba.templates.ZoekProfielType;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class PersoonslijstOpslagEntry {
@@ -59,7 +59,7 @@ public class PersoonslijstOpslagEntry {
     this.databron = databron;
     this.zoekIndicaties = zoekIndicaties;
 
-    if (Anummer.isCorrect(String.valueOf(nummer))) {
+    if (Anr.isCorrect(String.valueOf(nummer))) {
       this.anr = nummer;
     } else if (Bsn.isCorrect(String.valueOf(nummer))) {
       this.bsn = nummer;

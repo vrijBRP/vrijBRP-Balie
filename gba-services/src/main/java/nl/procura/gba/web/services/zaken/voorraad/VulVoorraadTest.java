@@ -34,7 +34,7 @@ import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpaEclipseLink;
 import nl.procura.diensten.gba.ple.procura.utils.jpa.PLEJpaManager;
 import nl.procura.gba.jpa.personen.db.Voorraad;
 import nl.procura.gba.jpa.personen.utils.GbaEclipseLinkUtil;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 /**
@@ -86,7 +86,7 @@ public class VulVoorraadTest {
 
           Bsn bsn = new Bsn(astr(s[0]));
 
-          Anummer anr = new Anummer(along(s[1]), along(s[2]), along(s[3]));
+          Anr anr = new Anr(along(s[1]), along(s[2]), along(s[3]));
 
           if (bsn.isCorrect()) {
 

@@ -1,0 +1,15 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/api/requests/018cd3c7-4adb-7b45-93db-8fdb62a501f9",
+    "method": "PATCH"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"@context\":\"\\/api\\/contexts\\/Request\",\"@id\":\"\\/api\\/requests\\/018cd3c7-4adb-7b45-93db-8fdb62a501f9\",\"@type\":\"Request\",\"id\":\"018cd3c7-4adb-7b45-93db-8fdb62a501f9\",\"source\":\"PIP\",\"registeredOn\":\"2024-01-04T10:21:42+01:00\",\"preferredChannel\":\"vrijbrp\",\"status\":\"received\",\"type\":{\"@id\":\"\\/api\\/request_types\\/vrijbrp-travel-document-application\",\"@type\":\"RequestType\",\"name\":\"vrijbrp-travel-document-application\"},\"customers\":[{\"@type\":\"RequestCustomer\",\"@id\":\"\\/api\\/.well-known\\/genid\\/7b68cae03b97b0ace41f\",\"customer\":\"https:\\/\\/vrijbrp.nl\\/bsn\\/772669314\",\"role\":\"initiator\",\"authorizationIndication\":\"authorizer\"}],\"withdraws\":[],\"supplements\":[{\"@id\":\"\\/api\\/requests\\/018cd3d0-9df9-7779-a07f-30df2da9eb13\",\"@type\":\"Request\",\"id\":\"018cd3d0-9df9-7779-a07f-30df2da9eb13\",\"source\":\"PIP\",\"registeredOn\":\"2024-01-04T10:31:53+01:00\",\"preferredChannel\":\"vrijbrp\",\"status\":\"received\",\"type\":{\"@id\":\"\\/api\\/request_types\\/vrijbrp-travel-document-application-update-payment\",\"@type\":\"RequestType\",\"name\":\"vrijbrp-travel-document-application-update-payment\"},\"customers\":[],\"withdraws\":[],\"supplementedRequest\":\"\\/api\\/requests\\/018cd3c7-4adb-7b45-93db-8fdb62a501f9\",\"supplements\":[],\"body\":{\"amountInCents\":7785,\"transactionId\":\"10\",\"paymentProvider\":\"ogone\",\"paymentProviderTransactionId\":\"3769259430\",\"status\":\"success\"},\"documents\":[]}],\"body\":{\"bsn\":\"772669314\",\"travelDocumentType\":\"PN\",\"height\":188,\"expeditedProcessing\":false},\"documents\":[{\"@id\":\"\\/api\\/documents\\/018cd3c7-31f4-78e4-9e53-ebf9f039e649\",\"@type\":\"Document\",\"id\":\"018cd3c7-31f4-78e4-9e53-ebf9f039e649\",\"originalName\":\"dossier-summary.pdf\",\"mimeType\":\"application\\/pdf\",\"contentUrl\":\"\\/api\\/documents\\/018cd3c7-31f4-78e4-9e53-ebf9f039e649\\/contents\"}]}",
+    "headers": {
+      "Content-Type": "application/ld+json; charset=utf-8"
+    }
+  }
+}

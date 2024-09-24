@@ -35,8 +35,8 @@ import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.applicatie.meldingen.export.XmlMelding;
 import nl.procura.gba.web.services.applicatie.meldingen.export.XmlMeldingenExport;
 import nl.procura.gba.web.services.gba.templates.GbaTemplateService;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;
 
 public class MeldingService extends GbaTemplateService {

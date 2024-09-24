@@ -22,8 +22,8 @@ package nl.procura.gba.web.services.beheer.gebruiker;
 import static ch.lambdaj.Lambda.*;
 import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
@@ -47,7 +47,7 @@ import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.KoppelbaarAanDocument;
 import nl.procura.java.reflection.ReflectionUtil;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Gebruiker extends Usr
     implements KoppelbaarAanDocument, KoppelbaarAanLocatie, KoppelbaarAanProfiel, Geldigheid, DatabaseTable {

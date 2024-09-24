@@ -19,14 +19,15 @@
 
 package nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 import static nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.zoeken.AdresBean.BSN;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.formats.Adres;
 import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
@@ -35,7 +36,6 @@ import nl.procura.gba.web.common.misc.SelectListener;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.bs.onderzoek.page10.adresselectie.selectie.AdresSelectieWindow;
 import nl.procura.gba.web.services.beheer.bag.ProcuraInhabitantsAddress;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

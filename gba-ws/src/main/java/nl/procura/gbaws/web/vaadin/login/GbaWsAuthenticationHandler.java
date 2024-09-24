@@ -20,8 +20,8 @@
 package nl.procura.gbaws.web.vaadin.login;
 
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.AUTHENTICATION;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.AUTHENTICATION;
 
 import java.net.ConnectException;
 
@@ -38,7 +38,7 @@ import nl.procura.proweb.rest.guice.misc.ProRestAuthenticatieException;
 import nl.procura.proweb.rest.v1_0.Rol;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruikerAntwoord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.vrijbrp.hub.client.HubContext;
 
 public class GbaWsAuthenticationHandler {

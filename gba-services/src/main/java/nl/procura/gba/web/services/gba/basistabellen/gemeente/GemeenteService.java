@@ -40,8 +40,8 @@ import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.standard.Resource;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.validation.Postcode;
 

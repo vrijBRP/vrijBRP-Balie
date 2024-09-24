@@ -38,8 +38,8 @@ import nl.procura.gba.web.services.beheer.locatie.Locatie;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.KoppelbaarAanPrintOptie;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 
 public class PrintOptieService extends AbstractService {
 

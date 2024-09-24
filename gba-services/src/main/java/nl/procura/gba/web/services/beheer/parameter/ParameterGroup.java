@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -72,6 +72,7 @@ public enum ParameterGroup {
   GROUP_KENNISBANK("Kennisbank"),
   GROUP_MIJN_OVERHEID("Mijn overheid"),
   GROUP_PROBEV("PROBEV"),
+  GROUP_INBOX("Verzoeken"),
   GROUP_INTERNAL("INTERNAL");
 
   private String             id;

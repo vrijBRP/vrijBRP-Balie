@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.bs.registration.page40.relations;
 
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.GERELATEERDE_BRP;
 import static nl.procura.gba.web.services.bs.registration.RelationMatchType.INAPPLICABLE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -36,7 +36,7 @@ import nl.procura.gba.web.services.bs.registration.RelationMatchType;
 import nl.procura.gba.web.services.bs.registration.RelationService;
 import nl.procura.gba.web.services.bs.registration.RelationType;
 import nl.procura.gba.web.services.bs.registration.relations.Relation;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class RelationPage extends NormalPageTemplate {
 

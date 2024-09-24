@@ -29,7 +29,7 @@ import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.db.KiesrStem;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Stempas {
 
@@ -82,15 +82,15 @@ public class Stempas {
     return stem.isStored() ? stem.getVnr() : 0L;
   }
 
-  public Anummer getAnr() {
-    return stem.isStored() ? new Anummer(stem.getAnr()) : new Anummer();
+  public Anr getAnr() {
+    return stem.isStored() ? new Anr(stem.getAnr()) : new Anr();
   }
 
-  public Anummer getAnrGemachtigde() {
-    return stem.isStored() ? new Anummer(stem.getAnrVolmacht()) : new Anummer();
+  public Anr getAnrGemachtigde() {
+    return stem.isStored() ? new Anr(stem.getAnrVolmacht()) : new Anr();
   }
 
-  public void setAnrGemachtigde(Anummer anummer) {
+  public void setAnrGemachtigde(Anr anummer) {
     stem.setAnrVolmacht(anummer.isCorrect() ? anummer.getLongAnummer() : -1L);
   }
 

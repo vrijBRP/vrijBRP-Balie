@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.toevoegen;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import nl.procura.gba.web.rest.v1_0.zaak.toevoegen.correspondentie.GbaRestCorres
 import nl.procura.gba.web.rest.v1_0.zaak.toevoegen.inbox.GbaRestInboxToevoegenHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.toevoegen.uittreksel.GbaRestUittrekselToevoegenHandler;
 import nl.procura.gba.web.services.Services;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaRestZaakToevoegenHandler extends GbaRestHandler {
 

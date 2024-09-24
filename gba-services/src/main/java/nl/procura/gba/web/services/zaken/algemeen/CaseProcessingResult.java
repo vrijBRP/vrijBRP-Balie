@@ -22,7 +22,7 @@ package nl.procura.gba.web.services.zaken.algemeen;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class CaseProcessingResult {
 

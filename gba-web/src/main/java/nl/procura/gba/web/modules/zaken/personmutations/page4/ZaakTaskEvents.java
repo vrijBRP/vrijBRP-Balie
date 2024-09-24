@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.Task;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskType;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class ZaakTaskEvents {
 
@@ -42,13 +42,13 @@ public class ZaakTaskEvents {
     Set<Task> tasks = new HashSet<>();
     if (zaak instanceof PersonListMutation) {
       PersonListMutation mutation = (PersonListMutation) zaak;
-      Anummer anr = new Anummer(mutation.getAnr().longValue());
+      Anr anr = new Anr(mutation.getAnr().longValue());
       if (mutation.getActionType().is(ADD_SET)) {
         // Sprake van Overlijden
         if (mutation.getCatType().is(GBACat.OVERL)) {
           PersonListMutElem datumOverl = getElem(mutations, DATUM_OVERL);
           if (isBlank(datumOverl.getCurrentValue().getVal()) && isNotBlank(datumOverl.getNewValue())) {
-            Anummer anrHuwelijk = getHuwelijk(services, anr);
+            Anr anrHuwelijk = getHuwelijk(services, anr);
             if (anrHuwelijk != null) {
               BasePLValue andereGemeente = getAndereWoongemeente(services, anrHuwelijk);
               if (andereGemeente != null) {
@@ -78,7 +78,7 @@ public class ZaakTaskEvents {
       if (mutation.getCatType().is(GBACat.HUW_GPS)) {
         PersonListMutElem datumHuw = getElem(mutations, DATUM_VERBINTENIS);
         if (isBlank(datumHuw.getCurrentValue().getVal()) && isNotBlank(datumHuw.getNewValue())) {
-          Anummer anrPartner = new Anummer(getElem(mutations, ANR).getNewValue());
+          Anr anrPartner = new Anr(getElem(mutations, ANR).getNewValue());
           if (anrPartner.isCorrect()) {
             BasePLValue gemeente = getAndereWoongemeente(services, anrPartner);
             if (gemeente != null) {
@@ -122,22 +122,22 @@ public class ZaakTaskEvents {
     return services.getTaskService().newTask(zaak.getZaakId(), taskType, remarks);
   }
 
-  private static boolean isOntvangOproepEUKiesr(Services services, Anummer anr) {
+  private static boolean isOntvangOproepEUKiesr(Services services, Anr anr) {
     BasePLExt pl = services.getPersonenWsService().getPersoonslijst(anr.getAnummer());
     long eukiesr = along(pl.getCat(GBACat.KIESR).getCurrentRec().getElemVal(AANDUIDING_EURO_KIESR).getVal());
     return eukiesr == EUKIESRECHT_ONTVANG_OPROEP;
   }
 
-  private static Anummer getHuwelijk(Services services, Anummer anr) {
+  private static Anr getHuwelijk(Services services, Anr anr) {
     BasePLExt pl = services.getPersonenWsService().getPersoonslijst(anr.getAnummer());
     BurgerlijkeStandStatus status = pl.getPersoon().getBurgerlijkeStand().getStatus();
     if (status.getType().is(HUWELIJK, PARTNERSCHAP)) {
-      return new Anummer(pl.getHuwelijk().getAnr().getVal());
+      return new Anr(pl.getHuwelijk().getAnr().getVal());
     }
     return null;
   }
 
-  private static BasePLValue getAndereWoongemeente(Services services, Anummer anr) {
+  private static BasePLValue getAndereWoongemeente(Services services, Anr anr) {
     BasePLElem gemeente = services.getPersonenWsService()
         .getPersoonslijst(anr.getAnummer())
         .getVerblijfplaats()

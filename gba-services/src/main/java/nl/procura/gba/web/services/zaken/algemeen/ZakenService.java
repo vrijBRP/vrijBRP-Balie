@@ -21,8 +21,8 @@ package nl.procura.gba.web.services.zaken.algemeen;
 
 import static java.util.Arrays.asList;
 import static nl.procura.gba.common.ZaakType.ONBEKEND;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
 import static org.apache.commons.collections.CollectionUtils.containsAny;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
@@ -38,7 +38,7 @@ import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.Timer;
 import nl.procura.gba.web.services.interfaces.DatabaseTable;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ZakenService extends AbstractService {
 

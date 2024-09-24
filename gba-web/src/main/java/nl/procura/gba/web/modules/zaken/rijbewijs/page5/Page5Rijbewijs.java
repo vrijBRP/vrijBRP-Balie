@@ -29,7 +29,7 @@ import static nl.procura.gba.web.services.zaken.rijbewijs.NaamgebruikType.EIGEN_
 import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort.OMWISSELING_BUITENLANDS_RIJBEWIJS;
 import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort.VERVANGEN_MET_HUIDIGE_GELDIGHEIDSDATA;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -76,8 +76,8 @@ import nl.procura.rdw.processen.p1653.f01.AANVRRYBKRT;
 import nl.procura.rdw.processen.p1653.f01.ADRESNATPGEG;
 import nl.procura.rdw.processen.p1653.f01.NATPERSOONGEG;
 import nl.procura.rdw.processen.p1653.f01.RYBGEG;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;

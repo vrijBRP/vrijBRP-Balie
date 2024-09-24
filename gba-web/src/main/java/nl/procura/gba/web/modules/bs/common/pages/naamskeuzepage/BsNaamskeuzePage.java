@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.bs.common.pages.naamskeuzepage;
 
 import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ import nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeType;
 import nl.procura.gba.web.services.bs.naamskeuze.argumenten.NaamskeuzeArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;

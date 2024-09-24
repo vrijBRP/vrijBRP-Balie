@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,6 +23,7 @@ import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AttribuutHistorie {
 
@@ -60,5 +61,11 @@ public class AttribuutHistorie {
 
   public int size() {
     return getAttributen().size();
+  }
+
+  public Optional<ZaakAttribuut> getAttribuut(ZaakAttribuutType type) {
+    return getAttributen().stream()
+        .filter(attribuut -> attribuut.getAttribuut().equals(type.getCode()))
+        .findFirst();
   }
 }

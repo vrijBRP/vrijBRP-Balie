@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -54,7 +54,7 @@ public enum ZaakType {
   GEGEVENSVERSTREKKING(1200, "Gegevensverstrekking", true),
   OMZETTING_GPS(1300, "Omzetting GPS in Huwelijk", true),
   ONTBINDING_GEMEENTE(1400, "Ontbinding/einde huwelijk/GPS in gemeente", true),
-  INBOX(1500, "Inboxbericht", true),
+  INBOX(1500, "Gemeente inbox", true),
   ONDERZOEK(1600, "Onderzoek", true),
   REGISTRATION(1700, "Eerste inschrijving", true),
   RISK_ANALYSIS(1800, "Risicoanalyse", false),

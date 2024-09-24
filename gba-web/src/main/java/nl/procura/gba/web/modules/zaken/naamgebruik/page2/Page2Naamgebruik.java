@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.zaken.naamgebruik.page2;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.Date;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.modules.zaken.naamgebruik.page3.Page3Naamgebruik;
 import nl.procura.gba.web.services.zaken.naamgebruik.NaamgebruikAanvraag;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;

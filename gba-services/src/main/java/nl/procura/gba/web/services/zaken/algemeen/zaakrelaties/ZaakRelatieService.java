@@ -20,7 +20,7 @@
 package nl.procura.gba.web.services.zaken.algemeen.zaakrelaties;
 
 import static nl.procura.gba.common.MiscUtils.copyList;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -38,7 +38,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakHistorie;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentTypeUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ZaakRelatieService extends AbstractService {
 

@@ -30,9 +30,9 @@ import nl.procura.gba.web.modules.bs.registration.person.modules.AbstractPersonP
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.table.indexed.IndexedTable;

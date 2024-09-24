@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -31,6 +31,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GPK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GV;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_HANDLEIDINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INBOX;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INTERNAL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KASSA;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KENNISBANK;
@@ -679,6 +680,18 @@ public enum ParameterConstant implements ParameterType {
 
   SMS_PW("SMS_password", "SMS wachtwoord",
       GROUP_SMS, true, false, false, ""),
+
+  INBOX_ENABLED("Inbox_enabled", "Verzoeken API inschakelen",
+      GROUP_INBOX, true, true, true, ""),
+
+  INBOX_ENDPOINT("Inbox_endpoint", "Verzoeken API endpoint",
+      GROUP_INBOX, true, false, false, ""),
+
+  INBOX_USERNAME("Inbox_username", "Verzoeken API gebruikersnaam",
+      GROUP_INBOX, true, false, false, ""),
+
+  INBOX_PW("Inbox_password", "Verzoeken API wachtwoord",
+      GROUP_INBOX, true, false, false, ""),
 
   GEO_ENABLED("Geo_enabled", "Geo / BAG service inschakelen",
       GROUP_GEO, true, true, true, ""),

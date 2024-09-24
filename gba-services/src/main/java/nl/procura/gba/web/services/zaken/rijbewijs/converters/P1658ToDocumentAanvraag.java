@@ -19,8 +19,19 @@
 
 package nl.procura.gba.web.services.zaken.rijbewijs.converters;
 
-import static nl.procura.gba.web.common.tables.GbaTables.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.common.tables.GbaTables.LAND;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
+import static nl.procura.gba.web.common.tables.GbaTables.TITEL;
+import static nl.procura.gba.web.common.tables.GbaTables.VBT;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.date2str;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
+import static nl.procura.standard.Globalfunctions.pad_right;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.time2str;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +48,16 @@ import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagAntwoord;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagAntwoord.Cat_gegevens;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusRijvaardigheid;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType;
-import nl.procura.rdw.processen.p1658.f02.*;
-import nl.procura.validation.Anummer;
+import nl.procura.rdw.processen.p1658.f02.AANVRRYBKGEG;
+import nl.procura.rdw.processen.p1658.f02.AANVRRYBKRT;
+import nl.procura.rdw.processen.p1658.f02.ADRESNATPGEG;
+import nl.procura.rdw.processen.p1658.f02.CATAANRYBGEG;
+import nl.procura.rdw.processen.p1658.f02.GESCHVERKLGEG;
+import nl.procura.rdw.processen.p1658.f02.NATPERSOONGEG;
+import nl.procura.rdw.processen.p1658.f02.RYBGEG;
+import nl.procura.rdw.processen.p1658.f02.RYVVERKLGEG;
+import nl.procura.rdw.processen.p1658.f02.STATRYBKGEG;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class P1658ToDocumentAanvraag {
@@ -80,7 +99,7 @@ public class P1658ToDocumentAanvraag {
 
     aanvraag.getPers_gegevens().setCrbsleutel(astr(pers_geg.getNatperssl()));
     aanvraag.getPers_gegevens().setSnr(new Bsn(astr(pers_geg.getFiscnrnatp())).getFormatBsn());
-    aanvraag.getPers_gegevens().setAnr(new Anummer(astr(pers_geg.getGbanrnatp())).getFormatAnummer());
+    aanvraag.getPers_gegevens().setAnr(new Anr(astr(pers_geg.getGbanrnatp())).getFormatAnummer());
     aanvraag.getPers_gegevens().setNaam(pers_geg.getGeslnaamnatp());
     aanvraag.getPers_gegevens().setVoorvoegsel(pers_geg.getVoorvoegnatp());
 

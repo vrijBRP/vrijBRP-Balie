@@ -65,7 +65,7 @@ import static nl.procura.standard.Globalfunctions.date2str;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.time2str;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,8 +131,8 @@ import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelaties;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.validation.Anummer;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class GbaRestZaakZoekenHandler extends GbaRestHandler {
@@ -173,7 +173,7 @@ public class GbaRestZaakZoekenHandler extends GbaRestHandler {
       if (bsn.isCorrect()) {
         za.setNummer(bsn.getDefaultBsn());
       } else {
-        Anummer anr = new Anummer(vraag.getPersoonsnummer());
+        Anr anr = new Anr(vraag.getPersoonsnummer());
         if (anr.isCorrect()) {
           za.setNummer(anr.getAnummer());
         }

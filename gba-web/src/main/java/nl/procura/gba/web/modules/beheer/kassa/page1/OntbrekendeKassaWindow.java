@@ -28,8 +28,8 @@ import nl.procura.gba.web.services.beheer.kassa.KassaProduct;
 import nl.procura.gba.web.services.beheer.kassa.KassaService;
 import nl.procura.gba.web.services.beheer.kassa.KassaUtils;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

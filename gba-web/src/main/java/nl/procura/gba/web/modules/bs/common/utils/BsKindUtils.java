@@ -29,7 +29,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class BsKindUtils extends BsUtils {
@@ -56,7 +56,7 @@ public class BsKindUtils extends BsUtils {
 
         if (Bsn.isCorrect(bsnKind)) {
           args.addNummer(bsnKind);
-        } else if (Anummer.isCorrect(anrKind)) {
+        } else if (Anr.isCorrect(anrKind)) {
           args.addNummer(anrKind);
         }
       }
@@ -88,7 +88,7 @@ public class BsKindUtils extends BsUtils {
         String bsnKind = k.getBsn().getVal();
         String anrKind = k.getAnr().getVal();
 
-        if (!Bsn.isCorrect(bsnKind) && !Anummer.isCorrect(anrKind)) {
+        if (!Bsn.isCorrect(bsnKind) && !Anr.isCorrect(anrKind)) {
           personen.add(BsPersoonUtils.kopieDossierPersoon(k.getRecord(), new DossierPersoon()));
         }
       }

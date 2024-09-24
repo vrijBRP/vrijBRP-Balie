@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,6 +22,7 @@ package nl.procura.gba.web.components.layouts.form.document.preview;
 import static java.util.Arrays.asList;
 import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getDownloadLayout;
 import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getImageLayout;
+import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getJsonLayout;
 import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getPdfLayout;
 import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getPropertiesLayout;
 import static nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewLayouts.getTxtLayout;
@@ -31,6 +32,7 @@ import static nl.procura.gba.web.components.layouts.form.document.preview.FilePr
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class FilePreviewWindow extends ModalWindow {
   }
 
   private FilePreviewWindow(PreviewFile file) {
-    this(asList(file));
+    this(Collections.singletonList(file));
   }
 
   public static void preview(Window window, PreviewFile file) {
@@ -137,6 +139,9 @@ public class FilePreviewWindow extends ModalWindow {
           break;
         case TXT:
           content = getTxtLayout(file);
+          break;
+        case JSON:
+          content = getJsonLayout(file);
           break;
         case PROPERTIES:
           content = getPropertiesLayout(file);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,6 +24,8 @@ import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPers
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER1;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER2;
 
+import java.util.function.Consumer;
+
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonControleWindow;
 import nl.procura.gba.web.modules.bs.omzetting.ModuleOmzetting;
 import nl.procura.gba.web.modules.bs.omzetting.overzicht.form1.OmzettingOverzichtBuilder;
@@ -33,16 +35,12 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOp
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page101.Page101Zaken;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierPartners;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 import nl.procura.vaadin.functies.VaadinUtils;
-
-import java.util.function.Consumer;
 
 /**
  * Tonen omzettingdossier

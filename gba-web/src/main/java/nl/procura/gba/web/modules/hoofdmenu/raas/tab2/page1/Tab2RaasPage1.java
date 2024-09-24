@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.hoofdmenu.raas.tab2.page1;
 
 import static nl.procura.gba.web.modules.hoofdmenu.raas.tab1.page2.subpages.Tab1RaasPage2Bean.AANVRAAGNUMMER;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +40,7 @@ import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.raas.rest.domain.ResponseMessage;
 import nl.procura.raas.rest.domain.raas.bestand.DeleteRaasBestandRequest;
 import nl.procura.raas.rest.domain.raas.bestand.ProcessRaasBestandRequest;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;

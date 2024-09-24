@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.beheer.overig;
 
 import static nl.procura.gba.common.MiscUtils.cleanPath;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class NavigationSorter {
 

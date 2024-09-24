@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.beheer.profielen.page1.kopie;
 
 import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.services.beheer.KoppelActie;
@@ -31,7 +31,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.beheer.profiel.ProfielService;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.layout.info.InfoLayout;

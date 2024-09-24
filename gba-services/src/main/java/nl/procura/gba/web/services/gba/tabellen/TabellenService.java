@@ -23,7 +23,7 @@ import static java.util.Collections.singletonList;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.gba.templates.ZoekProfielType.PROFIEL_STANDAARD;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -57,7 +57,7 @@ import nl.procura.gbaws.web.rest.v1_0.tabellen.GbaWsRestTabelRecord;
 import nl.procura.gbaws.web.rest.v1_0.tabellen.GbaWsRestTabellenAntwoord;
 import nl.procura.gbaws.web.rest.v1_0.tabellen.GbaWsRestTabellenVraag;
 import nl.procura.standard.diacrieten.ProcuraDiacrieten;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -29,8 +29,8 @@ import static nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType.VAN_RE
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VLUCHTELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VREEMDELINGEN_PASPOORT;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.reisdocumenten.*;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 

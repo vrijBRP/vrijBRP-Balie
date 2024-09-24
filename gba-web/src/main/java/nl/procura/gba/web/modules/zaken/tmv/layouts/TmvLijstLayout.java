@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.zaken.tmv.layouts;
 
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.persoonslijst.overig.grid.RecordElementCombo;
 import nl.procura.gba.web.modules.zaken.tmv.objects.TmvRecord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.AnrField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;

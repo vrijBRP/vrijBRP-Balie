@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.zaken.verhuizing;
 
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.Date;
 
@@ -30,7 +30,7 @@ import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class VerhuisAanvraagPage extends ZakenPage {
 

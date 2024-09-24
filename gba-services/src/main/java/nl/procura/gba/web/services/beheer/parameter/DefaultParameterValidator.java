@@ -21,9 +21,9 @@ package nl.procura.gba.web.services.beheer.parameter;
 
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,7 +36,7 @@ import org.apache.commons.net.ftp.FTPClient;
 
 import nl.procura.bzconnector.app.client.VrijBRPConnectRestClient;
 import nl.procura.gba.web.services.beheer.kassa.KassaSendType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class DefaultParameterValidator implements ParameterValidator {
 

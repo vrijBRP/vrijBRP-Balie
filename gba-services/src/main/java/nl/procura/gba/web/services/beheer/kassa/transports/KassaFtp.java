@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.services.beheer.kassa.transports;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import nl.procura.gba.web.services.beheer.kassa.KassaFile;
 import nl.procura.gba.web.services.beheer.kassa.KassaParameters;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class KassaFtp {
 

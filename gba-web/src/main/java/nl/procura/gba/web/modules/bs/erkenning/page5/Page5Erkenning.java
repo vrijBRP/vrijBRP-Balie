@@ -23,8 +23,8 @@ import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.modules.bs.erkenning.page5.Page5ErkenningForm1.ERKENNINGS_TYPE;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Collection;
 
@@ -46,7 +46,7 @@ import nl.procura.gba.web.services.bs.algemeen.nationaliteit.DossierNationalitei
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.erkenning.ErkenningsType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;

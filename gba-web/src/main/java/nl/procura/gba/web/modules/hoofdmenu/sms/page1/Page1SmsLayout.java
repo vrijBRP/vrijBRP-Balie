@@ -34,8 +34,8 @@ import nl.procura.gba.web.modules.zaken.common.PagingLayout.Paging;
 import nl.procura.gba.web.services.Services;
 import nl.procura.sms.rest.domain.*;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
 import nl.procura.validation.Bsn;
 

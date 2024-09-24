@@ -1,0 +1,15 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/auth",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"token\":\"myToken\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

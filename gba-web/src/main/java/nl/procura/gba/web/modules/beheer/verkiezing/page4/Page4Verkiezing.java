@@ -20,7 +20,16 @@
 package nl.procura.gba.web.modules.beheer.verkiezing.page4;
 
 import static nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource.STANDAARD;
-import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.*;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_AAND;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_ADRES;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_ANR;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_CODE;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_GEBOORTEDATUM;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_GESLACHT;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_NAAM;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_PASNR;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_TOEGEVOEGD;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page4.Page4VerkiezingBean.F_VERK;
 
 import java.util.List;
 
@@ -32,7 +41,7 @@ import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page4Verkiezing extends NormalPageTemplate {
 
@@ -52,7 +61,7 @@ public class Page4Verkiezing extends NormalPageTemplate {
     if (event.isEvent(InitPage.class)) {
       List<KiesrWijz> wijzigingen = getServices()
           .getKiezersregisterService()
-          .getWijzigingen(verk, new Anummer(stem.getAnr()));
+          .getWijzigingen(verk, new Anr(stem.getAnr()));
 
       Page4VerkiezingForm form1 = new Page4VerkiezingForm("Verkiezing", "200px",
           verk, stem, F_VERK);

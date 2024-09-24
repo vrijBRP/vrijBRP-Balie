@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.persoonslijst.overig.tmv;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import nl.procura.gba.web.modules.persoonslijst.overig.PlPage;
 import nl.procura.gba.web.modules.persoonslijst.overig.grid.RecordElementCombo;
 import nl.procura.gba.web.modules.zaken.tmv.page1.Page1Tmv;
 import nl.procura.gba.web.modules.zaken.tmv.page9.Page9TmvLayout;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class PlTmvPage extends PlPage {
 

@@ -29,7 +29,7 @@ import nl.procura.gba.web.modules.beheer.gemeenten.page2.Page2Gemeente;
 import nl.procura.gba.web.modules.tabellen.huwelijkslocatie.page3.Page3HuwelijkLocaties;
 import nl.procura.gba.web.modules.zaken.document.page4.DocUploader;
 import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

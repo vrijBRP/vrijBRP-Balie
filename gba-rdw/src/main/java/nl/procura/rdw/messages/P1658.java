@@ -26,7 +26,7 @@ import nl.procura.rdw.functions.RdwAanvraagMessage;
 import nl.procura.rdw.functions.RdwProces;
 import nl.procura.rdw.processen.p1658.f01.AANVRRYBKRT;
 import nl.procura.rdw.processen.p1658.f01.NATPERSOONGEG;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 /**
  * Raadplegen meest recente aanvraag rijbewijskaart
@@ -39,7 +39,7 @@ public class P1658 extends RdwAanvraagMessage {
 
     NATPERSOONGEG n = new NATPERSOONGEG();
 
-    Anummer anr2 = new Anummer(anr);
+    Anr anr2 = new Anr(anr);
 
     n.setGbanrnatp(BigInteger.valueOf(anr2.getLongAnummer()));
 

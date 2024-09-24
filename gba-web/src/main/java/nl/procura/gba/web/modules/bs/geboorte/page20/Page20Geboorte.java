@@ -24,8 +24,8 @@ import static nl.procura.gba.web.modules.bs.geboorte.page20.Page20GeboorteBean2.
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -49,7 +49,7 @@ import nl.procura.gba.web.modules.bs.common.pages.persoonpage.BsStatusForm;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;

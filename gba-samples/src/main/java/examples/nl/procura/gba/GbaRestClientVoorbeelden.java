@@ -21,7 +21,7 @@ package examples.nl.procura.gba;
 
 import static nl.procura.standard.Globalfunctions.pad_left;
 import static nl.procura.standard.Globalfunctions.pad_right;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,7 +39,7 @@ import nl.procura.gba.web.rest.client.GbaRestClient;
 import nl.procura.gba.web.rest.client.GbaRestClientException;
 import nl.procura.gba.web.rest.client.GbaRestClientResponse;
 import nl.procura.proweb.rest.utils.JsonUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaRestClientVoorbeelden {
 

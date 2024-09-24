@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.gebruikers.page5;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import nl.procura.gba.web.components.dialogs.DeleteRecordsFromTable;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
@@ -32,7 +32,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfo;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoService;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoType;
 import nl.procura.gba.web.theme.GbaWebTheme;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;

@@ -27,9 +27,9 @@ import static nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringStatus
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.Optional;
 
@@ -61,7 +61,7 @@ import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentC1;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

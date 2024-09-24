@@ -26,8 +26,8 @@ import static nl.procura.gba.jpa.personen.dao.UsrDao.findByName;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.BEEINDIGD;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.NOG_NIET_ACTUEEL;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
-import static nl.procura.standard.exceptions.ProExceptionType.*;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.*;
+import static nl.procura.commons.core.exceptions.ProExceptionType.*;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -61,7 +61,7 @@ import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.theme.Credentials;
 
 public class GebruikerService extends AbstractService {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,10 @@
 
 package nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb;
 
+import static java.util.Optional.ofNullable;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.Globalfunctions.trim;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import java.math.BigDecimal;
 
@@ -139,27 +141,27 @@ public class ErkenningBuitenProweb {
   }
 
   public String getGeslachtsnaam() {
-    return dg.getKeuzeNaamGesl();
+    return defaultIfBlank(dg.getOrgKeuzeNaam(), dg.getKeuzeGeslachtsnaam());
   }
 
   public void setGeslachtsnaam(String geslachtsnaam) {
-    dg.setKeuzeNaamGesl(geslachtsnaam);
+    dg.setOrgKeuzeNaam(geslachtsnaam);
   }
 
   public String getVoorvoegsel() {
-    return dg.getKeuzeVoorvoegsel();
+    return defaultIfBlank(dg.getOrgKeuzeNaamVoorv(), dg.getKeuzeVoorvoegsel());
   }
 
   public void setVoorvoegsel(FieldValue voorvoegsel) {
-    dg.setKeuzeVoorvoegsel(voorvoegsel.getStringValue());
+    dg.setOrgKeuzeNaamVoorv(voorvoegsel.getStringValue());
   }
 
   public FieldValue getTitel() {
-    return dg.getKeuzeTitel();
+    return new FieldValue(defaultIfBlank(dg.getOrgKeuzeNaamTp(), dg.getKeuzeNaamTp()));
   }
 
   public void setTitel(FieldValue titel) {
-    dg.setKeuzeTitel(titel);
+    dg.setOrgKeuzeNaamTp(ofNullable(titel).map(FieldValue::getStringValue).orElse(""));
   }
 
   public String getNaam() {

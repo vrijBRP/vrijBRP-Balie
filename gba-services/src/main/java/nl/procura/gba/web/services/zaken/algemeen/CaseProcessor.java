@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.services.zaken.algemeen;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.ByteArrayInputStream;
 import java.text.MessageFormat;
@@ -30,13 +30,16 @@ import nl.procura.gba.common.StreamUtils;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.inbox.InboxRecord;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieService;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxRecord;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
-public class CaseProcessor {
+import lombok.Getter;
+
+@Getter
+public abstract class CaseProcessor<T> {
 
   private StringBuilder              log    = new StringBuilder();
   private final CaseProcessingResult result = new CaseProcessingResult();
@@ -46,9 +49,7 @@ public class CaseProcessor {
     this.services = services;
   }
 
-  public void clearLog() {
-    log = new StringBuilder();
-  }
+  public abstract CaseProcessingResult process(T zaak);
 
   public void log(ProExceptionSeverity severity, String message, Object... args) {
     String line = MessageFormat.format(message, args);
@@ -57,19 +58,11 @@ public class CaseProcessor {
     log.append("\n");
   }
 
-  public StringBuilder getLog() {
-    return log;
+  protected void clearLog() {
+    log = new StringBuilder();
   }
 
-  public CaseProcessingResult getResult() {
-    return result;
-  }
-
-  public Services getServices() {
-    return services;
-  }
-
-  protected void addZaakRelatie(String zaakId, InboxRecord inboxRecord, ZaakType zaakType) {
+  protected void addZaakRelatie(String zaakId, GemeenteInboxRecord inboxRecord, ZaakType zaakType) {
     ZaakRelatieService relaties = getServices().getZaakRelatieService();
     ZaakRelatie relatie = new ZaakRelatie();
     relatie.setZaakId(zaakId);
@@ -80,7 +73,7 @@ public class CaseProcessor {
     relaties.save(relatie);
   }
 
-  protected <T> T fromStream(InboxRecord inboxRecord, Class<T> cl) {
+  protected <T> T fromStream(GemeenteInboxRecord inboxRecord, Class<T> cl) {
     return StreamUtils.fromStream(cl, new ByteArrayInputStream(inboxRecord.getBestandsbytes()));
   }
 
@@ -88,7 +81,6 @@ public class CaseProcessor {
    * Zaak
    */
   protected Zaak getZaak(String zaakNummer, ZaakType... zaakTypes) {
-
     ZakenService service = getServices().getZakenService();
     List<ZaakKey> zaakKeys = getZaakKeys(zaakNummer, zaakTypes);
 
@@ -104,7 +96,6 @@ public class CaseProcessor {
    * Zaakkeys
    */
   protected List<ZaakKey> getZaakKeys(String zaakNummer, ZaakType... zaakTypes) {
-
     ZaakArgumenten zaakArgumenten = new ZaakArgumenten(zaakNummer);
     zaakArgumenten.setTypen(zaakTypes);
 

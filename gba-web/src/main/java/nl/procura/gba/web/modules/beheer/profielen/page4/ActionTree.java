@@ -19,17 +19,17 @@
 
 package nl.procura.gba.web.modules.beheer.profielen.page4;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.ui.Tree;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.modules.beheer.profielen.container.ActieFormContainer;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType;
-import nl.procura.standard.exceptions.ProException;
 
 public class ActionTree extends Tree {
 

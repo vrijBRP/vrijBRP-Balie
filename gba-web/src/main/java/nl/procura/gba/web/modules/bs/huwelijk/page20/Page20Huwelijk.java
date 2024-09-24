@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.bs.huwelijk.page20;
 
 import static nl.procura.gba.web.modules.bs.huwelijk.page20.Page20HuwelijkBean1.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button;
@@ -36,7 +36,7 @@ import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.huwelijk.StatusVerbintenis;
 import nl.procura.gba.web.services.gba.basistabellen.huwelijkslocatie.HuwelijksLocatie;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.TimeFieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

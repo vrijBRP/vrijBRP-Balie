@@ -21,7 +21,7 @@ package nl.procura.gba.web.common.misc.email;
 
 import static nl.procura.gba.web.common.misc.email.EmailAddressType.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -36,8 +36,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 
 public class Email {
 

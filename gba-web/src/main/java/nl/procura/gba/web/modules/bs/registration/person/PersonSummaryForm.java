@@ -29,7 +29,7 @@ import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.table.TableLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 import lombok.Data;
@@ -42,7 +42,7 @@ public class PersonSummaryForm extends GbaForm<PersonSummaryForm.Bean> {
 
     Bean bean = new Bean();
     bean.setBsn(Bsn.format(personDossier.getBurgerServiceNummer().getStringValue()));
-    bean.setAnumber(Anummer.format(personDossier.getAnummer().getStringValue()));
+    bean.setAnumber(Anr.format(personDossier.getAnummer().getStringValue()));
     bean.setFamilyName(personDossier.getGeslachtsnaam());
     bean.setPrefix(personDossier.getVoorvoegsel());
     bean.setTitle(personDossier.getTp());

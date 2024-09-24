@@ -22,8 +22,8 @@ package nl.procura.gba.web.modules.zaken.verhuizing.page12;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ import nl.procura.gba.web.modules.zaken.verhuizing.page14.Page14Verhuizing;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.Relatie;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieLijst;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

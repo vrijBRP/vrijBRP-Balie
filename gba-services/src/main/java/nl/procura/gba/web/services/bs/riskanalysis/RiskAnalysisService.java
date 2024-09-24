@@ -78,7 +78,7 @@ import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieServic
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
 import nl.procura.java.reflection.ReflectionUtil;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.validation.Postcode;
 
 public class RiskAnalysisService extends AbstractZaakService<Dossier>

@@ -71,7 +71,7 @@ import nl.procura.diensten.zoekpersoon.objecten.Verblijfplaatsgegevens;
 import nl.procura.diensten.zoekpersoon.objecten.Verblijfstitelgegevens;
 import nl.procura.diensten.zoekpersoon.objecten.Verwijzinggegevens;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class DocumentPL implements Serializable {
 
@@ -1231,8 +1231,8 @@ public class DocumentPL implements Serializable {
 
       for (Iterator<String> iter = rel_pls.keySet().iterator(); iter.hasNext();) {
         String rel_anr = iter.next();
-        Anummer a = new Anummer(anr);
-        Anummer a2 = new Anummer(rel_anr);
+        Anr a = new Anr(anr);
+        Anr a2 = new Anr(rel_anr);
         if (a.getLongAnummer().equals(a2.getLongAnummer())) {
           return rel_pls.get(rel_anr);
         }

@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.zaken.reisdocument.page14;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import com.vaadin.ui.Button;
 
@@ -37,7 +37,7 @@ import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;

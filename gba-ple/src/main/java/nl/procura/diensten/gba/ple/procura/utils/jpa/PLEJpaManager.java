@@ -31,7 +31,7 @@ import org.eclipse.persistence.sessions.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class PLEJpaManager implements Closeable {
 

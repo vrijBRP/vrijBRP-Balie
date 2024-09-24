@@ -19,7 +19,14 @@
 
 package nl.procura.gba.web.modules.beheer.verkiezing.page3;
 
-import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.*;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_AAND;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_AANTAL;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_DATUM_TM;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_DATUM_VAN;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_GEMACHTIGDE;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_KIESGERECHTIGDE;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_ROS;
+import static nl.procura.gba.web.modules.beheer.verkiezing.page3.Page3VerkiezingBean.F_VNR;
 
 import java.util.function.Consumer;
 
@@ -29,15 +36,15 @@ import com.vaadin.ui.Field;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearchPersonWindow;
 import nl.procura.vaadin.component.layout.table.TableLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page3VerkiezingForm extends GbaForm<Page3VerkiezingBean> {
 
   private final Button selectButton1 = new Button("Zoek");
   private final Button selectButton2 = new Button("Zoek");
 
-  private Anummer                 anrKiesgerechtigde;
-  private Anummer                 anrGemachtigde;
+  private Anr                     anrKiesgerechtigde;
+  private Anr                     anrGemachtigde;
   private QuickSearchPersonWindow snelZoekWindow;
 
   public Page3VerkiezingForm() {
@@ -60,10 +67,10 @@ public class Page3VerkiezingForm extends GbaForm<Page3VerkiezingBean> {
     super.reset();
   }
 
-  private void onZoek(String fieldName, Consumer<Anummer> anummerConsumer) {
+  private void onZoek(String fieldName, Consumer<Anr> anummerConsumer) {
     if (snelZoekWindow == null) {
       snelZoekWindow = new QuickSearchPersonWindow(pl -> {
-        Anummer anr = new Anummer(pl.getPersoon().getAnr().getVal());
+        Anr anr = new Anr(pl.getPersoon().getAnr().getVal());
         anummerConsumer.accept(anr);
         getField(fieldName).setValue(pl.getPersoon().getNaam().getNaamNaamgebruikGeslachtsnaamVoornaamAanschrijf());
         repaint();
@@ -97,11 +104,11 @@ public class Page3VerkiezingForm extends GbaForm<Page3VerkiezingBean> {
     super.afterSetColumn(column, field, property);
   }
 
-  public Anummer getAnrKiesgerechtigde() {
+  public Anr getAnrKiesgerechtigde() {
     return anrKiesgerechtigde;
   }
 
-  public Anummer getAnrGemachtigde() {
+  public Anr getAnrGemachtigde() {
     return anrGemachtigde;
   }
 }

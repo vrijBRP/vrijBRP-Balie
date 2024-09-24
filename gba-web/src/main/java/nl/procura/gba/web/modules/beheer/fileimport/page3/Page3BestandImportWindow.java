@@ -50,7 +50,7 @@ import nl.procura.gba.web.modules.zaken.document.page4.DocUploader;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportResult;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

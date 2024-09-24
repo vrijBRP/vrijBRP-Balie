@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -271,13 +271,16 @@ public class DossierGeboorte extends DossGeb
 
   @Override
   public String getKeuzeNaam() {
-    return trim(getKeuzeTitel() + " " + getKeuzeVoorvoegsel() + " " + getKeuzeGeslachtsnaam());
+    return trim(getKeuzeVoorvoegsel() + " " + getKeuzeGeslachtsnaam());
   }
 
   @Override
   public String getOrigineleKeuzeNaam() {
-    if (StringUtils.isNotBlank(getOrgKeuzeNaam())) {
-      return getOrgKeuzeNaam();
+    if (StringUtils.isNotBlank(getOrgKeuzeNaamDubbel())) {
+      return getOrgKeuzeNaamDubbel();
+
+    } else if (StringUtils.isNotBlank(getOrgKeuzeNaam())) {
+      return trim(getOrgKeuzeNaamVoorv() + " " + getOrgKeuzeNaam());
 
     } else if (getVragen().heeftErkenningBijGeboorte()) {
       return getErkenningBijGeboorte().getKeuzeNaam();

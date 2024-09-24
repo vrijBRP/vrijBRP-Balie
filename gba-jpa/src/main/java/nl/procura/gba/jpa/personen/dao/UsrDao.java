@@ -29,7 +29,7 @@ import nl.procura.gba.common.UniqueList;
 import nl.procura.gba.jpa.personen.db.Usr;
 import nl.procura.gba.jpa.personen.db.UsrInfo;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class UsrDao extends GenericDao {
 

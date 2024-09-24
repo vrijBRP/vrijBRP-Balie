@@ -44,7 +44,7 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.verhuizing.*;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisToestemminggever.AangifteStatus;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisToestemminggever.ToestemmingStatus;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;

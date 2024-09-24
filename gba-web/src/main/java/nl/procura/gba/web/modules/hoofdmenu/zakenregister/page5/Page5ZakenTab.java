@@ -45,7 +45,7 @@ import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraag;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsService;
 import nl.procura.rdw.functions.RdwMessage;
 import nl.procura.vaadin.functies.VaadinUtils;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public abstract class Page5ZakenTab extends ZakenregisterPage<Zaak> {
@@ -101,7 +101,7 @@ public abstract class Page5ZakenTab extends ZakenregisterPage<Zaak> {
    * Geef naam terug van de basispl
    */
   public String getIdNummer(long anr, long bsn) {
-    Anummer anrValue = new Anummer(anr);
+    Anr anrValue = new Anr(anr);
     Bsn bsnValue = new Bsn(bsn);
     if (bsnValue.isCorrect()) {
       return bsnValue.getFormatBsn();
@@ -116,7 +116,7 @@ public abstract class Page5ZakenTab extends ZakenregisterPage<Zaak> {
    * Geef naam terug van de basispl
    */
   public String getNaam(PLResultComposite result, long anr, long bsn) {
-    Anummer anrValue = new Anummer(anr);
+    Anr anrValue = new Anr(anr);
     if (anrValue.isCorrect()) {
       if (result != null) {
         Optional<BasePLExt> bpl = result.getBasisPLWrappers()
@@ -140,7 +140,7 @@ public abstract class Page5ZakenTab extends ZakenregisterPage<Zaak> {
   public PLResultComposite getNaamByAnr(List<Long> anrs, int max) {
     PLEArgs args = new PLEArgs();
     for (Long anr : anrs) {
-      Anummer anrValue = new Anummer(anr);
+      Anr anrValue = new Anr(anr);
       if (anrValue.isCorrect()) {
         args.addNummer(anrValue.getAnummer());
       }

@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.services.applicatie.meldingen;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -27,7 +27,7 @@ import java.util.Date;
 
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

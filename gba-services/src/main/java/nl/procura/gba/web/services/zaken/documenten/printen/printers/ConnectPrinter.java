@@ -29,10 +29,10 @@ import nl.procura.bzconnector.app.client.actions.print.*;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.connect.VrijBrpConnectClient;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 /**
  * This printer connects to the VrijBRP Connect application

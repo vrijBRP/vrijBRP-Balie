@@ -56,7 +56,7 @@ import nl.procura.gba.web.services.interfaces.address.AddressRequest;
 import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.validation.Postcode;
 

@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.rijbewijs.page8;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
@@ -31,7 +31,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraag;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagAntwoord;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

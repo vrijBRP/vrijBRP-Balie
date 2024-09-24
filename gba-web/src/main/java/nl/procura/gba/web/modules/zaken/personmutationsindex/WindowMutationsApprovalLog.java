@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.personmutationsindex;
 
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,7 +33,7 @@ import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.zaken.ZakenModuleTemplate;
 import nl.procura.gba.web.modules.zaken.personmutationsindex.page1.Page1MutationsIndex;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.theme.twee.layout.ScrollLayout;

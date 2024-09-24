@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,7 @@
 package nl.procura.gba.web.common.exceptions;
 
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.EOFException;
 
@@ -43,50 +43,41 @@ public class ExceptionHandler {
   private ExceptionHandler() {
   }
 
-  public static void handle(Window w, Throwable e) {
-
-    if (w != null) {
-
+  public static void handle(Window window, Throwable exc) {
+    if (window != null) {
       // Een breakexception betekent gewoon stopppen met de code.
-      if (e instanceof Validator.InvalidValueException || e instanceof EOFException) {
+      if (exc instanceof Validator.InvalidValueException || exc instanceof EOFException) {
         return;
       }
 
-      ExceptionMessage m = new ExceptionMessage(e);
-      m.map(IllegalArgumentException.class, Message.TYPE_WARNING_MESSAGE);
+      ExceptionMessage em = new ExceptionMessage(exc);
+      em.map(IllegalArgumentException.class, Message.TYPE_WARNING_MESSAGE);
 
-      if (!m.getCauses().isEmpty()) {
-
+      if (!em.getCauses().isEmpty()) {
         // InvalidValueException is een formulier foutmelding.
         // Wordt toch al getoond.
-
-        if (m.hasException(InvalidValueException.class)) {
+        if (em.hasException(InvalidValueException.class)) {
           return;
         }
-
-        if (m.getWarningType() == Message.TYPE_ERROR_MESSAGE) {
-          store(w, e, m);
+        if (em.getWarningType() == Message.TYPE_ERROR_MESSAGE) {
+          store(window, exc, em);
         }
-
         // Toon melding aan gebruiker
-        ExceptionCause c = m.getCauses().get(0);
-        Message message = new Message(c.getTitle(), m.getHtmlCauseMsg(), m.getWarningType());
-        message.setDelayMsec(m.getDelay());
-        w.showNotification(message);
+        ExceptionCause c = em.getCauses().get(0);
+        Message message = new Message(c.getTitle(), em.getHtmlCauseMsg(), em.getWarningType());
+        message.setDelayMsec(em.getDelay());
+        window.showNotification(message);
       }
     }
   }
 
-  /**
-   * Opslaan in meldingenscherm
-   */
-  private static void store(Window w, Throwable e, ExceptionMessage m) {
-    e.printStackTrace();
-    LOGGER.error("Error!", e);
-    if (w instanceof GbaWindow) {
-      Services services = ((GbaWindow) w).getGbaApplication().getServices();
-      PersonenWsService gbaws = services.getPersonenWsService();
-      gbaws.addMessage(false, FAULT, ERROR, m.getMsg(), m.getCauseMsg(), e);
+  private static void store(Window window, Throwable exc, ExceptionMessage msg) {
+    exc.printStackTrace();
+    LOGGER.error("Error!", exc);
+    if (window instanceof GbaWindow) {
+      Services services = ((GbaWindow) window).getGbaApplication().getServices();
+      PersonenWsService service = services.getPersonenWsService();
+      service.addMessage(false, FAULT, ERROR, msg.getMsg(), msg.getCauseMsg(), exc);
     }
   }
 }

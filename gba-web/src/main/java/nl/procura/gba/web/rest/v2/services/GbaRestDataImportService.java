@@ -44,7 +44,7 @@ import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportRecord;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportResult;
 import nl.procura.gba.web.services.beheer.fileimport.FileImportService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 import au.com.bytecode.opencsv.CSVWriter;
 

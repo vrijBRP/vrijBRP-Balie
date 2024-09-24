@@ -19,8 +19,8 @@
 
 package nl.procura.gba.config;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.io.*;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import java.util.Vector;
 
 import org.apache.commons.io.IOUtils;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaProperties extends Properties {
 

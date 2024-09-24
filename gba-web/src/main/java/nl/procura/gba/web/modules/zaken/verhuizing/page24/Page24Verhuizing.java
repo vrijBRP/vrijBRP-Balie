@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.zaken.verhuizing.page24;
 
 import static ch.lambdaj.Lambda.*;
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
@@ -30,7 +30,7 @@ import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.modules.zaken.verhuizing.VerhuisRelatie;
 import nl.procura.gba.web.modules.zaken.verhuizing.page25.Page25Verhuizing;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

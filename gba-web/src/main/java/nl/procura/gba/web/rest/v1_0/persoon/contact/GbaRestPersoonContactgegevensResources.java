@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.persoon.contact;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -31,7 +31,7 @@ import com.google.inject.servlet.RequestScoped;
 
 import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 @RequestScoped
 @Path("v1.0/persoon/contactgegevens")

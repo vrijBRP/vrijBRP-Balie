@@ -20,9 +20,9 @@
 package nl.procura.gba.web.modules.beheer.verkiezing.page2.ongeldigverklaren;
 
 import static java.lang.Long.parseLong;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.gba.web.modules.beheer.verkiezing.page2.ongeldigverklaren.RedenOngeldigVerklarenContainer.OMSCHRIJVING;
 import static nl.procura.gba.web.services.beheer.verkiezing.StempasAanduidingType.AAND_GEEN;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.jpa.personen.db.KiesrStem;
 import nl.procura.gba.jpa.personen.db.KiesrVerk;
 import nl.procura.gba.jpa.personen.db.KiesrWijz;
@@ -40,16 +41,15 @@ import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.services.beheer.verkiezing.Stempas;
 import nl.procura.gba.web.services.beheer.verkiezing.StempasQuery;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.component.field.ProTextField;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.validation.Anummer;
 
 import lombok.Data;
+import nl.procura.validation.Anr;
 
 public class OngeldigVerklarenWindow extends GbaModalWindow {
 
@@ -162,7 +162,7 @@ public class OngeldigVerklarenWindow extends GbaModalWindow {
     }
 
     public OngeldigeStempas(String a1, String a2, String a3) {
-      this.anr = new Anummer(parseLong(a1), parseLong(a2), parseLong(a3)).getLongAnummer();
+      this.anr = new Anr(parseLong(a1), parseLong(a2), parseLong(a3)).getLongAnummer();
     }
 
     @Override

@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.zaken.rijbewijs.page2;
 
 import static nl.procura.gba.web.modules.zaken.rijbewijs.page2.Page2RijbewijsBean1.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.ui.Button;
 
@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsService;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType;
 import nl.procura.rdw.messages.P1659;
 import nl.procura.rdw.processen.p1659.f02.AANVRRYBKRT;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class Page2RijbewijsForm1 extends RdwReadOnlyForm {

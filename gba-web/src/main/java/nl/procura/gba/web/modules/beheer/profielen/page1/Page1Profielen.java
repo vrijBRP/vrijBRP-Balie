@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.profielen.page1;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ import nl.procura.gba.web.modules.beheer.profielen.page7.Page7Profielen;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.GbaWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

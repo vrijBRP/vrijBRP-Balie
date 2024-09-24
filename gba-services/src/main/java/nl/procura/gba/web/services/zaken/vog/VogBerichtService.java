@@ -22,8 +22,8 @@ package nl.procura.gba.web.services.zaken.vog;
 import static nl.procura.gba.common.MiscUtils.formatPostcode;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.*;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import nl.procura.covog.objecten.verzendAanvraagNp.*;
 import nl.procura.covog.soap.VogSoapHandler;
 import nl.procura.gba.web.common.misc.GbaLogger;
 import nl.procura.gba.web.services.AbstractService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class VogBerichtService extends AbstractService {
 

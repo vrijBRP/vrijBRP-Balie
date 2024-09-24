@@ -20,9 +20,9 @@
 package nl.procura.gba.web.modules.beheer.logbestanden.page1;
 
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.UNKNOWN;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -53,7 +53,7 @@ import nl.procura.gba.web.modules.beheer.overig.NavigationSorter.NavFile;
 import nl.procura.gba.web.modules.beheer.overig.TabelToonType;
 import nl.procura.gba.web.services.zaken.documenten.BestandType;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
 import nl.procura.vaadin.functies.downloading.StreamDownloader;
 

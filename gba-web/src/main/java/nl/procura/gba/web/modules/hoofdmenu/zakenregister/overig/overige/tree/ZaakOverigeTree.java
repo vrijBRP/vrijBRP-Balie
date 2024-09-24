@@ -19,9 +19,9 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.overige.tree;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
-import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
@@ -37,7 +37,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.tree.ZaakTableC
 import nl.procura.gba.web.modules.zaken.ZakenModuleTemplate;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.theme.GbaWebTheme;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.tmv.page6;
 
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
@@ -28,7 +28,7 @@ import com.vaadin.ui.Button;
 import nl.procura.gba.web.modules.zaken.tmv.layouts.TmvTabPage;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingAanvraag;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingRegistratie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.window.Message;
 import nl.procura.vaadin.functies.VaadinUtils;

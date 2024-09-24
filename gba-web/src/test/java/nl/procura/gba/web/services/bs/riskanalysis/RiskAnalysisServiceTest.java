@@ -45,7 +45,7 @@ import nl.procura.gba.web.services.zaken.verhuizing.FunctieAdres;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class RiskAnalysisServiceTest extends ZaakServiceTest {
 

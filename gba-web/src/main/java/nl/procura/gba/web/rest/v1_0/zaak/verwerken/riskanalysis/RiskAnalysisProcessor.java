@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,9 +22,9 @@ package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis;
 import static java.text.MessageFormat.format;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
 import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -67,16 +67,16 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
-public class RiskAnalysisProcessor extends CaseProcessor {
+public class RiskAnalysisProcessor extends CaseProcessor<Zaak> {
 
   public RiskAnalysisProcessor(Services services) {
     super(services);
   }
 
+  @Override
   public CaseProcessingResult process(Zaak zaak) {
-
     Dossier dossier = (Dossier) getZaak(zaak.getZaakId(), ZaakType.RISK_ANALYSIS);
     DossierRiskAnalysis riskAnalysis = (DossierRiskAnalysis) dossier.getZaakDossier();
     Zaak relatedCase = getRelatedCase(riskAnalysis);

@@ -19,13 +19,13 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page3;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterPage;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page2.Page2ZakenTable;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

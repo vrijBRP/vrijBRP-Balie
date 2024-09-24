@@ -1,7 +1,7 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -12,8 +12,8 @@ import nl.procura.bsm.rest.v1_0.objecten.algemeen.BsmRestElement;
 import nl.procura.bsm.rest.v1_0.objecten.algemeen.BsmRestElementAntwoord;
 import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationApproveRequestRestElement;
 import nl.procura.bsm.rest.v1_0.objecten.gba.probev.mutations.MutationApproveResponseRestElement;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.application.GbaApplication;
-import nl.procura.standard.exceptions.ProException;
 
 public class BCMCheckResultLayoutBuilder {
 

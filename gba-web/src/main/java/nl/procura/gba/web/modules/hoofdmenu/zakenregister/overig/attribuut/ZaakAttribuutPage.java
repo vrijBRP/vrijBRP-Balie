@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,7 +26,6 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 
-import com.vaadin.ui.NativeButton;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.components.layouts.tablefilter.sort.ZaakSortField;
@@ -40,7 +39,6 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakSortering;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
-import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.home.navigatie.ZakenregisterAccordionTab;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -105,6 +103,7 @@ public abstract class ZaakAttribuutPage extends ZakenregisterPage<Zaak> {
 
     if (isKeyCode(button, keyCode, KeyCode.F5, buttonReload)) {
       onSearch();
+
     } else if (keyCode == KeyCode.F8) {
       opties.delete();
     }
@@ -120,8 +119,6 @@ public abstract class ZaakAttribuutPage extends ZakenregisterPage<Zaak> {
 
   @Override
   public void onSearch() {
-    zaakIds = getApplication().getServices().getZakenService().getZaakKeys(getZaakArgumenten());
-    table.setSortering(zaakSortering);
     table.init();
     ZakenregisterUtils.getZakenregisterAccordionTab(getWindow()).ifPresent(ZakenregisterAccordionTab::recountTree);
     super.onSearch();
@@ -142,14 +139,21 @@ public abstract class ZaakAttribuutPage extends ZakenregisterPage<Zaak> {
 
       addColumn("Nr", 50);
       addColumn("Zaaktype");
-      addColumn("Gebruiker / profielen");
-      addColumn("Gebruiker", 170).setCollapsed(true);
+      addColumn("Gebruiker / profielen").setCollapsed(true);
+      addColumn("Gebruiker", 170).setCollapsed(false);
       addColumn("Profielen").setCollapsed(true);
       addColumn("Bron", 130).setCollapsed(true);
       addColumn("Leverancier", 130).setCollapsed(true);
       addColumn("Status", 130).setUseHTML(true);
       addColumn("Datum ingang", 100);
       addColumn("Ingevoerd op", 130);
+    }
+
+    @Override
+    public void init() {
+      zaakIds = getApplication().getServices().getZakenService().getZaakKeys(getZaakArgumenten());
+      table.setSortering(zaakSortering);
+      super.init();
     }
 
     @Override

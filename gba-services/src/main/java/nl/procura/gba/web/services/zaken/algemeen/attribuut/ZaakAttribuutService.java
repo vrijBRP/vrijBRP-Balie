@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,28 +23,34 @@ import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.jpa.personen.dao.GenericDao.ZAAK_ID;
 import static nl.procura.gba.jpa.personen.dao.ZaakAttrDao.C_USR;
 import static nl.procura.gba.jpa.personen.dao.ZaakAttrDao.ZAAK_ATTR;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_BRONNEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_LEVERANCIERS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_ZAAKTYPES;
 import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FAVORIET;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import nl.procura.gba.jpa.personen.dao.*;
 import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakType;
+import nl.procura.gba.jpa.personen.dao.UsrDao;
+import nl.procura.gba.jpa.personen.dao.ZaakAttrDao;
+import nl.procura.gba.jpa.personen.dao.ZaakKey;
+import nl.procura.gba.jpa.personen.dao.ZaakUsrDao;
 import nl.procura.gba.jpa.personen.db.Usr;
 import nl.procura.gba.web.services.AbstractService;
+import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatieService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ZaakAttribuutService extends AbstractService {
 
@@ -149,6 +155,7 @@ public class ZaakAttribuutService extends AbstractService {
   @Transactional
   public void save(ZaakAttribuut zaakAttribuut) {
     saveEntity(zaakAttribuut);
+    callListeners(ServiceEvent.CHANGE);
   }
 
   @ThrowException("Fout bij het opslaan")
@@ -161,6 +168,7 @@ public class ZaakAttribuutService extends AbstractService {
     zaakBehandelaar.setUsrToek(usr);
     saveEntity(zaakBehandelaar);
     zaak.getZaakHistorie().setBehandelaarHistorie(getZaakBehandelaarHistorie(zaak));
+    callListeners(ServiceEvent.CHANGE);
   }
 
   @ThrowException("Fout bij het opslaan")
@@ -168,6 +176,7 @@ public class ZaakAttribuutService extends AbstractService {
   public void save(ZaakBehandelaar zaakBehandelaar) {
     zaakBehandelaar.setUsr(UsrDao.find(Usr.class, getServices().getGebruiker().getCUsr()));
     saveEntity(zaakBehandelaar);
+    callListeners(ServiceEvent.CHANGE);
   }
 
   @Transactional
@@ -175,23 +184,27 @@ public class ZaakAttribuutService extends AbstractService {
   public void delete(Zaak zaak) {
     removeEntities(getZaakAttribuutHistorie(zaak).getAttributen());
     removeEntities(getZaakBehandelaarHistorie(zaak).getBehandelaars());
+    callListeners(ServiceEvent.CHANGE);
   }
 
   @ThrowException("Fout bij het verwijderen")
   @Transactional
   public void delete(ZaakAttribuut id) {
     removeEntity(id);
+    callListeners(ServiceEvent.CHANGE);
   }
 
   @ThrowException("Fout bij het verwijderen")
   @Transactional
   public void delete(ZaakBehandelaar id) {
     removeEntity(id);
+    callListeners(ServiceEvent.CHANGE);
   }
 
   @ThrowException("Fout bij het verwijderen")
   @Transactional
   public void delete(String zaakId, ZaakAttribuutType type) {
     removeEntities(getZaakAttributen(zaakId, type.getCode()).getAttributen());
+    callListeners(ServiceEvent.CHANGE);
   }
 }

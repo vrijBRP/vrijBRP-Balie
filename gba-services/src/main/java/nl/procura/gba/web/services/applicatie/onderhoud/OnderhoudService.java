@@ -31,9 +31,9 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TES
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -70,7 +70,7 @@ import nl.procura.ssl.web.rest.client.SslWebRestClientResponse;
 import nl.procura.ssl.web.rest.v1_0.certificates.SslRestCertificate;
 import nl.procura.ssl.web.rest.v1_0.certificates.SslRestCertificatesResponse;
 import nl.procura.ssl.web.rest.v1_0.connections.SslRestConnectionsResponse;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class OnderhoudService extends AbstractService {
 

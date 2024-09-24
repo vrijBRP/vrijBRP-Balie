@@ -27,7 +27,7 @@ import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
 
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class BsnAnrVeld extends GbaTextField implements BlurListener {
@@ -77,7 +77,7 @@ public class BsnAnrVeld extends GbaTextField implements BlurListener {
 
     @Override
     protected boolean isValidString(String nr) {
-      return new Bsn(nr).isCorrect() || new Anummer(nr).isCorrect();
+      return new Bsn(nr).isCorrect() || new Anr(nr).isCorrect();
     }
   }
 
@@ -91,7 +91,7 @@ public class BsnAnrVeld extends GbaTextField implements BlurListener {
         setDescription(bsn.getFormatBsn());
 
       } else {
-        Anummer anr = new Anummer(astr(value));
+        Anr anr = new Anr(astr(value));
 
         if (anr.isCorrect()) {
           setValue(anr.getLongAnummer());

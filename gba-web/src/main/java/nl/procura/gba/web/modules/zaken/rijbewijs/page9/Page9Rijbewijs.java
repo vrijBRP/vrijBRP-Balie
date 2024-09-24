@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.zaken.rijbewijs.page9;
 
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
 import com.vaadin.ui.Button;
 
@@ -38,7 +38,7 @@ import nl.procura.rdw.messages.P1656;
 import nl.procura.rdw.messages.P1658;
 import nl.procura.rdw.processen.p1656.f02.AANVRRYBKGEG;
 import nl.procura.rdw.processen.p1656.f02.STATRYBKGEG;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

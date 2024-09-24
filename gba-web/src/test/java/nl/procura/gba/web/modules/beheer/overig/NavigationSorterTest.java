@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import nl.procura.gba.web.modules.beheer.overig.NavigationSorter.Dir;
 import nl.procura.gba.web.modules.beheer.overig.NavigationSorter.NavFile;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class NavigationSorterTest {
 

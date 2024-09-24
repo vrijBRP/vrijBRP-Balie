@@ -20,13 +20,13 @@
 package nl.procura.gba.web.components.layouts.form.document.preview;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.table.TableLayout;
 
 /**

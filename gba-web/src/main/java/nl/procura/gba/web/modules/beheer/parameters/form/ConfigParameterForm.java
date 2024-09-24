@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.beheer.parameters.form;
 
 import static nl.procura.gba.web.modules.beheer.parameters.bean.ConfiguratieBean.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.beheer.parameters.bean.ConfiguratieBean;
 import nl.procura.gba.web.services.applicatie.DatabaseConfig;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ConfigParameterForm extends GbaForm<ConfiguratieBean> {
 

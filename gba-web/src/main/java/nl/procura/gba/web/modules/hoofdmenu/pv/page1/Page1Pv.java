@@ -31,8 +31,8 @@ import nl.procura.gba.web.modules.hoofdmenu.pv.page3.Page3Pv;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab6.PresentievragenTable;
 import nl.procura.gba.web.services.gba.presentievraag.Presentievraag;
 import nl.procura.gba.web.services.gba.presentievraag.PresentievraagZoekargumenten;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.profielen.page6;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
@@ -29,7 +29,7 @@ import com.vaadin.ui.Tree;
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.gba.web.modules.beheer.profielen.container.GbaElementFormContainer;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaElementTree extends Tree {
 

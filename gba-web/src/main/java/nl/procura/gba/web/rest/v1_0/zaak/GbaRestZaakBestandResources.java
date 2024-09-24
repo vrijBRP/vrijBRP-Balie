@@ -20,7 +20,7 @@
 package nl.procura.gba.web.rest.v1_0.zaak;
 
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.File;
@@ -59,7 +59,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentenPrintenService;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 @RequestScoped
 @Path("v1.0/zaak/bestand")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,16 +20,23 @@
 package nl.procura.gba.web.services.bs.algemeen.akte;
 
 import static java.util.Collections.singletonList;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.jpa.personen.dao.DossAkteDao;
 import nl.procura.gba.jpa.personen.db.DossAkte;
@@ -55,13 +62,9 @@ import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.bs.overlijden.DossierOverlijden;
 import nl.procura.gba.web.services.bs.overlijden.lijkvinding.DossierLijkvinding;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.gba.web.services.zaken.algemeen.ControleerbareService;
-import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
-import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
-public class AkteService extends AbstractService implements ControleerbareService {
+public class AkteService extends AbstractService {
 
   public AkteService() {
     super("Aktes");
@@ -183,11 +186,6 @@ public class AkteService extends AbstractService implements ControleerbareServic
   public long getAkteVolgnummer(long codeAkte, long datum, DossierAkteDeel registerdeel) {
     return DossAkteDao.getAkteVolgnr(codeAkte, datum, registerdeel.getRegisterSoort().getCode(),
         registerdeel.getRegisterdeel());
-  }
-
-  @Override
-  public Controles getControles(ControlesListener listener) {
-    return new DossierAkteControles(this).getControles(listener);
   }
 
   public List<BigDecimal> getJaren() {

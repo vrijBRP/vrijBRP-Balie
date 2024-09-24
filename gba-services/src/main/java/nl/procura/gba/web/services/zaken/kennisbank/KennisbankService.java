@@ -36,8 +36,8 @@ import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.kennisbank.KennisbankRecord.KennisbankURL;
 import nl.procura.standard.Resource;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 import au.com.bytecode.opencsv.CSVReader;

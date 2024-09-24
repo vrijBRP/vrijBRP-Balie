@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,19 +23,18 @@ import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCat
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.TASK;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.WORK;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Window;
 
 import nl.procura.gba.web.application.GbaApplication;
+import nl.procura.gba.web.components.layouts.GbaHorizontalLayout;
 import nl.procura.gba.web.modules.account.meldingen.MeldingenWindow;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.Services;
@@ -44,7 +43,7 @@ import nl.procura.gba.web.services.applicatie.meldingen.ServiceMelding;
 import nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory;
 import nl.procura.gba.web.windows.home.HomeWindow;
 
-public class MeldingenButtons extends HorizontalLayout {
+public class MeldingenButtons extends GbaHorizontalLayout {
 
   private final Button         meldingenButton0;
   private final Button         meldingenButton1;
@@ -91,11 +90,11 @@ public class MeldingenButtons extends HorizontalLayout {
     taskButton.setStyleName("melding-button");
     taskButton.setHtmlContentAllowed(true);
 
+    addComponent(taskButton);
     addComponent(meldingenButton0);
     addComponent(meldingenButton1);
     addComponent(meldingenButton2);
     addComponent(meldingenButton3);
-    addComponent(taskButton);
 
     update();
     showMessages();
@@ -108,7 +107,7 @@ public class MeldingenButtons extends HorizontalLayout {
         if (meldingService.isShowMessagesPopup()) {
           meldingService.disableMessagePopupShown();
           Stream.of(meldingenButton1, meldingenButton2, meldingenButton3)
-              .filter(AbstractComponent::isVisible)
+              .filter(component -> component.getParent() != null)
               .findFirst()
               .ifPresent(Button::click);
         }
@@ -118,6 +117,7 @@ public class MeldingenButtons extends HorizontalLayout {
 
   public void update() {
     if (application != null) {
+      removeAllComponents();
       updateMeldingButton();
       updateTaakButton();
     }
@@ -127,7 +127,9 @@ public class MeldingenButtons extends HorizontalLayout {
     boolean b1 = updateButton("Fouten", meldingenButton1, FAULT);
     boolean b2 = updateButton("Systeem", meldingenButton2, SYSTEM);
     boolean b3 = updateButton("Herinnering", meldingenButton3, WORK);
-    meldingenButton0.setVisible(!(b1 || b2 || b3));
+    if (!(b1 || b2 || b3)) {
+      add(meldingenButton0);
+    }
   }
 
   private boolean updateButton(String type, Button button, ServiceMeldingCategory category) {
@@ -146,15 +148,21 @@ public class MeldingenButtons extends HorizontalLayout {
 
     button.setHtmlContentAllowed(true);
     button.setCaption(bCaption);
-    button.setVisible(errors + warnings > 0);
+
+    if (errors + warnings > 0) {
+      addComponent(button);
+    }
 
     return errors + warnings > 0;
   }
 
-  private boolean updateTaakButton() {
+  private void updateTaakButton() {
     taskButton.setCaption("<span class='melding-ok'>Geen taken</span>");
     Services services = application.getServices();
     int countT = services.getTaskService().getOpenUserTasks().size();
+    if (countT > 0) {
+      addComponent(taskButton);
+    }
 
     if (countT == 1) {
       taskButton.setCaption("<span class='melding-warning'>1 taak</span>");
@@ -162,7 +170,5 @@ public class MeldingenButtons extends HorizontalLayout {
     } else if (countT > 1) {
       taskButton.setCaption("<span class='melding-warning'>" + countT + " taken</span>");
     }
-
-    return countT > 0;
   }
 }

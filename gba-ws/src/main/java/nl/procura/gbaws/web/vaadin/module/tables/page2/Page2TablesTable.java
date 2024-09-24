@@ -32,7 +32,7 @@ import nl.procura.gbaws.db.handlers.LandTabDao;
 import nl.procura.gbaws.db.handlers.LandTabDao.LandTable;
 import nl.procura.gbaws.db.handlers.LandTabDao.LandTableRecord;
 import nl.procura.gbaws.web.vaadin.layouts.tables.PersonenWsTable;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 @SuppressWarnings("serial")
 public class Page2TablesTable extends PersonenWsTable {

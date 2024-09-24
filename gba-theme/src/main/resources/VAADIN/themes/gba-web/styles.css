@@ -79,7 +79,7 @@
 
 
 .meldingtab .v-tabsheet-tabitem .v-caption {
-  width: 250px !important;
+  width: 200px !important;
   height: 100% !important;
   box-sizing: border-box;
 }
@@ -369,4 +369,44 @@
   width: 180px !important;
   height: 100% !important;
   box-sizing: border-box;
+}
+
+.tableform,
+.tableform .tableform-table {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.right-side-inbox-layout {
+  border-left: 1px solid #d8e3f3;
+}
+
+.right-side-inbox-layout .tableform .tableform-table .label {
+  text-align: left;
+}
+
+.right-side-inbox-layout .tableform .v-nativebutton {
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  height: 23px;
+}
+
+.right-side-inbox-layout .v-form .custom-fieldset.without-component {
+  margin-top: 0;
+  margin-bottom: 7px;
+}
+
+.right-side-inbox-layout .v-form .custom-fieldset legend {
+  text-align: center;
+  padding: 0 5px;
+  font-size: 13px;
+}
+
+.right-side-inbox-layout .tableform .tableform-table .data {
+  font-weight: 600;
+  background-color: #fcfdff !important;
+}
+
+.right-side-inbox-layout .tableform .tableform-table .data .position {
+  margin-right: 0;
 }

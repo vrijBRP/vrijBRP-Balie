@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,9 +20,9 @@
 package nl.procura.gba.web.modules.zaken.common;
 
 import static nl.procura.gba.common.ZaakStatusType.WACHTKAMER;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -36,8 +36,8 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.verwerken.B
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.status.ZaakStatusUpdater;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -47,10 +47,11 @@ import nl.procura.vaadin.component.layout.tabsheet.LazyTabsheet.LazyTab;
 
 public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
 
-  protected final ZaakAanpassenButton buttonAanpassen = new ZaakAanpassenButton();
-  protected final Button              buttonDoc       = new Button("Document afdrukken");
-  protected final Button              buttonFiat      = new Button("Fiatteren");
-  protected final Button              buttonVerwerken = new Button("Nu verwerken");
+  protected final ZaakAanpassenButton    buttonAanpassen = new ZaakAanpassenButton();
+  protected final ZaakRequestInboxButton buttonVerzoek   = new ZaakRequestInboxButton();
+  protected final Button                 buttonDoc       = new Button("Document afdrukken");
+  protected final Button                 buttonFiat      = new Button("Fiatteren");
+  protected final Button                 buttonVerwerken = new Button("Nu verwerken");
 
   private ZaakTabsheet<T> tabsheet = null;
 
@@ -66,6 +67,8 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
 
       // Vraag de volledige zaak op
       setZaak(Services.getInstance().getZakenService().getVolledigeZaak(getZaak()));
+
+      buttonVerzoek.setZaak(getZaak());
 
       tabsheet = new ZaakTabsheet<T>(this, getZaak()) {
 
@@ -103,6 +106,9 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
 
     if (button == buttonAanpassen) {
       buttonAanpassen.onClick(getZaak(), this::goToZaak);
+
+    } else if (button == buttonVerzoek) {
+      buttonVerzoek.onClick();
 
     } else if (button == buttonDoc) {
       goToDocument();

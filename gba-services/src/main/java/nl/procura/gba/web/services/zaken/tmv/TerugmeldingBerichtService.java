@@ -22,8 +22,8 @@ package nl.procura.gba.web.services.zaken.tmv;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TMV_URL;
 import static nl.procura.gba.web.services.gba.templates.ZoekProfielType.PROFIEL_STANDAARD;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.*;
-import static nl.procura.standard.exceptions.ProExceptionType.*;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.*;
+import static nl.procura.commons.core.exceptions.ProExceptionType.*;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ import nl.procura.gba.web.common.misc.GbaLogger;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gbaws.web.rest.v1_0.gbav.account.GbaWsRestGbavAccount;
 import nl.procura.gbaws.web.rest.v1_0.gbav.account.GbavType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.tmv.TmvActionTemplate;
 import nl.procura.tmv.actions.TmvInzageVerzoekAction;
 import nl.procura.tmv.actions.TmvRegistratieAction;

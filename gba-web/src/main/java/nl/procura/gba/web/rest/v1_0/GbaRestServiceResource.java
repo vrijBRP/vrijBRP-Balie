@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -49,7 +49,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaRestServiceResource {
 

@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.common;
 
 import static com.vaadin.ui.Window.Notification.TYPE_ERROR_MESSAGE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.vaadin.component.window.Message.TYPE_SUCCESS;
 import static org.apache.commons.io.IOUtils.toByteArray;
 
@@ -37,7 +37,7 @@ import nl.procura.gba.web.modules.beheer.documenten.components.DocumentImportExp
 import nl.procura.gba.web.modules.zaken.document.DocumentenTabel;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.window.Message;
 import nl.procura.vaadin.functies.downloading.DownloadHandlerImpl;
 

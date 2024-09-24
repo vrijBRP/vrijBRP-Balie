@@ -35,9 +35,9 @@ import nl.procura.gba.web.services.bs.algemeen.vereiste.DossierVereiste;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieLijstHandler;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieType;
-import nl.procura.standard.exceptions.NotSupportedException;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.NotSupportedException;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 public class Page45Erkenning extends BsVereistePage<DossierErkenning> {
 

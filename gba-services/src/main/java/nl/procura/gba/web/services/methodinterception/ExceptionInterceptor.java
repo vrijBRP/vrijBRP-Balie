@@ -22,7 +22,7 @@ package nl.procura.gba.web.services.methodinterception;
 import org.aopalliance.intercept.MethodInvocation;
 
 import nl.procura.gba.web.services.aop.ThrowException;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Onderschept methodes in services

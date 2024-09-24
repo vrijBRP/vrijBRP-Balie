@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.zaken.tmv.page9;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import com.vaadin.ui.Button;
 import nl.procura.gba.web.modules.persoonslijst.overig.grid.RecordElementCombo;
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.modules.zaken.tmv.page1.Page1Tmv;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Page9Tmv extends ZakenPage {
 

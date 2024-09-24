@@ -20,9 +20,9 @@
 package nl.procura.gba.web.services.zaken.documenten.printen.printers;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
-import static nl.procura.standard.exceptions.ProExceptionType.PRINT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PRINT;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -38,7 +38,7 @@ import com.martiansoftware.jsap.CommandLineTokenizer;
 import nl.procura.gba.common.ProcessStreamReader;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * This printer issues a commandline command to the local linux system

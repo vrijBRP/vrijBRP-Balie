@@ -23,9 +23,9 @@ import static java.text.MessageFormat.format;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.BSM;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ENABLED;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMelding;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMeldingType;
 import nl.procura.proweb.rest.v1_0.sessie.ProRestTicketAntwoord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class BsmService extends AbstractService implements ServiceControle {
 

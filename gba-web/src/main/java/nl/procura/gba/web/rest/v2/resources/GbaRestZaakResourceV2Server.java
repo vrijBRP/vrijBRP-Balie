@@ -40,7 +40,7 @@ import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSContent;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 @RequestScoped
 @Path(BASE_ZAKEN_URI)

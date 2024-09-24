@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,7 +24,10 @@ import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.common.ZaakType.REISDOCUMENT;
 import static nl.procura.gba.common.ZaakType.RIJBEWIJS;
 import static nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie.SELECT_ZAAKBEHANDELAARS;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
@@ -101,7 +104,7 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
           order.addAll(
               asList(ZAAKTYPE, STATUS, INGEVOERD, BRON, INGANG, LEVERANCIER, AANGEVER, ID, IDENTIFICATIE,
                   BEHANDELAAR, OPMERKINGEN, GOEDKEURING, COMMENTAAR));
-          widths.addAll(asList("90px", "", "90px", "230px"));
+          widths.addAll(asList("90px", "", "90px", "250px"));
           break;
 
         default: // Alleen voor uitreiken reisdocumenten
@@ -195,6 +198,7 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     }
 
     b.addOpmerking(getAantekeningOpmerking(zaak));
+    b.addOpmerking(getRequestInboxOpmerking(zaak));
     b.addOpmerking(getBijlageOpmerking(zaak));
     b.addOpmerking(getSms(zaak));
     b.addOpmerking(getRiskprofile(zaak));
@@ -256,6 +260,16 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     }
 
     return trim(tekst.toString()).replaceAll("\n", "<br/>");
+  }
+
+  private String getRequestInboxOpmerking(Zaak zaak) {
+    if (getApplication() != null) {
+      if (getApplication().getServices().getRequestInboxService().getRelatedRequestInboxItemId(zaak).isPresent()) {
+        return "Deze zaak is op basis van een verzoek";
+      }
+    }
+
+    return "";
   }
 
   private String getBijlageOpmerking(Zaak zaak) {

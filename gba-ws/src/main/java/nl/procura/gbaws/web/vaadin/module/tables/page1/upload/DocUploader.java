@@ -19,7 +19,7 @@
 
 package nl.procura.gbaws.web.vaadin.module.tables.page1.upload;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,7 +31,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.theme.twee.Icons;
 
 public class DocUploader extends CustomComponent

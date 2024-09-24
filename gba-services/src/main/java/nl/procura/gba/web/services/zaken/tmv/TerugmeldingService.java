@@ -23,9 +23,9 @@ import static nl.procura.gba.common.MiscUtils.*;
 import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class TerugmeldingService extends AbstractZaakContactService<TerugmeldingAanvraag>
     implements ZaakService<TerugmeldingAanvraag> {

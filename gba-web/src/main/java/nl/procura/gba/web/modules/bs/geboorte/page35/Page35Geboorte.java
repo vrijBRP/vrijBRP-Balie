@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -35,7 +35,7 @@ import static nl.procura.gba.web.services.bs.geboorte.GezinssituatieType.BUITEN_
 import static nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ToestemminggeverType.RECHTBANK;
 import static nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeType.NAAMSKEUZE_VOOR_GEBOORTE;
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -71,7 +71,7 @@ import nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeType;
 import nl.procura.gba.web.services.bs.naamskeuze.argumenten.NaamskeuzeArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -104,6 +104,9 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
     getZaakDossier().setErkenningsType(b1.getErkenningsType());
     getZaakDossier().setNaamskeuzeSoort(b1.getNaamskeuzeType());
     getZaakDossier().setOrgKeuzeNaam("");
+    getZaakDossier().setOrgKeuzeNaamTp("");
+    getZaakDossier().setOrgKeuzeNaamVoorv("");
+    getZaakDossier().setOrgKeuzeNaamDubbel("");
 
     ErkenningsApplicatie erkenningsApp = situatieForm.getBean().getErkenningsApp();
     if (erkenningsApp != null) {
@@ -115,7 +118,7 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
 
           binnenProwebLayoutErk.getForm().commit();
           Page35GeboorteBeanBinnenErk binnenBean = binnenProwebLayoutErk.getForm().getBean();
-          getZaakDossier().setOrgKeuzeNaam(binnenBean.getDubbeleNaam());
+          getZaakDossier().setOrgKeuzeNaamDubbel(binnenBean.getDubbeleNaam());
           break;
 
         case BUITEN_PROWEB:
@@ -138,7 +141,7 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
           bp.setVoorvoegsel(bean.getVoorv());
           bp.setGeslachtsnaam(bean.getGeslachtsnaam());
 
-          getZaakDossier().setOrgKeuzeNaam(bean.getDubbeleNaam());
+          getZaakDossier().setOrgKeuzeNaamDubbel(bean.getDubbeleNaam());
           break;
 
         default:
@@ -157,7 +160,7 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
 
           binnenProwebLayoutNk.getForm().commit();
           Page35GeboorteBeanBinnenNk binnenBean = binnenProwebLayoutNk.getForm().getBean();
-          getZaakDossier().setOrgKeuzeNaam(binnenBean.getDubbeleNaam());
+          getZaakDossier().setOrgKeuzeNaamDubbel(binnenBean.getDubbeleNaam());
 
           break;
 
@@ -178,7 +181,7 @@ public class Page35Geboorte<T extends DossierGeboorte> extends BsPageGeboorte<T>
           bp.setBijzonderheden(bean.getBijzonderheden());
           getZaakDossier().setEersteKindType(EersteKindType.JA);
           getZaakDossier().setNaamskeuzeType(JA);
-          getZaakDossier().setOrgKeuzeNaam(bean.getDubbeleNaam());
+          getZaakDossier().setOrgKeuzeNaamDubbel(bean.getDubbeleNaam());
           break;
 
         default:

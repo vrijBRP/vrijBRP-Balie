@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class BsPage<T extends ZaakDossier> extends NormalPageTemplate {
@@ -81,7 +81,7 @@ public class BsPage<T extends ZaakDossier> extends NormalPageTemplate {
       String anr = record.getElemVal(GBAElem.ANR).getVal();
       String bsn = record.getElemVal(GBAElem.BSN).getVal();
 
-      boolean isAnummer = new Anummer(anr).isCorrect();
+      boolean isAnummer = new Anr(anr).isCorrect();
       boolean isBsn = new Bsn(bsn).isCorrect();
 
       if (isAnummer || isBsn) {

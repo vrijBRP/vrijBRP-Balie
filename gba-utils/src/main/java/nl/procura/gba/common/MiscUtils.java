@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -29,15 +29,18 @@ import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.getSystemDate;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.trim;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.UNKNOWN;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,8 +51,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import nl.procura.commons.misc.application.properties.GitFileParser;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 public class MiscUtils {
 
@@ -362,6 +365,14 @@ public class MiscUtils {
   public static String getBuilddate() {
     String date = GitFileParser.getProperty(GitFileParser.GIT_COMMIT_TIME);
     return date != null ? GitFileParser.getDate(date, "dd-MM-yyyy") : "";
+  }
+
+  public static Date toDate(LocalDate localDate) {
+    return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+  }
+
+  public static LocalDate toLocalDate(Date date) {
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
   }
 
   public static String getBranch() {

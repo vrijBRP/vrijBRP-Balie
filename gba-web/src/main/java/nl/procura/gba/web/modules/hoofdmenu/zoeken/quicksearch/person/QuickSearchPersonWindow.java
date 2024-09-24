@@ -29,7 +29,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.page3.Page
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class QuickSearchPersonWindow extends GbaModalWindow {
 
@@ -39,7 +39,7 @@ public class QuickSearchPersonWindow extends GbaModalWindow {
     this(QuickSearchPersonConfig.builder().selectListener(selectListener).build());
   }
 
-  public QuickSearchPersonWindow(Anummer anummer, SelectListener selectListener) {
+  public QuickSearchPersonWindow(Anr anummer, SelectListener selectListener) {
     this(QuickSearchPersonConfig.builder()
         .selectListener(selectListener)
         .anummer(anummer)

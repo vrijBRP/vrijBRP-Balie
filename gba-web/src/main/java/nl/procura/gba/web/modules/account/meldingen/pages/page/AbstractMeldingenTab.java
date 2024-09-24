@@ -19,11 +19,11 @@
 
 package nl.procura.gba.web.modules.account.meldingen.pages.page;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.GBA_V_BLOK;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.GBA_V_VERLOOP;
 import static nl.procura.gba.web.services.gba.templates.ZoekProfielType.PROFIEL_STANDAARD;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 

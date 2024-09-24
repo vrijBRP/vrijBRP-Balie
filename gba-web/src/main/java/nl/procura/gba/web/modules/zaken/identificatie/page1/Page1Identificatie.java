@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.zaken.identificatie.page1;
 
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -47,7 +47,7 @@ import nl.procura.gba.web.services.zaken.rijbewijs.NrdServices;
 import nl.procura.rdw.functions.RdwMessage;
 import nl.procura.rdw.messages.P0252;
 import nl.procura.rdw.processen.p0252.f08.NATPRYBMAATR;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.label.H2;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;

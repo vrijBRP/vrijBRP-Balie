@@ -20,9 +20,9 @@
 package nl.procura.gba.web.modules.zaken.personmutations.page2;
 
 import static com.vaadin.event.ShortcutAction.KeyCode.F4;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
 
 import com.vaadin.ui.Button;
 
@@ -42,7 +42,7 @@ import nl.procura.gba.web.modules.zaken.personmutations.page7.Page7PersonListMut
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.theme.twee.ProcuraTheme.ICOON_24;
 

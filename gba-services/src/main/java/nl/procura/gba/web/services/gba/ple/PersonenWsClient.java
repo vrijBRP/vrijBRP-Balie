@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.services.gba.ple;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import javax.ws.rs.core.Response;
 
@@ -30,7 +30,7 @@ import nl.procura.gbaws.web.rest.*;
 import nl.procura.proweb.rest.client.v1_0.ProRestClient;
 import nl.procura.proweb.rest.v1_0.ProRestAntwoordImpl;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMeldingType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.theme.Credentials;
 
 public class PersonenWsClient implements HttpClient {

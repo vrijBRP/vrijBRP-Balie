@@ -21,8 +21,8 @@ package nl.procura.gba.web.modules.bs.common.modules;
 
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -45,7 +45,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.aantekening.Zaa
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.label.Ruler;
 import nl.procura.vaadin.component.layout.page.PageContainer;

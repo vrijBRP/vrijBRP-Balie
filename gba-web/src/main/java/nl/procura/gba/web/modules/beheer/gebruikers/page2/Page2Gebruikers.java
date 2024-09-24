@@ -22,8 +22,8 @@ package nl.procura.gba.web.modules.beheer.gebruikers.page2;
 import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.cleanPath;
 import static nl.procura.gba.web.modules.beheer.gebruikers.page2.Page2GebruikersBean.MAP;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoType;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType;
 import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.dialog.OkDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;

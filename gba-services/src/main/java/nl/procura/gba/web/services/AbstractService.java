@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,11 +19,11 @@
 
 package nl.procura.gba.web.services;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SSL_PROXY_URL;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +31,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.jpa.personen.db.BaseEntity;
@@ -44,8 +46,6 @@ import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.parameter.ParameterType;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.gba.ple.opslag.PersoonStatusOpslagEntry;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public abstract class AbstractService implements Serializable {
@@ -96,7 +96,7 @@ public abstract class AbstractService implements Serializable {
   }
 
   public void setName(String name) {
-    this.name = "Service: " + name;
+    this.name = name;
   }
 
   public String getParm(ParameterType parameterType) {

@@ -28,8 +28,8 @@ import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
 
 import java.util.Collection;
 
@@ -64,7 +64,7 @@ import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.gba.web.windows.persoonslijst.PersoonslijstWindow;
 import nl.procura.gba.web.windows.verwijzing.VerwijzingWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.window.Message;
 import nl.procura.vaadin.component.window.windowEvents.WindowInit;

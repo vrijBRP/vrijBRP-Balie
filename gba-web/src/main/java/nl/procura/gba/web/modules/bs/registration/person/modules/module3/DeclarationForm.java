@@ -25,8 +25,8 @@ import static nl.procura.gba.web.modules.bs.registration.person.modules.module3.
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.DeclarationType;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 public class DeclarationForm extends GbaForm<DeclarationBean> {
 

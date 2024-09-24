@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -51,6 +51,7 @@ public class ActieDescr {
   public static final String HOOFD_AANMELDING                = "(Hoofdscherm) aanmelding";
   public static final String HOOFD_BSM                       = "(Hoofdscherm) bsm";
   public static final String HOOFD_INBOX                     = "(Hoofdscherm) inbox";
+  public static final String HOOFD_VERZOEK                   = "(Hoofdscherm) verzoek";
   public static final String HOOFD_ZAKENREGISTER             = "(Hoofdscherm) zakenregister";
   public static final String HOOFD_GEMEENTELIJK              = "(Hoofdscherm) gemeentelijk";
   public static final String HOOFD_GBAV                      = "(Hoofdscherm) gba-v";

@@ -26,7 +26,7 @@ import nl.procura.gbaws.db.handlers.EmailLogDao;
 import nl.procura.gbaws.db.wrappers.EmailLogWrapper;
 import nl.procura.gbaws.web.vaadin.module.email.ModuleEmailPage;
 import nl.procura.gbaws.web.vaadin.module.email.log.page2.Page2EmailLog;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

@@ -24,7 +24,7 @@ import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.B
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.TK_JA_VOORWAARDELIJK;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.TK_NEE;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ import nl.procura.gba.web.services.zaken.documenten.afnemers.DocumentAfnemer;
 import nl.procura.gba.web.services.zaken.gv.GegevensVerstrekkingService;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraagProces;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

@@ -26,14 +26,14 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
 import com.vaadin.ui.ComboBox;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 import nl.procura.gba.web.services.beheer.bag.PdokLocationServiceAddress;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.geo.rest.client.GeoRestClient;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerDocResponse;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerResponse;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionType;
 
 import lombok.Data;
 import lombok.Setter;

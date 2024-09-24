@@ -44,7 +44,7 @@ import nl.procura.gba.jpa.personenws.utils.GbaWsJpa;
 import nl.procura.gbaws.db.enums.LandTabType;
 import nl.procura.gbaws.db.handlers.LandTabDao;
 import nl.procura.gbaws.export.tables.LandTabJsonRecord;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.task.VaadinTask;
 
 public abstract class TabelUpdatesImportTask implements VaadinTask {

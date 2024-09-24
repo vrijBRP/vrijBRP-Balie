@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.beheer.profielen.page10.tab2.page1;
 
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
@@ -29,7 +29,7 @@ import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLa
 import nl.procura.gba.web.modules.beheer.profielen.page10.IndicatiesTab;
 import nl.procura.gba.web.modules.beheer.profielen.page10.tab2.page2.Page2Indicaties;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekeningIndicatie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

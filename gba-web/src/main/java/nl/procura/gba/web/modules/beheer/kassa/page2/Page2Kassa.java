@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.beheer.kassa.page2;
 
 import static nl.procura.gba.web.services.beheer.kassa.KassaType.*;
-import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
+import static nl.procura.commons.core.exceptions.ProExceptionType.UNKNOWN;
 
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
@@ -29,7 +29,7 @@ import nl.procura.gba.web.services.beheer.kassa.KassaType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SoortReisdocument;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 
 public class Page2Kassa extends NormalPageTemplate {

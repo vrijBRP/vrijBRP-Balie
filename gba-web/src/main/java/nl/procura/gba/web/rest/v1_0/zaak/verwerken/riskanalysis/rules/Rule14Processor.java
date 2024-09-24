@@ -20,7 +20,7 @@
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
 import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.X;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
@@ -30,7 +30,7 @@ import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchResponse;
 import nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Rule 13

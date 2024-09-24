@@ -19,7 +19,7 @@
 
 package nl.procura.rdw.messages;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.math.BigInteger;
 
@@ -28,7 +28,7 @@ import nl.procura.rdw.functions.RdwMessage;
 import nl.procura.rdw.functions.RdwProces;
 import nl.procura.rdw.processen.p0252.f01.NATPRYBMAATR;
 import nl.procura.rdw.processen.p0252.f01.NATPZOEKGEG;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.validation.Bsn;
 
 /**

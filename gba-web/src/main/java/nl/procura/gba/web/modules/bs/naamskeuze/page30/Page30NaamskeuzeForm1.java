@@ -29,7 +29,7 @@ import nl.procura.gba.web.services.bs.algemeen.nationaliteit.DossierNationalitei
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.zaken.kennisbank.KennisBankBron;
 import nl.procura.gba.web.services.zaken.kennisbank.KennisBankDoel;
-import nl.procura.standard.exceptions.NotSupportedException;
+import nl.procura.commons.core.exceptions.NotSupportedException;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;

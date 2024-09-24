@@ -20,7 +20,7 @@
 package nl.procura.gba.web.services.applicatie.meldingen.types;
 
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.WORK;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.services.applicatie.meldingen.ServiceMelding;
 import nl.procura.gba.web.services.zaken.selectie.Selectie;

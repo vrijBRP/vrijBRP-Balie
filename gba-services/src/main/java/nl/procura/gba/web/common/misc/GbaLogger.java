@@ -33,9 +33,9 @@ import org.apache.commons.io.IOUtils;
 
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.soap.SoapHandler;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 import nl.procura.standard.security.ProwebPath;
 
 public class GbaLogger {

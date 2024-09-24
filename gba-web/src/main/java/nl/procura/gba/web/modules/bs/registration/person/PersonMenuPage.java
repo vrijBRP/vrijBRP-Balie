@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.bs.registration.person;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -45,7 +45,7 @@ import nl.procura.gba.web.modules.zaken.contact.ContactWindow;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.DossierRegistration;
 import nl.procura.gba.web.services.zaken.contact.Contact;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.label.Ruler;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.functies.VaadinUtils;

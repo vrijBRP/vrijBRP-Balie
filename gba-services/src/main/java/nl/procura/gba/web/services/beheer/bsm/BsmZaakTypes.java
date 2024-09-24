@@ -19,13 +19,13 @@
 
 package nl.procura.gba.web.services.beheer.bsm;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import nl.procura.bsm.taken.BsmTaak;
 import nl.procura.bsm.taken.GbaBsmTaak;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class BsmZaakTypes {
 

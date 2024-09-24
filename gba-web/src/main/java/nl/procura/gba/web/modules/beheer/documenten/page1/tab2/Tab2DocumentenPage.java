@@ -21,9 +21,9 @@ package nl.procura.gba.web.modules.beheer.documenten.page1.tab2;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.AUTHENTICATION;
-import static nl.procura.standard.exceptions.ProExceptionType.UNKNOWN;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.AUTHENTICATION;
+import static nl.procura.commons.core.exceptions.ProExceptionType.UNKNOWN;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +55,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentSoort;
 import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;

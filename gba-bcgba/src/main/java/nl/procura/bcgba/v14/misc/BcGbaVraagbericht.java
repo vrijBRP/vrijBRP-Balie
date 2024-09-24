@@ -19,7 +19,7 @@
 
 package nl.procura.bcgba.v14.misc;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public enum BcGbaVraagbericht {
 

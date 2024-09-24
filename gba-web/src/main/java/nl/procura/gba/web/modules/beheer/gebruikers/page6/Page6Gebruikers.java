@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.beheer.gebruikers.page6;
 
 import static nl.procura.gba.web.modules.beheer.gebruikers.page6.Page6GebruikersBean.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfo;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoService;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Page6Gebruikers extends NormalPageTemplate {
 

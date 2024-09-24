@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -50,8 +50,8 @@ public class MeldingenTabPage extends GbaPageTemplate {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       setSizeFull();
+      setHeight("400px");
 
       GbaTabsheet tabs = new GbaTabsheet();
       tabs.setSizeFull();
@@ -81,6 +81,7 @@ public class MeldingenTabPage extends GbaPageTemplate {
 
       } else if (TASK.equals(category)) {
         tabs.setSelectedTab(3);
+
       }
 
       addComponent(tabs);

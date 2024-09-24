@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.geboorte.page82;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.VerticalLayout;
@@ -41,7 +41,7 @@ import nl.procura.gba.web.services.bs.erkenning.ErkenningsType;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.geboorte.RedenVerplicht;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.theme.ProcuraWindow;

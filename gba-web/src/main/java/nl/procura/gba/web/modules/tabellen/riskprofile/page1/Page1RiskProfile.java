@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.tabellen.riskprofile.page1;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +41,7 @@ import nl.procura.gba.web.modules.tabellen.riskprofile.page3.Page3RiskProfile;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.gba.web.windows.GbaWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

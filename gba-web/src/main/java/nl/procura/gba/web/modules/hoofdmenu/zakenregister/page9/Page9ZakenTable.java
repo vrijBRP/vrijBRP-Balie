@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -34,7 +34,7 @@ public class Page9ZakenTable extends GbaTable {
 
     addColumn("Nr", 30);
     addColumn("Gewijzigd", 80).setUseHTML(true);
-    addColumn("Id", 170);
+    addColumn("Id", 260);
     addColumn("Onderwerp", 200);
     addColumn("Omschrijving", 350);
     addColumn("Opmerkingen");

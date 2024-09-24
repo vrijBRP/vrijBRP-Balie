@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
@@ -26,7 +27,6 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.gba.web.services.zaken.algemeen.CaseProcessor;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
 
 public abstract class AbstractRuleProcessor {
 

@@ -39,7 +39,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingAanvraag;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingRegistratie;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingService.REGISTRATIE_STATUS;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;

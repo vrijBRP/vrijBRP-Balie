@@ -27,8 +27,8 @@ import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.
 import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_PREFIX;
 import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_TITLE;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,10 +39,10 @@ import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.bs.registration.person.modules.module1.ExistingIdNumberValidator.TYPE;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.standard.Globalfunctions;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.table.TableLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class PersonalDetailsForm extends GbaForm<PersonBean> {
@@ -61,7 +61,7 @@ public class PersonalDetailsForm extends GbaForm<PersonBean> {
       getField(F_BSN).setValue(Bsn.format(p.getBsn().toString()));
     }
     if (Globalfunctions.def(p.getAnr())) {
-      getField(F_ANR).setValue(Anummer.format(p.getAnr().toString()));
+      getField(F_ANR).setValue(Anr.format(p.getAnr().toString()));
     }
     if (p.getVoorvoegsel() != null) {
       getField(F_PREFIX).setValue(new FieldValue(p.getVoorvoegsel()));

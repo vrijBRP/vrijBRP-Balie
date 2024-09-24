@@ -22,8 +22,8 @@ package nl.procura.gba.web.modules.beheer.parameters.form;
 import static nl.procura.commons.elements.codegeneration.GenerateReflectionUtils.getNewInstanceof;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -42,7 +42,7 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterValidator;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterValueConverter;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Immediate;
 import nl.procura.vaadin.component.formfieldfactory.BeanAnnotationUtil;
 

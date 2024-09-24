@@ -27,8 +27,8 @@ import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab6.result.PresentievraagResultWindow;
 import nl.procura.gba.web.services.gba.presentievraag.Presentievraag;
 import nl.procura.gba.web.services.gba.presentievraag.PresentievraagAntwoord;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 import lombok.Setter;
 

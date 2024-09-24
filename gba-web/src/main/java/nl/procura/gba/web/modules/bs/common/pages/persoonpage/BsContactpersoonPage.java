@@ -23,7 +23,7 @@ import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import com.vaadin.ui.Button;
 
@@ -33,7 +33,7 @@ import nl.procura.gba.web.modules.zaken.identificatie.IdentificatieWindow;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.zaken.contact.ContactStatusListener;
 import nl.procura.gba.web.services.zaken.identiteit.IdentificatieStatusListener;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Aangever

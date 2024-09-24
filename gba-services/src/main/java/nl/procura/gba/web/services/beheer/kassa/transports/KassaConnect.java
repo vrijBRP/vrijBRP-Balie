@@ -25,9 +25,9 @@ import java.util.Optional;
 import nl.procura.gba.web.services.beheer.connect.VrijBrpConnectClient;
 import nl.procura.gba.web.services.beheer.kassa.KassaFile;
 import nl.procura.gba.web.services.beheer.kassa.KassaParameters;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 public class KassaConnect {
 

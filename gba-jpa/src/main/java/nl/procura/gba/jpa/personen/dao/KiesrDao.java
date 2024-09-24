@@ -31,7 +31,7 @@ import nl.procura.gba.jpa.personen.db.KiesrStem;
 import nl.procura.gba.jpa.personen.db.KiesrVerk;
 import nl.procura.gba.jpa.personen.db.KiesrVerkInfo;
 import nl.procura.gba.jpa.personen.db.KiesrWijz;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 import lombok.Data;
 
@@ -101,7 +101,7 @@ public class KiesrDao extends GenericDao {
     return params;
   }
 
-  public static List<KiesrWijz> getWijzigingen(KiesrVerk verk, Anummer anummer) {
+  public static List<KiesrWijz> getWijzigingen(KiesrVerk verk, Anr anummer) {
     String sql = "select p from KiesrWijz p " +
         "where p.kiesrStem.cKiesrVerk = :cKiesrVerk " +
         "and p.kiesrStem.anr = :anr " +

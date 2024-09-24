@@ -24,8 +24,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import nl.procura.standard.exceptions.ProExceptionSeverity;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 
 /**
  * De methode interceptor gebruikt de waarde om een ProException van te maken.

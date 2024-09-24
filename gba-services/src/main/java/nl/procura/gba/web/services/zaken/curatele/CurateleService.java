@@ -26,8 +26,8 @@ import java.util.List;
 import nl.procura.curatele.soap.CurateleSoapHandler;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.rechtspraak.namespaces.ccr.CCRWS;
 
 public class CurateleService extends AbstractService {

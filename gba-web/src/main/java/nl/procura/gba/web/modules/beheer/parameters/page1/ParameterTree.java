@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.beheer.parameters.page1;
 
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
 
 import java.util.Iterator;
 
@@ -38,7 +38,7 @@ import nl.procura.gba.web.modules.beheer.parameters.layout.DatabaseParameterLayo
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.parameter.ParameterGroup;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ParameterTree extends Tree {
 

@@ -31,8 +31,8 @@ import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.K
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakNumbers;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 

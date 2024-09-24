@@ -19,8 +19,8 @@
 
 package nl.procura.gba.web.modules.beheer.profielen.page2;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ import nl.procura.gba.web.modules.beheer.profielen.page5.Page5Profielen;
 import nl.procura.gba.web.modules.beheer.profielen.page6.Page6Profielen;
 import nl.procura.gba.web.modules.beheer.profielen.page8.Page8Profielen;
 import nl.procura.gba.web.services.beheer.profiel.Profiel;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Page2Profielen extends ModuleProfielPageTemplate {
 

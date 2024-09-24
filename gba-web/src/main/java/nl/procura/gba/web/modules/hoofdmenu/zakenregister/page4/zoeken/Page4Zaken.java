@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,9 +22,11 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
 import static nl.procura.gba.common.MiscUtils.trimNr;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.NR;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakSortering;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.LoadPage;
@@ -139,18 +141,17 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
   public void handleEvent(Button button, int keyCode) {
 
     if (button == buttonExpand) {
-
       wijzigOpties();
-    } else if (button == buttonTelling) {
 
+    } else if (button == buttonTelling) {
       if (table.size() > 0) {
         ZaakPeriode periode = getDatumInvoerPeriode();
         getNavigation().goToPage(new Page7Zaken(periode, table));
+
       } else {
         throw new ProException(INFO, "De tabel bevat geen zaken");
       }
     } else if (keyCode == KeyCode.F8) {
-
       opties.delete();
     }
 
@@ -164,7 +165,6 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
 
   @Override
   public void onNew() {
-
     formSimpel.reset();
     formUitgebreid.reset();
     table.clear();
@@ -180,9 +180,7 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
   private ZaakPeriode getDatumInvoerPeriode() {
 
     ZaakPeriode periode = new ZaakPeriode();
-
     formSimpel.commit();
-
     Page4ZakenBean bSimpel = formSimpel.getBean();
 
     if (bSimpel.isFilled()) {
@@ -190,6 +188,7 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
       if (periode instanceof Anders) {
         periode.setdFrom(formSimpel.getBean().getInvoerVan().getLongValue());
         periode.setdTo(formSimpel.getBean().getInvoerTm().getLongValue());
+
       } else {
         periode.setdFrom(selPeriode.getdFrom());
         periode.setdTo(selPeriode.getdTo());
@@ -204,7 +203,6 @@ public class Page4Zaken extends ZakenregisterPage<Zaak> {
     // Zoek op A-nr / BSN
 
     if (fil(b.getNr()) && new Bsn(b.getNr()).isCorrect()) {
-
       PLEArgs args = new PLEArgs();
       args.addNummer(trimNr(b.getNr()));
       args.setShowHistory(false);

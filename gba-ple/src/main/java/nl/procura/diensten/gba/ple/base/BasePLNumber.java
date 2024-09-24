@@ -26,7 +26,7 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAElem.BSN;
 import static nl.procura.standard.Globalfunctions.aval;
 
 import nl.procura.diensten.gba.ple.procura.arguments.PLNumber;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class BasePLNumber extends PLNumber {
@@ -42,7 +42,7 @@ public class BasePLNumber extends PLNumber {
             setBsn(bsn.getLongBsn());
           }
         } else if (rec.isElem(ANR.getCode())) {
-          Anummer anr = new Anummer(rec.getElem(ANR).getValue().getVal());
+          Anr anr = new Anr(rec.getElem(ANR).getValue().getVal());
           if (anr.isCorrect()) {
             setA1(aval(anr.getA1()));
             setA2(aval(anr.getA2()));

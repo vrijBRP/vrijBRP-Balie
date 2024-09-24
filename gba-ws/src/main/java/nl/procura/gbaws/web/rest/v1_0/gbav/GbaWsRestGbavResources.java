@@ -20,7 +20,7 @@
 package nl.procura.gbaws.web.rest.v1_0.gbav;
 
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -48,8 +48,8 @@ import nl.procura.gbaws.web.rest.v1_0.gbav.wachtwoord.versturen.GbaWsRestGbavWac
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
 import nl.procura.proweb.rest.v1_0.Rol;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 
 @RequestScoped
 @Path("v1.0/gbav")

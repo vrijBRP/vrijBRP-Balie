@@ -53,7 +53,7 @@ import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElemS
 import nl.procura.gba.web.modules.zaken.personmutations.page2.PersonListMutElems;
 import nl.procura.gba.web.modules.zaken.personmutations.page4.Page4PersonListMutations;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

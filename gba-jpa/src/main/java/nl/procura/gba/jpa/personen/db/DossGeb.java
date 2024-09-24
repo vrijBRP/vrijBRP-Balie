@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -141,8 +141,17 @@ public class DossGeb extends BaseEntity<Long> {
       precision = 131089)
   private BigDecimal bNaamskeuzeErkenning;
 
+  @Column(name = "org_keuze_naam_dubbel")
+  private String orgKeuzeNaamDubbel;
+
   @Column(name = "org_keuze_naam")
   private String orgKeuzeNaam;
+
+  @Column(name = "org_keuze_naam_tp")
+  private String orgKeuzeNaamTp;
+
+  @Column(name = "org_keuze_naam_voorv")
+  private String orgKeuzeNaamVoorv;
 
   @Column(name = "wijze_bez")
   private String wijzeBez;
@@ -709,11 +718,35 @@ public class DossGeb extends BaseEntity<Long> {
     this.verklaringGezagErk = verklaringGezagErk;
   }
 
+  public String getOrgKeuzeNaamDubbel() {
+    return orgKeuzeNaamDubbel;
+  }
+
+  public void setOrgKeuzeNaamDubbel(String orgKeuzeNaam) {
+    this.orgKeuzeNaamDubbel = orgKeuzeNaam;
+  }
+
   public String getOrgKeuzeNaam() {
     return orgKeuzeNaam;
   }
 
-  public void setOrgKeuzeNaam(String orgKeuzeNaam) {
-    this.orgKeuzeNaam = orgKeuzeNaam;
+  public void setOrgKeuzeNaam(String orgNaam) {
+    this.orgKeuzeNaam = orgNaam;
+  }
+
+  public String getOrgKeuzeNaamTp() {
+    return orgKeuzeNaamTp;
+  }
+
+  public void setOrgKeuzeNaamTp(String orgNaamTp) {
+    this.orgKeuzeNaamTp = orgNaamTp;
+  }
+
+  public String getOrgKeuzeNaamVoorv() {
+    return orgKeuzeNaamVoorv;
+  }
+
+  public void setOrgKeuzeNaamVoorv(String orgNaamVoorv) {
+    this.orgKeuzeNaamVoorv = orgNaamVoorv;
   }
 }

@@ -20,7 +20,7 @@
 package nl.procura.gba.web.services.zaken.algemeen.tasks;
 
 import static nl.procura.gba.web.services.zaken.algemeen.tasks.TaskStatusType.OPEN;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.java.reflection.ReflectionUtil;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class TaskService extends AbstractService {
 

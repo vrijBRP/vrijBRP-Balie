@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person;
 import java.util.Map;
 
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 import lombok.Builder;
@@ -34,9 +34,9 @@ import lombok.Singular;
 public class QuickSearchPersonConfig {
 
   private SelectListener selectListener;
-  private Anummer        anummer;
+  private Anr            anummer;
   private Bsn            bsn;
-  private boolean        sameAddress = false;
+  private boolean        sameAddress;
 
   public String getId() {
     return anummer != null ? anummer.getAnummer() : bsn.getDefaultBsn();

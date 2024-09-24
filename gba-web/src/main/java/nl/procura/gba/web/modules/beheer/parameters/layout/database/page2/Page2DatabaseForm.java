@@ -20,12 +20,12 @@
 package nl.procura.gba.web.modules.beheer.parameters.layout.database.page2;
 
 import static nl.procura.gba.web.modules.beheer.parameters.layout.database.page2.Page2DatabaseBean.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionType.CONFIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.applicatie.DatabaseConfig;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Page2DatabaseForm extends GbaForm<Page2DatabaseBean> {
 

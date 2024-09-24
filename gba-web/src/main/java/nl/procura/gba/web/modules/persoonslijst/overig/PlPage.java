@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -40,6 +40,7 @@ import nl.procura.gba.web.components.layouts.page.IndicatieLabel;
 import nl.procura.gba.web.components.layouts.page.KassaButton;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.page.PersonListMutationsButton;
+import nl.procura.gba.web.components.layouts.page.RequestInboxButton;
 import nl.procura.gba.web.components.layouts.page.StatusButton;
 import nl.procura.gba.web.components.layouts.page.relaties.ZoekRelatiesLayout;
 import nl.procura.gba.web.components.layouts.page.relaties.ZoekRelatiesPopup;
@@ -127,6 +128,7 @@ public class PlPage extends NormalPageTemplate {
 
         addGBAVLabel();
         addIndicatieLabel();
+        addVerzoekButton();
         addAantekeningButton();
         addKassaButton();
         addPersonListMutationsButton();
@@ -218,6 +220,12 @@ public class PlPage extends NormalPageTemplate {
     });
 
     checkIndicatieLabel(label);
+  }
+
+  private void addVerzoekButton() {
+    if (getServices().getRequestInboxService().isEnabled()) {
+      addInfoButton(new RequestInboxButton(), ProfielActie.SELECT_HOOFD_VERZOEK);
+    }
   }
 
   private void addAantekeningButton() {

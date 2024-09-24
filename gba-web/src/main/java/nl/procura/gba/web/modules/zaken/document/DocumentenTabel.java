@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -41,49 +41,50 @@ public abstract class DocumentenTabel extends GbaTable {
 
   public abstract DMSResult getOpgeslagenBestanden();
 
+  public boolean isPopup() {
+    return false;
+  }
+
   @Override
   public void onDoubleClick(Record record) {
     openBestand(record);
   }
 
   public void openBestand(Record record) {
-
     try {
-      DMSDocument dmsDocument = (DMSDocument) record.getObject();
-      DMSContent content = dmsDocument.getContent();
-
-      BestandType type = BestandType.getType(dmsDocument.getContent().getExtension());
-      PreviewFile previewFile = new PreviewFile(content.getBytes(),
-          dmsDocument.getTitle(),
-          dmsDocument.getContent().getFilename(),
-          type);
-
-      previewFile.setProperty("Titel", dmsDocument.getTitle());
-      previewFile.setProperty("Bestandsnaam", dmsDocument.getContent().getFilename());
-      previewFile.setProperty("Alias", dmsDocument.getAlias());
-      previewFile.setProperty("Aangemaakt door", dmsDocument.getUser());
-      previewFile.setProperty("Aangemaakt op", new DateTime(dmsDocument.getDate(), dmsDocument.getTime()).toString());
-      previewFile.setProperty("Zaak-id", dmsDocument.getZaakId());
-      previewFile.setProperty("Opgeslagen op", dmsDocument.getContent().getLocation());
-      previewFile.setProperty("Documenttype", dmsDocument.getDocumentTypeDescription());
-      previewFile.setProperty("Vertrouwelijkheid", DocumentVertrouwelijkheid.get(dmsDocument
-          .getConfidentiality())
-          .getOmschrijving());
-      previewFile.setProperty("Grootte", FileUtils.byteCountToDisplaySize(dmsDocument.getContent().getSize()));
-      previewFile.setProperty("Opslaglocatie", dmsDocument.getStorage().toString());
-      previewFile.setProperty("Verzonden naar DMS",
-          BooleanUtils.toBoolean(dmsDocument.getOtherProperties().get("dms")) ? "Ja" : "Nee");
-
+      PreviewFile previewFile = getPreviewFile((DMSDocument) record.getObject());
       FilePreviewWindow.preview(getApplication().getParentWindow(), previewFile);
-
     } catch (Exception e) {
       getApplication().handleException(getWindow(), e);
     }
   }
 
+  public PreviewFile getPreviewFile(DMSDocument dmsDocument) {
+    DMSContent content = dmsDocument.getContent();
+    BestandType type = BestandType.getType(dmsDocument.getContent().getExtension());
+    PreviewFile previewFile = new PreviewFile(content.getBytes(), dmsDocument.getTitle(),
+        dmsDocument.getContent().getFilename(), type);
+
+    previewFile.setProperty("Titel", dmsDocument.getTitle());
+    previewFile.setProperty("Bestandsnaam", dmsDocument.getContent().getFilename());
+    previewFile.setProperty("Alias", dmsDocument.getAlias());
+    previewFile.setProperty("Aangemaakt door", dmsDocument.getUser());
+    previewFile.setProperty("Aangemaakt op", new DateTime(dmsDocument.getDate(), dmsDocument.getTime()).toString());
+    previewFile.setProperty("Zaak-id", dmsDocument.getZaakId());
+    previewFile.setProperty("Opgeslagen op", dmsDocument.getContent().getLocation());
+    previewFile.setProperty("Documenttype", dmsDocument.getDocumentTypeDescription());
+    previewFile.setProperty("Vertrouwelijkheid", DocumentVertrouwelijkheid.get(dmsDocument
+            .getConfidentiality())
+        .getOmschrijving());
+    previewFile.setProperty("Grootte", FileUtils.byteCountToDisplaySize(dmsDocument.getContent().getSize()));
+    previewFile.setProperty("Opslaglocatie", dmsDocument.getStorage().toString());
+    previewFile.setProperty("Verzonden naar DMS",
+        BooleanUtils.toBoolean(dmsDocument.getOtherProperties().get("dms")) ? "Ja" : "Nee");
+    return previewFile;
+  }
+
   @Override
   public void setColumns() {
-
     setSelectable(true);
     setMultiSelect(true);
 
@@ -91,11 +92,11 @@ public abstract class DocumentenTabel extends GbaTable {
     addColumn("Type", 30).setClassType(Embedded.class);
     addColumn("Datum/tijd", 140);
     addColumn("Document");
-    addColumn("DMS omschrijving", 200);
-    addColumn("Vertrouwelijkheid", 130);
+    addColumn("DMS omschrijving", 200).setCollapsed(isPopup());
+    addColumn("Vertrouwelijkheid", 130).setCollapsed(isPopup());
     addColumn("Grootte", 120);
-    addColumn("Zaak-id", 120);
-    addColumn("Gebruiker", 150);
+    addColumn("Zaak-id", 120).setCollapsed(isPopup());
+    addColumn("Gebruiker", 150).setCollapsed(isPopup());
 
     super.setColumns();
   }

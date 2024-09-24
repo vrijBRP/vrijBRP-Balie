@@ -21,7 +21,7 @@ package nl.procura.gba.web.rest.v1_0.zaak.toevoegen.uittreksel;
 
 import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakType.UITTREKSEL;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaakPersoon;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZakenService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 

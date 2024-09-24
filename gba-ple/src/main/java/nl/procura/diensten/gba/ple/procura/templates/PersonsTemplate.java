@@ -173,7 +173,7 @@ public class PersonsTemplate extends PLETemplateProcura<Object> {
   //            .setParameter("anr_oud", astr(number.getNummer()));
   //
   //        for (AnrWijz anrWijz : query.getResultList()) {
-  //          Anummer anrN = new Anummer(anrWijz.getId().getAnrN());
+  //          Anr anrN = new Anr(anrWijz.getId().getAnrN());
   //          number.setA1(aval(anrN.getA1()));
   //          number.setA2(aval(anrN.getA2()));
   //          number.setA3(aval(anrN.getA3()));

@@ -30,7 +30,7 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakDmsUtils;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ZaakDmsService extends AbstractService {
 

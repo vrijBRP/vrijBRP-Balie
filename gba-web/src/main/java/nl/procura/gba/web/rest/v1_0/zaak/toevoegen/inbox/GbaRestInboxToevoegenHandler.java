@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -33,11 +33,11 @@ import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakType;
 import nl.procura.gba.web.rest.v1_0.zaak.toevoegen.GbaRestZaakAlgemeenToevoegenHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.toevoegen.GbaRestZaakToevoegenVraag;
 import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.inbox.InboxRecord;
-import nl.procura.gba.web.services.inbox.InboxService;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieService;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxRecord;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxService;
 
 public class GbaRestInboxToevoegenHandler extends GbaRestZaakAlgemeenToevoegenHandler {
 
@@ -48,8 +48,8 @@ public class GbaRestInboxToevoegenHandler extends GbaRestZaakAlgemeenToevoegenHa
   public List<GbaRestElement> toevoegen(GbaRestZaakToevoegenVraag vraagParm) {
 
     GbaRestInboxToevoegenVraag vraag = new GbaRestInboxToevoegenVraag(vraagParm);
-    InboxService service = getServices().getInboxService();
-    InboxRecord inboxRecord = (InboxRecord) service.getNewZaak();
+    GemeenteInboxService service = getServices().getInboxService();
+    GemeenteInboxRecord inboxRecord = (GemeenteInboxRecord) service.getNewZaak();
 
     inboxRecord.setNieuw(vraag.isNieuweZaak());
     inboxRecord.setZaakIdExtern(vraag.getZaakId());
@@ -75,7 +75,7 @@ public class GbaRestInboxToevoegenHandler extends GbaRestZaakAlgemeenToevoegenHa
     return getAntwoord(inboxRecord.getZaakId(), GbaRestZaakType.INBOX);
   }
 
-  protected void addZaakRelatie(InboxRecord inboxRecord) {
+  protected void addZaakRelatie(GemeenteInboxRecord inboxRecord) {
 
     String externZaakId = inboxRecord.getZaakIdExtern();
     ZaakKey zaakKey = getInternalZaakKey(externZaakId);

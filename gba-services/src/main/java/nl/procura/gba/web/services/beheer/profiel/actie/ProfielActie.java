@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -110,6 +110,7 @@ public enum ProfielActie {
   SELECT_HOOFD_AANMELDING(new Actie(SELECT, ActieDescr.HOOFD_AANMELDING)),
   SELECT_HOOFD_BSM(new Actie(SELECT, ActieDescr.HOOFD_BSM)),
   SELECT_HOOFD_INBOX(new Actie(SELECT, ActieDescr.HOOFD_INBOX)),
+  SELECT_HOOFD_VERZOEK(new Actie(SELECT, ActieDescr.HOOFD_VERZOEK)),
   SELECT_HOOFD_ZAKENREGISTER(new Actie(SELECT, ActieDescr.HOOFD_ZAKENREGISTER)),
   UPDATE_HOOFD_ZAKENREGISTER(new Actie(UPDATE, ActieDescr.HOOFD_ZAKENREGISTER)),
   DELETE_HOOFD_ZAKENREGISTER(new Actie(DELETE, ActieDescr.HOOFD_ZAKENREGISTER)),

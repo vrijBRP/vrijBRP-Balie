@@ -30,7 +30,7 @@ import nl.procura.gba.web.services.zaken.ZaakServiceTest;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 
 public class CaseVersioningTest extends ZaakServiceTest {

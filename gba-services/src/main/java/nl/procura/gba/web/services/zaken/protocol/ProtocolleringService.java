@@ -19,7 +19,10 @@
 
 package nl.procura.gba.web.services.zaken.protocol;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.date2str;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,7 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class ProtocolleringService extends AbstractService {
@@ -102,7 +105,7 @@ public class ProtocolleringService extends AbstractService {
 
         case ANUMMER:
           ps.setWaarde(along(p[1]));
-          ps.setOmschrijving(new Anummer(astr(p[1])).getFormatAnummer());
+          ps.setOmschrijving(new Anr(astr(p[1])).getFormatAnummer());
           break;
 
         case GEBRUIKER:

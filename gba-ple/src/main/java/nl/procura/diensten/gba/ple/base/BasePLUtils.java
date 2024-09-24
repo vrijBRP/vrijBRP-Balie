@@ -19,16 +19,27 @@
 
 package nl.procura.diensten.gba.ple.base;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.KINDEREN;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_1;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.OUDER_2;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VERW;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_AANVANG_ADRESH;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.IND_ONJUIST;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.OMSCHR_VAN_DE_AANGIFTE_ADRESH;
 import static nl.procura.standard.Globalfunctions.aval;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.utils.Cat5MarriageUtils;
 import nl.procura.diensten.gba.ple.procura.arguments.PLNumber;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class BasePLUtils {
@@ -159,13 +170,13 @@ public class BasePLUtils {
     for (BasePLSet set : cat.getSets()) {
       BasePLRec rec = set.getLatestRec();
       Bsn bsn = null;
-      Anummer anr = null;
+      Anr anr = null;
 
       if (rec.isElem(GBAElem.BSN.getCode())) {
         bsn = new Bsn(rec.getElem(GBAElem.BSN).getValue().getVal());
       }
       if (rec.isElem(GBAElem.ANR.getCode())) {
-        anr = new Anummer(rec.getElem(GBAElem.ANR).getValue().getVal());
+        anr = new Anr(rec.getElem(GBAElem.ANR).getValue().getVal());
       }
 
       PLNumber number = new PLNumber(-1, -1, -1, -1, PLNumber.TABEL_BRON_ONBEKEND, true);

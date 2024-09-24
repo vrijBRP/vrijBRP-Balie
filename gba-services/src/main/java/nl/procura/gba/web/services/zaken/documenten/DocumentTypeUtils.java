@@ -19,10 +19,10 @@
 
 package nl.procura.gba.web.services.zaken.documenten;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import nl.procura.gba.common.ZaakType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class DocumentTypeUtils {
 

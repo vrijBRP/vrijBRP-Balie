@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -36,6 +36,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GPK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GV;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_HANDLEIDINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INBOX;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KASSA;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KENNISBANK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_MIDOFFICE;
@@ -147,6 +148,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_TERUGMELDINGEN, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_VERIFICATIEVRAAG, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_VERHUIZING, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_INBOX, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_ZAKEN, GROUP_DIENSTEN, true, DatabaseParameterLayout.class);
     addTreeItem(GROUP_ZAKEN_ALGEMEEN, GROUP_ZAKEN, false, ZakenStatusParametersLayout.class);
     addTreeItem(GROUP_ZAKEN_STATUS, GROUP_ZAKEN, false, ZakenStatusParametersLayout.class);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -30,7 +30,7 @@ public class ZaakRelatieLayout extends GbaVerticalLayout {
     addComponent(new Fieldset("Gekoppeld aan andere zaken", new RelatieTabel(zaak)));
   }
 
-  private class RelatieTabel extends Page1ZaakRelatieTable {
+  private static class RelatieTabel extends Page1ZaakRelatieTable {
 
     public RelatieTabel(Zaak zaak) {
       super(zaak);

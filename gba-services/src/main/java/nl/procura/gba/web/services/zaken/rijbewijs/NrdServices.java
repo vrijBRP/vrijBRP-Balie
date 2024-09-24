@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import nl.procura.rdw.processen.p1914.f02.AANVRRYBZGEG;
 import nl.procura.rdw.processen.p1914.f02.NATPAANVRGEG;
 import nl.procura.rdw.processen.p1914.f02.NATPAANVRTAB;
 import nl.procura.rdw.processen.p1914.f02.RYBAANVROVERZ;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 import lombok.extern.slf4j.Slf4j;
 

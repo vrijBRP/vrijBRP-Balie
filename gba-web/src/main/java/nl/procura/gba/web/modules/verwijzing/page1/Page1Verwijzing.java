@@ -32,9 +32,9 @@ import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.gba.web.windows.persoonslijst.PersoonslijstWindow;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page1Verwijzing extends NormalPageTemplate {
 
@@ -114,8 +114,7 @@ public class Page1Verwijzing extends NormalPageTemplate {
 
       String anr = getPl().getPersoon().getAnr().getVal();
 
-      if (Anummer.isCorrect(anr)) {
-
+      if (Anr.isCorrect(anr)) {
         PLEArgs a = new PLEArgs();
         a.setShowRemoved(true);
         a.setShowArchives(true);

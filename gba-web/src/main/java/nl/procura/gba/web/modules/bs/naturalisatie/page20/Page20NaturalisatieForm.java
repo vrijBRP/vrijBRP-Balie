@@ -42,7 +42,7 @@ import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.naturalisatie.enums.BasisVerzoekType;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.layout.table.TableLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 
 public class Page20NaturalisatieForm extends GbaForm<Page20NaturalisatieBean> {
 
@@ -115,7 +115,7 @@ public class Page20NaturalisatieForm extends GbaForm<Page20NaturalisatieBean> {
 
   private void onSelectVertegenwoordiger() {
     if (snelZoekWindow == null) {
-      Anummer anummer = new Anummer(dossier.getAangever().getAnummer().getStringValue());
+      Anr anummer = new Anr(dossier.getAangever().getAnummer().getStringValue());
       SelectListener selectListener = pl -> {
         BsPersoonUtils.kopieDossierPersoon(pl, dossier.getVertegenwoordiger());
         setNaamVertegenwoordiger();

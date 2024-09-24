@@ -22,7 +22,7 @@ package nl.procura.gba.web.rest.v1_0.zaak.zoeken.bs;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
 import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestElementHandler.add;
 import static nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteInvoerType;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAktePersoon;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkteRegistersoort;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaRestDossierAkteHandler extends GbaRestHandler {
 

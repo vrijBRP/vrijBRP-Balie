@@ -36,7 +36,7 @@ import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.QueryListener;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdType;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class ZaakArgumenten {
@@ -516,7 +516,7 @@ public class ZaakArgumenten {
     if (filledNrs) {
       for (String nr : nrs) {
         if (fil(nr)) {
-          Anummer a = new Anummer(nr);
+          Anr a = new Anr(nr);
           if (a.isCorrect()) {
             setAnr(a.getLongAnummer());
           } else {

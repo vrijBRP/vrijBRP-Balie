@@ -32,8 +32,8 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.RelationType;
 import nl.procura.gba.web.services.bs.registration.relations.Relation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.label.H3;
 import nl.procura.vaadin.component.layout.HLayout;
 

@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.bs.geboorte.page80;
 
 import static nl.procura.gba.web.services.bs.erkenning.ErkenningsType.ERKENNING_BIJ_AANGIFTE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import nl.procura.diensten.gba.ple.openoffice.formats.Naamformats;
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
@@ -31,7 +31,7 @@ import nl.procura.gba.web.modules.bs.geboorte.page81.Page81Geboorte;
 import nl.procura.gba.web.modules.bs.geboorte.page82.Page82Geboorte;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

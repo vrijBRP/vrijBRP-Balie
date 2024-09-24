@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -34,6 +34,7 @@ public enum BestandType {
   MAP("dir", "Map", "dir.png", false),
   VORIGE_MAP("rdir", "Vorige Map", "rdir.png", false),
   TXT("txt", "Tekstbestand", "file.png", true),
+  JSON("json", "JSON", "file.json", true),
   PROPERTIES("properties", "Eigenschappen", "file.png", true),
   XML("xml", "XML bestand", "file.png", true),
   PNG("png", "Afbeelding (PNG)", "img.png", true),

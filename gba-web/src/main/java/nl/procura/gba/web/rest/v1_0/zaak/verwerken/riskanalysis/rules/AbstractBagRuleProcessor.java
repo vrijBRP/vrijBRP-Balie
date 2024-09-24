@@ -19,11 +19,15 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
-import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.*;
+import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.HUISLETTER;
+import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.HUISNUMMER;
+import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.POSTCODE;
+import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.TOEVOEGING;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.diensten.gba.ple.openoffice.formats.Adresformats;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
 import nl.procura.gba.web.services.beheer.bag.BagService;
@@ -32,7 +36,6 @@ import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchRequest;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchResponse;
 import nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
 import nl.procura.validation.Postcode;
 
 /**

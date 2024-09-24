@@ -26,7 +26,7 @@ import nl.procura.burgerzaken.gba.core.validators.DatVal;
 import nl.procura.burgerzaken.gba.core.validators.Val;
 import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class GBAElem2FieldConverter {
@@ -42,7 +42,7 @@ public class GBAElem2FieldConverter {
       return new Bsn(value).getFormatBsn();
 
     } else if (pleE.getElem() == GBAElem.ANR) {
-      return new Anummer(value).getFormatAnummer();
+      return new Anr(value).getFormatAnummer();
 
     } else if ((tabel != GBATable.ONBEKEND) && tabel.isNational()) {
       return GbaTables.get(tabel).get(value).getDescription();

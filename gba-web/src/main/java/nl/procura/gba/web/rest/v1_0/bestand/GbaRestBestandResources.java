@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.bestand;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import com.google.inject.servlet.RequestScoped;
 
 import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
 

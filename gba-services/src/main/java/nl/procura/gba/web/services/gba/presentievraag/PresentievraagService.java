@@ -24,7 +24,7 @@ import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.PRESENTIE_VRAAG_ENDPOINT;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.proweb.rest.utils.JsonUtils;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class PresentievraagService extends GbaTemplateService {
 

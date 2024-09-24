@@ -31,7 +31,7 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.MappingJsonFactory;
 
 import nl.procura.gbaws.db.wrappers.ProfileWrapper.ProfielElement;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class ElementsExportUtils {
 

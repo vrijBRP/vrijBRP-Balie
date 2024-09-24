@@ -32,7 +32,7 @@ import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbPr
 import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.SID;
 import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.TNS_ADMIN_DIR;
 import static nl.procura.gbaws.web.vaadin.module.sources.procura.page1.Page1DbProcuraBean.USERNAME;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Properties;
 
@@ -47,7 +47,7 @@ import nl.procura.gbaws.db.handlers.ParmDao;
 import nl.procura.gbaws.db.wrappers.ProcuraDbWrapper;
 import nl.procura.gbaws.web.vaadin.module.auth.profile.page1.Page1AuthProfile;
 import nl.procura.gbaws.web.vaadin.module.sources.ModuleDbPage;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

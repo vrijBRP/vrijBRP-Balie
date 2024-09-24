@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,10 +21,10 @@ package nl.procura.gba.web.windows.persoonslijst;
 
 import com.vaadin.terminal.ExternalResource;
 
-import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
+import nl.procura.gba.web.components.layouts.MainRightSideLayout;
 import nl.procura.gba.web.components.layouts.footer.GbaWebNormalFooterLayout;
+import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
 import nl.procura.gba.web.windows.GbaWindow;
-import nl.procura.gba.web.windows.persoonslijst.layouts.PersoonslijstContent;
 import nl.procura.gba.web.windows.persoonslijst.layouts.PersoonslijstNavigation;
 import nl.procura.vaadin.component.window.windowEvents.WindowEvent;
 import nl.procura.vaadin.component.window.windowEvents.WindowInit;
@@ -45,7 +45,7 @@ public class PersoonslijstWindow extends GbaWindow {
 
       getHeaderLayout().setToolBarLayout(new ToolBar());
       getMainLayout().setNavigationLayout(new PersoonslijstNavigation());
-      getMainLayout().setContentLayout(new PersoonslijstContent());
+      getMainLayout().setContentLayout(new MainRightSideLayout("pl"));
       getMainLayout().setFooterLayout(new GbaWebNormalFooterLayout());
     }
 

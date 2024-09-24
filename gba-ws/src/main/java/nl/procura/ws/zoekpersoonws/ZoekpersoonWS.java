@@ -32,7 +32,7 @@ import nl.procura.diensten.gba.ple.procura.arguments.PLEArgs;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.diensten.zoekpersoon.objecten.Persoonslijst;
 import nl.procura.gbaws.requests.gba.GbaRequestHandlerWS;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class ZoekpersoonWS {
@@ -79,7 +79,7 @@ public class ZoekpersoonWS {
   private PLEArgs getPleArgumenten(ZoekArgumenten zkargs, CategorieArgumenten cargs) {
     final PLEArgs a = new PLEArgs();
     for (String anr : zkargs.getAnummers()) {
-      if (Anummer.isCorrect(anr)) {
+      if (Anr.isCorrect(anr)) {
         a.addNummer(anr);
       }
     }

@@ -22,8 +22,8 @@ package nl.procura.gba.web.modules.beheer.overig;
 import static java.text.MessageFormat.format;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.eq;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.modules.beheer.gebruikers.page2.Page2GebruikersBean;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 
 /**

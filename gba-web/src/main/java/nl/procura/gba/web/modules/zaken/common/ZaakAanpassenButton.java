@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.zaken.common;
 import static java.util.Optional.ofNullable;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN;
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Optional;
 
@@ -35,7 +35,7 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutService;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakBehandelaar;
 import nl.procura.gba.web.windows.home.navigatie.ZakenregisterAccordionTab;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.functies.VaadinUtils;
 import nl.procura.vaadin.theme.ProcuraWindow;
@@ -68,22 +68,29 @@ public class ZaakAanpassenButton extends Button {
 
             @Override
             public void buttonYes() {
-              postCheckAction.run();
+              goToZaak(zaak, postCheckAction, app);
               super.buttonYes();
             }
           });
         } else {
-          postCheckAction.run();
+          goToZaak(zaak, postCheckAction, app);
         }
       } else {
         showBehandelaarPopup(zaak, postCheckAction, app, service);
       }
     } else {
-      postCheckAction.run();
+      goToZaak(zaak, postCheckAction, app);
     }
   }
 
-  private void showBehandelaarPopup(Zaak zaak, Runnable runnable, GbaApplication app, ZaakAttribuutService service) {
+  private void goToZaak(Zaak zaak, Runnable postCheckAction, GbaApplication app) {
+    // Open related Zaak
+    app.getServices().getRequestInboxService().openRelatedRequestInboxItem(zaak);
+    postCheckAction.run();
+  }
+
+  private void showBehandelaarPopup(Zaak zaak, Runnable postCheckAction, GbaApplication app,
+      ZaakAttribuutService service) {
     ProcuraWindow parentWindow = app.getParentWindow();
     parentWindow.addWindow(new ConfirmDialog("Behandelaar van de zaak",
         "Wilt u uzelf toewijzen als behandelaar van deze zaak?",
@@ -94,13 +101,13 @@ public class ZaakAanpassenButton extends Button {
         service.koppelenAlsBehandelaar(zaak);
         ofNullable(VaadinUtils.getChild(parentWindow, ZakenregisterAccordionTab.class))
             .ifPresent(ZakenregisterAccordionTab::recountTree);
-        runnable.run();
+        goToZaak(zaak, postCheckAction, app);
         super.buttonYes();
       }
 
       @Override
       public void buttonNo() {
-        runnable.run();
+        goToZaak(zaak, postCheckAction, app);
         super.buttonNo();
       }
     });

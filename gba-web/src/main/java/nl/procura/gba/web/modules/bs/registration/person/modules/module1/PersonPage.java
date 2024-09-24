@@ -28,7 +28,7 @@ import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.IDE
 import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.PASPOORT;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.math.BigDecimal;
@@ -51,14 +51,14 @@ import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.SourceDocumentType;
 import nl.procura.gba.web.services.bs.registration.ValidityDateType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.theme.twee.ProcuraTheme;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class PersonPage extends AbstractPersonPage {
@@ -172,7 +172,7 @@ public class PersonPage extends AbstractPersonPage {
     final String currentAnr = astr(personalDetailsForm.getField(F_ANR).getValue());
 
     getPerson().setBsn(new BigDecimal(new Bsn(currentBsn).getLongBsn()));
-    getPerson().setAnr(new BigDecimal(new Anummer(currentAnr).getLongAnummer()));
+    getPerson().setAnr(new BigDecimal(new Anr(currentAnr).getLongAnummer()));
     getPerson().setVoorvoegsel(Optional.ofNullable(pBean.getPrefix()).map(FieldValue::getStringValue).orElse(null));
     getPerson().setGeslachtsnaam(pBean.getFamilyName());
     getPerson().setVoornaam(pBean.getFirstNames());
@@ -227,7 +227,7 @@ public class PersonPage extends AbstractPersonPage {
 
   private void onNewANumber() {
     final String anr = astr(personalDetailsForm.getField(F_ANR).getValue());
-    if (Anummer.isCorrect(anr)) {
+    if (Anr.isCorrect(anr)) {
       getApplication().getParentWindow()
           .addWindow(new ConfirmDialog("Weet u het zeker?",
               "Er is al een A-nummer uit de voorraad gehaald en toegekend aan deze persoon<hr>" +
@@ -250,7 +250,7 @@ public class PersonPage extends AbstractPersonPage {
         .getRegistrationService().getIdentificationNumbers(false, true);
     if (fil(response.getAnr())) {
       final String aNum = response.getAnr();
-      personalDetailsForm.getField(F_ANR).setValue(Anummer.format(aNum));
+      personalDetailsForm.getField(F_ANR).setValue(Anr.format(aNum));
       personalDetailsForm.getBean().setAnr(new AnrFieldValue(aNum));
       personalDetailsForm.repaint();
     }

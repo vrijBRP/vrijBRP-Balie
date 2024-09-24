@@ -19,17 +19,22 @@
 
 package nl.procura.bvbsn.actions;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.ictu.bsn.*;
+import nl.ictu.bsn.AfzenderDE;
+import nl.ictu.bsn.ArrayOfZoekNrVraagDE;
+import nl.ictu.bsn.BerichtInBase;
+import nl.ictu.bsn.ZoekNrBI;
+import nl.ictu.bsn.ZoekNrBU;
+import nl.ictu.bsn.ZoekNrVraagDE;
 import nl.procura.bvbsn.BvBsnActionInterface;
 import nl.procura.bvbsn.BvBsnActionTemplate;
 import nl.procura.bvbsn.misc.CODES;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.validation.Bsn;
 
 public class ActionZoekNr extends BvBsnActionTemplate implements BvBsnActionInterface {

@@ -29,7 +29,7 @@ import java.util.Date;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 @Converter
 public class BigDecimalDateConverter implements AttributeConverter<Date, BigDecimal> {

@@ -20,7 +20,7 @@
 package nl.procura.gba.web.modules.bs.naturalisatie.valuechoice;
 
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.ONBEKEND;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatieVerzoeker;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.VLayout;

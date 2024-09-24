@@ -21,9 +21,9 @@ package nl.procura.gba.web.modules.zaken.geheim.page2;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieType.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -42,7 +42,7 @@ import nl.procura.gba.web.services.gba.ple.relatieLijst.Relatie;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieLijst;
 import nl.procura.gba.web.services.zaken.geheim.GeheimAanvraag;
 import nl.procura.gba.web.services.zaken.geheim.GeheimPersoon;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;

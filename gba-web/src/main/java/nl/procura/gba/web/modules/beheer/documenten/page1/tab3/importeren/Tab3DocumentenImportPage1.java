@@ -28,7 +28,7 @@ import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.components.layouts.tablefilter.GbaIndexedTableFilterLayout;
 import nl.procura.gba.web.modules.beheer.documenten.DocumentenTabPage;
 import nl.procura.gba.web.services.zaken.documenten.afnemers.DocumentAfnemer;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 

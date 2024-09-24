@@ -43,7 +43,7 @@ import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.component.layout.table.TableLayout;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 /**
@@ -160,7 +160,7 @@ public class Page11Rijbewijs extends RijbewijsPage {
 
     NATPERSOONGEG g = p1651f8.getNatpersoongeg();
 
-    Anummer anr = new Anummer(astr(g.getGbanrnatp()));
+    Anr anr = new Anr(astr(g.getGbanrnatp()));
     Bsn snr = new Bsn(astr(g.getFiscnrnatp()));
 
     if (anr.isCorrect()) {
@@ -223,7 +223,7 @@ public class Page11Rijbewijs extends RijbewijsPage {
 
     BasePLExt pl = getPl();
 
-    Anummer anr = new Anummer(pl.getPersoon().getAnr().getVal());
+    Anr anr = new Anr(pl.getPersoon().getAnr().getVal());
     Bsn snr = new Bsn(pl.getPersoon().getBsn().getVal());
 
     if (anr.isCorrect()) {

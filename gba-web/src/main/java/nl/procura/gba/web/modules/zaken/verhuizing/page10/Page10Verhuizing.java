@@ -25,9 +25,9 @@ import static nl.procura.gba.web.modules.zaken.verhuizing.page10.Page10Verhuizin
 import static nl.procura.gba.web.modules.zaken.verhuizing.page10.Page10VerhuizingBean1.TOELICHTING;
 import static nl.procura.gba.web.services.gba.ple.relatieLijst.AangifteSoort.MEERDERJARIGE_GEMACHTIGDE;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.hamcrest.Matcher;
@@ -65,7 +65,7 @@ import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuizingService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;

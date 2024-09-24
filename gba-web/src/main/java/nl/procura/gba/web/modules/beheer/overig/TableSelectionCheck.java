@@ -19,11 +19,11 @@
 
 package nl.procura.gba.web.modules.beheer.overig;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Class die controleert of er records in een tabel zijn geselecteerd.

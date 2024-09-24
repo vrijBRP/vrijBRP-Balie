@@ -19,13 +19,13 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.ui.Button;
 
 import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Aanvraagnummer;
-import nl.procura.standard.exceptions.ProException;
 
 public class AanvraagArchiefButton extends Button {
 

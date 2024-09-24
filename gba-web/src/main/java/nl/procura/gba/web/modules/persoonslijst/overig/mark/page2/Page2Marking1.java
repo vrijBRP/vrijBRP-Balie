@@ -33,8 +33,8 @@ import nl.procura.gba.web.modules.hoofdmenu.zoeken.quicksearch.person.QuickSearc
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService.SIGNALTYPE;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 

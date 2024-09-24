@@ -30,7 +30,7 @@ import nl.procura.rdw.functions.RdwProces;
 import nl.procura.rdw.functions.Voorletters;
 import nl.procura.rdw.processen.p1651.f01.AANRYBKOVERZ;
 import nl.procura.rdw.processen.p1651.f01.NATPERSOONGEG;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 /**
@@ -51,7 +51,7 @@ public class P1651 extends RdwMessage {
     NATPERSOONGEG n = new NATPERSOONGEG();
 
     Bsn bsn2 = new Bsn(bsn);
-    Anummer anr2 = new Anummer(anr);
+    Anr anr2 = new Anr(anr);
     String voorl = Voorletters.getVoorletters(voorn, false);
 
     if (bsn2.isCorrect()) {

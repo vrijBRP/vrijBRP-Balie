@@ -25,7 +25,7 @@ import static nl.procura.gba.web.modules.bs.onderzoek.page1.Page1OnderzoekBean.R
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 import static nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType.BURGER;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,7 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.onderzoek.enums.OnderzoekBronType;
 import nl.procura.gba.web.services.bs.onderzoek.enums.VermoedAdresType;
 import nl.procura.gba.web.services.gba.basistabellen.gemeente.Gemeente;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.VLayout;

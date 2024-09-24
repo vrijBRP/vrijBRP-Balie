@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 import com.vaadin.data.validator.AbstractStringValidator;
 
 import nl.procura.gba.web.services.Services;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class ExistingIdNumberValidator extends AbstractStringValidator {
@@ -52,7 +52,7 @@ public class ExistingIdNumberValidator extends AbstractStringValidator {
       if (results.containsKey(id)) {
         return results.get(id);
       }
-      if (Bsn.isCorrect(id) || Anummer.isCorrect(id)) {
+      if (Bsn.isCorrect(id) || Anr.isCorrect(id)) {
         boolean result = servicesSupplier.get().getPersonenWsService().getPersoonslijst(id).getCats().isEmpty();
         results.put(id, result);
         return result;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,10 +21,10 @@ package nl.procura.gba.web.windows.home;
 
 import com.vaadin.ui.UriFragmentUtility.FragmentChangedEvent;
 
-import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
+import nl.procura.gba.web.components.layouts.MainRightSideLayout;
 import nl.procura.gba.web.components.layouts.footer.GbaWebNormalFooterLayout;
+import nl.procura.gba.web.components.layouts.toolbar.ToolBar;
 import nl.procura.gba.web.windows.GbaWindow;
-import nl.procura.gba.web.windows.home.layouts.HomeContent;
 import nl.procura.gba.web.windows.home.layouts.HomeNavigation;
 import nl.procura.gba.web.windows.home.navigatie.HoofdAccordionTab;
 import nl.procura.gba.web.windows.home.navigatie.ZakenregisterAccordionTab;
@@ -50,7 +50,7 @@ public class HomeWindow extends GbaWindow {
 
       getHeaderLayout().setToolBarLayout(new ToolBar());
       getMainLayout().setNavigationLayout(new HomeNavigation());
-      getMainLayout().setContentLayout(new HomeContent());
+      getMainLayout().setContentLayout(new MainRightSideLayout("home"));
       getMainLayout().setFooterLayout(new GbaWebNormalFooterLayout());
     }
 

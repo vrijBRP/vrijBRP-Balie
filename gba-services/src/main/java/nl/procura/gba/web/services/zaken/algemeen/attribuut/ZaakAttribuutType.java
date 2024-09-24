@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -28,6 +28,7 @@ public enum ZaakAttribuutType {
   WACHT_OP_RISICOANALYSE("wacht-op-risicoanalyse", "Wacht op risicoanalyse", false),
   FOUT_BIJ_VERWERKING("fout-bij-verwerking", "Fout bij verwerking", false),
   FAVORIET("favoriet", "Favoriete zaak", true),
+  REQUEST_INBOX("verzoek", "Gekoppeld verzoek", false),
   ANDERS("", "Anders", false);
 
   private final String  code;

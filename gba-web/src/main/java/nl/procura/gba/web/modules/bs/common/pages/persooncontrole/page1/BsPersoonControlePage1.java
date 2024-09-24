@@ -27,7 +27,7 @@ import static nl.procura.gba.web.modules.bs.common.pages.gerelateerdepage.PageBs
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER1;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.PARTNER2;
 import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -54,7 +54,7 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaren;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.label.H2;

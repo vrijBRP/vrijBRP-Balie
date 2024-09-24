@@ -19,13 +19,13 @@
 
 package nl.procura.gba.web.modules.bs.common.pages.aktepage;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import nl.procura.gba.web.modules.bs.common.pages.BsPage;
 import nl.procura.gba.web.modules.bs.common.pages.aktepage.page2.BsAktePage2;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
 import nl.procura.gba.web.services.bs.algemeen.akte.DossierAkte;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class BsAktePage<T extends ZaakDossier> extends BsPage<T> {
 

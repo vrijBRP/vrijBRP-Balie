@@ -23,8 +23,8 @@ import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.convert
 import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.removeStillborns;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_UITTREKSEL;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaakPersoon;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZakenService;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;

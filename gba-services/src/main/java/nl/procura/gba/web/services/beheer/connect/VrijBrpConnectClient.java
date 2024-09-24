@@ -22,7 +22,7 @@ package nl.procura.gba.web.services.beheer.connect;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.io.File;
 import java.util.List;
@@ -36,7 +36,7 @@ import nl.procura.bzconnector.app.client.actions.print.SaveFileRequest;
 import nl.procura.gba.web.services.beheer.kassa.KassaFile;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.beheer.parameter.ParameterService;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class VrijBrpConnectClient {
 

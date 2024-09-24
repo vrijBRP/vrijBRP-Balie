@@ -19,6 +19,10 @@
 
 package nl.procura.gba.web.modules.bs.common.layouts.relocation;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER;
 import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_A;
 import static nl.procura.gba.web.modules.bs.common.layouts.relocation.MunicipalAddressBean.F_HOUSE_NUMBER_L;
@@ -31,10 +35,6 @@ import static nl.procura.gba.web.services.interfaces.address.AddressSourceType.B
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -47,6 +47,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Layout;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.wk.procura.argumenten.ZoekArgumenten;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.modules.bs.registration.page10.adresselectie.adres.BewonerWindow;
@@ -59,7 +60,6 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.services.interfaces.address.AddressRequest;
 import nl.procura.gba.web.services.interfaces.address.AddressSourceType;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;

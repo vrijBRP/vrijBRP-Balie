@@ -40,9 +40,9 @@ import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.validation.Anummer;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.procura.validation.Anr;
 
 @Slf4j
 public class KiezersregisterService extends AbstractService {
@@ -221,7 +221,7 @@ public class KiezersregisterService extends AbstractService {
   public KiesrStem toKiezerPers(KiesrVerk verkiezing, Bestandsregel regel) {
     KiesrStem kiezer = new KiesrStem(verkiezing);
     kiezer.setVnr(regel.getVStem());
-    kiezer.setAnr(new Anummer(notBlank(regel.getAnr(), "A-nummer ontbreekt")).getLongAnummer());
+    kiezer.setAnr(new Anr(notBlank(regel.getAnr(), "A-nummer ontbreekt")).getLongAnummer());
     kiezer.setdGeb(parseLong(notBlank(regel.getDGeb(), "Geboortedatum ontbreekt")));
     kiezer.setVoorn(regel.getVoorn());
     kiezer.setNaam(notBlank(regel.getNaam(), "Naam ontbreekt"));
@@ -246,7 +246,7 @@ public class KiezersregisterService extends AbstractService {
     return KiesrDao.getAantalStempassen(query);
   }
 
-  public List<Verkiezing> getVerkiezingen(Anummer anummer) {
+  public List<Verkiezing> getVerkiezingen(Anr anummer) {
     return getSelecteerbareVerkiezingen().stream()
         .map(kiesrVerk -> toVerkiezing(anummer, kiesrVerk))
         .collect(Collectors.toList());
@@ -296,21 +296,21 @@ public class KiezersregisterService extends AbstractService {
         .build()).getStempassen();
   }
 
-  public List<KiesrStem> getStempassenByAnr(KiesrVerk verk, Anummer anummer) {
+  public List<KiesrStem> getStempassenByAnr(KiesrVerk verk, Anr anummer) {
     return getStempassen(StempasQuery.builder(verk)
         .anrKiesgerechtigde(anummer)
         .aflopend(true)
         .build()).getStempassen();
   }
 
-  public List<Stempas> getStempassenByVolmachtAnr(KiesrVerk verk, Anummer anummer) {
+  public List<Stempas> getStempassenByVolmachtAnr(KiesrVerk verk, Anr anummer) {
     StempasQuery query = StempasQuery.builder(verk).anrGemachtigde(anummer).build();
     return getStempassen(query).getStempassen().stream()
         .map(this::toStempas)
         .collect(Collectors.toList());
   }
 
-  public List<KiesrWijz> getWijzigingen(KiesrVerk verk, Anummer anummer) {
+  public List<KiesrWijz> getWijzigingen(KiesrVerk verk, Anr anummer) {
     return KiesrDao.getWijzigingen(verk, anummer);
   }
 
@@ -318,7 +318,7 @@ public class KiezersregisterService extends AbstractService {
     return KiesrDao.getInfo(verk);
   }
 
-  private Verkiezing toVerkiezing(Anummer anummer, KiesrVerk kiesrVerk) {
+  private Verkiezing toVerkiezing(Anr anummer, KiesrVerk kiesrVerk) {
     Verkiezing verkiezing = new Verkiezing(kiesrVerk);
     verkiezing.setStempassen(getStempassenByAnr(kiesrVerk, anummer).stream()
         .map(this::toStempas)

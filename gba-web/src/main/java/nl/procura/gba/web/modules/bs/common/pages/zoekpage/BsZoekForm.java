@@ -36,8 +36,8 @@ import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.TYPE;
 import static nl.procura.geo.rest.domain.pdok.locationserver.SearchType.WEERGAVENAAM;
 import static nl.procura.geo.rest.domain.pdok.locationserver.ServiceType.SUGGEST;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.Field;
@@ -48,7 +48,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.geo.rest.domain.pdok.locationserver.LocationServerRequest;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class BsZoekForm extends GbaForm<BsZoekBean> {

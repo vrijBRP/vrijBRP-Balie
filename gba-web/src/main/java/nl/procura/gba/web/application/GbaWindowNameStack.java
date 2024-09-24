@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import com.vaadin.ui.Window;
 
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 public class GbaWindowNameStack extends ArrayList<String> {
 

@@ -1,0 +1,16 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/api/documents/018cd3c7-31f4-78e4-9e53-ebf9f039e649/contents",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "/dossier-summary.pdf",
+    "headers": {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attachment; filename=\"dossier-summary.pdf\""
+    }
+  }
+}

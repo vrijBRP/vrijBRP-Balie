@@ -19,13 +19,20 @@
 
 package nl.procura.diensten.gba.ple.procura.arguments;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class PLEArgs implements Serializable {
@@ -87,7 +94,7 @@ public class PLEArgs implements Serializable {
     List<String> nrs = new ArrayList<>();
     for (PLNumber nummer : getNumbers()) {
       if (nummer.getA1() > 0) {
-        nrs.add(new Anummer(nummer.getA1(), nummer.getA2(), nummer.getA3()).getAnummer());
+        nrs.add(new Anr(nummer.getA1(), nummer.getA2(), nummer.getA3()).getAnummer());
       }
     }
 
@@ -108,7 +115,7 @@ public class PLEArgs implements Serializable {
   public void addNummer(String... nrs) {
     for (String nr : nrs) {
       if (fil(nr)) {
-        Anummer a = new Anummer(nr);
+        Anr a = new Anr(nr);
         if (a.isCorrect()) {
           getNumbers().add(new PLNumber(aval(a.getA1()), aval(a.getA2()), aval(a.getA3()), 0, -1));
         } else {

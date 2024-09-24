@@ -20,7 +20,7 @@
 package nl.procura.gba.web.common.misc.spreadsheets;
 
 import static ch.lambdaj.Lambda.join;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.locatie.LocatieType;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GebruikerSpreadsheetStandaard extends SpreadsheetTemplate {
 

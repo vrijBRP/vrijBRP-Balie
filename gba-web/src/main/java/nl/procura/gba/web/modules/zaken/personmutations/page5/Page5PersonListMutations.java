@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -31,8 +31,6 @@ public class Page5PersonListMutations extends ZakenOverzichtModalPage<PersonList
 
   public Page5PersonListMutations(PersonListMutation mutation) {
     super(mutation, "");
-    addButton(buttonPrev, 1f);
-    addButton(buttonClose);
   }
 
   @Override

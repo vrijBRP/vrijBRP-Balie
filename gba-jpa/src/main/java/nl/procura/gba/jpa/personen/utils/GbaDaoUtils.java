@@ -34,8 +34,8 @@ import nl.procura.java.reflection.ReflectionCache;
 import nl.procura.java.reflection.ReflectionCache.ClassStorage;
 import nl.procura.java.reflection.ReflectionCache.FieldStorage;
 import nl.procura.java.reflection.ReflectionUtil;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 public class GbaDaoUtils {
 

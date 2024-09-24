@@ -19,14 +19,15 @@
 
 package nl.procura.gba.web.services.zaken.algemeen;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakStatusType;
@@ -43,7 +44,6 @@ import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.gba.web.services.zaken.algemeen.tasks.TaskService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieService;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 

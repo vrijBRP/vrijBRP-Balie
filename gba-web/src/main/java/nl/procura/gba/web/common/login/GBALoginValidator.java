@@ -21,8 +21,8 @@ package nl.procura.gba.web.common.login;
 
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.vrijbrp.hub.client.HubAuthConstants.ROLE_VRIJBRP_BALIE;
 
 import java.util.Optional;
@@ -45,7 +45,7 @@ import nl.procura.gba.web.services.beheer.link.PersonenLinkProperty;
 import nl.procura.gba.web.services.beheer.link.PersonenLinkType;
 import nl.procura.proweb.rest.guice.misc.TicketMap;
 import nl.procura.proweb.rest.v1_0.gebruiker.ProRestGebruiker;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.UserAgentInfo;
 import nl.procura.vaadin.theme.Credentials;
 import nl.procura.vaadin.theme.twee.login.CookieLoginValidator;

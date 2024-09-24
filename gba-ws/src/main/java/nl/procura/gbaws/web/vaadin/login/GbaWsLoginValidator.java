@@ -21,7 +21,7 @@ package nl.procura.gbaws.web.vaadin.login;
 
 import static java.util.Optional.ofNullable;
 import static nl.procura.gbaws.web.vaadin.login.GbaWsAuthenticationHandler.getUserByCredentials;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.vrijbrp.hub.client.HubAuthConstants.ROLE_VRIJBRP_PERSOONSLIJSTEN_WS;
 
 import java.util.Optional;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.theme.Credentials;
 import nl.procura.vaadin.theme.twee.login.CookieLoginValidator;
 import nl.vrijbrp.hub.client.HubAuth;

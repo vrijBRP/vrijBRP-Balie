@@ -36,7 +36,7 @@ import javax.print.attribute.standard.Chromaticity;
 import javax.print.attribute.standard.Media;
 import javax.print.attribute.standard.PrinterName;
 
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class LocalPrinterUtils {
 

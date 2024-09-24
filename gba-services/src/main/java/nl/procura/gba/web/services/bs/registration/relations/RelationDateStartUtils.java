@@ -20,7 +20,7 @@
 package nl.procura.gba.web.services.bs.registration.relations;
 
 import static nl.procura.gba.web.services.bs.registration.RelationType.*;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.math.BigDecimal;
 
@@ -31,7 +31,7 @@ import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.RelationType;
 import nl.procura.gba.web.services.bs.registration.RelationshipDateType;
 import nl.procura.gba.web.services.bs.registration.ValidityDateType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class RelationDateStartUtils {
 

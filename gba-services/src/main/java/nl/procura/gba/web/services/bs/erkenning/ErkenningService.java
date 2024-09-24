@@ -26,7 +26,7 @@ import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpers
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.MOEDER;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.bs.geboorte.GeboorteService;
 import nl.procura.gba.web.services.zaken.algemeen.*;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
 public class ErkenningService extends AbstractZaakContactService<Dossier> implements ZaakService<Dossier> {

@@ -488,4 +488,18 @@
       </column>
     </addColumn>
   </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_7">
+    <renameColumn tableName="doss_geb" oldColumnName="org_keuze_naam"
+      newColumnName="org_keuze_naam_dubbel"/>
+    <addColumn tableName="doss_geb">
+      <column name="org_keuze_naam" type="VARCHAR(255)" defaultValue=""/>
+    </addColumn>
+    <addColumn tableName="doss_geb">
+      <column name="org_keuze_naam_voorv" type="VARCHAR(255)" defaultValue=""/>
+    </addColumn>
+    <addColumn tableName="doss_geb">
+      <column name="org_keuze_naam_tp" type="VARCHAR(255)" defaultValue=""/>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>

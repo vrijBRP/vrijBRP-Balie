@@ -19,17 +19,22 @@
 
 package nl.procura.gba.web.services.zaken.documenten.printen.printers;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.PRINT;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PRINT;
 
 import java.io.IOException;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.print.PrintException;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
-import nl.procura.standard.exceptions.ProException;
 
 public abstract class AbstractPrinter {
 

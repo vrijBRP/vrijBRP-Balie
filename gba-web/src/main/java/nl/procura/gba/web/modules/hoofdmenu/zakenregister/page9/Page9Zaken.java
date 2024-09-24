@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -41,15 +41,12 @@ public class Page9Zaken extends ZakenregisterPage<Zaak> {
     if (event.isEvent(InitPage.class)) {
 
       addButton(buttonNext);
-
       buttonNext.setCaption("Voer controles uit (F2)");
 
-      setInfo("Voert controles uit op openstaande zaken.");
+      setInfo("Voert controles uit op diensten van de applicatie.");
 
       table = new Table1();
-
       getButtonLayout().addComponent(new IndexedTableFilterLayout(table));
-
       addExpandComponent(table);
     }
 

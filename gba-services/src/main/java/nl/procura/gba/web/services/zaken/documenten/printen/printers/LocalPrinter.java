@@ -20,7 +20,7 @@
 package nl.procura.gba.web.services.zaken.documenten.printen.printers;
 
 import static javax.print.DocFlavor.SERVICE_FORMATTED.PAGEABLE;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.awt.print.Book;
 import java.io.IOException;
@@ -37,7 +37,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.zaken.documenten.printen.LocalPrinterUtils;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintUtils;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * This printer uses the internal JAVA print library

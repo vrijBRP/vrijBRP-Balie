@@ -36,7 +36,7 @@ import nl.procura.diensten.gba.ple.procura.utils.SortableObject;
 import nl.procura.diensten.gba.ple.procura.utils.diacrits.Diacrieten;
 import nl.procura.diensten.gba.ple.procura.utils.diacrits.Diacs;
 import nl.procura.gba.jpa.probev.db.*;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Cat12ReisdTemplate extends PLETemplateProcura<AbstractReisd> {
 

@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.bs.overlijden.buitenland.page20;
 import static nl.procura.gba.web.modules.bs.overlijden.buitenland.page20.Page20OverlijdenBean.*;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AFGEVER;
 import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoonFilter;
 import nl.procura.gba.web.services.bs.overlijden.buitenland.DossierOverlijdenBuitenland;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;

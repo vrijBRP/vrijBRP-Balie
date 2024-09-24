@@ -57,8 +57,8 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.java.reflection.ReflectionUtil;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
 public class OnderzoekService extends AbstractZaakContactService<Dossier> implements ZaakService<Dossier> {

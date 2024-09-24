@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -114,6 +114,14 @@ public class FilePreviewLayouts {
    */
   public static Component getXmlLayout(final PreviewFile file) {
     String content = StreamUtils.toPrettyString(new String(file.getBytes()), true);
+    return new LucidaConsoleLabel(content, Label.CONTENT_XHTML, false);
+  }
+
+  /**
+   * Component voor tonen van XML bestanden
+   */
+  public static Component getJsonLayout(final PreviewFile file) {
+    String content = newLineToBreaks(new String(file.getBytes()));
     return new LucidaConsoleLabel(content, Label.CONTENT_XHTML, false);
   }
 

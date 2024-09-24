@@ -34,7 +34,7 @@ import nl.procura.gba.config.GbaConfigProperty;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.modules.beheer.parameters.container.DatabaseTypeContainer;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;

@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.zaken.verhuizing.page19;
 
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.data.Property.ValueChangeListener;
 
@@ -29,7 +29,7 @@ import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.modules.zaken.verhuizing.VerhuisAanvraagPage;
 import nl.procura.gba.web.modules.zaken.verhuizing.page17.Page17Verhuizing;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

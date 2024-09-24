@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 /**
@@ -61,7 +61,7 @@ public class Rule17Processor extends AbstractRuleProcessor {
     return false;
   }
 
-  private Boolean checkAnumbers(RiskAnalysisRelatedCase relatedCase, Anummer anr) {
+  private Boolean checkAnumbers(RiskAnalysisRelatedCase relatedCase, Anr anr) {
     List<BaseWKExt> addresses = getUtils().getRelocationAddress(relatedCase, true);
     if (INTEGER_ONE.equals(addresses.size())) {
       BaseWKExt address = addresses.get(0);
@@ -69,8 +69,8 @@ public class Rule17Processor extends AbstractRuleProcessor {
           .getPersonen()
           .stream()
           .filter(BaseWKPerson::isCurrentResident)
-          .map(person -> new Anummer(person.getAnummer().getValue()))
-          .filter(Anummer::isCorrect)
+          .map(person -> new Anr(person.getAnummer().getValue()))
+          .filter(Anr::isCorrect)
           .noneMatch(anrPerson -> anrPerson.getLongAnummer().equals(anr.getLongAnummer()))) {
         String bron = relatedCase.getRelocation().getBron();
         if (ZaakUtils.PROWEB_PERSONEN.equals(bron)) {
@@ -94,10 +94,10 @@ public class Rule17Processor extends AbstractRuleProcessor {
   /*
   Finds Bsn and retrieve Anumber
   */
-  private Optional<Anummer> getAnrHoofdbewoner(VerhuisAanvraag relocation) {
+  private Optional<Anr> getAnrHoofdbewoner(VerhuisAanvraag relocation) {
     Bsn bsnHoofdbewoner = new Bsn(relocation.getHoofdbewoner().getBurgerServiceNummer().getStringValue());
     if (bsnHoofdbewoner.isCorrect()) {
-      Anummer anr = new Anummer(getServices().getPersonenWsService()
+      Anr anr = new Anr(getServices().getPersonenWsService()
           .getPersoonslijst(bsnHoofdbewoner.getDefaultBsn())
           .getPersoon().getAnr().getVal());
       if (anr.isCorrect()) {

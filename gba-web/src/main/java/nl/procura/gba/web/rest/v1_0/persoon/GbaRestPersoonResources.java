@@ -21,7 +21,7 @@ package nl.procura.gba.web.rest.v1_0.persoon;
 
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
 import static nl.procura.standard.Globalfunctions.astr;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,8 +39,8 @@ import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
 import nl.procura.proweb.rest.guice.annotations.AuthenticatieVereist;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.validation.Anummer;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 import nl.procura.validation.IdNummer;
 
@@ -61,7 +61,7 @@ public class GbaRestPersoonResources extends GbaRestServiceResource {
 
       if (new Bsn(nr.getVal()).isCorrect()) {
         antwoord.getAntwoordElement().add(BSN).set(nr.getVal(), nr.getDescr());
-      } else if (new Anummer(nr.getVal()).isCorrect()) {
+      } else if (new Anr(nr.getVal()).isCorrect()) {
         antwoord.getAntwoordElement().add(ANR).set(nr.getVal(), nr.getDescr());
       }
     }

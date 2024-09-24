@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,13 +19,14 @@
 
 package nl.procura.gba.web.services.zaken.algemeen;
 
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_BRONNEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_LEVERANCIERS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_ZAAKTYPES;
 import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.FOUT_BIJ_VERWERKING;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType;
 import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.common.ZaakStatusType;

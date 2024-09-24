@@ -31,7 +31,7 @@ import nl.procura.gba.jpa.personenws.db.EmailLog;
 import nl.procura.gba.jpa.personenws.utils.GbaWsJpa;
 import nl.procura.gbaws.db.handlers.EmailConfigDao;
 import nl.procura.gbaws.mail.Email;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class EmailLogWrapper extends AbstractTableWrapper<EmailLog, Integer> {
 

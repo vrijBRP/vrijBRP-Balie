@@ -26,7 +26,7 @@ import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven
 import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.ALGEMENE_ZAAKGEGEVENS;
 import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.SLEUTELS;
 import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.SPECIFIEKE_ZAAKGEGEVENS;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zkndms.ZaakDmsService;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaRestZaakService extends GbaRestAbstractService {
 

@@ -31,7 +31,7 @@ import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisService;
 import nl.procura.gba.web.services.zaken.indicaties.IndicatiesService;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 
 /**
  * Rule 1

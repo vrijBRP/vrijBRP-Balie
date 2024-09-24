@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.verhuizing.page2;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.ui.Button;
 
@@ -34,7 +34,7 @@ import nl.procura.gba.web.services.gba.presentievraag.Presentievraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAangever;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 /**

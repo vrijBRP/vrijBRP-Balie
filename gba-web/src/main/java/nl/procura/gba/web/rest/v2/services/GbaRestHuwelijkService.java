@@ -24,7 +24,7 @@ import static nl.procura.gba.web.rest.v2.model.base.GbaRestEnum.toEnum;
 import static nl.procura.gba.web.rest.v2.model.zaken.huwelijk.GbaRestHuwelijkOptieType.TEKST;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.ALLES;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ import nl.procura.gba.web.services.gba.basistabellen.huwelijkslocatieOptie.Huwel
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.commentaar.ZaakCommentaren;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.validation.Bsn;

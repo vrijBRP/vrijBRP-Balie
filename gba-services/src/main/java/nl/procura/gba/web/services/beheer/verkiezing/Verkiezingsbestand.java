@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.services.beheer.verkiezing;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import nl.procura.gba.jpa.personen.db.KiesrVerk;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class Verkiezingsbestand {
 

@@ -27,9 +27,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 
 import nl.procura.gba.web.components.layouts.table.GbaTable;
-import nl.procura.standard.exceptions.ProException;
-import nl.procura.standard.exceptions.ProExceptionSeverity;
-import nl.procura.standard.exceptions.ProExceptionType;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.commons.core.exceptions.ProExceptionType;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.label.Ruler;
 import nl.procura.vaadin.component.layout.Fieldset;

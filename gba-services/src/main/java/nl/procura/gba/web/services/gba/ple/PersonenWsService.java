@@ -19,6 +19,12 @@
 
 package nl.procura.gba.web.services.gba.ple;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.GBA_V_BLOK;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.GBA_V_VERLOOP;
@@ -29,12 +35,6 @@ import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.isTru;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.standard.exceptions.ProExceptionType.ENTRY;
-import static nl.procura.standard.exceptions.ProExceptionType.NO_RESULTS;
-import static nl.procura.standard.exceptions.ProExceptionType.WEBSERVICE;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -45,7 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
-import nl.procura.commons.misc.numbers.Anr;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.base.PLEMessage;
 import nl.procura.diensten.gba.ple.base.PLEResult;
@@ -81,9 +81,8 @@ import nl.procura.gbaws.web.rest.v1_0.gbav.account.update.GbaWsRestGbavAccountUp
 import nl.procura.gbaws.web.rest.v1_0.gbav.account.update.GbaWsRestGbavAccountUpdatenVraag;
 import nl.procura.gbaws.web.rest.v1_0.gbav.wachtwoord.versturen.GbaWsRestGbavWachtwoordVersturenAntwoord;
 import nl.procura.gbaws.web.rest.v1_0.gbav.wachtwoord.versturen.GbaWsRestGbavWachtwoordVersturenVraag;
-import nl.procura.standard.exceptions.ProException;
 import nl.procura.vaadin.theme.Credentials;
-import nl.procura.validation.Anummer;
+import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
 public class PersonenWsService extends GbaTemplateService {
@@ -252,7 +251,7 @@ public class PersonenWsService extends GbaTemplateService {
       nummers.add(new BasePLValue(format.getDefaultBsn(), format.getFormatBsn()));
 
     } else if (Anr.isCorrect(nr)) {
-      Anummer format = new Anummer(nr);
+      Anr format = new Anr(nr);
       nummers.add(new BasePLValue(format.getAnummer(), format.getFormatAnummer()));
     }
 
@@ -273,7 +272,7 @@ public class PersonenWsService extends GbaTemplateService {
     }
 
     for (BasePLValue w : nrs) {
-      if (Anummer.isCorrect(w.getVal()) || Bsn.isCorrect(w.getVal())) {
+      if (Anr.isCorrect(w.getVal()) || Bsn.isCorrect(w.getVal())) {
         if (!nummers.contains(w)) {
           nummers.add(w);
         }
@@ -322,7 +321,7 @@ public class PersonenWsService extends GbaTemplateService {
         if (fil(nummer)) {
           if (Bsn.isCorrect(nummer)) {
             argumenten.addNummer(nummer);
-          } else if (Anummer.isCorrect(nummer)) {
+          } else if (Anr.isCorrect(nummer)) {
             argumenten.addNummer(nummer);
           }
         }

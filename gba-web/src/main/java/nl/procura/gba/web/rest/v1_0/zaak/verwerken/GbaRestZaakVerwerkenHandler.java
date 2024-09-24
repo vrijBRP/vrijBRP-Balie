@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,23 +19,24 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken;
 
-import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.procura.gba.web.rest.v1_0.GbaRestHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.GbaRestZaakAntwoord;
-import nl.procura.gba.web.rest.v1_0.zaak.verwerken.inbox.GbaRestInboxVerwerkenHandler;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.gemeenteinbox.GbaRestGemeenteInboxVerwerkenHandler;
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.GbaRestRiskAnalysisProcessingHandler;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
+import nl.procura.gba.web.services.zaken.gemeenteinbox.GemeenteInboxRecord;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMelding;
 import nl.procura.proweb.rest.v1_0.meldingen.ProRestMeldingType;
-import nl.procura.standard.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProException;
 
 public class GbaRestZaakVerwerkenHandler extends GbaRestHandler {
 
@@ -56,7 +57,8 @@ public class GbaRestZaakVerwerkenHandler extends GbaRestHandler {
     for (Zaak zaak : getZaken(vraag)) {
       switch (zaak.getType()) {
         case INBOX:
-          resultaten.add(new GbaRestInboxVerwerkenHandler(getServices()).verwerken(zaak));
+          new GbaRestGemeenteInboxVerwerkenHandler(getServices()).process((GemeenteInboxRecord) zaak)
+              .ifPresent(resultaten::add);
           break;
         case RISK_ANALYSIS:
           resultaten.add(new GbaRestRiskAnalysisProcessingHandler(getServices()).process(zaak));
