@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.zoeken;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.AANTEKENING;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.AANTEKENINGEN;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ANR;
@@ -65,11 +66,11 @@ import static nl.procura.standard.Globalfunctions.date2str;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.time2str;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
@@ -127,11 +128,12 @@ import nl.procura.gba.web.services.zaken.algemeen.attribuut.AttribuutHistorie;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuut;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdType;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatie;
+import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatieService;
+import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatie;
 import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelaties;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.contact.PlContactgegeven;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.validation.Anr;
 import nl.procura.validation.Bsn;
 
@@ -269,8 +271,12 @@ public class GbaRestZaakZoekenHandler extends GbaRestHandler {
       // Zaaksysteem identificaties opvragen voor MINIMAAL
       if (vraagType != null && vraagType.is(MINIMAAL)) {
         if (!zaak.getZaakHistorie().getIdentificaties().exists()) {
-          zaak.getZaakHistorie()
-              .setIdentificaties(getServices().getZaakIdentificatieService().getIdentificaties(zaak));
+          ZaakIdentificatieService zaakIdentificatieService = getServices().getZaakIdentificatieService();
+          zaak.getZaakHistorie().setIdentificaties(zaakIdentificatieService.getIdentificaties(zaak));
+        }
+        if (zaak.getZaakHistorie().getStatusHistorie().size() == 0) {
+          ZaakStatusService zaakStatusService = getServices().getZaakStatusService();
+          zaak.getZaakHistorie().setStatusHistorie(zaakStatusService.getStatusHistorie(zaak));
         }
       }
 

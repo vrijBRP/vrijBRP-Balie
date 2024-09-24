@@ -19,12 +19,13 @@
 
 package nl.procura.gba.web.components.layouts.toolbar;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.CITIZEN;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.TASK;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.WORK;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -49,6 +50,7 @@ public class MeldingenButtons extends GbaHorizontalLayout {
   private final Button         meldingenButton1;
   private final Button         meldingenButton2;
   private final Button         meldingenButton3;
+  private final Button         meldingenButton4;
   private final Button         taskButton;
   private final GbaApplication application;
 
@@ -73,6 +75,10 @@ public class MeldingenButtons extends GbaHorizontalLayout {
       application.getMainWindow().addWindow(new MeldingenWindow(WORK));
     });
 
+    meldingenButton4 = new NativeButton("", (Button.ClickListener) event -> {
+      application.getMainWindow().addWindow(new MeldingenWindow(CITIZEN));
+    });
+
     taskButton = new NativeButton("", (Button.ClickListener) event -> {
       application.getMainWindow().addWindow(new MeldingenWindow(TASK));
     });
@@ -87,6 +93,8 @@ public class MeldingenButtons extends GbaHorizontalLayout {
     meldingenButton1.setStyleName("melding-button");
     meldingenButton2.setStyleName("melding-button");
     meldingenButton3.setStyleName("melding-button");
+    meldingenButton4.setStyleName("melding-button");
+
     taskButton.setStyleName("melding-button");
     taskButton.setHtmlContentAllowed(true);
 
@@ -95,6 +103,7 @@ public class MeldingenButtons extends GbaHorizontalLayout {
     addComponent(meldingenButton1);
     addComponent(meldingenButton2);
     addComponent(meldingenButton3);
+    addComponent(meldingenButton4);
 
     update();
     showMessages();
@@ -127,7 +136,8 @@ public class MeldingenButtons extends GbaHorizontalLayout {
     boolean b1 = updateButton("Fouten", meldingenButton1, FAULT);
     boolean b2 = updateButton("Systeem", meldingenButton2, SYSTEM);
     boolean b3 = updateButton("Herinnering", meldingenButton3, WORK);
-    if (!(b1 || b2 || b3)) {
+    boolean b4 = updateButton("Signalen Inwoner.app", meldingenButton4, CITIZEN);
+    if (!(b1 || b2 || b3 || b4)) {
       add(meldingenButton0);
     }
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,6 +25,7 @@ import java.util.List;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.windows.home.HomeWindow;
@@ -60,7 +61,7 @@ public class ZaakPersonChoiceWindow extends GbaModalWindow {
 
   protected void goToZaak(Dossier dossier) {
     getGbaApplication().getServices().getMemoryService().setObject(Dossier.class, dossier);
-    getGbaApplication().openWindow(getApplication().getMainWindow(), new HomeWindow(), "bs.onderzoek");
+    getGbaApplication().openWindow(getApplication().getMainWindow(), new HomeWindow(), ZaakFragment.FR_ONDERZOEK);
   }
 
   protected void addChoice(String label, Runnable choiceListener) {

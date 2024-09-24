@@ -50,7 +50,6 @@ public class Page70Zaken extends ZakenregisterOptiePage<ReisdocumentAanvraag> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
     addOptieButton(buttonFiat);

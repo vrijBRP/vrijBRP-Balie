@@ -27,6 +27,8 @@ public enum ZaakAttribuutType {
   MIJN_OVERHEID_NIET("mijn-overheid-niet", "Geen abonnee van mijn-overheid", false),
   WACHT_OP_RISICOANALYSE("wacht-op-risicoanalyse", "Wacht op risicoanalyse", false),
   FOUT_BIJ_VERWERKING("fout-bij-verwerking", "Fout bij verwerking", false),
+  INWONER_APP_SAMENV("inwoner-app-samenvatting", "Inwoner.app samenvatting", false),
+  INWONER_AFSLUITEN_ZAAK("inwoner-app-afsluiten", "Inwoner.app afsluiten zaak", false),
   FAVORIET("favoriet", "Favoriete zaak", true),
   REQUEST_INBOX("verzoek", "Gekoppeld verzoek", false),
   ANDERS("", "Anders", false);

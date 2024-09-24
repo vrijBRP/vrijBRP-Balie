@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.application;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.REMEMBER_ME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SCHERMOPBOUWTYPE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SESSIE_TIMEOUT;
@@ -28,8 +30,6 @@ import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
 
 import java.util.Collection;
 
@@ -41,12 +41,14 @@ import com.vaadin.terminal.Terminal;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Window;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.config.GbaConfigProperty;
 import nl.procura.gba.web.common.exceptions.ExceptionHandler;
 import nl.procura.gba.web.common.login.GBALoginValidator;
+import nl.procura.gba.web.common.misc.GbaFragmentUtility;
 import nl.procura.gba.web.common.window.WindowHandler;
 import nl.procura.gba.web.components.layouts.footer.GbaWebLoginFooterLayout;
 import nl.procura.gba.web.modules.beheer.parameters.container.SchermopbouwtypeContainer;
@@ -64,7 +66,6 @@ import nl.procura.gba.web.windows.GbaWindow;
 import nl.procura.gba.web.windows.home.HomeWindow;
 import nl.procura.gba.web.windows.persoonslijst.PersoonslijstWindow;
 import nl.procura.gba.web.windows.verwijzing.VerwijzingWindow;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.window.Message;
 import nl.procura.vaadin.component.window.windowEvents.WindowInit;
@@ -395,7 +396,6 @@ public class GbaApplication extends ProcuraApplication {
   }
 
   private void proceedOpenWindow(WindowChangeListener wcl) {
-
     Window currentWindow = wcl.getCurrentWindow();
     Window newWindow = wcl.getNewWindow();
     boolean removeFirst = wcl.isRemoveFirst();
@@ -403,16 +403,17 @@ public class GbaApplication extends ProcuraApplication {
 
     if (!currentWindow.getName().equals(newWindow.getName()) && removeFirst) {
       removeAddedWindow(newWindow);
+    } else {
+      GbaFragmentUtility fragmentUtility = ((GbaWindow) getParentWindow()).getFragmentUtility();
+      fragmentUtility.setFragment("bs.home", true);
     }
 
     StringBuilder url = new StringBuilder(getExternalURL(newWindow.getName()));
 
     if (fil(fragment)) {
-
       if (!fragment.contains("#")) {
         url.append("#");
       }
-
       url.append(fragment);
     }
 

@@ -44,6 +44,7 @@ public enum ParameterGroup {
   GROUP_PORTAAL("Portaal"),
   GROUP_RAAS("RAAS"),
   GROUP_SYSTEM("Systeem"),
+  GROUP_INW_APP("Inwoner.app"),
   GROUP_GPK("GPK"),
   GROUP_WERKPROCES("Werkproces"),
   GROUP_VOORRAAD("Voorraad"),

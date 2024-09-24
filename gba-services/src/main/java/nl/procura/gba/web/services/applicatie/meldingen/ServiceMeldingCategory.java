@@ -23,5 +23,6 @@ public enum ServiceMeldingCategory {
   WORK,
   SYSTEM,
   FAULT,
-  TASK
+  TASK,
+  CITIZEN
 }

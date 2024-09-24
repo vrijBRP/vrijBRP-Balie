@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,6 +24,7 @@ import java.util.Optional;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
 import nl.procura.gba.web.modules.bs.common.modules.BsModule;
@@ -39,7 +40,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.functies.VaadinUtils;
 
-@ModuleAnnotation(url = "#bs.registratie",
+@ModuleAnnotation(url = "#" + ZaakFragment.FR_REGISTRATION,
     caption = "Eerste inschrijving",
     profielActie = ProfielActie.SELECT_ZAAK_REGISTRATIE)
 public class ModuleRegistration extends BsModule {
@@ -100,7 +101,6 @@ public class ModuleRegistration extends BsModule {
 
     super.event(event);
   }
-
 
   public FileImportRegistrant setImportRegistrant(FileImportRegistrant importRegistrant) {
     this.importRegistrant = importRegistrant;

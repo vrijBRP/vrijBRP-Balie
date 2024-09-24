@@ -19,12 +19,20 @@
 
 package nl.procura.gba.web.services.beheer.requestinbox;
 
+import static nl.procura.burgerzaken.requestinbox.api.RequestInboxUtils.getVrijBRPChannel;
+import static nl.procura.burgerzaken.requestinbox.api.model.InboxItemStatus.HANDLED;
+import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.REQUEST_INBOX;
+
 import java.text.MessageFormat;
 
-import nl.procura.gba.web.services.Services;
-import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
+import nl.procura.burgerzaken.requestinbox.api.UpdateItemRequest;
 import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuut;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
 
 import lombok.Getter;
 
@@ -49,6 +57,27 @@ public abstract class RequestInboxBodyProcessor {
   abstract public RequestInboxBody getBody();
 
   abstract public CaseProcessingResult process();
+
+  protected void addRequestBoxToZaak(Zaak zaak, RequestInboxItem item) {
+    // Add verzoek-id to zaak
+    ZaakAttribuut attribuut = new ZaakAttribuut(zaak.getZaakId(), REQUEST_INBOX, item.getId());
+    getServices().getZaakAttribuutService().save(attribuut);
+
+    // Update status of inbox item
+    UpdateItemRequest request = new UpdateItemRequest()
+        .handlingChannel(getVrijBRPChannel())
+        .status(HANDLED);
+    getServices().getRequestInboxService().updateItem(item, request);
+
+    // Add documents
+    if (item.getDocumentsCount() > 0) {
+      DMSResult dmsResult = getServices().getRequestInboxService().getDocuments(item);
+      dmsResult.getDocuments().forEach(doc -> {
+        doc.setZaakId(zaak.getZaakId());
+        getServices().getDmsService().save(doc);
+      });
+    }
+  }
 
   protected <T> T getInboxData(Class<T> clazz) {
     if (inboxData == null) {

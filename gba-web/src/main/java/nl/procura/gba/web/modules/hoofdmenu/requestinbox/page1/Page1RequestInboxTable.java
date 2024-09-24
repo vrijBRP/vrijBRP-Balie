@@ -44,8 +44,8 @@ public class Page1RequestInboxTable extends GbaTable {
 
     addColumn("Nr", 30).setUseHTML(true);
     addColumn("Omschrijving").setUseHTML(true);
-    addColumn("Behandelaar", 140).setUseHTML(true);
-    addColumn("Status", 100).setUseHTML(true);
+    addColumn("Behandelaar", 200).setUseHTML(true);
+    addColumn("Status", 150).setUseHTML(true);
     addColumn("Ingevoerd op", 130).setUseHTML(true);
   }
 

@@ -1,0 +1,39 @@
+{
+  "id": "77d702fb-c3c7-419d-bcb6-f012794f7c86",
+  "name": "signaleringcontroles_v2_bsn",
+  "priority": 1,
+  "request": {
+    "url": "/signaleringcontroles/v2/bsn",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "ignoreArrayOrder": true,
+        "ignoreExtraElements": true,
+        "matchesJsonPath": "$.[?(@.bsn=='779872873')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{ \"resultaatCode\": \"HIT\", \"resultaatOmschrijving\": \"Paspoortsignalering(en)voorpersoonaanwezig\", \"peildatum\": \"2024-04-16T12:55:37.486Z\", \"signaleringInformatie\": { \"persoon\": { \"bsn\": \"999995315\", \"geslachtsnaam\": \"Puk\", \"voornamen\": \"Pietje\", \"geslacht\": \"M\", \"geboortedatum\": \"18-09-1982\", \"geboorteplaats\": \"Antwerpen\" }, \"signaleringen\": [ { \"registratiedatum\": \"2022-10-20\", \"subartikelen\": [ { \"artikel\": { \"artikelnummer\": \"22\", \"subartikel\": \"b\", \"subartikelomschrijvingScherm\": \"b. Betrokkene is nalatig in het nakomen van zijn verplichting tot terugbetaling van door de overheid aan hem verstrekte geldleningen, subsidies of renteloze voorschotten;\" } } ], \"instantie\": { \"naam\": \"DienstUitvoeringOnderwijs\" }, \"zaaknummer\": \"168582297013\", \"naamContactpersoon\": \"de heer P.Bakker\", \"telefoonContactpersoon\": \"001-1234567\" } ] }}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Fri, 21 Aug 2020 11:54:02 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "77d702fb-c3c7-419d-bcb6-f012794f7c84",
+  "persistent": true,
+  "insertionIndex": 3
+}

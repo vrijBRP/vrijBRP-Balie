@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.gv;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.components.layouts.ModuleTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.gv.page1.Page1Gv;
@@ -28,7 +29,7 @@ import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
-@ModuleAnnotation(url = "#bs.gv",
+@ModuleAnnotation(url = "#" + ZaakFragment.FR_GV,
     caption = "Gegevensverstrekking",
     profielActie = ProfielActie.SELECT_ZAAK_GV)
 public class ModuleGv extends ModuleTemplate {

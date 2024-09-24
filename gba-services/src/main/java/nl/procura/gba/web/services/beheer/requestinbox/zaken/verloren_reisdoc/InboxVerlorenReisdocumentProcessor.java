@@ -20,14 +20,20 @@
 package nl.procura.gba.web.services.beheer.requestinbox.zaken.verloren_reisdoc;
 
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxBody;
 import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxBodyProcessor;
 import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxItem;
 import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
+import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
+import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
+import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 
 import lombok.Data;
 
@@ -39,6 +45,25 @@ public class InboxVerlorenReisdocumentProcessor extends RequestInboxBodyProcesso
 
   @Override
   public CaseProcessingResult process() {
+    RequestInboxItem item = getRecord();
+    log(INFO, "Omschrijving: {0}", item.getDescription());
+    log(INFO, "Zaaknummer: {0}", item.getId());
+
+    LostTravelDocumentInboxData data = RequestInboxBody.fromJson(getRecord(), LostTravelDocumentInboxData.class);
+    DocumentInhoudingenService service = getServices().getDocumentInhoudingenService();
+    DocumentInhouding zaak = (DocumentInhouding) service.getNewZaak();
+
+    zaak.setBsn(BigDecimal.valueOf(data.getBsn()));
+    zaak.setDocumentType(data.getTravelDocumentType().getType());
+    zaak.setNummerDocument(data.getDocNumber());
+    zaak.setInhoudingType(InhoudingType.VERMISSING);
+    zaak.setSprakeVanRijbewijs(false);
+
+    service.getZaakStatussen().setInitieleStatus(zaak, ZaakStatusType.OPGENOMEN);
+    service.save(zaak);
+
+    addRequestBoxToZaak(zaak, item);
+
     return new CaseProcessingResult();
   }
 

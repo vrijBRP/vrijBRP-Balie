@@ -1,0 +1,20 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/geefStartUrl",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "{\"externUserId\":\"aa\",\"groupId\":\"bb\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"url\":\"https://www.fakeurl.blabla\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

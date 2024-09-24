@@ -1,0 +1,20 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/geefZaak",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "{\"externZaakId\":\"cc\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"zaakId\":\"abcd\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

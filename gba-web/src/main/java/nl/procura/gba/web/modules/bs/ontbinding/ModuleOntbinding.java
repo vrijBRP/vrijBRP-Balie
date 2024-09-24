@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.ontbinding;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.modules.bs.common.modules.BsModule;
 import nl.procura.gba.web.modules.bs.ontbinding.processen.OntbindingProcessen;
@@ -27,7 +28,7 @@ import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
-@ModuleAnnotation(url = "#bs.ontbinding",
+@ModuleAnnotation(url = "#" + ZaakFragment.FR_ONTBINDING,
     caption = "Ontbinding/einde in gemeente",
     profielActie = ProfielActie.SELECT_ZAAK_ONTBINDING)
 public class ModuleOntbinding extends BsModule {

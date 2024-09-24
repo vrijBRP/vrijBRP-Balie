@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.naturalisatie.page1;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.bs.page1.Page1BsTemplate;
 import nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils;
@@ -47,7 +48,7 @@ public class Page1Naturalisatie extends Page1BsTemplate {
     BasePLExt pl = getApplication().getServices().getPersonenWsService().getHuidige();
     BsPersoonUtils.kopieDossierPersoon(pl, zaakDossier.getAangever());
     getApplication().getServices().getMemoryService().setObject(Dossier.class, zaakDossier.getDossier());
-    getApplication().openWindow(getApplication().getParentWindow(), new HomeWindow(), "bs.naturalisatie");
+    getApplication().openWindow(getApplication().getParentWindow(), new HomeWindow(), ZaakFragment.FR_NATURALISATIE);
   }
 
   @Override
@@ -57,7 +58,7 @@ public class Page1Naturalisatie extends Page1BsTemplate {
 
   @Override
   protected String getFragment(ZaakType zaakType) {
-    return "bs.naturalisatie";
+    return ZaakFragment.FR_NATURALISATIE;
   }
 
   @Override

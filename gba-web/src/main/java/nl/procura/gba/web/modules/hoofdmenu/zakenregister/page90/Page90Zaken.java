@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -48,7 +48,6 @@ public class Page90Zaken extends ZakenregisterOptiePage<RijbewijsAanvraag> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
   }

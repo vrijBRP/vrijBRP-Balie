@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.onderzoek.page1;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.zaken.common.ZaakMultiWindow;
 import nl.procura.gba.web.modules.zaken.common.ZaakPersonChoiceWindow;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
@@ -43,7 +44,7 @@ public class OnderzoekMultiWindow extends ZaakMultiWindow {
   public class KeuzeAdresonderzoek extends FragmentKeuze {
 
     public KeuzeAdresonderzoek() {
-      super("Adresonderzoek", "bs.onderzoek");
+      super("Adresonderzoek", ZaakFragment.FR_ONDERZOEK);
     }
 
     @Override

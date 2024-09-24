@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,11 @@
 
 package nl.procura.gba.web.modules.zaken.overlijden.page1;
 
-import static nl.procura.gba.common.ZaakType.*;
+import static nl.procura.gba.common.ZaakType.LEVENLOOS;
+import static nl.procura.gba.common.ZaakType.LIJKVINDING;
+import static nl.procura.gba.common.ZaakType.OVERLIJDEN_IN_GEMEENTE;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.bs.page1.Page1BsTemplate;
 import nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils;
@@ -56,13 +59,13 @@ public class Page1Overlijden extends Page1BsTemplate {
 
     switch (zaakType) {
       case LEVENLOOS:
-        return "bs.levenloos";
+        return ZaakFragment.FR_LEVENLOOS;
 
       case LIJKVINDING:
-        return "bs.lijkvinding";
+        return ZaakFragment.FR_LIJKVINDING;
 
       default:
-        return "bs.overlijden.gemeente";
+        return ZaakFragment.FR_OVERL_GEMEENTE;
     }
   }
 

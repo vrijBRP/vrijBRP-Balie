@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,6 +23,7 @@ public enum ZaakIdType {
 
   ZAAKSYSTEEM(1, "ZAAKSYSTEEM", "Zaaksysteem"),
   PROWEB_PERSONEN(3, "PROWEB-PERSONEN", "Proweb Personen"),
+  INWONER_APP(5, "INWONER-APP", "Inwoner.app"),
   ONBEKEND(4, "", "Onbekend");
 
   private final String oms;

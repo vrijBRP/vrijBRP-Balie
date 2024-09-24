@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.zaken.bs.page2;
 
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonControleWindow;
 import nl.procura.gba.web.modules.bs.erkenning.overzicht.ErkenningOverzichtBuilder;
 import nl.procura.gba.web.modules.bs.geboorte.overzicht.GeboorteOverzichtBuilder;
@@ -58,7 +59,6 @@ import nl.procura.gba.web.services.bs.registration.DossierRegistration;
 import nl.procura.gba.web.services.bs.riskanalysis.DossierRiskAnalysis;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.windows.home.HomeWindow;
-import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Inzage zaak scherm
@@ -85,9 +85,7 @@ public class Page2BsTemplate extends ZakenOverzichtPage<Dossier> {
 
   @Override
   protected void addOptieButtons() {
-
     buttonAanpassen.setEnabled(getApplication().isProfielActie(profielActie));
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonFiat);

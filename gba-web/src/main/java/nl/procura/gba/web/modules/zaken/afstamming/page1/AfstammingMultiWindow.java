@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.afstamming.page1;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.zaken.common.ZaakMultiWindow;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
@@ -47,7 +48,7 @@ public class AfstammingMultiWindow extends ZaakMultiWindow {
   public class KeuzeErkenning extends FragmentKeuze {
 
     public KeuzeErkenning() {
-      super("Erkenning", "bs.erkenning");
+      super("Erkenning", ZaakFragment.FR_ERKENNING);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class AfstammingMultiWindow extends ZaakMultiWindow {
   public class KeuzeNaamskeuze extends FragmentKeuze {
 
     public KeuzeNaamskeuze() {
-      super("Naamskeuze", "bs.naamskeuze");
+      super("Naamskeuze", ZaakFragment.FR_NAAMSKEUZE);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class AfstammingMultiWindow extends ZaakMultiWindow {
   public class KeuzeGeboorte extends FragmentKeuze {
 
     public KeuzeGeboorte() {
-      super("Geboorte", "bs.geboorte");
+      super("Geboorte", ZaakFragment.FR_GEBOORTE);
     }
 
     @Override
@@ -110,7 +111,7 @@ public class AfstammingMultiWindow extends ZaakMultiWindow {
   public class KeuzeLv extends FragmentKeuze {
 
     public KeuzeLv() {
-      super("Latere vermelding", "bs.lv");
+      super("Latere vermelding", ZaakFragment.FR_LV);
     }
 
     @Override

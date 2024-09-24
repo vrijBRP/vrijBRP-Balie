@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.samenvatting;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -84,6 +86,7 @@ public class ZaakSamenvatting {
   private String              goedkeuring       = "";
   private String              identificatie     = "";
   private String              aangever          = "";
+  private String              aangeverAdres     = "";
   private ZaakItemRubrieken   zaakItemRubrieken = new ZaakItemRubrieken();
   private Deelzaken           deelzaken         = new Deelzaken();
   private boolean             zaakSpecifiek     = false;
@@ -111,8 +114,10 @@ public class ZaakSamenvatting {
     setZaakId(ZaakUtils.getRelevantZaakId(zaak));
 
     setAangever(getAangever(zaak));
-    setIdentificatie(
-        zaak.getIdentificatie() != null ? zaak.getIdentificatie().getOmschrijving() : "Niet vastgesteld");
+    setAangeverAdres(getAangeverAdres(zaak));
+    setIdentificatie(zaak.getIdentificatie() != null
+        ? zaak.getIdentificatie().getOmschrijving()
+        : "Niet vastgesteld");
 
     setGoedkeuring("N.v.t");
     if (zaak instanceof GoedkeuringZaak) {
@@ -212,6 +217,14 @@ public class ZaakSamenvatting {
       }
     }
 
+    return fil(out) ? out : "Onbekend";
+  }
+
+  private String getAangeverAdres(Zaak zaak) {
+    String out = "";
+    if (zaak.getBasisPersoon() != null && zaak.getBasisPersoon().getCat(GBACat.VB).hasSets()) {
+      out = zaak.getBasisPersoon().getVerblijfplaats().getAdres().getAdresPcWpl();
+    }
     return fil(out) ? out : "Onbekend";
   }
 

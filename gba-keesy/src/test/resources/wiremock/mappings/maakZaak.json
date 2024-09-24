@@ -1,0 +1,20 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/maakZaak",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "{\"groupId\":\"MyGroup\",\"zaakSoort\":\"Huwelijk\",\"behandelaarId\":\"burgerzaken@procura.nl\",\"onderwerp\":\"Huwelijk sluiten\",\"externZaakId\":\"K128\",\"persoon\":{\"naam\":\"Frits Janssen\",\"email\":\"burgerzaken@procura.nl\",\"telnr\":\"1234567890\"}}"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"zaakId\": \"123456789\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

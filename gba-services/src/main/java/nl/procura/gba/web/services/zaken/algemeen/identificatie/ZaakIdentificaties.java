@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -32,9 +32,9 @@ public class ZaakIdentificaties {
     return pos(size());
   }
 
-  public String getNummer(String zaakType) {
+  public String getNummer(String idType) {
     for (ZaakIdentificatie nummer : nummers) {
-      if (nummer.getType().equalsIgnoreCase(zaakType)) {
+      if (nummer.getType().equalsIgnoreCase(idType)) {
         return nummer.getExternId();
       }
     }

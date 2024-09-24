@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -27,6 +27,7 @@ import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.eq;
 import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isDotValue;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.trim;
 
@@ -605,7 +606,7 @@ public class DocumentPL implements Serializable {
           sAand = "Vervallen     " + dInh;
         }
 
-        if (sAand.equals(".")) {
+        if (isDotValue(sAand)) {
           sAand = "Onbekend     " + dInh;
         }
 

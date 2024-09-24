@@ -561,7 +561,7 @@ public class DocumentenPrintenService extends AbstractService {
     for (TranslationRec record : documentTranslation.getSortedRecords()) {
       translations.put(record.getNl(), record.getFl());
     }
-    return new TranslationFilter(translations);
+    return new TranslationFilter(translations, true);
   }
 
   private void setNumberOfResidents(ConditionalMap model) {

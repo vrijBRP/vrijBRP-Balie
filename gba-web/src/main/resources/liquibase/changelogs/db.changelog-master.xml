@@ -49,4 +49,5 @@
     <include relativeToChangelogFile="true" file="db.changelog-v1_30.xml"/>
     <include relativeToChangelogFile="true" file="db.changelog-v1_31.xml"/>
     <include relativeToChangelogFile="true" file="db.changelog-v1_32.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-zaken-view-ext.xml"/>
 </databaseChangeLog>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.huwelijk.page1;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.zaken.common.ZaakMultiWindow;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
@@ -52,7 +53,7 @@ public class HuwelijkMultiWindow extends ZaakMultiWindow {
   public class KeuzeOmzetting extends FragmentKeuze {
 
     public KeuzeOmzetting() {
-      super("Omzetting in gemeente", "bs.omzetting");
+      super("Omzetting in gemeente", ZaakFragment.FR_OMZETTING_GPS);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class HuwelijkMultiWindow extends ZaakMultiWindow {
   public class KeuzeOntbinding extends FragmentKeuze {
 
     public KeuzeOntbinding() {
-      super("Ontbinding/einde in gemeente", "bs.ontbinding");
+      super("Ontbinding/einde in gemeente", ZaakFragment.FR_ONTBINDING);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class HuwelijkMultiWindow extends ZaakMultiWindow {
   public class KeuzeSluiting extends FragmentKeuze {
 
     public KeuzeSluiting() {
-      super("Sluiting in gemeente", "bs.huwelijk");
+      super("Sluiting in gemeente", ZaakFragment.FR_HUWELIJK);
     }
 
     @Override

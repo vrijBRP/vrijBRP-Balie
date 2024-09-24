@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -37,9 +37,10 @@ public abstract class VerwijderZaakActie<T> {
 
   public abstract List<VerwijderZakenQuery> getQueries();
 
-  protected static int toNumericDate(int year) {
+  protected static int toNumericDate(int year, int months) {
     return Integer.parseInt(LocalDate.now()
         .minusYears(year)
+        .minusMonths(months)
         .format(DateTimeFormatter.ofPattern("yyyyMMdd")));
   }
 

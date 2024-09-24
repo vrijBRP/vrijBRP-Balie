@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,13 +24,13 @@ import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.List;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.verwijderen.page2.Page2Verwijderen;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.zaken.opschonen.VerwijderZakenActie;
 import nl.procura.gba.web.services.zaken.opschonen.VerwijderZakenOverzicht;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -121,7 +121,7 @@ public class Page1Verwijderen extends NormalPageTemplate {
       setMultiSelect(true);
 
       addColumn("Zaaktype", 500);
-      addColumn("Bewaartermijn", 100);
+      addColumn("Bewaartermijn", 150);
       addColumn("Aantallen");
       super.setColumns();
     }
@@ -132,7 +132,7 @@ public class Page1Verwijderen extends NormalPageTemplate {
       for (VerwijderZakenActie actie : overzicht.getActies()) {
         Record record = addRecord(actie);
         record.addValue(actie.getVerwijderActie().getType().getOmschrijving());
-        record.addValue(actie.getVerwijderActie().getBewaarTermijnInJaren() + " jaar");
+        record.addValue(actie.getVerwijderActie().getTermijnAsString());
         record.addValue(actie.getVerwijderActie().getAantal());
       }
       super.setRecords();

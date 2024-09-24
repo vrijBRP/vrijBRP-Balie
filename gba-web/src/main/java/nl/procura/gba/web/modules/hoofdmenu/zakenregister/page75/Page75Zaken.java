@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -52,7 +52,6 @@ public class Page75Zaken extends ZakenregisterOptiePage<DocumentInhouding> {
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     if (button == buttonVermissing) {
       goToVermissing();
     }
@@ -62,8 +61,8 @@ public class Page75Zaken extends ZakenregisterOptiePage<DocumentInhouding> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonPersonen);
+
     if (InhoudingType.VERMISSING.equals(getZaak().getInhoudingType())) {
       addOptieButton(buttonVermissing);
       buttonDoc.setCaption("Zaak afdrukken");

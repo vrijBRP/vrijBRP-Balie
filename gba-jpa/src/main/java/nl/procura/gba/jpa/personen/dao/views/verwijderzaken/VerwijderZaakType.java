@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -69,8 +69,9 @@ public enum VerwijderZaakType {
   NAAMSKEUZE("naamskeuze", "Naamskeuze", Doss.class, ZaakType.NAAMSKEUZE),
   OVERLIJDEN_GEMEENTE("overlijden_in_gemeente", "Overlijden in gemeente", Doss.class, ZaakType.OVERLIJDEN_IN_GEMEENTE),
   LIJKVINDING("lijkvinding", "Lijkvindingen", Doss.class, ZaakType.LIJKVINDING),
-  OVERLIJDEN_BUITENLAND("overlijden_in_buitenland", "Overlijdens buitenland", Doss.class, OVERLIJDEN_IN_BUITENLAND),
+  OVERLIJDEN_BUITENLAND("overlijden_in_buitenland", "Overlijden in buitenland", Doss.class, OVERLIJDEN_IN_BUITENLAND),
   LEVENLOOS("levenloos_geboren_kind", "Levenloos geboren kind", Doss.class, ZaakType.LEVENLOOS),
+  LV("latere_vermelding", "Latere vermelding", Doss.class, ZaakType.LV),
   INDICATIE("indicatie", "Indicaties", Indicatie.class, ZaakType.INDICATIE),
   CORRESPONDENTIE("correspondentie", "Correspondenties", Correspondentie.class, ZaakType.CORRESPONDENTIE),
   GEGEVENSVERSTREKKING("gegevensverstrekking", "Gegevensverstrekkingen", Gv.class, ZaakType.GEGEVENSVERSTREKKING),

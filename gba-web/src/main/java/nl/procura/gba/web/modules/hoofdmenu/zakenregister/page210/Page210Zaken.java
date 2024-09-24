@@ -26,8 +26,8 @@ import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.P
 
 import java.util.function.Consumer;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonControleWindow;
-import nl.procura.gba.web.modules.bs.omzetting.ModuleOmzetting;
 import nl.procura.gba.web.modules.bs.omzetting.overzicht.form1.OmzettingOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -39,8 +39,6 @@ import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierPartners;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.omzetting.DossierOmzetting;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.functies.VaadinUtils;
 
 /**
  * Tonen omzettingdossier
@@ -48,15 +46,12 @@ import nl.procura.vaadin.functies.VaadinUtils;
 public class Page210Zaken extends ZakenregisterOptiePage<Dossier> {
 
   public Page210Zaken(Dossier zaak) {
-
     super(zaak, "Zakenregister - dossier - omzetting GPS in huwelijk");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -125,9 +120,7 @@ public class Page210Zaken extends ZakenregisterOptiePage<Dossier> {
       }
 
       private void goToHuwelijk() {
-        final MainModuleContainer mainModule = VaadinUtils.getChild(getParentWindow(),
-            MainModuleContainer.class);
-        mainModule.getNavigation().addPage(new ModuleOmzetting(getZaak()));
+        goToZaak(ZaakFragment.FR_OMZETTING_GPS);
       }
     };
 

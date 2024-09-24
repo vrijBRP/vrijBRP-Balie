@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,17 +21,35 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.overige.tree;
 
 import com.vaadin.ui.HorizontalLayout;
 
+import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabLayout;
 import nl.procura.gba.web.modules.zaken.ZakenModuleTemplate;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
-public class ZaakOverigeLayout extends GbaVerticalLayout {
+public class ZaakOverigeLayout extends GbaVerticalLayout implements ZaakTabLayout {
 
   private final MainModuleContainer mainModule = new MainModuleContainer();
+  private Zaak                      zaak;
 
   public ZaakOverigeLayout(Zaak zaak) {
+    this.zaak = zaak;
+    updateComponents();
+  }
 
+  public String getHeader() {
+    return "Overige";
+  }
+
+  @Override
+  public void reloadLayout(GbaApplication application, Zaak zaak) {
+    this.zaak = zaak;
+    updateComponents();
+  }
+
+  private void updateComponents() {
+    removeAllComponents();
     HorizontalLayout layout = new HorizontalLayout();
     layout.setSizeFull();
 
@@ -41,10 +59,6 @@ public class ZaakOverigeLayout extends GbaVerticalLayout {
 
     addComponent(layout);
     layout.setExpandRatio(mainModule, 1f);
-  }
-
-  public String getHeader() {
-    return "Overige";
   }
 
   public class Tree extends ZaakOverigeTree {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,10 +19,15 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bijlage.page1;
 
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DOC_UPLOAD_PERIODE;
+import static nl.procura.standard.Globalfunctions.aval;
+
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.dialogs.DeleteProcedure;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
@@ -37,8 +42,7 @@ import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSDocument;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
+import nl.procura.standard.ProcuraDate;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
@@ -131,12 +135,27 @@ public abstract class Page1ZaakBijlage extends NormalPageTemplate {
     };
   }
 
+  /**
+   * Mag er een document worden geupload voor deze zaak op basis van de upload periode
+   */
+  private boolean magDocumentUploaden() {
+    int uploadPeriode = aval(getServices().getDmsService().getSysteemParm(ZAKEN_DOC_UPLOAD_PERIODE, false));
+    return zaak.getZaakHistorie().getStatusHistorie()
+        .getEindStatusInHistorie()
+        .filter(status -> uploadPeriode >= 0)
+        .map(status -> !new ProcuraDate(status.getDatumTijdInvoer()
+            .getDate())
+            .addDays(uploadPeriode)
+            .isExpired())
+        .orElse(true);
+  }
+
   @Override
   public void onNew() {
-
-    if (zaak.getStatus().isEindStatus()) {
-      throw new ProException(ProExceptionSeverity.WARNING, "Bij zaken met een eindstatus kunnen geen " +
-          "nieuwe documenten worden geupload");
+    if (!magDocumentUploaden()) {
+      throw new ProException(ProExceptionSeverity.WARNING,
+          "Het is niet mogelijk om documenten te uploaden. " +
+              "De upload periode voor deze zaak is verstreken.");
     }
 
     if (buttonNew.getParent() == null) {

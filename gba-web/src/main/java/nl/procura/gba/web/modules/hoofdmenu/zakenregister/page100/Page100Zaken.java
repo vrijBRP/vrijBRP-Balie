@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,12 +20,15 @@
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page100;
 
 import static nl.procura.gba.common.MiscUtils.to;
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.*;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.AANGEVER;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.MOEDER;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.VADER;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.procura.gba.web.modules.bs.geboorte.ModuleGeboorte;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.geboorte.overzicht.GeboorteOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -35,9 +38,6 @@ import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.vaadin.functies.VaadinUtils;
 
 /**
  * Tonen geboorte dossier
@@ -46,15 +46,12 @@ import nl.procura.vaadin.functies.VaadinUtils;
 public class Page100Zaken extends ZakenregisterOptiePage<Dossier> {
 
   public Page100Zaken(Dossier zaak) {
-
     super(zaak, "Zakenregister - dossier - geboorte");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -119,9 +116,6 @@ public class Page100Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
-
-    MainModuleContainer mainModule = VaadinUtils.getChild(getWindow(), MainModuleContainer.class);
-
-    mainModule.getNavigation().addPage(new ModuleGeboorte(getZaak()));
+    goToZaak(ZaakFragment.FR_GEBOORTE);
   }
 }

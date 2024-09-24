@@ -19,19 +19,15 @@
 
 package nl.procura.gba.web.services.beheer.requestinbox.zaken.reisdocument;
 
-import static nl.procura.burgerzaken.requestinbox.api.RequestInboxUtils.getVrijBRPChannel;
-import static nl.procura.burgerzaken.requestinbox.api.model.InboxItemStatus.HANDLED;
-import static nl.procura.gba.web.services.beheer.requestinbox.zaken.betaling.InboxBetalingProcessor.BEDRAG;
-import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.REQUEST_INBOX;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.gba.web.services.beheer.requestinbox.zaken.betaling.InboxBetalingProcessor.BEDRAG;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
 import org.apache.commons.lang3.BooleanUtils;
 
-import nl.procura.burgerzaken.requestinbox.api.UpdateItemRequest;
 import nl.procura.burgerzaken.requestinbox.api.model.InboxItemTypeName;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.services.Services;
@@ -41,8 +37,6 @@ import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxItem;
 import nl.procura.gba.web.services.beheer.requestinbox.zaken.betaling.InboxBetalingProcessor;
 import nl.procura.gba.web.services.beheer.requestinbox.zaken.verloren_reisdoc.TravelDocumentType;
 import nl.procura.gba.web.services.zaken.algemeen.CaseProcessingResult;
-import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuut;
-import nl.procura.gba.web.services.zaken.algemeen.dms.DMSResult;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SpoedType;
@@ -62,39 +56,22 @@ public class InboxReisdocumentProcessor extends RequestInboxBodyProcessor {
     log(INFO, "Zaaknummer: {0}", item.getId());
 
     ReisdocumentInboxData data = RequestInboxBody.fromJson(item, ReisdocumentInboxData.class);
-    ReisdocumentAanvraag zaakId = (ReisdocumentAanvraag) getServices().getReisdocumentService().getNewZaak();
+    ReisdocumentAanvraag zaak = (ReisdocumentAanvraag) getServices().getReisdocumentService().getNewZaak();
 
-    zaakId.setBsn(BigDecimal.valueOf(data.getBsn()));
-    zaakId.setReisdocumentType(data.getTravelDocumentType().getType());
-    zaakId.setLengte(BigDecimal.valueOf(data.getHeight()));
-    zaakId.setSpoed(BooleanUtils.isTrue(data.getExpeditedProcessing())
+    zaak.setBsn(BigDecimal.valueOf(data.getBsn()));
+    zaak.setReisdocumentType(data.getTravelDocumentType().getType());
+    zaak.setLengte(BigDecimal.valueOf(data.getHeight()));
+    zaak.setSpoed(BooleanUtils.isTrue(data.getExpeditedProcessing())
         ? SpoedType.JA_OP_VERZOEK_AANVRAGER
         : SpoedType.NEE);
 
     ReisdocumentService service = getServices().getReisdocumentService();
-    service.getZaakStatussen().setInitieleStatus(zaakId, ZaakStatusType.INCOMPLEET);
-    service.save(zaakId);
+    service.getZaakStatussen().setInitieleStatus(zaak, ZaakStatusType.INCOMPLEET);
+    service.save(zaak);
 
-    // Add verzoek-id to zaak
-    ZaakAttribuut attribuut = new ZaakAttribuut(zaakId.getZaakId(), REQUEST_INBOX, item.getId());
-    getServices().getZaakAttribuutService().save(attribuut);
+    addRequestBoxToZaak(zaak, item);
 
-    // Update status of inbox item
-    UpdateItemRequest request = new UpdateItemRequest()
-        .handlingChannel(getVrijBRPChannel())
-        .status(HANDLED);
-    getServices().getRequestInboxService().updateItem(item, request);
-
-    // Add documents
-    if (item.getDocumentsCount() > 0) {
-      DMSResult dmsResult = getServices().getRequestInboxService().getDocuments(item);
-      dmsResult.getDocuments().forEach(doc -> {
-        doc.setZaakId(zaakId.getZaakId());
-        getServices().getDmsService().save(doc);
-      });
-    }
-
-    log(INFO, "Reisdocument opgeslagen", zaakId.getZaakId());
+    log(INFO, "Reisdocument opgeslagen", zaak.getZaakId());
 
     return getResult();
   }

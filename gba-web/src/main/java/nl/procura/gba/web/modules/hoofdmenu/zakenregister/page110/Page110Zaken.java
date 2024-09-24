@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,8 +26,8 @@ import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.P
 
 import java.util.function.Consumer;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.common.pages.persooncontrole.BsPersoonControleWindow;
-import nl.procura.gba.web.modules.bs.huwelijk.ModuleHuwelijk;
 import nl.procura.gba.web.modules.bs.huwelijk.overzicht.form1.HuwelijkOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -38,8 +38,6 @@ import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.huwelijk.DossierHuwelijk;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.functies.VaadinUtils;
 
 /**
  * Tonen huwelijksdossier
@@ -54,7 +52,6 @@ public class Page110Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -118,13 +115,7 @@ public class Page110Zaken extends ZakenregisterOptiePage<Dossier> {
 
       @Override
       public void onGoToZaak() {
-        goToHuwelijk();
-        close();
-      }
-
-      private void goToHuwelijk() {
-        MainModuleContainer mainModule = VaadinUtils.getChild(getParentWindow(), MainModuleContainer.class);
-        mainModule.getNavigation().addPage(new ModuleHuwelijk(getZaak()));
+        goToZaak(ZaakFragment.FR_HUWELIJK);
       }
     };
 

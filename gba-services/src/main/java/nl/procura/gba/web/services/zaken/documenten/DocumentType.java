@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -97,7 +97,7 @@ public enum DocumentType {
   RISK_ANALYSE("risico_analyse", "data", "Risicoanalyse"),
   STEMPAS("stempas", "data", "Stempas"),
   ROS("ros", "data", "Register ongeldige stempassen (ROS)"),
-  PL_CATEGORIE("pl_categorie", "data", "Persoonslijst categorie"),
+  PL_CATEGORIE("pl_categorie", "data", "Persoonslijst (categorie)"),
   ONBEKEND("onbekend", "onbekend", "Onbekend");
 
   private final int    order;

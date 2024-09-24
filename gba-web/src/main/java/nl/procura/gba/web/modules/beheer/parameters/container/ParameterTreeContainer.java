@@ -37,6 +37,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_GV;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_HANDLEIDINGEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INBOX;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INW_APP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KASSA;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KENNISBANK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_MIDOFFICE;
@@ -134,6 +135,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_GEO, GROUP_DIENSTEN, false, GeoParameterLayout.class);
     addTreeItem(GROUP_GPK, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_GV, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_INW_APP, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_KENNISBANK, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_MIDOFFICE, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_MIJN_OVERHEID, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);

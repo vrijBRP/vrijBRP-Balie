@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+  <!--
+  Update this file if something need to change to the zaken_view_ext view.
+  It's re-run on every change and will replace the existing view
+  -->
+  <changeSet author="VrijBRP" id="zaken-view-ext-1" runOnChange="true" dbms="postgresql">
+    <createView viewName="zaken_view_ext" replaceIfExists="true">
+      <![CDATA[
+      SELECT uitt_aanvr.zaak_id,
+             'uittreksel'::text                 AS zaak_type,
+             'uitt_aanvr'::text                 AS tabel,
+             uitt_aanvr.ind_verwerkt,
+             uitt_aanvr.d_aanvr                 AS d_invoer,
+             uitt_aanvr.t_aanvr                 AS t_invoer,
+             uitt_aanvr.d_aanvr                 AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(uitt_aanvr.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)               AS anr,
+             array_agg(DISTINCT uitt_aanvr.bsn) AS bsn
+      FROM uitt_aanvr,
+           document
+      WHERE uitt_aanvr.c_document = document.c_document
+        AND document.document_type::text = 'pl'::text
+      GROUP BY uitt_aanvr.zaak_id, uitt_aanvr.ind_verwerkt, uitt_aanvr.d_aanvr, uitt_aanvr.t_aanvr
+      UNION
+      SELECT uitt_aanvr.zaak_id,
+             'formulier'::text                  AS zaak_type,
+             'uitt_aanvr'::text                 AS tabel,
+             uitt_aanvr.ind_verwerkt,
+             uitt_aanvr.d_aanvr                 AS d_invoer,
+             uitt_aanvr.t_aanvr                 AS t_invoer,
+             uitt_aanvr.d_aanvr                 AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(uitt_aanvr.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)               AS anr,
+             array_agg(DISTINCT uitt_aanvr.bsn) AS bsn
+      FROM uitt_aanvr,
+           document
+      WHERE uitt_aanvr.c_document = document.c_document
+        AND document.document_type::text <> 'pl'::text
+      GROUP BY uitt_aanvr.zaak_id, uitt_aanvr.ind_verwerkt, uitt_aanvr.d_aanvr, uitt_aanvr.t_aanvr
+      UNION
+      SELECT geheimhouding.zaak_id,
+             'verstrekkingsbeperking'::text                 AS zaak_type,
+             'geheimhouding'::text                          AS tabel,
+             geheimhouding.ind_verwerkt,
+             geheimhouding.d_in                             AS d_invoer,
+             geheimhouding.t_in                             AS t_invoer,
+             geheimhouding.d_wijz                           AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(geheimhouding.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+                                         ''::text)::bigint) AS anr,
+             array_agg(DISTINCT geheimhouding.bsn)          AS bsn
+      FROM geheimhouding
+      GROUP BY geheimhouding.zaak_id, geheimhouding.ind_verwerkt, geheimhouding.d_in,
+               geheimhouding.d_wijz, geheimhouding.t_in
+      UNION
+      SELECT naamgebruik.zaak_id,
+             'naamgebruik'::text                            AS zaak_type,
+             'naamgebruik'::text                            AS tabel,
+             naamgebruik.ind_verwerkt,
+             naamgebruik.d_in                               AS d_invoer,
+             naamgebruik.t_in                               AS t_invoer,
+             naamgebruik.d_wijz                             AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(naamgebruik.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+                                         ''::text)::bigint) AS anr,
+             array_agg(DISTINCT naamgebruik.bsn)            AS bsn
+      FROM naamgebruik
+      GROUP BY naamgebruik.zaak_id, naamgebruik.ind_verwerkt, naamgebruik.d_in, naamgebruik.d_wijz,
+               naamgebruik.t_in
+      UNION
+      SELECT bvh_park.zaak_id,
+             'binnenverhuizing'::text         AS zaak_type,
+             'bvh_park'::text                 AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn                   AS d_invoer,
+             bvh_park.t_opn                   AS t_invoer,
+             bvh_park.d_aanv                  AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(bvh_park.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)             AS anr,
+             array_agg(DISTINCT bvh_park.bsn) AS bsn
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 1::numeric
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv,
+               bvh_park.t_opn
+      UNION
+      SELECT bvh_park.zaak_id,
+             'buitenverhuizing'::text         AS zaak_type,
+             'bvh_park'::text                 AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn                   AS d_invoer,
+             bvh_park.t_opn                   AS t_invoer,
+             bvh_park.d_aanv                  AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(bvh_park.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)             AS anr,
+             array_agg(DISTINCT bvh_park.bsn) AS bsn
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 2::numeric
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv,
+               bvh_park.t_opn
+      UNION
+      SELECT bvh_park.zaak_id,
+             'emigratie'::text                AS zaak_type,
+             'bvh_park'::text                 AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn                   AS d_invoer,
+             bvh_park.t_opn                   AS t_invoer,
+             bvh_park.d_aanv                  AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(bvh_park.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)             AS anr,
+             array_agg(DISTINCT bvh_park.bsn) AS bsn
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 3::numeric
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv,
+               bvh_park.t_opn
+      UNION
+      SELECT bvh_park.zaak_id,
+             'hervestiging'::text             AS zaak_type,
+             'bvh_park'::text                 AS tabel,
+             bvh_park.ind_verwerkt,
+             bvh_park.d_opn                   AS d_invoer,
+             bvh_park.t_opn                   AS t_invoer,
+             bvh_park.d_aanv                  AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(bvh_park.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)             AS anr,
+             array_agg(DISTINCT bvh_park.bsn) AS bsn
+      FROM bvh_park
+      WHERE bvh_park.verhuis_type = 4::numeric
+      GROUP BY bvh_park.zaak_id, bvh_park.ind_verwerkt, bvh_park.d_opn, bvh_park.d_aanv,
+               bvh_park.t_opn
+      UNION
+      SELECT vog_aanvr.zaak_id,
+             'vog'::text                         AS zaak_type,
+             'vog_aanvr'::text                   AS tabel,
+             vog_aanvr.ind_verwerkt,
+             vog_aanvr.d_aanvr                   AS d_invoer,
+             vog_aanvr.t_aanvr                   AS t_invoer,
+             vog_aanvr.d_aanvr                   AS d_ingang,
+             array_agg(DISTINCT vog_aanvr.anr)   AS anr,
+             array_agg(DISTINCT vog_aanvr.bsn_a) AS bsn
+      FROM vog_aanvr
+      GROUP BY vog_aanvr.zaak_id, vog_aanvr.ind_verwerkt, vog_aanvr.d_aanvr, vog_aanvr.t_aanvr
+      UNION
+      SELECT gpk.zaak_id,
+             'gpk'::text                 AS zaak_type,
+             'gpk'::text                 AS tabel,
+             gpk.ind_verwerkt,
+             gpk.d_aanvr                 AS d_invoer,
+             gpk.t_aanvr                 AS d_invoer,
+             gpk.d_aanvr                 AS d_ingang,
+             array_agg(DISTINCT gpk.anr) AS anr,
+             array_agg(DISTINCT gpk.bsn) AS bsn
+      FROM gpk
+      GROUP BY gpk.zaak_id, gpk.ind_verwerkt, gpk.d_aanvr, gpk.t_aanvr
+      UNION
+      SELECT rdm01.zaak_id,
+             'reisdocument'::text                                                                                        AS zaak_type,
+             'rdm01'::text                                                                                               AS tabel,
+             rdm01.ind_verwerkt,
+             rdm01.d_aanvr                                                                                               AS d_invoer,
+             rdm01.t_aanvr                                                                                               AS t_invoer,
+             rdm01.d_aanvr                                                                                               AS d_ingang,
+             array_agg(DISTINCT
+                         NULLIF(regexp_replace(rdm01.anr::text, '[^0-9]'::text, ''::text, 'g'::text), ''::text)::bigint) AS anr,
+             array_agg(DISTINCT rdm01.bsn)                                                                               AS bsn
+      FROM rdm01
+      GROUP BY rdm01.zaak_id, rdm01.ind_verwerkt, rdm01.d_aanvr, rdm01.t_aanvr
+      UNION
+      SELECT doc_inh.zaak_id,
+             'inhouding_vermissing'::text    AS zaak_type,
+             'doc_inh'::text                 AS tabel,
+             doc_inh.ind_verwerkt,
+             doc_inh.d_in                    AS d_invoer,
+             doc_inh.t_in                    AS t_invoer,
+             doc_inh.d_inneming              AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(doc_inh.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+               ''::text)::bigint)            AS anr,
+             array_agg(DISTINCT doc_inh.bsn) AS bsn
+      FROM doc_inh
+      GROUP BY doc_inh.zaak_id, doc_inh.ind_verwerkt, doc_inh.d_inneming, doc_inh.d_in, doc_inh.t_in
+      UNION
+      SELECT nrd.zaak_id,
+             'rijbewijs'::text                                                                                         AS zaak_type,
+             'nrd'::text                                                                                               AS tabel,
+             nrd.ind_verwerkt,
+             nrd.d_aanvr                                                                                               AS d_invoer,
+             nrd.t_aanvr                                                                                               AS t_invoer,
+             nrd.d_aanvr                                                                                               AS d_ingang,
+             array_agg(DISTINCT
+                         NULLIF(regexp_replace(nrd.anr::text, '[^0-9]'::text, ''::text, 'g'::text), ''::text)::bigint) AS anr,
+             array_agg(DISTINCT nrd.bsn)                                                                               AS bsn
+      FROM nrd
+      GROUP BY nrd.zaak_id, nrd.ind_verwerkt, nrd.d_aanvr, nrd.t_aanvr
+      UNION
+      SELECT terugmelding.zaak_id,
+             'terugmelding'::text                           AS zaak_type,
+             'terugmelding'::text                           AS tabel,
+             terugmelding.ind_verwerkt,
+             terugmelding.d_in                              AS d_invoer,
+             terugmelding.t_in                              AS t_invoer,
+             terugmelding.d_in                              AS d_ingang,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(terugmelding.anr::text, '[^0-9]'::text, ''::text, 'g'::text),
+                                         ''::text)::bigint) AS anr,
+             array_agg(DISTINCT NULLIF(
+               regexp_replace(terugmelding.snr::text, '[^0-9]'::text, ''::text, 'g'::text),
+                                         ''::text)::bigint) AS bsn
+      FROM terugmelding
+      GROUP BY terugmelding.zaak_id, terugmelding.ind_verwerkt, terugmelding.d_in, terugmelding.t_in
+      UNION
+      SELECT doss.zaak_id,
+             'geboorte'::text           AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND
+                                       (dp.type_persoon = ANY
+                                        (ARRAY [10::numeric, 30::numeric, 40::numeric]))
+      WHERE doss.type_doss = 100::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'erkenning'::text          AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND
+                                       (dp.type_persoon = ANY
+                                        (ARRAY [10::numeric, 40::numeric, 60::numeric]))
+      WHERE doss.type_doss = 200::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'huw_gps'::text            AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [70::numeric, 71::numeric]))
+      WHERE doss.type_doss = 300::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'naamskeuze'::text         AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [40::numeric, 50::numeric]))
+      WHERE doss.type_doss = 400::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'overlijden_in_gemeente'::text AS zaak_type,
+             'doss'::text                   AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr                   AS d_invoer,
+             doss.t_aanvr                   AS t_invoer,
+             doss.d_in                      AS d_ingang,
+             array_agg(DISTINCT dp.anr)     AS anr,
+             array_agg(DISTINCT dp.bsn)     AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [10::numeric, 15::numeric]))
+      WHERE doss.type_doss = 500::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'lijkvinding'::text        AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND dp.type_persoon = 15::numeric
+      WHERE doss.type_doss = 600::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'overlijden_in_buitenland'::text AS zaak_type,
+             'doss'::text                     AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr                     AS d_invoer,
+             doss.t_aanvr                     AS t_invoer,
+             doss.d_in                        AS d_ingang,
+             array_agg(DISTINCT dp.anr)       AS anr,
+             array_agg(DISTINCT dp.bsn)       AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [10::numeric, 15::numeric]))
+      WHERE doss.type_doss = 700::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'levenloos_geboren_kind'::text AS zaak_type,
+             'doss'::text                   AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr                   AS d_invoer,
+             doss.t_aanvr                   AS t_invoer,
+             doss.d_in                      AS d_ingang,
+             array_agg(DISTINCT dp.anr)     AS anr,
+             array_agg(DISTINCT dp.bsn)     AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND dp.type_persoon = 10::numeric
+      WHERE doss.type_doss = 800::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT indicatie.zaak_id,
+             'indicatie'::text                 AS zaak_type,
+             'indicatie'::text                 AS tabel,
+             indicatie.ind_verwerkt,
+             indicatie.d_in                    AS d_invoer,
+             indicatie.t_in                    AS t_invoer,
+             indicatie.d_in                    AS d_ingang,
+             array_agg(DISTINCT indicatie.anr) AS anr,
+             array_agg(DISTINCT indicatie.bsn) AS bsn
+      FROM indicatie
+      GROUP BY indicatie.zaak_id, indicatie.ind_verwerkt, indicatie.d_in, indicatie.t_in
+      UNION
+      SELECT correspondentie.zaak_id,
+             'correspondentie'::text                 AS zaak_type,
+             'correspondentie'::text                 AS tabel,
+             correspondentie.ind_verwerkt,
+             correspondentie.d_in                    AS d_invoer,
+             correspondentie.t_in                    AS t_invoer,
+             correspondentie.d_in                    AS d_ingang,
+             array_agg(DISTINCT correspondentie.anr) AS anr,
+             array_agg(DISTINCT correspondentie.bsn) AS bsn
+      FROM correspondentie
+      GROUP BY correspondentie.zaak_id, correspondentie.ind_verwerkt, correspondentie.d_in,
+               correspondentie.t_in
+      UNION
+      SELECT gv.zaak_id,
+             'gegevensverstrekking'::text AS zaak_type,
+             'gv'::text                   AS tabel,
+             gv.ind_verwerkt,
+             gv.d_in                      AS d_invoer,
+             gv.t_in                      AS t_invoer,
+             gv.d_wijz                    AS d_ingang,
+             array_agg(DISTINCT gv.anr)   AS anr,
+             array_agg(DISTINCT gv.bsn)   AS bsn
+      FROM gv
+      GROUP BY gv.zaak_id, gv.ind_verwerkt, gv.d_in, gv.d_wijz, gv.t_in
+      UNION
+      SELECT doss.zaak_id,
+             'omzetting_gps'::text      AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [70::numeric, 71::numeric]))
+      WHERE doss.type_doss = 1300::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'ontbinding_huwelijk_gps'::text AS zaak_type,
+             'doss'::text                    AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr                    AS d_invoer,
+             doss.t_aanvr                    AS t_invoer,
+             doss.d_in                       AS d_ingang,
+             array_agg(DISTINCT dp.anr)      AS anr,
+             array_agg(DISTINCT dp.bsn)      AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [70::numeric, 71::numeric]))
+      WHERE doss.type_doss = 1400::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT inbox.zaak_id,
+             'inbox'::text      AS zaak_type,
+             'inbox'::text      AS tabel,
+             inbox.ind_verwerkt,
+             inbox.d_invoer,
+             inbox.t_invoer,
+             inbox.d_invoer     AS d_ingang,
+             ARRAY []::bigint[] AS anr,
+             ARRAY []::bigint[] AS bsn
+      FROM inbox
+      GROUP BY inbox.zaak_id, inbox.ind_verwerkt, inbox.d_invoer, inbox.t_invoer
+      UNION
+      SELECT doss.zaak_id,
+             'onderzoek'::text          AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp
+                       ON doss.c_doss = dp.c_doss AND
+                          (dp.type_persoon = ANY (ARRAY [10::numeric, 75::numeric]))
+      WHERE doss.type_doss = 1600::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'eerste_inschrijving'::text AS zaak_type,
+             'doss'::text                AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr                AS d_invoer,
+             doss.t_aanvr                AS t_invoer,
+             doss.d_in                   AS d_ingang,
+             array_agg(DISTINCT dp.anr)  AS anr,
+             array_agg(DISTINCT dp.bsn)  AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND dp.type_persoon = 81::numeric
+      WHERE doss.type_doss = 1700::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'risicoanalyse'::text      AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND dp.type_persoon = 75::numeric
+      WHERE doss.type_doss = 1800::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'naturalisatie'::text      AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND
+                                       (dp.type_persoon = ANY
+                                        (ARRAY [84::numeric, 83::numeric, 85::numeric, 86::numeric]))
+      WHERE doss.type_doss = 2000::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT doss.zaak_id,
+             'latere_vermelding'::text  AS zaak_type,
+             'doss'::text               AS tabel,
+             doss.ind_verwerkt,
+             doss.d_aanvr               AS d_invoer,
+             doss.t_aanvr               AS t_invoer,
+             doss.d_in                  AS d_ingang,
+             array_agg(DISTINCT dp.anr) AS anr,
+             array_agg(DISTINCT dp.bsn) AS bsn
+      FROM doss
+             LEFT JOIN doss_pers dp ON doss.c_doss = dp.c_doss AND
+                                       (dp.type_persoon = ANY
+                                        (ARRAY [20::numeric, 74::numeric, 87::numeric]))
+      WHERE doss.type_doss = 2100::numeric
+      GROUP BY doss.zaak_id, doss.ind_verwerkt, doss.d_aanvr, doss.d_in, doss.t_aanvr
+      UNION
+      SELECT pl_mut.zaak_id,
+             'pl_mutatie'::text             AS zaak_type,
+             'pl_mut'::text                 AS tabel,
+             pl_mut.ind_verwerkt,
+             pl_mut.d_in                    AS d_invoer,
+             pl_mut.t_in                    AS t_invoer,
+             pl_mut.d_in                    AS d_ingang,
+             array_agg(DISTINCT pl_mut.anr) AS anr,
+             array_agg(DISTINCT pl_mut.bsn) AS bsn
+      FROM pl_mut
+      GROUP BY pl_mut.zaak_id, pl_mut.ind_verwerkt, pl_mut.d_in, pl_mut.t_in;
+      ]]>
+    </createView>
+  </changeSet>
+</databaseChangeLog>

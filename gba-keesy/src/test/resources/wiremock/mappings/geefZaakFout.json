@@ -1,0 +1,20 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/geefZaak",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "{\"externZaakId\":\"dd\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 400,
+    "body": "{\"exception\":{\"severity\":\"error\",\"message\":\"ZaakReferentie niet gevonden (LOGID:34315380)\"}}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

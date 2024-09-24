@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,7 +24,7 @@ import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPers
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.procura.gba.web.modules.bs.lv.ModuleLv;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.lv.overzicht.LvOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -33,8 +33,6 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page101.Page101Zaken;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.functies.VaadinUtils;
 
 public class Page300Zaken extends ZakenregisterOptiePage<Dossier> {
 
@@ -57,7 +55,7 @@ public class Page300Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected ZaakPersoonType[] getZoekpersoonTypes() {
-    return new ZaakPersoonType[]{KIND};
+    return new ZaakPersoonType[]{ KIND };
   }
 
   @Override
@@ -80,7 +78,6 @@ public class Page300Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
-    MainModuleContainer mainModule = VaadinUtils.getChild(getWindow(), MainModuleContainer.class);
-    mainModule.getNavigation().addPage(new ModuleLv(getZaak()));
+    goToZaak(ZaakFragment.FR_LV);
   }
 }

@@ -19,16 +19,18 @@
 
 package nl.procura.gba.web.modules.zaken.common;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.gba.common.ZaakStatusType.WACHTKAMER;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.TabSheet.Tab;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -36,8 +38,6 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.bsm.verwerken.B
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.status.ZaakStatusUpdater;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -47,11 +47,12 @@ import nl.procura.vaadin.component.layout.tabsheet.LazyTabsheet.LazyTab;
 
 public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
 
-  protected final ZaakAanpassenButton    buttonAanpassen = new ZaakAanpassenButton();
-  protected final ZaakRequestInboxButton buttonVerzoek   = new ZaakRequestInboxButton();
-  protected final Button                 buttonDoc       = new Button("Document afdrukken");
-  protected final Button                 buttonFiat      = new Button("Fiatteren");
-  protected final Button                 buttonVerwerken = new Button("Nu verwerken");
+  protected final ZaakAanpassenButton    buttonAanpassen  = new ZaakAanpassenButton();
+  protected final ZaakRequestInboxButton buttonVerzoek    = new ZaakRequestInboxButton();
+  protected final ZaakInwonerAppButton   buttonInwonerApp = new ZaakInwonerAppButton();
+  protected final Button                 buttonDoc        = new Button("Document afdrukken");
+  protected final Button                 buttonFiat       = new Button("Fiatteren");
+  protected final Button                 buttonVerwerken  = new Button("Nu verwerken");
 
   private ZaakTabsheet<T> tabsheet = null;
 
@@ -69,12 +70,17 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
       setZaak(Services.getInstance().getZakenService().getVolledigeZaak(getZaak()));
 
       buttonVerzoek.setZaak(getZaak());
+      buttonInwonerApp.setZaak(getZaak());
+      buttonInwonerApp.addCloseListener(() -> tabsheet.reloadTabs());
 
       tabsheet = new ZaakTabsheet<T>(this, getZaak()) {
 
         @Override
         protected void addOptieButtons() {
           ZakenOverzichtPage.this.addOptieButtons();
+          if (getServices().getInwonerAppService().supportZaak(getZaak())) {
+            addOptieButton(buttonInwonerApp);
+          }
         }
 
         @Override
@@ -109,6 +115,9 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
 
     } else if (button == buttonVerzoek) {
       buttonVerzoek.onClick();
+
+    } else if (button == buttonInwonerApp) {
+      buttonInwonerApp.onClick();
 
     } else if (button == buttonDoc) {
       goToDocument();
@@ -152,8 +161,27 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
   protected void addTabs() {
   }
 
-  @SuppressWarnings("unused")
   protected void addTabs(ZaakTabsheet<T> tabsheet) {
+  }
+
+  protected void goToDocument() {
+  }
+
+  protected void goToZaak() {
+  }
+
+  protected void onSelectedTabChange(LazyTab lazyTab) {
+  }
+
+  protected void goToPersoon(String fragment, FieldValue... fieldValues) {
+    for (FieldValue fieldValue : fieldValues) {
+      if (fieldValue != null && pos(fieldValue.getValue())) {
+        getApplication().goToPl(getWindow(), fragment, PLEDatasource.STANDAARD, astr(fieldValue.getValue()));
+        return;
+      }
+    }
+
+    throw new ProException(INFO, "Geen a-nummer of burgerservicenummer gevonden");
   }
 
   private void doFiat() {
@@ -174,31 +202,5 @@ public class ZakenOverzichtPage<T extends Zaak> extends ZakenPage<T> {
         tabsheet.reloadTabs();
       }
     });
-  }
-
-  protected void goToDocument() {
-  }
-
-  protected void goToPersoon(String fragment, FieldValue... fieldValues) {
-
-    for (FieldValue fieldValue : fieldValues) {
-
-      if (fieldValue != null && pos(fieldValue.getValue())) {
-
-        getApplication().goToPl(getWindow(), fragment, PLEDatasource.STANDAARD, astr(fieldValue.getValue()));
-
-        return;
-      }
-    }
-
-    throw new ProException(INFO, "Geen a-nummer of burgerservicenummer gevonden");
-  }
-
-  protected void goToZaak() {
-  }
-
-  // Override please
-  @SuppressWarnings("unused")
-  protected void onSelectedTabChange(LazyTab lazyTab) {
   }
 }

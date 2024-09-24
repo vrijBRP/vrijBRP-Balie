@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -47,6 +47,7 @@ public class ZaakTabsheet<T extends Zaak> extends GbaTabsheet {
     addStyleName("zaaktab");
     this.page = page;
     this.zaak = zaak;
+    addListener((SelectedTabChangeListener) event -> refreshTab(event.getTabSheet().getSelectedTab()));
   }
 
   @Override
@@ -98,6 +99,7 @@ public class ZaakTabsheet<T extends Zaak> extends GbaTabsheet {
       ZaakTabLayout taskLayout = (ZaakTabLayout) component;
       taskLayout.reloadLayout(getApplication(), zaak);
     }
+    getWindow().center();
   }
 
   public void reloadTabs() {

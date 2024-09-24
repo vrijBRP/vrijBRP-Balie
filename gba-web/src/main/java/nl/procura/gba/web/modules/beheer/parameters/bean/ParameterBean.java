@@ -80,6 +80,12 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INB
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_PW;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_USERNAME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INLOGOPMERKING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INW_APP_DEBUG;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INW_APP_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INW_APP_KEESY_API_KEY;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INW_APP_KEESY_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INW_APP_KEESY_USER_GROUP;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INW_APP_KEESY_USER_ID;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_CLEAR_LIST;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FILENAME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.KASSA_FTP_PW;
@@ -181,6 +187,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAK
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_UITTREKSEL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_VERHUIZING;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_VERSTREK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DOC_UPLOAD_PERIODE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_EINDSTATUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_ERK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_INIT_STATUS_AFSTAM_GEB;
@@ -360,6 +367,12 @@ public class ParameterBean implements Serializable {
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Maximale status voor wijzigen zaak")
   private String zakenMaxStatusZaakWijzigen = "";
+
+  @ParameterAnnotation(ZAKEN_DOC_UPLOAD_PERIODE)
+  @Position(order = "0.5")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Maximale document upload termijn (in dagen) na eindstatus")
+  private String documentUploadPeriode = "";
 
   @ParameterAnnotation(ZAKEN_INIT_STATUS_AFSTAM_GEB)
   @Position(order = "Afstamming (geboorte)")
@@ -2005,6 +2018,53 @@ public class ParameterBean implements Serializable {
       required = true)
   @Position(order = "1")
   private String systemMinHdSize = "";
+
+  @ParameterAnnotation(INW_APP_ENABLED)
+  @Position(order = "1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Inwoner.app inschakelen",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String inwAppEnabled = "";
+
+  @ParameterAnnotation(INW_APP_KEESY_URL)
+  @Position(order = "2")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Keesy URL",
+      width = "400px")
+  private String inwAppUrl = "";
+
+  @ParameterAnnotation(INW_APP_KEESY_API_KEY)
+  @Position(order = "3")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Keesy API key",
+      width = "400px")
+  @TextField(secret = true)
+  private String inwAppApiKey = "";
+
+  @ParameterAnnotation(INW_APP_KEESY_USER_GROUP)
+  @Position(order = "4")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Keesy gebruikers groep",
+      width = "400px")
+  private String inwAppUserGroup = "";
+
+  @ParameterAnnotation(INW_APP_KEESY_USER_ID)
+  @Position(order = "5")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Keesy gebruiker ID (leeg == e-mail)",
+      width = "400px")
+  private String inwAppUserId = "";
+
+  @ParameterAnnotation(INW_APP_DEBUG)
+  @Position(order = "6")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Inwoner.app logging inschakelen",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String inwAppDebug = "";
 
   public ParameterBean() {
   }

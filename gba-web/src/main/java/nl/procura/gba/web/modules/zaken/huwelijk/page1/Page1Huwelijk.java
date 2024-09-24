@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.huwelijk.page1;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.bs.page1.Page1BsTemplate;
 import nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils;
@@ -57,13 +58,13 @@ public class Page1Huwelijk extends Page1BsTemplate {
   protected String getFragment(ZaakType zaakType) {
     switch (zaakType) {
       case OMZETTING_GPS:
-        return "bs.omzetting";
+        return ZaakFragment.FR_OMZETTING_GPS;
 
       case ONTBINDING_GEMEENTE:
-        return "bs.ontbinding";
+        return ZaakFragment.FR_ONTBINDING;
 
       default:
-        return "bs.huwelijk";
+        return ZaakFragment.FR_HUWELIJK;
     }
   }
 

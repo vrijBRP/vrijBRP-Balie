@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.registration.page1;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.bs.page1.Page1BsTemplate;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
@@ -41,7 +42,7 @@ public class Page1Registration extends Page1BsTemplate {
 
   @Override
   protected String getFragment(ZaakType zaakType) {
-    return "bs.registratie";
+    return ZaakFragment.FR_REGISTRATION;
   }
 
   @Override

@@ -33,6 +33,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_HANDLEIDINGEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INBOX;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INTERNAL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_INW_APP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KASSA;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_KENNISBANK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_MIDOFFICE;
@@ -75,6 +76,9 @@ public enum ParameterConstant implements ParameterType {
       GROUP_ZOEKEN_ALGEMEEN, true, false, false, ""),
 
   ZAKEN_TAB_VOLGORDE("zaken_tab_volgorde", "Volgorde tabbladen van een zaak",
+      GROUP_ZAKEN_ALGEMEEN, true, true, true, "0"),
+
+  ZAKEN_DOC_UPLOAD_PERIODE("zaken_doc_upload_periode", "Document upload periode (in dagen)",
       GROUP_ZAKEN_ALGEMEEN, true, true, true, "0"),
 
   ZAKEN_EINDSTATUS("zaken_eindstatus", "Eindstatus wijzigen",
@@ -722,7 +726,25 @@ public enum ParameterConstant implements ParameterType {
 
   SYSTEM_MIN_HD_SIZE("system_min_hd_size", "Minimale grootte vrije ruimte in MB",
       GROUP_SYSTEM, true, false, false, "1000"),
-  //
+
+  INW_APP_ENABLED("inw_app_enabled", "Inwoner.app inschakelen",
+      GROUP_INW_APP, true, false, false, ""),
+
+  INW_APP_KEESY_URL("inw_app_keesy_url", "Keesy endpoint endpoint",
+      GROUP_INW_APP, true, false, false, ""),
+
+  INW_APP_KEESY_API_KEY("inw_app_keesy_api_key", "Keesy API Key",
+      GROUP_INW_APP, true, false, false, ""),
+
+  INW_APP_KEESY_USER_GROUP("inw_app_keesy_user_group", "Keesy user group",
+      GROUP_INW_APP, true, true, true, "0"),
+
+  INW_APP_KEESY_USER_ID("inw_app_keesy_user_id", "Keesy user id",
+      GROUP_INW_APP, false, false, true, ""),
+
+  INW_APP_DEBUG("inw_app_debug", "Inwoner.app logging",
+      GROUP_INW_APP, true, false, false, ""),
+
   // Internal Parameters. These cannot be changed by the user
   //
   PL_TOON_RECORDS("pl_toon_records", GROUP_INTERNAL, false, false, false, "1000"),

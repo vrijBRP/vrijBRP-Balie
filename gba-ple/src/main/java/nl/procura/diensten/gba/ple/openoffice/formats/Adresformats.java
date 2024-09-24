@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,11 @@
 
 package nl.procura.diensten.gba.ple.openoffice.formats;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isDotValue;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 public class Adresformats {
 
@@ -79,7 +83,7 @@ public class Adresformats {
   }
 
   private String getStraatOms(String straat) {
-    return straat.equals(".") ? "Onbekend" : straat;
+    return isDotValue(straat) ? "Onbekend" : straat;
   }
 
   public String getAdres_pc_wpl() {

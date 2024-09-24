@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -35,15 +35,12 @@ import nl.procura.gba.web.services.zaken.gpk.GpkAanvraag;
 public class Page30Zaken extends ZakenregisterOptiePage<GpkAanvraag> {
 
   public Page30Zaken(GpkAanvraag aanvraag) {
-
     super(aanvraag, "Zakenregister - gehandicapten parkeerkaart");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
   }

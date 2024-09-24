@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -35,15 +35,12 @@ import nl.procura.gba.web.services.zaken.naamgebruik.NaamgebruikAanvraag;
 public class Page10Zaken extends ZakenregisterOptiePage<NaamgebruikAanvraag> {
 
   public Page10Zaken(NaamgebruikAanvraag zaak) {
-
     super(zaak, "Zakenregister - naamgebruik");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
     addOptieButton(buttonFiat);

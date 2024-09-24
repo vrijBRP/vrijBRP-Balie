@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,10 +19,10 @@
 
 package nl.procura.gba.web.modules.bs.common.modules;
 
-import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
 
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -34,6 +34,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.components.layouts.ModuleTemplate;
 import nl.procura.gba.web.modules.bs.common.BsProces;
 import nl.procura.gba.web.modules.bs.common.BsProcesListener;
@@ -42,10 +43,10 @@ import nl.procura.gba.web.modules.bs.common.pages.BsPage;
 import nl.procura.gba.web.modules.bs.common.pages.BsProcesStatus;
 import nl.procura.gba.web.modules.bs.common.pages.documentpage.BsDocumentWindow;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.aantekening.ZaakAantekeningWindow;
+import nl.procura.gba.web.modules.zaken.common.ZaakInwonerAppButton;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.ZaakDossier;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.label.Ruler;
 import nl.procura.vaadin.component.layout.page.PageContainer;
@@ -62,9 +63,10 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
   private BsProcessen    processen;
   private ModuleTemplate module;
 
-  private Button buttonDocs;
-  private Button buttonAant;
-  private Button buttonClose;
+  private Button               buttonDocs;
+  private Button               buttonAant;
+  private Button               buttonClose;
+  private ZaakInwonerAppButton buttonInwonerApp;
 
   /**
    * Store the state of the 'verzoek' popups
@@ -97,6 +99,10 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
     if (event.getButton() == buttonClose) {
       ((ModalWindow) getWindow()).closeWindow();
     }
+
+    if (event.getButton() == buttonInwonerApp) {
+      buttonInwonerApp.onClick();
+    }
   }
 
   public void checkButtons() {
@@ -109,6 +115,7 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
     String zaakId = dossier.getZaakId();
     buttonDocs.setEnabled(fil(zaakId));
     buttonAant.setEnabled(fil(zaakId));
+    buttonInwonerApp.setZaak(dossier);
   }
 
   @Override
@@ -144,6 +151,10 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
       vLayout.addComponent(new Ruler());
       vLayout.addComponent(buttonDocs);
       vLayout.addComponent(buttonAant);
+
+      if (getApplication().getServices().getInwonerAppService().supportZaak(processen.getDossier())) {
+        vLayout.addComponent(buttonInwonerApp);
+      }
 
       setExtraButtons(vLayout);
 
@@ -212,6 +223,10 @@ public class BsModule extends ModuleTemplate implements Button.ClickListener {
     buttonClose = new Button("Sluiten");
     buttonClose.setWidth("100%");
     buttonClose.addListener(this);
+
+    buttonInwonerApp = new ZaakInwonerAppButton();
+    buttonInwonerApp.setWidth("100%");
+    buttonInwonerApp.addListener(this);
   }
 
   protected void setExtraButtons(Layout layout) {

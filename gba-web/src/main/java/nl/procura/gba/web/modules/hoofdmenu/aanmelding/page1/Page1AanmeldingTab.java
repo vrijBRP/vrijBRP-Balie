@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.hoofdmenu.aanmelding.page1;
 
 import static nl.procura.gba.web.modules.beheer.fileimport.types.FileImportTableListener.newRegistration;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.jpa.personen.db.FileImport;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.beheer.fileimport.FileImportType;
@@ -61,7 +62,7 @@ public class Page1AanmeldingTab extends NormalPageTemplate {
     DossierRegistration zaakDossier = (DossierRegistration) dossier.getZaakDossier();
     zaakDossier.setCFileRecord(importRecord.getId());
     getApplication().getServices().getMemoryService().setObject(Dossier.class, dossier);
-    getApplication().openWindow(getParentWindow(), new HomeWindow(), "bs.registratie");
+    getApplication().openWindow(getParentWindow(), new HomeWindow(), ZaakFragment.FR_REGISTRATION);
     getApplication().closeAllModalWindows(getApplication().getWindows());
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page120;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.AANGEVER;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.OVERLEDENE;
 
-import nl.procura.gba.web.modules.bs.overlijden.gemeente.ModuleOverlijdenGemeente;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.overlijden.gemeente.overzicht.OverlijdenGemeenteOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -32,8 +32,7 @@ import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.overlijden.DossierOverlijden;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.functies.VaadinUtils;
+import nl.procura.gba.web.windows.home.HomeWindow;
 
 /**
  * Tonen overlijdendossier
@@ -41,15 +40,12 @@ import nl.procura.vaadin.functies.VaadinUtils;
 public class Page120Zaken extends ZakenregisterOptiePage<Dossier> {
 
   public Page120Zaken(Dossier zaak) {
-
     super(zaak, "Zakenregister - dossier - Overlijden in gemeente");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -95,8 +91,8 @@ public class Page120Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
-
-    MainModuleContainer mainModule = VaadinUtils.getChild(getWindow(), MainModuleContainer.class);
-    mainModule.getNavigation().addPage(new ModuleOverlijdenGemeente(getZaak()));
+    getApplication().getServices().getMemoryService().setObject(Dossier.class, getZaak());
+    getApplication().openWindow(getParentWindow(), new HomeWindow(), ZaakFragment.FR_OVERL_GEMEENTE);
+    getApplication().closeAllModalWindows(getApplication().getWindows());
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,6 +22,7 @@ package nl.procura.gba.web.modules.bs.naturalisatie;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.components.dialogs.ZaakConfiguratieDialog;
 import nl.procura.gba.web.modules.bs.common.modules.BsModule;
@@ -37,7 +38,7 @@ import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.functies.VaadinUtils;
 
-@ModuleAnnotation(url = "#bs.naturalisatie",
+@ModuleAnnotation(url = "#" + ZaakFragment.FR_NATURALISATIE,
     caption = "Nationaliteit",
     profielActie = ProfielActie.SELECT_ZAAK_NATURALISATIE)
 public class ModuleNaturalisatie extends BsModule {

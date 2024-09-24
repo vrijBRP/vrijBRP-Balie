@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations;
 
+import static nl.procura.standard.Globalfunctions.isDotValue;
+
 import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.web.components.fields.GbaTextField;
@@ -31,7 +33,7 @@ public class UnknownValueField extends GbaTextField {
     addListener((ValueChangeListener) event -> {
       FieldValue newValue = new FieldValue(Globalfunctions.astr(event.getProperty().getValue()));
       String newValueValue = newValue.getValue().toString().toLowerCase();
-      if (newValueValue.equals(".") || StringUtils.containsAny(newValueValue, "onbekend", "standaardwaarde")) {
+      if (isDotValue(newValueValue) || StringUtils.containsAny(newValueValue, "onbekend", "standaardwaarde")) {
         setValue(new FieldValue(".", "Onbekend (standaardwaarde)"));
       }
     });

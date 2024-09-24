@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,7 +21,7 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page130;
 
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.OVERLEDENE;
 
-import nl.procura.gba.web.modules.bs.overlijden.lijkvinding.ModuleLijkvinding;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.overlijden.lijkvinding.overzicht.LijkvindingOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -30,8 +30,6 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page101.Page101Zaken;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.functies.VaadinUtils;
 
 /**
  * Tonen Lijkvindingdossier
@@ -40,15 +38,12 @@ import nl.procura.vaadin.functies.VaadinUtils;
 public class Page130Zaken extends ZakenregisterOptiePage<Dossier> {
 
   public Page130Zaken(Dossier zaak) {
-
     super(zaak, "Zakenregister - dossier - Lijkvinding");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -81,8 +76,6 @@ public class Page130Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
-
-    MainModuleContainer mainModule = VaadinUtils.getChild(getWindow(), MainModuleContainer.class);
-    mainModule.getNavigation().addPage(new ModuleLijkvinding(getZaak()));
+    goToZaak(ZaakFragment.FR_LIJKVINDING);
   }
 }

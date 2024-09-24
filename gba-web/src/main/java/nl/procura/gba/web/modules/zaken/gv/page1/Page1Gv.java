@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.zaken.gv.page1;
 
 import static nl.procura.gba.web.services.zaken.algemeen.ZaakUtils.getDatumEnDagenTekst;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.common.ZakenListPage;
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable;
@@ -92,7 +93,7 @@ public class Page1Gv extends ZakenListPage<GvAanvraag> {
     gv.setBasisPersoon(getPl());
 
     getApplication().getServices().getMemoryService().setObject(GvAanvraag.class, gv);
-    getApplication().openWindow(getWindow(), new HomeWindow(), "bs.gv");
+    getApplication().openWindow(getWindow(), new HomeWindow(), ZaakFragment.FR_GV);
 
     super.onNew();
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -409,8 +409,10 @@ public class ZakenViewTest {
   }
 
   private LocalDate toDate(VerwijderZaakType type) {
-    return LocalDate.now().minusYears(new VerwijderZakenOverzicht()
-        .getActie(type).getVerwijderActie().getBewaarTermijnInJaren());
+    return new VerwijderZakenOverzicht()
+        .getActie(type)
+        .getVerwijderActie()
+        .getTermijnAsLocalDate();
   }
 
   private void assertZakenCount(long expectedCount, VerwijderZaakType type) {

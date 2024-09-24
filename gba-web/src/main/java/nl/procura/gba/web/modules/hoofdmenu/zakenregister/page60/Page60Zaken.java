@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,10 +19,11 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page60;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.AANGEVER;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.HOOFDBEWONER;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOptiePage;
@@ -35,7 +36,6 @@ import nl.procura.gba.web.services.gba.presentievraag.Presentievraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAangever;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 /**
@@ -50,7 +50,6 @@ public class Page60Zaken extends ZakenregisterOptiePage<VerhuisAanvraag> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
     addOptieButton(buttonFiat);

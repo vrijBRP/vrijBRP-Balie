@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.jpa.personen.dao.views.verwijderzaken;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,11 +35,13 @@ import lombok.Data;
 public class VerwijderVerlopenZaakActie extends VerwijderZaakActie<ZaakKey> {
 
   private VerwijderZaakType type;
-  private int               bewaarTermijnInJaren;
+  private int               jaren;
+  private final int         maanden;
 
-  public VerwijderVerlopenZaakActie(VerwijderZaakType type, int bewaarTermijnInJaren) {
+  public VerwijderVerlopenZaakActie(VerwijderZaakType type, int jaren, int maanden) {
     this.type = type;
-    this.bewaarTermijnInJaren = bewaarTermijnInJaren;
+    this.jaren = jaren;
+    this.maanden = maanden;
   }
 
   @Override
@@ -71,6 +74,24 @@ public class VerwijderVerlopenZaakActie extends VerwijderZaakActie<ZaakKey> {
     return query.executeUpdate();
   }
 
+  public LocalDate getTermijnAsLocalDate() {
+    return LocalDate.now().minusYears(jaren).minusMonths(maanden);
+  }
+
+  public String getTermijnAsString() {
+    StringBuilder termijn = new StringBuilder();
+    if (jaren > 0) {
+      termijn.append(jaren).append(" jaar");
+    }
+    if (maanden > 0) {
+      if (termijn.length() > 0) {
+        termijn.append(" en ");
+      }
+      termijn.append(maanden).append(" maanden");
+    }
+    return termijn.toString();
+  }
+
   private VerwijderZakenQuery getAantalQuery() {
     return addParameters(new VerwijderZakenQuery()
         .sql("select count(t) from ZakenView t where t.zaakType = :id")
@@ -96,8 +117,8 @@ public class VerwijderVerlopenZaakActie extends VerwijderZaakActie<ZaakKey> {
 
   private VerwijderZakenQuery addParameters(VerwijderZakenQuery query) {
     query.param("id", type.getId())
-        .param("enddate", toNumericDate(bewaarTermijnInJaren))
-        .param("canceldate", toNumericDate(1))
+        .param("enddate", toNumericDate(jaren, maanden))
+        .param("canceldate", toNumericDate(1, 0))
         .param("cancelstatus", ZaakStatusType.GEANNULEERD.getCode());
     return query;
   }

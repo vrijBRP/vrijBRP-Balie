@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,8 +20,8 @@
 package nl.procura.gba.web.modules.zaken.verhuizing.overzicht;
 
 import static java.util.Arrays.asList;
-import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.List;
 
@@ -29,6 +29,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.components.layouts.OptieLayout;
@@ -55,7 +57,6 @@ import nl.procura.gba.web.services.zaken.verhuizing.VerhuisAanvraag;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisPersoon;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuisType;
 import nl.procura.gba.web.windows.home.HomeWindow;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
@@ -208,7 +209,7 @@ public abstract class VerhuizingOverzichtLayout extends GbaVerticalLayout implem
       } else {
         // Navigate to page inside PL window
         page.getNavigation()
-            .addPage(new Page2BsTemplate(dossier, DocumentType.RISK_ANALYSE, "bs.risicoanalyse",
+            .addPage(new Page2BsTemplate(dossier, DocumentType.RISK_ANALYSE, ZaakFragment.FR_RISICO_ANALYSE,
                 "Risicoanalyses - overzicht",
                 ProfielActie.UPDATE_CASE_RISK_ANALYSIS));
       }

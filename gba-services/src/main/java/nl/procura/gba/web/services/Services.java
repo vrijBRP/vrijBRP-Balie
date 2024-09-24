@@ -40,6 +40,7 @@ import nl.procura.gba.web.services.beheer.fileimport.FileImportService;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoService;
+import nl.procura.gba.web.services.beheer.inwonerapp.InwonerAppService;
 import nl.procura.gba.web.services.beheer.kassa.KassaService;
 import nl.procura.gba.web.services.beheer.link.LinkService;
 import nl.procura.gba.web.services.beheer.locatie.LocatieService;
@@ -226,6 +227,7 @@ public class Services {
     add(FileImportService.class);
     add(TaskService.class);
     add(RequestInboxService.class);
+    add(InwonerAppService.class);
   }
 
   public static Services getInstance() {
@@ -307,14 +309,6 @@ public class Services {
 
   public LvService getLvService() {
     return get(LvService.class);
-  }
-
-  public Gebruiker getGebruiker() {
-    return gebruiker;
-  }
-
-  public void setGebruiker(Gebruiker gebruiker) {
-    this.gebruiker = gebruiker;
   }
 
   public GebruikerInfoService getGebruikerInfoService() {
@@ -529,22 +523,6 @@ public class Services {
     return get(TaskService.class);
   }
 
-  public List<AbstractService> getServices() {
-    return services;
-  }
-
-  @SuppressWarnings("unchecked")
-  public <T> List<T> getServices(Class<T> cl) {
-    List<T> l = new ArrayList<>();
-    for (AbstractService db : getServices()) {
-      if (cl.isAssignableFrom(db.getClass())) {
-        l.add((T) db);
-      }
-    }
-
-    return l;
-  }
-
   public StempelService getStempelService() {
     return get(StempelService.class);
   }
@@ -627,6 +605,34 @@ public class Services {
 
   public RequestInboxService getRequestInboxService() {
     return get(RequestInboxService.class);
+  }
+
+  public InwonerAppService getInwonerAppService() {
+    return get(InwonerAppService.class);
+  }
+
+  public List<AbstractService> getServices() {
+    return services;
+  }
+
+  public Gebruiker getGebruiker() {
+    return gebruiker;
+  }
+
+  public void setGebruiker(Gebruiker gebruiker) {
+    this.gebruiker = gebruiker;
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> List<T> getServices(Class<T> cl) {
+    List<T> l = new ArrayList<>();
+    for (AbstractService db : getServices()) {
+      if (cl.isAssignableFrom(db.getClass())) {
+        l.add((T) db);
+      }
+    }
+
+    return l;
   }
 
   public void init() {

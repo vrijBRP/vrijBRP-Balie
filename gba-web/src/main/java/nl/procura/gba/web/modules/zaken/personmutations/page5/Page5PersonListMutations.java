@@ -21,16 +21,16 @@ package nl.procura.gba.web.modules.zaken.personmutations.page5;
 
 import nl.procura.gba.web.components.layouts.window.GbaModalWindow;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
-import nl.procura.gba.web.modules.zaken.common.ZakenOverzichtModalPage;
+import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOptiePage;
 import nl.procura.gba.web.modules.zaken.personmutations.overview.PersonMutationOverviewBuilder;
 import nl.procura.gba.web.modules.zaken.personmutations.page3.Page3PersonListMutations;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
 
-public class Page5PersonListMutations extends ZakenOverzichtModalPage<PersonListMutation> {
+public class Page5PersonListMutations extends ZakenregisterOptiePage<PersonListMutation> {
 
   public Page5PersonListMutations(PersonListMutation mutation) {
-    super(mutation, "");
+    super(mutation, "Mutaties van de persoonslijst (Escape om te sluiten)");
   }
 
   @Override

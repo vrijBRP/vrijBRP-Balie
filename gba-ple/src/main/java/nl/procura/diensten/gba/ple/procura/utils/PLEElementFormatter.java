@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,12 +24,13 @@ import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isDotValue;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.Objects;
+
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.gba.core.enums.GBATable;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
@@ -264,6 +265,10 @@ public class PLEElementFormatter {
         waarden.setVal(astr(get(input, "IndVoogdij")));
         break;
 
+      case OMSCHR_VAN_DE_AANGIFTE_ADRESH:
+        onbekendeWaardeOmschrijving(waarden);
+        break;
+
       default:
         break;
     }
@@ -305,7 +310,7 @@ public class PLEElementFormatter {
   }
 
   private void onbekendeWaardeOmschrijving(BasePLValue waarden) {
-    if (waarden.getVal().equals(".")) {
+    if (isDotValue(waarden.getVal())) {
       waarden.setDescr("Onbekend (standaardwaarde)");
     }
   }

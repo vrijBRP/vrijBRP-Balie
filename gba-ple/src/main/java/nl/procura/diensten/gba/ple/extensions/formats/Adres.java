@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,6 +26,7 @@ import java.text.MessageFormat;
 
 import nl.procura.diensten.gba.ple.base.BasePLElem;
 import nl.procura.gba.common.MiscUtils;
+import nl.procura.standard.Globalfunctions;
 
 public class Adres {
 
@@ -311,7 +312,7 @@ public class Adres {
 
   private String getStraatOms(BasePLElem element) {
     String oms = element.getValue().getDescr();
-    return oms.equals(".") ? "Onbekend" : oms;
+    return Globalfunctions.isDotValue(oms) ? "Onbekend" : oms;
   }
 
   private String check(String s) {

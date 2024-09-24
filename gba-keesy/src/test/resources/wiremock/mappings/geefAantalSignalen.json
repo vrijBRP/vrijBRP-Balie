@@ -1,0 +1,20 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/geefAantalSignalen",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "contains": "{\"externUserId\":\"aa\",\"groupId\":\"bb\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"aantal\":6,\"signalen\":[{\"aantal\":1,\"externZaakId\":\"K226524\"},{\"aantal\":2,\"externZaakId\":\"PR123\"},{\"aantal\":3,\"externZaakId\":\"ABC-123/A1\"}]}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

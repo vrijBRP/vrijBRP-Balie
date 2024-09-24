@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,6 +21,7 @@ package nl.procura.gba.web.services.zaken.algemeen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import nl.procura.gba.common.ZaakStatusType;
 
@@ -46,6 +47,10 @@ public class ZaakStatusHistorie {
 
   public boolean isHuidigeStatus(ZaakStatusType status) {
     return (getHuidigeStatus().getStatus() == status);
+  }
+
+  public Optional<ZaakStatus> getEindStatusInHistorie() {
+    return statussen.stream().filter(status -> status.getStatus().isEindStatus()).findFirst();
   }
 
   public boolean isInHistorieIngevoerd(ZaakStatusType status) {

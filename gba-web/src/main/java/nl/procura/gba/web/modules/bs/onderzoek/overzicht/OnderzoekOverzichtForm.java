@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -78,7 +78,7 @@ public abstract class OnderzoekOverzichtForm extends GbaForm<OnderzoekOverzichtB
     bean.setAfdeling(onderzoek.getAanlAfdeling());
     bean.setDatumOntvangst(onderzoek.getDatumOntvangstMelding());
     bean.setAard(onderzoek.getOnderzoekAard());
-    bean.setVermoedAdres(trim(onderzoek.getVermoedelijkAdres() + ": " + aanlAdres.getAdres()));
+    bean.setVermoedAdres(trim(onderzoek.getVermoedelijkAdres() + ": " + aanlAdres.getAdres_pc_wpl_gem()));
     bean.setBinnen5dagen(toYesNo(onderzoek.getBinnenTermijn()));
     bean.setDatumAanvangOnderzoek(onderzoek.getDatumAanvangOnderzoek());
     bean.setAandGegOnderzoek(onderzoek.getAanduidingGegevensOnderzoek());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -41,15 +41,12 @@ public class Page190Zaken extends ZakenregisterOptiePage<GvAanvraag> {
   protected final Button buttonVervolgen = new Button("Zaak vervolgen");
 
   public Page190Zaken(GvAanvraag zaak) {
-
     super(zaak, "Zakenregister - gegevensverstrekking");
-
     addButton(buttonPrev);
   }
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
     if (button == buttonVervolgen) {
       getNavigation().goToPage(new Page2Gv(getZaak()));
     }
@@ -59,7 +56,6 @@ public class Page190Zaken extends ZakenregisterOptiePage<GvAanvraag> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
 

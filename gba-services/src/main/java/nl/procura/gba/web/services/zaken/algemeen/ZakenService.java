@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,9 +20,9 @@
 package nl.procura.gba.web.services.zaken.algemeen;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.common.ZaakType.ONBEKEND;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.gba.common.ZaakType.ONBEKEND;
 import static org.apache.commons.collections.CollectionUtils.containsAny;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
@@ -32,13 +32,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.MaxList;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.Timer;
 import nl.procura.gba.web.services.interfaces.DatabaseTable;
-import nl.procura.commons.core.exceptions.ProException;
 
 public class ZakenService extends AbstractService {
 
@@ -133,6 +133,14 @@ public class ZakenService extends AbstractService {
   public <T extends Zaak> List<T> getStandaardZaken(List<T> zaken) {
     zaken.stream().filter(DatabaseTable::isStored).forEach(zaak -> getService(zaak).getStandardZaak(zaak));
     return zaken;
+  }
+
+  /**
+   * Laad alleen de databasegegevens van de zaak
+   */
+  @Timer
+  public <T extends Zaak> T getStandaardZaak(T zaak) {
+    return (zaak != null) ? (zaak.isStored() ? (T) getService(zaak).getStandardZaak(zaak) : zaak) : null;
   }
 
   /**

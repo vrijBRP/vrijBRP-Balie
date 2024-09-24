@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -53,6 +53,7 @@ public class OnderzoekSamenvatting extends ZaakSamenvattingTemplate<DossierOnder
       ZaakSamenvatting.Deelzaak deelZaak = new ZaakSamenvatting.Deelzaak();
       deelZaak.add("Naam", getNormalizedNameWithAge(dp));
       deelZaak.add("BSN", dp.getBurgerServiceNummer());
+      deelZaak.add("Adres", dp.getAdres().getAdres_pc_wpl_gem());
       deelZaken.add(deelZaak);
     }
   }
@@ -131,7 +132,7 @@ public class OnderzoekSamenvatting extends ZaakSamenvattingTemplate<DossierOnder
         zaak.getAanleidingBuitenl2(),
         zaak.getAanleidingBuitenl3());
 
-    rubriek.add("Adres", adresformats.getAdres());
+    rubriek.add("Adres", adresformats.getAdres_pc_wpl_gem());
 
     if (zaak.getVermoedelijkAdres() == VermoedAdresType.ANDERE_GEMEENTE) {
       Gemeente vm = zaak.getVermoedelijkeGemeentePostbus();

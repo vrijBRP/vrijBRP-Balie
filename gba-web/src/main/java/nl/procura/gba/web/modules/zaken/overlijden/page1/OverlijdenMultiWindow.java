@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.overlijden.page1;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.zaken.common.ZaakMultiWindow;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
@@ -56,7 +57,7 @@ public class OverlijdenMultiWindow extends ZaakMultiWindow {
   public class KeuzeInGemeente extends FragmentKeuze {
 
     public KeuzeInGemeente() {
-      super("In gemeente", "bs.overlijden.gemeente");
+      super("In gemeente", ZaakFragment.FR_OVERL_GEMEENTE);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class OverlijdenMultiWindow extends ZaakMultiWindow {
   public class KeuzeLevenloos extends FragmentKeuze {
 
     public KeuzeLevenloos() {
-      super("Levenloos geboren kind", "bs.levenloos");
+      super("Levenloos geboren kind", ZaakFragment.FR_LEVENLOOS);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class OverlijdenMultiWindow extends ZaakMultiWindow {
   public class KeuzeLijkvinding extends FragmentKeuze {
 
     public KeuzeLijkvinding() {
-      super("Lijkvinding", "bs.lijkvinding");
+      super("Lijkvinding", ZaakFragment.FR_LIJKVINDING);
     }
 
     @Override

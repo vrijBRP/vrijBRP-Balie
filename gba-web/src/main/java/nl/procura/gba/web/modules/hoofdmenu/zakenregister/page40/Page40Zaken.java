@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -40,9 +40,7 @@ public class Page40Zaken extends ZakenregisterOptiePage<VogAanvraag> {
   private final Button buttonStatus = new Button("Status opvragen (F3)");
 
   public Page40Zaken(VogAanvraag aanvraag) {
-
     super(aanvraag, "Zakenregister - verklaring omtrent gedrag");
-
     addButton(buttonPrev);
   }
 
@@ -58,7 +56,6 @@ public class Page40Zaken extends ZakenregisterOptiePage<VogAanvraag> {
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
     addOptieButton(buttonStatus);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,9 +26,9 @@ import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPers
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.procura.gba.web.modules.bs.erkenning.ModuleErkenning;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.erkenning.overzicht.ErkenningOverzichtBuilder;
-import nl.procura.gba.web.modules.bs.geboorte.ModuleGeboorte;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOptiePage;
@@ -38,9 +38,7 @@ import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.erkenning.DossierErkenning;
 import nl.procura.gba.web.services.bs.geboorte.DossierGeboorte;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.vaadin.functies.VaadinUtils;
+import nl.procura.gba.web.windows.home.HomeWindow;
 
 /**
  * Tonen erkenning
@@ -48,15 +46,12 @@ import nl.procura.vaadin.functies.VaadinUtils;
 public class Page150Zaken extends ZakenregisterOptiePage<Dossier> {
 
   public Page150Zaken(Dossier zaak) {
-
     super(zaak, "Zakenregister - erkenning");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -113,24 +108,20 @@ public class Page150Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
-
-    MainModuleContainer mainModule = VaadinUtils.getChild(getWindow(), MainModuleContainer.class);
-
     DossierErkenning dossierErkenning = to(getZaak().getZaakDossier(), DossierErkenning.class);
-
     if (dossierErkenning.isErkenningBijAangifte()) {
-
       DossierGeboorte geboorte = getServices().getErkenningService().getGekoppeldeGeboorte(dossierErkenning);
 
       if (geboorte != null) {
+        getApplication().getServices().getMemoryService().setObject(Dossier.class, geboorte.getDossier());
+        getApplication().openWindow(getParentWindow(), new HomeWindow(), ZaakFragment.FR_GEBOORTE);
+        getApplication().closeAllModalWindows(getApplication().getWindows());
 
-        mainModule.getNavigation().addPage(new ModuleGeboorte(geboorte.getDossier()));
       } else {
         throw new ProException("De geboortezaak kan niet meer worden gevonden");
       }
     } else {
-
-      mainModule.getNavigation().addPage(new ModuleErkenning(getZaak()));
+      goToZaak(ZaakFragment.FR_ERKENNING);
     }
   }
 }

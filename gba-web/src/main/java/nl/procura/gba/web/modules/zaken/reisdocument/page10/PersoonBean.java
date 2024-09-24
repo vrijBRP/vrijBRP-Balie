@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,9 @@ package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 import static java.util.Optional.ofNullable;
 
 import java.lang.annotation.ElementType;
+import java.util.Optional;
 
+import nl.procura.burgerzaken.vrsclient.model.Land;
 import nl.procura.burgerzaken.vrsclient.model.Persoon;
 import nl.procura.commons.misc.formats.geboorte.Geboorte;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
@@ -63,7 +65,7 @@ public class PersoonBean {
 
     String geboortedatum = persoon.getGeboortedatum();
     String geboorteplaats = persoon.getGeboorteplaats();
-    String geboorteland = persoon.getGeboorteland().getNaam();
+    String geboorteland = Optional.ofNullable(persoon.getGeboorteland()).map(Land::getNaam).orElse("");
 
     this.bsn = persoon.getBsn();
     this.naam = Globalfunctions.trim(voornamen + " " + voorvoegsel + " " + geslachtsnaam);

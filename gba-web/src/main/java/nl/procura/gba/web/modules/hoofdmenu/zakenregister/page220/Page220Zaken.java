@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,7 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page220;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.PARTNER_1;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.PARTNER_2;
 
-import nl.procura.gba.web.modules.bs.ontbinding.ModuleOntbinding;
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.ontbinding.overzicht.form1.OntbindingOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -32,8 +32,6 @@ import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.interfaces.DossierPartners;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
-import nl.procura.gba.web.windows.home.modules.MainModuleContainer;
-import nl.procura.vaadin.functies.VaadinUtils;
 
 /**
  * Tonen ontbindingdossier
@@ -41,15 +39,12 @@ import nl.procura.vaadin.functies.VaadinUtils;
 public class Page220Zaken extends ZakenregisterOptiePage<Dossier> {
 
   public Page220Zaken(Dossier zaak) {
-
     super(zaak, "Zakenregister - dossier - ontbinding/einde huwelijk/GPS in gemeente");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonAanpassen);
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
@@ -96,8 +91,6 @@ public class Page220Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToZaak() {
-
-    final MainModuleContainer mainModule = VaadinUtils.getChild(getWindow(), MainModuleContainer.class);
-    mainModule.getNavigation().addPage(new ModuleOntbinding(getZaak()));
+    goToZaak(ZaakFragment.FR_ONTBINDING);
   }
 }

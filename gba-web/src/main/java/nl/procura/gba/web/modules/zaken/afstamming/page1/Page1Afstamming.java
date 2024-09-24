@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,6 +24,7 @@ import static nl.procura.gba.common.ZaakType.GEBOORTE;
 import static nl.procura.gba.common.ZaakType.LV;
 import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.bs.page1.Page1BsTemplate;
 import nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils;
@@ -60,14 +61,14 @@ public class Page1Afstamming extends Page1BsTemplate {
   protected String getFragment(ZaakType zaakType) {
     switch (zaakType) {
       case NAAMSKEUZE:
-        return "bs.naamskeuze";
+        return ZaakFragment.FR_NAAMSKEUZE;
       case LV:
-        return "bs.lv";
+        return ZaakFragment.FR_LV;
       case ERKENNING:
-        return "bs.erkenning";
+        return ZaakFragment.FR_ERKENNING;
       case GEBOORTE:
       default:
-        return "bs.geboorte";
+        return ZaakFragment.FR_GEBOORTE;
     }
   }
 
@@ -78,6 +79,6 @@ public class Page1Afstamming extends Page1BsTemplate {
 
   @Override
   protected ZaakType[] getZaakTypes() {
-    return new ZaakType[]{GEBOORTE, ERKENNING, NAAMSKEUZE, LV};
+    return new ZaakType[]{ GEBOORTE, ERKENNING, NAAMSKEUZE, LV };
   }
 }

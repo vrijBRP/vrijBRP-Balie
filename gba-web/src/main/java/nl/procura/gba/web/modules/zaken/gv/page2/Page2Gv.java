@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.gv.page2;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.modules.hoofdmenu.gv.overzicht.GvOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
@@ -59,6 +60,6 @@ public class Page2Gv extends ZakenOverzichtPage<GvAanvraag> {
   protected void goToZaak() {
 
     getApplication().getServices().getMemoryService().setObject(GvAanvraag.class, getZaak());
-    getApplication().openWindow(getWindow(), new HomeWindow(), "bs.gv");
+    getApplication().openWindow(getWindow(), new HomeWindow(), ZaakFragment.FR_GV);
   }
 }

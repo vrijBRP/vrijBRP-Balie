@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -36,6 +36,7 @@ import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaak
 import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.INHOUDING_VERMISSING;
 import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.LEVENLOOS;
 import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.LIJKVINDING;
+import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.LV;
 import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.NAAMGEBRUIK;
 import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.NAAMSKEUZE;
 import static nl.procura.gba.jpa.personen.dao.views.verwijderzaken.VerwijderZaakType.NATURALISATIE;
@@ -64,43 +65,44 @@ public class VerwijderZakenOverzicht {
   private final List<VerwijderZakenActie> acties = new ArrayList<>();
 
   public VerwijderZakenOverzicht() {
-    add(UITTREKSEL, 20);
-    add(FORMULIER, 10);
-    add(VERSTREKKINGSBEPERKING, 5);
-    add(NAAMGEBRUIK, 5);
-    add(BINNENVERHUIZING, 5);
-    add(BUITENVERHUIZING, 5);
-    add(EMIGRATIE, 10);
-    add(HERVESTIGING, 5);
-    add(VOG, 10);
-    add(GPK, 5);
-    add(REISDOCUMENT, 16);
-    add(INHOUDING_VERMISSING, 16);
-    add(RIJBEWIJS, 11);
-    add(TERUGMELDING, 5);
-    add(GEBOORTE, 1);
-    add(ERKENNING, 1);
-    add(HUW_GPS, 1);
-    add(NAAMSKEUZE, 1);
-    add(OVERLIJDEN_GEMEENTE, 1);
-    add(LIJKVINDING, 1);
-    add(OVERLIJDEN_BUITENLAND, 1);
-    add(LEVENLOOS, 1);
-    add(INDICATIE, 1);
-    add(CORRESPONDENTIE, 5);
-    add(GEGEVENSVERSTREKKING, 20);
-    add(OMZETTING_GPS, 1);
-    add(ONTBINDING_HUW_GPS, 1);
-    add(INBOX, 1);
-    add(ONDERZOEK, 10);
-    add(EERSTE_INSCHRIJVING, 110);
-    add(RISICOANALYSE, 5);
-    add(PL_MUTATIE, 110);
-    add(NATURALISATIE, 10);
+    add(BINNENVERHUIZING, 5, 0);
+    add(CORRESPONDENTIE, 10, 0);
+    add(EERSTE_INSCHRIJVING, 110, 0);
+    add(EMIGRATIE, 10, 0);
+    add(ERKENNING, 2, 6);
+    add(FORMULIER, 10, 0);
+    add(GEBOORTE, 2, 6);
+    add(GEGEVENSVERSTREKKING, 20, 0);
+    add(GPK, 10, 0);
+    add(HERVESTIGING, 5, 0);
+    add(HUW_GPS, 12, 0);
+    add(INBOX, 1, 0);
+    add(INDICATIE, 1, 0);
+    add(INHOUDING_VERMISSING, 16, 0);
+    add(BUITENVERHUIZING, 5, 0);
+    add(LV, 2, 6);
+    add(LEVENLOOS, 2, 6);
+    add(LIJKVINDING, 2, 6);
+    add(NAAMGEBRUIK, 5, 0);
+    add(NAAMSKEUZE, 2, 6);
+    add(NATURALISATIE, 12, 0);
+    add(OMZETTING_GPS, 2, 6);
+    add(ONDERZOEK, 10, 0);
+    add(ONTBINDING_HUW_GPS, 2, 6);
+    add(OVERLIJDEN_BUITENLAND, 110, 0);
+    add(OVERLIJDEN_GEMEENTE, 2, 6);
+    add(PL_MUTATIE, 110, 0);
+    add(REISDOCUMENT, 16, 0);
+    add(RIJBEWIJS, 1, 0);
+    add(RISICOANALYSE, 5, 0);
+    add(TERUGMELDING, 10, 0);
+    add(UITTREKSEL, 20, 0);
+    add(VERSTREKKINGSBEPERKING, 5, 0);
+    add(VOG, 1, 0);
   }
 
-  public void add(VerwijderZaakType verwijderZaakType, int jaar) {
-    acties.add(new VerwijderZakenActie(new VerwijderVerlopenZaakActie(verwijderZaakType, jaar)));
+  public void add(VerwijderZaakType verwijderZaakType, int jaar, int maanden) {
+    acties.add(new VerwijderZakenActie(new VerwijderVerlopenZaakActie(verwijderZaakType, jaar, maanden)));
   }
 
   public List<VerwijderZakenActie> getActies() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.bs.riskanalysis;
 
+import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.common.annotations.ModuleAnnotation;
 import nl.procura.gba.web.components.layouts.ModuleTemplate;
 import nl.procura.gba.web.modules.bs.riskanalysis.page1.Page1RiskAnalysis;
@@ -26,7 +27,7 @@ import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
-@ModuleAnnotation(url = "#bs.risicoanalyse",
+@ModuleAnnotation(url = "#" + ZaakFragment.FR_RISICO_ANALYSE,
     caption = "Risicoanalyse",
     profielActie = ProfielActie.SELECT_CASE_RISK_ANALYSIS)
 public class ModuleRiskAnalysis extends ModuleTemplate {

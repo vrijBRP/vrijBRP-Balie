@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,9 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page50;
 
-import static java.util.Arrays.asList;
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.AANGEVER;
 
+import java.util.Collections;
 import java.util.List;
 
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
@@ -29,7 +29,11 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOptiePage;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page51.Page51Zaken;
 import nl.procura.gba.web.modules.zaken.uittreksel.overzicht.UittrekselOverzichtBuilder;
-import nl.procura.gba.web.services.zaken.documenten.*;
+import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
+import nl.procura.gba.web.services.zaken.documenten.DocumentService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentSoort;
+import nl.procura.gba.web.services.zaken.documenten.DocumentType;
+import nl.procura.gba.web.services.zaken.documenten.DocumentTypeUtils;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 
 /**
@@ -39,9 +43,7 @@ import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 public class Page50Zaken extends ZakenregisterOptiePage<DocumentZaak> {
 
   public Page50Zaken(DocumentZaak aanvraag) {
-
     super(aanvraag, "Zakenregister - " + getOmschrijving(aanvraag) + " document");
-
     addButton(buttonPrev);
   }
 
@@ -71,7 +73,7 @@ public class Page50Zaken extends ZakenregisterOptiePage<DocumentZaak> {
     DocumentService documenten = getServices().getDocumentService();
     DocumentRecord document = documenten.getDocument(getZaak().getDoc().getCDocument());
     List<DocumentSoort> soorten = documenten.getDocumentSoorten(getApplication().getServices().getGebruiker(),
-        asList(document));
+        Collections.singletonList(document));
     soorten.addAll(documenten.getDocumentSoorten(getApplication().getServices().getGebruiker(), DocumentType.ZAAK));
 
     getNavigation().goToPage(new Page51Zaken(getZaak(), soorten));

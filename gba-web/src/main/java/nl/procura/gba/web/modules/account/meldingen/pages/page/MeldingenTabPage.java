@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.modules.account.meldingen.pages.page;
 
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.CITIZEN;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.TASK;
@@ -30,6 +31,7 @@ import nl.procura.gba.web.modules.account.meldingen.pages.page.tab1.MeldingenTab
 import nl.procura.gba.web.modules.account.meldingen.pages.page.tab2.MeldingenTab2;
 import nl.procura.gba.web.modules.account.meldingen.pages.page.tab3.MeldingenTab3;
 import nl.procura.gba.web.modules.account.meldingen.pages.page.tab4.MeldingenTab4;
+import nl.procura.gba.web.modules.account.meldingen.pages.page.tab5.MeldingenTab5;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.applicatie.meldingen.MeldingService;
 import nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory;
@@ -69,6 +71,7 @@ public class MeldingenTabPage extends GbaPageTemplate {
       tabs.addTab(MeldingenTab2.class, "Systeemmeldingen (" + countS + ")", null);
       tabs.addTab(MeldingenTab1.class, "Herinneringen (" + countM + ")", null);
       tabs.addTab(MeldingenTab4.class, "Taken (" + countT + ")", null);
+      tabs.addTab(MeldingenTab5.class, "Signalen Inwoner.app", null);
 
       if (FAULT.equals(category)) {
         tabs.setSelectedTab(0);
@@ -81,6 +84,9 @@ public class MeldingenTabPage extends GbaPageTemplate {
 
       } else if (TASK.equals(category)) {
         tabs.setSelectedTab(3);
+
+      } else if (CITIZEN.equals(category)) {
+        tabs.setSelectedTab(4);
 
       }
 

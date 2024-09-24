@@ -31,7 +31,7 @@ public enum InboxItemTypeName implements InboxEnum<String> {
   VRIJBRP_ADDRESS_RESEARCH("vrijbrp-address-research", "Verzoek adresonderzoek", false),
   VRIJBRP_CERTIFICATE_OF_CONDUCT("vrijbrp-certificate-of-conduct", "Verzoek VOG", false),
   VRIJBRP_CIVIL_RECORD("vrijbrp-civil-record", "Verzoek afschrift burgerlijke stand", false),
-  VRIJBRP_LOST_TRAVEL_DOCUMENT("vrijbrp-lost-travel-document", "Verzoek vermissing reisdocument", false),
+  VRIJBRP_LOST_TRAVEL_DOCUMENT("vrijbrp-lost-travel-document", "Verzoek vermissing reisdocument", true),
   VRIJBRP_TRAVEL_DOCUMENT("vrijbrp-travel-document-application", "Verzoek reisdocument", true),
   VRIJBRP_PAYMENT("vrijbrp-travel-document-application-update-payment", "Verzoek betaling", true),
   VRIJBRP_VOTING_CARD("vrijbrp-voting-card", "Verzoek vervangende stempas", false),

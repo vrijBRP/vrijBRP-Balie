@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -33,15 +33,12 @@ import nl.procura.gba.web.services.zaken.correspondentie.CorrespondentieZaak;
 public class Page180Zaken extends ZakenregisterOptiePage<CorrespondentieZaak> {
 
   public Page180Zaken(CorrespondentieZaak zaak) {
-
     super(zaak, "Zakenregister - correspondentie");
-
     addButton(buttonPrev);
   }
 
   @Override
   protected void addOptieButtons() {
-
     addOptieButton(buttonDoc);
     addOptieButton(buttonPersonen);
   }
