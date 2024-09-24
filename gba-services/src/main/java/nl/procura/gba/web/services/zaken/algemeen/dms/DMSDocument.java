@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,6 +21,8 @@ package nl.procura.gba.web.services.zaken.algemeen.dms;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import com.google.common.collect.ComparisonChain;
 
@@ -33,35 +35,37 @@ import lombok.Data;
 public class DMSDocument implements Comparable<DMSDocument> {
 
   @Default
-  private DMSContent          content                 = null;
+  private DMSContent           content                 = null;
   @Default
-  private String              collection              = "";
+  private Supplier<DMSContent> contentSupplier         = null;
   @Default
-  private String              uuid                    = "";
+  private String               collection              = "";
   @Default
-  private String              customerId              = "";
+  private String               uuid                    = "";
   @Default
-  private long                date                    = -1;
+  private String               customerId              = "";
   @Default
-  private long                time                    = -1;
+  private long                 date                    = -1;
   @Default
-  private String              alias                   = "";
+  private long                 time                    = -1;
   @Default
-  private String              title                   = "";
+  private String               alias                   = "";
   @Default
-  private String              user                    = "";
+  private String               title                   = "";
   @Default
-  private String              datatype                = "";
+  private String               user                    = "";
   @Default
-  private String              zaakId                  = "";
+  private String               datatype                = "";
   @Default
-  private String              documentTypeDescription = "";
+  private String               zaakId                  = "";
   @Default
-  private String              confidentiality         = "";
+  private String               documentTypeDescription = "";
   @Default
-  private DMSStorageType      storage                 = DMSStorageType.DEFAULT;
+  private String               confidentiality         = "";
   @Default
-  private Map<String, String> otherProperties         = new HashMap<>();
+  private DMSStorageType       storage                 = DMSStorageType.DEFAULT;
+  @Default
+  private Map<String, String>  otherProperties         = new HashMap<>();
 
   public static DMSDocumentBuilder builder() {
     return hiddenBuilder();
@@ -73,6 +77,10 @@ public class DMSDocument implements Comparable<DMSDocument> {
         .compare(that.getDate(), this.getDate())
         .compare(that.getTime(), this.getTime())
         .result();
+  }
+
+  public DMSContent getContent() {
+    return Optional.ofNullable(contentSupplier).map(Supplier::get).orElse(content);
   }
 
   @Override

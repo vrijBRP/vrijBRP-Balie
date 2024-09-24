@@ -58,6 +58,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_RIJBEWIJS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEBR_PPD;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEMEENTE_CODES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEMEENTE_NAAM;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_ENDPOINT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEO_PW;
@@ -979,6 +980,14 @@ public class ParameterBean implements Serializable {
       description = "De code(s) van de gemeente om te bepalen of een PL of adres binnengemeentelijk is. " +
           "Als er meerdere codes zijn, dan moeten deze door een komma (,) worden gescheiden.")
   private String gemeenteCodes = "";
+
+  // Gemeentenaam
+  @ParameterAnnotation(GEMEENTE_NAAM)
+  @Position(order = "6")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Gemeentenaam",
+      description = "Naam van de gemeente")
+  private String gemeenteNaam = "";
 
   // Google Maps Key
   @ParameterAnnotation(GMAPKEY)

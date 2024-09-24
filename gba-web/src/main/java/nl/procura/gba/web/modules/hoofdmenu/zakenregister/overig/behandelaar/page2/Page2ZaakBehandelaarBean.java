@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,12 +23,13 @@ import java.io.Serializable;
 import java.lang.annotation.ElementType;
 
 import nl.procura.gba.common.DateTime;
-import nl.procura.gba.web.components.fields.GbaNativeSelect;
+import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.InputPrompt;
+import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextArea;
 
 import lombok.Data;
@@ -55,10 +56,11 @@ public class Page2ZaakBehandelaarBean implements Serializable {
       caption = "Toegewezen door")
   private UsrFieldValue toegewezenDoorLabel;
 
-  @Field(customTypeClass = GbaNativeSelect.class,
+  @Field(customTypeClass = GbaComboBox.class,
       caption = "Behandelaar",
       width = "300px",
       required = true)
+  @Select(nullSelectionAllowed = false)
   private UsrFieldValue behandelaar;
 
   @Field(type = FieldType.TEXT_AREA,

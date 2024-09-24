@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -28,15 +28,14 @@ import nl.procura.gba.web.modules.beheer.documenten.page1.tab5.Tab5DocumentenMod
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab6.Tab6DocumentenModule;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab7.Tab7DocumentenModule;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab8.Tab8DocumentenModule;
+import nl.procura.gba.web.modules.beheer.documenten.page1.tab9.Tab9DocumentenModule;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.layout.page.PageLayout;
 
 public class DocumentenTab extends PageLayout {
 
-  private final GbaTabsheet tabs = new GbaTabsheet();
-
   public DocumentenTab() {
-
+    GbaTabsheet tabs = new GbaTabsheet();
     tabs.addStyleName(GbaWebTheme.TABSHEET_TOP);
 
     tabs.addTab(new Tab1DocumentenModule(), "Documenten");
@@ -47,6 +46,7 @@ public class DocumentenTab extends PageLayout {
     tabs.addTab(new Tab6DocumentenModule(), "Stempels");
     tabs.addTab(new Tab7DocumentenModule(), "Kenmerken");
     tabs.addTab(new Tab8DocumentenModule(), "DMS documenttypes");
+    tabs.addTab(new Tab9DocumentenModule(), "Vertalingen");
 
     addExpandComponent(tabs);
   }

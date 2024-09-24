@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -33,9 +33,9 @@ import liquibase.database.Database;
 /**
  * Tabellen met een 0 record
  */
-public class DBCheckPre1 extends DBCheckTemplateLb {
+public class DBCheckPost10 extends DBCheckTemplateLb {
 
-  public DBCheckPre1(EntityManager entityManager, Database database, String type) {
+  public DBCheckPost10(EntityManager entityManager, Database database, String type) {
     super(entityManager, database, type, "Controle lege waarden van tabellen");
   }
 
@@ -46,6 +46,7 @@ public class DBCheckPre1 extends DBCheckTemplateLb {
     checkTabel("reisdoc", "c_reisdoc");
     checkTabel("profile", "c_profile");
     checkTabel("location", "c_location");
+    checkTabel("translation", "c_translation");
   }
 
   private void checkTabel(String table, String column) throws SQLException {

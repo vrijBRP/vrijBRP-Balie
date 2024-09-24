@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -45,6 +45,7 @@ public class ZakenAantalDao {
   public static final long C_RIJB           = ZaakType.RIJBEWIJS.getCode();
   public static final long C_TMV            = ZaakType.TERUGMELDING.getCode();
   public static final long C_GEB            = ZaakType.GEBOORTE.getCode();
+  public static final long C_LV             = ZaakType.LV.getCode();
   public static final long C_NAT            = ZaakType.NATURALISATIE.getCode();
   public static final long C_ERK            = ZaakType.ERKENNING.getCode();
   public static final long C_NK             = ZaakType.NAAMSKEUZE.getCode();
@@ -87,6 +88,7 @@ public class ZakenAantalDao {
     sql.append(groupBy(dIn(selectU("terugmelding"), "d_in"), C_TMV));
     sql.append(groupBy(dIn(selectU("pl_mut"), "d_in"), C_PL_MUT));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_GEB, C_GEB));
+    sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_LV, C_LV));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_NAT, C_NAT));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_ERK, C_ERK));
     sql.append(groupBy(dIn(selectU("doss where type_doss = %d"), "d_aanvr"), C_NK, C_NK));

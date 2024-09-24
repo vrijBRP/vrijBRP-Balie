@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2023 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,7 +25,7 @@ import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.behandel
 import java.util.List;
 
 import nl.procura.gba.web.components.containers.GebruikerContainer;
-import nl.procura.gba.web.components.fields.GbaNativeSelect;
+import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.Services;
@@ -49,11 +49,11 @@ public class Page2ZaakBehandelaarForm1 extends GbaForm<Page2ZaakBehandelaarBean>
   @Override
   public void afterSetBean() {
     super.afterSetBean();
-    GbaNativeSelect field = getField(BEHANDELAAR, GbaNativeSelect.class);
+    GbaComboBox field = getField(BEHANDELAAR, GbaComboBox.class);
     Services services = Services.getInstance();
     GebruikerService gebruikerService = services.getGebruikerService();
     List<Gebruiker> gebruikers = gebruikerService.getGebruikers(false);
-    GebruikerContainer gebruikerContainer = new GebruikerContainer(gebruikers);
+    GebruikerContainer gebruikerContainer = new GebruikerContainer(gebruikers, false);
     field.setContainerDataSource(gebruikerContainer);
     field.setValue(new UsrFieldValue(services.getGebruiker()));
   }

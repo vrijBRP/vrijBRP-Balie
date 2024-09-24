@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,12 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.*;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.BEHANDELAAR;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.GEBRUIKER;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.INDICATIE;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.PROFIEL;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.ZAAKSTATUSSEN;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.page4.zoeken.Page4ZakenBean.ZAAKTYPES;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,7 +91,7 @@ public class Page4ZakenFormUitgebreid extends GbaForm<Page4ZakenBean> {
     GbaNativeSelect field2 = getField(BEHANDELAAR, GbaNativeSelect.class);
     if (field1 != null) {
       if (gebruikerContainer == null) {
-        gebruikerContainer = new GebruikerContainer(getServices().getGebruikerService().getGebruikers(false));
+        gebruikerContainer = new GebruikerContainer(getServices().getGebruikerService().getGebruikers(false), false);
       }
       field1.setContainerDataSource(gebruikerContainer);
       field2.setContainerDataSource(gebruikerContainer);

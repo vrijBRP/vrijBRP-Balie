@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,6 +22,7 @@ package nl.procura.gba.web.common.database;
 import javax.persistence.EntityManager;
 
 import nl.procura.gba.web.common.database.checks.DBCheckPost1;
+import nl.procura.gba.web.common.database.checks.DBCheckPost10;
 import nl.procura.gba.web.common.database.checks.DBCheckPost2;
 import nl.procura.gba.web.common.database.checks.DBCheckPost3;
 import nl.procura.gba.web.common.database.checks.DBCheckPost4;
@@ -46,5 +47,6 @@ public class DBPostCheck {
     new DBCheckPost7(entityManager, database, TYPE).execute();
     new DBCheckPost8(entityManager, database, TYPE).execute();
     // new DBCheckPost9(entityManager, database, TYPE).execute(); // Disabled for now. Too slow
+    new DBCheckPost10(entityManager, database, TYPE).execute();
   }
 }

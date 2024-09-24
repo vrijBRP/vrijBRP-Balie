@@ -50,9 +50,11 @@ public class OkHttpRequestInboxClient extends ApiClient {
   public OkHttpRequestInboxClient(final String basePath, Duration duration) {
     super(basePath);
     client = new OkHttpClient.Builder()
-        //.addInterceptor(new HttpLoggingInterceptor())
+        //        .addInterceptor(new HttpLoggingInterceptor())
         .connectTimeout(duration.toMillis(), TimeUnit.MILLISECONDS)
         .readTimeout(duration.toMillis(), TimeUnit.MILLISECONDS)
+        .callTimeout(duration.toMillis(), TimeUnit.MILLISECONDS)
+        .writeTimeout(duration.toMillis(), TimeUnit.MILLISECONDS)
         .build();
     gson = new GsonBuilder()
         .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeDeserializer())

@@ -37,6 +37,7 @@ import nl.procura.gba.common.StreamUtils;
 import nl.procura.gba.web.components.layouts.form.document.preview.FilePreviewWindow.PreviewFile;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.theme.twee.ProcuraTheme;
+import nl.procura.vaadin6.addons.embed.Embed;
 
 public class FilePreviewLayouts {
 
@@ -78,12 +79,11 @@ public class FilePreviewLayouts {
    */
   public static Component getPdfLayout(Window window, final PreviewFile file) {
     StreamResource streamResource = getStreamResource(file.getBytes(), file.getFileName(), window.getApplication());
-    Embedded embedded = new Embedded(null, streamResource);
-    embedded.setType(Embedded.TYPE_BROWSER);
-    embedded.setSizeFull();
+    Embed embed = new Embed(streamResource);
+    embed.setSizeFull();
 
-    VLayout layout = new VLayout(embedded).sizeFull().margin(true);
-    layout.setExpandRatio(embedded, 1f);
+    VLayout layout = new VLayout(embed).sizeFull().margin(true);
+    layout.setExpandRatio(embed, 1f);
 
     return layout;
   }

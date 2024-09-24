@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,15 +19,26 @@
 
 package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2;
 
-import static nl.procura.gba.common.MiscUtils.cleanPath;
-import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.gba.web.modules.beheer.gebruikers.page2.Page2GebruikersBean.MAP;
-import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static java.util.Optional.ofNullable;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 import static nl.procura.commons.core.exceptions.ProExceptionType.PROGRAMMING;
+import static nl.procura.gba.common.MiscUtils.cleanPath;
+import static nl.procura.gba.common.MiscUtils.setClass;
+import static nl.procura.gba.web.modules.beheer.gebruikers.page2.Page2GebruikersBean.MAP;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.BINNENGEM;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.GRONDSLAG;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.PROCESACTIE;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.REACTIE;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.TOEKENNING;
+import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieSoortType.VERSTREK_BEP;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.defaultNul;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -36,15 +47,21 @@ import java.util.Properties;
 
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
+import nl.procura.gba.jpa.personen.db.Translation;
 import nl.procura.gba.web.components.layouts.OptieLayout;
-import nl.procura.gba.web.modules.beheer.documenten.*;
+import nl.procura.gba.web.modules.beheer.documenten.DocumentenTabPage;
+import nl.procura.gba.web.modules.beheer.documenten.KoppelGebruikersAanDocumentenPage;
+import nl.procura.gba.web.modules.beheer.documenten.KoppelKenmerkenAanDocumentenPage;
+import nl.procura.gba.web.modules.beheer.documenten.KoppelPrintoptiesAanDocumentenPage;
+import nl.procura.gba.web.modules.beheer.documenten.KoppelStempelsAanDocumentenPage;
 import nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page5.Page5Documenten;
 import nl.procura.gba.web.modules.beheer.overig.CheckPadEnOpslaanDocument;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
+import nl.procura.gba.web.services.zaken.documenten.DocumentTranslation;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -290,7 +307,6 @@ public class Tab1DocumentenPage2 extends DocumentenTabPage {
     setOpslagEnToegang(bOT);
     getDocument().setIedereenToegang(getDocument().isStored() && getDocument().isIedereenToegang());
     // voorkom dat allAllowed = -1.
-
     getServices().getDocumentService().save(getDocument());
 
     checkGebruikerKoppeling();
@@ -318,6 +334,9 @@ public class Tab1DocumentenPage2 extends DocumentenTabPage {
     getDocument().setAantal(aval(b.getAantal()));
     getDocument().setDocumentDmsType(b.getDocumentDmsType());
     getDocument().setVertrouwelijkheid(b.getVertrouwelijkheid());
+    getDocument().setTranslation(ofNullable(b.getVertaling())
+        .map(DocumentTranslation::getEntity)
+        .orElse(new Translation(0L)));
   }
 
   private void setOpslagEnToegang(OpslagEnToegangBean bOT) {

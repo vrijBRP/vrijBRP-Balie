@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 import static nl.procura.burgerzaken.requestinbox.api.RequestInboxUtils.getUserIdFromUrl;
 import static nl.procura.burgerzaken.requestinbox.api.RequestInboxUtils.getVrijBRPChannel;
 import static nl.procura.burgerzaken.requestinbox.api.RequestInboxUtils.getVrijBRPUser;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INBOX_ENDPOINT;
@@ -34,7 +35,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.INB
 import static nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuutType.REQUEST_INBOX;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.Duration;
@@ -142,10 +143,10 @@ public class RequestInboxService extends AbstractService implements Controleerba
   public DMSResult getDocuments(RequestInboxItem item) {
     DMSResult dmsResult = new DMSResult();
     item.getInboxItem().getDocuments().forEach(document -> {
-      byte[] content = getDocumentContent(document.getId());
       String documentDmsType = "";
       dmsResult.getDocuments().add(DMSDocument.builder()
-          .content(DMSBytesContent.fromFilename(document.getOriginalName(), content))
+          .contentSupplier(
+              () -> DMSBytesContent.fromFilename(document.getOriginalName(), getDocumentContent(document.getId())))
           .title(document.getOriginalName())
           .user("")
           .zaakId(item.getId())
@@ -218,7 +219,7 @@ public class RequestInboxService extends AbstractService implements Controleerba
     if (requestHandler.contains(getVrijBRPChannel())) {
       long userId = along(getUserIdFromUrl(requestHandler));
       Gebruiker gebruiker = getServices().getGebruikerService().getGebruikerByCode(userId, false);
-      return "VrijBRP / " + gebruiker.getNaam();
+      return "VrijBRP / " + defaultIfBlank(gebruiker.getNaam(), "Onbekende gebruiker");
     }
     return "Onbekend (" + requestHandler + ")";
   }
@@ -262,7 +263,7 @@ public class RequestInboxService extends AbstractService implements Controleerba
 
   private ApiClient getRequestInboxClient() {
     String url = getSysteemParm(INBOX_ENDPOINT, true);
-    return new OkHttpRequestInboxClient(url, Duration.ofSeconds(30));
+    return new OkHttpRequestInboxClient(url, Duration.ofSeconds(5));
   }
 
   private String getAccessToken() {

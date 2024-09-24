@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,14 +20,20 @@
 package nl.procura.gba.web.services.zaken.documenten;
 
 import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.MiscUtils;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.BaseEntity;
+import nl.procura.gba.jpa.personen.db.Document;
+import nl.procura.gba.jpa.personen.db.Kenmerk;
+import nl.procura.gba.jpa.personen.db.Koppelenum;
+import nl.procura.gba.jpa.personen.db.Stempel;
 import nl.procura.gba.web.services.beheer.KoppelActie;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.KoppelbaarAanGebruiker;
@@ -201,6 +207,10 @@ public class DocumentRecord extends Document
       }
     }
     return false;
+  }
+
+  public boolean hasTranslations() {
+    return getTranslation() != null && !getTranslation().getTranslations().isEmpty();
   }
 
   @Override

@@ -356,6 +356,9 @@ public enum ParameterConstant implements ParameterType {
   DOC_OBJECT_STORAGE_PW("doc_object_storage_pw", "VrijBRP ObjectStore wachtwoord",
       GROUP_DOCUMENTEN, true, false, false, ""),
 
+  GEMEENTE_NAAM("gemeente_naam", "Gemeentenaam",
+      GROUP_ALGEMENE_INSTELLINGEN, true, false, false, ""),
+
   GEMEENTE_CODES("gemeente_codes", "Gemeentecode(s)",
       GROUP_ALGEMENE_INSTELLINGEN, true, false, false, ""),
 

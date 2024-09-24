@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,13 +19,21 @@
 
 package nl.procura.gba.web.services.zaken.documenten;
 
-import static ch.lambdaj.Lambda.*;
-import static java.util.Arrays.asList;
-import static nl.procura.gba.common.MiscUtils.*;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.selectFirst;
+import static nl.procura.gba.common.MiscUtils.copy;
+import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.common.MiscUtils.sort;
+import static nl.procura.gba.common.MiscUtils.to;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +43,8 @@ import nl.procura.gba.common.UniqueList;
 import nl.procura.gba.jpa.personen.dao.DocumentDao;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.jpa.personen.db.Document;
+import nl.procura.gba.jpa.personen.db.Translation;
+import nl.procura.gba.jpa.personen.db.TranslationRec;
 import nl.procura.gba.jpa.personen.utils.GbaDaoUtils;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
@@ -74,6 +84,19 @@ public class DocumentService extends DocumentenPrintenService {
   @ThrowException("Fout bij het zoeken van de DMS documenttypes")
   public List<DmsDocumentType> getDmsDocumentTypes() {
     return copyList(DocumentDao.findDmsTypes(), DmsDocumentType.class);
+  }
+
+  /**
+   * geeft de lijst met alle documenttypes
+   */
+  @ThrowException("Fout bij het zoeken van de vertalingen")
+  public List<Translation> getTranslations() {
+    return copyList(DocumentDao.findTranslations(), Translation.class);
+  }
+
+  @ThrowException("Fout bij het zoeken van de vertaling")
+  public Translation getTranslationById(Long cTranslation) {
+    return DocumentDao.findTranslationById(cTranslation);
   }
 
   /**
@@ -296,7 +319,7 @@ public class DocumentService extends DocumentenPrintenService {
     for (DocumentRecord document : documenten) {
       for (KoppelbaarAanDocument koppelObject : koppelList) {
         KoppelbaarAanDocument dbKoppelObject = checkDatabaseRepresentation(koppelObject);
-        if (koppelActie.isPossible(document.isGekoppeld(asList(dbKoppelObject)))) {
+        if (koppelActie.isPossible(document.isGekoppeld(Collections.singletonList(dbKoppelObject)))) {
           dbKoppelObject.koppelActie(document, koppelActie);
           koppelObject.koppelActie(document, koppelActie);
           document.koppelActie(dbKoppelObject, koppelActie);
@@ -306,6 +329,16 @@ public class DocumentService extends DocumentenPrintenService {
 
       saveEntity(document);
     }
+  }
+
+  @ThrowException("Fout bij het opslaan van een vertaling")
+  public void save(Translation translation) {
+    saveEntity(translation);
+  }
+
+  @ThrowException("Fout bij het opslaan van een vertaling")
+  public void save(TranslationRec translationRec) {
+    saveEntity(translationRec);
   }
 
   @ThrowException("Fout bij het opslaan van afnemer")
@@ -329,7 +362,7 @@ public class DocumentService extends DocumentenPrintenService {
   }
 
   public void save(DocumentRecord document) {
-    save(asList(document));
+    save(Collections.singletonList(document));
   }
 
   @ThrowException("Fout bij het opslaan van een stempel")
@@ -341,6 +374,16 @@ public class DocumentService extends DocumentenPrintenService {
   @ThrowException("Fout bij het opslaan van document")
   public void save(List<DocumentRecord> docList) {
     docList.forEach(o -> saveEntity(o));
+  }
+
+  @ThrowException("Fout bij het verwijderen van vertaling")
+  public void delete(Translation translation) {
+    removeEntity(translation);
+  }
+
+  @ThrowException("Fout bij het verwijderen van vertaling")
+  public void delete(TranslationRec translationRec) {
+    removeEntity(translationRec);
   }
 
   @ThrowException("Fout bij het verwijderen van afnemer")
@@ -386,6 +429,7 @@ public class DocumentService extends DocumentenPrintenService {
       return StringUtils.isNotBlank(vertrouwId) ? DocumentVertrouwelijkheid.get(vertrouwId) : defaultVertrouw;
     }
   }
+
 
   private List<DocumentSoort> addDocumentToSoort(DocumentRecord document, List<DocumentSoort> documentSoorten) {
     DocumentSoort documentSoort = document.getDocumentSoort();
@@ -471,7 +515,7 @@ public class DocumentService extends DocumentenPrintenService {
     document.setPrintOpties(getServices().getPrintOptieService().getPrintOpties(gebruiker, document));
     document.setAfnemers(getAfnemers(document));
     document.setDoelen(getDoelen(document));
-    document.setDocumentStempels(new ArrayList(getDocumentStempels(document)));
+    document.setDocumentStempels(new ArrayList<>(getDocumentStempels(document)));
     document.setKoppelElementen(getKoppelenumen(document));
     document.setDocumentKenmerken(new DocumentKenmerken(new ArrayList<>(getDocumentKenmerken(document))));
   }

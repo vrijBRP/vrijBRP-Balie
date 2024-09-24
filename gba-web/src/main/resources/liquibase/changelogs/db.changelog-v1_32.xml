@@ -502,4 +502,80 @@
       <column name="org_keuze_naam_tp" type="VARCHAR(255)" defaultValue=""/>
     </addColumn>
   </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_8">
+    <createTable tableName="translation">
+      <column name="c_translation" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="name" type="VARCHAR(255)" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_9">
+    <addPrimaryKey columnNames="c_translation"
+      constraintName="translation_pkey"
+      tableName="translation"/>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_10">
+    <createTable tableName="translation_rec">
+      <column name="c_translation_rec" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="c_translation" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nl" type="TEXT" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fl" type="TEXT" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_11">
+    <addPrimaryKey columnNames="c_translation_rec"
+      constraintName="translation_rec_pkey"
+      tableName="translation_rec"/>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_12">
+    <addForeignKeyConstraint
+      baseColumnNames="c_translation"
+      baseTableName="translation_rec"
+      constraintName="translation_rec_c_translation_fkey"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_translation"
+      referencedTableName="translation"/>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_13">
+    <sql>
+      INSERT INTO translation (c_translation, name)
+      VALUES (0, '');
+    </sql>
+    <addColumn tableName="document">
+      <column name="c_translation" type="numeric" defaultValue="0"/>
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_14">
+    <addForeignKeyConstraint
+      baseColumnNames="c_translation"
+      baseTableName="document"
+      constraintName="document_c_translation_fkey"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="SET DEFAULT"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_translation"
+      referencedTableName="translation"/>
+  </changeSet>
 </databaseChangeLog>

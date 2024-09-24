@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,7 +23,6 @@ import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.E
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.VADER_DUO_MOEDER;
-import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.Globalfunctions.trim;
@@ -308,7 +307,7 @@ public class DossierErkenning extends DossErk
       }
     }
 
-    return getToestemminggeverType().getOms() + " " + astr(getRechtbank());
+    return getToestemminggeverType().getToestemmingMetRechtbank(getRechtbank());
   }
 
   public ToestemminggeverType getToestemminggeverType() {

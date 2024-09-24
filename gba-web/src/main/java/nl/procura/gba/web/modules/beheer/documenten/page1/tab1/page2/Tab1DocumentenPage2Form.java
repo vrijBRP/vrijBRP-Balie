@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,19 @@
 package nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2;
 
 import static nl.procura.gba.common.MiscUtils.cleanPath;
-import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.*;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.AANTAL;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.ALIAS;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.CODE;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.DOCUMENT_DMS_TYPE;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.MAP;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.NAAM;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.OMSCHRIJVING;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.SJABLOON;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.TYPE;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.VERTALING;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.VERTROUWELIJKHEID;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.VERVALDATUM;
+import static nl.procura.gba.web.modules.beheer.documenten.page1.tab1.page2.Tab1DocumentenPage2Bean.VOLGNR;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.io.File;
@@ -40,6 +52,7 @@ import nl.procura.gba.web.components.layouts.form.document.DocumentVertrouwelijk
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
+import nl.procura.gba.web.services.zaken.documenten.DocumentTranslation;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.vaadin.component.container.ArrayListContainer;
@@ -55,7 +68,7 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
 
     setCaption("Document");
     setOrder(CODE, VOLGNR, ALIAS, NAAM, SJABLOON, TYPE, MAP, VERVALDATUM, AANTAL,
-        DOCUMENT_DMS_TYPE, VERTROUWELIJKHEID, OMSCHRIJVING);
+        DOCUMENT_DMS_TYPE, VERTROUWELIJKHEID, VERTALING, OMSCHRIJVING);
     setColumnWidths(WIDTH_130, "");
     setReadonlyAsText(false);
 
@@ -128,12 +141,28 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
     field.setValue(getBean().getDocumentDmsType());
   }
 
+  protected void setVertalingenContainer() {
+    GbaNativeSelect field = getField(VERTALING, GbaNativeSelect.class);
+    field.setContainerDataSource(new VertalingOmschrijvingContainer());
+    field.setValue(getBean().getVertaling());
+  }
+
   protected class DocumentTypeOmschrijvingContainer extends ArrayListContainer {
 
     public DocumentTypeOmschrijvingContainer(String documentDmsType) {
       addItem(documentDmsType);
       getApplication().getServices().getDocumentService().getDmsDocumentTypes().stream()
           .map(DmsDocumentType::toString)
+          .forEach(this::addItem);
+    }
+  }
+
+  protected class VertalingOmschrijvingContainer extends ArrayListContainer {
+
+    public VertalingOmschrijvingContainer() {
+      getApplication().getServices().getDocumentService().getTranslations()
+          .stream()
+          .map(DocumentTranslation::new)
           .forEach(this::addItem);
     }
   }
@@ -156,6 +185,7 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
       bean.setAlias(doc.getAlias());
       bean.setVertrouwelijkheid(doc.getVertrouwelijkheid());
       bean.setDocumentDmsType(doc.getDocumentDmsType());
+      bean.setVertaling(new DocumentTranslation(doc.getTranslation()));
     }
 
     setBean(bean);
@@ -164,12 +194,12 @@ public class Tab1DocumentenPage2Form extends GbaForm<Tab1DocumentenPage2Bean> {
   }
 
   private void setContainers() {
-
     setTemplateContainer();
     setDocumentTypeContainer();
     setDocumentmapContainer();
     setVertrouwelijkheidContainer();
     setDocumenttypeOmschrijvingContainer();
+    setVertalingenContainer();
 
     repaint();
   }

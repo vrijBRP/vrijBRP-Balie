@@ -33,6 +33,7 @@ import static nl.procura.gba.common.ZaakType.INDICATIE;
 import static nl.procura.gba.common.ZaakType.INHOUD_VERMIS;
 import static nl.procura.gba.common.ZaakType.LEVENLOOS;
 import static nl.procura.gba.common.ZaakType.LIJKVINDING;
+import static nl.procura.gba.common.ZaakType.LV;
 import static nl.procura.gba.common.ZaakType.NAAMGEBRUIK;
 import static nl.procura.gba.common.ZaakType.NAAMSKEUZE;
 import static nl.procura.gba.common.ZaakType.NATURALISATIE;
@@ -148,7 +149,7 @@ public class ZaakTableContainer extends HierarchicalContainer implements Procura
     addTreeItem(new ZaakAantalItem().setCaption(BULK_CORR), BULKACTIES, false, true, Page12Module.class);
 
     ZaakType[] huwelijkTypes = { HUWELIJK_GPS_GEMEENTE, OMZETTING_GPS, ONTBINDING_GEMEENTE };
-    ZaakType[] afstammingTypes = { GEBOORTE, ERKENNING, NAAMSKEUZE };
+    ZaakType[] afstammingTypes = { GEBOORTE, ERKENNING, NAAMSKEUZE, LV };
     ZaakType[] overlijdenTypes = { OVERLIJDEN_IN_GEMEENTE, OVERLIJDEN_IN_BUITENLAND, LEVENLOOS, LIJKVINDING };
 
     addZaakItem(afstammingTypes, ZAAK, true, false, SubModuleZaken.class, "Naam & Afst.");

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,19 @@ package nl.procura.gba.jpa.personen.db;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
@@ -147,6 +159,11 @@ public class Document extends BaseEntity<Long> {
 
   @OneToMany(mappedBy = "document")
   private List<UittAanvr> uittAanvrs;
+
+  @ManyToOne
+  @BatchFetch(BatchFetchType.IN)
+  @JoinColumn(name = "c_translation")
+  private Translation translation;
 
   public Document() {
   }
@@ -362,5 +379,13 @@ public class Document extends BaseEntity<Long> {
 
   public void setSbAllowed(BigDecimal sbAllowed) {
     this.sbAllowed = sbAllowed;
+  }
+
+  public Translation getTranslation() {
+    return translation;
+  }
+
+  public void setTranslation(Translation translation) {
+    this.translation = translation;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -28,7 +28,6 @@ import com.vaadin.terminal.StreamResource.StreamSource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
@@ -40,6 +39,7 @@ import nl.procura.gba.web.services.zaken.documenten.BestandType;
 import nl.procura.gba.web.theme.GbaWebTheme;
 import nl.procura.vaadin.component.dialog.ModalWindow;
 import nl.procura.vaadin.component.layout.VLayout;
+import nl.procura.vaadin6.addons.embed.Embed;
 
 public class PrintPreviewWindow extends ModalWindow {
 
@@ -84,17 +84,16 @@ public class PrintPreviewWindow extends ModalWindow {
       return;
     }
 
-    Embedded pdf = new Embedded("", new StreamResource((StreamSource) () -> new ByteArrayInputStream(bytes),
-        downloadNaam + new Date().getTime() + ".pdf", window.getApplication()));
-
-    pdf.setType(Embedded.TYPE_BROWSER);
+    StreamResource streamResource = new StreamResource((StreamSource) () -> new ByteArrayInputStream(bytes),
+        downloadNaam + new Date().getTime() + ".pdf", window.getApplication());
+    Embed pdf = new Embed(streamResource);
     pdf.setSizeFull();
 
     VerticalLayout pdfLayout = new VerticalLayout();
-
     pdfLayout.setStyleName("download-layout");
     pdfLayout.setMargin(true);
     pdfLayout.setSizeFull();
+    pdfLayout.setSpacing(true);
 
     Button sluitButton = new Button("Sluiten (Esc)");
     sluitButton.addListener((ClickListener) event -> closePrintWindow());

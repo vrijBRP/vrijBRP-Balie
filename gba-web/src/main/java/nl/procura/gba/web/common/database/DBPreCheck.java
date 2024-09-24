@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,8 +21,6 @@ package nl.procura.gba.web.common.database;
 
 import javax.persistence.EntityManager;
 
-import nl.procura.gba.web.common.database.checks.DBCheckPre1;
-
 import liquibase.database.Database;
 
 public class DBPreCheck {
@@ -30,6 +28,6 @@ public class DBPreCheck {
   private static final String TYPE = "vóór";
 
   public DBPreCheck(EntityManager entityManager, Database database) {
-    new DBCheckPre1(entityManager, database, TYPE).execute();
+    // No checks
   }
 }

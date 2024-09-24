@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,7 +23,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.Document;
+import nl.procura.gba.jpa.personen.db.DocumentAfn;
+import nl.procura.gba.jpa.personen.db.DocumentDmsType;
+import nl.procura.gba.jpa.personen.db.DocumentDoel;
+import nl.procura.gba.jpa.personen.db.Kenmerk;
+import nl.procura.gba.jpa.personen.db.Stempel;
+import nl.procura.gba.jpa.personen.db.Translation;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 
 public class DocumentDao extends GenericDao {
@@ -47,10 +53,9 @@ public class DocumentDao extends GenericDao {
   }
 
   public static List<Document> findAllDocuments() {
-    StringBuilder query = new StringBuilder();
-    query.append("select d from Document d ");
-    query.append("where d.cDocument > 0");
-    return GbaJpa.getManager().createQuery(query.toString(), Document.class).getResultList();
+    String query = "select d from Document d "
+        + "where d.cDocument > 0";
+    return GbaJpa.getManager().createQuery(query, Document.class).getResultList();
   }
 
   public static List<DocumentAfn> findAfnemers() {
@@ -78,6 +83,15 @@ public class DocumentDao extends GenericDao {
   public static List<DocumentDoel> findDoelen() {
     return GbaJpa.getManager().createQuery("select d from DocumentDoel d where d.cDocumentDoel > 0",
         DocumentDoel.class).getResultList();
+  }
+
+  public static List<Translation> findTranslations() {
+    return GbaJpa.getManager().createQuery("select d from Translation d where d.cTranslation > 0",
+        Translation.class).getResultList();
+  }
+
+  public static Translation findTranslationById(Long cTranslation) {
+    return GbaJpa.getManager().find(Translation.class, cTranslation);
   }
 
   public static List<Document> findDocuments(String sql) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,10 +25,15 @@ import java.lang.annotation.ElementType;
 import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.modules.beheer.overig.MapValidator;
+import nl.procura.gba.web.services.zaken.documenten.DocumentTranslation;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
-import nl.procura.vaadin.annotation.field.*;
+import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.Immediate;
+import nl.procura.vaadin.annotation.field.TextArea;
+import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
@@ -50,7 +55,9 @@ public class Tab1DocumentenPage2Bean implements Serializable {
   public static final String AANTAL            = "aantal";
   public static final String ALIAS             = "alias";
   public static final String VERTROUWELIJKHEID = "vertrouwelijkheid";
+  public static final String VERTALINGEN       = "vertalingen";
   public static final String DOCUMENT_DMS_TYPE = "documentDmsType";
+  public static final String VERTALING         = "vertaling";
 
   @Field(type = FieldType.LABEL,
       caption = "Code")
@@ -124,4 +131,10 @@ public class Tab1DocumentenPage2Bean implements Serializable {
       width = "350px")
   @Immediate
   private DocumentVertrouwelijkheid vertrouwelijkheid;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Vertaling",
+      width = "350px")
+  @Immediate
+  private DocumentTranslation vertaling;
 }

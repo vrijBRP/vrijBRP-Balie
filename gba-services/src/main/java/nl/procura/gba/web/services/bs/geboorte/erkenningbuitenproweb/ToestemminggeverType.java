@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -91,6 +91,17 @@ public enum ToestemminggeverType {
       }
     }
     return false;
+  }
+
+  /**
+   * Als er sprake is van toestemming door hoge raad of gerechtshof dan het woord rechtbank weglaten
+   */
+  public String getToestemmingMetRechtbank(String rechtbank) {
+    String value = getOms() + " " + rechtbank;
+    if (value.toLowerCase().matches(".*(hoge|gerechtshof).*")) {
+      value = value.replaceAll("([Rr])echtbank", "");
+    }
+    return value;
   }
 
   @Override

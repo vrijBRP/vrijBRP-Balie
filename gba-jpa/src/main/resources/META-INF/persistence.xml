@@ -154,5 +154,7 @@
         <class>nl.procura.gba.jpa.personen.db.DossNaturVerz</class>
         <class>nl.procura.gba.jpa.personen.db.TaskEntity</class>
         <class>nl.procura.gba.jpa.personen.db.DossLv</class>
+      <class>nl.procura.gba.jpa.personen.db.Translation</class>
+      <class>nl.procura.gba.jpa.personen.db.TranslationRec</class>
     </persistence-unit>
 </persistence>

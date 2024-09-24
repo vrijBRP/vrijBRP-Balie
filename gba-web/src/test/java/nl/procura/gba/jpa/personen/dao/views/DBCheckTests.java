@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -47,6 +47,7 @@ import nl.procura.gba.jpa.personen.db.ZaakRel;
 import nl.procura.gba.jpa.personen.db.ZaakRelPK;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
 import nl.procura.gba.web.common.database.checks.DBCheckPost1;
+import nl.procura.gba.web.common.database.checks.DBCheckPost10;
 import nl.procura.gba.web.common.database.checks.DBCheckPost2;
 import nl.procura.gba.web.common.database.checks.DBCheckPost3;
 import nl.procura.gba.web.common.database.checks.DBCheckPost4;
@@ -54,7 +55,6 @@ import nl.procura.gba.web.common.database.checks.DBCheckPost5;
 import nl.procura.gba.web.common.database.checks.DBCheckPost7;
 import nl.procura.gba.web.common.database.checks.DBCheckPost8;
 import nl.procura.gba.web.common.database.checks.DBCheckPost9;
-import nl.procura.gba.web.common.database.checks.DBCheckPre1;
 import nl.procura.gba.web.services.TemporaryDatabase;
 
 import liquibase.database.core.HsqlDatabase;
@@ -72,8 +72,8 @@ public class DBCheckTests {
   public void mustExecuteAllChecks() {
     HsqlDatabase database = getHsqlDatabase(getConnection());
     // Pre-liquibase checks
-    new DBCheckPre1(GbaJpa.getManager(), database, "").execute();
-    new DBCheckPre1(GbaJpa.getManager(), database, "").execute();
+    new DBCheckPost10(GbaJpa.getManager(), database, "").execute();
+    new DBCheckPost10(GbaJpa.getManager(), database, "").execute();
     // Post-liquibase checks
     new DBCheckPost1(GbaJpa.getManager(), database, "").execute();
     new DBCheckPost2(GbaJpa.getManager(), database, "").execute();

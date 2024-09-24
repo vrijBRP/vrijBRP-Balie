@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,6 +21,10 @@ package nl.procura.gba.web.services.zaken.documenten.printen;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DOCUMENTS;
+import static nl.procura.commons.core.exceptions.ProExceptionType.PRINT;
+import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 import static nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoType.ondertekening_naam;
 import static nl.procura.gba.web.services.zaken.algemeen.ZaakUtils.getRelevantZaakId;
 import static nl.procura.gba.web.services.zaken.documenten.PDFBoxUtils.getRelativeCoordinates;
@@ -31,10 +35,6 @@ import static nl.procura.gba.web.services.zaken.documenten.stempel.PositieType.R
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.commons.core.exceptions.ProExceptionType.DOCUMENTS;
-import static nl.procura.commons.core.exceptions.ProExceptionType.PRINT;
-import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 import static org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode.APPEND;
 
 import java.io.ByteArrayInputStream;
@@ -46,7 +46,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -59,11 +61,15 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.jodreports.templates.DocumentTemplate;
+import org.jodreports.templates.DocumentTemplateFactory;
+import org.jodreports.templates.xmlfilters.XmlEntryFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.zxing.WriterException;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.formats.Adres;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.diensten.gba.wk.extensions.BaseWKExt;
@@ -73,6 +79,8 @@ import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.MiscUtils;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.config.GbaConfigProperty;
+import nl.procura.gba.jpa.personen.db.Translation;
+import nl.procura.gba.jpa.personen.db.TranslationRec;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.beheer.bsm.BsmMijnOverheidBestand;
@@ -80,6 +88,7 @@ import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfo;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
+import nl.procura.gba.web.services.zaken.documenten.DocumentTranslation;
 import nl.procura.gba.web.services.zaken.documenten.PDFBoxUtils;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
@@ -93,13 +102,11 @@ import nl.procura.gba.web.services.zaken.documenten.stempel.stempels.ProcuraQrZa
 import nl.procura.openoffice.OODocumentFormats;
 import nl.procura.openoffice.OOTools;
 import nl.procura.openoffice.jodconverter.DocumentFormat;
+import nl.procura.openoffice.jodconverter.TranslationFilter;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import net.sf.jooreports.templates.DocumentTemplate;
-import net.sf.jooreports.templates.ZippedDocumentTemplate;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -234,7 +241,7 @@ public class DocumentenPrintenService extends AbstractService {
     List<DocumentStempel> stempels = printActie.getDocument().getDocumentStempels();
 
     // Geen PDF dan niet bestempelen
-    if (!asList(PDF, PDF_A1).contains(po.getUitvoerformaatType()) || stempels.size() == 0) {
+    if (!asList(PDF, PDF_A1).contains(po.getUitvoerformaatType()) || stempels.isEmpty()) {
       return inBytes;
     }
 
@@ -476,12 +483,10 @@ public class DocumentenPrintenService extends AbstractService {
     }
   }
 
-  @SuppressWarnings("deprecation")
   private byte[] samenvoegen(PrintActie printActie) {
 
-    ByteArrayOutputStream tos = new ByteArrayOutputStream();
-
     DocumentRecord document = printActie.getDocument();
+
     try {
       ConditionalMap model = printActie.getModel();
 
@@ -514,18 +519,49 @@ public class DocumentenPrintenService extends AbstractService {
 
       LOGGER.debug("Samenvoegen: " + new File(getSjablonenMap(), document.getBestand()).getAbsolutePath());
 
-      DocumentTemplate sjabloon = new ZippedDocumentTemplate(
-          new File(getSjablonenMap(), document.getBestand()));
-      sjabloon.createDocument(model, tos);
+      DocumentTemplateFactory factory = new DocumentTemplateFactory();
+      ByteArrayOutputStream mergeOut = new ByteArrayOutputStream();
+      try {
+        // Merge
+        DocumentTemplate mergeTemplate = factory.getTemplate(new File(getSjablonenMap(), document.getBestand()));
+        mergeTemplate.createDocument(model, mergeOut);
 
-      return tos.toByteArray();
+        // Translate
+        if (document.hasTranslations()) {
+          ByteArrayOutputStream transOut = new ByteArrayOutputStream();
+          ByteArrayInputStream bis = new ByteArrayInputStream(mergeOut.toByteArray());
+          try {
+            Translation translation = document.getTranslation();
+            DocumentTemplate translateTemplate = factory.getTemplate(bis);
+            Translation tr = getServices().getDocumentService().getTranslationById(translation.getCTranslation());
+            TranslationFilter filter = getTranslationsFilter(new DocumentTranslation(tr));
+            translateTemplate.setXmlEntryFilters(new XmlEntryFilter[]{ filter });
+            translateTemplate.createDocument(model, transOut);
+            return transOut.toByteArray();
+          } finally {
+            IOUtils.closeQuietly(bis);
+            IOUtils.closeQuietly(transOut);
+          }
+        } else {
+          return mergeOut.toByteArray();
+        }
+      } finally {
+        IOUtils.closeQuietly(mergeOut);
+      }
+
     } catch (Exception e) {
       throw new ProException(PRINT, ERROR,
           "Fout bij samenvoegen document: " + document.getDocument() + ", bestand: " + document.getBestand(),
           e);
-    } finally {
-      IOUtils.closeQuietly(tos);
     }
+  }
+
+  private TranslationFilter getTranslationsFilter(DocumentTranslation documentTranslation) {
+    Map<String, String> translations = new LinkedHashMap<>();
+    for (TranslationRec record : documentTranslation.getSortedRecords()) {
+      translations.put(record.getNl(), record.getFl());
+    }
+    return new TranslationFilter(translations);
   }
 
   private void setNumberOfResidents(ConditionalMap model) {
