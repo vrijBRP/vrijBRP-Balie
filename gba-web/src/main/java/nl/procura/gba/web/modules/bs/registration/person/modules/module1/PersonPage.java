@@ -32,6 +32,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.vaadin.ui.Button;
@@ -163,9 +164,7 @@ public class PersonPage extends AbstractPersonPage {
 
     getPerson().setBsn(new BigDecimal(new Bsn(currentBsn).getLongBsn()));
     getPerson().setAnr(new BigDecimal(new Anummer(currentAnr).getLongAnummer()));
-    if (pBean.getPrefix() != null) {
-      getPerson().setVoorvoegsel(pBean.getPrefix().getStringValue());
-    }
+    getPerson().setVoorvoegsel(Optional.ofNullable(pBean.getPrefix()).map(FieldValue::getStringValue).orElse(null));
     getPerson().setGeslachtsnaam(pBean.getFamilyName());
     getPerson().setVoornaam(pBean.getFirstNames());
     getPerson().setTitel(pBean.getTitle());
