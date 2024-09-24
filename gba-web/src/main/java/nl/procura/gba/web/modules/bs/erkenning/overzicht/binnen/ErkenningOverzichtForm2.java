@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,7 +21,6 @@ package nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen;
 
 import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.TOESTEMMING_RECHT_KIND;
 import static nl.procura.gba.web.modules.bs.erkenning.overzicht.binnen.ErkenningOverzichtBean2.TOESTEMMING_RECHT_MOEDER;
-import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.pos;
 
 import com.vaadin.ui.Field;
@@ -53,8 +52,7 @@ public class ErkenningOverzichtForm2 extends ReadOnlyForm<ErkenningOverzichtBean
       bean.setAfstammingsRecht(erkenning.getLandAfstammingsRecht());
       bean.setToestemmingrechtMoeder(erkenning.getLandToestemmingsRechtMoeder());
       bean.setToestemmingrechtKind(erkenning.getLandToestemmingsRechtKind());
-      bean.setToestemminggever(
-          erkenning.getToestemminggeverType().getOms() + " " + astr(erkenning.getRechtbank()));
+      bean.setToestemminggever(erkenning.getToestemming());
       bean.setNamenRecht(erkenning.getLandNaamRecht());
       bean.setNaamskeuze(erkenning.getNaamskeuzeType().toString());
       bean.setNaamskeuzePersoon(erkenning.getNaamskeuzePersoon().getType());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -49,13 +49,13 @@ public class RiskAnalysisChecks extends ControlesTemplate<RiskAnalysisService> {
 
   @Override
   public Controles getControles(ControlesListener listener) {
-    Controles checks = new Controles();
+    Controles controles = new Controles();
     service.getApplicableCases().stream()
         .map(this::getRelocationCheck)
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .forEach(checks::add);
-    return checks;
+        .forEach(controles::add);
+    return controles;
   }
 
   private Optional<RelocationCheck> getRelocationCheck(RiskAnalysisRelatedCase relatedCase) {

@@ -39,20 +39,21 @@ public class RequestInboxControles extends ControlesTemplate<RequestInboxService
   @Override
   public Controles getControles(ControlesListener listener) {
     Controles controles = new Controles();
-    ListItemsRequest request = new ListItemsRequest()
-        .status(InboxItemStatus.RECEIVED)
-        .types(InboxItemTypeName.getAutomaticProcessingIds())
-        .page(1)
-        .itemsPerPage(30)
-        .preferredChannel(getVrijBRPChannel());
-    getService().getRequestInboxItems(request)
-        .getItems()
-        .forEach(inboxItem -> {
-          if (!inboxItem.getType().isUnknown()) {
-            processRequest(inboxItem, controles);
-          }
-        });
-
+    if (getService().isEnabled()) {
+      ListItemsRequest request = new ListItemsRequest()
+          .status(InboxItemStatus.RECEIVED)
+          .types(InboxItemTypeName.getAutomaticProcessingIds())
+          .page(1)
+          .itemsPerPage(30)
+          .preferredChannel(getVrijBRPChannel());
+      getService().getRequestInboxItems(request)
+          .getItems()
+          .forEach(inboxItem -> {
+            if (!inboxItem.getType().isUnknown()) {
+              processRequest(inboxItem, controles);
+            }
+          });
+    }
     return controles;
   }
 

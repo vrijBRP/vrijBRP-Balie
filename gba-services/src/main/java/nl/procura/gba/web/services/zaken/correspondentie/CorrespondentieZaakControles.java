@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -48,14 +48,12 @@ public class CorrespondentieZaakControles extends ControlesTemplate<Corresponden
   @Override
   public Controles getControles(ControlesListener listener) {
 
-    CorrespondentieService db = getService();
-    ZaakRelatieService dbZaakRelaties = db.getServices().getZaakRelatieService();
-
     Controles controles = new Controles();
+    CorrespondentieService service = getService();
+    ZaakRelatieService dbZaakRelaties = service.getServices().getZaakRelatieService();
     ZaakArgumenten corArgs = new ZaakArgumenten(ZaakStatusType.OPGENOMEN);
 
-    for (Zaak zaak : db.getMinimalZaken(corArgs)) {
-
+    for (Zaak zaak : service.getMinimalZaken(corArgs)) {
       CorrespondentieZaak corrZaak = (CorrespondentieZaak) zaak;
       ZaakRelaties relaties = dbZaakRelaties.getGerelateerdeZaakRelaties(zaak);
       Map<ZaakRelatie, Zaak> map = dbZaakRelaties.getGerelateerdeZaken(relaties);
@@ -76,7 +74,7 @@ public class CorrespondentieZaakControles extends ControlesTemplate<Corresponden
 
       if (alleenEindStatus) {
         controle.addOpmerking("Gerelateerde zaken zijn allemaal verwerkt");
-        db.updateStatus(corrZaak, zaak.getStatus(), ZaakStatusType.VERWERKT,
+        service.updateStatus(corrZaak, zaak.getStatus(), ZaakStatusType.VERWERKT,
             "Automatisch afgesloten omdat er geen openstaande gerelateerde zaken meer zijn.");
       } else {
         controle.addOpmerking("Heeft nog openstaande zaken");

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,7 +25,10 @@ import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
 import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
 import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType.RIJBEWIJS_ONTVANGEN_DOOR_GEMEENTE_OK;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.util.HashSet;
 import java.util.List;
@@ -75,11 +78,9 @@ public class RijbewijsZaakControles extends ControlesTemplate<RijbewijsService> 
    * Zoek alle zaken met een bepaalde rijbewijsStatus
    */
   Controles getControlesByStatus(ControlesListener listener, RijbewijsStatusType rijbewijsStatus) {
-
     Controles controles = new Controles();
 
     if (getService().isRijbewijzenServiceActive()) {
-
       List<RYBAANVROVERZ> overzichten = NrdServices.getNrdAanvragenByStatus(getService(), rijbewijsStatus, 1000,
           listener, listener);
 

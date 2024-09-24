@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
-import static nl.procura.gba.common.ZaakStatusType.*;
+import static nl.procura.gba.common.ZaakStatusType.DOCUMENT_ONTVANGEN;
+import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
+import static nl.procura.gba.common.ZaakStatusType.VERWERKT_IN_GBA;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.LeveringType.DOCUMENT_GOED;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.SluitingType.AANVRAAG_NIET_AFGESLOTEN;
 
@@ -67,12 +69,12 @@ public class ReisdocumentZaakControles extends ControlesTemplate<ReisdocumentSer
    */
   @Override
   public Controles getControles(ControlesListener listener) {
-
     Controles controles = new Controles();
-    ZaakArgumenten zaakArgumenten = new ZaakArgumenten(INBEHANDELING);
-
-    for (ReisdocumentAanvraag zaak : getService().getMinimalZaken(zaakArgumenten)) {
-      controles.addControle(new ZaakControle("Reisdocumenten", getService().getStandardZaak(zaak)));
+    if (getService().getServices().getRaasService().isRaasServiceActive()) {
+      ZaakArgumenten zaakArgumenten = new ZaakArgumenten(INBEHANDELING);
+      for (ReisdocumentAanvraag zaak : getService().getMinimalZaken(zaakArgumenten)) {
+        controles.addControle(new ZaakControle("Reisdocumenten", getService().getStandardZaak(zaak)));
+      }
     }
 
     return controles;

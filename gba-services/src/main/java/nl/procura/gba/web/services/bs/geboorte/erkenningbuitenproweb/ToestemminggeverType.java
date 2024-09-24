@@ -99,7 +99,9 @@ public enum ToestemminggeverType {
   public String getToestemmingMetRechtbank(String rechtbank) {
     String value = getOms() + " " + rechtbank;
     if (value.toLowerCase().matches(".*(hoge|gerechtshof).*")) {
-      value = value.replaceAll("([Rr])echtbank", "");
+      value = value.replaceAll("([Rr])echtbank", "")
+          .replaceAll("\\s+", " ")
+          .trim();
     }
     return value;
   }
