@@ -4,7 +4,7 @@
   <packaging>pom</packaging>
   <groupId>nl.procura.gba</groupId>
   <artifactId>gba-parent</artifactId>
-  <version>1.32.0</version>
+  <version>1.32.1</version>
   <name>Proweb GBA - Parent</name>
 
   <developers>
@@ -23,7 +23,7 @@
 
   <scm>
     <developerConnection>scm:git:https://gitlab.simgroep.nl/vrijbrp/balie.git</developerConnection>
-    <tag>1.32.0</tag>
+    <tag>1.32.1</tag>
   </scm>
 
   <distributionManagement>
