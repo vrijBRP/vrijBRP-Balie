@@ -101,6 +101,7 @@ public class ModuleRegistration extends BsModule {
     super.event(event);
   }
 
+
   public FileImportRegistrant setImportRegistrant(FileImportRegistrant importRegistrant) {
     this.importRegistrant = importRegistrant;
     return importRegistrant;
@@ -118,5 +119,4 @@ public class ModuleRegistration extends BsModule {
               .map(type -> setImportRegistrant(FileImportRegistrant.of(type, rec))));
     }
   }
-
 }

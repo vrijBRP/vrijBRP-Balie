@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.bs.registration;
 
 import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.Optional;
 
@@ -69,7 +70,12 @@ public abstract class AbstractRegistrationPage extends BsPage<DossierRegistratio
   public void event(PageEvent event) {
     super.event(event);
     if (event.isEvent(InitPage.class)) {
-      getImportRegistrant().ifPresent(registrantLayout::setRegistrant);
+      getImportRegistrant().ifPresent(importRegistrant -> {
+        if (isBlank(getZaakDossier().getDuration())) {
+          loadImportRegistrant(importRegistrant);
+        }
+        registrantLayout.setRegistrant(importRegistrant);
+      });
     }
   }
 }

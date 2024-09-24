@@ -25,11 +25,11 @@ import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.Regi
 import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.HUISNUMMER;
 import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.POSTCODE;
 import static nl.procura.gba.web.modules.beheer.fileimport.types.registrant.RegistrantImport.TOEVOEGING;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import com.vaadin.ui.Button;
@@ -171,7 +171,7 @@ public class Page10Registration extends AbstractRegistrationPage {
   private void addDocuments(FileImportRegistrant fileImportRegistrant) {
     String uuid = fileImportRegistrant.getRecord().getUuid();
     DMSService dmsService = getServices().getDmsService();
-    if (StringUtils.isNotBlank(uuid) && dmsService.getDocumentsByZaak(getDossier()).getDocuments().isEmpty()) {
+    if (isNotBlank(uuid) && dmsService.getDocumentsByZaak(getDossier()).getDocuments().isEmpty()) {
       List<DMSDocument> documents = dmsService.getDocumentsById(uuid).getDocuments();
       if (!documents.isEmpty()) {
         documents.forEach(document -> dmsService.save(getDossier(), document));
@@ -182,7 +182,7 @@ public class Page10Registration extends AbstractRegistrationPage {
   }
 
   private void addBagAddress(FileImportRecord record, DossierRegistration zaakDossier) {
-    if (StringUtils.isBlank(zaakDossier.getPostalCode())) {
+    if (isNotBlank(record.getValue(POSTCODE))) {
       Optional<Address> bagAddress = getBagAddress(record);
       if (bagAddress.isPresent()) {
         zaakDossier.setPostalCode(bagAddress.get().getPostalCode());
