@@ -315,6 +315,11 @@ public class GbaRestZaakService extends GbaRestAbstractService {
             .getOverlijdenService()
             .toGbaRestOverlijden((Dossier) zaak));
         break;
+      case NAAMSKEUZE:
+        restObj.setNaamskeuze(getRestServices()
+            .getNaamskeuzeService()
+            .toGbaRestNaamskeuze((Dossier) zaak));
+        break;
       case UITTREKSEL:
       case VERSTREKKINGSBEPERKING:
       case NAAMGEBRUIK:
@@ -324,11 +329,6 @@ public class GbaRestZaakService extends GbaRestAbstractService {
       case INHOUD_VERMIS:
       case RIJBEWIJS:
       case TERUGMELDING:
-      case NAAMSKEUZE:
-        restObj.setNaamskeuze(getRestServices()
-            .getNaamskeuzeService()
-            .toGbaRestNaamskeuze((Dossier) zaak));
-        break;
       case OVERLIJDEN_IN_BUITENLAND:
       case LEVENLOOS:
       case INDICATIE:
