@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,14 +19,14 @@
 
 package nl.procura.gba.web.modules.zaken.document.page1;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.convert;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_ADRESONDERZOEK;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_FORMULIER;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_NATURALISATIE;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_OPTIE;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.Cat1PersoonExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
@@ -52,7 +53,6 @@ import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaakPersoon;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZakenService;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;

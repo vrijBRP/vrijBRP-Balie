@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -79,6 +79,7 @@ public class LvOverzichtForm2 extends ReadOnlyForm<LvOverzichtBean1> {
     bean.setUitspraak(zaakDossier.getUitspraak());
     bean.setDatumUitspraak(new DateTime(zaakDossier.getDatumUitspraak()));
     bean.setDatumGewijsde(new DateTime(zaakDossier.getDatumGewijsde()));
+    bean.setDatumVerzoekschrift(new DateTime(zaakDossier.getDatumVerzoekschrift()));
 
     bean.setSoortVerbintenis(LvSoortVerbintenisType.get(zaakDossier.getSoortVerbintenis()));
     bean.setDocument(zaakDossier.getDoc());

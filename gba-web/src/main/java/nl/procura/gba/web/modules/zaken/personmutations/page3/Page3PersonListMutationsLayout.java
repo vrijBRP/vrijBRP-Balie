@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.zaken.personmutations.page3;
 
+import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.HIST;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.web.common.misc.Landelijk.isNederland;
 import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.ADMIN;
 import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.REQUIRED_GROUPS;
@@ -34,7 +36,6 @@ import static nl.procura.gba.web.services.beheer.personmutations.PersonListActio
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -60,6 +61,7 @@ import nl.procura.burgerzaken.gba.core.validators.AlfVal;
 import nl.procura.burgerzaken.gba.core.validators.DatVal;
 import nl.procura.burgerzaken.gba.core.validators.NumVal;
 import nl.procura.burgerzaken.gba.core.validators.Val;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -88,7 +90,6 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.AnrField;
 import nl.procura.vaadin.component.field.DatumVeld;
 import nl.procura.vaadin.component.field.NumberField;
@@ -224,7 +225,7 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
       field = new UnknownValueField();
 
     } else if (pleE.getElem().is(GBAElem.AAND_GEG_IN_ONDERZ)) {
-      field = new IndicatieOnjuistField(mutElem.getCat());
+      field = new IndicatieOnjuistField(mutElem.getCat(), mutElem.getRec().isStatus(HIST));
 
     } else if (pleE.getElem().is(GBAElem.AKTENR, GBAElem.NR_NL_REISDOC)) {
       field = new UpperCaseField();
@@ -443,7 +444,6 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     addDateRestriction(elements, GBAElem.GEBOORTEDATUM, GBAElem.GEBOORTELAND);
     addDateRestriction(elements, GBAElem.DATUM_VERBINTENIS, GBAElem.PLAATS_VERBINTENIS);
     addDateRestriction(elements, GBAElem.DATUM_VERBINTENIS, GBAElem.LAND_VERBINTENIS);
-    addDateRestriction(elements, GBAElem.DATUM_VERBINTENIS, GBAElem.REGIST_GEM_AKTE);
     addDateRestriction(elements, GBAElem.DATUM_ONTBINDING, GBAElem.PLAATS_ONTBINDING);
     addDateRestriction(elements, GBAElem.DATUM_ONTBINDING, GBAElem.LAND_ONTBINDING);
     addDateRestriction(elements, GBAElem.DATUM_OVERL, GBAElem.PLAATS_OVERL);

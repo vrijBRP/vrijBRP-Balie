@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -47,15 +47,12 @@ public class ZakenPrintPage<M, Z extends Zaak> extends ZakenPage<Z> {
     }
 
     printLayout = new PrintMultiLayout(model, zaak, new DocumentSelectListener(), newTypes);
-
     setButtons();
-
     addExpandComponent(printLayout);
   }
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
       if (getZaak() != null) {
         getServices().getZakenService().getService(getZaak()).setVolledigeZaakExtra(getZaak());

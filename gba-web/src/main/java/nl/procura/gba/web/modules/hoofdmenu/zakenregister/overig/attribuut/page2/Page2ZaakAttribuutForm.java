@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2;
 
-import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.*;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.ATTRIBUUT;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.TYPE;
+import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.attribuut.page2.Page2ZaakAttribuutBean.WAARDE;
 import static nl.procura.standard.Globalfunctions.fil;
 
 import nl.procura.gba.web.components.layouts.form.GbaForm;

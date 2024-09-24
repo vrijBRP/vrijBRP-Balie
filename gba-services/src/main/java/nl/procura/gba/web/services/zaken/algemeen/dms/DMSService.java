@@ -26,12 +26,14 @@ import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.isTru;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.io.IOException;
 import java.util.Map;
 
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.Services;
+import nl.procura.gba.web.services.beheer.zynyo.SignedDocument;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.dms.filesystem.FilesystemDMSStorage;
 import nl.procura.gba.web.services.zaken.algemeen.dms.objectstore.ObjectStoreDMSStorage;
@@ -39,6 +41,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
+import nl.procura.standard.security.Base64;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
@@ -132,6 +135,24 @@ public class DMSService extends AbstractService {
 
   public ObjectStoreDMSStorage getObjectStore() {
     return objectStore;
+  }
+
+  public void saveSignedDocumentWithZaak(Zaak zaak, SignedDocument signedDocument, int index) {
+    DMSDocument dmsDocument;
+    try {
+      String documentName = signedDocument.name() + " (ondertekend document " + index + ")";
+      dmsDocument = DMSDocument.builder()
+              .content(DMSBytesContent.fromFilename(signedDocument.documentUUID() + ".pdf", Base64.decode(signedDocument.documentContent())))
+              .title(documentName)
+              .alias(documentName)
+              .user(Services.getInstance().getGebruiker().getNaam())
+              .zaakId(zaak.getZaakId())
+              .confidentiality(DocumentVertrouwelijkheid.ONBEKEND.getNaam())
+              .build();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Services.getInstance().getDmsService().save(zaak, dmsDocument);
   }
 
   @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,18 +19,19 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.gv.page1;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.BETROKKENE;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.TK_JA_VOORWAARDELIJK;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.TK_NEE;
 import static nl.procura.standard.Globalfunctions.emp;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Window.CloseListener;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.procura.arguments.PLEDatasource;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.dialogs.ZaakConfiguratieDialog;
@@ -47,7 +48,6 @@ import nl.procura.gba.web.services.zaken.documenten.afnemers.DocumentAfnemer;
 import nl.procura.gba.web.services.zaken.gv.GegevensVerstrekkingService;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraagProces;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;

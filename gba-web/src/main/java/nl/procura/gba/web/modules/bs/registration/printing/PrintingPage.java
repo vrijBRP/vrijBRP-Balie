@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -63,13 +63,12 @@ public class PrintingPage extends NormalPageTemplate {
     if (event.isEvent(InitPage.class)) {
       addButton(buttonPreview);
       addButton(buttonPrint, 1F);
-
       addButton(buttonClose);
 
       printForm = new PrintRegistrationForm(firstRegistrationDossier);
 
-      setInfo(
-          "Selecteer de persoon en het document. Druk het document af. <br/>Druk op Volgende (F2) om verder te gaan.");
+      setInfo("Selecteer de persoon en het document. Druk het document af. "
+          + "<br/>Druk op Volgende (F2) om verder te gaan.");
       addComponent(printForm);
       addComponent(soortLayout);
       setSoort();

@@ -44,6 +44,12 @@ public class ZaakAttribuut extends ZaakAttr {
     setWaarde(waarde);
   }
 
+  public ZaakAttribuut(String zaakId, ZaakAttribuutType type, String attribuut, String waarde) {
+    this(zaakId, type);
+    setAttribuut(attribuut);
+    setWaarde(waarde);
+  }
+
   public String getAttribuut() {
     return getId().getZaakAttr();
   }

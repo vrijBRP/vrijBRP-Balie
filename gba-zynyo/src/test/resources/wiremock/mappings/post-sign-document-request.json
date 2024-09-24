@@ -1,0 +1,15 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "url": "/sign/signdocumentrequest",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"documentUUID\": \"74e65b2c-fc2a-4272-b438-f766cfe936c1\", \"signatoryLink\": [{\"sequence\": 1, \"email\": \"k.deheer@simgroep.nl\", \"role\": \"SIGN\", \"signatoryUUID\": \"ca5f4f2f-21a5-437b-aac0-a2eda63aa3c0\", \"documentLink\": \"https://sandbox.zynyo.com/webapp/sign/ca5f4f2f-21a5-437b-aac0-a2eda63aa3c0\"}]}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

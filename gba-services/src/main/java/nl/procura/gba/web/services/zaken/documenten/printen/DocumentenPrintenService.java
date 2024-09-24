@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -82,10 +83,12 @@ import nl.procura.gba.config.GbaConfigProperty;
 import nl.procura.gba.jpa.personen.db.Translation;
 import nl.procura.gba.jpa.personen.db.TranslationRec;
 import nl.procura.gba.web.services.AbstractService;
+import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.beheer.bsm.BsmMijnOverheidBestand;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfo;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.DocumentTranslation;
@@ -105,6 +108,7 @@ import nl.procura.openoffice.OOTools;
 import nl.procura.openoffice.jodconverter.DocumentFormat;
 import nl.procura.openoffice.jodconverter.TranslationFilter;
 import nl.procura.standard.ProcuraDate;
+import nl.procura.standard.Resource;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;
 
 import au.com.bytecode.opencsv.CSVWriter;
@@ -227,6 +231,50 @@ public class DocumentenPrintenService extends AbstractService {
       default:
         // Toon gewoon aan gebruiker
         toonGebruiker(printActie, documentBytes, asDownload, downloadHandler);
+    }
+  }
+
+  /*
+   Used only for signing
+   */
+  public byte[] generateSignDocument(Object model, Zaak zaak, DocumentRecord documentRecord) {
+    Object printModel = model;
+    if (printModel instanceof Zaak) {
+      // Zoek gerelateerde zaak.
+      // Meestal is dit de zaak zelf.
+      printModel = Services.getInstance().getZaakRelatieService().getGerelateerdeDocumentZaak(zaak, documentRecord);
+    }
+    printModel = PrintModelUtils.getModel(printModel, zaak, documentRecord);
+
+    ConditionalMap modelMap = new ConditionalMap();
+    modelMap.put(documentRecord.getDocumentType().getDoc(), printModel);
+
+    String zaakId = Services.getInstance().getZaakIdentificatieService().getDmsZaakId(zaak);
+    modelMap.put("zaakid", zaakId);
+
+    PrintActie printActie = new PrintActie();
+    printActie.setModel(modelMap);
+    printActie.setDocument(documentRecord);
+    printActie.setZaak(zaak);
+
+    PrintOptie printOptie = new PrintOptie();
+    printOptie.setUitvoerformaatType(UitvoerformaatType.PDF);
+    printActie.setPrintOptie(printOptie);
+
+    byte[] document = getServices().getDocumentService().preview(printActie);
+
+    if (!getServices().getZynyoService().isZynyoEnabled()) {
+      return document;
+    }
+
+    try {
+      List<byte[]> pdfs = new ArrayList<>();
+      pdfs.add(document);
+      pdfs.add(converteer(UitvoerformaatType.ODT, UitvoerformaatType.PDF, Files.readAllBytes(new File(Resource.getURL("zynyo-signature-page.odt").getFile()).toPath())));
+
+      return PDFBoxUtils.mergePDFs(pdfs);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 

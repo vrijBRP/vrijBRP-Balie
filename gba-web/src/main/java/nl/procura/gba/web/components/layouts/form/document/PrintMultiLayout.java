@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -35,6 +35,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord.Status;
@@ -49,8 +51,6 @@ import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintModelUtils;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.VLayout;
@@ -73,10 +73,10 @@ public class PrintMultiLayout extends GbaVerticalLayout {
   private final PrintSoortForm         form;
   private final PrintTable             table;
 
-  public PrintMultiLayout(Object model,
-      Zaak zaak,
+  public PrintMultiLayout(Object model, Zaak zaak,
       PrintSelectRecordFilter selectListener,
       DocumentType... types) {
+
     this(PrintMultiLayoutConfig.builder()
         .model(model)
         .zaak(zaak)
@@ -85,8 +85,7 @@ public class PrintMultiLayout extends GbaVerticalLayout {
         .build());
   }
 
-  public PrintMultiLayout(Object model,
-      Zaak zaak,
+  public PrintMultiLayout(Object model, Zaak zaak,
       PrintSelectRecordFilter selectListener,
       List<DocumentSoort> documentSoorten,
       DocumentType... documentTypes) {
@@ -121,6 +120,7 @@ public class PrintMultiLayout extends GbaVerticalLayout {
     if (table.getParent() == null) {
       VLayout vLayout = new VLayout().add(infoLayout).add(form).margin(false);
       vLayout.setVisible(!config.isFormHidden());
+
       Fieldset documentgegevens = new Fieldset("Documentgegevens");
       Filter filter = new Filter();
       HLayout h = new HLayout();
@@ -129,8 +129,8 @@ public class PrintMultiLayout extends GbaVerticalLayout {
       h.addComponent(filter);
       h.setExpandRatio(documentgegevens, 1f);
       vLayout.addComponent(h);
-      addComponent(vLayout);
 
+      addComponent(vLayout);
       addExpandComponent(table);
     }
 

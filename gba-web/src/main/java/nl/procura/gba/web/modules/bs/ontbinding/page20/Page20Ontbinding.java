@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,12 +20,23 @@
 package nl.procura.gba.web.modules.bs.ontbinding.page20;
 
 import static java.util.Arrays.asList;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AKTENR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REGIST_GEM_AKTE;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_VERBINTENIS;
+import static nl.procura.gba.web.common.tables.GbaTables.LAND;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
 import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import com.vaadin.ui.Button;
 
+import java.util.Collections;
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -222,14 +233,14 @@ public class Page20Ontbinding extends BsPage<DossierOntbinding> {
               // Sluitingsgegevens
               bean1.setSoort(SoortVerbintenis.get(soort));
               bean1.setDatum(new DateTime(dHuw).getDate());
-              bean1.setPlaatsNL(new FieldValue(plaats));
-              bean1.setLand(new FieldValue(land));
+              bean1.setPlaatsNL(PLAATS.get(plaats));
+              bean1.setLand(LAND.get(land));
 
               // Aktegegevens
               bean2.setAkteJaar(new ProcuraDate(astr(dHuw)).getYear());
               bean2.setBsAkteNummer(BsAkteUtils.getBsAktenummer(aktenummer));
               bean2.setBrpAkteNummer(BsAkteUtils.getBrpAktenummer(aktenummer, "B"));
-              bean2.setAktePlaats(new FieldValue(gemeente));
+              bean2.setAktePlaats(PLAATS.get(gemeente));
             }
           }
         }
@@ -290,7 +301,7 @@ public class Page20Ontbinding extends BsPage<DossierOntbinding> {
 
     @Override
     public void onVerwijderen(DossierPersoon persoon) {
-      getServices().getDossierService().deletePersonen(getDossier(), asList(persoon));
+      getServices().getDossierService().deletePersonen(getDossier(), Collections.singletonList(persoon));
     }
   }
 }

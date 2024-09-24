@@ -702,6 +702,9 @@ public enum ParameterConstant implements ParameterType {
   SMS_PW("SMS_password", "SMS wachtwoord",
       GROUP_SMS, true, false, false, ""),
 
+  ZYNYO_ENABLED("Zynyo_enabled", "Zynyo integratie inschakelen",
+          GROUP_ZYNYO, true, true, true, ""),
+
   ZYNYO_API_ENDPOINT("Zynyo_api_endpoint", "Zynyo API endpoint",
       GROUP_ZYNYO, true, false, false, ""),
 

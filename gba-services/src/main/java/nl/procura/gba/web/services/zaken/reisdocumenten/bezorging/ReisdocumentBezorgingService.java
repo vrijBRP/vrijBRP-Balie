@@ -382,7 +382,9 @@ public class ReisdocumentBezorgingService extends AbstractService implements Con
     List<BezorgingCheck> checks = new ArrayList<>();
     for (RdmAmp melding : RdmAmpDao.findNietIngeklaarde()) {
       ReisdocumentAanvraag aanvraag = getReisdocumentAanvraag(melding);
-      if (aanvraag != null && fil(aanvraag.getNrNlDoc())) {
+      if (aanvraag != null
+          && aanvraag.getReisdocumentStatus().getStatusLevering().is(DOCUMENT_GOED)
+          && fil(aanvraag.getNrNlDoc())) {
         inklarenOrder(melding.getOrderRefNr(), aanvraag.getNrNlDoc(), melding);
         checks.add(BezorgingCheck.ingeklaard(melding.getOrderRefNr()));
       }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -165,7 +165,7 @@ public final class GBATableList {
       Object val = (byKey ? tfv.getKey() : tfv.getValue());
       long codeVal = along(val);
       long codeWaarde = along(waarde);
-      boolean isCodeMatch = (codeVal >= 0 && codeWaarde >= 0 && codeVal == codeWaarde);
+      boolean isCodeMatch = (codeWaarde >= 0 && codeVal == codeWaarde);
       if (Objects.equals(astr(val), waarde) || isCodeMatch) {
         return tfv;
       }

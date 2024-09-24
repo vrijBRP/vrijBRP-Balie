@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -84,6 +84,10 @@ public class DossLv extends BaseEntity {
   @Column(name = "d_gewijsde")
   @Convert(converter = BigDecimalDateConverter.class)
   private Date datumGewijsde;
+
+  @Column(name = "d_verzoekschrift")
+  @Convert(converter = BigDecimalDateConverter.class)
+  private Date datumVerzoekschrift;
 
   @Column(name = "soort_verbintenis")
   private String soortVerbintenis;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -68,7 +68,8 @@ public class Page1PersonListMutations extends NormalPageTemplate {
         @Override
         public void onDoubleClick(Record record) {
           PersonListMutation mutation = record.getObject(PersonListMutation.class);
-          Page5PersonListMutations page = new Page5PersonListMutations(mutation);
+          PersonListMutation zaak = getServices().getZakenService().getVolledigeZaak(mutation);
+          Page5PersonListMutations page = new Page5PersonListMutations(zaak);
           getApplication().getParentWindow().addWindow(new PersonListMutationsWindow(page, () -> table.init()));
         }
       };

@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  zynyo-mockserver:
+    container_name: zynyo-mockserver
+    image: wiremock/wiremock:3.3.1
+    volumes:
+      - ./mappings:/home/wiremock/mappings
+    restart: unless-stopped
+    ports:
+      - "9001:8080"

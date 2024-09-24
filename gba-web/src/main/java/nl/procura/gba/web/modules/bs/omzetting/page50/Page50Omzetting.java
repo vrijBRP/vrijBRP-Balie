@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,10 +20,24 @@
 package nl.procura.gba.web.modules.bs.omzetting.page50;
 
 import static java.util.Arrays.asList;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AKTENR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_ONTBINDING;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LAND_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.PLAATS_VERBINTENIS;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REGIST_GEM_AKTE;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.PARTNERSCHAP;
-import static nl.procura.gba.web.modules.bs.omzetting.page50.Page50OmzettingBean1.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.common.tables.GbaTables.LAND;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
+import static nl.procura.gba.web.modules.bs.omzetting.page50.Page50OmzettingBean1.NATIOP1;
+import static nl.procura.gba.web.modules.bs.omzetting.page50.Page50OmzettingBean1.NATIOP2;
+import static nl.procura.gba.web.modules.bs.omzetting.page50.Page50OmzettingBean1.RECHTP1;
+import static nl.procura.gba.web.modules.bs.omzetting.page50.Page50OmzettingBean1.RECHTP2;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Window;
@@ -263,14 +277,14 @@ public class Page50Omzetting extends BsVereistePage<DossierOmzetting> {
 
               // Sluitingsgegevens
               bean2.setDatum(new DateTime(dHuw).getDate());
-              bean2.setPlaatsNL(new FieldValue(plaats));
-              bean2.setLand(new FieldValue(land));
+              bean2.setPlaatsNL(PLAATS.get(plaats));
+              bean2.setLand(LAND.get(land));
 
               // Aktegegevens
               bean3.setJaar(new ProcuraDate(astr(dHuw)).getYear());
               bean3.setBsAkteNummer(BsAkteUtils.getBsAktenummer(aktenummer));
               bean3.setBrpAkteNummer(aktenummer);
-              bean3.setPlaats(new FieldValue(gemeente));
+              bean3.setPlaats(PLAATS.get(gemeente));
             }
           }
         }

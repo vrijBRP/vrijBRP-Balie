@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,6 @@
 package nl.procura.gba.web.modules.zaken.verhuizing.overzicht.bewoners.page2;
 
 import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.convert;
-import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.removeStillborns;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_BEWONER_BRIEF;
 
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import com.vaadin.ui.Button;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
+import nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord;
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
@@ -60,7 +60,7 @@ public class Page2BewonersPage extends ButtonPageTemplate {
 
           DocumentRecord document = printRecord.getDocument();
           List<DocumentPL> dps = convert(persoonslijsten, null);
-          dps.stream().filter(dp -> !document.isStillbornAllowed()).forEach(dpl -> removeStillborns(dpl));
+          dps.stream().filter(dp -> !document.isStillbornAllowed()).forEach(DocumentPLConverter::removeStillborns);
 
           PrintRecord newPrintRecord = new PrintRecord();
           newPrintRecord.setSoort(printRecord.getSoort());

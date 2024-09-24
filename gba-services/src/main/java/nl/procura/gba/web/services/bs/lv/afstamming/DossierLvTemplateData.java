@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -78,6 +78,7 @@ public class DossierLvTemplateData extends DocumentTemplateData {
       put("uitspraak", d.getUitspraak());
       put("datumUitspraak", new DateTime(d.getDatumUitspraak()));
       put("datumGewijsde", new DateTime(d.getDatumGewijsde()));
+      put("datumVerzoekschrift", new DateTime(d.getDatumVerzoekschrift()));
       put("soortVerbintenis", toFieldValue(LvSoortVerbintenisType.get(d.getSoortVerbintenis())));
       put("document", d.getDoc());
       put("nummer", d.getDocNr());

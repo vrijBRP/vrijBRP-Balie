@@ -24,6 +24,7 @@ import static nl.procura.standard.Globalfunctions.isTru;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.procura.gba.web.services.beheer.zynyo.ZynyoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -226,6 +227,7 @@ public class Services {
     add(FileImportService.class);
     add(TaskService.class);
     add(RequestInboxService.class);
+    add(ZynyoService.class);
     add(InwonerAppService.class);
     add(ReisdocumentBezorgingService.class);
   }
@@ -605,6 +607,10 @@ public class Services {
 
   public RequestInboxService getRequestInboxService() {
     return get(RequestInboxService.class);
+  }
+
+  public ZynyoService getZynyoService() {
+    return get(ZynyoService.class);
   }
 
   public InwonerAppService getInwonerAppService() {

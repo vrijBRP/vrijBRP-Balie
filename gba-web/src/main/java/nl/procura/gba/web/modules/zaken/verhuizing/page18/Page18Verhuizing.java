@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,12 @@
 package nl.procura.gba.web.modules.zaken.verhuizing.page18;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.web.common.misc.Landelijk.*;
+import static nl.procura.gba.web.common.misc.Landelijk.LAND_ARUBA;
+import static nl.procura.gba.web.common.misc.Landelijk.LAND_BONAIRE;
+import static nl.procura.gba.web.common.misc.Landelijk.LAND_CURACAO;
+import static nl.procura.gba.web.common.misc.Landelijk.LAND_SABA;
+import static nl.procura.gba.web.common.misc.Landelijk.LAND_ST_EUSTATIUS;
+import static nl.procura.gba.web.common.misc.Landelijk.LAND_ST_MAARTEN;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.fil;
 
@@ -63,7 +68,6 @@ public class Page18Verhuizing extends ZakenProcesPrintPage<VerhuisAanvraag, Verh
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
-
       getButtonLayout().addComponent(incompleetCheckbox);
       incompleetCheckbox.setImmediate(true);
       incompleetCheckbox.addListener((ValueChangeListener) this);

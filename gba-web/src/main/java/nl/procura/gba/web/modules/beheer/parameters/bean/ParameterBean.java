@@ -255,6 +255,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOE
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_USERNAME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_NAAMGEBRUIK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PROFIEL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_API_ENDPOINT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_API_KEY;
 import static nl.procura.standard.Globalfunctions.astr;
@@ -1964,6 +1965,15 @@ public class ParameterBean implements Serializable {
   private String smsPassword = "";
 
   // Zynyo
+  @ParameterAnnotation(ZYNYO_ENABLED)
+  @Position(order = "1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+          caption = "Zynyo integratie actief",
+          width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+          itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String zynyoEnabled = "";
+
   @ParameterAnnotation(ZYNYO_API_ENDPOINT)
   @Position(order = "10")
   @Field(type = FieldType.TEXT_FIELD,

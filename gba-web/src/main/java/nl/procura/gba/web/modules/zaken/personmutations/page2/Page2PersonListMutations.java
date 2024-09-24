@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,11 +23,14 @@ import static com.vaadin.event.ShortcutAction.KeyCode.F4;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.NO_RESULTS;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_SET;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 
 import com.vaadin.ui.Button;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
@@ -42,7 +45,6 @@ import nl.procura.gba.web.modules.zaken.personmutations.page7.Page7PersonListMut
 import nl.procura.gba.web.services.beheer.personmutations.PersonListActionType;
 import nl.procura.gba.web.services.beheer.personmutations.PersonListMutation;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.theme.twee.ProcuraTheme.ICOON_24;
 
@@ -155,10 +157,12 @@ public class Page2PersonListMutations extends NormalPageTemplate {
       throw new ProException(NO_RESULTS, WARNING, "Er zijn geen BRP elementen geselecteerd");
     }
 
-    if (!action.getItem().isSuperuser() && getPl().getCat(GBACat.INSCHR)
-        .getLatestRec()
-        .getElemVal(GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD)
-        .isNotBlank()) {
+    if (!action.getItem().isSuperuser()
+        && action.getItem().is(UPDATE_SET, ADD_SET)
+        && getPl().getCat(GBACat.INSCHR)
+            .getLatestRec()
+            .getElemVal(GBAElem.OMSCHR_REDEN_OPSCH_BIJHOUD)
+            .isNotBlank()) {
 
       getApplication().getParentWindow()
           .addWindow(new ConfirmDialog("Deze persoonslijst is opgeschort",

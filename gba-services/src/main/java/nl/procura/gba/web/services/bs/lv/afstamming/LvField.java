@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -33,6 +33,7 @@ public enum LvField {
   UITSPRAAK("uitspraak"),
   UITSPRAAK_ANDERS("uitspraakAnders"),
   DATUM_UITSPRAAK("datumUitspraak"),
+  DATUM_VERZOEKSCHRIFT("datumVerzoekschrift"),
   DATUM_GEWIJSDE("datumGewijsde"),
   SOORT_VERBINTENIS("soortVerbintenis"),
   DOCUMENT("document"),
@@ -90,7 +91,7 @@ public enum LvField {
 
   public static String[] getForm1(LvType type) {
     return toMapping(type).toArray(Arrays.asList(UITSPRAAK, UITSPRAAK_ANDERS, DATUM_UITSPRAAK,
-        DATUM_GEWIJSDE, SOORT_VERBINTENIS, DOCUMENT, DOCUMENT_ANDERS, NUMMER, DATUM, PLAATS, DOOR,
+        DATUM_GEWIJSDE, DATUM_VERZOEKSCHRIFT, SOORT_VERBINTENIS, DOCUMENT, DOCUMENT_ANDERS, NUMMER, DATUM, PLAATS, DOOR,
         TWEEDE_DOC, TWEEDE_DOC_OMS, TWEEDE_DOC_OMS_ANDERS, TWEEDE_DOC_DATUM, TWEEDE_DOC_PLAATS));
   }
 
@@ -108,7 +109,7 @@ public enum LvField {
   public static Mapping toMapping(LvType type) {
     switch (type) {
       case ADOPTIE: // 1
-        return new Mapping(UITSPRAAK, UITSPRAAK_ANDERS, DATUM_UITSPRAAK, DATUM_GEWIJSDE,
+        return new Mapping(UITSPRAAK, UITSPRAAK_ANDERS, DATUM_UITSPRAAK, DATUM_GEWIJSDE, DATUM_VERZOEKSCHRIFT,
             FAMRECHT, BETREFT_OUDER_PERSOON, ADOPTIEFOUDERS,
             KEUZE_GESLACHTSNAAM, GESLN_IS, VOORNAMEN_GW, VOORNAMEN_GW_IN);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,10 +21,12 @@ package nl.procura.gba.web.modules.bs.lv.page40;
 
 import static nl.procura.burgerzaken.gba.StringUtils.isBlank;
 import static nl.procura.gba.web.services.bs.algemeen.enums.LvDocumentType.ANDERS;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DATUM_VERZOEKSCHRIFT;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TWEEDE_DOC;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.UITSPRAAK;
 
 import com.vaadin.ui.Field;
+import com.vaadin.ui.Label;
 
 import nl.procura.gba.web.services.bs.algemeen.enums.LvDocumentType;
 import nl.procura.gba.web.services.bs.algemeen.enums.RechtbankLocatie;
@@ -32,6 +34,7 @@ import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvDocumentDoorType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvField;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvSoortVerbintenisType;
+import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class Page40LvForm1 extends Page40LvForm {
 
@@ -41,7 +44,6 @@ public class Page40LvForm1 extends Page40LvForm {
   }
 
   public void setBean(DossierLv zaakDossier) {
-
     setOrder(LvField.getForm1(zaakDossier.getSoort()));
     Page40LvBean1 bean = new Page40LvBean1();
 
@@ -59,6 +61,7 @@ public class Page40LvForm1 extends Page40LvForm {
 
     bean.setDatumUitspraak(zaakDossier.getDatumUitspraak());
     bean.setDatumGewijsde(zaakDossier.getDatumGewijsde());
+    bean.setDatumVerzoekschrift(zaakDossier.getDatumVerzoekschrift());
 
     bean.setSoortVerbintenis(LvSoortVerbintenisType.get(zaakDossier.getSoortVerbintenis()));
     bean.setNummer(zaakDossier.getDocNr());
@@ -95,6 +98,14 @@ public class Page40LvForm1 extends Page40LvForm {
     }
 
     setBean(bean);
+  }
+
+  @Override
+  public void afterSetColumn(Column column, Field field, Property property) {
+    if (property.is(DATUM_VERZOEKSCHRIFT.getName())) {
+      column.addComponent(new Label(" (bij adoptie vóór of binnen 6 mnd. na geboorte)"));
+    }
+    super.afterSetColumn(column, field, property);
   }
 
   @Override

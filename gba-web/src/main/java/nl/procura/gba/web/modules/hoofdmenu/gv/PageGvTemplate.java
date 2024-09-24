@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,11 +19,11 @@
 
 package nl.procura.gba.web.modules.hoofdmenu.gv;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.BG_JA;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.BG_NEE;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.VP_JA;
 import static nl.procura.gba.web.services.zaken.algemeen.koppelenumeratie.KoppelEnumeratieType.VP_NEE;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +35,8 @@ import java.util.Map.Entry;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayoutConfig;
 import nl.procura.gba.web.components.layouts.form.document.PrintRecord;
@@ -57,8 +59,6 @@ import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.printen.PrintActie;
 import nl.procura.gba.web.services.zaken.documenten.printopties.PrintOptie;
 import nl.procura.gba.web.services.zaken.gv.GvAanvraag;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;

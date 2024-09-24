@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -75,6 +75,9 @@ public class LvOverzichtBean1 implements Serializable {
 
   @Field(type = FieldType.LABEL, caption = "Datum kracht van gewijsde")
   private Object datumGewijsde = null;
+
+  @Field(type = FieldType.LABEL, caption = "Datum verzoekschrift")
+  private Object datumVerzoekschrift = null;
 
   @Field(type = FieldType.LABEL, caption = "Document")
   private Object document = null;

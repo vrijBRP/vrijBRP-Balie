@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,6 +25,7 @@ import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.BETREFT_OUDER
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DAG_VAN_WIJZIGING;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DATUM_GEWIJSDE;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DATUM_UITSPRAAK;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DATUM_VERZOEKSCHRIFT;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DOCUMENT;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.ERKENNING_DOOR;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.FAMRECHT;
@@ -120,6 +121,7 @@ public class Page40Lv extends BsPage<DossierLv> {
     zd.setUitspraak("");
     zd.setDatumUitspraak(null);
     zd.setDatumGewijsde(null);
+    zd.setDatumVerzoekschrift(null);
     zd.setToestemming("");
     zd.setToegepastRecht(toBigDecimal(-1L));
 
@@ -133,6 +135,7 @@ public class Page40Lv extends BsPage<DossierLv> {
 
     form1.ifLvFieldValue(DATUM_UITSPRAAK, zd::setDatumUitspraak, Date.class);
     form1.ifLvFieldValue(DATUM_GEWIJSDE, zd::setDatumGewijsde, Date.class);
+    form1.ifLvFieldValue(DATUM_VERZOEKSCHRIFT, zd::setDatumVerzoekschrift, Date.class);
 
     form1.ifLvFieldValue(SOORT_VERBINTENIS,
         value -> zd.setSoortVerbintenis(value.getCode()),

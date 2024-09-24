@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -76,6 +76,11 @@ public class Page40LvBean1 implements Serializable {
       caption = "Datum kracht van gewijsde",
       width = "97px")
   private Date datumGewijsde = null;
+
+  @Field(customTypeClass = ProDateField.class,
+      caption = "Datum verzoekschrift",
+      width = "97px")
+  private Date datumVerzoekschrift = null;
 
   @Field(customTypeClass = ProNativeSelect.class,
       caption = "Soort verbintenis",

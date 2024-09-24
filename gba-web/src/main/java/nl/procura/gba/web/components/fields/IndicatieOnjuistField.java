@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -37,9 +37,9 @@ import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 public class IndicatieOnjuistField extends GbaComboBox {
 
-  public IndicatieOnjuistField(GBACat gbaCat) {
+  public IndicatieOnjuistField(GBACat gbaCat, boolean hist) {
     this.setValidationVisible(true);
-    setContainerDataSource(new IndexedContainer(new Values(gbaCat)));
+    setContainerDataSource(new IndexedContainer(new Values(gbaCat, hist)));
     setFilteringMode(AbstractSelect.Filtering.FILTERINGMODE_CONTAINS);
   }
 
@@ -48,40 +48,57 @@ public class IndicatieOnjuistField extends GbaComboBox {
     return super.getValue() != null ? new Val(super.getValue(), "") : null;
   }
 
-  class Values extends ArrayList {
+  class Values extends ArrayList<Val> {
 
-    public Values(GBACat gbaCat) {
+    public Values(GBACat gbaCat, boolean hist) {
+      addElements(gbaCat, hist);
+    }
 
+    private void addElements(GBACat gbaCat, boolean hist) {
       //Add category
-      add(gbaCat);
+      add(gbaCat, hist);
 
       // Add groups
       getByCat(gbaCat.getCode()).stream()
           .collect(groupingBy(GBAGroupElem::getGroup))
-          .forEach((key, value) -> add(gbaCat, key));
+          .forEach((group, value) -> add(gbaCat, group, hist));
 
       // Add elements
-      getByCat(gbaCat.getCode()).forEach(elemGroup -> add(gbaCat, elemGroup.getElem()));
+      getByCat(gbaCat.getCode())
+          .forEach(elemGroup -> add(gbaCat, elemGroup.getElem(), hist));
 
       // Handmatig toegevoegd voor cat. 8
       if (gbaCat.is(GBACat.VB)) {
-        add(new Val("089999", "betrokkene niet meer woonachtig op adres"));
+        add(new Val(
+            hist ? "589999" : "089999",
+            getCatDescr("betrokkene niet meer woonachtig op adres", hist)));
       }
     }
 
-    private void add(GBACat cat) {
-      add(new Val(String.format("%02d0000", cat.getCode()),
-          "hele categorie"));
+    private void add(GBACat cat, boolean hist) {
+      add(new Val(String.format("%02d0000",
+          getCatCode(cat, hist)),
+          getCatDescr("hele categorie", hist)));
     }
 
-    private void add(GBACat cat, GBAGroup group) {
-      add(new Val(String.format("%02d%02d00", cat.getCode(), group.getCode()),
-          "groep " + group.getDescr().toLowerCase()));
+    private void add(GBACat cat, GBAGroup group, boolean hist) {
+      add(new Val(String.format("%02d%02d00",
+          getCatCode(cat, hist), group.getCode()),
+          getCatDescr("groep " + group.getDescr().toLowerCase(), hist)));
     }
 
-    private void add(GBACat cat, GBAElem elem) {
-      add(new Val(String.format("%02d%04d", cat.getCode(), elem.getCode()),
-          "element " + elem.getDescr().toLowerCase()));
+    private void add(GBACat cat, GBAElem elem, boolean hist) {
+      add(new Val(String.format("%02d%04d",
+          getCatCode(cat, hist), elem.getCode()),
+          getCatDescr("element " + elem.getDescr().toLowerCase(), hist)));
+    }
+
+    private int getCatCode(GBACat cat, boolean hist) {
+      return hist ? cat.getCode() + 50 : cat.getCode();
+    }
+
+    private String getCatDescr(String descr, boolean hist) {
+      return descr + (hist ? " - historie" : "");
     }
   }
 
