@@ -2,7 +2,7 @@
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
-
+  
   <changeSet author="Procura" id="v1_32_1">
     <createTable tableName="doss_lv">
       <column name="c_doss_lv" type="numeric">
@@ -106,13 +106,13 @@
       </column>
     </createTable>
   </changeSet>
-
+  
   <changeSet author="Procura" id="v1_32_2">
     <addPrimaryKey columnNames="c_doss_lv"
       constraintName="doss_lv_pkey"
       tableName="doss_lv"/>
   </changeSet>
-
+  
   <changeSet author="Procura" id="v1_32_3">
     <addForeignKeyConstraint
       baseColumnNames="c_doss_lv"
@@ -125,7 +125,7 @@
       referencedColumnNames="c_doss"
       referencedTableName="doss"/>
   </changeSet>
-
+  
   <changeSet author="Procura" id="v1_32_4">
     <createView viewName="zaken_view" replaceIfExists="true">
       <![CDATA[
@@ -463,14 +463,14 @@
       ]]>
     </createView>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_5">
     <addColumn tableName="doss_geb">
       <column name="org_keuze_naam" type="VARCHAR(255)" defaultValue="">
       </column>
     </addColumn>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_6">
     <addColumn tableName="doss_lv">
       <column name="toestemming" type="VARCHAR(255)" defaultValue="">
@@ -488,7 +488,7 @@
       </column>
     </addColumn>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_7">
     <renameColumn tableName="doss_geb" oldColumnName="org_keuze_naam"
       newColumnName="org_keuze_naam_dubbel"/>
@@ -502,7 +502,7 @@
       <column name="org_keuze_naam_tp" type="VARCHAR(255)" defaultValue=""/>
     </addColumn>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_8">
     <createTable tableName="translation">
       <column name="c_translation" type="numeric">
@@ -513,13 +513,13 @@
       </column>
     </createTable>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_9">
     <addPrimaryKey columnNames="c_translation"
       constraintName="translation_pkey"
       tableName="translation"/>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_10">
     <createTable tableName="translation_rec">
       <column name="c_translation_rec" type="numeric">
@@ -536,13 +536,13 @@
       </column>
     </createTable>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_11">
     <addPrimaryKey columnNames="c_translation_rec"
       constraintName="translation_rec_pkey"
       tableName="translation_rec"/>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_12">
     <addForeignKeyConstraint
       baseColumnNames="c_translation"
@@ -555,7 +555,7 @@
       referencedColumnNames="c_translation"
       referencedTableName="translation"/>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_13">
     <sql>
       INSERT INTO translation (c_translation, name)
@@ -565,7 +565,7 @@
       <column name="c_translation" type="numeric" defaultValue="0"/>
     </addColumn>
   </changeSet>
-
+  
   <changeSet author="Procura (Frits)" id="v1_32_14">
     <addForeignKeyConstraint
       baseColumnNames="c_translation"
@@ -577,5 +577,195 @@
       onUpdate="NO ACTION"
       referencedColumnNames="c_translation"
       referencedTableName="translation"/>
+  </changeSet>
+  
+  <changeSet author="Procura (Frits)" id="v1_32_30">
+    <createTable tableName="rdm_amp">
+      <column name="c_rdm_amp" type="numeric">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rdm_amp_pk"/>
+      </column>
+      <column name="rdm01_id" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bezorging_gewenst" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="aanvr_nr" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bundel_ref_nr" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="order_ref_nr" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="hoofdorder" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_type" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gemeentecode" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gemeentenaam" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="locatiecode" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="opmerkingen" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_in" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_end" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ind_voormelding" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ind_koppeling" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ind_inklaring" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ind_blokkering" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ind_annulering" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ind_uitreiking" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code_blokkering" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="oms_blokkering" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code_annulering" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="oms_annulering" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="bsn" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="voorl" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="voornamen" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="voorv" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="geslachtsnaam" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gesl" type="VARCHAR(1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_geb" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="hnr" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="hnr_l" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="hnr_t" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="pc" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="straat" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="wpl" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tel1" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tel2" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  
+  <changeSet author="procura" id="v1_32_31">
+    <createTable tableName="rdm_amp_doc">
+      <column name="c_rdm_amp_doc" type="numeric">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rdm_amp_doc_pk"/>
+      </column>
+      <column name="c_rdm_amp" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_nr" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="doc_type" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="d_end_geld" type="numeric">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  
+  <changeSet author="procura" id="v1_32_32">
+    <addForeignKeyConstraint
+      baseColumnNames="c_rdm_amp"
+      baseTableName="rdm_amp_doc"
+      constraintName="rdm_amp_doc_rdm_amp_fk"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="c_rdm_amp"
+      referencedTableName="rdm_amp"/>
+  </changeSet>
+  
+  <changeSet author="procura" id="v1_32_34">
+    <addUniqueConstraint
+      columnNames="doc_nr"
+      constraintName="rdm_amp_doc_unique"
+      tableName="rdm_amp_doc"/>
+  </changeSet>
+  
+  <changeSet author="procura" id="v1_32_35">
+    <addForeignKeyConstraint
+      baseColumnNames="rdm01_id"
+      baseTableName="rdm_amp"
+      constraintName="rdm_amp_rdm01_fk"
+      deferrable="false"
+      initiallyDeferred="false"
+      onDelete="CASCADE"
+      onUpdate="NO ACTION"
+      referencedColumnNames="rdm01_id"
+      referencedTableName="rdm01"/>
+  </changeSet>
+  
+  <changeSet author="Procura" id="v1_32_60">
+    <addColumn tableName="nrd">
+      <column name="ind_bezorgen" type="boolean" defaultValueBoolean="false"/>
+    </addColumn>
+    <addColumn tableName="nrd">
+      <column name="opm_bezorgen" type="TEXT" defaultValue=""/>
+    </addColumn>
   </changeSet>
 </databaseChangeLog>

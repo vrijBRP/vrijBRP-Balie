@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
 import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.io.Serializable;
@@ -30,7 +31,7 @@ public class ReisdocumentStatus implements Serializable {
 
   private static final long serialVersionUID = 2643071408462385700L;
 
-  private ReisdocumentAanvraag aanvraag;
+  private final ReisdocumentAanvraag aanvraag;
 
   public ReisdocumentStatus(ReisdocumentAanvraag aanvraag) {
     this.aanvraag = aanvraag;
@@ -80,7 +81,8 @@ public class ReisdocumentStatus implements Serializable {
   }
 
   public boolean isUitTeReiken() {
-    return getStatusLevering() == LeveringType.DOCUMENT_GOED
+    return fil(getNrNederlandsDocument())
+        && getStatusLevering() == LeveringType.DOCUMENT_GOED
         && getStatusAfsluiting().getCode() <= SluitingType.AANVRAAG_NIET_AFGESLOTEN.getCode();
   }
 

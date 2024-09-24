@@ -38,14 +38,15 @@ import lombok.Data;
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 public class Page2LocatiesBean implements Serializable {
 
-  public static final String IPADRES      = "IPadres";
-  public static final String LOCATIE      = "locatie";
-  public static final String OMSCHRIJVING = "omschrijving";
-  public static final String IPADRESSEN   = "IPadressen";
-  public static final String RASCODE      = "rasCode";
-  public static final String RAASCODE     = "raasCode";
-  public static final String JCCGKASID    = "JCCGKASid";
-  public static final String TYPE         = "type";
+  public static final String IPADRES         = "IPadres";
+  public static final String LOCATIE         = "locatie";
+  public static final String OMSCHRIJVING    = "omschrijving";
+  public static final String ZYNYO_DEVICE_ID = "zynyoDeviceId";
+  public static final String IPADRESSEN      = "IPadressen";
+  public static final String RASCODE         = "rasCode";
+  public static final String RAASCODE        = "raasCode";
+  public static final String JCCGKASID       = "JCCGKASid";
+  public static final String TYPE            = "type";
 
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Uw IP-adres",
@@ -72,6 +73,11 @@ public class Page2LocatiesBean implements Serializable {
       width = "500px")
   @TextArea(nullRepresentation = "")
   private String omschrijving = "";
+
+  @Field(type = FieldType.TEXT_FIELD,
+          caption = "Zynyo device ID")
+  @TextField(nullRepresentation = "")
+  private String zynyoDeviceId = "";
 
   @Field(type = FieldType.TEXT_AREA,
       caption = "IP adres(sen) (gescheiden door komma of door een nieuwe regel)",
@@ -132,6 +138,14 @@ public class Page2LocatiesBean implements Serializable {
 
   public void setOmschrijving(String omschrijving) {
     this.omschrijving = omschrijving;
+  }
+
+  public String getZynyoDeviceId() {
+    return zynyoDeviceId;
+  }
+
+  public void setZynyoDeviceId(String zynyoDeviceId) {
+    this.zynyoDeviceId = zynyoDeviceId;
   }
 
   public BigDecimal getRaasCode() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,12 +19,16 @@
 
 package nl.procura.gba.web.services.beheer.kassa;
 
-import static java.util.Arrays.asList;
 import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
@@ -162,7 +166,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   public List<KassaProductAanvraag> getVerversdeWinkelwagen() {
     List<KassaProductAanvraag> list = getProductenInWinkelwagen();
     for (KassaProductAanvraag p : list) {
-      for (KassaProduct kassaProduct : getKassaProducten(asList(p.getKassaProduct()))) {
+      for (KassaProduct kassaProduct : getKassaProducten(Collections.singletonList(p.getKassaProduct()))) {
         p.setKassaProduct(kassaProduct);
       }
     }
@@ -216,7 +220,6 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   }
 
   public void addToWinkelwagen(List<KassaProduct> producten) {
-
     List<KassaProduct> nieuweProducten = new ArrayList<>(producten);
     for (KassaProduct kassa : getKassaProducten()) {
       if (kassa.isKassaBundel()) {
@@ -235,7 +238,6 @@ public class KassaService extends AbstractService implements ZaakNumbers {
         UsrFieldValue gebruiker = new UsrFieldValue(getServices().getGebruiker());
         KassaProductAanvraag aanvraag = new KassaProductAanvraag(nieuwProduct, pl, gebruiker);
         getProductenInWinkelwagen().add(aanvraag);
-
         callListeners(ServiceEvent.CHANGE);
       }
     }
@@ -247,9 +249,11 @@ public class KassaService extends AbstractService implements ZaakNumbers {
 
   public void addToWinkelwagen(Zaak zaak, boolean magDubbelVoorkomen) {
     if (getServices().isType(Services.TYPE.PROWEB)) {
-      List<KassaProduct> nieuweProducten = KassaProductConverter.getKassaProductAanvragen(this, zaak);
-      if (magDubbelVoorkomen || !isToegevoegdAanWinkelwagen(nieuweProducten)) {
-        addToWinkelwagen(getKassaProducten(nieuweProducten));
+      List<KassaProduct> producten = KassaProductConverter.getKassaProductAanvragen(this, zaak);
+      if (magDubbelVoorkomen) {
+        addToWinkelwagen(getKassaProducten(producten));
+      } else {
+        addToWinkelwagen(getOntbrekendeProducten(producten));
       }
     }
   }
@@ -358,19 +362,20 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   /**
    * Is het product van deze persoon al in de kassa
    */
-  private boolean isToegevoegdAanWinkelwagen(List<KassaProduct> producten) {
-    for (KassaProduct nieuwProdukt : producten) {
+  private List<KassaProduct> getOntbrekendeProducten(List<KassaProduct> producten) {
+    List<KassaProduct> nieuweProducten = new ArrayList<>();
+    PROD_LIST: for (KassaProduct nieuwProdukt : producten) {
       for (KassaProductAanvraag aanvraag : getProductenInWinkelwagen()) {
         if (aanvraag.getKassaProduct().getKassaType() == nieuwProdukt.getKassaType()) {
           BasePLExt pl = getServices().getPersonenWsService().getHuidige();
           if (pl.is(aanvraag.getPl())) {
-            return true;
+            continue PROD_LIST;
           }
         }
       }
+      nieuweProducten.add(nieuwProdukt);
     }
-
-    return false;
+    return nieuweProducten;
   }
 
   private void verwijderEersteProductUitWinkelwagen(KassaProduct kassaProduct) {

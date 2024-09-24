@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -245,7 +245,6 @@ public class P1659ToDocumentAanvraag {
     if (fil(aanvr_nr)) {
 
       ZaakArgumenten z = new ZaakArgumenten(aanvr_nr);
-
       List<RijbewijsAanvraag> zaken = services.getZakenService()
           .getVolledigeZaken(services.getRijbewijsService().getMinimalZaken(z));
 
@@ -253,6 +252,7 @@ public class P1659ToDocumentAanvraag {
 
         RijbewijsAanvraag rec = (RijbewijsAanvraag) zaak;
 
+        aanvraag.setThuisbezorgingGewenst(rec.isThuisbezorgingGewenst());
         aanvraag.getAanvrager().setSoortIDBewijs(rec.getSoortId());
         aanvraag.getAanvrager().setNationaliteiten(rec.getNationaliteiten());
         aanvraag.getAanvrager().setCode_verblijfstatus(rec.getCodeVerblijfstitel());

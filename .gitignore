@@ -37,6 +37,7 @@ bin/
 build/
 target/
 .settings/
+.VSCodeCounter/
 
 # OS junk #
 ###########
@@ -53,6 +54,7 @@ pom.xml.versionsBackup
 # GBA #
 #######
 git.properties
+liquibase.properties
 gba-web/src/main/java/notes/
 gba-web/src/main/webapp/VAADIN/widgetsets/
 gba-web/src/main/webapp/VAADIN/gwt-*

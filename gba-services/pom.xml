@@ -4,204 +4,211 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.35.1</version>
+    <version>1.35.2</version>
   </parent>
-
+  
   <artifactId>gba-services</artifactId>
   <name>Proweb GBA - Services</name>
-
+  
   <properties>
   </properties>
-
+  
   <dependencies>
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-jpa</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-rest-client</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-ple</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
+    <!-- AMP -->
+    <dependency>
+      <groupId>nl.procura.gba</groupId>
+      <artifactId>gba-amp</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    
     <!-- Presentievraag -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-bcgba</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Verificatievraag -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-bvbsn</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Terugmeldvoorziening -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-tmv</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Verklaring omtrent gedrag -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-vog</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Curateleregister -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-curatele</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Keesy -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-keesy</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- VRS -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-vrs</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Request inbox -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-request-inbox</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Rijbewijzen -->
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-rdw</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.procura.gba</groupId>
       <artifactId>gba-utils</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-
+    
     <!-- Google Guice -->
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-assistedinject</artifactId>
       <version>${guice.version}</version>
     </dependency>
-
+    
     <!-- Brp inbox shared -->
     <dependency>
       <groupId>nl.procura.brp.inbox</groupId>
       <artifactId>brp-inbox-shared</artifactId>
       <version>${brp-inbox.version}</version>
     </dependency>
-
+    
     <!-- SMS Micro client -->
     <dependency>
       <groupId>nl.procura.sms.rest</groupId>
       <artifactId>sms-rest-client</artifactId>
       <version>${sms-micro.version}</version>
     </dependency>
-
+    
     <!-- guava -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
-
+    
     <!-- Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-
+    
     <!-- Geo Micro client -->
     <dependency>
       <groupId>nl.procura.geo.rest</groupId>
       <artifactId>geo-rest-client</artifactId>
       <version>${geo-micro.version}</version>
     </dependency>
-
+    
     <!-- RAAS Micro client -->
     <dependency>
       <groupId>nl.procura.raas.rest</groupId>
       <artifactId>raas-rest-client</artifactId>
       <version>${raas-micro.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.procura.raas.rest</groupId>
       <artifactId>raas-message</artifactId>
       <version>${raas-micro.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.vrijbrp.micro.rest</groupId>
       <artifactId>micro-rest-client-jersey1</artifactId>
       <version>${vrijbrp-libs.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.procura</groupId>
       <artifactId>ssl-web-client</artifactId>
       <version>${ssl-web.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.vrijbrp.bsm</groupId>
       <artifactId>bsm-rest-client</artifactId>
       <version>${bsm-rest-client.version}</version>
     </dependency>
-
+    
     <!-- Voor encryptie -->
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
     </dependency>
-
+    
     <!-- CSV -->
     <dependency>
       <groupId>net.sf.opencsv</groupId>
       <artifactId>opencsv</artifactId>
       <version>${opencsv.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>
       <artifactId>caffeine</artifactId>
       <version>${caffeine.version}</version>
     </dependency>
-
+    
     <!-- Vaadin -->
     <dependency>
       <groupId>nl.vrijbrp.vaadin</groupId>
@@ -209,14 +216,14 @@
       <version>${vaadin6.version}</version>
       <scope>provided</scope>
     </dependency>
-
+    
     <!-- database synchronisatie -->
     <dependency>
       <groupId>nl.vrijbrp.commons</groupId>
       <artifactId>commons-liquibase</artifactId>
       <version>${vrijbrp-libs.version}</version>
     </dependency>
-
+    
     <!-- Voor genereren documenten -->
     <dependency>
       <groupId>nl.vrijbrp</groupId>
@@ -229,46 +236,46 @@
         </exclusion>
       </exclusions>
     </dependency>
-
+    
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>2.3.31</version>
     </dependency>
-
+    
     <!-- PDF -->
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
       <version>${pdfbox.version}</version>
     </dependency>
-
+    
     <!-- Barcode scanner -->
     <dependency>
       <groupId>com.google.zxing</groupId>
       <artifactId>core</artifactId>
       <version>${barcode-zxing.version}</version>
     </dependency>
-
+    
     <dependency>
       <groupId>com.google.zxing</groupId>
       <artifactId>javase</artifactId>
       <version>${barcode-zxing.version}</version>
     </dependency>
-
+    
     <!-- Mail -->
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
     </dependency>
-
+    
     <!-- Voor o.a. FTP van kassa -->
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
       <version>${commons-net.version}</version>
     </dependency>
-
+    
     <!-- Jollyday -->
     <dependency>
       <groupId>de.jollyday</groupId>
@@ -281,14 +288,14 @@
         </exclusion>
       </exclusions>
     </dependency>
-
+    
     <!-- On-premise-connector -->
     <dependency>
       <groupId>nl.procura</groupId>
       <artifactId>vrijbrp-connect-app-client</artifactId>
       <version>${vrijbrp-connect.version}</version>
     </dependency>
-
+    
     <!-- Object-storage -->
     <dependency>
       <groupId>nl.procura.storage</groupId>
@@ -296,7 +303,7 @@
       <version>${object-storage.version}</version>
     </dependency>
   </dependencies>
-
+  
   <build>
     <plugins>
       <plugin>

@@ -21,6 +21,8 @@ package nl.procura.gba.web.services.beheer.requestinbox.zaken.afschriftbs;
 
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 
+import java.time.LocalDate;
+
 import nl.procura.burgerzaken.requestinbox.api.model.InboxEnum;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxBody;
@@ -51,7 +53,8 @@ public class InboxAfschriftbsProcessor extends RequestInboxBodyProcessor {
       inboxBody.addBsn("BSN", data.getPersonBsn())
           .add("Aanvraag", data.getRequestType())
           .add("Soort", data.getCivilRecordType())
-          .add("Reden", data.getCivilRequestReason());
+          .add("Reden", data.getCivilRequestReason())
+          .add("Datum", data.getDateOfCivilEvent());
     } catch (RuntimeException e) {
       log(ERROR, "Fout bij inlezen verzoek", e.getMessage());
       inboxBody.add("Fout bij inlezen verzoek", e.getMessage());
@@ -66,6 +69,7 @@ public class InboxAfschriftbsProcessor extends RequestInboxBodyProcessor {
     private CivilRecordType civilRecordType;
     private RequestType     requestType;
     private String          civilRequestReason;
+    private LocalDate       dateOfCivilEvent;
   }
 
   @Getter

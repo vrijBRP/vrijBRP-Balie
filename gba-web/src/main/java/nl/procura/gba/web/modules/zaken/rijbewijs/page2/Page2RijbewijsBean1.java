@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -45,6 +45,7 @@ public class Page2RijbewijsBean1 implements Serializable {
   public static final String DAGEN185NL        = "dagen185nl";
   public static final String RIJBEWIJSNR       = "rijbewijsNr";
   public static final String STATUSGBA         = "statusGba";
+  public static final String THUISBEZORGEN     = "bezorgen";
 
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Aanvraagnummer")
@@ -93,4 +94,8 @@ public class Page2RijbewijsBean1 implements Serializable {
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Rijbewijsnummer")
   private String rijbewijsNr = "";
+
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Thuisbezorgen")
+  private String bezorgen = "";
 }

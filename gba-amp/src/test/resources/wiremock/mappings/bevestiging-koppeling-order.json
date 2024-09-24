@@ -1,0 +1,19 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "method": "POST",
+    "headers": {
+      "SOAPAction": {
+        "contains": "BevestigingKoppelingOrder"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "/bevestiging-koppeling-order.xml",
+    "headers": {
+      "Content-Type": "text/xml"
+    }
+  }
+}

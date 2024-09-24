@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -31,8 +31,9 @@ public enum KassaType {
   SPOED_REISDOC(9, "Spoed reisdocument"),
   SPOED_RIJBEWIJS(10, "Spoed rijbewijs"),
   UITTREKSEL(3, "Uittreksel"),
-  VERMISS_REISDOC(6, "Vermissing reisdocument"),
-  VERMISS_RIJBEWIJS(7, "Vermissing rijbewijs");
+  //  VERMISS_REISDOC(6, "Vermissing reisdocument"), // Removed
+  //  VERMISS_RIJBEWIJS(7, "Vermissing rijbewijs"), // Removed
+  BEZORGING_REISDOC(11, "Thuisbezorging reisdocument");
 
   private String oms = "";
   private int    nr  = 0;

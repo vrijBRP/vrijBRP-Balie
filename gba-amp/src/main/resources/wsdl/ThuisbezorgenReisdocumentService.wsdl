@@ -1,0 +1,188 @@
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://thuisbezorgendocumenten.nl/reisdocument/v1/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ThuisbezorgenReisdocumentService" targetNamespace="http://thuisbezorgendocumenten.nl/reisdocument/v1/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://thuisbezorgendocumenten.nl/reisdocument/v1/Imports">
+      <xsd:import schemaLocation="ThuisbezorgenReisdocumentService_2_2_0.xsd" namespace="http://thuisbezorgendocumenten.nl/reisdocument/v1/"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="BevestigingKoppelingOrderResponse">
+    <wsdl:part element="tns:BevestigingKoppelingOrderResponse" name="BevestigingKoppelingOrderResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OphalenAnnuleringenResponse">
+    <wsdl:part element="tns:OphalenAnnuleringenResponse" name="OphalenAnnuleringenResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BevestigingVerwerkingUitreiking">
+    <wsdl:part element="tns:BevestigingVerwerkingUitreiking" name="BevestigingVerwerkingUitreiking"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Blokkering">
+    <wsdl:part element="tns:Blokkering" name="Blokkering"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BevestigingVerwerkingAnnulering">
+    <wsdl:part element="tns:BevestigingVerwerkingAnnulering" name="BevestigingVerwerkingAnnulering"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OphalenOrdersResponse">
+    <wsdl:part element="tns:OphalenOrdersResponse" name="OphalenOrdersResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OrderUpdateResponse">
+    <wsdl:part element="tns:OrderUpdateResponse" name="OrderUpdateResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Voormelding">
+    <wsdl:part element="tns:Voormelding" name="Voormelding"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BevestigingVerwerkingAnnuleringResponse">
+    <wsdl:part element="tns:BevestigingVerwerkingAnnuleringResponse" name="BevestigingVerwerkingAnnuleringResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OphalenUitreikingen">
+    <wsdl:part element="tns:OphalenUitreikingen" name="OphalenUitreikingen"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BevestigingVerwerkingUitreikingResponse">
+    <wsdl:part element="tns:BevestigingVerwerkingUitreikingResponse" name="BevestigingVerwerkingUitreikingResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="VoormeldingResponse">
+    <wsdl:part element="tns:VoormeldingResponse" name="VoormeldingResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BevestigingKoppelingOrder">
+    <wsdl:part element="tns:BevestigingKoppelingOrder" name="BevestigingKoppelingOrder"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OphalenAnnuleringen">
+    <wsdl:part element="tns:OphalenAnnuleringen" name="OphalenAnnuleringen"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OphalenOrders">
+    <wsdl:part element="tns:OphalenOrders" name="OphalenOrders"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BlokkeringResponse">
+    <wsdl:part element="tns:BlokkeringResponse" name="BlokkeringResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OphalenUitreikingenResponse">
+    <wsdl:part element="tns:OphalenUitreikingenResponse" name="OphalenUitreikingenResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OrderUpdate">
+    <wsdl:part element="tns:OrderUpdate" name="OrderUpdate"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ThuisbezorgenReisdocumentService">
+    <wsdl:operation name="BevestigingVerwerkingUitreiking" parameterOrder="BevestigingVerwerkingUitreiking BevestigingVerwerkingUitreikingResponse">
+      <wsdl:input message="tns:BevestigingVerwerkingUitreiking" name="BevestigingVerwerkingUitreiking"></wsdl:input>
+      <wsdl:output message="tns:BevestigingVerwerkingUitreikingResponse" name="BevestigingVerwerkingUitreikingResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OphalenUitreikingen" parameterOrder="OphalenUitreikingen OphalenUitreikingenResponse">
+      <wsdl:input message="tns:OphalenUitreikingen" name="OphalenUitreikingen"></wsdl:input>
+      <wsdl:output message="tns:OphalenUitreikingenResponse" name="OphalenUitreikingenResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Blokkering" parameterOrder="Blokkering BlokkeringResponse">
+      <wsdl:input message="tns:Blokkering" name="Blokkering"></wsdl:input>
+      <wsdl:output message="tns:BlokkeringResponse" name="BlokkeringResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Voormelding" parameterOrder="Voormelding VoormeldingResponse">
+      <wsdl:input message="tns:Voormelding" name="Voormelding"></wsdl:input>
+      <wsdl:output message="tns:VoormeldingResponse" name="VoormeldingResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OphalenAnnuleringen" parameterOrder="OphalenAnnuleringen OphalenAnnuleringenResponse">
+      <wsdl:input message="tns:OphalenAnnuleringen" name="OphalenAnnuleringen"></wsdl:input>
+      <wsdl:output message="tns:OphalenAnnuleringenResponse" name="OphalenAnnuleringenResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrderUpdate" parameterOrder="OrderUpdate OrderUpdateResponse">
+      <wsdl:input message="tns:OrderUpdate" name="OrderUpdate"></wsdl:input>
+      <wsdl:output message="tns:OrderUpdateResponse" name="OrderUpdateResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OphalenOrders" parameterOrder="OphalenOrders OphalenOrdersResponse">
+      <wsdl:input message="tns:OphalenOrders" name="OphalenOrders"></wsdl:input>
+      <wsdl:output message="tns:OphalenOrdersResponse" name="OphalenOrdersResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BevestigingVerwerkingAnnulering" parameterOrder="BevestigingVerwerkingAnnulering BevestigingVerwerkingAnnuleringResponse">
+      <wsdl:input message="tns:BevestigingVerwerkingAnnulering" name="BevestigingVerwerkingAnnulering"></wsdl:input>
+      <wsdl:output message="tns:BevestigingVerwerkingAnnuleringResponse" name="BevestigingVerwerkingAnnuleringResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BevestigingKoppelingOrder" parameterOrder="BevestigingKoppelingOrder BevestigingKoppelingOrderResponse">
+      <wsdl:input message="tns:BevestigingKoppelingOrder" name="BevestigingKoppelingOrder"></wsdl:input>
+      <wsdl:output message="tns:BevestigingKoppelingOrderResponse" name="BevestigingKoppelingOrderResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ThuisbezorgenReisdocumentServiceSoapBinding" type="tns:ThuisbezorgenReisdocumentService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="BevestigingVerwerkingUitreiking">
+      <soap:operation soapAction="BevestigingVerwerkingUitreiking" style="document"/>
+      <wsdl:input name="BevestigingVerwerkingUitreiking">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="BevestigingVerwerkingUitreikingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OphalenUitreikingen">
+      <soap:operation soapAction="OphalenUitreikingen" style="document"/>
+      <wsdl:input name="OphalenUitreikingen">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="OphalenUitreikingenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Blokkering">
+      <soap:operation soapAction="Blokkering" style="document"/>
+      <wsdl:input name="Blokkering">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="BlokkeringResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Voormelding">
+      <soap:operation soapAction="Voormelding" style="document"/>
+      <wsdl:input name="Voormelding">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="VoormeldingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OphalenAnnuleringen">
+      <soap:operation soapAction="OphalenAnnuleringen" style="document"/>
+      <wsdl:input name="OphalenAnnuleringen">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="OphalenAnnuleringenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OphalenOrders">
+      <soap:operation soapAction="OphalenOrders" style="document"/>
+      <wsdl:input name="OphalenOrders">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="OphalenOrdersResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrderUpdate">
+      <soap:operation soapAction="OrderUpdate" style="document"/>
+      <wsdl:input name="OrderUpdate">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="OrderUpdateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BevestigingVerwerkingAnnulering">
+      <soap:operation soapAction="BevestigingVerwerkingAnnulering" style="document"/>
+      <wsdl:input name="BevestigingVerwerkingAnnulering">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="BevestigingVerwerkingAnnuleringResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BevestigingKoppelingOrder">
+      <soap:operation soapAction="BevestigingKoppelingOrder" style="document"/>
+      <wsdl:input name="BevestigingKoppelingOrder">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="BevestigingKoppelingOrderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ThuisbezorgenReisdocumentService">
+    <wsdl:port binding="tns:ThuisbezorgenReisdocumentServiceSoapBinding" name="BasicHttpBinding_ThuisbezorgenReisdocumentService">
+      <soap:address location="http://localhost:8888/ThuisbezorgenReisdocumentService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

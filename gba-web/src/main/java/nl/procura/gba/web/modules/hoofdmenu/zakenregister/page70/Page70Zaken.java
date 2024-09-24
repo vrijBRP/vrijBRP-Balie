@@ -31,6 +31,7 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOptiePage;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page71.Page71Zaken;
+import nl.procura.gba.web.modules.zaken.reisdocument.bezorging.BezorgingWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtBuilder;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.raas.rest.domain.aanvraag.FindAanvraagRequest;
@@ -41,7 +42,8 @@ import nl.procura.raas.rest.domain.aanvraag.FindAanvraagRequest;
 
 public class Page70Zaken extends ZakenregisterOptiePage<ReisdocumentAanvraag> {
 
-  private final Button buttonRaas = new Button("RAAS aanvraag");
+  private final Button buttonRaas   = new Button("RAAS aanvraag");
+  private final Button buttonBezorg = new Button("Thuisbezorging");
 
   public Page70Zaken(ReisdocumentAanvraag aanvraag) {
     super(aanvraag, "Zakenregister - reisdocument");
@@ -61,6 +63,10 @@ public class Page70Zaken extends ZakenregisterOptiePage<ReisdocumentAanvraag> {
     if (buttonVerzoek.isRequest()) {
       addOptieButton(buttonVerzoek);
     }
+
+    if (getServices().getReisdocumentBezorgingService().isEnabled() || getZaak().getThuisbezorging().isMelding()) {
+      addOptieButton(buttonBezorg);
+    }
   }
 
   @Override
@@ -68,6 +74,10 @@ public class Page70Zaken extends ZakenregisterOptiePage<ReisdocumentAanvraag> {
 
     if ((button == buttonRaas) || (keyCode == ShortcutAction.KeyCode.F3)) {
       onRaas();
+    }
+
+    if ((button == buttonBezorg)) {
+      getParentWindow().addWindow(new BezorgingWindow(getZaak()));
     }
 
     super.handleEvent(button, keyCode);

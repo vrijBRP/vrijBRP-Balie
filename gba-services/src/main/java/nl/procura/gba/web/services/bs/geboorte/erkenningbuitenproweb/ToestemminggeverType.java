@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb;
 
 import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import static nl.procura.standard.Globalfunctions.trim;
 
 public enum ToestemminggeverType {
 
@@ -97,7 +98,7 @@ public enum ToestemminggeverType {
    * Als er sprake is van toestemming door hoge raad of gerechtshof dan het woord rechtbank weglaten
    */
   public String getToestemmingMetRechtbank(String rechtbank) {
-    String value = getOms() + " " + rechtbank;
+    String value = (getOms() + " " + trim(rechtbank)).trim();
     if (value.toLowerCase().matches(".*(hoge|gerechtshof).*")) {
       value = value.replaceAll("([Rr])echtbank", "")
           .replaceAll("\\s+", " ")

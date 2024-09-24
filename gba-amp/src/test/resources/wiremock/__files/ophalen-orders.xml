@@ -1,0 +1,20 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://thuisbezorgendocumenten.nl/reisdocument/v1/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <v1:OphalenOrdersResponse>
+      <!--Optional:-->
+      <v1:OphalenOrdersResult>
+        <!--Optional:-->
+        <v1:Orders>
+          <!--Zero or more repetitions:-->
+          <v1:OpgehaaldeOrder>
+            <!--Optional:-->
+            <v1:Aanvraagnummer>123</v1:Aanvraagnummer>
+            <!--Optional:-->
+            <v1:Orderreferentieid>123</v1:Orderreferentieid>
+          </v1:OpgehaaldeOrder>
+        </v1:Orders>
+      </v1:OphalenOrdersResult>
+    </v1:OphalenOrdersResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

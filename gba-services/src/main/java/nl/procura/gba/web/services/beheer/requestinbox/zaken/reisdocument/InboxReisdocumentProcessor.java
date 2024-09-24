@@ -76,6 +76,10 @@ public class InboxReisdocumentProcessor extends RequestInboxBodyProcessor {
     return getResult();
   }
 
+  public ReisdocumentInboxData getData() {
+    return RequestInboxBody.fromJson(getRecord(), ReisdocumentInboxData.class);
+  }
+
   @Override
   public RequestInboxBody getBody() {
     RequestInboxBody inboxBody = new RequestInboxBody();
@@ -85,7 +89,8 @@ public class InboxReisdocumentProcessor extends RequestInboxBodyProcessor {
           .add("Reisdocument", data.getTravelDocumentType())
           .add("Lengte", data.getHeight())
           .add("Spoed", data.getExpeditedProcessing())
-          .add("Betaling", getPaymentInfo());
+          .add("Betaling", getPaymentInfo())
+          .add("Thuisbezorgen", data.getHomeDelivery());
     } catch (RuntimeException e) {
       log(ERROR, "Fout bij inlezen verzoek", e.getMessage());
       inboxBody.add("Fout bij inlezen verzoek", e.getMessage());
@@ -107,11 +112,12 @@ public class InboxReisdocumentProcessor extends RequestInboxBodyProcessor {
   }
 
   @Data
-  private static class ReisdocumentInboxData {
+  public static class ReisdocumentInboxData {
 
     private Long               bsn;
     private TravelDocumentType travelDocumentType;
     private Integer            height;
     private Boolean            expeditedProcessing;
+    private Boolean            homeDelivery;
   }
 }

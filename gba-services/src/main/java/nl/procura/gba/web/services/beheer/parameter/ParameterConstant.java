@@ -20,6 +20,7 @@
 package nl.procura.gba.web.services.beheer.parameter;
 
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ALGEMENE_INSTELLINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_AMP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_BSM;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_CONNECT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_CONTACT;
@@ -63,6 +64,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_ALGEMEEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_PROFIEL_GBAV_PLUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_PROFIEL_STANDAARD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZYNYO;
 
 public enum ParameterConstant implements ParameterType {
 
@@ -687,6 +689,27 @@ public enum ParameterConstant implements ParameterType {
 
   SMS_PW("SMS_password", "SMS wachtwoord",
       GROUP_SMS, true, false, false, ""),
+
+  ZYNYO_API_ENDPOINT("Zynyo_api_endpoint", "Zynyo API endpoint",
+      GROUP_ZYNYO, true, false, false, ""),
+
+  ZYNYO_API_KEY("Zynyo_api_key", "Zynyo API key",
+      GROUP_ZYNYO, true, false, false, ""),
+
+  AMP_ENABLED("AMP_enabled", "AMP API inschakelen",
+      GROUP_AMP, true, false, false, ""),
+
+  AMP_ENABLED_BUNDLES("AMP_bundle_enabled", "AMP Bundelen toestaan",
+      GROUP_AMP, true, false, false, "false"),
+
+  AMP_ENDPOINT("AMP_endpoint", "AMP API endpoint",
+      GROUP_AMP, true, false, false, ""),
+
+  AMP_LOCATIONS("AMP_locations", "AMP API locaties",
+      GROUP_AMP, true, false, false, ""),
+
+  AMP_SSL("AMP_ssl_proxy", "AMP via SSL proxy",
+      GROUP_AMP, true, false, false, ""),
 
   INBOX_ENABLED("Inbox_enabled", "Verzoeken API inschakelen",
       GROUP_INBOX, true, true, true, ""),

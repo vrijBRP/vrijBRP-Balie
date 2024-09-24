@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,13 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
+import java.util.Arrays;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum SluitingType {
 
   AANVRAAG_NIET_AFGESLOTEN(0, "Aanvraag niet afgesloten"),
@@ -29,39 +36,18 @@ public enum SluitingType {
   DOCUMENT_NIET_OPGEHAALD(5, "Document niet opgehaald"),
   ONBEKEND(-1, "Onbekend");
 
-  private int    code = 0;
-  private String oms  = "";
-
-  SluitingType(int code, String oms) {
-
-    setCode(code);
-    setOms(oms);
-  }
+  private final int    code;
+  private final String oms;
 
   public static SluitingType get(int code) {
-    for (SluitingType var : values()) {
-      if (var.getCode() == code) {
-        return var;
-      }
-    }
+    return Arrays.stream(values())
+        .filter(var -> var.getCode() == code)
+        .findFirst().orElse(ONBEKEND);
 
-    return ONBEKEND;
   }
 
-  public int getCode() {
-    return code;
-  }
-
-  public void setCode(int code) {
-    this.code = code;
-  }
-
-  public String getOms() {
-    return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
+  public boolean is(SluitingType... types) {
+    return Arrays.stream(types).anyMatch(type -> this == type);
   }
 
   @Override

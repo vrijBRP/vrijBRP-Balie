@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,7 +21,9 @@ package nl.procura.gba.web.services.zaken.rijbewijs;
 
 import static ch.lambdaj.Lambda.join;
 import static java.util.Arrays.asList;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class RijbewijsAanvraagAntwoord {
   private Locatie        locatieInvoer  = new Locatie();
   private Locatie        locatieAfhaal  = new Locatie();
   private String         ondertekening  = "";
+  private boolean        thuisbezorgingGewenst;
   private Aanvrager      aanvrager      = new Aanvrager();
   private Rijb_gegevens  rijb_gegevens  = new Rijb_gegevens();
   private Pers_gegevens  pers_gegevens  = new Pers_gegevens();
@@ -98,6 +101,14 @@ public class RijbewijsAanvraagAntwoord {
 
   public void setOndertekening(String ondertekening) {
     this.ondertekening = ondertekening;
+  }
+
+  public boolean isThuisbezorgingGewenst() {
+    return thuisbezorgingGewenst;
+  }
+
+  public void setThuisbezorgingGewenst(boolean thuisbezorgingGewenst) {
+    this.thuisbezorgingGewenst = thuisbezorgingGewenst;
   }
 
   public Pers_gegevens getPers_gegevens() {

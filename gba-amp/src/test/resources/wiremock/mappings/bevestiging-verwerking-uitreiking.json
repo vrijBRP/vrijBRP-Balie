@@ -1,0 +1,19 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "method": "POST",
+    "headers": {
+      "SOAPAction": {
+        "contains": "BevestigingVerwerkingUitreiking"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "/bevestiging-verwerking-uitreiking.xml",
+    "headers": {
+      "Content-Type": "text/xml"
+    }
+  }
+}

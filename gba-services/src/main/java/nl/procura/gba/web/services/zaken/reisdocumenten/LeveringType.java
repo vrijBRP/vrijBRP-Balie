@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,13 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
+import java.util.Arrays;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum LeveringType {
 
   LEVERING_NIET_BEKEND(0, "Levering niet bekend"),
@@ -28,40 +35,20 @@ public enum LeveringType {
   DOCUMENT_VERDWENEN(4, "Document verdwenen"),
   ONBEKEND(-1, "Onbekend");
 
-  private int    code = 0;
-  private String oms  = "";
-
-  LeveringType(int code, String oms) {
-
-    setCode(code);
-    setOms(oms);
-  }
+  private final int    code;
+  private final String oms;
 
   public static LeveringType get(int code) {
+    return Arrays.stream(values())
+        .filter(var -> var.getCode() == code)
+        .findFirst()
+        .orElse(ONBEKEND);
 
-    for (LeveringType var : values()) {
-      if (var.getCode() == code) {
-        return var;
-      }
-    }
-
-    return ONBEKEND;
   }
 
-  public int getCode() {
-    return code;
-  }
-
-  public void setCode(int code) {
-    this.code = code;
-  }
-
-  public String getOms() {
-    return oms;
-  }
-
-  public void setOms(String oms) {
-    this.oms = oms;
+  public boolean is(LeveringType... types) {
+    return Arrays.stream(types)
+        .anyMatch(type -> this == type);
   }
 
   @Override

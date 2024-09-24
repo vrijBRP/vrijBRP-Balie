@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,15 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
-import static ch.lambdaj.Lambda.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.select;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
+import static nl.procura.standard.Globalfunctions.trim;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.math.BigDecimal;
@@ -47,6 +54,7 @@ import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.bezorging.Bezorging;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.Clausules;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.VermeldTitelType;
 import nl.procura.java.reflection.ReflectionUtil;
@@ -65,6 +73,7 @@ public class ReisdocumentAanvraag extends Rdm01 implements ContactZaak, ZaakAfha
   private Toestemmingen           toestemmingen      = new Toestemmingen(this);
   private List<DocumentInhouding> inhoudingen        = new ArrayList<>();
   private List<Reisdocument>      documentHistorie   = new ArrayList<>();
+  private Bezorging               thuisbezorging     = new Bezorging();
 
   public ReisdocumentAanvraag() {
     setUsr1(new Usr(BaseEntity.DEFAULT));
@@ -83,6 +92,14 @@ public class ReisdocumentAanvraag extends Rdm01 implements ContactZaak, ZaakAfha
 
   public Aanvraagnummer getAanvraagnummer() {
     return new Aanvraagnummer(getAanvrNr());
+  }
+
+  public Bezorging getThuisbezorging() {
+    return thuisbezorging;
+  }
+
+  public void setThuisbezorging(Bezorging thuisbezorging) {
+    this.thuisbezorging = thuisbezorging;
   }
 
   public void setAanvraagnummer(Aanvraagnummer nr) {
@@ -479,4 +496,10 @@ public class ReisdocumentAanvraag extends Rdm01 implements ContactZaak, ZaakAfha
     setVermeldTp(toBigDecimal(type.getCode()));
   }
 
+  public boolean isThuisbezorgingGewenst() {
+    if (thuisbezorging != null && thuisbezorging.getMelding() != null) {
+      return thuisbezorging.getMelding().isBezorgingGewenst();
+    }
+    return false;
+  }
 }

@@ -73,6 +73,8 @@ public enum ParameterGroup {
   GROUP_KENNISBANK("Kennisbank"),
   GROUP_MIJN_OVERHEID("Mijn overheid"),
   GROUP_PROBEV("PROBEV"),
+  GROUP_ZYNYO("Zynyo"),
+  GROUP_AMP("AMP thuisbezorging"),
   GROUP_INBOX("Verzoeken"),
   GROUP_INTERNAL("INTERNAL");
 

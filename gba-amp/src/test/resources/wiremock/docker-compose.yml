@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  request-inbox-mockserver:
+    container_name: amp-mockserver
+    image: wiremock/wiremock:3.3.1
+    volumes:
+      - ./mappings:/home/wiremock/mappings
+      - ./__files:/home/wiremock/__files
+    restart: unless-stopped
+    ports:
+      - "9001:8080"

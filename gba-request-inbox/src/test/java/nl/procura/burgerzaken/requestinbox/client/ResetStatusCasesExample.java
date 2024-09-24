@@ -50,6 +50,10 @@ public class ResetStatusCasesExample {
     String user = System.getenv("USER");
     String pw = System.getenv("PW");
 
+    System.out.println("url = " + url);
+    System.out.println("user = " + user);
+    System.out.println("pw = " + pw);
+
     ApiClient apiClient = new OkHttpRequestInboxClient(url, Duration.ofSeconds(10));
 
     TokenRequest tokenRequest = new TokenRequest(user, pw);

@@ -30,16 +30,16 @@ public class Page2LocatiesForm1 extends GbaForm<Page2LocatiesBean> {
   public Page2LocatiesForm1(Locatie locatie) {
 
     setCaption("Locatie");
-    setOrder(TYPE, LOCATIE, OMSCHRIJVING);
+    setOrder(TYPE, LOCATIE, OMSCHRIJVING, ZYNYO_DEVICE_ID);
     setColumnWidths("200px", "");
 
     Page2LocatiesBean bean = new Page2LocatiesBean();
 
     if (locatie.isStored()) {
-
       bean.setType(locatie.getLocatieType());
       bean.setLocatie(locatie.getLocatie());
       bean.setOmschrijving(locatie.getOmschrijving());
+      bean.setZynyoDeviceId(locatie.getZynyoDeviceId());
     }
 
     setBean(bean);

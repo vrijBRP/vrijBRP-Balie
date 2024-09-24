@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -37,9 +37,7 @@ import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
-import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.application.ProcessChangeInterceptor;
-import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.modules.zaken.common.ZaakHeaderForm;
 import nl.procura.gba.web.modules.zaken.reisdocument.ReisdocumentAanvraagPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtLayoutForm3;
@@ -48,18 +46,14 @@ import nl.procura.gba.web.modules.zaken.reisdocument.page10.BasisregisterButton;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14ReisdocumentTable1;
-import nl.procura.gba.web.services.beheer.raas.AfsluitRequest;
 import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.LeveringType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
-import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentStatus;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SluitingType;
-import nl.procura.raas.rest.domain.aanvraag.AfsluitingStatusType;
-import nl.procura.raas.rest.domain.aanvraag.LeveringStatusType;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.VLayout;
@@ -185,29 +179,8 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
       public void buttonYes() {
         LeveringType statLev = form1.getBean().getAflevering();
         SluitingType statAfsl = form1.getBean().getAfsluiting();
-        Long aanvrNr = getAanvraag().getAanvraagnummer().toLong();
-
-        // Update RAAS service
-        if (getServices().getRaasService().isRaasServiceActive()) {
-          if (getServices().getRaasService().isAanvraag(aanvrNr)) {
-            AfsluitRequest afsluitRequest = new AfsluitRequest();
-            afsluitRequest.setAanvraagNummer(aanvrNr);
-            afsluitRequest.setNrNLDocIn("");
-            afsluitRequest.setStatusLevering(LeveringStatusType.getByCode(statLev.getCode()));
-            afsluitRequest.setStatusAfsluiting(AfsluitingStatusType.getByCode(statAfsl.getCode()));
-            getServices().getRaasService().updateAanvraag(afsluitRequest.createRequest());
-          }
-        }
-
-        ReisdocumentStatus status = getAanvraag().getReisdocumentStatus();
-        status.setStatusLevering(statLev);
-        status.setStatusAfsluiting(statAfsl);
-        status.setDatumTijdAfsluiting(new DateTime());
-        getAanvraag().setGebruikerUitgifte(new UsrFieldValue(getServices().getGebruiker()));
-
-        // Opslaan aanvraag
-        getServices().getReisdocumentService().save(getAanvraag());
-
+        getServices().getReisdocumentService().afsluiten(getAanvraag(),
+            statLev, statAfsl, getServices().getGebruiker());
         headerForm.updateBean();
         form4.updateBean();
         successMessage("De gegevens zijn opgeslagen");
@@ -260,15 +233,12 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
       fouten.add(setClass(false, "Uitreiking niet mogelijk wegens functiescheiding"));
     }
 
-    if (fouten.size() > 0) {
-
+    if (!fouten.isEmpty()) {
       buttonSave.setEnabled(false);
       uitreikLayout.setVisible(false);
-
       info.append("<ul>");
 
       for (String fout : fouten) {
-
         info.append("<li>");
         info.append(fout);
         info.append("</li>");

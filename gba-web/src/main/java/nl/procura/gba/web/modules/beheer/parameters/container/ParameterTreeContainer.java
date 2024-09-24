@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.beheer.parameters.container;
 
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ALGEMEEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ALGEMENE_INSTELLINGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_AMP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_APPS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_BSM;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_CONFIGURATIEBESTAND;
@@ -72,6 +73,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_ALGEMEEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_PROFIEL_GBAV_PLUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZOEKEN_PROFIEL_STANDAARD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterGroup.GROUP_ZYNYO;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
@@ -83,6 +85,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
 import nl.procura.gba.web.modules.beheer.parameters.bean.ParameterBean;
+import nl.procura.gba.web.modules.beheer.parameters.layout.AmpParameterLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.AppInstanceLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.AvailableDatabasesLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.ConfigParameterLayout;
@@ -129,6 +132,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_DATABASES, GROUP_ALGEMEEN, false, AvailableDatabasesLayout.class);
 
     // Diensten
+    addTreeItem(GROUP_AMP, GROUP_DIENSTEN, false, AmpParameterLayout.class);
     addTreeItem(GROUP_BSM, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_COVOG, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_CURATELE, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
@@ -150,6 +154,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     addTreeItem(GROUP_TERUGMELDINGEN, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_VERIFICATIEVRAAG, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_VERHUIZING, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_ZYNYO, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_INBOX, GROUP_DIENSTEN, false, DatabaseParameterLayout.class);
     addTreeItem(GROUP_ZAKEN, GROUP_DIENSTEN, true, DatabaseParameterLayout.class);
     addTreeItem(GROUP_ZAKEN_ALGEMEEN, GROUP_ZAKEN, false, ZakenStatusParametersLayout.class);

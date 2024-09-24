@@ -1,0 +1,19 @@
+{
+  "name": "IDP",
+  "priority": "1",
+  "request": {
+    "method": "POST",
+    "headers": {
+      "SOAPAction": {
+        "contains": "OrderUpdate"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "/order-update.xml",
+    "headers": {
+      "Content-Type": "text/xml"
+    }
+  }
+}

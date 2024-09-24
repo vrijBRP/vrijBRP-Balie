@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,12 @@
 
 package nl.procura.gba.web.services.zaken.rijbewijs;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
@@ -371,5 +376,9 @@ public class RijbewijsAanvraag extends Nrd implements ContactZaak, ZaakAfhaalbaa
 
   public void setVermeldingTitel(VermeldTitelType type) {
     setVermeldTp(toBigDecimal(type.getCode()));
+  }
+
+  public boolean isThuisbezorgingGewenst() {
+    return getIndBezorgen();
   }
 }

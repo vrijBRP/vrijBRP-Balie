@@ -21,6 +21,11 @@ package nl.procura.gba.web.modules.beheer.parameters.bean;
 
 import static nl.procura.commons.elements.codegeneration.GenerateReflectionUtils.getNewInstanceof;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ACCESS_RISK_PROFILE_SIGNALS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_ENABLED;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_ENABLED_BUNDLES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_LOCATIONS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_SSL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_EXTERNAL_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.BSM_INTERNAL_URL;
@@ -245,6 +250,8 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOE
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_USERNAME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_NAAMGEBRUIK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PROFIEL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_API_ENDPOINT;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_API_KEY;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.io.Serializable;
@@ -253,6 +260,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.procura.gba.jpa.personen.db.Parm;
+import nl.procura.gba.web.common.validators.PropertiesValidator;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.SimpleMultiField;
 import nl.procura.gba.web.components.fields.values.MultiFieldValue;
@@ -1911,6 +1919,65 @@ public class ParameterBean implements Serializable {
   @Position(order = "30")
   @TextField(secret = true)
   private String smsPassword = "";
+
+  // Zynyo
+  @ParameterAnnotation(ZYNYO_API_ENDPOINT)
+  @Position(order = "10")
+  @Field(type = FieldType.TEXT_FIELD,
+          caption = "Zynyo API endpoint",
+          width = "400px")
+  private String zynyoApiEndpoint = "";
+
+  @ParameterAnnotation(ZYNYO_API_KEY)
+  @Position(order = "10")
+  @Field(type = FieldType.TEXT_FIELD,
+          caption = "Zynyo API key",
+          width = "400px")
+  private String zynyoApiKey = "";
+
+  // AMP
+  @ParameterAnnotation(AMP_ENABLED)
+  @Position(order = "1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "AMP API actief",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String ampEnabled = "";
+
+  @ParameterAnnotation(AMP_ENABLED_BUNDLES)
+  @Position(order = "2")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "AMP bundelen toestaan",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String ampBundleEnabled = "";
+
+  @ParameterAnnotation(AMP_SSL)
+  @Position(order = "3")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "AMP via SSL proxy",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String ampSSLProxy = "";
+
+  @ParameterAnnotation(AMP_ENDPOINT)
+  @Position(order = "4")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "AMP API endpoint",
+      width = "400px")
+  private String ampEndpoint = "";
+
+  @ParameterAnnotation(AMP_LOCATIONS)
+  @Position(order = "5")
+  @Field(type = FieldType.TEXT_AREA,
+      caption = "AMP locaties",
+      width = "400px",
+      validators = PropertiesValidator.class)
+  @TextArea(rows = 5)
+  private String ampLocations = "";
 
   // Verzoek
   @ParameterAnnotation(INBOX_ENABLED)

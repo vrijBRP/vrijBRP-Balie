@@ -65,11 +65,11 @@ import nl.procura.burgerzaken.requestinbox.client.OkHttpRequestInboxClient;
 import nl.procura.gba.jpa.personen.db.ZaakAttr;
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.ServiceEvent;
+import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.zaken.algemeen.ControleerbareService;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
-import nl.procura.gba.web.services.zaken.algemeen.attribuut.AttribuutHistorie;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
 import nl.procura.gba.web.services.zaken.algemeen.dms.DMSBytesContent;
@@ -134,12 +134,6 @@ public class RequestInboxService extends AbstractService implements Controleerba
         }).orElse(result);
   }
 
-  public RequestInboxItem getRequestInboxItem(String id) {
-    return getItem(id)
-        .map(this::toRequestInboxItem)
-        .orElse(null);
-  }
-
   public DMSResult getDocuments(RequestInboxItem item) {
     DMSResult dmsResult = new DMSResult();
     item.getInboxItem().getDocuments().forEach(document -> {
@@ -157,11 +151,26 @@ public class RequestInboxService extends AbstractService implements Controleerba
     return dmsResult;
   }
 
+  @ThrowException("Fout bij het ophalen van het verzoek")
+  public RequestInboxItem getRequestInboxItem(String id) {
+    if (isEnabled()) {
+      return getItem(id)
+          .map(this::toRequestInboxItem)
+          .orElse(null);
+    }
+    return null;
+  }
+
+  public Optional<String> getRelatedRequestInboxItemId(Zaak zaak) {
+    return zaak.getZaakHistorie()
+        .getAttribuutHistorie()
+        .getAttribuut(REQUEST_INBOX)
+        .map(ZaakAttr::getWaarde);
+  }
+
   public List<RequestInboxItem> getRelatedItems(RequestInboxItem item) {
     List<RequestInboxItem> items = new ArrayList<>();
-    item.getInboxItem().getSupplements().forEach(supplement -> {
-      items.add(getRequestInboxItem(supplement.getId()));
-    });
+    item.getInboxItem().getSupplements().forEach(supplement -> items.add(getRequestInboxItem(supplement.getId())));
     InboxSupplementedRequestItem supplementedRequest = item.getInboxItem().getSupplementedRequest();
     if (supplementedRequest != null) {
       items.add(getRequestInboxItem(supplementedRequest.getId()));
@@ -183,10 +192,12 @@ public class RequestInboxService extends AbstractService implements Controleerba
     callListeners(ServiceEvent.CHANGE);
   }
 
-  public Optional<String> getRelatedRequestInboxItemId(Zaak zaak) {
-    AttribuutHistorie attribuutHistorie = zaak.getZaakHistorie().getAttribuutHistorie();
-    return attribuutHistorie.getAttribuut(REQUEST_INBOX)
-        .map(ZaakAttr::getWaarde);
+  public <T extends RequestInboxBodyProcessor> Optional<T> getInboxProcessor(Zaak zaak, Class<T> clazz) {
+    return getRelatedRequestInboxItemId(zaak)
+        .map(this::getRequestInboxItem)
+        .map(item -> RequestInboxProcessors.get(item, getServices()))
+        .filter(obj -> obj.getClass().equals(clazz))
+        .map(clazz::cast);
   }
 
   public void openRelatedRequestInboxItem(Zaak zaak) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,17 +19,38 @@
 
 package nl.procura.gba.web.modules.zaken.rijbewijs.page5;
 
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.web.modules.beheer.parameters.container.RdwAanpassingenContainer.DEEL1;
-import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.*;
-import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.*;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.AFHAAL_LOCATIE;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.DAGEN185;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.GBABESTENDIG;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.INFO;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.NAAMPARTNER;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.PROCESVERBAAL;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.REDEN;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.SOORT;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.SPOED;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.VERMELDING_TITEL;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean1.VERVANGTRBW;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.DATUMINNL;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.DATUMUITNL;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.IDBEWIJS;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.NAARLAND;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.NATIONALITEITEN;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.UITLAND;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean2.VERBLIJFSTATUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_PV_NR;
 import static nl.procura.gba.web.services.zaken.rijbewijs.NaamgebruikType.EIGEN_NAAM;
 import static nl.procura.gba.web.services.zaken.rijbewijs.NaamgebruikType.EIGEN_NAAM_NAAM_PARTNER;
 import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort.OMWISSELING_BUITENLANDS_RIJBEWIJS;
 import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort.VERVANGEN_MET_HUIDIGE_GELDIGHEIDSDATA;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -42,6 +63,8 @@ import com.vaadin.ui.Field;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
@@ -76,8 +99,6 @@ import nl.procura.rdw.processen.p1653.f01.AANVRRYBKRT;
 import nl.procura.rdw.processen.p1653.f01.ADRESNATPGEG;
 import nl.procura.rdw.processen.p1653.f01.NATPERSOONGEG;
 import nl.procura.rdw.processen.p1653.f01.RYBGEG;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.DateFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -95,6 +116,7 @@ public class Page5Rijbewijs extends RijbewijsPage {
   private final P1651          message;
   private Page5RijbewijsForm1  form1      = null;
   private Page5RijbewijsForm2  form2      = null;
+  private Page5RijbewijsForm3  form3      = null;
   private Page5RijbewijsTable1 table1     = null;
   private GbaNativeSelect      fieldSoort = null;
   private Page5RedenField      fieldReden = null;
@@ -185,6 +207,11 @@ public class Page5Rijbewijs extends RijbewijsPage {
       initFields(antwoord);
 
       addComponent(form1);
+
+      if (getServices().getReisdocumentBezorgingService().isEnabled()) {
+        form3 = new Page5RijbewijsForm3();
+        addComponent(form3);
+      }
       addComponent(new Fieldset("Rijbewijscategorieën", table1));
     }
 
@@ -198,6 +225,10 @@ public class Page5Rijbewijs extends RijbewijsPage {
 
     if (form2.getParent() != null) {
       form2.commit();
+    }
+
+    if (form3.getParent() != null) {
+      form3.commit();
     }
 
     if (along(getPl().getNatio().getNationaliteit().getValue().getVal()) < 0) {
@@ -218,6 +249,11 @@ public class Page5Rijbewijs extends RijbewijsPage {
     // Afhaallocatie
     if (form1.getBean().getAfhaalLocatie() != null) {
       aanvraag.setLocatieAfhaal(form1.getBean().getAfhaalLocatie());
+    }
+
+    if (form3.getParent() != null) {
+      aanvraag.setIndBezorgen(form3.getBean().getIndBezorgen());
+      aanvraag.setOpmBezorgen(form3.getBean().getOpmBezorgen());
     }
 
     // Vermelding titel / predikaat

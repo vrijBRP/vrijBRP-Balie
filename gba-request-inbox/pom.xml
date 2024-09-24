@@ -5,7 +5,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.35.1</version>
+    <version>1.35.2</version>
   </parent>
 
   <artifactId>gba-request-inbox</artifactId>

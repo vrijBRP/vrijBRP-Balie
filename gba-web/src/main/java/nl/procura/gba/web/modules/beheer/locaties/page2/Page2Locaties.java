@@ -118,6 +118,7 @@ public class Page2Locaties extends NormalPageTemplate {
     locatie.setLocatieType(b1.getType());
     locatie.setLocatie(b1.getLocatie());
     locatie.setOmschrijving(b1.getOmschrijving());
+    locatie.setZynyoDeviceId(b1.getZynyoDeviceId());
 
     if (locatie.getLocatieType() == LocatieType.NORMALE_LOCATIE) {
 

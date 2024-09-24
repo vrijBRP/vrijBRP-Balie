@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,12 +19,13 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page14;
 
-import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
+import static nl.procura.standard.Globalfunctions.astr;
 
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.dialogs.ZaakConfiguratieDialog;
@@ -37,7 +38,6 @@ import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
@@ -59,9 +59,7 @@ public class Page14Reisdocument extends ZakenPage {
   private BasePLExt    pl;
 
   public Page14Reisdocument(BasePLExt pl) {
-
     super("In te houden documenten");
-
     setPl(pl);
 
     addButton(buttonPrev);

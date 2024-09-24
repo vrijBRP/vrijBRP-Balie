@@ -72,6 +72,9 @@ public class Location extends BaseEntity {
   @Column()
   private String location;
 
+  @Column(name="zynyo_device_id")
+  private String zynyoDeviceId;
+
   @OneToMany(mappedBy = "location")
   private List<Nrd> nrds;
 
@@ -150,6 +153,14 @@ public class Location extends BaseEntity {
 
   public void setLocation(String location) {
     this.location = location;
+  }
+
+  public String getZynyoDeviceId() {
+    return this.zynyoDeviceId;
+  }
+
+  public void setZynyoDeviceId(String zynyoDeviceId) {
+    this.zynyoDeviceId = zynyoDeviceId;
   }
 
   public List<Nrd> getNrds() {

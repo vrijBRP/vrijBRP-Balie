@@ -25,6 +25,7 @@ import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.beheer.requestinbox.RequestInboxBody;
@@ -57,9 +58,14 @@ public class InboxVerlorenReisdocumentProcessor extends RequestInboxBodyProcesso
     zaak.setDocumentType(data.getTravelDocumentType().getType());
     zaak.setNummerDocument(data.getDocNumber());
     zaak.setInhoudingType(InhoudingType.VERMISSING);
+    zaak.setDatumTijdInvoer(new DateTime());
+    zaak.setDatumIngang(new DateTime());
+    zaak.setProcesVerbaalNummer("");
+    zaak.setProcesVerbaalOms("");
     zaak.setSprakeVanRijbewijs(false);
 
     service.getZaakStatussen().setInitieleStatus(zaak, ZaakStatusType.OPGENOMEN);
+    service.getServices().getZaakIdentificatieService().getDmsZaakId(zaak);
     service.save(zaak);
 
     addRequestBoxToZaak(zaak, item);

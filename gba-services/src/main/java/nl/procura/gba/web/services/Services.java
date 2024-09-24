@@ -112,6 +112,7 @@ import nl.procura.gba.web.services.zaken.legezaak.LegeZaakService;
 import nl.procura.gba.web.services.zaken.naamgebruik.NaamgebruikWijzigingService;
 import nl.procura.gba.web.services.zaken.protocol.ProtocolleringService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.bezorging.ReisdocumentBezorgingService;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsService;
 import nl.procura.gba.web.services.zaken.selectie.SelectieService;
 import nl.procura.gba.web.services.zaken.tmv.TerugmeldingBerichtService;
@@ -228,6 +229,7 @@ public class Services {
     add(TaskService.class);
     add(RequestInboxService.class);
     add(InwonerAppService.class);
+    add(ReisdocumentBezorgingService.class);
   }
 
   public static Services getInstance() {
@@ -509,6 +511,10 @@ public class Services {
 
   public ReisdocumentService getReisdocumentService() {
     return get(ReisdocumentService.class);
+  }
+
+  public ReisdocumentBezorgingService getReisdocumentBezorgingService() {
+    return get(ReisdocumentBezorgingService.class);
   }
 
   public RijbewijsService getRijbewijsService() {

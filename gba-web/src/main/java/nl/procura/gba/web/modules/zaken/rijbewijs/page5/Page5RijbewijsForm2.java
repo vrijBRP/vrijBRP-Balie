@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -29,7 +29,6 @@ import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 public class Page5RijbewijsForm2 extends GbaForm<Page5RijbewijsBean2> {
 
   public Page5RijbewijsForm2(Page5RijbewijsBean2 bean) {
-
     initForm();
     setReadThrough(true);
     setReadonlyAsText(false);

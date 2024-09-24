@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,13 +23,13 @@ import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import nl.procura.gba.common.ZaakStatusType;
+import nl.procura.gba.web.services.beheer.requestinbox.zaken.reisdocument.InboxReisdocumentProcessor.ReisdocumentInboxData;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 import nl.procura.gba.web.services.zaken.documenten.aanvragen.DocumentZaak;
-import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
-import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SoortReisdocument;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SpoedType;
@@ -41,7 +41,6 @@ public class KassaProductConverter {
    * Vertaald zaak naar kassaproduct
    */
   public static List<KassaProduct> getKassaProductAanvragen(KassaService service, Zaak zaak) {
-
     List<KassaProduct> list = new ArrayList<>();
     if (zaak.getStatus().isMinimaal(ZaakStatusType.OPGENOMEN)) {
       switch (zaak.getType()) {
@@ -56,9 +55,6 @@ public class KassaProductConverter {
         case RIJBEWIJS:
           addRijbewijzen(list, zaak);
           break;
-
-        case INHOUD_VERMIS:
-          return addVermissing(list, zaak);
 
         default:
           break;
@@ -83,28 +79,47 @@ public class KassaProductConverter {
   }
 
   private static void addReisdocumenten(KassaService service, List<KassaProduct> list, Zaak zaak) {
-
     ReisdocumentAanvraag aanvraag = (ReisdocumentAanvraag) zaak;
-    KassaProduct kassaProduct = new KassaProduct();
-    kassaProduct.setKassaType(KassaType.REISDOCUMENT);
 
-    // Type document
-    for (SoortReisdocument soort : service.getServices().getReisdocumentService().getSoortReisdocumenten()) {
-      if (equalsIgnoreCase(soort.getZkarg(), aanvraag.getReisdocumentType().getCode())) {
-        kassaProduct.setKassaReisdocument(soort);
+    // Verzoek
+    Optional<ReisdocumentInboxData> verzoekData = service.getServices()
+        .getReisdocumentService()
+        .getInboxRequestData(aanvraag);
+
+    if (!verzoekData.isPresent()) {
+      KassaProduct kassaProduct = new KassaProduct();
+      kassaProduct.setKassaType(KassaType.REISDOCUMENT);
+
+      // Type document
+      for (SoortReisdocument soort : service.getServices().getReisdocumentService().getSoortReisdocumenten()) {
+        if (equalsIgnoreCase(soort.getZkarg(), aanvraag.getReisdocumentType().getCode())) {
+          kassaProduct.setKassaReisdocument(soort);
+        }
+      }
+
+      list.add(kassaProduct);
+
+      // Jeugd
+      if (aanvraag.isGratis()) {
+        list.add(getKassaProduct(KassaType.JEUGDTARIEF_REISDOC));
       }
     }
 
-    list.add(kassaProduct);
+    boolean isSpoedBijVerzoek = verzoekData.map(ReisdocumentInboxData::getExpeditedProcessing).orElse(false);
+    boolean isBezorgingBijVerzoek = verzoekData.map(ReisdocumentInboxData::getHomeDelivery).orElse(false);
 
     // Spoed
     if (!aanvraag.getSpoed().is(SpoedType.NEE)) {
-      list.add(getKassaProduct(KassaType.SPOED_REISDOC));
+      if (!isSpoedBijVerzoek) {
+        list.add(getKassaProduct(KassaType.SPOED_REISDOC));
+      }
     }
 
-    // Jeugd
-    if (aanvraag.isGratis()) {
-      list.add(getKassaProduct(KassaType.JEUGDTARIEF_REISDOC));
+    // Thuisbezorging
+    if (aanvraag.isThuisbezorgingGewenst()) {
+      if (!isBezorgingBijVerzoek) {
+        list.add(getKassaProduct(KassaType.BEZORGING_REISDOC));
+      }
     }
   }
 
@@ -134,19 +149,6 @@ public class KassaProductConverter {
       kp.setKassaDocument(aanvraag.getDoc());
       list.add(kp);
     }
-  }
-
-  private static List<KassaProduct> addVermissing(List<KassaProduct> list, Zaak zaak) {
-    DocumentInhouding aanvraag = (DocumentInhouding) zaak;
-    if (InhoudingType.VERMISSING.equals(aanvraag.getInhoudingType())) {
-      if (aanvraag.isSprakeVanRijbewijs()) {
-        list.add(getKassaProduct(KassaType.VERMISS_RIJBEWIJS));
-      } else {
-        list.add(getKassaProduct(KassaType.VERMISS_REISDOC));
-      }
-    }
-
-    return list;
   }
 
   private static KassaProduct getKassaProduct(KassaType type) {

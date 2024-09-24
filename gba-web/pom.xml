@@ -4,7 +4,7 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.35.1</version>
+    <version>1.35.2</version>
   </parent>
 
   <packaging>war</packaging>
@@ -194,4 +194,30 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>liquibase</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.22.0</version>
+            <configuration>
+              <propertyFile>liquibase.properties</propertyFile>
+              <outputChangeLogFile>target/generated-changelog.xml</outputChangeLogFile>
+              <changeSetAuthor>procura</changeSetAuthor>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.5.4</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

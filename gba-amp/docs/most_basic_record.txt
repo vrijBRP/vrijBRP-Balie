@@ -1,0 +1,50 @@
+In rdm_amp
+================
+c_rdm_amp = PK, null
+bezorging_gewenst = true
+aanvr_nr = aanvr_nr
+ref_nr = aanvr_nr
+order_ref_nr = ''
+doc_type = Reisdoc. code (NI, PN, ...)
+hoofdorder = true
+gemeentecode = -1
+gemeentenaam = ''
+locatiecode = 0
+opmerkingen = 'blablabla' // Optional
+status = 10
+d_in = 20240613 // today
+ind_voormelding = false
+ind_koppeling = false
+ind_inklaring = false
+ind_blokkering = false
+ind_annulering = false
+ind_uitreiking = false
+d_end = -1
+code_blokkering = ''
+oms_blokkering = ''
+code_annulering = ''
+oms_annulering = ''
+bsn = '123456789' // required
+voorl = ''
+voornamen = ''
+voorv = ''
+geslachtsnaam = ''
+gesl = ''
+d_geb = -1
+hnr = -1
+hnr_l = ''
+hnr_t = ''
+pc = ''
+straat = ''
+wpl = ''
+email = ''
+tel1 = ''
+tel2 = ''
+
+In rdm_amp_doc
+================
+c_rdm_amp_doc = PK
+c_rdm_amp = FK rdm_amp
+doc_nr = 'IH0R33L63' // NR nl document
+doc_type = 'NI' // Reisdoc. code (NI, PN, ...)
+d_end_geld = 20260212 // required

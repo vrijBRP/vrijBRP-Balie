@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,18 @@
 
 package nl.procura.gba.web.services.beheer.kassa;
 
-import static ch.lambdaj.Lambda.*;
-import static nl.procura.gba.web.services.beheer.kassa.KassaType.*;
+import static ch.lambdaj.Lambda.exists;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.BEZORGING_REISDOC;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.COVOG;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.GPK;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.JEUGDTARIEF_REISDOC;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.REISDOCUMENT;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.SPOED_REISDOC;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.SPOED_RIJBEWIJS;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.UITTREKSEL;
 import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagSoort.ONBEKEND;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -45,11 +55,10 @@ public class KassaUtils {
 
     checkKassaDB(db, ontbrekendeProducten, COVOG);
     checkKassaDB(db, ontbrekendeProducten, GPK);
-    checkKassaDB(db, ontbrekendeProducten, VERMISS_REISDOC);
-    checkKassaDB(db, ontbrekendeProducten, VERMISS_RIJBEWIJS);
     checkKassaDB(db, ontbrekendeProducten, JEUGDTARIEF_REISDOC);
     checkKassaDB(db, ontbrekendeProducten, SPOED_RIJBEWIJS);
     checkKassaDB(db, ontbrekendeProducten, SPOED_REISDOC);
+    checkKassaDB(db, ontbrekendeProducten, BEZORGING_REISDOC);
 
     return ontbrekendeProducten;
   }

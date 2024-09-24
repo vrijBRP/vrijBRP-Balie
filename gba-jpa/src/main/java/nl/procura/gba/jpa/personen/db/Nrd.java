@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,16 @@ package nl.procura.gba.jpa.personen.db;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
@@ -188,6 +197,13 @@ public class Nrd extends BaseEntity {
   @Column(name = "bsn",
       precision = 131089)
   private BigDecimal bsn;
+
+  @Column(name = "ind_bezorgen",
+      length = 1)
+  private Boolean indBezorgen;
+
+  @Column(name = "opm_bezorgen")
+  private String opmBezorgen;
 
   @OneToMany(mappedBy = "nrd")
   private List<NrdStatus> nrdStatuses;
@@ -528,5 +544,21 @@ public class Nrd extends BaseEntity {
 
   public void setVermeldTp(BigDecimal vermeldTp) {
     this.vermeldTp = vermeldTp;
+  }
+
+  public Boolean getIndBezorgen() {
+    return indBezorgen;
+  }
+
+  public void setIndBezorgen(Boolean indBezorgen) {
+    this.indBezorgen = indBezorgen;
+  }
+
+  public String getOpmBezorgen() {
+    return opmBezorgen;
+  }
+
+  public void setOpmBezorgen(String opmBezorgen) {
+    this.opmBezorgen = opmBezorgen;
   }
 }

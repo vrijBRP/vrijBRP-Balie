@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://thuisbezorgendocumenten.nl/reisdocument/v1/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <v1:OrderUpdateResponse>
+      <!--Optional:-->
+      <v1:OrderUpdateResult/>
+    </v1:OrderUpdateResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

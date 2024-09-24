@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema version="2.2.0" elementFormDefault="qualified" targetNamespace="http://thuisbezorgendocumenten.nl/reisdocument/v1/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://thuisbezorgendocumenten.nl/reisdocument/v1/">
+  <xs:annotation>
+    <xs:documentation>
+      Type-definities als basis voor Thuisbezorgen Reisdocumenten,
+      Alle Request en Result objecten voor de verschillende berichten stromen
+    </xs:documentation>
+  </xs:annotation>
+  <xs:simpleType name="Gemeentecode">
+    <xs:restriction base="xs:short">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="9999"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Gemeentenaam">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Diensttype">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="LocatieOmschrijving">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="60"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ReisdocumentOmschrijving">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="90"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="KeuzeAfhandeling">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Bezorgen"/>
+      <xs:enumeration value="Afhalen"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Spoed">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1"/>
+      <xs:enumeration value="J"/>
+      <xs:enumeration value="N"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Opmerkingen">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="2000"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Referentienummer">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Straatnaam">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="90"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Woonplaats">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="80"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Postcode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[1-9][0-9]{3}[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Huisnummer">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="9999999"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HuisnummerToevoeging">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Voorletters">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="12"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Voornamen">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="200"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Voorvoegsels">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Achternaam">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="200"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Emailadres">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="200"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Geslacht">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1"/>
+      <xs:enumeration value="M"/>
+      <xs:enumeration value="V"/>
+      <xs:enumeration value="O"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Telefoonnummer">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Orderreferentieid">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Reisdocumentnummer">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="9"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Gemeentestatus">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="80"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Blokkeringomschrijving">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="80"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Annuleringcode">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="80"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Annuleringomschrijving">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="80"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Voormelding">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="voormeldingRequest" nillable="true" type="tns:VoormeldingRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="VoormeldingRequest">
+    <xs:sequence>
+      <xs:element name="Aanvraagnummer" type="xs:long"/>
+      <xs:element name="Adresgegevens" type="tns:Adresgegevens"/>
+      <xs:element name="Diensttype" type="tns:Diensttype"/>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+      <xs:element name="Gemeentenaam" type="tns:Gemeentenaam"/>
+      <xs:element name="Hoofdorder" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="InTeHoudenReisdocumenten" nillable="true" type="tns:ArrayOfInTeHoudenReisdocument"/>
+      
+      <!-- this field removed in 2.2.0 but optional for now because of forward compatibility -->
+      <xs:element minOccurs="0" name="LocatieOmschrijving" type="tns:LocatieOmschrijving"/>
+      
+      <!-- this field is required but optional for now because of backwards compatibility -->
+      <xs:element minOccurs="0" name="KeuzeAfhandeling" type="tns:KeuzeAfhandeling"/>
+      
+      <!-- this field is required but optional for now because of backwards compatibility -->
+      <xs:element minOccurs="0" name="Locatiecode" type="xs:long"/>
+      
+      <xs:element minOccurs="0" name="Opmerkingen" nillable="true" type="tns:Opmerkingen"/>
+      <xs:element name="Persoonsgegevens" nillable="true" type="tns:Persoonsgegevens"/>
+      <xs:element minOccurs="0" name="Referentienummer" nillable="true" type="tns:Referentienummer"/>
+      <xs:element name="ReisdocumentOmschrijving" nillable="true" type="tns:ReisdocumentOmschrijving"/>
+      
+      <!-- this field is required but optional for now because of backwards compatibility -->
+      <xs:element minOccurs="0" name="Spoed" type="tns:Spoed"/>
+    
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VoormeldingRequest" nillable="true" type="tns:VoormeldingRequest"/>
+  <xs:complexType name="Adresgegevens">
+    <xs:sequence>
+      <xs:element name="Huisnummer" type="tns:Huisnummer"/>
+      <xs:element name="HuisnummerToevoeging" nillable="true" type="tns:HuisnummerToevoeging"/>
+      <xs:element name="Postcode" type="tns:Postcode"/>
+      <xs:element name="Straatnaam" type="tns:Straatnaam"/>
+      <xs:element name="Woonplaats" type="tns:Woonplaats"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Adresgegevens" nillable="true" type="tns:Adresgegevens"/>
+  <xs:complexType name="ArrayOfInTeHoudenReisdocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InTeHoudenReisdocument" nillable="true" type="tns:InTeHoudenReisdocument"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInTeHoudenReisdocument" nillable="true" type="tns:ArrayOfInTeHoudenReisdocument"/>
+  <xs:complexType name="InTeHoudenReisdocument">
+    <xs:sequence>
+      <xs:element name="Reisdocumentnummer" nillable="true" type="tns:Reisdocumentnummer"/>
+      <xs:element name="Reisdocumentomschrijving" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InTeHoudenReisdocument" nillable="true" type="tns:InTeHoudenReisdocument"/>
+  <xs:complexType name="Persoonsgegevens">
+    <xs:sequence>
+      <xs:element name="Achternaam" type="tns:Achternaam"/>
+      <xs:element name="Emailadres" nillable="true" type="tns:Emailadres"/>
+      <xs:element name="Geboortedatum" type="xs:int"/>
+      <xs:element name="Geslacht" type="tns:Geslacht"/>
+      <xs:element name="Telefoonnummer1" nillable="true" type="tns:Telefoonnummer"/>
+      <xs:element name="Telefoonnummer2" nillable="true" type="tns:Telefoonnummer"/>
+      <xs:element name="Voorletters" type="tns:Voorletters"/>
+      <xs:element name="Voornamen" nillable="true" type="tns:Voornamen"/>
+      <xs:element name="Voorvoegsels" nillable="true" type="tns:Voorvoegsels"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Persoonsgegevens" nillable="true" type="tns:Persoonsgegevens"/>
+  <xs:element name="VoormeldingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="VoormeldingResult" nillable="true" type="tns:VoormeldingResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="VoormeldingResult">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="VoormeldingResult" nillable="true" type="tns:VoormeldingResult"/>
+  <xs:element name="OphalenOrders">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ophalenOrdersRequest" nillable="true" type="tns:OphalenOrdersRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OphalenOrdersRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OphalenOrdersRequest" nillable="true" type="tns:OphalenOrdersRequest"/>
+  <xs:element name="OphalenOrdersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OphalenOrdersResult" nillable="true" type="tns:OphalenOrdersResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OphalenOrdersResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Orders" nillable="true" type="tns:ArrayOfOpgehaaldeOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OphalenOrdersResult" nillable="true" type="tns:OphalenOrdersResult"/>
+  <xs:complexType name="ArrayOfOpgehaaldeOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OpgehaaldeOrder" nillable="true" type="tns:OpgehaaldeOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOpgehaaldeOrder" nillable="true" type="tns:ArrayOfOpgehaaldeOrder"/>
+  <xs:complexType name="OpgehaaldeOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Aanvraagnummer" type="xs:long"/>
+      <xs:element minOccurs="0" name="Orderreferentieid" nillable="true" type="tns:Orderreferentieid"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OpgehaaldeOrder" nillable="true" type="tns:OpgehaaldeOrder"/>
+  <xs:element name="BevestigingKoppelingOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bevestigingKoppelingOrder" nillable="true" type="tns:BevestigingKoppelingOrderRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BevestigingKoppelingOrderRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+      <xs:element minOccurs="0" name="Gemeentestatus" type="tns:Gemeentestatus"/>
+      <xs:element minOccurs="0" name="Orderreferentieid" type="tns:Orderreferentieid"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BevestigingKoppelingOrderRequest" nillable="true" type="tns:BevestigingKoppelingOrderRequest"/>
+  <xs:element name="BevestigingKoppelingOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="BevestigingKoppelingOrderResult" nillable="true" type="tns:BevestigingKoppelingOrderResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BevestigingKoppelingOrderResult">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="BevestigingKoppelingOrderResult" nillable="true" type="tns:BevestigingKoppelingOrderResult"/>
+  <xs:element name="OrderUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderUpdateRequest" nillable="true" type="tns:OrderUpdateRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OrderUpdateRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+      <xs:element name="Gemeentestatus" type="tns:Gemeentestatus"/>
+      <xs:element name="Orderreferentieid" type="tns:Orderreferentieid"/>
+      <xs:element name="Reisdocumentnummer" type="tns:Reisdocumentnummer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderUpdateRequest" nillable="true" type="tns:OrderUpdateRequest"/>
+  <xs:element name="OrderUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OrderUpdateResult" nillable="true" type="tns:OrderUpdateResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OrderUpdateResult">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="OrderUpdateResult" nillable="true" type="tns:OrderUpdateResult"/>
+  <xs:element name="Blokkering">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="blokkeringRequest" nillable="true" type="tns:BlokkeringRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BlokkeringRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+      <xs:element name="Gemeentestatus" type="tns:Gemeentestatus"/>
+      <xs:element name="Omschrijving" type="tns:Blokkeringomschrijving"/>
+      <xs:element name="Orderreferentieid" type="tns:Orderreferentieid"/>
+      <xs:element minOccurs="0" name="Reisdocumentnummer" nillable="true" type="tns:Reisdocumentnummer"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BlokkeringRequest" nillable="true" type="tns:BlokkeringRequest"/>
+  <xs:element name="BlokkeringResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="BlokkeringResult" nillable="true" type="tns:BlokkeringResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BlokkeringResult">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="BlokkeringResult" nillable="true" type="tns:BlokkeringResult"/>
+  <xs:element name="OphalenAnnuleringen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ophalenAnnuleringenRequest" nillable="true" type="tns:OphalenAnnuleringenRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OphalenAnnuleringenRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OphalenAnnuleringenRequest" nillable="true" type="tns:OphalenAnnuleringenRequest"/>
+  <xs:element name="OphalenAnnuleringenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OphalenAnnuleringenResult" nillable="true" type="tns:OphalenAnnuleringenResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OphalenAnnuleringenResult">
+    <xs:sequence>
+      <xs:element name="GeannuleerdeOrders" nillable="true" type="tns:ArrayOfGeannuleerdeOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OphalenAnnuleringenResult" nillable="true" type="tns:OphalenAnnuleringenResult"/>
+  <xs:complexType name="ArrayOfGeannuleerdeOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GeannuleerdeOrder" nillable="true" type="tns:GeannuleerdeOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGeannuleerdeOrder" nillable="true" type="tns:ArrayOfGeannuleerdeOrder"/>
+  <xs:complexType name="GeannuleerdeOrder">
+    <xs:sequence>
+      <xs:element name="Code" nillable="true" type="tns:Annuleringcode"/>
+      <xs:element name="Omschrijving" nillable="true" type="tns:Annuleringomschrijving"/>
+      <xs:element name="Orderreferentieid" nillable="true" type="tns:Orderreferentieid"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeannuleerdeOrder" nillable="true" type="tns:GeannuleerdeOrder"/>
+  <xs:element name="BevestigingVerwerkingAnnulering">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bevestigingVerwerkingAnnuleringRequest" nillable="true" type="tns:BevestigingVerwerkingAnnuleringRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BevestigingVerwerkingAnnuleringRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+      <xs:element name="Gemeentestatus" type="tns:Gemeentestatus"/>
+      <xs:element name="Orderreferentieid" type="tns:Orderreferentieid"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BevestigingVerwerkingAnnuleringRequest" nillable="true" type="tns:BevestigingVerwerkingAnnuleringRequest"/>
+  <xs:element name="BevestigingVerwerkingAnnuleringResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="BevestigingVerwerkingAnnuleringResult" nillable="true" type="tns:BevestigingVerwerkingAnnuleringResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BevestigingVerwerkingAnnuleringResult">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="BevestigingVerwerkingAnnuleringResult" nillable="true" type="tns:BevestigingVerwerkingAnnuleringResult"/>
+  <xs:element name="OphalenUitreikingen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ophalenUitreikingenRequest" nillable="true" type="tns:OphalenUitreikingenRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OphalenUitreikingenRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OphalenUitreikingenRequest" nillable="true" type="tns:OphalenUitreikingenRequest"/>
+  <xs:element name="OphalenUitreikingenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OphalenUitreikingenResult" nillable="true" type="tns:OphalenUitreikingenResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="OphalenUitreikingenResult">
+    <xs:sequence>
+      <xs:element name="Orders" nillable="true" type="tns:ArrayOfUitreikingenOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OphalenUitreikingenResult" nillable="true" type="tns:OphalenUitreikingenResult"/>
+  <xs:complexType name="ArrayOfUitreikingenOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UitreikingenOrder" nillable="true" type="tns:UitreikingenOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUitreikingenOrder" nillable="true" type="tns:ArrayOfUitreikingenOrder"/>
+  <xs:complexType name="UitreikingenOrder">
+    <xs:sequence>
+      <xs:element name="Orderreferentieid" nillable="true" type="tns:Orderreferentieid"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UitreikingenOrder" nillable="true" type="tns:UitreikingenOrder"/>
+  <xs:element name="BevestigingVerwerkingUitreiking">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bevestigingVerwerkingUitreikingRequest" nillable="true" type="tns:BevestigingVerwerkingUitreikingRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BevestigingVerwerkingUitreikingRequest">
+    <xs:sequence>
+      <xs:element name="Gemeentecode" type="tns:Gemeentecode"/>
+      <xs:element minOccurs="0" name="Gemeentestatus" type="tns:Gemeentestatus"/>
+      <xs:element minOccurs="0" name="Orderreferentieid" type="tns:Orderreferentieid"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BevestigingVerwerkingUitreikingRequest" nillable="true" type="tns:BevestigingVerwerkingUitreikingRequest"/>
+  <xs:element name="BevestigingVerwerkingUitreikingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="BevestigingVerwerkingUitreikingResult" nillable="true" type="tns:BevestigingVerwerkingUitreikingResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BevestigingVerwerkingUitreikingResult">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="BevestigingVerwerkingUitreikingResult" nillable="true" type="tns:BevestigingVerwerkingUitreikingResult"/>
+</xs:schema>

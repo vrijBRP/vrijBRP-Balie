@@ -28,6 +28,7 @@ import nl.procura.gba.jpa.personen.dao.GenericDao;
 import nl.procura.gba.web.modules.hoofdmenu.raas.tab1.page2.windows.RaasWindow;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakTabsheet;
 import nl.procura.gba.web.modules.zaken.common.ZakenOverzichtPage;
+import nl.procura.gba.web.modules.zaken.reisdocument.bezorging.BezorgingWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtBuilder;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page18.Page18Reisdocument;
@@ -44,6 +45,7 @@ public class Page2Reisdocument extends ZakenOverzichtPage<ReisdocumentAanvraag> 
 
   private final Button buttonUitreiken = new Button("Uitreiken");
   private final Button buttonRaas      = new Button("RAAS aanvraag");
+  private final Button buttonBezorg    = new Button("Thuisbezorging");
 
   public Page2Reisdocument(ReisdocumentAanvraag aanvraag) {
     super(aanvraag, "Reisdocument");
@@ -63,6 +65,9 @@ public class Page2Reisdocument extends ZakenOverzichtPage<ReisdocumentAanvraag> 
       FindAanvraagRequest request = new FindAanvraagRequest(getZaak().getAanvraagnummer().toLong());
       DocAanvraagDto raasAanvraag = getServices().getRaasService().get(request);
       getParentWindow().addWindow(new RaasWindow(raasAanvraag));
+
+    } else if ((button == buttonBezorg)) {
+      getParentWindow().addWindow(new BezorgingWindow(getZaak()));
     }
 
     super.handleEvent(button, keyCode);
@@ -85,6 +90,10 @@ public class Page2Reisdocument extends ZakenOverzichtPage<ReisdocumentAanvraag> 
 
     if (buttonVerzoek.isRequest()) {
       addOptieButton(buttonVerzoek);
+    }
+
+    if (getServices().getReisdocumentBezorgingService().isEnabled() || getZaak().getThuisbezorging().isMelding()) {
+      addOptieButton(buttonBezorg);
     }
   }
 

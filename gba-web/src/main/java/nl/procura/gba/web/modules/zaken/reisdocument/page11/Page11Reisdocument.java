@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,14 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page11;
 
-import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.*;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.DVBDOC;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.GELDIGVOORREIZENNAAR;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.NATIOGBA;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.NRVBDOC;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.PSEUDONIEM;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.STAATLOOS;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.TERVERVANGINGVAN;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11ReisdocumentBean1.UITGEZONDERDELANDEN;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.NEDERLANDSE_IDENTITEITSKAART;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
@@ -27,6 +34,7 @@ import static nl.procura.standard.Globalfunctions.pos;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.modules.zaken.reisdocument.ReisdocumentAanvraagPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.page25.Page25Reisdocument;
+import nl.procura.gba.web.modules.zaken.reisdocument.page26.Page26Reisdocument;
 import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
@@ -146,7 +154,11 @@ public class Page11Reisdocument extends ReisdocumentAanvraagPage {
     ReisdocumentService service = getApplication().getServices().getReisdocumentService();
     service.save(getAanvraag());
 
-    getNavigation().goToPage(new Page25Reisdocument(getAanvraag()));
+    if (getServices().getReisdocumentBezorgingService().isEnabled()) {
+      getNavigation().goToPage(new Page26Reisdocument(getAanvraag()));
+    } else {
+      getNavigation().goToPage(new Page25Reisdocument(getAanvraag()));
+    }
 
     super.onNextPage();
   }

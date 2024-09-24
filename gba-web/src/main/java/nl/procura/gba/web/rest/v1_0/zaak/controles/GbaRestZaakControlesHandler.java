@@ -19,6 +19,7 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.controles;
 
+import static java.util.stream.Collectors.toList;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DATUM_INVOER;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.OMSCHRIJVING;
 import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.OPMERKINGEN;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
@@ -48,7 +50,6 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controle;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ZaakControle;
-import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Vertaald de zaakcontroles naar GBA rest elementen
@@ -108,8 +109,8 @@ public class GbaRestZaakControlesHandler extends GbaRestHandler {
   }
 
   private Controles getZaakControles(String filterInclude, String filterExclude) {
-    List<String> includeServices = Arrays.asList(StringUtils.split(filterInclude, ","));
-    List<String> excludeServices = Arrays.asList(StringUtils.split(filterExclude, ","));
+    List<String> includeServices = splitAndTrim(filterInclude);
+    List<String> excludeServices = splitAndTrim(filterExclude);
     List<ControleerbareService> services = getServices().getServices(ControleerbareService.class);
     Controles controles = new Controles();
     checkServices(includeServices, services);
@@ -121,6 +122,12 @@ public class GbaRestZaakControlesHandler extends GbaRestHandler {
         .forEach(controles::addGewijzigdeControles);
 
     return controles;
+  }
+
+  private static List<String> splitAndTrim(String filterInclude) {
+    return Arrays.stream(StringUtils.split(filterInclude, ","))
+        .map(String::trim)
+        .collect(toList());
   }
 
   private void checkServices(List<String> serviceList, List<ControleerbareService> services) {
