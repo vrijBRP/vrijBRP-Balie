@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,6 +26,7 @@ import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DAG_VAN_WIJZI
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DATUM_GEWIJSDE;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DATUM_UITSPRAAK;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.DOCUMENT;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.ERKENNING_DOOR;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.FAMRECHT;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GEKOZEN_RECHT;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLNM_GW;
@@ -35,10 +36,13 @@ import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLN_OUDER_G
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLN_OUDER_VG;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLN_VA;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESL_AAND;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GEZAG;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.KEUZE_GESLACHTSNAAM;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.OUDERSCHAP_ONTKEND;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.OUDERSCHAP_VASTGESTELD;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.SOORT_VERBINTENIS;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TOEGEPAST_RECHT;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TOESTEMMING_DOOR;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TWEEDE_DOC;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.UITSPRAAK;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.VERBETERD;
@@ -57,8 +61,11 @@ import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.lv.afstamming.KeuzeVaststellingGeslachtsnaam;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvDocumentDoorType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvField;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvGezagType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvOuderType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvSoortVerbintenisType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToegepastRechtType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToestemmingType;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -113,6 +120,8 @@ public class Page40Lv extends BsPage<DossierLv> {
     zd.setUitspraak("");
     zd.setDatumUitspraak(null);
     zd.setDatumGewijsde(null);
+    zd.setToestemming("");
+    zd.setToegepastRecht(toBigDecimal(-1L));
 
     // Form 1
 
@@ -169,8 +178,20 @@ public class Page40Lv extends BsPage<DossierLv> {
     form2.ifLvFieldValue(OUDERSCHAP_ONTKEND, value -> zd.setBetreftOuder(value.getCode()), LvOuderType.class);
     form2.ifLvFieldValue(OUDERSCHAP_VASTGESTELD, value -> zd.setBetreftOuder(value.getCode()), LvOuderType.class);
     form2.ifLvFieldValue(BETREFT_OUDER, value -> zd.setBetreftOuder(value.getCode()), LvOuderType.class);
+    form2.ifLvFieldValue(ERKENNING_DOOR, value -> zd.setBetreftOuder(value.getCode()), LvOuderType.class);
     form2.ifLvFieldValue(BETREFT_OUDER_PERSOON, value -> zd.setBetreftOuderP(toBigDecimal(value.getCode())),
         KeuzeOuder.class);
+
+    if (form2.isVisibleLvField(TOESTEMMING_DOOR)) {
+      LvToestemmingType toestemmingDoor = form2.getBean().getToestemmingDoor();
+      if (toestemmingDoor != null) {
+        if (toestemmingDoor == LvToestemmingType.ANDERS) {
+          zd.setToestemming(form2.getBean().getToestemmingAnders());
+        } else {
+          zd.setToestemming(toestemmingDoor.getOms());
+        }
+      }
+    }
 
     form2.ifLvFieldValue(GESLN_OUDER_VG, zd::setGeslOuder);
     form2.ifLvFieldValue(GESLN_OUDER_GW, zd::setGeslOuder);
@@ -188,6 +209,18 @@ public class Page40Lv extends BsPage<DossierLv> {
     form2.ifLvFieldValue(VOORNAMEN_VA, zd::setVoorn);
     form2.ifLvFieldValue(VOORNAMEN_GW_IN, zd::setVoorn);
 
+    if (form2.isVisibleLvField(TOEGEPAST_RECHT)) {
+      LvToegepastRechtType toegepastRecht = form2.getBean().getToegepastRecht();
+      if (toegepastRecht != null) {
+        if (toegepastRecht == LvToegepastRechtType.ANDERS) {
+          zd.setToegepastRecht(toBigDecimal(form2.getBean().getToegepastRechtAnders().getValue()));
+        } else {
+          zd.setToegepastRecht(toBigDecimal(toegepastRecht.getCode()));
+        }
+      }
+    }
+
+    form2.ifLvFieldValue(GEZAG, value -> zd.setGezag(value.getCode()), LvGezagType.class);
     form2.ifLvFieldValue(GESL_AAND, value -> zd.setGeslAand(value.getAfkorting()), Geslacht.class);
     form2.ifLvFieldValue(GEKOZEN_RECHT, zd::setGekozenRecht);
     form2.ifLvFieldValue(DAG_VAN_WIJZIGING, zd::setDatumWijziging, Date.class);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,14 +24,19 @@ import java.lang.annotation.ElementType;
 import java.util.Date;
 
 import nl.procura.gba.web.components.containers.GeslachtContainer;
+import nl.procura.gba.web.components.containers.LandContainer;
+import nl.procura.gba.web.components.fields.GbaComboBox;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.services.bs.algemeen.enums.LvDocumentType;
 import nl.procura.gba.web.services.bs.algemeen.enums.RechtbankLocatie;
 import nl.procura.gba.web.services.bs.lv.afstamming.KeuzeVaststellingGeslachtsnaam;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvDocumentDoorType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvGezagType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvOuderType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvSoortVerbintenisType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToegepastRechtType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToestemmingType;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
@@ -40,6 +45,7 @@ import nl.procura.vaadin.annotation.field.TextField;
 import nl.procura.vaadin.component.container.NLBooleanContainer;
 import nl.procura.vaadin.component.field.ProDateField;
 import nl.procura.vaadin.component.field.ProNativeSelect;
+import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
 import lombok.Data;
 
@@ -156,10 +162,17 @@ public class Page40LvBean1 implements Serializable {
   private LvOuderType famRecht = null;
 
   @Field(customTypeClass = ProNativeSelect.class,
+      caption = "Erkenning gedaan door",
+      required = true,
+      width = "250px")
+  @Select(containerDataSource = LvOuderZonderNvtTypeContainer.class)
+  private LvOuderType erkenningDoor = null;
+
+  @Field(customTypeClass = ProNativeSelect.class,
       caption = "Ouderschap ontkend van",
       required = true,
       width = "250px")
-  @Select(containerDataSource = LvOuderTypeContainer.class)
+  @Select(containerDataSource = LvOuderZonderNvtTypeContainer.class)
   private LvOuderType ouderschapOntkend = null;
 
   @Field(customTypeClass = ProNativeSelect.class,
@@ -171,7 +184,7 @@ public class Page40LvBean1 implements Serializable {
       caption = "Ouderschap vastgesteld van",
       required = true,
       width = "250px")
-  @Select(containerDataSource = LvOuderTypeContainer.class)
+  @Select(containerDataSource = LvOuderZonderNvtTypeContainer.class)
   private LvOuderType ouderschapVastgesteld = null;
 
   @Field(customTypeClass = GbaTextField.class,
@@ -240,6 +253,39 @@ public class Page40LvBean1 implements Serializable {
       width = "250px")
   @Select(containerDataSource = GeslachtContainer.class)
   private Geslacht geslachtsaand = null;
+
+  @Field(customTypeClass = ProNativeSelect.class,
+      caption = "Toestemming door",
+      required = true,
+      width = "250px")
+  @Select(containerDataSource = LvToestemmingTypeContainer.class)
+  private LvToestemmingType toestemmingDoor = null;
+
+  @Field(customTypeClass = GbaTextField.class,
+      required = true,
+      width = "250px")
+  private String toestemmingAnders = null;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Toegepast recht van",
+      required = true,
+      width = "250px")
+  @Select(containerDataSource = LvToegepastRechtTypeContainer.class)
+  private LvToegepastRechtType toegepastRecht = null;
+
+  @Field(customTypeClass = GbaComboBox.class,
+      caption = "",
+      required = true,
+      width = "250px")
+  @Select(containerDataSource = LandContainer.class)
+  private FieldValue toegepastRechtAnders = null;
+
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Gezag",
+      required = true,
+      width = "250px")
+  @Select(containerDataSource = LvGezagTypeContainer.class)
+  private LvGezagType gezag = null;
 
   @Field(customTypeClass = GbaTextField.class,
       caption = "Gekozen recht",

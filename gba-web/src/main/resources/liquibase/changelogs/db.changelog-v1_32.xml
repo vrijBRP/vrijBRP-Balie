@@ -470,4 +470,22 @@
       </column>
     </addColumn>
   </changeSet>
+
+  <changeSet author="Procura (Frits)" id="v1_32_6">
+    <addColumn tableName="doss_lv">
+      <column name="toestemming" type="VARCHAR(255)" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+    <addColumn tableName="doss_lv">
+      <column name="toeg_recht" type="numeric" defaultValue="-1">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+    <addColumn tableName="doss_lv">
+      <column name="gezag" type="VARCHAR(255)" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>

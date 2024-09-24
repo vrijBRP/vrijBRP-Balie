@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -93,10 +93,15 @@ public class GbaPopupButton extends PopupButton {
 
   public static class Choice {
 
-    private String caption = "";
+    private Runnable clickListener;
+    private String   caption = "";
 
     public Choice(String caption) {
+      setCaption(caption);
+    }
 
+    public Choice(String caption, Runnable clickListener) {
+      this.clickListener = clickListener;
       setCaption(caption);
     }
 
@@ -109,29 +114,24 @@ public class GbaPopupButton extends PopupButton {
     }
 
     public void onClick() {
+      if (clickListener != null) {
+        clickListener.run();
+      }
     }
   }
 
-  public class Tab extends Table {
+  public static class Tab extends Table {
 
     public Tab() {
-
       setWidth("100%");
-
       setPageLength(4);
-
       addContainerProperty("Keuze", String.class, null);
-
       addStyleName(ProcuraTweeTheme.TABLE.CLICKABLE);
-
       setSelectable(false);
-
       setImmediate(true);
 
       addListener((ItemClickListener) event -> {
-
         Choice choice = (Choice) event.getItemId();
-
         choice.onClick();
       });
     }

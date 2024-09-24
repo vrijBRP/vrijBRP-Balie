@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -50,6 +50,9 @@ public class GbaRestServices {
   private GbaRestErkenningService erkenningService;
 
   @Inject
+  private GbaRestNaamskeuzeService naamskeuzeService;
+
+  @Inject
   private GbaRestHuwelijkService huwelijkService;
 
   @Inject
@@ -98,6 +101,10 @@ public class GbaRestServices {
 
   public GbaRestErkenningService getErkenningService() {
     return erkenningService;
+  }
+
+  public GbaRestNaamskeuzeService getNaamskeuzeService() {
+    return naamskeuzeService;
   }
 
   public GbaRestHuwelijkService getHuwelijkService() {

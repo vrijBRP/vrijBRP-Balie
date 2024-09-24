@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -55,10 +55,10 @@ public class DatabaseParameterLayout extends ParameterLayout<DatabaseParameterFo
 
   @Override
   public void onPreviousPage() {
-
     if (isModuleGebruiker()) {
       Page4Gebruikers page = VaadinUtils.getChild(getWindow(), Page4Gebruikers.class);
       page.getNavigation().goBackToPage(page.getNavigation().getPreviousPage());
+
     } else if (isModuleProfiel()) {
       Page11Profielen page = VaadinUtils.getChild(getWindow(), Page11Profielen.class);
       page.getNavigation().goBackToPage(page.getNavigation().getPreviousPage());

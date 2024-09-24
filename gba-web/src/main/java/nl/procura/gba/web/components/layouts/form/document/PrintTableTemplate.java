@@ -53,31 +53,35 @@ public class PrintTableTemplate extends GbaTable {
     setSelectable(true);
     setMultiSelect(true);
 
-    addColumn("Soort", 400);
+    addColumn("Nr", 30);
     addColumn("Document");
+    addColumn("Soort", 250);
     addColumn("Uitvoer naar", 250).setClassType(Component.class);
   }
 
   @Override
   public void setRecords() {
+    int nr = 0;
     if (soorten != null) {
       for (DocumentSoort soort : soorten) {
-        for (DocumentRecord document : soort.getDocumenten()) {
-          PrintRecord docRecord = new PrintRecord();
-          docRecord.setSoort(soort);
-          docRecord.setDocument(document);
-          docRecord.setUitvoer(new UitvoerField(document));
+        for (DocumentRecord documentRecord : soort.getDocumenten()) {
+          PrintRecord printRecord = new PrintRecord();
+          printRecord.setSoort(soort);
+          printRecord.setDocument(documentRecord);
+          printRecord.setUitvoer(new UitvoerField(documentRecord));
 
-          Record r = addRecord(docRecord);
-          String naam = docRecord.getDocument().toString();
+          Record r = addRecord(printRecord);
+          DocumentRecord document = printRecord.getDocument();
+          String naam = document.toString();
 
           if (isTru(getApplication().getParmValue(ParameterConstant.DOC_TOON_BESTAND))) {
-            naam += " (" + docRecord.getDocument().getBestand() + ")";
+            naam += String.format(" (%d - %s)", document.getCDocument(), document.getBestand());
           }
 
-          r.addValue(docRecord.getSoort());
+          r.addValue(++nr);
           r.addValue(naam);
-          r.addValue(docRecord.getUitvoer());
+          r.addValue(printRecord.getSoort());
+          r.addValue(printRecord.getUitvoer());
         }
       }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -58,6 +58,7 @@ public enum DocumentType {
   LATERE_VERMELDING_AFST_1("lv_afst_1", "data", "LV afstamming - adoptie"),
   LATERE_VERMELDING_AFST_2("lv_afst_2", "data", "LV afstamming - ambtshalve verbetering akte"),
   LATERE_VERMELDING_AFST_3("lv_afst_3", "data", "LV afstamming - doorhaling akte"),
+  LATERE_VERMELDING_AFST_20("lv_afst_20", "data", "LV afstamming - erkenning"),
   LATERE_VERMELDING_AFST_4("lv_afst_4", "data", "LV afstamming - gerechtelijke vaststelling ouderschap"),
   LATERE_VERMELDING_AFST_5("lv_afst_5", "data", "LV afstamming - herroeping adoptie"),
   LATERE_VERMELDING_AFST_6("lv_afst_6", "data", "LV afstamming - ontkenning ouderschap"),

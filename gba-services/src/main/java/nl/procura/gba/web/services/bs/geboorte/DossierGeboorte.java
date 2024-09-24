@@ -279,6 +279,9 @@ public class DossierGeboorte extends DossGeb
     if (StringUtils.isNotBlank(getOrgKeuzeNaam())) {
       return getOrgKeuzeNaam();
 
+    } else if (getVragen().heeftErkenningBijGeboorte()) {
+      return getErkenningBijGeboorte().getKeuzeNaam();
+
     } else if (getVragen().heeftErkenningVoorGeboorte()) {
       return getErkenningVoorGeboorte().getKeuzeNaam();
 

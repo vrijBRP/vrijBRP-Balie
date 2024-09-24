@@ -84,8 +84,10 @@ public class VrsClient extends ApiClient {
         if (errorMessages != null) {
           StringBuilder sb = new StringBuilder(errorMessages.getTitel());
           sb.append("<br>");
-          for (InvalidParam ongeldigeParameter : errorMessages.getOngeldigeParameters()) {
-            sb.append(format(" - %s<br>", ongeldigeParameter.getReden()));
+          if (errorMessages.getOngeldigeParameters() != null) {
+            for (InvalidParam ongeldigeParameter : errorMessages.getOngeldigeParameters()) {
+              sb.append(format(" - %s<br>", ongeldigeParameter.getReden()));
+            }
           }
           throw new ProException(WEBSERVICE, WARNING, sb.toString());
         }

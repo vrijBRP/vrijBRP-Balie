@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,6 +25,7 @@ import static nl.procura.standard.Globalfunctions.fil;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.EnumWithCode;
+import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentTemplateData;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -131,6 +132,9 @@ public class DossierLvTemplateData extends DocumentTemplateData {
           case OUDERSCHAP_VASTGESTELD:
             betreftOuderLabel = "Ouderschap vastgesteld van";
             break;
+          case ERKENNING_DOOR:
+            betreftOuderLabel = "Erkenning gedaan door";
+            break;
           case FAMRECHT:
             betreftOuderLabel = "Familierechtelijke betrekking met deze ouder blijft in stand";
             break;
@@ -153,11 +157,22 @@ public class DossierLvTemplateData extends DocumentTemplateData {
       put("voornamen", d.getVoorn());
       put("voornamenLabel", voornamenLabel);
 
+      put("toestemming", d.getToestemming());
+      put("toegepastRecht", getToegepastRecht(d));
+      put("gezag", LvGezagType.get(d.getGezag()));
       put("geslacht", Geslacht.get(d.getGeslAand()));
       put("gekozenRecht", d.getGekozenRecht());
       put("dagVanWijziging", new DateTime(d.getDatumWijziging()));
       put("verbeteringen", d.getVerbeteringen());
     }
+  }
+
+  private static String getToegepastRecht(DossierLv zaakDossier) {
+    LvToegepastRechtType type = LvToegepastRechtType.get(zaakDossier.getToegepastRecht().longValue());
+    if (type == LvToegepastRechtType.ONBEKEND) {
+      return GbaTables.LAND.get(zaakDossier.getToegepastRecht()).getDescription();
+    }
+    return type.getOms();
   }
 
   private static FieldValue toFieldValue(EnumWithCode<?> value) {

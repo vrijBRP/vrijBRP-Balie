@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,10 @@ package nl.procura.gba.web.rest.v2.services;
 import static nl.procura.gba.web.rest.v2.converters.GbaRestBaseTypeConverter.toTableRecord;
 import static nl.procura.gba.web.rest.v2.converters.zaken.GbaRestZaakZoekenVraagConverter.toZaakargumenten;
 import static nl.procura.gba.web.rest.v2.model.base.GbaRestEnum.toEnum;
-import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.*;
+import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.AANTALLEN;
+import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.ALGEMENE_ZAAKGEGEVENS;
+import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.SLEUTELS;
+import static nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakZoekGegeven.SPECIFIEKE_ZAAKGEGEVENS;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
 
 import java.util.ArrayList;
@@ -35,10 +38,26 @@ import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
-import nl.procura.gba.web.rest.v2.model.zaken.*;
-import nl.procura.gba.web.rest.v2.model.zaken.base.*;
+import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakStatusUpdateVraag;
+import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakToevoegenVraag;
+import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakUpdateVraag;
+import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakZoekenAntwoord;
+import nl.procura.gba.web.rest.v2.model.zaken.GbaRestZaakZoekenVraag;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakAlgemeen;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakAttribuut;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakId;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakRelatie;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakSleutel;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakStatus;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakStatusType;
+import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaakType;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakStatus;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
+import nl.procura.gba.web.services.zaken.algemeen.ZakenService;
 import nl.procura.gba.web.services.zaken.algemeen.attribuut.ZaakAttribuut;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatie;
 import nl.procura.gba.web.services.zaken.algemeen.identificatie.ZaakIdentificatieService;
@@ -306,6 +325,10 @@ public class GbaRestZaakService extends GbaRestAbstractService {
       case RIJBEWIJS:
       case TERUGMELDING:
       case NAAMSKEUZE:
+        restObj.setNaamskeuze(getRestServices()
+            .getNaamskeuzeService()
+            .toGbaRestNaamskeuze((Dossier) zaak));
+        break;
       case OVERLIJDEN_IN_BUITENLAND:
       case LEVENLOOS:
       case INDICATIE:

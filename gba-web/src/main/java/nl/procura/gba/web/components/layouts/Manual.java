@@ -28,10 +28,10 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 
 public enum Manual {
 
-  USER(HANDLEIDING_GEBRUIKER, "Voor gebruikers", "handleiding-gebruikers.pdf"),
-  ADMIN(HANDLEIDING_BEHEERDER, "Voor beheerders", "handleiding-beheerders.pdf"),
+  USER(HANDLEIDING_GEBRUIKER, "Voor gebruikers", "handleiding-gebruikers-2.9.pdf"),
+  ADMIN(HANDLEIDING_BEHEERDER, "Voor beheerders", "handleiding-beheerders-2.7.pdf"),
   FIRST_REGISTRATION(HANDLEIDING_INSCHRIJVING, "Voor 1e inschrijving", "handleiding-1e-inschrijving.pdf"),
-  HUP(HANDLEIDING_HUP, "Uitvoeringsprocedures", "HUP-BRP-3.2A.pdf");
+  HUP(HANDLEIDING_HUP, "Uitvoeringsprocedures", "HUP-BRP-3.9.pdf");
 
   private final ParameterConstant parameter;
   private final String            title;

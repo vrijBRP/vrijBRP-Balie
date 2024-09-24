@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -111,6 +111,18 @@ public class LvOverzichtBean1 implements Serializable {
 
   @Field(type = FieldType.LABEL, caption = "Ouderschap vastgesteld van")
   private Object ouderschapVastgesteld = null;
+
+  @Field(type = FieldType.LABEL, caption = "Erkenning gedaan door")
+  private Object erkenningDoor = null;
+
+  @Field(type = FieldType.LABEL, caption = "Toestemming gegeven door")
+  private Object toestemmingDoor = null;
+
+  @Field(type = FieldType.LABEL, caption = "Toegepast recht van")
+  private Object toegepastRecht = null;
+
+  @Field(type = FieldType.LABEL, caption = "Gezag")
+  private Object gezag = null;
 
   @Field(type = FieldType.LABEL, caption = "Geslachtsnaam ouder vastgesteld als")
   private Object geslOuderVastgesteld = null;

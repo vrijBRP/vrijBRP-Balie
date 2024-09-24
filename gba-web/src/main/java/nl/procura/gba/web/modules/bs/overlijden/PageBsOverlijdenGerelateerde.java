@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,6 +23,7 @@ import static java.util.Arrays.asList;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
 
+import java.util.Collections;
 import java.util.List;
 
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -108,6 +109,10 @@ public class PageBsOverlijdenGerelateerde<T extends ZaakDossier> extends BsPage<
     return relatiesLayout.getPersonen();
   }
 
+  protected List<DossierPersoon> getPersonen(DossierPersoonType... types) {
+    return relatiesLayout.getPersonen(types);
+  }
+
   protected void init(DossierPersoon dossierPersoon) {
     this.dossierPersoon = dossierPersoon;
   }
@@ -126,7 +131,6 @@ public class PageBsOverlijdenGerelateerde<T extends ZaakDossier> extends BsPage<
 
     @Override
     public void onToevoegen(DossierPersoonType type) {
-
       DossierPersoon nieuwePersoon = dossierPersoon.toevoegenPersoon(type);
       getNavigation().goToPage(
           new PageBsGerelateerdePersoon(getZaakDossier().getDossier().getType(), nieuwePersoon));
@@ -134,7 +138,7 @@ public class PageBsOverlijdenGerelateerde<T extends ZaakDossier> extends BsPage<
 
     @Override
     public void onVerwijderen(DossierPersoon persoon) {
-      getServices().getDossierService().deletePersonen(getDossier(), asList(persoon));
+      getServices().getDossierService().deletePersonen(getDossier(), Collections.singletonList(persoon));
     }
   }
 }

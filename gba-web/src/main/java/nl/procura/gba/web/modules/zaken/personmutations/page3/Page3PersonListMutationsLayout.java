@@ -23,6 +23,7 @@ import static nl.procura.gba.web.common.misc.Landelijk.isNederland;
 import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.ADMIN;
 import static nl.procura.gba.web.modules.zaken.personmutations.PersonListMutationsCheckBoxType.REQUIRED_GROUPS;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.ADD_SET;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CATEGORY;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_CURRENT_ADMIN;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.CORRECT_HISTORIC_ADMIN;
@@ -30,6 +31,7 @@ import static nl.procura.gba.web.services.beheer.personmutations.PersonListActio
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.OVERWRITE_HISTORIC;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.SUPER_OVERWRITE_CURRENT;
 import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.SUPER_OVERWRITE_HISTORIC;
+import static nl.procura.gba.web.services.beheer.personmutations.PersonListActionType.UPDATE_SET;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.WARNING;
@@ -292,8 +294,10 @@ public class Page3PersonListMutationsLayout extends GbaVerticalLayout {
     }
 
     // Ingangsdatum geldigheid altijd leegmaken
-    if (GBAElem.INGANGSDAT_GELDIG.is(pleE.getElem())) {
-      mutElem.setDefaultValue(() -> new GbaDateFieldValue(""));
+    if (mutElem.getAction().is(UPDATE_SET, ADD_SET, ADD_HISTORIC)) {
+      if (GBAElem.INGANGSDAT_GELDIG.is(pleE.getElem())) {
+        mutElem.setDefaultValue(() -> new GbaDateFieldValue(""));
+      }
     }
 
     if (mutElem.getAction().is(CORRECT_CATEGORY)) {

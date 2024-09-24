@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -22,7 +22,10 @@ package nl.procura.gba.web.rest.v2.services;
 import static nl.procura.gba.web.components.containers.Container.PLAATS;
 import static nl.procura.gba.web.rest.v2.converters.GbaRestBaseTypeConverter.toTableRecord;
 import static nl.procura.gba.web.rest.v2.model.base.GbaRestEnum.toEnum;
-import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.*;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.AANGEVER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.KIND;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.MOEDER;
+import static nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType.VADER_DUO_MOEDER;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.ERROR;
@@ -40,10 +43,20 @@ import nl.procura.gba.web.modules.bs.geboorte.processen.GeboorteProcessen;
 import nl.procura.gba.web.rest.v2.model.base.GbaRestGeslacht;
 import nl.procura.gba.web.rest.v2.model.base.HeeftContactgegevens;
 import nl.procura.gba.web.rest.v2.model.zaken.base.GbaRestZaak;
-import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.*;
+import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.GbaRestAfstamming;
+import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.GbaRestEersteKindType;
+import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.GbaRestNaamsPersoonType;
+import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.GbaRestNaamskeuzeType;
+import nl.procura.gba.web.rest.v2.model.zaken.base.namenrecht.GbaRestNamenrecht;
 import nl.procura.gba.web.rest.v2.model.zaken.base.persoon.GbaRestPersoon;
 import nl.procura.gba.web.rest.v2.model.zaken.erkenning.GbaRestErkenningsType;
-import nl.procura.gba.web.rest.v2.model.zaken.geboorte.*;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestGeboorte;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestGeboorteAangifte;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestGeboorteErkenning;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestGeboorteVerzoek;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestGezinssituatieType;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestKind;
+import nl.procura.gba.web.rest.v2.model.zaken.geboorte.GbaRestRedenVerplichtOfBevoegdType;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
 import nl.procura.gba.web.services.bs.algemeen.DossierService;
@@ -181,19 +194,7 @@ public class GbaRestGeboorteService extends GbaRestAbstractService {
     GbaRestNamenrecht namenrecht = restGeboorte.getNamenrecht();
     if (namenrecht != null) {
       GbaRestNaamsPersoonType naamskeuzePersoon = namenrecht.getNaamsPersoonType();
-      if (naamskeuzePersoon != null) {
-        switch (naamskeuzePersoon) {
-          case MOEDER:
-            geboorte.setNaamskeuzePersoon(NaamsPersoonType.MOEDER);
-            break;
-          case VADER_OF_DUO_MOEDER:
-            geboorte.setNaamskeuzePersoon(NaamsPersoonType.VADER_DUO_MOEDER);
-            break;
-          default:
-            throw new ProException("Onbekende waarde: naamskeuze persoon " + naamskeuzePersoon);
-        }
-      }
-
+      geboorte.setNaamskeuzePersoon(NaamsPersoonType.get(BigDecimal.valueOf(naamskeuzePersoon.getCode())));
       geboorte.setKeuzeGeslachtsnaam(namenrecht.getGeslachtsnaam());
       geboorte.setKeuzeVoorvoegsel(namenrecht.getVoorvoegsel());
       geboorte.setKeuzeTitel(new FieldValue(namenrecht.getTitelPredikaat()));

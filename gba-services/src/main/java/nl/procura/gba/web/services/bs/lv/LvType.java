@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -31,6 +31,7 @@ import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_V
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_18;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_19;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_2;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_20;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_3;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_4;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentType.LATERE_VERMELDING_AFST_5;
@@ -60,8 +61,6 @@ public enum LvType implements EnumWithCode<Integer> {
       LATERE_VERMELDING_AFST_4),
   HERROEPING_ADOPTIE(50, "Herroeping adoptie", "R",
       LATERE_VERMELDING_AFST_5),
-  NAAMSKEUZE(190, "Naamskeuze", "W",
-      LATERE_VERMELDING_AFST_19),
   ONTKENNING_OUDERSCHAP(60, "Ontkenning ouderschap", "E",
       LATERE_VERMELDING_AFST_6),
   VASTSTELLING_NAMEN_BIJ_KB(70, "Vaststelling namen bij KB", "G",
@@ -89,6 +88,10 @@ public enum LvType implements EnumWithCode<Integer> {
       LATERE_VERMELDING_AFST_17),
   WIJZIGING_VOORNAMEN(180, "Wijziging voornamen", "M",
       LATERE_VERMELDING_AFST_18),
+  NAAMSKEUZE(190, "Naamskeuze", "W",
+      LATERE_VERMELDING_AFST_19),
+  ERKENNING(200, "Erkenning", "C",
+      LATERE_VERMELDING_AFST_20),
   ONBEKEND(-1, "Onbekend", "", null);
 
   private final Integer      code;

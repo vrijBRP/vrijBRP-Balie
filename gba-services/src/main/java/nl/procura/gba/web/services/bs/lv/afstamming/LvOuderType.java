@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -18,6 +18,8 @@
  */
 
 package nl.procura.gba.web.services.bs.lv.afstamming;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.Arrays;
 
@@ -42,10 +44,15 @@ public enum LvOuderType implements EnumWithCode<String> {
   }
 
   public static LvOuderType get(String code) {
+    return get(code, ONBEKEND);
+  }
+
+  public static LvOuderType get(String code, LvOuderType defaultType) {
     return Arrays.stream(values())
+        .filter(value -> isNotBlank(value.getCode()))
         .filter(value -> value.getCode().equalsIgnoreCase(code))
         .findFirst()
-        .orElse(ONBEKEND);
+        .orElse(defaultType);
   }
 
   public boolean is(LvOuderType... types) {

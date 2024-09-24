@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,8 +20,10 @@
 package nl.procura.gba.web.modules.zaken.document.page1;
 
 import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.convert;
-import static nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter.removeStillborns;
-import static nl.procura.gba.web.services.zaken.documenten.DocumentType.*;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_ADRESONDERZOEK;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_FORMULIER;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_NATURALISATIE;
+import static nl.procura.gba.web.services.zaken.documenten.DocumentType.PL_OPTIE;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.standard.exceptions.ProExceptionType.SELECT;
@@ -35,6 +37,7 @@ import com.vaadin.ui.Button;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.extensions.Cat1PersoonExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
+import nl.procura.diensten.gba.ple.openoffice.DocumentPLConverter;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
 import nl.procura.gba.web.components.layouts.form.document.PrintMultiLayout;
@@ -114,7 +117,8 @@ public class Page1Document extends DocumentenPage {
 
             DocumentRecord document = printRecord.getDocument();
             List<DocumentPL> dps = convert(pls, null);
-            dps.stream().filter(dp -> !document.isStillbornAllowed()).forEach(dpl -> removeStillborns(dpl));
+            dps.stream().filter(dp -> !document.isStillbornAllowed())
+                .forEach(DocumentPLConverter::removeStillborns);
 
             newPrintRecord.setZaak(samenstellenZaak(relaties, printRecord));
             newPrintRecord.setSoort(printRecord.getSoort());
@@ -153,14 +157,8 @@ public class Page1Document extends DocumentenPage {
         }
 
         private boolean isMachtigingNodig() {
-
-          for (Relatie rel : table.getSelectedValues(Relatie.class)) {
-            if (rel.getRelatieType() == RelatieType.NIET_GERELATEERD) {
-              return true;
-            }
-          }
-
-          return false;
+          return table.getSelectedValues(Relatie.class).stream()
+              .anyMatch(rel -> RelatieType.NIET_GERELATEERD == rel.getRelatieType());
         }
       };
 
@@ -176,14 +174,12 @@ public class Page1Document extends DocumentenPage {
 
         @Override
         public void setRecords() {
-
           for (Relatie relatie : getApplication().getServices()
               .getPersonenWsService()
               .getRelatieLijst(getPl(), false)
               .getSortedRelaties()) {
 
             if (relatie.isHuisgenoot()) {
-
               addRelatie(relatie);
             }
           }

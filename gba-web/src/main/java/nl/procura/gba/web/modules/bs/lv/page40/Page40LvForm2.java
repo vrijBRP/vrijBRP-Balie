@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,15 +20,19 @@
 package nl.procura.gba.web.modules.bs.lv.page40;
 
 import static java.util.Optional.ofNullable;
+import static nl.procura.burgerzaken.gba.StringUtils.isBlank;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.BETREFT_OUDER_PERSOON;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.FAMRECHT;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLN_IS;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLN_OUDER_GW;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.GESLN_OUDER_VG;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.KEUZE_GESLACHTSNAAM;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TOEGEPAST_RECHT;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TOEGEPAST_RECHT_ANDERS;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TOESTEMMING_ANDERS;
+import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.TOESTEMMING_DOOR;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.VOORNAMEN_GW;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.VOORNAMEN_GW_IN;
-import static nl.procura.gba.web.services.bs.lv.afstamming.LvField.VOORN_OUDER;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvOuderType.MOEDER;
 import static nl.procura.gba.web.services.bs.lv.afstamming.LvOuderType.VADER;
 import static nl.procura.standard.Globalfunctions.fil;
@@ -37,12 +41,16 @@ import java.util.List;
 
 import com.vaadin.ui.Field;
 
+import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.lv.LvType;
 import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.lv.afstamming.KeuzeVaststellingGeslachtsnaam;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvField;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvGezagType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvOuderType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToegepastRechtType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToestemmingType;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.vaadin.component.container.ArrayListContainer;
 import nl.procura.vaadin.component.field.ProNativeSelect;
@@ -63,10 +71,11 @@ public class Page40LvForm2 extends Page40LvForm {
     Page40LvBean1 bean = new Page40LvBean1();
 
     // Ouder
-    bean.setBetreftOuder(LvOuderType.get(zaakDossier.getBetreftOuder()));
-    bean.setOuderschapVastgesteld(LvOuderType.get(zaakDossier.getBetreftOuder()));
-    bean.setOuderschapOntkend(LvOuderType.get(zaakDossier.getBetreftOuder()));
-    bean.setFamRecht(LvOuderType.get(zaakDossier.getBetreftOuder()));
+    bean.setBetreftOuder(LvOuderType.get(zaakDossier.getBetreftOuder(), null));
+    bean.setOuderschapVastgesteld(LvOuderType.get(zaakDossier.getBetreftOuder(), null));
+    bean.setOuderschapOntkend(LvOuderType.get(zaakDossier.getBetreftOuder(), null));
+    bean.setFamRecht(LvOuderType.get(zaakDossier.getBetreftOuder(), null));
+    bean.setErkenningDoor(LvOuderType.get(zaakDossier.getBetreftOuder(), null));
 
     bean.setGeslOuderVastgesteld(zaakDossier.getGeslOuder());
     bean.setGeslOuderGewijzigd(zaakDossier.getGeslOuder());
@@ -74,7 +83,7 @@ public class Page40LvForm2 extends Page40LvForm {
     bean.setVoornamenOuderVastgesteldAls(zaakDossier.getVoornOuder());
 
     // Kind
-    bean.setKeuzeGeslachtsnaam(KeuzeVaststellingGeslachtsnaam.get(zaakDossier.getKeuzeGesl()));
+    bean.setKeuzeGeslachtsnaam(KeuzeVaststellingGeslachtsnaam.get(zaakDossier.getKeuzeGesl(), null));
 
     bean.setGeslachtsnaamIs(zaakDossier.getGesl());
     bean.setGeslachtsnaamVastgesteldAls(zaakDossier.getGesl());
@@ -86,6 +95,31 @@ public class Page40LvForm2 extends Page40LvForm {
     bean.setVoornamenVastgesteldAls(zaakDossier.getVoorn());
     bean.setGeslachtsaand(Geslacht.get(zaakDossier.getGeslAand()));
 
+    LvToestemmingType toestemmingType = LvToestemmingType.get(zaakDossier.getToestemming());
+    if (LvToestemmingType.ONBEKEND != toestemmingType) {
+      bean.setToestemmingDoor(toestemmingType);
+    } else {
+      if (isBlank(zaakDossier.getToestemming())) {
+        bean.setToestemmingDoor(null);
+      } else {
+        bean.setToestemmingDoor(LvToestemmingType.ANDERS);
+        bean.setToestemmingAnders(zaakDossier.getToestemming());
+      }
+    }
+
+    LvToegepastRechtType toegepastRechtType = LvToegepastRechtType.get(zaakDossier.getToegepastRecht().longValue());
+    if (LvToegepastRechtType.ONBEKEND != toegepastRechtType) {
+      bean.setToegepastRecht(toegepastRechtType);
+    } else {
+      if (zaakDossier.getToegepastRecht().longValue() <= 0) {
+        bean.setToegepastRecht(null);
+      } else {
+        bean.setToegepastRecht(LvToegepastRechtType.ANDERS);
+        bean.setToegepastRechtAnders(GbaTables.LAND.get(zaakDossier.getToegepastRecht()));
+      }
+    }
+
+    bean.setGezag(LvGezagType.get(zaakDossier.getGezag(), null));
     bean.setGekozenRecht(zaakDossier.getGekozenRecht());
     bean.setDagVanWijziging(zaakDossier.getDatumWijziging());
     bean.setOuders(getOuders(zaakDossier));
@@ -135,7 +169,10 @@ public class Page40LvForm2 extends Page40LvForm {
     if (property.is(VOORNAMEN_GW_IN.getName()) && getLvField(VOORNAMEN_GW) != null) {
       column.setAppend(true);
     }
-    if (property.is(BETREFT_OUDER_PERSOON.getName())) {
+    if (property.is(
+        TOESTEMMING_ANDERS.getName(),
+        BETREFT_OUDER_PERSOON.getName(),
+        TOEGEPAST_RECHT_ANDERS.getName())) {
       column.setAppend(true);
     }
     super.setColumn(column, field, property);
@@ -146,13 +183,14 @@ public class Page40LvForm2 extends Page40LvForm {
     Field betreftOuder = getLvField(LvField.BETREFT_OUDER);
     Field ouderschapOntkend = getLvField(LvField.OUDERSCHAP_ONTKEND);
     Field ouderschapVastgesteld = getLvField(LvField.OUDERSCHAP_VASTGESTELD);
+    Field erkenningDoor = getLvField(LvField.ERKENNING_DOOR);
     Field famRecht = getLvField(FAMRECHT);
 
     setGeslachtsnaam(betreftOuder);
     setGeslachtsnaam(ouderschapOntkend);
     setGeslachtsnaam(ouderschapVastgesteld);
     setGeslachtsnaam(famRecht);
-
+    setGeslachtsnaam(erkenningDoor);
     // Voornaam
     Field voornaamGewijzigd = getLvField(VOORNAMEN_GW);
     Field voornaamGewijzigdIn = getLvField(VOORNAMEN_GW_IN);
@@ -170,6 +208,22 @@ public class Page40LvForm2 extends Page40LvForm {
       ProNativeSelect field = getLvField(KEUZE_GESLACHTSNAAM, ProNativeSelect.class);
       field.setContainerDataSource(container);
       field.setValue(getBean().getKeuzeGeslachtsnaam());
+    }
+
+    Field toestemming = getLvField(TOESTEMMING_DOOR);
+    if (toestemming != null) {
+      toestemming.addListener((ValueChangeListener) event -> {
+        checkToestemmingAnders((LvToestemmingType) event.getProperty().getValue());
+      });
+      checkToestemmingAnders((LvToestemmingType) toestemming.getValue());
+    }
+
+    Field toegepastRecht = getLvField(TOEGEPAST_RECHT);
+    if (toegepastRecht != null) {
+      toegepastRecht.addListener((ValueChangeListener) event -> {
+        checkToegepastRechtAnders((LvToegepastRechtType) event.getProperty().getValue());
+      });
+      checkToegepastRechtAnders((LvToegepastRechtType) toegepastRecht.getValue());
     }
 
     super.afterSetBean();
@@ -191,10 +245,33 @@ public class Page40LvForm2 extends Page40LvForm {
 
     ifLvField(GESLN_OUDER_VG, field -> field.setVisible(betreftOuderPersoon.isVisible()));
     ifLvField(GESLN_OUDER_GW, field -> field.setVisible(betreftOuderPersoon.isVisible()));
-    ifLvField(VOORN_OUDER, field -> field.setVisible(betreftOuderPersoon.isVisible()));
 
     if (LvType.WETTIGING.is(zaakDossier.getSoort())) {
       ofNullable(getLvField(GESLN_IS)).ifPresent(f -> f.setVisible(betreftOuderPersoon.isVisible()));
+    }
+    repaint();
+  }
+
+  private void checkToestemmingAnders(LvToestemmingType toestemmingType) {
+    boolean isAnders = LvToestemmingType.ANDERS == toestemmingType;
+    Field anders = getLvField(TOESTEMMING_ANDERS);
+    if (isAnders) {
+      anders.setVisible(true);
+    } else {
+      anders.setValue("");
+      anders.setVisible(false);
+    }
+    repaint();
+  }
+
+  private void checkToegepastRechtAnders(LvToegepastRechtType type) {
+    boolean isAnders = LvToegepastRechtType.ANDERS == type;
+    Field anders = getLvField(TOEGEPAST_RECHT_ANDERS);
+    if (isAnders) {
+      anders.setVisible(true);
+    } else {
+      anders.setValue("");
+      anders.setVisible(false);
     }
     repaint();
   }

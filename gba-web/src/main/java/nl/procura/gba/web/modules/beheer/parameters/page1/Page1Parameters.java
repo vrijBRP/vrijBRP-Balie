@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -40,9 +40,7 @@ public class Page1Parameters extends ButtonPageTemplate {
   public void event(PageEvent event) {
 
     try {
-
       if (event.isEvent(InitPage.class)) {
-
         ParameterBean parameterBean = new ParameterBean();
         parameterBean.setFieldValues(getServices().getParameterService().getAllParameters(), 0, 0);
 

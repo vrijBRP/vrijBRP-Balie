@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -120,6 +120,15 @@ public class DossLv extends BaseEntity {
 
   @Column(name = "betreft_ouder")
   private String betreftOuder;
+
+  @Column(name = "toestemming")
+  private String toestemming;
+
+  @Column(name = "toeg_recht")
+  private BigDecimal toegepastRecht;
+
+  @Column(name = "gezag")
+  private String gezag;
 
   @Column(name = "betreft_ouder_persoon")
   private BigDecimal betreftOuderP;

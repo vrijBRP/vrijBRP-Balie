@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,8 @@
 
 package nl.procura.gba.web.modules.bs.lv.page30;
 
+import static java.util.Comparator.comparing;
+
 import java.util.Arrays;
 
 import nl.procura.gba.web.components.containers.GbaContainer;
@@ -28,6 +30,7 @@ public class SoortLvContainer extends GbaContainer {
 
   public SoortLvContainer() {
     Arrays.stream(LvType.values())
+        .sorted(comparing(LvType::getOms))
         .filter(type -> type != LvType.ONBEKEND)
         .forEach(this::addItem);
   }

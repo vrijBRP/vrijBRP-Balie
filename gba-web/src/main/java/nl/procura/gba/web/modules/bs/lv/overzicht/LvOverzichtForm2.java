@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,10 +24,12 @@ import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.util.List;
 
 import nl.procura.gba.common.DateTime;
+import nl.procura.gba.web.common.tables.GbaTables;
 import nl.procura.gba.web.components.layouts.form.ReadOnlyForm;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.lv.LvType;
@@ -35,8 +37,10 @@ import nl.procura.gba.web.services.bs.lv.afstamming.DossierLv;
 import nl.procura.gba.web.services.bs.lv.afstamming.KeuzeVaststellingGeslachtsnaam;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvDocumentDoorType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvField;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvGezagType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvOuderType;
 import nl.procura.gba.web.services.bs.lv.afstamming.LvSoortVerbintenisType;
+import nl.procura.gba.web.services.bs.lv.afstamming.LvToegepastRechtType;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 
 public class LvOverzichtForm2 extends ReadOnlyForm<LvOverzichtBean1> {
@@ -94,13 +98,14 @@ public class LvOverzichtForm2 extends ReadOnlyForm<LvOverzichtBean1> {
     // Ouder
     LvOuderType betreftOuderType = LvOuderType.get(zaakDossier.getBetreftOuder());
     String betreftOuderPersoon = zaakDossier.getBetreftOuderPersoon().getNaam().getPred_adel_voorv_gesl_voorn();
-    String betreftOuder = betreftOuderType.getOms() + (fil(betreftOuderPersoon)
+    String betreftOuder = betreftOuderType.getOms() + (fil(trim(betreftOuderPersoon))
         ? " (" + betreftOuderPersoon + ")"
         : "");
     bean.setBetreftOuder(betreftOuder);
     bean.setOuderschapVastgesteld(betreftOuder);
     bean.setOuderschapOntkend(betreftOuder);
     bean.setFamRecht(betreftOuder);
+    bean.setErkenningDoor(betreftOuder);
 
     bean.setGeslOuderVastgesteld(zaakDossier.getGeslOuder());
     bean.setGeslOuderGewijzigd(zaakDossier.getGeslOuder());
@@ -119,6 +124,9 @@ public class LvOverzichtForm2 extends ReadOnlyForm<LvOverzichtBean1> {
     bean.setVoornamenVastgesteldAls(zaakDossier.getVoorn());
     bean.setGeslachtsaand(Geslacht.get(zaakDossier.getGeslAand()));
 
+    bean.setToestemmingDoor(zaakDossier.getToestemming());
+    bean.setToegepastRecht(getToegepastRecht(zaakDossier));
+    bean.setGezag(LvGezagType.get(zaakDossier.getGezag()));
     bean.setGekozenRecht(zaakDossier.getGekozenRecht());
     bean.setDagVanWijziging(new DateTime(zaakDossier.getDatumWijziging()));
     bean.setVerbeterd(zaakDossier.getVerbeterd().replaceAll("\n", "<br/>"));
@@ -126,6 +134,14 @@ public class LvOverzichtForm2 extends ReadOnlyForm<LvOverzichtBean1> {
     bean.setAdoptiefouders(getAdoptiefOuders(zaakDossier));
 
     setBean(bean);
+  }
+
+  private static String getToegepastRecht(DossierLv zaakDossier) {
+    LvToegepastRechtType type = LvToegepastRechtType.get(zaakDossier.getToegepastRecht().longValue());
+    if (type == LvToegepastRechtType.ONBEKEND) {
+      return GbaTables.LAND.get(zaakDossier.getToegepastRecht()).getDescription();
+    }
+    return type.getOms();
   }
 
   @Override

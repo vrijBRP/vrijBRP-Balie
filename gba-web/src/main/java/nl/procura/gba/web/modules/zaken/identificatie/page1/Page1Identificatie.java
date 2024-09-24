@@ -35,6 +35,7 @@ import nl.procura.gba.web.modules.zaken.identificatie.page1.IdVraagGenerator.IDV
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.modules.zaken.rijbewijs.errorpage.RijbewijsErrorWindow;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.gba.verificatievraag.VerificatievraagService;
 import nl.procura.gba.web.services.gba.verificatievraag.VerificatievraagService.VerificatieActie;
 import nl.procura.gba.web.services.zaken.identiteit.IdVerplichtMate;
@@ -133,9 +134,9 @@ public class Page1Identificatie extends NormalPageTemplate {
       ol2.getRight().setCaption("Opties");
       ol2.getRight().addButton(buttonRpsInfo, this);
 
-      boolean isVrsEnabled = getServices().getReisdocumentService().getVrsService().isEnabled();
-      buttonRpsInfo.setEnabled(isVrsEnabled);
-      buttonBasisregister.setEnabled(isVrsEnabled);
+      VrsService vrsService = getServices().getReisdocumentService().getVrsService();
+      buttonRpsInfo.setEnabled(vrsService.isEnabled());
+      buttonBasisregister.setEnabled(vrsService.isBasisregisterEnabled());
 
       OptieLayout ol3 = new OptieLayout();
       ol3.getLeft().addComponent(new Fieldset("Identificatie aan de hand van vragen.", table));

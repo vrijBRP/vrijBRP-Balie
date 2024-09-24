@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -45,9 +45,14 @@ public enum LvDocumentDoorType implements EnumWithCode<Integer> {
   }
 
   public static LvDocumentDoorType get(Integer code) {
+    return get(code, ONBEKEND);
+  }
+
+  public static LvDocumentDoorType get(Integer code, LvDocumentDoorType defaultType) {
     return Arrays.stream(values())
+        .filter(value -> value.getCode() > 0)
         .filter(value -> value.getCode().equals(code))
-        .findFirst().orElse(ONBEKEND);
+        .findFirst().orElse(defaultType);
   }
 
   @Override

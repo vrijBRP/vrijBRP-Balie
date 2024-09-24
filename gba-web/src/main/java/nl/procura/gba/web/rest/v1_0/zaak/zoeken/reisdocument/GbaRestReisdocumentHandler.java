@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,20 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.zoeken.reisdocument;
 
-import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ANR;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.BSN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DEELZAAK;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DEELZAKEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEGEVEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.LOCATIE_AFHAAL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.LOCATIE_INVOER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NAAM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TOELICHTING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TYPE;
 import static nl.procura.standard.Globalfunctions.aval;
 import static nl.procura.standard.Globalfunctions.fil;
+
+import org.apache.commons.lang3.StringUtils;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElement;
@@ -32,7 +43,13 @@ import nl.procura.gba.web.services.beheer.locatie.Locatie;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
-import nl.procura.gba.web.services.zaken.reisdocumenten.*;
+import nl.procura.gba.web.services.zaken.reisdocumenten.LeveringType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentStatus;
+import nl.procura.gba.web.services.zaken.reisdocumenten.SluitingType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.Toestemming;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ToestemmingType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.Toestemmingen;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.StaatloosType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.TekenenType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.VermeldPartnerType;
@@ -141,7 +158,9 @@ public class GbaRestReisdocumentHandler extends GbaRestElementHandler {
 
     String bewijsIdentiteit = getServices().getParameterService().getParm(ParameterConstant.RAAS_IDENT_BEWIJS);
     if (zaak.getIdentificatie().isVastgesteld()) {
-      bewijsIdentiteit = zaak.getIdentificatie().getKorteOmschrijving();
+      if (StringUtils.isNotBlank(zaak.getIdentificatie().getKorteOmschrijving())) {
+        bewijsIdentiteit = zaak.getIdentificatie().getKorteOmschrijving();
+      }
     }
 
     add(reisdocument, GbaRestElementType.DATUM_EINDE_GELDIGHEID, zaak.getDatumEindeGeldigheid());

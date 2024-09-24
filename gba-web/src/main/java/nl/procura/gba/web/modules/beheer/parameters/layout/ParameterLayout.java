@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -60,6 +60,10 @@ public class ParameterLayout<T extends GbaForm> extends NormalPageTemplate {
 
   protected boolean isModuleProfiel() {
     return VaadinUtils.getChild(getWindow(), Page11Profielen.class) != null;
+  }
+
+  protected boolean isModuleAlgemeen() {
+    return !isModuleGebruiker() && !isModuleProfiel();
   }
 
   protected boolean isPreviousButton() {

@@ -1,3 +1,22 @@
+/*
+ * Copyright 2023 - 2024 Procura B.V.
+ *
+ * In licentie gegeven krachtens de EUPL, versie 1.2
+ * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
+ * U kunt een kopie van de licentie vinden op:
+ *
+ *   https://github.com/vrijBRP/vrijBRP/blob/master/LICENSE.md
+ *
+ * Deze bevat zowel de Nederlandse als de Engelse tekst
+ *
+ * Tenzij dit op grond van toepasselijk recht vereist is of schriftelijk
+ * is overeengekomen, wordt software krachtens deze licentie verspreid
+ * "zoals deze is", ZONDER ENIGE GARANTIES OF VOORWAARDEN, noch expliciet
+ * noch impliciet.
+ * Zie de licentie voor de specifieke bepalingen voor toestemmingen en
+ * beperkingen op grond van de licentie.
+ */
+
 package nl.procura.gba.web.services.bs.lv.afstamming;
 
 import java.util.Arrays;
@@ -31,7 +50,10 @@ public enum LvField {
   BETREFT_OUDER_PERSOON("betreftOuderPersoon"),
   OUDERSCHAP_ONTKEND("ouderschapOntkend"),
   OUDERSCHAP_VASTGESTELD("ouderschapVastgesteld"),
+  ERKENNING_DOOR("erkenningDoor"),
   FAMRECHT("famRecht"),
+  TOESTEMMING_DOOR("toestemmingDoor"),
+  TOESTEMMING_ANDERS("toestemmingAnders"),
   GESLN_OUDER_VG("geslOuderVastgesteld"),
   GESLN_OUDER_GW("geslOuderGewijzigd"),
   VOORN_OUDER("voornamenOuderVastgesteldAls"),
@@ -44,6 +66,9 @@ public enum LvField {
   VOORNAMEN_VA("voornamenVastgesteldAls"),
   VOORNAMEN_GW_IN("voornamenGewijzigdIn"),
   GESL_AAND("geslachtsaand"),
+  TOEGEPAST_RECHT("toegepastRecht"),
+  TOEGEPAST_RECHT_ANDERS("toegepastRechtAnders"),
+  GEZAG("gezag"),
   GEKOZEN_RECHT("gekozenRecht"),
   DAG_VAN_WIJZIGING("dagVanWijziging"),
   VERBETERD("verbeterd"),
@@ -71,10 +96,11 @@ public enum LvField {
 
   public static String[] getForm2(LvType type) {
     return toMapping(type).toArray(
-        Arrays.asList(BETREFT_OUDER, OUDERSCHAP_ONTKEND, OUDERSCHAP_VASTGESTELD, FAMRECHT, BETREFT_OUDER_PERSOON,
-            GESLN_OUDER_VG, GESLN_OUDER_GW, VOORN_OUDER, KEUZE_GESLACHTSNAAM,
+        Arrays.asList(BETREFT_OUDER, OUDERSCHAP_ONTKEND, OUDERSCHAP_VASTGESTELD, FAMRECHT, ERKENNING_DOOR,
+            BETREFT_OUDER_PERSOON, TOESTEMMING_DOOR, TOESTEMMING_ANDERS, GESLN_OUDER_VG, GESLN_OUDER_GW, VOORN_OUDER,
+            KEUZE_GESLACHTSNAAM,
             GESLN_IS, GESLN_VA, GESLNM_GW, GESLNM_KIND_GW,
-            VOORNAMEN_VA, VOORNAMEN_GW, VOORNAMEN_GW_IN, GESL_AAND,
+            VOORNAMEN_VA, VOORNAMEN_GW, VOORNAMEN_GW_IN, GESL_AAND, TOEGEPAST_RECHT, TOEGEPAST_RECHT_ANDERS, GEZAG,
             GEKOZEN_RECHT, DAG_VAN_WIJZIGING, VERBETERD,
             OUDERS, ADOPTIEFOUDERS));
   }
@@ -162,6 +188,12 @@ public enum LvField {
 
       case NAAMSKEUZE: // 19
         return new Mapping(DOCUMENT, DOCUMENT_ANDERS, NUMMER, DATUM, PLAATS, DOOR, GESLN_IS);
+
+      case ERKENNING: // 20
+        return new Mapping(DOCUMENT, DOCUMENT_ANDERS, NUMMER, DATUM, PLAATS, DOOR,
+            ERKENNING_DOOR, BETREFT_OUDER_PERSOON,
+            TOESTEMMING_DOOR, TOESTEMMING_ANDERS, TOEGEPAST_RECHT, TOEGEPAST_RECHT_ANDERS, GEZAG,
+            KEUZE_GESLACHTSNAAM, GESLN_IS);
       default:
         return new Mapping();
     }

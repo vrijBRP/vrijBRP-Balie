@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2023 - 2024 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -86,6 +86,7 @@ import nl.procura.gba.web.modules.beheer.parameters.layout.AvailableDatabasesLay
 import nl.procura.gba.web.modules.beheer.parameters.layout.ConfigParameterLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.DatabaseParameterLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.EmailParameterLayout;
+import nl.procura.gba.web.modules.beheer.parameters.layout.GenericParametersLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.GeoParameterLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.RaasParameterLayout;
 import nl.procura.gba.web.modules.beheer.parameters.layout.ZakenBehandelingParametersLayout;
@@ -118,7 +119,7 @@ public class ParameterTreeContainer extends HierarchicalContainer implements Pro
     removeAllItems();
 
     addTreeItem(GROUP_ALGEMEEN, true, HorizontalLayout.class);
-    addTreeItem(GROUP_ALGEMENE_INSTELLINGEN, GROUP_ALGEMEEN, false, DatabaseParameterLayout.class);
+    addTreeItem(GROUP_ALGEMENE_INSTELLINGEN, GROUP_ALGEMEEN, false, GenericParametersLayout.class);
     addTreeItem(GROUP_APPS, GROUP_ALGEMEEN, false, AppInstanceLayout.class);
     addTreeItem(GROUP_DIENSTEN, true, HorizontalLayout.class);
     addTreeItem(GROUP_OVERIG, true, HorizontalLayout.class);
