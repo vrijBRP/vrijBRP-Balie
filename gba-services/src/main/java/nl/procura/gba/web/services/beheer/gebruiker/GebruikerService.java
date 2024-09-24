@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,24 +19,41 @@
 
 package nl.procura.gba.web.services.beheer.gebruiker;
 
-import static java.util.Arrays.asList;
-import static nl.procura.gba.common.MiscUtils.*;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.AUTHENTICATION;
+import static nl.procura.commons.core.exceptions.ProExceptionType.DATABASE;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.gba.common.MiscUtils.copy;
+import static nl.procura.gba.common.MiscUtils.copyList;
+import static nl.procura.gba.common.MiscUtils.copySet;
+import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.jpa.personen.dao.UsrDao.findByEmail;
 import static nl.procura.gba.jpa.personen.dao.UsrDao.findByName;
+import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.BEEINDIGD;
 import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.NOG_NIET_ACTUEEL;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.*;
-import static nl.procura.commons.core.exceptions.ProExceptionType.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.jpa.personen.dao.UsrDao;
 import nl.procura.gba.jpa.personen.db.Usr;
@@ -51,6 +68,7 @@ import nl.procura.gba.web.rest.v1_0.gebruiker.sync.GbaRestGebruikerWachtwoordSyn
 import nl.procura.gba.web.services.AbstractService;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Transactional;
+import nl.procura.gba.web.services.applicatie.meldingen.ServiceMelding;
 import nl.procura.gba.web.services.applicatie.onderhoud.Application;
 import nl.procura.gba.web.services.beheer.KoppelActie;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoType;
@@ -61,7 +79,6 @@ import nl.procura.gba.web.services.beheer.profiel.Profiel;
 import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.theme.Credentials;
 
 public class GebruikerService extends AbstractService {
@@ -79,6 +96,31 @@ public class GebruikerService extends AbstractService {
 
   public GebruikerService() {
     super("Gebruikers");
+  }
+
+  @Override
+  public void check() {
+    checkVerloopAccount();
+  }
+
+  private void checkVerloopAccount() {
+    int verloopAccountInDagen = getVerloopAccountInDagen();
+    if (verloopAccountInDagen >= 0) {
+      DateTime datumEinde = getServices().getGebruiker().getDatumEinde();
+      if (datumEinde != null && datumEinde.getDate() != null) {
+        int dagen = new ProcuraDate().diffInDays(new ProcuraDate(datumEinde.getDate()));
+        if (dagen <= verloopAccountInDagen) {
+          ServiceMelding melding = new ServiceMelding();
+          melding.setId("Verlopen account");
+          melding.setGebruiker(getServices().getGebruiker());
+          melding.setAdminOnly(false);
+          melding.setCategory(SYSTEM);
+          melding.setSeverity(WARNING);
+          melding.setMelding("Uw account is nog maar " + dagen + " dag(en) actief.");
+          getServices().getMeldingService().add(melding);
+        }
+      }
+    }
   }
 
   public void checkEmail(Gebruiker gebruiker, String email) {
@@ -312,9 +354,16 @@ public class GebruikerService extends AbstractService {
   public ProcuraDate getWachtwoordVerloopdatum(Gebruiker gebruiker) {
     ProcuraDate mutatieDatum = getWachtwoordMutatiedatum(gebruiker);
     String aantalDagen = gebruiker.getParameters().get(ParameterConstant.WACHTWOORD_VERLOOP).getValue();
-
     ProcuraDate date = mutatieDatum == null ? new ProcuraDate() : getWachtwoordMutatiedatum(gebruiker);
     return date.addDays(aval(aantalDagen));
+  }
+
+  public int getVerloopAccountInDagen() {
+    return aval(getServices().getGebruikerService().getSysteemParm(ParameterConstant.ACCOUNT_VERLOOP, false));
+  }
+
+  public boolean isWachtwoordTijdelijk() {
+    return pos(getServices().getGebruikerService().getSysteemParm(ParameterConstant.WACHTWOORD_TIJDELIJK, false));
   }
 
   public boolean isCorrectWachtwoord(Gebruiker gebruiker, Credentials credentials) {
@@ -358,7 +407,7 @@ public class GebruikerService extends AbstractService {
   @ThrowException("Fout bij het opslaan van de gebruiker")
   @Transactional
   public void save(Gebruiker gebruiker) {
-    save(asList(gebruiker));
+    save(Collections.singletonList(gebruiker));
     syncRemoteUser(gebruiker);
   }
 
@@ -374,16 +423,15 @@ public class GebruikerService extends AbstractService {
   }
 
   public Gebruiker setInformatie(Gebruiker gebruiker) {
-    return setInformatie(asList(gebruiker)).get(0);
+    return setInformatie(Collections.singletonList(gebruiker)).get(0);
   }
 
   public List<Gebruiker> setInformatie(List<Gebruiker> gebruikers) {
     for (Gebruiker gebruiker : gebruikers) {
-      Gebruiker impl = gebruiker;
-      impl.setInformatie(getServices().getGebruikerInfoService().getGebruikerInfo(gebruiker));
-      impl.setEmail(gebruiker.getInformatie().getInfo(GebruikerInfoType.email).getGebruikerWaarde());
-      impl.setTelefoonnummer(gebruiker.getInformatie().getInfo(GebruikerInfoType.telefoon).getGebruikerWaarde());
-      impl.setAfdeling(gebruiker.getInformatie().getInfo(GebruikerInfoType.afdelingsnaam).getGebruikerWaarde());
+      gebruiker.setInformatie(getServices().getGebruikerInfoService().getGebruikerInfo(gebruiker));
+      gebruiker.setEmail(gebruiker.getInformatie().getInfo(GebruikerInfoType.email).getGebruikerWaarde());
+      gebruiker.setTelefoonnummer(gebruiker.getInformatie().getInfo(GebruikerInfoType.telefoon).getGebruikerWaarde());
+      gebruiker.setAfdeling(gebruiker.getInformatie().getInfo(GebruikerInfoType.afdelingsnaam).getGebruikerWaarde());
     }
 
     return gebruikers;
@@ -399,16 +447,19 @@ public class GebruikerService extends AbstractService {
 
   @Transactional
   @ThrowException("Fout bij het opslaan van het wachtwoord")
-  public void setWachtwoord(Gebruiker gebruiker, String wachtwoord, boolean reset) {
+  public boolean setWachtwoord(Gebruiker gebruiker, String wachtwoord, boolean resetPw) {
     gebruiker.setGeblokkeerd(false);
-    GebruikerWachtwoord newGebruikerWw = new GebruikerWachtwoord(gebruiker, passwordService.encryptPassword(wachtwoord),
-        reset);
+    byte[] encryptedPw = passwordService.encryptPassword(wachtwoord);
+    boolean isTemporary = isWachtwoordTijdelijk();
+    resetPw = resetPw && isTemporary;
+    GebruikerWachtwoord newGebruikerWw = new GebruikerWachtwoord(gebruiker, encryptedPw, resetPw);
 
     // Save new Password
     saveEntity(newGebruikerWw);
     saveEntity(gebruiker);
 
-    syncChangeRemotePassword(gebruiker, reset, newGebruikerWw);
+    syncChangeRemotePassword(gebruiker, newGebruikerWw);
+    return resetPw;
   }
 
   public void setWachtwoordVerloop(Gebruiker gebruiker) {
@@ -434,21 +485,20 @@ public class GebruikerService extends AbstractService {
    */
   public String generateWachtwoord() {
     SecureRandom random = new SecureRandom();
-    StringBuilder message = new StringBuilder();
-    message.append(random.nextInt(MAX_RANDOM_NUMBER));
-    message.append(randomLetter(random));
-    message.append(randomLetter(random));
-    message.append(random.nextInt(MAX_RANDOM_NUMBER));
-    message.append(randomLetter(random));
-    message.append(randomLetter(random));
-    message.append(random.nextInt(MAX_RANDOM_NUMBER));
-    message.append(randomLetter(random));
-    message.append(randomLetter(random));
-    message.append(random.nextInt(MAX_RANDOM_NUMBER));
-    message.append(randomLetter(random));
-    message.append(randomLetter(random));
+    String message = String.valueOf(random.nextInt(MAX_RANDOM_NUMBER))
+        + randomLetter(random)
+        + randomLetter(random)
+        + random.nextInt(MAX_RANDOM_NUMBER)
+        + randomLetter(random)
+        + randomLetter(random)
+        + random.nextInt(MAX_RANDOM_NUMBER)
+        + randomLetter(random)
+        + randomLetter(random)
+        + random.nextInt(MAX_RANDOM_NUMBER)
+        + randomLetter(random)
+        + randomLetter(random);
 
-    return message.toString().toLowerCase(Locale.ENGLISH).substring(0, MAX_PASSWORD_LEN);
+    return message.toLowerCase(Locale.ENGLISH).substring(0, MAX_PASSWORD_LEN);
   }
 
   @Transactional
@@ -461,10 +511,9 @@ public class GebruikerService extends AbstractService {
       laadAttributen(gebruiker);
       String currentPassword = getCurrentPassword(gebruiker).orElse(null);
       if (currentPassword == null || !StringUtils.equals(currentPassword, password)) {
-        GebruikerWachtwoord ww = new GebruikerWachtwoord(gebruiker, passwordService.encryptPassword(password), true);
+        GebruikerWachtwoord ww = new GebruikerWachtwoord(gebruiker, passwordService.encryptPassword(password), resetPw);
         ww.setDIn(date);
         ww.setTIn(time);
-        ww.setResetPw(toBigDecimal(resetPw ? 1 : 0));
         saveEntity(ww);
         saveEntity(gebruiker);
         cache.cleanAll();
@@ -535,7 +584,7 @@ public class GebruikerService extends AbstractService {
   /**
    * Sync with remote app instance
    */
-  private void syncChangeRemotePassword(Gebruiker gebruiker, boolean reset, GebruikerWachtwoord newGebruikerWw) {
+  private void syncChangeRemotePassword(Gebruiker gebruiker, GebruikerWachtwoord newGebruikerWw) {
     for (Application syncInstance : getServices().getOnderhoudService().getActiveApps(false)) {
       try {
         if (syncInstance.getAttributes().isSyncUsers()) {
@@ -543,8 +592,8 @@ public class GebruikerService extends AbstractService {
           vraag.setGebruikersnaam(gebruiker.getGebruikersnaam());
           vraag.setDatum(newGebruikerWw.getDIn());
           vraag.setTijd(newGebruikerWw.getTIn());
+          vraag.setResetPassword(newGebruikerWw.getResetPw().intValue() > 0);
           vraag.setWachtwoord(passwordService.getPassword(newGebruikerWw.getPw()));
-          vraag.setResetPassword(reset);
 
           GbaRestGebruikerSyncVraag syncVraag = new GbaRestGebruikerSyncVraag();
           syncVraag.setWachtwoord(vraag);

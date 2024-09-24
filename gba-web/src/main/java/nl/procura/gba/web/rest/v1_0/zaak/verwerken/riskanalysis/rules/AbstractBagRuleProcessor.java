@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,6 +23,9 @@ import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.HUISLETTER;
 import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.HUISNUMMER;
 import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.POSTCODE;
 import static nl.procura.geo.rest.domain.ngr.wfs.SearchType.TOEVOEGING;
+import static nl.procura.standard.Globalfunctions.aval;
+
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -31,6 +34,10 @@ import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.diensten.gba.ple.openoffice.formats.Adresformats;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
 import nl.procura.gba.web.services.beheer.bag.BagService;
+import nl.procura.geo.rest.domain.baglv.adresV2.AdresParametersV2;
+import nl.procura.geo.rest.domain.baglv.adresV2.AdresV2;
+import nl.procura.geo.rest.domain.baglv.adresV2.LVBagRequestV2;
+import nl.procura.geo.rest.domain.baglv.adresV2.LVBagResponseV2;
 import nl.procura.geo.rest.domain.ngr.wfs.SearchParam;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchRequest;
@@ -47,7 +54,7 @@ public abstract class AbstractBagRuleProcessor extends AbstractRuleProcessor {
     super(ruleType);
   }
 
-  protected WfsSearchResponse search(Adresformats newAddress) {
+  protected LVBagResponseV2 searchBagLV(Adresformats newAddress) {
     BagService geoService = getServices().getGeoService();
     if (!geoService.isGeoServiceActive()) {
       log(ProExceptionSeverity.ERROR, "De parameter Geo / bag => " + "Geo / BAG service actief staat niet op Ja");
@@ -58,7 +65,44 @@ public abstract class AbstractBagRuleProcessor extends AbstractRuleProcessor {
     String hnrL = newAddress.getHuisletter();
     String hnrT = newAddress.getHuisnummertoev();
 
-    WfsSearchRequest request = new WfsSearchRequest().setRequestorName("BRP / Risk analysis")
+    LVBagRequestV2 request = new LVBagRequestV2()
+        .setRequestorName("BRP / Risk analysis")
+        .setAdres(new AdresParametersV2()
+            .setExacteMatch(true)
+            .setPostcode(pc)
+            .setHuisnummer(aval(hnr))
+            .setHuisletter(hnrL)
+            .setHuisnummertoevoeging(hnrT));
+
+    LVBagResponseV2 lvBagResponse = geoService.searchLvBagService(request);
+    List<AdresV2> adressen = lvBagResponse.getAdresResponse().getAdressen();
+    int total = adressen.size();
+
+    if (total > NumberUtils.INTEGER_ONE) {
+      warn("Meerdere adressen {0} gevonden", total);
+
+    } else if (total == NumberUtils.INTEGER_ZERO) {
+      warn("Geen adres gevonden", total);
+
+    } else {
+      return lvBagResponse;
+    }
+    return null;
+  }
+
+  protected WfsSearchResponse searchWfs(Adresformats newAddress) {
+    BagService geoService = getServices().getGeoService();
+    if (!geoService.isGeoServiceActive()) {
+      log(ProExceptionSeverity.ERROR, "De parameter Geo / bag => " + "Geo / BAG service actief staat niet op Ja");
+    }
+
+    String pc = Postcode.getCompact(newAddress.getPostcode());
+    String hnr = String.valueOf(newAddress.getHuisnummer());
+    String hnrL = newAddress.getHuisletter();
+    String hnrT = newAddress.getHuisnummertoev();
+
+    WfsSearchRequest request = new WfsSearchRequest()
+        .setRequestorName("BRP / Risk analysis")
         .setOffset(0)
         .setRows(5)
         .setFeatureType(FeatureType.VERBLIJFSOBJECT)
@@ -103,14 +147,12 @@ public abstract class AbstractBagRuleProcessor extends AbstractRuleProcessor {
   }
 
   private String formatSearchArgs(String pc, String hnr, String hnrL, String hnrT) {
-    return new StringBuilder()
-        .append("Zoekargumenten: postcode: ")
-        .append(pc).append(", huisnummer: ")
-        .append(StringUtils.isBlank(hnr) ? "N.v.t." : hnr)
-        .append(", huisletter: ")
-        .append(StringUtils.isBlank(hnrL) ? "N.v.t." : hnrL)
-        .append(", toevoeging: ")
-        .append(StringUtils.isBlank(hnrT) ? "N.v.t." : hnrT)
-        .toString();
+    return "Zoekargumenten: postcode: "
+        + pc + ", huisnummer: "
+        + (StringUtils.isBlank(hnr) ? "N.v.t." : hnr)
+        + ", huisletter: "
+        + (StringUtils.isBlank(hnrL) ? "N.v.t." : hnrL)
+        + ", toevoeging: "
+        + (StringUtils.isBlank(hnrT) ? "N.v.t." : hnrT);
   }
 }

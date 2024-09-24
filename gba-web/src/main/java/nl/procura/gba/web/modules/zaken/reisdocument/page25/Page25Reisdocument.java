@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -40,7 +40,7 @@ public class Page25Reisdocument extends ReisdocumentAanvraagPage {
 
   @Override
   public void onNextPage() {
-    getServices().getKassaService().addToWinkelwagen(getAanvraag(), false);
+    getServices().getKassaService().addToWinkelwagen(getAanvraag());
     getNavigation().goToPage(new Page19Reisdocument(getAanvraag()));
   }
 }

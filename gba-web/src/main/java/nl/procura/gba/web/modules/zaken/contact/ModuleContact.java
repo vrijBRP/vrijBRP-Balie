@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -35,10 +35,12 @@ public class ModuleContact extends ZakenModuleTemplate {
 
   private final Contact               contact;
   private final ContactStatusListener succesListener;
+  private final String                warning;
 
-  public ModuleContact(Contact contact, ContactStatusListener succesListener) {
+  public ModuleContact(Contact contact, ContactStatusListener succesListener, String warning) {
     this.contact = contact;
     this.succesListener = succesListener;
+    this.warning = warning;
   }
 
   @Override
@@ -47,7 +49,7 @@ public class ModuleContact extends ZakenModuleTemplate {
     super.event(event);
 
     if (event.isEvent(InitPage.class)) {
-      getPages().getNavigation().goToPage(new Page1Contact(contact, succesListener));
+      getPages().getNavigation().goToPage(new Page1Contact(contact, succesListener, warning));
     }
   }
 }

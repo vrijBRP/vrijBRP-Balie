@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,13 +19,14 @@
 
 package nl.procura.gba.web.modules.zaken.rijbewijs.page9;
 
-import static nl.procura.standard.Globalfunctions.along;
-import static nl.procura.standard.Globalfunctions.isTru;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.isTru;
 
 import com.vaadin.ui.Button;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.modules.zaken.rijbewijs.RijbewijsPage;
 import nl.procura.gba.web.modules.zaken.rijbewijs.page1.Page1Rijbewijs;
 import nl.procura.gba.web.modules.zaken.rijbewijs.page7.Page7Rijbewijs;
@@ -38,7 +39,6 @@ import nl.procura.rdw.messages.P1656;
 import nl.procura.rdw.messages.P1658;
 import nl.procura.rdw.processen.p1656.f02.AANVRRYBKGEG;
 import nl.procura.rdw.processen.p1656.f02.STATRYBKGEG;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
@@ -80,8 +80,9 @@ public class Page9Rijbewijs extends RijbewijsPage {
               + "Is dit niet het geval dan kan de aanvraag worden geannuleerd.");
 
       form1 = new Page9RijbewijsForm1(aanvraag);
-
       addComponent(form1);
+
+      getServices().getKassaService().addToWinkelwagen(aanvraag);
     }
 
     super.event(event);

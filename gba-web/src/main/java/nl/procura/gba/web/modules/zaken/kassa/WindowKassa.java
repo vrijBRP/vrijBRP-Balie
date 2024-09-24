@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -26,7 +26,7 @@ public class WindowKassa extends GbaModalWindow {
 
   public WindowKassa() {
 
-    super("Kassa (Escape om te sluiten)", "900px");
+    super("Kassa (Escape om te sluiten)", "1000px");
   }
 
   @Override

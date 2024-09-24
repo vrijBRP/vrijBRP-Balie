@@ -56,12 +56,14 @@ import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.trim;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isAllBlank;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import nl.amp.api.domain.BevestigingKoppelingOrderRequest;
@@ -191,7 +193,7 @@ public class ReisdocumentBezorgingService extends AbstractService implements Con
   }
 
   public Optional<RdmAmp> findByAanvrNr(String aanvrNr) {
-    return RdmAmpDao.findByAanvrNr(aanvrNr);
+    return RdmAmpDao.findByAanvrNr(new Aanvraagnummer(aanvrNr).getNummer());
   }
 
   public List<Bezorging> findOther(RdmAmp voormelding) {
@@ -244,11 +246,11 @@ public class ReisdocumentBezorgingService extends AbstractService implements Con
       String email = dbcg.getContactWaarde(pl, ContactgegevensService.EMAIL);
       melding.setEmail(email);
     }
-    if (emp(melding.getTel1()) || emp(melding.getTel2())) {
+    if (emp(melding.getTel1())) {
       String mobiel = dbcg.getContactWaarde(pl, ContactgegevensService.TEL_MOBIEL);
       String thuis = dbcg.getContactWaarde(pl, ContactgegevensService.TEL_THUIS);
-      melding.setTel1(mobiel);
-      melding.setTel2(thuis);
+      melding.setTel1(defaultIfBlank(mobiel, thuis));
+      melding.setTel2(Objects.equals(melding.getTel1(), mobiel) ? thuis : "");
     }
   }
 

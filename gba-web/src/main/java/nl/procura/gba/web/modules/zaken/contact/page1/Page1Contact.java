@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,12 @@
 
 package nl.procura.gba.web.modules.zaken.contact.page1;
 
-import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.Globalfunctions.along;
 
+import org.apache.commons.lang3.StringUtils;
+
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.zaken.contact.ContactTabel;
 import nl.procura.gba.web.modules.zaken.contact.page2.Page2Contact;
@@ -29,7 +32,6 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.contact.Contact;
 import nl.procura.gba.web.services.zaken.contact.ContactStatusListener;
 import nl.procura.gba.web.services.zaken.contact.ContactVerplichtMate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.label.H2;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -40,11 +42,13 @@ public class Page1Contact extends NormalPageTemplate {
 
   private final Contact               contact;
   private final ContactStatusListener succesListener;
+  private final String                warning;
   private ContactTabel                table = null;
 
-  public Page1Contact(Contact contact, ContactStatusListener succesListener) {
+  public Page1Contact(Contact contact, ContactStatusListener succesListener, String warning) {
     this.contact = contact;
     this.succesListener = succesListener;
+    this.warning = warning;
   }
 
   @Override
@@ -80,8 +84,15 @@ public class Page1Contact extends NormalPageTemplate {
       getButtonLayout().setExpandRatio(h2, 1f);
       getButtonLayout().setWidth("100%");
 
+      String infoMsg = "Om verder te kunnen zullen de contactgegevens van de aanvrager moeten worden vastgesteld. "
+          + "<br/>Vul minimaal één contactgegeven in.";
+
+      if (StringUtils.isNotBlank(warning)) {
+        infoMsg = warning;
+      }
+
       setInfo("Contactgegevens van " + contact.getName(),
-          "Om verder te kunnen zullen de contactgegevens van de aanvrager moeten worden vastgesteld. <br/>Vul minimaal één contactgegeven in.");
+          infoMsg);
 
       addComponent(table);
 

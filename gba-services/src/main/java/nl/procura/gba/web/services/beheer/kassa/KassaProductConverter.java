@@ -118,7 +118,7 @@ public class KassaProductConverter {
     // Thuisbezorging
     if (aanvraag.isThuisbezorgingGewenst()) {
       if (!isBezorgingBijVerzoek) {
-        list.add(getKassaProduct(KassaType.BEZORGING_REISDOC));
+        list.add(getKassaProduct(KassaType.BEZORGING));
       }
     }
   }
@@ -139,6 +139,11 @@ public class KassaProductConverter {
     if (aanvraag.isSpoed()) {
       list.add(getKassaProduct(KassaType.SPOED_RIJBEWIJS));
     }
+
+    // Thuisbezorging
+    if (aanvraag.isThuisbezorgingGewenst()) {
+      list.add(getKassaProduct(KassaType.BEZORGING));
+    }
   }
 
   private static void addUittreksels(List<KassaProduct> list, Zaak zaak) {
@@ -152,9 +157,8 @@ public class KassaProductConverter {
   }
 
   private static KassaProduct getKassaProduct(KassaType type) {
-
-    KassaProduct kassaProduct = new KassaProduct();
-    kassaProduct.setKassaType(type);
-    return kassaProduct;
+    KassaProduct kp = new KassaProduct();
+    kp.setKassaType(type);
+    return kp;
   }
 }

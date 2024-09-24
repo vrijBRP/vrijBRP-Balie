@@ -17,20 +17,29 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.zaken.rijbewijs.page5;
+package nl.procura.gba.web.modules.beheer.onderhoud.page1.tab1;
 
-import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean3.IND_BEZORGEN;
-import static nl.procura.gba.web.modules.zaken.rijbewijs.page5.Page5RijbewijsBean3.OPM_BEZORGEN;
+import java.io.Serializable;
+import java.lang.annotation.ElementType;
 
-import nl.procura.gba.web.components.layouts.form.GbaForm;
+import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.Field.FieldType;
+import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 
-public class Page5RijbewijsForm3 extends GbaForm<Page5RijbewijsBean3> {
+import lombok.Data;
 
-  public Page5RijbewijsForm3() {
-    setCaption("Thuisbezorgen");
-    setOrder(IND_BEZORGEN, OPM_BEZORGEN);
-    setReadThrough(true);
-    setReadonlyAsText(false);
-    setBean(new Page5RijbewijsBean3());
-  }
+@Data
+@FormFieldFactoryBean(accessType = ElementType.FIELD)
+public class Page1OnderhoudBean implements Serializable {
+
+  public static final String ANR = "anr";
+  public static final String BSN = "bsn";
+
+  @Field(type = FieldType.LABEL,
+      caption = "A-nummers")
+  private Object anr = "";
+
+  @Field(type = FieldType.LABEL,
+      caption = "BSN's")
+  private Object bsn = "";
 }

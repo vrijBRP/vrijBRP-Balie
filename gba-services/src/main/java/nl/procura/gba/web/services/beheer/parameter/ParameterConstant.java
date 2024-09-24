@@ -92,6 +92,9 @@ public enum ParameterConstant implements ParameterType {
   ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN("zaken_max_status_zaak_wijzigen", "Maximale status voor wijzigen zaak",
       GROUP_ZAKEN_ALGEMEEN, true, true, true, "5"),
 
+  ZAKEN_STATUS_VERH_TOEST("zaken_status_verh_toest", "Status na toestemming verhuizing",
+      GROUP_ZAKEN_ALGEMEEN, true, true, true, "0"),
+
   ZAKEN_INIT_STATUS_AFSTAM_GEB("zaken_init_afstam_geb", "Afstamming (geboorte)",
       GROUP_ZAKEN_STATUS, true, true, true, "0"),
 
@@ -339,6 +342,9 @@ public enum ParameterConstant implements ParameterType {
       GROUP_DOCUMENTEN, true, false, false, ""),
 
   DOC_TEMPLATE_PAD("doc_template_pad", "Documenten sjabloonmap",
+      GROUP_DOCUMENTEN, true, false, false, ""),
+
+  DOC_MAX_GROOTTE("doc_max_grootte", "Uploads max. grootte",
       GROUP_DOCUMENTEN, true, false, false, ""),
 
   DOC_DMS_TYPE("doc_dms_type", "Type documentenopslag",
@@ -615,6 +621,12 @@ public enum ParameterConstant implements ParameterType {
   WACHTWOORD_VERLOOP("ww_verloop", "Wachtw. verloop in dagen",
       GROUP_ALGEMENE_INSTELLINGEN, true, true, true, ""),
 
+  WACHTWOORD_TIJDELIJK("ww_tijdelijk_reset", "Wachtw. tijdelijk na resetten",
+      GROUP_ALGEMENE_INSTELLINGEN, true, true, true, "1"),
+
+  ACCOUNT_VERLOOP("account_verloop", "Melding verloop account in dagen",
+      GROUP_ALGEMENE_INSTELLINGEN, true, true, true, ""),
+
   SESSIE_TIMEOUT("sessiontimeout", "Sessie timeout (in minuten)",
       GROUP_ALGEMENE_INSTELLINGEN, true, true, true, ""),
 
@@ -749,6 +761,9 @@ public enum ParameterConstant implements ParameterType {
 
   SYSTEM_MIN_HD_SIZE("system_min_hd_size", "Minimale grootte vrije ruimte in MB",
       GROUP_SYSTEM, true, false, false, "1000"),
+
+  MIN_ID_VOORRAAD("min_id_voorraad", "Minimale voorraad a-nummers / BSN's",
+      GROUP_SYSTEM, true, false, false, "100"),
 
   INW_APP_ENABLED("inw_app_enabled", "Inwoner.app inschakelen",
       GROUP_INW_APP, true, false, false, ""),

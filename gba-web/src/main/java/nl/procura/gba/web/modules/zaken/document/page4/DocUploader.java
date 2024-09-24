@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,11 +23,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.FileUtils;
+
 import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Upload;
+import com.vaadin.ui.VerticalLayout;
 
 import nl.procura.gba.web.application.GbaApplication;
+import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.documenten.printen.DocumentenPrintenService;
+import nl.procura.vaadin.functies.VaadinUtils;
 import nl.procura.vaadin.theme.twee.Icons;
 
 public class DocUploader extends CustomComponent
@@ -53,6 +62,19 @@ public class DocUploader extends CustomComponent
 
     root.addComponent(getUpload());
     root.addComponent(fileLayout);
+  }
+
+  public boolean isValidFileSize() {
+    DMSService dms = getApplication().getServices().getDmsService();
+    long maxSizeInMb = dms.getMaxFileSizeUploadsInMB();
+    long fileSize = FileUtils.sizeOf(file) / 1024 / 1024;
+    if (maxSizeInMb > 0 && fileSize > maxSizeInMb) {
+      addMessage(String.format("Het bestand is %d MB groot. Maximaal %d MB toegestaan.", fileSize,
+          dms.getMaxFileSizeUploadsInMB()), Icons.ICON_WARN);
+      VaadinUtils.resetHeight(getWindow());
+      return false;
+    }
+    return true;
   }
 
   public void addMessage(String msg, int icon) {

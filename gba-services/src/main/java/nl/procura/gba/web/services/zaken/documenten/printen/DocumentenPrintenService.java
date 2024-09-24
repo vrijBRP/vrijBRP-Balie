@@ -92,6 +92,7 @@ import nl.procura.gba.web.services.zaken.documenten.DocumentTranslation;
 import nl.procura.gba.web.services.zaken.documenten.PDFBoxUtils;
 import nl.procura.gba.web.services.zaken.documenten.UitvoerformaatType;
 import nl.procura.gba.web.services.zaken.documenten.kenmerk.DocumentKenmerkType;
+import nl.procura.gba.web.services.zaken.documenten.printen.functions.Functies;
 import nl.procura.gba.web.services.zaken.documenten.printen.printers.CommandPrinter;
 import nl.procura.gba.web.services.zaken.documenten.printen.printers.ConnectPrinter;
 import nl.procura.gba.web.services.zaken.documenten.printen.printers.LocalPrinter;
@@ -494,6 +495,7 @@ public class DocumentenPrintenService extends AbstractService {
       String fn = getServices().getGebruiker().getNaam();
       String naam = ((on != null) && fil(on.getWaarde())) ? on.getWaarde() : fn;
 
+      model.put("functies", new Functies());
       model.put("datum", new Date());
       model.put("tijd", new ProcuraDate().getFormatTime());
       model.put("code_gebruiker", getServices().getGebruiker().getCUsr());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,13 +19,37 @@
 
 package nl.procura.gba.web.rest.v1_0.gebruiker;
 
-import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ADMIN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.AFDELING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.CODE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DATUM_EINDE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DATUM_INGANG;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.EMAIL;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBLOKKEERD;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBRUIKER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBRUIKERS;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.GEBRUIKERSNAAM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NAAM;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.OMSCHRIJVING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.PAD;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.PARAMETER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.PARAMETERS;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TELEFOON;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.WAARDE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.WACHTWOORD_VERLOPEN;
 import static nl.procura.gba.web.rest.v1_0.zaak.GbaRestElementHandler.add;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.lang.reflect.Field;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +59,11 @@ import com.google.inject.servlet.RequestScoped;
 import nl.procura.gba.web.modules.beheer.parameters.bean.ParameterBean;
 import nl.procura.gba.web.rest.v1_0.GbaRestServiceResource;
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElement;
-import nl.procura.gba.web.rest.v1_0.gebruiker.sync.*;
+import nl.procura.gba.web.rest.v1_0.gebruiker.sync.GbaRestGebruikerSyncAntwoord;
+import nl.procura.gba.web.rest.v1_0.gebruiker.sync.GbaRestGebruikerSyncVraag;
+import nl.procura.gba.web.rest.v1_0.gebruiker.sync.GbaRestGebruikerToevoegenSyncVraag;
+import nl.procura.gba.web.rest.v1_0.gebruiker.sync.GbaRestGebruikerVerwijderenSyncVraag;
+import nl.procura.gba.web.rest.v1_0.gebruiker.sync.GbaRestGebruikerWachtwoordSyncVraag;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfo;
 import nl.procura.gba.web.services.beheer.parameter.Parameter;
@@ -68,8 +96,10 @@ public class GbaRestAuthenticatieResources extends GbaRestServiceResource implem
           toevoegen.isGeblokkeerd(), toevoegen.getDatumIngang(),
           toevoegen.getDatumEinde());
     } else if (wachtwoord != null) {
-      getServices().getGebruikerService().syncChangeLocalPassword(wachtwoord.getGebruikersnaam(), wachtwoord.getDatum(),
-          wachtwoord.getTijd(), wachtwoord.getWachtwoord(),
+      getServices().getGebruikerService().syncChangeLocalPassword(wachtwoord.getGebruikersnaam(),
+          wachtwoord.getDatum(),
+          wachtwoord.getTijd(),
+          wachtwoord.getWachtwoord(),
           wachtwoord.isResetPassword());
     } else if (verwijderen != null) {
       getServices().getGebruikerService().syncRemoveLocalUser(verwijderen.getGebruikersnaam());

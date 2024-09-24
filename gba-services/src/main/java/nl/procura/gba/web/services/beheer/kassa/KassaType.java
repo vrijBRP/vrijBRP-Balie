@@ -33,7 +33,7 @@ public enum KassaType {
   UITTREKSEL(3, "Uittreksel"),
   //  VERMISS_REISDOC(6, "Vermissing reisdocument"), // Removed
   //  VERMISS_RIJBEWIJS(7, "Vermissing rijbewijs"), // Removed
-  BEZORGING_REISDOC(11, "Thuisbezorging reisdocument");
+  BEZORGING(11, "Thuisbezorging document");
 
   private String oms = "";
   private int    nr  = 0;

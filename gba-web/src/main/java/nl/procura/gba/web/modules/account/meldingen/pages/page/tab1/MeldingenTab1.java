@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -77,12 +77,11 @@ public class MeldingenTab1 extends AbstractMeldingenTab {
 
         @Override
         public void setRecords() {
-          getServices().getMeldingService().delete(WORK);
           getServices().getSelectieService().check();
           List<ServiceMelding> messages = getServices().getMeldingService().getMeldingen(WORK);
 
           int nr = messages.size();
-          if (messages.size() > 0) {
+          if (!messages.isEmpty()) {
             for (ServiceMelding m : messages) {
               IndexedTable.Record r = addRecord(m);
               r.addValue(nr);
@@ -90,7 +89,6 @@ public class MeldingenTab1 extends AbstractMeldingenTab {
               r.addValue(m.getSeverity());
               r.addValue(m.getDatumtijdString());
               r.addValue(StringUtils.abbreviate(m.getMelding(), 0, 120));
-
               nr--;
             }
           }

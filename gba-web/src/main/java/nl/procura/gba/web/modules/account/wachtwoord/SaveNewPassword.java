@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -29,20 +29,15 @@ public class SaveNewPassword {
 
   public static String getMessage(GebruikerService gebruikers, Gebruiker gebruiker) {
 
-    gebruiker = getGebruikerFromDatabase(gebruikers,
-        gebruiker); // haal gebruiker uit database: ww historie is nu aangepast!!
-
+    gebruiker = getGebruikerFromDatabase(gebruikers, gebruiker); // haal gebruiker uit database: ww historie is nu aangepast!!
     int verloopTermijn = gebruikers.getVerlooptermijn(gebruiker);
 
     StringBuilder msg = new StringBuilder();
-
     if (pos(verloopTermijn)) {
-
       String dagen = verloopTermijn == 1 ? " dag" : " dagen";
       String datumEindeWachtwoord = getDatumEindeWachtwoord(gebruikers, gebruiker);
 
       msg.append("Uw wachtwoord is gewijzigd.");
-
       if (pos(verloopTermijn)) {
         msg.append(" Het nieuwe wachtwoord is ");
         msg.append("<b>");

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.kassa.page1;
 
 import static nl.procura.standard.Globalfunctions.eq;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import nl.procura.gba.web.components.layouts.table.GbaTable;
 import nl.procura.gba.web.services.beheer.kassa.KassaProductAanvraag;
@@ -40,6 +41,7 @@ public class Page1KassaTable extends GbaTable {
     addColumn("Tijd", 130);
     addColumn("Productgroep");
     addColumn("Product");
+    addColumn("Zaak-id");
 
     super.setColumns();
   }
@@ -48,7 +50,6 @@ public class Page1KassaTable extends GbaTable {
   public void setRecords() {
 
     for (KassaProductAanvraag kpa : getApplication().getServices().getKassaService().getVerversdeWinkelwagen()) {
-
       Record r = addRecord(kpa);
       r.addValue(getRecords().size());
       r.addValue(kpa.getKassaProduct().getKassa());
@@ -63,6 +64,7 @@ public class Page1KassaTable extends GbaTable {
 
       r.addValue(type);
       r.addValue(descr);
+      r.addValue(defaultIfBlank(kpa.getZaakId(), "N.v.t."));
     }
 
     super.setRecords();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -83,6 +83,9 @@ public enum RiskProfileRuleType implements EnumWithCode<Integer> {
   RULE_15(15, "Verhuizing van persoon die onder curatele staat"),
   RULE_16(16, "Verhuizing naar het huidige adres"),
   RULE_17(17, "Hoofdbewoner is geen bewoner van het nieuwe adres en het is geen baliezaak"),
+  RULE_18(18, "Adres is een nevenadres"),
+  RULE_19(19, "Verhuizing binnen aantal dagen na vorige verhuizing",
+      new RiskProfileRuleMap().add(X, "Aantal dagen", POSNUMBER)),
 
   UNKNOWN(0, "Onbekend");
 

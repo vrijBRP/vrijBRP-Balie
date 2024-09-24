@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -47,8 +47,11 @@ public class Page4Document extends DocumentenPage {
     @Override
     public void uploadSucceeded(SucceededEvent event) {
       form.commit();
-      DMSService dms = getApplication().getServices().getDmsService();
       try {
+        if (!isValidFileSize()) {
+          return;
+        }
+        DMSService dms = getApplication().getServices().getDmsService();
         String gebruiker = getApplication().getServices().getGebruiker().getNaam();
         DMSDocument dmsDocument = DMSDocument.builder()
             .content(DMSFileContent.from(getFile()))

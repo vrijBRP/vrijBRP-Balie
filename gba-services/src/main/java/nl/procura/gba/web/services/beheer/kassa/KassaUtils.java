@@ -22,7 +22,7 @@ package nl.procura.gba.web.services.beheer.kassa;
 import static ch.lambdaj.Lambda.exists;
 import static ch.lambdaj.Lambda.having;
 import static ch.lambdaj.Lambda.on;
-import static nl.procura.gba.web.services.beheer.kassa.KassaType.BEZORGING_REISDOC;
+import static nl.procura.gba.web.services.beheer.kassa.KassaType.BEZORGING;
 import static nl.procura.gba.web.services.beheer.kassa.KassaType.COVOG;
 import static nl.procura.gba.web.services.beheer.kassa.KassaType.GPK;
 import static nl.procura.gba.web.services.beheer.kassa.KassaType.JEUGDTARIEF_REISDOC;
@@ -58,7 +58,7 @@ public class KassaUtils {
     checkKassaDB(db, ontbrekendeProducten, JEUGDTARIEF_REISDOC);
     checkKassaDB(db, ontbrekendeProducten, SPOED_RIJBEWIJS);
     checkKassaDB(db, ontbrekendeProducten, SPOED_REISDOC);
-    checkKassaDB(db, ontbrekendeProducten, BEZORGING_REISDOC);
+    checkKassaDB(db, ontbrekendeProducten, BEZORGING);
 
     return ontbrekendeProducten;
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,10 @@
 
 package nl.procura.gba.web.services.zaken.algemeen.dms;
 
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_MAX_GROOTTE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLED;
 import static nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid.ONBEKEND;
+import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.isTru;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -114,6 +116,10 @@ public class DMSService extends AbstractService {
 
       save(dmsDocument);
     }
+  }
+
+  public long getMaxFileSizeUploadsInMB() {
+    return along(getSysteemParm(DOC_MAX_GROOTTE, false));
   }
 
   public void updateMetadata(String collection, String id, Map<String, String> metadata) {

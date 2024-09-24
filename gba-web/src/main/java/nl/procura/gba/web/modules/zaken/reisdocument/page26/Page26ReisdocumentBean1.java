@@ -26,6 +26,7 @@ import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
+import nl.procura.vaadin.annotation.field.InputPrompt;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextArea;
 import nl.procura.vaadin.component.container.NLBooleanContainer;
@@ -58,6 +59,7 @@ public class Page26ReisdocumentBean1 implements Serializable {
       required = true,
       caption = "Opmerkingen",
       width = "400px")
+  @InputPrompt(text = "Opmerkingen voor de bezorger")
   private String opmerkingen = "";
 
   @Field(type = FieldType.LABEL,

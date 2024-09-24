@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,18 +25,22 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SHO
 import static nl.procura.standard.Globalfunctions.fil;
 
 import java.io.ByteArrayOutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.gba.common.StreamUtils;
 import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.applicatie.meldingen.export.XmlMelding;
 import nl.procura.gba.web.services.applicatie.meldingen.export.XmlMeldingenExport;
 import nl.procura.gba.web.services.gba.templates.GbaTemplateService;
-import nl.procura.commons.core.exceptions.ProException;
-import nl.procura.commons.core.exceptions.ProExceptionSeverity;
 import nl.procura.vaadin.functies.downloading.DownloadHandler;
 
 public class MeldingService extends GbaTemplateService {
@@ -77,8 +81,8 @@ public class MeldingService extends GbaTemplateService {
   public List<ServiceMelding> getMeldingen(ServiceMeldingCategory category) {
     return getMeldingen().stream()
         .filter(m -> category != null && category.equals(m.getCategory()))
-        .filter(m -> !m.isAdminOnly() || (m.getGebruiker() != null && m.getGebruiker().isAdministrator()
-            && m.isAdminOnly()))
+        .filter(m -> !m.isAdminOnly()
+            || (m.getGebruiker() != null && m.getGebruiker().isAdministrator() && m.isAdminOnly()))
         .collect(Collectors.toList());
   }
 
@@ -87,7 +91,7 @@ public class MeldingService extends GbaTemplateService {
    */
   public boolean isShowMessagesPopup() {
     String parm = getServices().getGebruiker().getParameters().get(SHOW_MESSAGES).getValue();
-    return StringUtils.isBlank(parm) || Boolean.valueOf(parm);
+    return StringUtils.isBlank(parm) || Boolean.parseBoolean(parm);
   }
 
   /**
@@ -99,7 +103,6 @@ public class MeldingService extends GbaTemplateService {
 
   /**
    * Is the popup already shown this session
-   * @return
    */
   public boolean isMessagePopupShown() {
     return this.messagePopupShow;
@@ -119,11 +122,10 @@ public class MeldingService extends GbaTemplateService {
 
   /**
    * Show only user messages
-   * @return
    */
   public boolean isShowOnlyUser() {
     String parm = getServices().getGebruiker().getParameters().get(SHOW_USER_MESSAGES).getValue();
-    return StringUtils.isNotBlank(parm) && Boolean.valueOf(parm);
+    return StringUtils.isNotBlank(parm) && Boolean.parseBoolean(parm);
   }
 
   /**

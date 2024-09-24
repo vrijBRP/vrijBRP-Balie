@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -31,6 +31,7 @@ import nl.procura.gba.web.services.Services;
 import nl.procura.gba.web.services.zaken.documenten.DocumentVertrouwelijkheid;
 import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.vaadin.annotation.field.Field;
+import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.annotation.field.Select;
 import nl.procura.vaadin.annotation.field.TextField;
@@ -42,7 +43,8 @@ public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrou
 
   private static final String DOCUMENT_TYPE_OMSCHRIJVING = "documentTypeOmschrijving";
   private static final String VERTROUWELIJKHEID          = "vertrouwelijkheid";
-  private ZaakType            zaakType;
+  private static final String MAX_GROOTTE                = "maxGrootte";
+  private final ZaakType      zaakType;
 
   public ZaakBijlageVertrouwelijkheidForm() {
     this(ZaakType.ONBEKEND);
@@ -50,7 +52,7 @@ public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrou
 
   public ZaakBijlageVertrouwelijkheidForm(ZaakType zaakType) {
     this.zaakType = zaakType;
-    setOrder(DOCUMENT_TYPE_OMSCHRIJVING, VERTROUWELIJKHEID);
+    setOrder(DOCUMENT_TYPE_OMSCHRIJVING, VERTROUWELIJKHEID, MAX_GROOTTE);
     setCaption("Nieuw bestand");
     setColumnWidths(WIDTH_130, "");
   }
@@ -58,9 +60,12 @@ public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrou
   @Override
   public void attach() {
     AttachmentBean bean = new AttachmentBean();
-    bean.setVertrouwelijkheid(getApplication().getServices()
+    Services services = getApplication().getServices();
+    long maxFileSizeUploadsInMB = services.getDmsService().getMaxFileSizeUploadsInMB();
+    bean.setVertrouwelijkheid(services
         .getDocumentService()
         .getStandaardVertrouwelijkheid(null, null));
+    bean.setMaxGrootte(maxFileSizeUploadsInMB > 0 ? (maxFileSizeUploadsInMB + " MB") : "Onbeperkt");
     setBean(bean);
     super.attach();
   }
@@ -99,6 +104,11 @@ public class ZaakBijlageVertrouwelijkheidForm extends GbaForm<ZaakBijlageVertrou
     @Select(containerDataSource = DocumentVertrouwelijkheidContainer.class,
         nullSelectionAllowed = false)
     private DocumentVertrouwelijkheid vertrouwelijkheid;
+
+    @Field(type = FieldType.LABEL,
+        caption = "Max. grootte",
+        width = "250px")
+    private String maxGrootte;
   }
 
   public static class DocumentTypeOmschrijvingContainer extends ArrayListContainer {

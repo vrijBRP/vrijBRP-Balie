@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,12 @@
 
 package nl.procura.gba.web.modules.zaken.rijbewijs.page7;
 
+import static org.apache.commons.lang3.ObjectUtils.anyNotNull;
+
 import nl.procura.gba.web.components.layouts.tabsheet.GbaTabsheet;
 import nl.procura.gba.web.modules.zaken.rijbewijs.RbwUpdateToDateCheck;
 import nl.procura.gba.web.modules.zaken.rijbewijs.RijbewijsPage;
+import nl.procura.gba.web.modules.zaken.rijbewijs.page17.Page17Rijbewijs;
 import nl.procura.gba.web.modules.zaken.rijbewijs.page8.Page8Rijbewijs;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraag;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagAntwoord;
@@ -49,7 +52,7 @@ public class Page7Rijbewijs extends RijbewijsPage {
 
   public Page7Rijbewijs() {
 
-    super("Overzicht raadpleging");
+    super("Overzicht aanvraag");
 
     setMargin(true);
 
@@ -139,7 +142,11 @@ public class Page7Rijbewijs extends RijbewijsPage {
       @Override
       public void onProceed(RijbewijsAanvraag checkedAanvraag) {
         rijbewijsAanvraag = checkedAanvraag;
-        getNavigation().goToPage(new Page8Rijbewijs(rijbewijsDocumentAanvraag, checkedAanvraag));
+        if (getServices().getReisdocumentBezorgingService().isEnabled() && anyNotNull(p1653, p1654)) {
+          getNavigation().goToPage(new Page17Rijbewijs(rijbewijsDocumentAanvraag, checkedAanvraag));
+        } else {
+          getNavigation().goToPage(new Page8Rijbewijs(rijbewijsDocumentAanvraag, checkedAanvraag));
+        }
       }
 
       @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -33,6 +33,7 @@ import nl.procura.gba.web.services.zaken.algemeen.dms.DMSService;
 import nl.procura.gba.web.services.zaken.documenten.dmstypes.DmsDocumentType;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
+import nl.procura.vaadin.functies.VaadinUtils;
 
 public class ZaakBijlageUploadPage extends NormalPageTemplate {
 
@@ -77,9 +78,11 @@ public class ZaakBijlageUploadPage extends NormalPageTemplate {
 
     @Override
     public void uploadSucceeded(SucceededEvent event) {
-      DMSService dms = getApplication().getServices().getDmsService();
-
       try {
+        if (!isValidFileSize()) {
+          return;
+        }
+        DMSService dms = getApplication().getServices().getDmsService();
         String naam = getApplication().getServices().getGebruiker().getNaam();
         String documentDmsType = form.getDmsDocumentType().map(DmsDocumentType::toString).orElse("");
         String vertrouwelijkheid = form.getVertrouwelijkheid().getNaam();
@@ -98,6 +101,7 @@ public class ZaakBijlageUploadPage extends NormalPageTemplate {
 
         uploadSuccess();
       } catch (Exception e) {
+        VaadinUtils.resetHeight(getWindow());
         getApplication().handleException(getWindow(), e);
       }
     }

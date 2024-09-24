@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.zaken.reisdocument.page26;
 
 import static nl.procura.gba.web.services.zaken.reisdocumenten.bezorging.BezorgingStatusType.INGEVOERD;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.bezorging.BezorgingStatusType.ONBEKEND;
+import static org.apache.commons.lang3.StringUtils.isAllBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 import nl.procura.gba.jpa.personen.db.RdmAmp;
 import nl.procura.gba.jpa.personen.db.RdmAmpDoc;
+import nl.procura.gba.web.modules.zaken.contact.ContactWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.ReisdocumentAanvraagPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.page25.Page25Reisdocument;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
@@ -96,6 +98,9 @@ public class Page26Reisdocument extends ReisdocumentAanvraagPage {
     form1.commit();
 
     if (bezorging.getStatus().getType().is(ONBEKEND, INGEVOERD)) {
+      bezorging.getMelding().setEmail("");
+      bezorging.getMelding().setTel1("");
+      bezorging.getMelding().setTel2("");
       getBezorgingService().updateVoormelding(bezorging.getMelding(), getAanvraag().getBurgerServiceNummer());
 
       RdmAmp melding = bezorging.getMelding();
@@ -108,6 +113,13 @@ public class Page26Reisdocument extends ReisdocumentAanvraagPage {
       if (melding.isBezorgingGewenst()) {
         if (getBezorgingService().isBundelingMogelijk()) {
           melding.setBundelRefNr(form1.getBean().getBundeling().getBundelRefNr());
+        }
+
+        if (isAllBlank(melding.getEmail(), melding.getTel1())) {
+          getApplication().getParentWindow().addWindow(new ContactWindow(
+              "Thuisbezorging vereist minimaal een geldig "
+                  + "e-mailadres, mobiel- of thuisnummer"));
+          return;
         }
       }
       melding.setHoofdorder(melding.getBundelRefNr().equals(melding.getAanvrNr()));

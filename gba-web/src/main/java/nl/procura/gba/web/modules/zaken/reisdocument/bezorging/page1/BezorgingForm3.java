@@ -21,7 +21,8 @@ package nl.procura.gba.web.modules.zaken.reisdocument.bezorging.page1;
 
 import static nl.procura.gba.web.modules.zaken.reisdocument.bezorging.page1.BezorgingBean1.RDN_ANNULERING;
 import static nl.procura.gba.web.modules.zaken.reisdocument.bezorging.page1.BezorgingBean1.RDN_BLOKKERING;
-import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.gba.web.services.zaken.reisdocumenten.bezorging.BezorgingAnnuleringReden.getOms;
+import static org.apache.commons.lang3.StringUtils.isAllBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,19 +43,22 @@ public class BezorgingForm3 extends ReadOnlyForm<BezorgingBean1> {
 
   public void update() {
     List<String> fields = new ArrayList<>();
-    if (fil(bezorging.getMelding().getOmsBlokkering())) {
+    RdmAmp melding = bezorging.getMelding();
+    if (!isAllBlank(melding.getCodeBlokkering(), melding.getOmsBlokkering())) {
       fields.add(RDN_BLOKKERING);
     }
-    if (fil(bezorging.getMelding().getOmsAnnulering())) {
+    String codeAnnulering = melding.getCodeAnnulering();
+    String omsAnnulering = melding.getOmsAnnulering();
+
+    if (!isAllBlank(codeAnnulering, omsAnnulering)) {
       fields.add(RDN_ANNULERING);
     }
 
     setVisible(!fields.isEmpty());
     setOrder(fields.toArray(new String[0]));
     BezorgingBean1 bean = new BezorgingBean1();
-    RdmAmp melding = bezorging.getMelding();
-    bean.setRedenBlokkering(melding.getOmsBlokkering());
-    bean.setRedenAnnulering(melding.getOmsAnnulering());
+    bean.setRedenBlokkering(melding.getCodeBlokkering() + " - " + melding.getOmsBlokkering());
+    bean.setRedenAnnulering(codeAnnulering + " - " + getOms(codeAnnulering, omsAnnulering));
     setBean(bean);
   }
 }

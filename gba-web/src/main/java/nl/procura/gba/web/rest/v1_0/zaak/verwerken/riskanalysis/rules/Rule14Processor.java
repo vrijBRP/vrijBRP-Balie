@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,10 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules;
 
-import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.X;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.gba.jpa.personen.types.RiskProfileRuleVar.X;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.jpa.personen.db.DossRiskAnalysisSubject;
 import nl.procura.gba.jpa.personen.db.RiskProfileRule;
 import nl.procura.gba.jpa.personen.types.RiskProfileRuleType;
@@ -30,7 +31,6 @@ import nl.procura.gba.web.services.bs.riskanalysis.RiskAnalysisRelatedCase;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchResponse;
 import nl.procura.geo.rest.domain.ngr.wfs.types.FeatureType;
-import nl.procura.commons.core.exceptions.ProException;
 
 /**
  * Rule 13
@@ -48,7 +48,7 @@ public class Rule14Processor extends AbstractBagRuleProcessor {
       RiskProfileRule rule) {
 
     boolean isMatch = false;
-    WfsSearchResponse response = search(relatedCase.getAddress());
+    WfsSearchResponse response = searchWfs(relatedCase.getAddress());
 
     if (response != null) {
       long numberOfPersons = relatedCase.getNumberOfPersons();

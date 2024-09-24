@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,6 +25,8 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_VERBINTENIS;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_EINDE_NATIO;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.REDEN_OPN_NATIO;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_VERBINTENIS;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.HUWELIJK;
 import static nl.procura.diensten.gba.ple.extensions.formats.BurgerlijkeStaatType.PARTNERSCHAP;
 import static nl.procura.gba.common.MiscUtils.to;
@@ -36,8 +38,6 @@ import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static nl.procura.standard.Globalfunctions.trim;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +45,7 @@ import java.util.Set;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
@@ -73,7 +74,6 @@ import nl.procura.gba.web.services.bs.erkenning.KindLeeftijdsType;
 import nl.procura.gba.web.services.gba.basistabellen.huwelijksambtenaar.HuwelijksAmbtenaar;
 import nl.procura.gba.web.services.gba.functies.Geslacht;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
@@ -408,6 +408,7 @@ public class BsPersoonUtils extends BsUtils {
 
       persoon.setWoonplaats(new FieldValue(wp.getVal(), wp.getDescr()));
       persoon.setWoongemeente(new FieldValue(wg.getVal(), wg.getDescr()));
+      persoon.setInGemeente(Services.getInstance().getGebruiker().isGemeente(wg.toLong()));
       persoon.setLand(new FieldValue(lnd.getVal(), lnd.getDescr()));
       persoon.setDatumMoment(new DateTime());
 
@@ -511,6 +512,7 @@ public class BsPersoonUtils extends BsUtils {
     tp.setPostcode(dp.getPostcode());
     tp.setWoonplaats(dp.getWoonplaats());
     tp.setWoongemeente(dp.getWoongemeente());
+    tp.setInGemeente(Services.getInstance().getGebruiker().isGemeente(along(tp.getCWoonGemeente())));
     tp.setWoonplaatsAkte(dp.getWoonplaatsAkte());
     tp.setLand(dp.getLand());
     tp.setWoonlandAkte(dp.getWoonlandAkte());

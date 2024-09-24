@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,8 +20,13 @@
 package nl.procura.gba.web.services.zaken.contact;
 
 import static java.util.Collections.emptyList;
-import static nl.procura.gba.common.ZaakType.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.common.ZaakType.HUWELIJK_GPS_GEMEENTE;
+import static nl.procura.gba.common.ZaakType.OMZETTING_GPS;
+import static nl.procura.gba.common.ZaakType.ONTBINDING_GEMEENTE;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.getSystemDate;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
@@ -291,14 +296,10 @@ public class ContactgegevensService extends AbstractService {
   }
 
   private PlContactgegeven getContactgegeven(BasePLExt pl, String aant) {
-
-    for (PlContactgegeven c : getContactgegevens(pl)) {
-      if (equalsIgnoreCase(c.getContactgegeven().getGegeven(), aant)) {
-        return c;
-      }
-    }
-
-    return null;
+    return getContactgegevens(pl)
+        .stream()
+        .filter(c -> equalsIgnoreCase(c.getContactgegeven().getGegeven(), aant))
+        .findFirst().orElse(null);
   }
 
   private List<PlContactgegeven> getContactgegeven(long anr, long bsn, String persoon) {
@@ -306,7 +307,6 @@ public class ContactgegevensService extends AbstractService {
     List<PlContactgegeven> l = new ArrayList<>();
 
     for (Aant3 aant3 : Aant3Dao.findAant(anr, bsn)) {
-
       PlContactgegeven c = new PlContactgegeven();
       c.setAnr(aant3.getId().getAnr());
       c.setBsn(aant3.getId().getBsn());

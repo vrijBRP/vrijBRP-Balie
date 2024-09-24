@@ -20,11 +20,11 @@
 package nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis;
 
 import static java.text.MessageFormat.format;
-import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
-import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.gba.common.ZaakStatusType.INBEHANDELING;
+import static nl.procura.java.reflection.ReflectionUtil.deepCopyBean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
@@ -47,6 +48,8 @@ import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule14Proc
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule15Processor;
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule16Processor;
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule17Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule18Processor;
+import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule19Processor;
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule1Processor;
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule2Processor;
 import nl.procura.gba.web.rest.v1_0.zaak.verwerken.riskanalysis.rules.Rule3Processor;
@@ -67,7 +70,6 @@ import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
-import nl.procura.commons.core.exceptions.ProException;
 
 public class RiskAnalysisProcessor extends CaseProcessor<Zaak> {
 
@@ -177,6 +179,8 @@ public class RiskAnalysisProcessor extends CaseProcessor<Zaak> {
     ruleProcessors.add(new Rule15Processor());
     ruleProcessors.add(new Rule16Processor());
     ruleProcessors.add(new Rule17Processor());
+    ruleProcessors.add(new Rule18Processor());
+    ruleProcessors.add(new Rule19Processor());
 
     return ruleProcessors.stream()
         .filter(processor -> processor.getRuleType() == rule.getRuleType())

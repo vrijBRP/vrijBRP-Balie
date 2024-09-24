@@ -17,7 +17,7 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.zaken.rijbewijs.page5;
+package nl.procura.gba.web.modules.zaken.rijbewijs.page17;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
@@ -38,7 +38,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
-public class Page5RijbewijsBean3 implements Serializable {
+public class Page17RijbewijsBean1 implements Serializable {
 
   public static final String IND_BEZORGEN = "indBezorgen";
   public static final String OPM_BEZORGEN = "opmBezorgen";
@@ -53,6 +53,7 @@ public class Page5RijbewijsBean3 implements Serializable {
   private Boolean indBezorgen;
 
   @Field(type = FieldType.TEXT_AREA,
+      required = true,
       caption = "Opmerkingen",
       width = "400px")
   @TextArea(rows = 3)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,16 +20,18 @@
 package nl.procura.gba.web.modules.beheer.gebruikers.page2;
 
 import static java.util.Arrays.asList;
-import static nl.procura.gba.common.MiscUtils.cleanPath;
-import static nl.procura.gba.web.modules.beheer.gebruikers.page2.Page2GebruikersBean.MAP;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.gba.common.MiscUtils.cleanPath;
+import static nl.procura.gba.web.modules.beheer.gebruikers.page2.Page2GebruikersBean.MAP;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Window;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.common.misc.email.Verzending;
 import nl.procura.gba.web.components.layouts.OptieLayout;
@@ -47,7 +49,6 @@ import nl.procura.gba.web.services.beheer.gebruiker.GebruikerService;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInfoType;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActieType;
 import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.dialog.OkDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
@@ -249,12 +250,11 @@ public class Page2Gebruikers extends NormalPageTemplate {
       boolean isVolledigeNaam = g.getNaam().equals(volledigeNaam);
       if (!g.equals(gebruiker) && isVolledigeNaam) {
 
-        StringBuilder msg = new StringBuilder();
-        msg.append("De ingevoerde volledige naam komt reeds voor bij gebruiker ");
-        msg.append(g.getGebruikersnaam());
-        msg.append(".<br/>Voer een unieke volledige naam in a.u.b.");
+        String msg = "De ingevoerde volledige naam komt reeds voor bij gebruiker "
+            + g.getGebruikersnaam()
+            + ".<br/>Voer een unieke volledige naam in a.u.b.";
 
-        throw new ProException(ENTRY, WARNING, msg.toString());
+        throw new ProException(ENTRY, WARNING, msg);
       }
     }
   }
@@ -286,7 +286,8 @@ public class Page2Gebruikers extends NormalPageTemplate {
 
     form.commit();
 
-    getWindow().addWindow(new SendEmailWindow(asList(new Verzending(getGebruiker(), form.getBean().getEmail()))));
+    getWindow().addWindow(new SendEmailWindow(
+        Collections.singletonList(new Verzending(getGebruiker(), form.getBean().getEmail()))));
   }
 
   private void extraInfoOpslaan() {
@@ -306,7 +307,7 @@ public class Page2Gebruikers extends NormalPageTemplate {
   private void resetWachtwoord() {
 
     ConfirmDialog confirmDialog = new ConfirmDialog("Weet u het zeker?",
-        "U wilt het wachtwoord van deze gebruiker resetten?", "350px") {
+        "U wilt het wachtwoord van deze gebruiker resetten?", "400px") {
 
       @Override
       public void buttonYes() {
@@ -355,14 +356,16 @@ public class Page2Gebruikers extends NormalPageTemplate {
       extraInfoOpslaan();
 
       String nieuwWachtwoord = gebruikerService.generateWachtwoord();
-      gebruikerService.setWachtwoord(getGebruiker(), nieuwWachtwoord, true);
+      boolean resetPw = gebruikerService.setWachtwoord(getGebruiker(), nieuwWachtwoord, true);
 
       StringBuilder msg = new StringBuilder();
       msg.append("De nieuwe gebruiker is opgeslagen.<br> Gebruiker '");
       msg.append(getGebruiker().getGebruikersnaam());
       msg.append("' kan inloggen met het wachtwoord: <b>");
       msg.append(nieuwWachtwoord);
-      msg.append("</b><br>De gebruiker zal dit wachtwoord moeten wijzigen bij het inloggen.");
+      if (resetPw) {
+        msg.append("</b><br>De gebruiker zal dit wachtwoord moeten wijzigen bij het inloggen.");
+      }
       String message = msg.toString();
 
       getWindow().addWindow(new OkDialog(message, 600));

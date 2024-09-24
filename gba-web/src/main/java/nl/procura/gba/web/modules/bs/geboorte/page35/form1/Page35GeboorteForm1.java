@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -58,26 +58,17 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
 
   @Override
   public void setBean(Object bean) {
-
     super.setBean(bean);
-
-    getField(GEZIN).setReadOnly(geboorte != null
-        && geboorte.getGezinssituatie() != GezinssituatieType.ONBEKEND);
-
-    getField(ERKENNINGS_TYPE).setReadOnly(geboorte != null
-        && geboorte.getErkenningsType() != ErkenningsType.ONBEKEND);
-
-    getField(NAAMSKEUZE_TYPE).setReadOnly(geboorte != null
-        && geboorte.getNaamskeuzeSoort() != NaamskeuzeType.ONBEKEND);
 
     getField(GEZIN).addListener(new FieldChangeListener<GezinssituatieType>() {
 
       @Override
       public void onChange(GezinssituatieType gezin) {
-        bijWijzigingGezin(gezin, (ErkenningsType) getField(ERKENNINGS_TYPE).getValue());
+        ErkenningsType erkType = (ErkenningsType) getField(ERKENNINGS_TYPE).getValue();
+        bijWijzigingGezin(gezin, erkType);
         getField(ERKENNINGS_TYPE).setValue(null);
         getField(NAAMSKEUZE_TYPE).setValue(null);
-        bijWijzigingErkenningsType(null, null);
+        bijWijzigingErkenningsType(gezin, erkType);
         bijWijzigingNaamskeuzeType(null);
       }
     });
@@ -86,7 +77,7 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
 
       @Override
       public void onChange(ErkenningsType type) {
-        bijWijzigingErkenningsType(type, (GezinssituatieType) getField(GEZIN).getValue());
+        bijWijzigingErkenningsType((GezinssituatieType) getField(GEZIN).getValue(), type);
         getField(ERKENNINGS_APP).setValue(null);
         updateGekoppeldeZaakLayouts(null, null, false);
       }
@@ -132,7 +123,7 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
     NaamskeuzeApplicatie nkApp = getBean().getNaamskeuzeApp();
 
     bijWijzigingGezin(gezin, erkType);
-    bijWijzigingErkenningsType(erkType, gezin);
+    bijWijzigingErkenningsType(gezin, erkType);
     bijWijzigingNaamskeuzeType(nkType);
     updateGekoppeldeZaakLayouts(erkApp, nkApp, true);
   }
@@ -145,20 +136,24 @@ public abstract class Page35GeboorteForm1 extends GbaForm<Page35GeboorteBean1> {
   protected abstract DossierNaamskeuze getProwebNaamskeuze();
 
   private void bijWijzigingGezin(GezinssituatieType gezin, ErkenningsType erkType) {
-    getField(ERKENNINGS_TYPE).setVisible(!BINNEN_HETERO_HUWELIJK.equals(gezin));
-    getField(NAAMSKEUZE_TYPE).setVisible(BINNEN_HETERO_HUWELIJK.equals(gezin)
-        || (BINNEN_HOMO_HUWELIJK.equals(gezin) && GEEN_ERKENNING.equals(erkType)));
+    boolean binnenHeteroHuw = BINNEN_HETERO_HUWELIJK.equals(gezin);
+    boolean binnenHomoHuw = BINNEN_HOMO_HUWELIJK.equals(gezin);
+    boolean geenErkenning = GEEN_ERKENNING.equals(erkType);
+
+    getField(ERKENNINGS_TYPE).setVisible(!binnenHeteroHuw);
+    getField(NAAMSKEUZE_TYPE).setVisible(binnenHeteroHuw || (binnenHomoHuw && geenErkenning));
+
     repaint();
   }
 
-  private void bijWijzigingErkenningsType(ErkenningsType type, GezinssituatieType gezin) {
-    getField(ERKENNINGS_APP).setVisible(ErkenningsType.ERKENNING_ONGEBOREN_VRUCHT.equals(type));
+  private void bijWijzigingErkenningsType(GezinssituatieType gezin, ErkenningsType erkType) {
+    boolean binnenHeteroHuw = BINNEN_HETERO_HUWELIJK.is(gezin);
+    boolean binnenHomoHuw = BINNEN_HOMO_HUWELIJK.is(gezin);
+    boolean geenErkenning = GEEN_ERKENNING.equals(erkType);
 
-    getField(NAAMSKEUZE_TYPE).setVisible(BINNEN_HETERO_HUWELIJK.is(gezin)
-        || (BINNEN_HOMO_HUWELIJK.is(gezin) && GEEN_ERKENNING.equals(type)));
-
-    getField(NAAMSKEUZE_APP).setVisible(BINNEN_HETERO_HUWELIJK.is(gezin)
-        || (BINNEN_HOMO_HUWELIJK.is(gezin) && GEEN_ERKENNING.equals(type)));
+    getField(ERKENNINGS_APP).setVisible(ErkenningsType.ERKENNING_ONGEBOREN_VRUCHT.equals(erkType));
+    getField(NAAMSKEUZE_TYPE).setVisible(binnenHeteroHuw || (binnenHomoHuw && geenErkenning));
+    getField(NAAMSKEUZE_APP).setVisible(binnenHeteroHuw || (binnenHomoHuw && geenErkenning));
 
     repaint();
   } // Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -49,6 +49,8 @@ import nl.procura.gba.web.services.beheer.parameter.ParameterService;
 import nl.procura.gba.web.services.interfaces.address.Address;
 import nl.procura.gba.web.services.interfaces.address.AddressRequest;
 import nl.procura.geo.rest.client.GeoRestClient;
+import nl.procura.geo.rest.domain.baglv.adresV2.LVBagRequestV2;
+import nl.procura.geo.rest.domain.baglv.adresV2.LVBagResponseV2;
 import nl.procura.geo.rest.domain.ngr.wfs.SearchParam;
 import nl.procura.geo.rest.domain.ngr.wfs.SearchType;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsFeature;
@@ -100,6 +102,11 @@ public class BagService extends AbstractService {
   @ThrowException("Fout bij ophalen GEO berichten")
   public WfsSearchResponse searchWfsService(WfsSearchRequest request) {
     return getGeoClient().getPdok().getWfs().search(request);
+  }
+
+  @ThrowException("Fout bij ophalen GEO berichten")
+  public LVBagResponseV2 searchLvBagService(LVBagRequestV2 request) {
+    return getGeoClient().getLvbag().searchV2(request);
   }
 
   /**

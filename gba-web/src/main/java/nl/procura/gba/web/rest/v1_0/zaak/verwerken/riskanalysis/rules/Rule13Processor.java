@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -40,7 +40,11 @@ import nl.procura.geo.rest.domain.ngr.wfs.WfsLigplaatsProperties;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsSearchResponse;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsStandplaatsProperties;
 import nl.procura.geo.rest.domain.ngr.wfs.WfsVboProperties;
-import nl.procura.geo.rest.domain.ngr.wfs.types.*;
+import nl.procura.geo.rest.domain.ngr.wfs.types.EnumType;
+import nl.procura.geo.rest.domain.ngr.wfs.types.GebruiksdoelType;
+import nl.procura.geo.rest.domain.ngr.wfs.types.PandStatusType;
+import nl.procura.geo.rest.domain.ngr.wfs.types.PlaatsStatusType;
+import nl.procura.geo.rest.domain.ngr.wfs.types.VboStatusType;
 
 /**
  * Rule 13
@@ -58,7 +62,7 @@ public class Rule13Processor extends AbstractBagRuleProcessor {
       RiskProfileRule rule) {
 
     boolean isMatch = false;
-    WfsSearchResponse response = search(relatedCase.getAddress());
+    WfsSearchResponse response = searchWfs(relatedCase.getAddress());
 
     if (response != null) {
       WfsVboProperties vbo = response.getFeatures().get(0).getVerblijfsobject();

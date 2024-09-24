@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,24 +19,19 @@
 
 package nl.procura.gba.web.modules.beheer.parameters.layout;
 
-import static nl.procura.standard.Globalfunctions.astr;
-
 import java.util.List;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Field;
 
-import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.modules.beheer.parameters.bean.ParameterBean;
+import nl.procura.gba.web.modules.beheer.parameters.bean.ZaakStatusParameterContainer;
 import nl.procura.gba.web.modules.beheer.parameters.form.DatabaseParameterForm;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.beheer.parameter.ZaakStatusParameterType;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakTypeStatussen;
-import nl.procura.vaadin.component.container.ProcuraContainer;
 
 public class ZakenStatusParametersLayout extends DatabaseParameterLayout {
 
@@ -81,18 +76,5 @@ public class ZakenStatusParametersLayout extends DatabaseParameterLayout {
         return super.newField(field, property);
       }
     });
-  }
-
-  public class ZaakStatusParameterContainer extends IndexedContainer implements ProcuraContainer {
-
-    public ZaakStatusParameterContainer(List<ZaakStatusType> statussen) {
-      addContainerProperty(OMSCHRIJVING, String.class, "");
-      removeAllItems();
-
-      for (ZaakStatusType status : statussen) {
-        Item item = addItem(astr(status.getCode()));
-        item.getItemProperty(OMSCHRIJVING).setValue(status.getOms());
-      }
-    }
   }
 }

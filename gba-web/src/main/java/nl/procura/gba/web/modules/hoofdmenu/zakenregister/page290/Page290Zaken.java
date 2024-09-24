@@ -21,9 +21,6 @@ package nl.procura.gba.web.modules.hoofdmenu.zakenregister.page290;
 
 import static nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType.AANGEVER;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.procura.gba.common.ZaakFragment;
 import nl.procura.gba.web.modules.bs.naturalisatie.overzicht.NaturalisatieOverzichtBuilder;
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZaakPersoonType;
@@ -32,7 +29,6 @@ import nl.procura.gba.web.modules.hoofdmenu.zakenregister.overig.ZakenregisterOp
 import nl.procura.gba.web.modules.hoofdmenu.zakenregister.page101.Page101Zaken;
 import nl.procura.gba.web.services.beheer.profiel.actie.ProfielActie;
 import nl.procura.gba.web.services.bs.algemeen.Dossier;
-import nl.procura.gba.web.services.zaken.documenten.DocumentType;
 
 public class Page290Zaken extends ZakenregisterOptiePage<Dossier> {
 
@@ -63,10 +59,7 @@ public class Page290Zaken extends ZakenregisterOptiePage<Dossier> {
 
   @Override
   protected void goToDocument() {
-
-    List<DocumentType> types = new ArrayList<>();
-    types.add(DocumentType.NATURALISATIE);
-    getNavigation().goToPage(new Page101Zaken(getZaak(), getTitle(), types.toArray(new DocumentType[0])));
+    getNavigation().goToPage(new Page101Zaken(getZaak(), getTitle()));
   }
 
   @Override

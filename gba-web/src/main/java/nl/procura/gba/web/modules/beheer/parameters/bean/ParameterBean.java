@@ -21,6 +21,7 @@ package nl.procura.gba.web.modules.beheer.parameters.bean;
 
 import static nl.procura.commons.elements.codegeneration.GenerateReflectionUtils.getNewInstanceof;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ACCESS_RISK_PROFILE_SIGNALS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ACCOUNT_VERLOOP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_ENABLED_BUNDLES;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.AMP_ENDPOINT;
@@ -46,6 +47,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.CUR
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.CURATELE_WACHTWOORD;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_CONFIDENTIALITY;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_DMS_TYPE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_MAX_GROOTTE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_PW;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.DOC_OBJECT_STORAGE_URL;
@@ -106,6 +108,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MID
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIDOFFICE_DASHBOARD_BRONNEN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIDOFFICE_DASHBOARD_LEVERANCIERS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIJN_OVERHEID_BULK_UITTREKSELS;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIN_ID_VOORRAAD;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_5_DAGEN_TERM;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_ANDER_ORGAAN;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ONDERZ_DEFAULT_AAND;
@@ -167,6 +170,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_INSTANTIE_CODE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_TIMEOUT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.WACHTWOORD_TIJDELIJK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.WACHTWOORD_VERLOOP;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.X_UA_COMPATIBLE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_DMS_AFSTAM_ERK;
@@ -237,6 +241,7 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAK
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_LEVERANCIERS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_NIEUW_ZAAKTYPES;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_STATUS_EIGEN_ZAAK;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_STATUS_VERH_TOEST;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZAKEN_TAB_VOLGORDE;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_ALL_RECORDS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_MAX_FOUND_COUNT;
@@ -370,14 +375,22 @@ public class ParameterBean implements Serializable {
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
   private String zakenEigenStatus = "";
 
-  @ParameterAnnotation(ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN)
+  @ParameterAnnotation(ZAKEN_STATUS_VERH_TOEST)
   @Position(order = "0.4")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Status na toestemming verhuizing")
+  @Select(containerDataSource = VerhuizingToestemmingContainer.class,
+      itemCaptionPropertyId = VerhuizingToestemmingContainer.OMSCHRIJVING)
+  private String verhuizingToestemming = "";
+
+  @ParameterAnnotation(ZAKEN_MAX_STATUS_ZAAK_WIJZIGEN)
+  @Position(order = "0.5")
   @Field(customTypeClass = GbaNativeSelect.class,
       caption = "Maximale status voor wijzigen zaak")
   private String zakenMaxStatusZaakWijzigen = "";
 
   @ParameterAnnotation(ZAKEN_DOC_UPLOAD_PERIODE)
-  @Position(order = "0.5")
+  @Position(order = "0.6")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Maximale document upload termijn (in dagen) na eindstatus")
   private String documentUploadPeriode = "";
@@ -706,6 +719,7 @@ public class ParameterBean implements Serializable {
       caption = "Emigratie (briefadres)")
   private String initieleStatusEmigrBriefAdres = "";
 
+
   @ParameterAnnotation(ZAKEN_INIT_STATUS_REGISTRATION_WA)
   @Position(order = "Eerste inschrijving (Woonadres)")
   @Field(customTypeClass = GbaNativeSelect.class,
@@ -928,6 +942,15 @@ public class ParameterBean implements Serializable {
       width = "300px")
   @Position(order = "20")
   private String documentenTemplatePath = "";
+
+  // Documenten Template Path
+  @ParameterAnnotation(DOC_MAX_GROOTTE)
+  @Field(customTypeClass = NumberField.class,
+      caption = "Max. grootte uploads (in MB)",
+      description = "Maximale grootte voor upload bestanden",
+      width = "300px")
+  @Position(order = "30")
+  private String maxGrootte = "";
 
   // Documenten Output Path
   @ParameterAnnotation(DOC_OUTPUT_PAD)
@@ -1705,6 +1728,26 @@ public class ParameterBean implements Serializable {
   @TextField(maxLength = 3)
   private String wachtwoordVerloop = "";
 
+  // Wachtwoord verloop
+  @ParameterAnnotation(WACHTWOORD_TIJDELIJK)
+  @Position(order = "1.1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "Wachtwoord tijdelijk na resetten",
+      width = "60px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String wachtwoordTijdelijk = "";
+
+  @ParameterAnnotation(ACCOUNT_VERLOOP)
+  @Position(order = "1.2")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Melding verloop account in dagen",
+      description = "Melding als account binnen dit aantal dagen verloopt",
+      validators = { GetalValidator.class },
+      width = "40px")
+  @TextField(maxLength = 3)
+  private String dagenMeldingVerloopAccount = "";
+
   // Sessie timeout
   @ParameterAnnotation(SESSIE_TIMEOUT)
 
@@ -1924,15 +1967,15 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(ZYNYO_API_ENDPOINT)
   @Position(order = "10")
   @Field(type = FieldType.TEXT_FIELD,
-          caption = "Zynyo API endpoint",
-          width = "400px")
+      caption = "Zynyo API endpoint",
+      width = "400px")
   private String zynyoApiEndpoint = "";
 
   @ParameterAnnotation(ZYNYO_API_KEY)
   @Position(order = "10")
   @Field(type = FieldType.TEXT_FIELD,
-          caption = "Zynyo API key",
-          width = "400px")
+      caption = "Zynyo API key",
+      width = "400px")
   private String zynyoApiKey = "";
 
   // AMP
@@ -2085,6 +2128,14 @@ public class ParameterBean implements Serializable {
       required = true)
   @Position(order = "1")
   private String systemMinHdSize = "";
+
+  @ParameterAnnotation(MIN_ID_VOORRAAD)
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "Minimale voorraad a-nummers / BSN's",
+      width = "100px",
+      required = true)
+  @Position(order = "2")
+  private String idVoorraad = "";
 
   @ParameterAnnotation(INW_APP_ENABLED)
   @Position(order = "1")

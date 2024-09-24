@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -36,16 +36,14 @@ import static nl.procura.burgerzaken.gba.core.enums.GBACat.REISDOC;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.TIJD_VBA;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
 import static nl.procura.burgerzaken.gba.core.enums.GBACat.VBTITEL;
+import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.UNKNOWN;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
-import nl.procura.burgerzaken.gba.core.enums.GBARecStatus;
 import nl.procura.diensten.gba.ple.base.BasePLCat;
-import nl.procura.diensten.gba.ple.base.BasePLRec;
-import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.EmbeddedResource;
@@ -111,7 +109,6 @@ public class PersoonslijstAccordionTab extends PlAccordionTab {
 
   @Override
   public void onLinkSelect(AccordionLink link) {
-
     if (link.getButton().getStyleName().contains("off")) {
       new Message(getWindow(), "Deze categorie komt niet voor op de persoonlijst.", Message.TYPE_WARNING_MESSAGE);
     } else {
@@ -120,19 +117,8 @@ public class PersoonslijstAccordionTab extends PlAccordionTab {
   }
 
   private AccordionLink addLink(Class<?> c, BasePLCat soort) {
-
-    boolean filled = soort.hasSets();
-    boolean mutatie = false;
-
-    for (BasePLSet set : soort.getSets()) {
-      for (BasePLRec record : set.getRecs()) {
-        if (record.isStatus(GBARecStatus.MUTATION)) {
-          mutatie = true;
-          break;
-        }
-      }
-    }
-
+    boolean filled = soort.getSets().stream().anyMatch(set -> !set.getLatestRec().isStatus(UNKNOWN));
+    boolean mutatie = soort.getSets().stream().anyMatch(set -> !set.getMutationRec().isStatus(UNKNOWN));
     return addLink(c, filled, mutatie);
   }
 

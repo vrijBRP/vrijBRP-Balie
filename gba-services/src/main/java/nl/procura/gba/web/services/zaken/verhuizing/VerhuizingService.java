@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,15 +19,31 @@
 
 package nl.procura.gba.web.services.zaken.verhuizing;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBACat.*;
-import static nl.procura.gba.common.MiscUtils.*;
-import static nl.procura.gba.web.common.tables.GbaTables.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.HUW_GPS;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.INSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.PERSOON;
+import static nl.procura.burgerzaken.gba.core.enums.GBACat.VB;
+import static nl.procura.gba.common.MiscUtils.copy;
+import static nl.procura.gba.common.MiscUtils.formatPostcode;
+import static nl.procura.gba.common.MiscUtils.to;
+import static nl.procura.gba.common.ZaakStatusType.OPGENOMEN;
+import static nl.procura.gba.web.common.tables.GbaTables.LAND;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
+import static nl.procura.gba.web.common.tables.GbaTables.STRAAT;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.MEEVERHUIZER;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLElem;
@@ -59,7 +75,11 @@ import nl.procura.gba.web.services.gba.ple.PersonenWsService;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.AangifteSoort;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.Relatie;
 import nl.procura.gba.web.services.gba.ple.relatieLijst.RelatieLijstHandler;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
@@ -302,7 +322,9 @@ public class VerhuizingService extends AbstractZaakContactService<VerhuisAanvraa
       case GEACCEPTEERD:
       case GEACCEPTEERD_ZONDER_TOESTEMMING:
         opmerking += "'geaccepteerd'.";
-        updateStatus(zaak, zaak.getStatus(), ZaakStatusType.OPGENOMEN, opmerking);
+        String parm = getParm(ParameterConstant.ZAKEN_STATUS_VERH_TOEST);
+        ZaakStatusType defaultStatus = ZaakStatusType.get(NumberUtils.toLong(parm, OPGENOMEN.getCode()));
+        updateStatus(zaak, zaak.getStatus(), defaultStatus, opmerking);
         break;
 
       case NIET_GEACCEPTEERD:

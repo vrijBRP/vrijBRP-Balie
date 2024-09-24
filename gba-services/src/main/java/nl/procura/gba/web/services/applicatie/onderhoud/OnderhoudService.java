@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,20 +20,18 @@
 package nl.procura.gba.web.services.applicatie.onderhoud;
 
 import static java.text.MessageFormat.format;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 import static nl.procura.commons.liquibase.utils.LbConnectionUtils.getConnection;
 import static nl.procura.commons.liquibase.utils.LbConnectionUtils.getDatabase;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.FAULT;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingCategory.SYSTEM;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.GEMEENTE_CODES;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.MIN_ID_VOORRAAD;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SSL_PROXY_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.SYSTEM_MIN_HD_SIZE;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.TEST_OMGEVING;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.aval;
-import static nl.procura.standard.Globalfunctions.isTru;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.commons.core.exceptions.ProExceptionType.CONFIG;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -50,6 +48,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 
 import nl.procura.burgerzaken.gba.StringUtils;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.commons.liquibase.connections.LbDatabaseType;
 import nl.procura.gba.config.GbaConfig;
 import nl.procura.gba.jpa.personen.dao.AppDao;
@@ -70,7 +69,9 @@ import nl.procura.ssl.web.rest.client.SslWebRestClientResponse;
 import nl.procura.ssl.web.rest.v1_0.certificates.SslRestCertificate;
 import nl.procura.ssl.web.rest.v1_0.certificates.SslRestCertificatesResponse;
 import nl.procura.ssl.web.rest.v1_0.connections.SslRestConnectionsResponse;
-import nl.procura.commons.core.exceptions.ProException;
+
+import lombok.Builder;
+import lombok.Getter;
 
 public class OnderhoudService extends AbstractService {
 
@@ -86,6 +87,7 @@ public class OnderhoudService extends AbstractService {
     getSSLCertificates();
     getFileSystemInfo();
     getAppsInfo();
+    idVoorraadCheck();
   }
 
   public void checkConnection(DatabaseConfig config) {
@@ -241,6 +243,41 @@ public class OnderhoudService extends AbstractService {
     }
   }
 
+  public void idVoorraadCheck() {
+    IdVoorraad idVoorraad = getIdVoorraad();
+    if (idVoorraad.getMin() > 0) {
+      if (idVoorraad.getAnr() < idVoorraad.getMin()) {
+        addMessage(false, SYSTEM, WARNING,
+            "Er zijn nog maar " + idVoorraad.getAnr()
+                + " a-nummers beschikbaar. De applicatiebeheerder moet deze aanvullen.");
+      }
+      if (idVoorraad.getBsn() < idVoorraad.getMin()) {
+        addMessage(false, SYSTEM, WARNING,
+            "Er zijn nog maar " + idVoorraad.getBsn()
+                + " burgerservicenummers beschikbaar. De applicatiebeheerder moet deze aanvullen.");
+      }
+    }
+  }
+
+  public IdVoorraad getIdVoorraad() {
+    List<String[]> anrsCount = getServices().getProbevSqlService().find("select count(anr) from Anr anr");
+    List<String[]> bsnCount = getServices().getProbevSqlService().find("select count(bsn) from Bsn bsn");
+    return IdVoorraad.builder()
+        .min(aval(getParm(MIN_ID_VOORRAAD)))
+        .bsn(bsnCount.stream().mapToInt(result -> aval(result[0])).sum())
+        .anr(anrsCount.stream().mapToInt(result -> aval(result[0])).sum())
+        .build();
+  }
+
+  @Getter
+  @Builder
+  public static class IdVoorraad {
+
+    private int min;
+    private int bsn;
+    private int anr;
+  }
+
   public FileSystemInfo getFileSystemInfo() {
 
     FileSystemInfo info = new FileSystemInfo();
@@ -346,16 +383,6 @@ public class OnderhoudService extends AbstractService {
     }
 
     return application;
-  }
-
-  public String getGemeenteCodes() {
-    ParameterService parameterService = getServices().getParameterService();
-    return parameterService.getSysteemParameter(GEMEENTE_CODES).getValue();
-  }
-
-  public boolean isTestEnvironment() {
-    ParameterService parameterService = getServices().getParameterService();
-    return isTru(parameterService.getSysteemParameter(TEST_OMGEVING).getValue());
   }
 
   private boolean getLoginOk(App sync, Application app, GbaRestClient client) {

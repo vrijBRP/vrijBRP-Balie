@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.bs.registration.person.modules.module1;
 
 import static java.util.Arrays.asList;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_ANR;
 import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_BSN;
 import static nl.procura.gba.web.modules.bs.registration.person.modules.module1.PersonBean.F_DATE_OF_BIRTH;
@@ -28,7 +29,6 @@ import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.IDE
 import static nl.procura.gba.web.services.zaken.identiteit.IdentificatieType.PASPOORT;
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.math.BigDecimal;
@@ -40,18 +40,20 @@ import com.vaadin.ui.Button;
 
 import nl.procura.bsm.rest.v1_0.objecten.gba.probev.idnumbers.IdNumbersResponseRestElement;
 import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.jpa.personen.db.DossSourceDoc;
 import nl.procura.gba.web.common.misc.Landelijk;
 import nl.procura.gba.web.components.fields.GbaDateField;
 import nl.procura.gba.web.components.fields.values.GbaDateFieldValue;
 import nl.procura.gba.web.components.layouts.OptieLayout;
+import nl.procura.gba.web.modules.beheer.onderhoud.page1.tab1.IdVoorraadWindow;
 import nl.procura.gba.web.modules.bs.registration.person.modules.AbstractPersonPage;
 import nl.procura.gba.web.modules.zaken.common.SourceDocumentForm;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
+import nl.procura.gba.web.services.applicatie.onderhoud.OnderhoudService.IdVoorraad;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
 import nl.procura.gba.web.services.bs.registration.SourceDocumentType;
 import nl.procura.gba.web.services.bs.registration.ValidityDateType;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
@@ -89,6 +91,7 @@ public class PersonPage extends AbstractPersonPage {
     if (PASPOORT.getCode().equals(person.getSoort())) {
       description = PASPOORT + " " + person.getIssueingCountry();
       doc.setDocType(CUSTOM.getCode());
+
     } else if (IDENTITEITSKAART.getCode().equals(person.getSoort())) {
       description = IDENTITEITSKAART + " " + person.getIssueingCountry();
       doc.setDocType(CUSTOM.getCode());
@@ -104,6 +107,9 @@ public class PersonPage extends AbstractPersonPage {
 
     final Button anrButton = new Button("Nieuw A-nummer", e -> onNewANumber());
     anrButton.setWidth("130px");
+
+    final Button idVoorraad = new Button("Nummer voorraad", e -> onShowIDVoorraad());
+    idVoorraad.setWidth("130px");
 
     final Button rpsInfoButton = new Button("Toon RPS info", e -> onShowRPSInfo());
     rpsInfoButton.setWidth("130px");
@@ -122,6 +128,7 @@ public class PersonPage extends AbstractPersonPage {
     layout.getRight().setCaption("Opties");
     layout.getRight().addButton(bsnButton, this);
     layout.getRight().addButton(anrButton, this);
+    layout.getRight().addButton(idVoorraad, this);
     layout.getRight().addButton(rpsInfoButton, this);
 
     addComponent(layout);
@@ -254,6 +261,11 @@ public class PersonPage extends AbstractPersonPage {
       personalDetailsForm.getBean().setAnr(new AnrFieldValue(aNum));
       personalDetailsForm.repaint();
     }
+  }
+
+  private void onShowIDVoorraad() {
+    IdVoorraad idVoorraad = getServices().getOnderhoudService().getIdVoorraad();
+    getParentWindow().addWindow(new IdVoorraadWindow(idVoorraad));
   }
 
   private void onShowRPSInfo() {

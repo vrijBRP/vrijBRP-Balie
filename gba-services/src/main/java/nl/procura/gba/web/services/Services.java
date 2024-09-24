@@ -120,7 +120,6 @@ import nl.procura.gba.web.services.zaken.tmv.TerugmeldingService;
 import nl.procura.gba.web.services.zaken.verhuizing.VerhuizingService;
 import nl.procura.gba.web.services.zaken.vog.VogBerichtService;
 import nl.procura.gba.web.services.zaken.vog.VogsService;
-import nl.procura.gba.web.services.zaken.voorraad.VoorraadService;
 import nl.procura.gba.web.services.zaken.zakenregister.ZakenregisterService;
 
 public class Services {
@@ -197,7 +196,6 @@ public class Services {
     add(KoppelEnumeratieService.class);
     add(DossierService.class);
     add(AkteService.class);
-    add(VoorraadService.class);
     add(CurateleService.class);
     add(KennisbankService.class);
     add(OverlijdenGemeenteService.class);
@@ -567,10 +565,6 @@ public class Services {
 
   public VogsService getVogService() {
     return get(VogsService.class);
-  }
-
-  public VoorraadService getVoorraadService() {
-    return get(VoorraadService.class);
   }
 
   public ZaakAttribuutService getZaakAttribuutService() {

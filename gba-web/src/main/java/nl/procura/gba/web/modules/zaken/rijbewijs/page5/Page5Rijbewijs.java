@@ -116,7 +116,6 @@ public class Page5Rijbewijs extends RijbewijsPage {
   private final P1651          message;
   private Page5RijbewijsForm1  form1      = null;
   private Page5RijbewijsForm2  form2      = null;
-  private Page5RijbewijsForm3  form3      = null;
   private Page5RijbewijsTable1 table1     = null;
   private GbaNativeSelect      fieldSoort = null;
   private Page5RedenField      fieldReden = null;
@@ -207,11 +206,6 @@ public class Page5Rijbewijs extends RijbewijsPage {
       initFields(antwoord);
 
       addComponent(form1);
-
-      if (getServices().getReisdocumentBezorgingService().isEnabled()) {
-        form3 = new Page5RijbewijsForm3();
-        addComponent(form3);
-      }
       addComponent(new Fieldset("Rijbewijscategorieën", table1));
     }
 
@@ -225,10 +219,6 @@ public class Page5Rijbewijs extends RijbewijsPage {
 
     if (form2.getParent() != null) {
       form2.commit();
-    }
-
-    if (form3.getParent() != null) {
-      form3.commit();
     }
 
     if (along(getPl().getNatio().getNationaliteit().getValue().getVal()) < 0) {
@@ -249,11 +239,6 @@ public class Page5Rijbewijs extends RijbewijsPage {
     // Afhaallocatie
     if (form1.getBean().getAfhaalLocatie() != null) {
       aanvraag.setLocatieAfhaal(form1.getBean().getAfhaalLocatie());
-    }
-
-    if (form3.getParent() != null) {
-      aanvraag.setIndBezorgen(form3.getBean().getIndBezorgen());
-      aanvraag.setOpmBezorgen(form3.getBean().getOpmBezorgen());
     }
 
     // Vermelding titel / predikaat

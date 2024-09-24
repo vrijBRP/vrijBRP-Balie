@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,8 +25,8 @@ import com.vaadin.ui.Field;
 
 import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
+import nl.procura.gba.web.modules.beheer.parameters.bean.ZaakStatusParameterContainer;
 import nl.procura.gba.web.modules.beheer.parameters.form.DatabaseParameterForm;
-import nl.procura.gba.web.modules.beheer.parameters.layout.ZakenStatusParametersLayout.ZaakStatusParameterContainer;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.gba.templates.ZoekProfielType;
 import nl.procura.vaadin.component.container.ProcuraContainer;

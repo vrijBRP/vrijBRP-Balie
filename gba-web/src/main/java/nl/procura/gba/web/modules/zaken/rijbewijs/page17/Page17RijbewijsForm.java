@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,20 +17,20 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.beheer.voorraad.page1;
+package nl.procura.gba.web.modules.zaken.rijbewijs.page17;
 
-import nl.procura.gba.web.components.layouts.table.GbaTable;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page17.Page17RijbewijsBean1.IND_BEZORGEN;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page17.Page17RijbewijsBean1.OPM_BEZORGEN;
 
-public class Page1VoorraadTable extends GbaTable {
+import nl.procura.gba.web.components.layouts.form.GbaForm;
 
-  @Override
-  public void setColumns() {
+public class Page17RijbewijsForm extends GbaForm<Page17RijbewijsBean1> {
 
-    setSelectable(true);
-    setMultiSelect(true);
-
-    addColumn("Type", 140);
-    addColumn("Aantal beschikbaar", 150);
-    addColumn("Aantal verbruikt");
+  public Page17RijbewijsForm() {
+    setCaption("Thuisbezorgen");
+    setOrder(IND_BEZORGEN, OPM_BEZORGEN);
+    setReadThrough(true);
+    setReadonlyAsText(false);
+    setBean(new Page17RijbewijsBean1());
   }
 }

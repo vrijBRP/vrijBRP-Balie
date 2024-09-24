@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,6 +24,7 @@ import java.util.List;
 import com.vaadin.ui.Button;
 
 import nl.procura.gba.web.modules.beheer.onderhoud.OnderhoudTabPage;
+import nl.procura.gba.web.services.applicatie.onderhoud.OnderhoudService.IdVoorraad;
 import nl.procura.ssl.web.rest.v1_0.connections.SslRestConnection;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -42,6 +43,9 @@ public class Tab1OnderhoudPage extends OnderhoudTabPage {
   public void event(PageEvent event) {
 
     if (event.isEvent(InitPage.class)) {
+      addComponent(new Fieldset("ID-nummers"));
+      addComponent(getIdNumbersForm());
+
       addComponent(new Fieldset("RDW account"));
       setInfo("", "Klik op de regel in de tabel hieronder voor meer informatie");
       addComponent(new Tab1RdwTable());
@@ -60,6 +64,11 @@ public class Tab1OnderhoudPage extends OnderhoudTabPage {
     }
 
     super.event(event);
+  }
+
+  private Page1OnderhoudForm getIdNumbersForm() {
+    IdVoorraad idVoorraad = getServices().getOnderhoudService().getIdVoorraad();
+    return new Page1OnderhoudForm(idVoorraad);
   }
 
   private List<SslRestConnection> getConnections(boolean b) {

@@ -54,8 +54,10 @@ public class KassaProduct extends Kassa implements DatabaseTable {
   public String getDescr() {
     if (KassaType.REISDOCUMENT.is(getKassaType())) {
       return getKassaReisdocument().toString();
+
     } else if (KassaType.RIJBEWIJS.is(getKassaType())) {
       return getKassaRijbewijs().getCode() + ": " + getKassaRijbewijs().getOms();
+
     } else if (KassaType.UITTREKSEL.is(getKassaType())) {
       return getKassaDocument().toString();
     }

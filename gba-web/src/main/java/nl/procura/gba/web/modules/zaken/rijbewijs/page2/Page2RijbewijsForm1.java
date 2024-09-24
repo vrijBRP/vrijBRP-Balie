@@ -81,7 +81,7 @@ public class Page2RijbewijsForm1 extends RdwReadOnlyForm {
     b.setSpoed(aanvraag.isSpoed() ? "Ja" : "Nee");
     b.setVermeldingTitel(VermeldTitelType.get(aanvraag.getVermeldTp().intValue()).getOms());
     b.setVervangtRijbewijs(aanvraag.getVervangingsRbwNr());
-    b.setBezorgen(aanvraag.getIndBezorgen() ? trim("Ja, " + aanvraag.getOpmBezorgen()) : "Nee");
+    b.setBezorgen(trim((aanvraag.getIndBezorgen() ? "Ja, " : "Nee, ") + aanvraag.getOpmBezorgen()));
     setBean(b);
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,6 +19,9 @@
 
 package nl.procura.gba.web.rest.v2.services;
 
+import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.BEEINDIGD;
+import static nl.procura.gba.web.services.interfaces.GeldigheidStatus.NOG_NIET_ACTUEEL;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,6 @@ import nl.procura.gba.web.rest.v2.model.gebruikers.GbaRestParameter;
 import nl.procura.gba.web.services.beheer.gebruiker.Gebruiker;
 import nl.procura.gba.web.services.beheer.parameter.Parameter;
 import nl.procura.gba.web.services.beheer.parameter.annotations.ParameterAnnotation;
-import nl.procura.standard.ProcuraDate;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +61,7 @@ public class GbaRestGebruikerService extends GbaRestAbstractService {
       restGebruiker.setEmail(gebruiker.getEmail());
       restGebruiker.setBeheerder(gebruiker.isAdministrator());
       restGebruiker.setGeblokkeerd(gebruiker.isGeblokkeerd());
-      restGebruiker.setVerlopen(new ProcuraDate(gebruiker.getDatumEinde().getIntDate()).isExpired());
+      restGebruiker.setVerlopen(gebruiker.getGeldigheidStatus().is(BEEINDIGD, NOG_NIET_ACTUEEL));
       restGebruiker.setParameters(getParameters(gebruiker));
       antwoord.setGebruiker(restGebruiker);
     }

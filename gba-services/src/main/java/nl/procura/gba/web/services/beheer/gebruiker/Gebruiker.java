@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,18 +19,30 @@
 
 package nl.procura.gba.web.services.beheer.gebruiker;
 
-import static ch.lambdaj.Lambda.*;
-import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
-import static nl.procura.standard.Globalfunctions.*;
+import static ch.lambdaj.Lambda.exists;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
 
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.MiscUtils;
-import nl.procura.gba.jpa.personen.db.*;
+import nl.procura.gba.jpa.personen.db.BaseEntity;
+import nl.procura.gba.jpa.personen.db.Document;
+import nl.procura.gba.jpa.personen.db.Location;
+import nl.procura.gba.jpa.personen.db.Profile;
+import nl.procura.gba.jpa.personen.db.Usr;
 import nl.procura.gba.web.services.beheer.KoppelActie;
 import nl.procura.gba.web.services.beheer.gebruiker.info.GebruikerInformatie;
 import nl.procura.gba.web.services.beheer.locatie.KoppelbaarAanLocatie;
@@ -47,7 +59,6 @@ import nl.procura.gba.web.services.interfaces.GeldigheidStatus;
 import nl.procura.gba.web.services.zaken.documenten.DocumentRecord;
 import nl.procura.gba.web.services.zaken.documenten.KoppelbaarAanDocument;
 import nl.procura.java.reflection.ReflectionUtil;
-import nl.procura.commons.core.exceptions.ProException;
 
 public class Gebruiker extends Usr
     implements KoppelbaarAanDocument, KoppelbaarAanLocatie, KoppelbaarAanProfiel, Geldigheid, DatabaseTable {

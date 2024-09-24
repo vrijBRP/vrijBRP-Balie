@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -48,7 +48,7 @@ public class Rule6Processor extends AbstractRuleProcessor {
     int endHour = rule.getIntAttribute(Y.name()); // End hour (y)
 
     DateTime dateTimeEntry = relatedCase.getDatumTijdInvoer();
-    long hour = Long.valueOf(dateTimeEntry.getFormatTime("HH"));
+    long hour = Long.parseLong(dateTimeEntry.getFormatTime("HH"));
     String formatHour = dateTimeEntry.getFormatTime("HH:mm");
 
     boolean isInBetween = hour >= startHour && hour < endHour;

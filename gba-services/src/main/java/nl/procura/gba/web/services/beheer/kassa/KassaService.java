@@ -219,31 +219,22 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   }
 
   public void addToWinkelwagen(Zaak zaak) {
-    addToWinkelwagen(zaak, true);
-  }
-
-  public void addToWinkelwagen(Zaak zaak, boolean magDubbelVoorkomen) {
     if (getServices().isType(Services.TYPE.PROWEB)) {
       List<KassaProduct> producten = samenvoegenTotBundel(getKassaProducten(getNieuweKassaProducten(this, zaak)));
-      addToWinkelwagen(producten, magDubbelVoorkomen);
+      addToWinkelwagen(zaak.getZaakId(), producten);
     }
   }
 
-  public void addToWinkelwagen(List<KassaProduct> producten) {
-    addToWinkelwagen(producten, true);
-  }
-
-  public void addToWinkelwagen(List<KassaProduct> producten, boolean magDubbelVoorkomen) {
+  public void addToWinkelwagen(String zaakId, List<KassaProduct> producten) {
     for (KassaProduct product : samenvoegenTotBundel(producten)) {
       if (product.getKassaType() != KassaType.ONBEKEND) {
-        if (!magDubbelVoorkomen && isToegevoegdAanWinkelwagen(product)) {
-          continue;
-        }
         BasePLExt pl = getServices().getPersonenWsService().getHuidige();
         UsrFieldValue gebruiker = new UsrFieldValue(getServices().getGebruiker());
-        KassaProductAanvraag aanvraag = new KassaProductAanvraag(product, pl, gebruiker);
-        getProductenInWinkelwagen().add(aanvraag);
-        callListeners(ServiceEvent.CHANGE);
+        KassaProductAanvraag aanvraag = new KassaProductAanvraag(product, zaakId, pl, gebruiker);
+        if (!isToegevoegdAanWinkelwagen(aanvraag)) {
+          getProductenInWinkelwagen().add(aanvraag);
+          callListeners(ServiceEvent.CHANGE);
+        }
       }
     }
   }
@@ -291,7 +282,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
    * Vervang de kassaproducten met de bundel
    */
   public void vervangBundel(KassaProduct kassaProduct) {
-    addToWinkelwagen(kassaProduct.getGekoppeldeProducten());
+    addToWinkelwagen("", kassaProduct.getGekoppeldeProducten());
     for (KassaProduct gekoppeldProduct : kassaProduct.getGekoppeldeProducten()) {
       verwijderEersteProductUitWinkelwagen(gekoppeldProduct);
     }
@@ -305,10 +296,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   }
 
   public void deleteProductUitWinkelwagen(KassaProductAanvraag product) {
-    if (isToegevoegdAanWinkelwagen(product)) {
-      getProductenInWinkelwagen().remove(product);
-    }
-
+    getProductenInWinkelwagen().remove(product);
     callListeners(ServiceEvent.CHANGE);
   }
 
@@ -324,7 +312,7 @@ public class KassaService extends AbstractService implements ZaakNumbers {
     Set<KassaProduct> bundels = new LinkedHashSet<>();
     for (Set<KassaProduct> set : KassaCombinations.getCombinationsFor(producten)) {
       for (KassaProduct kassa : getKassaProducten()) {
-        if (kassa.isKassaBundel() && kassa.heeftAlleGekoppeldeProducten(new ArrayList(set))) {
+        if (kassa.isKassaBundel() && kassa.heeftAlleGekoppeldeProducten(new ArrayList<>(set))) {
           bundels.add(kassa);
         }
       }
@@ -354,24 +342,8 @@ public class KassaService extends AbstractService implements ZaakNumbers {
   /**
    * Is de aanvraag al in de kassa
    */
-  private boolean isToegevoegdAanWinkelwagen(KassaProductAanvraag product) {
-    return getProductenInWinkelwagen().contains(product);
-  }
-
-  /**
-   * Is het product van deze persoon al in de kassa
-   */
-  private boolean isToegevoegdAanWinkelwagen(KassaProduct product) {
-    for (KassaProductAanvraag aanvraag : getProductenInWinkelwagen()) {
-      if (aanvraag.getKassaProduct().getId().equals(product.getId())) {
-        BasePLExt pl = getServices().getPersonenWsService().getHuidige();
-        if (pl.is(aanvraag.getPl())) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+  private boolean isToegevoegdAanWinkelwagen(KassaProductAanvraag aanvraag) {
+    return getProductenInWinkelwagen().stream().anyMatch(aanvraag::isTheSame);
   }
 
   private void verwijderEersteProductUitWinkelwagen(KassaProduct kassaProduct) {

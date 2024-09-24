@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,7 +19,7 @@
 
 package nl.procura.gba.web.modules.zaken.kassa.page2;
 
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 import nl.procura.gba.web.components.layouts.page.ButtonPageTemplate;
 import nl.procura.gba.web.modules.zaken.kassa.page1.Page1Kassa;
@@ -75,7 +75,7 @@ public class Page2Kassa extends ButtonPageTemplate {
 
     KassaProduct kp = form2.getKassaProduct();
 
-    getServices().getKassaService().addToWinkelwagen(asList(kp));
+    getServices().getKassaService().addToWinkelwagen("", singletonList(kp));
 
     new Message(getWindow(), "Kassaproduct is opgeslagen.", Message.TYPE_SUCCESS);
 

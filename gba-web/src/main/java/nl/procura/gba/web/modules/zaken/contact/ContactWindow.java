@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -29,9 +29,15 @@ public class ContactWindow extends GbaModalWindow {
 
   private final Contact               contact;
   private final ContactStatusListener succesListener;
+  private String                      warning;
 
   public ContactWindow() {
-    this(null);
+    this((ContactStatusListener) null);
+  }
+
+  public ContactWindow(String warning) {
+    this((ContactStatusListener) null);
+    this.warning = warning;
   }
 
   public ContactWindow(ContactStatusListener succesListener) {
@@ -46,11 +52,9 @@ public class ContactWindow extends GbaModalWindow {
 
   @Override
   public void attach() {
-
     super.attach();
-
     MainModuleContainer mainModule = new MainModuleContainer();
     addComponent(mainModule);
-    mainModule.getNavigation().addPage(new ModuleContact(contact, succesListener));
+    mainModule.getNavigation().addPage(new ModuleContact(contact, succesListener, warning));
   }
 }

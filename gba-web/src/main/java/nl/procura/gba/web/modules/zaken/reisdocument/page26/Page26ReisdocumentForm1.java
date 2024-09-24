@@ -46,7 +46,7 @@ public class Page26ReisdocumentForm1 extends GbaForm<Page26ReisdocumentBean1> {
     this.bezorging = bezorging;
     this.service = service;
     this.bezorgingListener = bezorgingListener;
-    setOrder(BEZORGING_GEWENST, ADRES, BUNDELING, OPMERKINGEN);
+    setOrder(BEZORGING_GEWENST, OPMERKINGEN, BUNDELING, ADRES);
     setColumnWidths("150px", "");
     setReadonlyAsText(false);
     setBean(bean);

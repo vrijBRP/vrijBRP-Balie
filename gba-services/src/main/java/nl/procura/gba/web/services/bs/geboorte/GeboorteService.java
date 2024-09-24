@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,9 +19,12 @@
 
 package nl.procura.gba.web.services.bs.geboorte;
 
-import static nl.procura.gba.web.common.tables.GbaTables.*;
-import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.*;
-import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.gba.web.common.tables.GbaTables.LAND;
+import static nl.procura.gba.web.common.tables.GbaTables.PLAATS;
+import static nl.procura.gba.web.common.tables.GbaTables.TITEL;
+import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
+import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.MOEDER;
+import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.VADER_ERKENNER;
 import static nl.procura.standard.Globalfunctions.fil;
 
 import java.util.ArrayList;
@@ -33,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nl.procura.gba.common.DateTime;
-import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.jpa.personen.dao.ZaakKey;
 import nl.procura.gba.jpa.personen.db.DossErk;
@@ -50,13 +52,12 @@ import nl.procura.gba.web.services.bs.geboorte.erkenningbuitenproweb.ErkenningBu
 import nl.procura.gba.web.services.bs.geboorte.naamskeuzebuitenproweb.NaamskeuzeBuitenProweb;
 import nl.procura.gba.web.services.bs.naamskeuze.DossierNaamskeuze;
 import nl.procura.gba.web.services.bs.naamskeuze.NaamskeuzeService;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
-import nl.procura.gba.web.services.zaken.contact.ContactgegevensService;
-import nl.procura.gba.web.services.zaken.voorraad.VoorraadStatus;
-import nl.procura.gba.web.services.zaken.voorraad.VoorraadType;
-import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
-import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
 public class GeboorteService extends AbstractZaakContactService<Dossier> implements ZaakService<Dossier> {
 
@@ -70,32 +71,6 @@ public class GeboorteService extends AbstractZaakContactService<Dossier> impleme
     super(name, zaakType);
   }
 
-  /**
-   * ID-nummers worden nu door de BSM bepaald op het moment van verwerking
-   */
-  @Transactional
-  @ThrowException("Fout bij het bepalen van de nummers")
-  @Deprecated
-  public void bepaalIdNummers(DossierGeboorte zaakDossier) {
-
-    if (zaakDossier.getDossier().getStatus().isMinimaal(ZaakStatusType.OPGENOMEN)) {
-
-      long gemeenteCode = along(getServices().getGebruiker().getGemeenteCode());
-      long moederGemeenteCode = along(zaakDossier.getMoeder().getWoongemeente().getValue());
-
-      // Alleen nummers toevoegen als moeder in gemeente woont
-      if (gemeenteCode == moederGemeenteCode) {
-        for (DossierPersoon kind : zaakDossier.getKinderen()) {
-          if (heeftNieuweIdNummers(kind)) {
-            getServices().getDossierService().savePersoon(kind);
-            // Verwerk ook de nieuwe nummers in de aktes
-            getServices().getAkteService().updateAkteEigenschappen(zaakDossier.getDossier());
-          }
-        }
-      }
-    }
-  }
-
   @Override
   @Timer
   @ThrowException("Fout bij het zoeken van de geboortezaken")
@@ -105,12 +80,8 @@ public class GeboorteService extends AbstractZaakContactService<Dossier> impleme
 
   @Override
   public ZaakContact getContact(Dossier zaak) {
-
     ZaakContact contact = new ZaakContact();
-
     DossierGeboorte geboorte = (DossierGeboorte) zaak.getZaakDossier();
-    ContactgegevensService cg = getServices().getContactgegevensService();
-
     contact.add(getServices().getDossierService().getContactPersoon(AANGEVER, geboorte.getAangever()));
     contact.add(getServices().getDossierService().getContactPersoon(MOEDER, geboorte.getMoeder()));
     contact.add(getServices().getDossierService().getContactPersoon(VADER_ERKENNER, geboorte.getVaderErkenner()));
@@ -277,29 +248,6 @@ public class GeboorteService extends AbstractZaakContactService<Dossier> impleme
     List<DossierPersoon> sorted = new ArrayList<>(personen);
     sorted.sort(new GeboorteDatumComparator(false));
     return sorted;
-  }
-
-  /**
-   * Bepaal de BSN's en A-nummers
-   */
-  @Deprecated
-  private boolean heeftNieuweIdNummers(DossierPersoon kind) {
-
-    boolean heeftNieuweNummers = false;
-
-    if (!kind.getBurgerServiceNummer().isCorrect()) {
-      long bsn = getServices().getVoorraadService().getNummer(VoorraadType.BSN, VoorraadStatus.TIJDELIJK);
-      kind.setBurgerServiceNummer(new BsnFieldValue(bsn));
-      heeftNieuweNummers = true;
-    }
-
-    if (!kind.getAnummer().isCorrect()) {
-      long anr = getServices().getVoorraadService().getNummer(VoorraadType.ANR, VoorraadStatus.TIJDELIJK);
-      kind.setAnummer(new AnrFieldValue(anr));
-      heeftNieuweNummers = true;
-    }
-
-    return heeftNieuweNummers;
   }
 
   private void updateGeboorteDatums(Dossier zaak, DossierGeboorte zaakDossier) {
