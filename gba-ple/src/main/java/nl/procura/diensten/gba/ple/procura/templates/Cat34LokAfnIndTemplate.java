@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,11 +19,12 @@
 
 package nl.procura.diensten.gba.ple.procura.templates;
 
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LOK_AFN_AANT_OMSCHR;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LOK_AFN_AANT_OPMERK;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.LOK_AFN_AANT_SOORT;
 
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.diensten.gba.ple.procura.utils.SortableObject;
-import nl.procura.gba.jpa.probev.db.Aant3;
 import nl.procura.gba.jpa.probev.db.AbstractAant3;
 
 public class Cat34LokAfnIndTemplate extends PLETemplateProcura<AbstractAant3> {
@@ -33,7 +34,7 @@ public class Cat34LokAfnIndTemplate extends PLETemplateProcura<AbstractAant3> {
 
     addCat(GBACat.LOK_AF_IND, so);
 
-    Aant3 aant = (Aant3) so.getObject();
+    AbstractAant3 aant = so.getObject();
     addElem(LOK_AFN_AANT_SOORT, aant.getAantek3().getAant());
     addElem(LOK_AFN_AANT_OMSCHR, aant.getAantek3().getOms());
     addElem(LOK_AFN_AANT_OPMERK, aant.getAant());

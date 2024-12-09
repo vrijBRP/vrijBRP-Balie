@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.jpa.personen.db.ZaakId;
 import nl.procura.gba.jpa.personen.utils.GbaJpa;
@@ -61,8 +62,10 @@ public class InwonerAppControles extends ControlesTemplate<InwonerAppService> {
       for (Zaak zaak : zakenService.getStandaardZaken(new ZaakArgumenten(zaakId))) {
         services.getInwonerAppService().getSummary(zaak).ifPresent(pdf -> {
           // Save the document
+          DateTime dateTime = new DateTime();
           DMSDocument dmsDocument = DMSDocument.builder()
-              .content(DMSBytesContent.fromFilename("inwoner_app_samenvatting.pdf", pdf))
+              .content(
+                  DMSBytesContent.fromFilename("inwoner_app_samenvatting_" + dateTime.getLongDateTime() + ".pdf", pdf))
               .title("Inwoner.app samenvatting")
               .zaakId(zaak.getZaakId())
               .documentTypeDescription("")
@@ -138,10 +141,11 @@ public class InwonerAppControles extends ControlesTemplate<InwonerAppService> {
         .map(ZaakStatusType::getCode)
         .collect(Collectors.toList()));
 
-    return query.getResultList()
+    List<String> collect = query.getResultList()
         .stream()
         .map(z -> z.getId().getInternId())
         .collect(Collectors.toList());
+    return collect;
   }
 
   public static class InwonerAppControle extends StandaardControle {

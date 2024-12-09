@@ -57,7 +57,6 @@ import nl.procura.burgerzaken.keesy.api.SignalenApi;
 import nl.procura.burgerzaken.keesy.api.ZakenApi;
 import nl.procura.burgerzaken.keesy.api.model.DownloadVerzamelDocumentPDFRequest;
 import nl.procura.burgerzaken.keesy.api.model.GeefStartUrlRequest;
-import nl.procura.burgerzaken.keesy.api.model.GeefStartUrlResponse;
 import nl.procura.burgerzaken.keesy.api.model.GeefZaakRequest;
 import nl.procura.burgerzaken.keesy.api.model.MaakZaakRequest;
 import nl.procura.burgerzaken.keesy.api.model.MaakZaakRequestPersoon;
@@ -116,13 +115,13 @@ public class InwonerAppService extends AbstractService implements Controleerbare
 
   public Optional<Integer> getAantalSignalen(String zaakId) {
     SignalenApi signalenApi = new SignalenApi(getKeesyClient());
-    return ofNullable(signalenApi.geefAantalSignalen(new SignalenRequest()
+    return Optional.ofNullable(signalenApi.geefAantalSignalen(new SignalenRequest()
         .externUserId(getExternUserId())
         .groupId(getUserGroupId())
-        .externZaakId(zaakId)))
-        .filter(ApiResponse::isSuccessful)
-        .map(ApiResponse::getEntity)
-        .map(SignalenResponse::getAantal);
+        .externZaakId(zaakId))
+        .onError(msg -> new ProException(WARNING, "Fout bij het ophalen van inwoner.app signalen", msg))
+        .getEntity()
+        .getAantal());
 
   }
 
@@ -135,6 +134,7 @@ public class InwonerAppService extends AbstractService implements Controleerbare
           .groupId(getUserGroupId());
 
       ApiResponse<SignalenResponse> response = signalenApi.geefAantalSignalen(request);
+      response.onError(msg -> new ProException(WARNING, "Fout bij het ophalen van inwoner.app signalen", msg));
       if (response.isSuccessful()) {
         if (response.getEntity().getSignalen() != null) {
           for (Signaal signaal : response.getEntity().getSignalen()) {
@@ -148,9 +148,6 @@ public class InwonerAppService extends AbstractService implements Controleerbare
                     .orElse("Onbekende zaak (" + signaal.getExternZaakId() + ")")));
           }
         }
-      } else {
-        throw new ProException(WARNING, "Fout bij het ophalen van signalen: " +
-            response.getError().getException().message());
       }
     }
     return signalen;
@@ -308,11 +305,12 @@ public class InwonerAppService extends AbstractService implements Controleerbare
 
   public Optional<String> getExternalURL() {
     AutorisatieApi autorisatieApi = new AutorisatieApi(getKeesyClient());
-    GeefStartUrlRequest request = new GeefStartUrlRequest()
+    return Optional.of(autorisatieApi.geefStartUrl(new GeefStartUrlRequest()
         .externUserId(getExternUserId())
-        .groupId(getUserGroupId());
-    GeefStartUrlResponse response = autorisatieApi.geefStartUrl(request).getEntity();
-    return Optional.of(response.getUrl());
+        .groupId(getUserGroupId()))
+        .onError(msg -> new ProException(WARNING, "Fout bij het bevragen van inwoner.app: ", msg))
+        .getEntity()
+        .getUrl());
   }
 
   public Optional<byte[]> getSummary(Zaak zaak) {
@@ -335,11 +333,10 @@ public class InwonerAppService extends AbstractService implements Controleerbare
 
   private String getInwonerAppInternalId(String zaakId) {
     ZakenApi zakenApi = new ZakenApi(getKeesyClient());
-    return zakenApi.geefZaak(new GeefZaakRequest()
-        .externZaakId(zaakId))
+    return zakenApi.geefZaak(new GeefZaakRequest().externZaakId(zaakId))
+        .onError(msg -> new ProException(WARNING, "Fout bij het bevragen van inwoner.app: ", msg))
         .getEntity()
         .getZaakId();
-
   }
 
   private byte[] downloadSummary(String zaakId) {
@@ -348,7 +345,7 @@ public class InwonerAppService extends AbstractService implements Controleerbare
         .zaakId(zaakId)
         .inclusiefInhoudsopgave(true)
         .inclusiefBerichtenoverzicht(true))
+        .onError(msg -> new ProException(WARNING, "Fout bij het ophalen van inwoner.app signalen", msg))
         .getEntity();
-
   }
 }

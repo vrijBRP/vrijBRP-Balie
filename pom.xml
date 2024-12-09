@@ -4,7 +4,7 @@
   <packaging>pom</packaging>
   <groupId>nl.procura.gba</groupId>
   <artifactId>gba-parent</artifactId>
-  <version>1.36.2</version>
+  <version>1.36.3</version>
   <name>Proweb GBA - Parent</name>
 
   <developers>
@@ -23,7 +23,7 @@
 
   <scm>
     <developerConnection>scm:git:https://gitlab.simgroep.nl/vrijbrp/balie.git</developerConnection>
-    <tag>1.36.2</tag>
+    <tag>1.36.3</tag>
   </scm>
 
   <distributionManagement>
@@ -35,7 +35,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <vaadin6.version>2.0.2</vaadin6.version>
+    <vaadin6.version>2.0.3</vaadin6.version>
     <vrijbrp-libs.version>1.0.15</vrijbrp-libs.version>
     <hub.version>1.0.6</hub.version>
     <vrijbrp-connect.version>1.2.1</vrijbrp-connect.version>

@@ -19,6 +19,8 @@
 
 package nl.procura.burgerzaken.keesy.api;
 
+import java.util.function.Function;
+
 import nl.procura.burgerzaken.keesy.api.model.InwonerAppError;
 
 import lombok.Data;
@@ -30,4 +32,15 @@ public class ApiResponse<T> {
   private int             httpCode;
   private T               entity;
   private InwonerAppError error;
+
+  public ApiResponse<T> onError(Function<String, RuntimeException> f) {
+    if (!isSuccessful()) {
+      if (error != null && error.getException() != null) {
+        throw f.apply(error.getException().message());
+      } else {
+        throw f.apply("Onbekende fout met HTTP code: " + httpCode);
+      }
+    }
+    return this;
+  }
 }
