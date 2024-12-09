@@ -19,18 +19,18 @@
 
 package nl.procura.gba.jpa.personen.dao;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.jpa.personen.db.Idvaststelling;
 import nl.procura.gba.jpa.personen.db.Usr;
@@ -39,14 +39,13 @@ import nl.procura.gba.jpa.personen.utils.GbaJpa;
 public class IdVastellingDao extends GenericDao {
 
   private static final String USR   = "usr";
-  private static final String SOORT = "soort";
   private static final String D_IN  = "dIn";
   private static final String T_IN  = "tIn";
 
   /**
    * geeft een vaststelling terug
    */
-  public static final Idvaststelling getVaststelling(long bsn, long cUsr, String zaakId, long dIn, long tIn) {
+  public static Idvaststelling getVaststelling(long bsn, long cUsr, long dIn, long tIn) {
 
     EntityManager em = GbaJpa.getManager();
 
@@ -56,28 +55,24 @@ public class IdVastellingDao extends GenericDao {
 
     List<Predicate> where = new ArrayList<>();
 
-    where.add(builder.equal(table.<BigDecimal> get(BSN), bsn));
-    where.add(builder.equal(table.<BigDecimal> get(D_IN), dIn));
+    where.add(builder.equal(table.<BigDecimal>get(BSN), bsn));
+    where.add(builder.equal(table.<BigDecimal>get(D_IN), dIn));
 
     if (tIn <= 0) {
-      where.add(builder.ge(table.<BigDecimal> get(T_IN), toBigDecimal(-1L)));
+      where.add(builder.ge(table.<BigDecimal>get(T_IN), toBigDecimal(-1L)));
     }
 
     if (pos(cUsr)) {
       where.add(builder.equal(table.get(USR).get(extracted()), cUsr));
     }
 
-    query.where(where.toArray(new Predicate[where.size()]));
-    query.orderBy(builder.desc(table.<BigDecimal> get(T_IN)));
+    query.where(where.toArray(new Predicate[0]));
+    query.orderBy(builder.desc(table.<BigDecimal>get(T_IN)));
 
     for (Idvaststelling i : em.createQuery(query).getResultList()) {
-
-      long zaakTime = along(i.getTIn());
-
-      // Geen tijd in zaak of wel tijd in zaak
-      if (zaakTime <= 0 || zaakTime <= tIn) {
+      long idTime = along(i.getTIn());
+      if (idTime <= 0 || idTime <= tIn) { // Geen tijd in zaak of wel tijd in zaak
         return i;
-
       }
     }
 
@@ -91,11 +86,10 @@ public class IdVastellingDao extends GenericDao {
   /**
    * Voegt een vaststelling toe
    */
-  public static void addVaststelling(long bsn, long cUsr, String soort, String documentnr, boolean verificatie,
-      String verificatieOms) {
+  public static void addVaststelling(long bsn, long cUsr, String soort,
+      String documentnr, boolean verificatie, String verificatieOms) {
 
     DateTime dt = new DateTime();
-
     Idvaststelling id = new Idvaststelling();
     id.setUsr(find(Usr.class, cUsr));
     id.setBsn(BigDecimal.valueOf(bsn));
@@ -107,12 +101,5 @@ public class IdVastellingDao extends GenericDao {
     id.setSVerificatie(verificatieOms);
 
     saveEntity(id);
-  }
-
-  /**
-   * Verwijder de vaststelling
-   */
-  public static void removeVaststelling(long bsn, long cUsr, long dIn, long tIn) {
-    removeEntity(getVaststelling(bsn, cUsr, "", dIn, tIn));
   }
 }

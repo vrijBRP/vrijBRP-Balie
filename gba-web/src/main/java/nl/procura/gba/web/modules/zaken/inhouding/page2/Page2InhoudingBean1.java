@@ -22,13 +22,11 @@ package nl.procura.gba.web.modules.zaken.inhouding.page2;
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.util.Date;
-
+import lombok.Data;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
 import nl.procura.vaadin.component.field.ProDateField;
-
-import lombok.Data;
 
 @Data
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
@@ -63,12 +61,12 @@ public class Page2InhoudingBean1 implements Serializable {
   private String inhouding = "";
 
   @Field(customTypeClass = ProDateField.class,
-      caption = "Datum geldigheid",
+      caption = "Datum inneming / melding",
       width = "97px",
       required = true)
   private Date datum = null;
 
   @Field(type = FieldType.LABEL,
-      caption = "Datum geldigheid")
+      caption = "Datum inneming / melding")
   private String datumReadOnly = "";
 }

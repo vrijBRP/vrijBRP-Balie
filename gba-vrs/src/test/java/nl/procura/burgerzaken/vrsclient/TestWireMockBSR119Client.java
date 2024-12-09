@@ -30,19 +30,19 @@ import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.PSEUDONIEM
 import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.V2_DOCUMENTEN_ENDPOINT;
 import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.V2_DOCUMENT_DETAILS_ENDPOINT;
 
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpStatus;
-import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import nl.procura.burgerzaken.vrsclient.api.DocumentenApi;
 import nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType;
+import nl.procura.burgerzaken.vrsclient.api.VrsDocumentStatusType;
 import nl.procura.burgerzaken.vrsclient.api.VrsMetadata;
 import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.validation.Bsn;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
+import org.apache.http.entity.ContentType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestWireMockBSR119Client extends AbstractTestWireMockClient {
 
@@ -55,8 +55,13 @@ public class TestWireMockBSR119Client extends AbstractTestWireMockClient {
             .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())));
 
     final DocumentenApi api = getDocumentenApi();
-    final ReisdocumentInformatiePersoonsGegevensInstantieResponse response = api.documenten(getDocumentenRequest());
+    final ReisdocumentInformatiePersoonsGegevensInstantieResponse response = api.documenten(getDocumentenRequest())
+        .response();
     Assertions.assertEquals("Er zijn documenten gevonden.", response.getResultaatOmschrijving());
+    Assertions.assertEquals(VrsDocumentStatusType.IN_AANVRAAG, VrsDocumentStatusType.getByCode(response.getReisdocumentenLijst().get(0)
+        .getReisdocument()
+        .getStatusMeestRecent()
+        .getDocumentstatusCode()));
   }
 
   @Test
@@ -69,7 +74,8 @@ public class TestWireMockBSR119Client extends AbstractTestWireMockClient {
 
     final DocumentenApi api = getDocumentenApi();
     final ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse response = api
-        .document(getDocumentRequest());
+        .document(getDocumentRequest())
+        .response();
     Assertions.assertEquals("Er is een document gevonden.", response.getResultaatOmschrijving());
   }
 

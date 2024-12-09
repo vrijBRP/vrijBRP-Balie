@@ -26,7 +26,6 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponseReisdocumentInformatiePersoonsgegevens;
@@ -42,7 +41,6 @@ public class Page1ReisdocumentTable2 extends GbaTable {
   public Page1ReisdocumentTable2(
       List<ReisdocumentInformatiePersoonsGegevensInstantieResponseReisdocumentInformatiePersoonsgegevens> reisdocumenten) {
     this.reisdocumenten = reisdocumenten;
-    setSelectable(true);
   }
 
   @Override
@@ -52,9 +50,9 @@ public class Page1ReisdocumentTable2 extends GbaTable {
     addColumn("Nummer", 100);
     addColumn("Reisdocument");
     addColumn("Status", 200);
-    addColumn("Uitgifte", 110);
-    addColumn("Einde", 110);
-    addColumn("Vermissing", 110);
+    addColumn("Uitgifte", 90);
+    addColumn("Einde", 90);
+    addColumn("Vermissing", 250);
 
     super.setColumns();
   }

@@ -25,26 +25,27 @@ import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.emp;
 
 import com.vaadin.ui.Field;
-
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.GbaVerticalLayout;
 import nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingForm1;
 import nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingForm2;
 import nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingForm3;
+import nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingForm4;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
 import nl.procura.vaadin.component.layout.Fieldset;
+import nl.procura.vaadin.component.layout.HLayout;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
 
 public class DocumentInhoudingOverzichtLayout extends GbaVerticalLayout {
 
-  private final DocumentInhouding zaak;
-  private final Reisdocument      reisdocument;
-  private final boolean           readOnlyDatumGeldigheid;
-  private final boolean           readOnlyVermissing;
-  private Page2InhoudingForm2     form2;
-  private Page2InhoudingForm3     form3;
+  private final DocumentInhouding   zaak;
+  private final Reisdocument        reisdocument;
+  private final boolean             readOnlyDatumGeldigheid;
+  private final boolean             readOnlyVermissing;
+  private       Page2InhoudingForm2 form2;
+  private       Page2InhoudingForm3 form3;
 
   public DocumentInhoudingOverzichtLayout(DocumentInhouding zaak, Reisdocument reisdocument,
       boolean readOnlyDatumGeldigheid,
@@ -61,11 +62,22 @@ public class DocumentInhoudingOverzichtLayout extends GbaVerticalLayout {
   public void attach() {
 
     if (getComponentCount() == 0) {
-      addComponent(new Page2InhoudingForm1(zaak, reisdocument));
-
       if (zaak != null) {
+        Page2InhoudingForm1 form1 = new Page2InhoudingForm1(zaak, reisdocument);
+        if (zaak.isStored()) {
+          form1.setWidth("600px");
+          Page2InhoudingForm4 form4 = new Page2InhoudingForm4(zaak);
+          add(new HLayout().add(form1).addExpandComponent(form4).spacing(true).widthFull());
+        } else {
+          addComponent(form1);
+        }
+
+        addComponent(new Fieldset("Inhouding op de persoonslijst"));
+        if (zaak.isVrsOnlyBasisregister()) {
+          addComponent(new InfoLayout("Dit document komt niet (meer) voor op de persoonslijst."));
+        }
         form3 = new Page2InhoudingForm3(zaak, readOnlyDatumGeldigheid);
-        addComponent(form3);
+        addComponent(this.form3);
       }
 
       if (isVermissing()) {

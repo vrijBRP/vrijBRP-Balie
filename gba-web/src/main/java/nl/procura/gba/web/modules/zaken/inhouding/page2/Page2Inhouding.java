@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -33,9 +33,9 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class Page2Inhouding extends ZakenPage {
 
-  private final DocumentInhouding          inhouding;
-  private final Reisdocument               reisdocument;
-  private DocumentInhoudingOverzichtLayout reisdocumentInhoudingLayout = null;
+  private final DocumentInhouding                inhouding;
+  private final Reisdocument                     reisdocument;
+  private       DocumentInhoudingOverzichtLayout reisdocumentInhoudingLayout = null;
 
   public Page2Inhouding(DocumentInhouding inhouding, Reisdocument reisdocument) {
     super("Inhouding / vermissing");
@@ -50,7 +50,9 @@ public class Page2Inhouding extends ZakenPage {
   @Override
   public void event(PageEvent event) {
     if (event.isEvent(InitPage.class)) {
-      reisdocumentInhoudingLayout = DocumentInhoudingOverzichtBuilder.create(inhouding, reisdocument, false, false);
+      reisdocumentInhoudingLayout = DocumentInhoudingOverzichtBuilder.create(inhouding, reisdocument,
+          false,
+          false);
       addComponent(reisdocumentInhoudingLayout);
     }
 

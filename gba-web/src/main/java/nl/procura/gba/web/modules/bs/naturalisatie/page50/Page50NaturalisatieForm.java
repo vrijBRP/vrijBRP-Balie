@@ -35,11 +35,9 @@ import static nl.procura.gba.web.modules.bs.naturalisatie.page50.Page50Naturalis
 import static nl.procura.gba.web.modules.bs.naturalisatie.page50.Page50NaturalisatieBean.F_TOELICHTING;
 import static nl.procura.gba.web.modules.bs.naturalisatie.page50.Page50NaturalisatieBean.F_TOELICHTING2;
 
+import com.vaadin.ui.Field;
 import java.time.ZoneId;
 import java.util.Date;
-
-import com.vaadin.ui.Field;
-
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
 import nl.procura.gba.web.components.fields.GbaTextField;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -49,7 +47,7 @@ import nl.procura.gba.web.modules.bs.naturalisatie.valuechoice.ValueChoiceConfig
 import nl.procura.gba.web.modules.bs.naturalisatie.valuechoice.ValueChoiceField;
 import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatie;
 import nl.procura.gba.web.services.bs.naturalisatie.DossierNaturalisatieVerzoeker;
-import nl.procura.gba.web.services.bs.naturalisatie.enums.AdviesBurgermeesterType;
+import nl.procura.gba.web.services.bs.naturalisatie.enums.AdviesBurgemeesterType;
 import nl.procura.gba.web.services.bs.naturalisatie.enums.AndereOuderAkkoordType;
 import nl.procura.gba.web.services.bs.naturalisatie.enums.BeslissingType;
 import nl.procura.standard.ProcuraDate;
@@ -119,16 +117,16 @@ public class Page50NaturalisatieForm extends GbaForm<Page50NaturalisatieBean> {
     }
 
     if (property.is(F_ADVIES)) {
-      column.addComponent(new ValueChoiceField(dossier, ValueChoiceConfig.<AdviesBurgermeesterType> create()
+      column.addComponent(new ValueChoiceField(dossier, ValueChoiceConfig.<AdviesBurgemeesterType>create()
           .title("Advies burgemeester")
           .component(v -> {
             GbaNativeSelect select = new GbaNativeSelect();
-            select.setContainerDataSource(new AdviesBurgermeesterContainer());
+            select.setContainerDataSource(new AdviesBurgemeesterContainer());
             select.setImmediate(true);
             return select;
           })
-          .getter(DossierNaturalisatieVerzoeker::getAdviesBurgermeesterType)
-          .setter(DossierNaturalisatieVerzoeker::setAdviesBurgermeesterType)
+          .getter(DossierNaturalisatieVerzoeker::getAdviesBurgemeesterType)
+          .setter(DossierNaturalisatieVerzoeker::setAdviesBurgemeesterType)
           .build()));
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -23,13 +23,11 @@ import static nl.procura.standard.Globalfunctions.fil;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
-
+import lombok.Data;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
-
-import lombok.Data;
 
 public class ZaakBijlageUploadForm extends GbaForm<ZaakBijlageUploadForm.ZaakHeaderBean> {
 
@@ -52,7 +50,7 @@ public class ZaakBijlageUploadForm extends GbaForm<ZaakBijlageUploadForm.ZaakHea
   @FormFieldFactoryBean(accessType = ElementType.FIELD)
   public class ZaakHeaderBean implements Serializable {
 
-    @Field(caption = "Zaak-type",
+    @Field(caption = "Zaaktype",
         readOnly = true)
     private String zaaktype = "";
 

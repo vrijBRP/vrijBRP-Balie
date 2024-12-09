@@ -34,6 +34,7 @@ public interface TestConstantsInterface {
   String V2_AANVRAAG_DETAILS_ENDPOINT = "/controleaanvragen/v2/aanvraag/details";
   String V2_DOCUMENTEN_ENDPOINT       = "/reisdocumentinformatie/uitgevendeinstanties/v2/personalisatiegegevens";
   String V2_DOCUMENT_DETAILS_ENDPOINT = "/reisdocumentinformatie/uitgevendeinstanties/v2/documentnummer";
+  String V1_REGISTRATIE_MELDING       = "/registratiemeldingreisdocument/uitgevendeinstanties/v1";
   String IDP_CONFIG_ENDPOINT          = "/idpconfiguratie/v1";
   String TOKEN_ENDPOINT               = "/token";
 }

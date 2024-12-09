@@ -33,7 +33,6 @@ import static org.hamcrest.Matchers.equalTo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.common.DateTime;
@@ -53,6 +52,7 @@ import nl.procura.gba.web.services.zaken.algemeen.contact.ContactZaak;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
+import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingBasisregister;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.bezorging.Bezorging;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.Clausules;
@@ -62,18 +62,21 @@ import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
-public class ReisdocumentAanvraag extends Rdm01 implements ContactZaak, ZaakAfhaalbaar, ToestemmingbaarReisdocument {
+public class ReisdocumentAanvraag extends Rdm01
+    implements ContactZaak, ZaakAfhaalbaar, ToestemmingbaarReisdocument, IdentificatieUitreikingZaak {
 
   private static final long serialVersionUID = -3468735287544148942L;
 
-  private final GenericZaak       zaak               = new GenericZaak();
-  private Clausules               clausules          = new Clausules(this);
-  private Contactgegevens         contactgegevens    = new Contactgegevens(this);
-  private ReisdocumentStatus      reisdocumentStatus = new ReisdocumentStatus(this);
-  private Toestemmingen           toestemmingen      = new Toestemmingen(this);
-  private List<DocumentInhouding> inhoudingen        = new ArrayList<>();
-  private List<Reisdocument>      documentHistorie   = new ArrayList<>();
-  private Bezorging               thuisbezorging     = new Bezorging();
+  private final GenericZaak                    zaak               = new GenericZaak();
+  private       Clausules                      clausules          = new Clausules(this);
+  private       Contactgegevens                contactgegevens    = new Contactgegevens(this);
+  private       ReisdocumentStatus             reisdocumentStatus = new ReisdocumentStatus(this);
+  private       Toestemmingen                  toestemmingen      = new Toestemmingen(this);
+  private       List<DocumentInhouding>        inhoudingen        = new ArrayList<>();
+  private       List<Reisdocument>             documentHistorie   = new ArrayList<>();
+  private       Bezorging                      thuisbezorging     = new Bezorging();
+  private       Identificatie                  identificatieBijUitreiking;
+  private       DocumentInhoudingBasisregister basisregister;
 
   public ReisdocumentAanvraag() {
     setUsr1(new Usr(BaseEntity.DEFAULT));
@@ -501,5 +504,23 @@ public class ReisdocumentAanvraag extends Rdm01 implements ContactZaak, ZaakAfha
       return thuisbezorging.getMelding().isBezorgingGewenst();
     }
     return false;
+  }
+
+  public DocumentInhoudingBasisregister getBasisregister() {
+    return basisregister;
+  }
+
+  public void setBasisregister(DocumentInhoudingBasisregister basisregister) {
+    this.basisregister = basisregister;
+  }
+
+  @Override
+  public Identificatie getIdentificatieBijUitreiking() {
+    return this.identificatieBijUitreiking;
+  }
+
+  @Override
+  public void setIdentificatieBijUitreiking(Identificatie identificatie) {
+    this.identificatieBijUitreiking = identificatie;
   }
 }

@@ -43,19 +43,22 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakHistorie;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ContactZaak;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
+import nl.procura.gba.web.services.zaken.reisdocumenten.IdentificatieUitreikingZaak;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.VermeldTitelType;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 
-public class RijbewijsAanvraag extends Nrd implements ContactZaak, ZaakAfhaalbaar {
+public class RijbewijsAanvraag extends Nrd
+    implements ContactZaak, ZaakAfhaalbaar, IdentificatieUitreikingZaak {
 
   private static final long serialVersionUID = -3468735287544148942L;
 
-  private final GenericZaak          zaak            = new GenericZaak();
-  private Contactgegevens            contactgegevens = new Contactgegevens(this);
-  private RijbewijsAanvraagStatussen statussen       = new RijbewijsAanvraagStatussen();
+  private final GenericZaak                zaak            = new GenericZaak();
+  private       Contactgegevens            contactgegevens = new Contactgegevens(this);
+  private       RijbewijsAanvraagStatussen statussen       = new RijbewijsAanvraagStatussen();
+  private       Identificatie              identificatieBijUitreiking;
 
   public RijbewijsAanvraag() {
     setIndBezorgen(false);
@@ -381,5 +384,15 @@ public class RijbewijsAanvraag extends Nrd implements ContactZaak, ZaakAfhaalbaa
 
   public boolean isThuisbezorgingGewenst() {
     return getIndBezorgen();
+  }
+
+  @Override
+  public Identificatie getIdentificatieBijUitreiking() {
+    return identificatieBijUitreiking;
+  }
+
+  @Override
+  public void setIdentificatieBijUitreiking(Identificatie identificatieBijUitreiking) {
+    this.identificatieBijUitreiking = identificatieBijUitreiking;
   }
 }

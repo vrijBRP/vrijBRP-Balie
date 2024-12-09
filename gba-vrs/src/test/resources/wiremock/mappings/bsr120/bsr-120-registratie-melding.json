@@ -1,0 +1,38 @@
+{
+  "id": "c42a4dfe-7735-11ee-b962-0242ac120003",
+  "name": "reisdocumentaanvragen",
+  "priority": "1",
+  "request": {
+    "url": "/registratiemeldingreisdocument/uitgevendeinstanties/v1",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer MY_VERY_NICE_TOKEN"
+      }
+    },
+    "bodyPatterns": []
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"meldingredendatum\" : \"2024-12-07\" ,\"meldingdatum\" : \"2024-11-07T15:53:33.366Z\",\"verwerkingdatum\" : \"2024-11-07T15:53:34.606Z\",\"reisdocumentNummer\" : \"IP8799D18\",\"reisdocumentmeldingtypeCode\" : \"RRV\",\"reisdocumentredentypeCode\" : \"REVS\",\"instantieCode\" : \"RDX9218084\",\"instantieNaam\" : \"Demodam\",\"instantielocatieCode\" : null,\"instantielocatieNaam\" : null,\"administratiefOnjuist\" : false,\"toelichting\" : null\n}",
+    "headers": {
+      "Api-Version": "1.0.0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Type": "application/json",
+      "Date": "Wed, 05 Aug 2020 15:48:28 GMT",
+      "Expires": "0",
+      "Pragma": "no-cache",
+      "Vary": [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers"
+      ],
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-Xss-Protection": "1; mode=block"
+    }
+  },
+  "uuid": "c42a4dfe-7735-11ee-b962-0242ac120003",
+  "persistent": true,
+  "insertionIndex": 23
+}

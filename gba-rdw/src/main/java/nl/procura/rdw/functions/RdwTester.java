@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,14 +19,35 @@
 
 package nl.procura.rdw.functions;
 
-import static nl.procura.rdw.functions.RdwProces.*;
+import static nl.procura.rdw.functions.RdwProces.P0177_F1;
+import static nl.procura.rdw.functions.RdwProces.P0178_F1;
+import static nl.procura.rdw.functions.RdwProces.P0179_F1;
+import static nl.procura.rdw.functions.RdwProces.P0181_F1;
+import static nl.procura.rdw.functions.RdwProces.P0182_F1;
+import static nl.procura.rdw.functions.RdwProces.P0183_F1;
+import static nl.procura.rdw.functions.RdwProces.P0252_F1;
+import static nl.procura.rdw.functions.RdwProces.P0252_F2;
+import static nl.procura.rdw.functions.RdwProces.P1303_F1;
+import static nl.procura.rdw.functions.RdwProces.P13_F1;
+import static nl.procura.rdw.functions.RdwProces.P1651_F1;
+import static nl.procura.rdw.functions.RdwProces.P1651_F2;
+import static nl.procura.rdw.functions.RdwProces.P1652_F1;
+import static nl.procura.rdw.functions.RdwProces.P1653_F1;
+import static nl.procura.rdw.functions.RdwProces.P1654_F1;
+import static nl.procura.rdw.functions.RdwProces.P1656_F1;
+import static nl.procura.rdw.functions.RdwProces.P1658_F1;
+import static nl.procura.rdw.functions.RdwProces.P1659_F1;
+import static nl.procura.rdw.functions.RdwProces.P1660_F1;
+import static nl.procura.rdw.functions.RdwProces.P1722_F1;
+import static nl.procura.rdw.functions.RdwProces.P1908_F1;
+import static nl.procura.rdw.functions.RdwProces.P1914_F1;
+import static nl.procura.rdw.functions.RdwProces.get;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,34 +99,34 @@ public class RdwTester {
         getProcessen().add(new TestProces(P13_F1, "13_8/13_8_1.xml"));
         getProcessen().add(new TestProces(P1303_F1, "1303_2/1303_2_1.xml"));
 
-        //getProcessen ().add (new TestProces (P1651_F1, "1651_9/1651_9_547.xml"));   // Geen personen
+        //        getProcessen ().add (new TestProces (P1651_F1, "1651_9/1651_9_547.xml"));   // Geen personen
         getProcessen().add(new TestProces(P1651_F1, "1651_8/1651_8_30401.xml")); // Geen personen
         getProcessen().add(new TestProces(P1651_F2, "1651_8/1651_8_101.xml"));
         getProcessen().add(new TestProces(P1652_F1, "1652_2/1652_2_1018.xml"));
         getProcessen().add(new TestProces(P1653_F1, "1653_2/1653_2_16633.xml"));
-        //getProcessen().add(new TestProces(P1653_F1, "1653_2/1653_2_3703.xml"));  // Verlies / diefstal
+        //        getProcessen().add(new TestProces(P1653_F1, "1653_2/1653_2_3703.xml"));  // Verlies / diefstal
         getProcessen().add(new TestProces(P1654_F1, "1654_2/1654_2_2859.xml"));
 
         getProcessen().add(new TestProces(P1656_F1, "1656_2/1656_2_103.xml")); // Geannuleerd
-        //getProcessen ().add (new TestProces (P1656_F1, "1656_2/1656_2_97.xml"));    // Niet uitgereikt
-        //getProcessen().add(new TestProces(P1656_F1, "1656_2/1656_2_91.xml")); // Uitgereikt
-        //getProcessen ().add (new TestProces (P1656_F1, "1656_2/1656_2_85.xml"));    // Geaccordeerd
+        //        getProcessen ().add (new TestProces (P1656_F1, "1656_2/1656_2_97.xml"));    // Niet uitgereikt
+        //        getProcessen().add(new TestProces(P1656_F1, "1656_2/1656_2_91.xml")); // Uitgereikt
+        //        getProcessen ().add (new TestProces (P1656_F1, "1656_2/1656_2_85.xml"));    // Geaccordeerd
 
         //        getProcessen().add(new TestProces(P0252_F1, "252_8/252_8_221b.xml"));
         getProcessen().add(new TestProces(P0252_F1, "252_8/252_8_40000.xml"));
-        //              getProcessen ().add (new TestProces (P0252_F1, "252_9/252_9_2.xml"));       // Wachtwoord is fout
+        //        getProcessen().add(new TestProces(P0252_F1, "252_9/252_9_2.xml")); // Wachtwoord is fout
         getProcessen().add(new TestProces(P0252_F2, "252_7/252_7_1943.xml"));
 
-        //getProcessen().add(new TestProces(P1658_F1, "1658_2/1658_2_99.xml"));
+        //        getProcessen().add(new TestProces(P1658_F1, "1658_2/1658_2_99.xml"));
         getProcessen().add(new TestProces(P1658_F1, "1658_2/1658_2_40000.xml"));
 
-        //              getProcessen ().add (new TestProces (P1659_F1, "1659_2/1659_2_403.xml"));    // Geen nieuw rijbewijsnummer
+        //        getProcessen().add(new TestProces(P1659_F1, "1659_2/1659_2_403.xml")); // Geen nieuw rijbewijsnummer
         getProcessen().add(new TestProces(P1659_F1, "1659_2/1659_2_16895.xml")); // Geen nieuw rijbewijsnummer
         getProcessen().add(new TestProces(P1660_F1, "1660_2/1660_2_1.xml"));
 
-        //        getProcessen().add(new TestProces(P1908_F1, "1908_2/1908_2_101.xml"));
-        getProcessen().add(new TestProces(P1908_F1, "1908_2/1908_2_40000.xml"));
-        //              getProcessen ().add (new TestProces (P1908_F1, "1908_9/1908_9_603.xml"));
+        getProcessen().add(new TestProces(P1908_F1, "1908_2/1908_2_101.xml"));
+        //        getProcessen().add(new TestProces(P1908_F1, "1908_2/1908_2_40000.xml"));
+        //        getProcessen().add(new TestProces(P1908_F1, "1908_9/1908_9_603.xml"));
 
         getProcessen().add(new TestProces(P1722_F1, "1722_2/1722_2_40.xml"));
         getProcessen().add(new TestProces(P1722_F1, "1722_2/1722_2_48.xml"));
@@ -150,7 +171,7 @@ public class RdwTester {
 
   public static class Test {
 
-    private String           name      = "";
+    private String name;
     private List<TestProces> processen = new ArrayList<>();
 
     public Test(String name) {

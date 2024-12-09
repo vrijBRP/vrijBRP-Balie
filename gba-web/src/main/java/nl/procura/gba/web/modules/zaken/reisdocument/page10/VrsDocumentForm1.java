@@ -56,8 +56,9 @@ public class VrsDocumentForm1 extends ReadOnlyForm<VrsDocumentBean1> {
 
     ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponsePersoon persoon = response.getPersoon();
     bean.setBsn(new Bsn(persoon.getBsn()).getFormatBsn());
-    bean.setNaam(
-        trim(persoon.getVoornamen() + " " + persoon.getVoorvoegselGeslachtsnaam() + " " + persoon.getGeslachtsnaam()));
+    bean.setNaam(trim(persoon.getVoornamen()
+        + " " + astr(persoon.getVoorvoegselGeslachtsnaam())
+        + " " + persoon.getGeslachtsnaam()));
     bean.setGeboortedatum(new ProcuraDate(persoon.getGeboortedatum()).getFormatDate());
     bean.setGeboorteplaats(persoon.getGeboorteplaats());
     bean.setNationaliteit(persoon.getNationaliteit().getOmschrijving());
@@ -71,7 +72,6 @@ public class VrsDocumentForm1 extends ReadOnlyForm<VrsDocumentBean1> {
     bean.setStaatloos(Boolean.TRUE.equals(persGegevens.getStaatloze()) ? "Ja" : "Nee");
     bean.setAanvraagnummer(new Aanvraagnummer(astr(persGegevens.getAanvraag().getAanvraagnummer())).getFormatNummer());
 
-    bean.setAutoriteitVanAfgifte(response.getAutoriteitVanAfgifte());
     AutoriteitVerstrekkingDto autVer = response.getAutoriteitVerstrekking();
     bean.setAutoriteitVerstrekking(autVer.getAutoriteitVerstrekkingCode()
         + " - " + autVer.getAutoriteitVerstrekkingOmschrijving());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,8 +25,7 @@ import nl.procura.burgerzaken.vrsclient.ApiClient.Request;
 
 public class AbstractVrsApi {
 
-  protected static void setHeaders(VrsRequest vrsRequest, Request<Object> apiRequest) {
-    VrsMetadata metadata = vrsRequest.metadata();
+  protected static void setHeaders(VrsMetadata metadata, Request<Object> apiRequest) {
     requireNonNull(metadata, "metadata is required");
     requireNonNull(metadata.pseudoniem(), "pseudoniem is required");
     requireNonNull(metadata.instantieCode(), "instantieCode is required");

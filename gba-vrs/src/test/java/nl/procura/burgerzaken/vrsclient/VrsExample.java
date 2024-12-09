@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -24,21 +24,26 @@ import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.BSN;
 import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.DOCUMENTNUMMER;
 import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.IDENTITEITSONDERZOEK;
 import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.REISDOCUMENTAANVRAAG;
-
-import java.io.IOException;
-import java.util.Properties;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.common.Json;
-
+import java.io.IOException;
+import java.util.Properties;
 import nl.procura.burgerzaken.vrsclient.api.AanvragenApi;
 import nl.procura.burgerzaken.vrsclient.api.DocumentenApi;
+import nl.procura.burgerzaken.vrsclient.api.RegistratieMeldingApi;
 import nl.procura.burgerzaken.vrsclient.api.SignaleringApi;
 import nl.procura.burgerzaken.vrsclient.api.TokenApi;
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingRedenType;
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingRequest;
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingType;
 import nl.procura.burgerzaken.vrsclient.api.VrsMetadata;
 import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
+import nl.procura.burgerzaken.vrsclient.api.VrsResponse;
 import nl.procura.burgerzaken.vrsclient.api.model.IDPIssuerResponse;
 import nl.procura.burgerzaken.vrsclient.api.model.TokenRequest;
+import nl.procura.standard.ProcuraDate;
 import nl.procura.validation.Bsn;
 
 public class VrsExample {
@@ -50,16 +55,25 @@ public class VrsExample {
   instantieCode=<1234>
   clientId=
   clientSecret=
-   */
+  scope=RDMREIS
+  resourceServer=REISLAP
+  tlsProxy=http://srv-411t:85/cert-manager/proxy?url=
+  baseUri=https://lap.api.reis.idm.diginetwerk.net
+  */
+
   private final static Properties  properties = new Properties();
   private final        VrsMetadata metadata;
   private final        String      token;
-  private final        String      baseUri;
 
   String pseudoniem;
   String instantieCode;
   String clientId;
   String clientSecret;
+  String scope;
+  String resourceServer;
+  String tlsProxy;
+  String baseUri;
+
 
   public static void main(String[] args) throws IOException {
     new VrsExample();
@@ -67,16 +81,19 @@ public class VrsExample {
 
   public VrsExample() throws IOException {
     properties.load(VrsExample.class.getResourceAsStream("/vrs.properties"));
-    String tlsProxy = "http://srv-411t:85/cert-manager/proxy?url=";
-    baseUri = tlsProxy + "https://lap.api.reis.idm.diginetwerk.net";
+
     pseudoniem = properties.getProperty("pseudoniem");
     instantieCode = properties.getProperty("instantieCode");
     clientId = properties.getProperty("clientId");
     clientSecret = properties.getProperty("clientSecret");
+    scope = properties.getProperty("scope");
+    resourceServer = properties.getProperty("resourceServer");
+    tlsProxy = properties.getProperty("tlsProxy");
+    baseUri = tlsProxy + properties.getProperty("baseUri");
 
     IDPIssuerResponse tokenResponse = getTokenApi(baseUri).getIDPIssuerResponse();
     String issuerUri = tokenResponse.getIssuerUri();
-    token = getAccessToken(tlsProxy + issuerUri);
+    token = getAccessToken(defaultIfBlank(tlsProxy, baseUri) + issuerUri);
     metadata = new VrsMetadata()
         .accessToken(token)
         .pseudoniem(pseudoniem)
@@ -88,6 +105,18 @@ public class VrsExample {
     aanvraagDetails();
     documenten();
     document();
+    registrerenMeldingReisdocument();
+  }
+
+  private void registrerenMeldingReisdocument() throws JsonProcessingException {
+    RegistratieMeldingApi api = new RegistratieMeldingApi(new ExampleJerseyClient(baseUri));
+    System.out.println(toJson(api.meldingRequest(new VrsMeldingRequest()
+        .metadata(metadata)
+        .documentnummer("IMF0LHCP6")
+        .melding(VrsMeldingType.RRV)
+        .reden(VrsMeldingRedenType.REVS)
+        .datumReden(new ProcuraDate())
+        .datumTijd(new ProcuraDate().addDays(-1)))));
   }
 
   private void signalering() throws JsonProcessingException {
@@ -142,7 +171,13 @@ public class VrsExample {
   }
 
   private String toJson(Object object) throws JsonProcessingException {
-    return Json.getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+    Object response = object;
+    if (object instanceof VrsResponse) {
+      response = ((VrsResponse<?, ?>) object).response();
+    }
+    return Json.getObjectMapper()
+        .writerWithDefaultPrettyPrinter()
+        .writeValueAsString(response);
   }
 
   private String getAccessToken(String endpoint) {
@@ -150,8 +185,8 @@ public class VrsExample {
         .getTokenResponse(new TokenRequest()
             .clientId(clientId)
             .clientSecret(clientSecret)
-            .scope("RDMREIS")
-            .resourceServer("REISLAP"))
+            .scope(scope)
+            .resourceServer(resourceServer))
         .getAccess_token();
   }
 

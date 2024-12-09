@@ -19,43 +19,74 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static com.vaadin.ui.Window.Notification.TYPE_ERROR_MESSAGE;
 
 import com.vaadin.ui.Button;
-
+import java.util.List;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
-import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.components.buttons.GbaButton;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Aanvraagnummer;
+import nl.procura.vaadin.component.window.Message;
 
-public class AanvraagArchiefButton extends Button {
+@Slf4j
+public class AanvraagArchiefButton extends GbaButton {
 
-  private final ControleAanvragenResponse response;
+  private final BasePLExt                 pl;
+  private final Aanvraagnummer            aanvraagnummer;
   private final boolean                   autoOpen;
-  private       boolean                   opened = false;
+  private       boolean                   opened   = false;
+  private       ControleAanvragenResponse response;
 
-  public AanvraagArchiefButton(Aanvraagnummer aanvraagnummer, ControleAanvragenResponse response, boolean autoOpen) {
-    super("");
-    this.response = response;
+  public AanvraagArchiefButton(BasePLExt pl, Aanvraagnummer aanvraagnummer, boolean autoOpen) {
+    super("Aanvraagarchief");
+    this.pl = pl;
+    this.aanvraagnummer = aanvraagnummer;
     this.autoOpen = autoOpen;
-    setCaption(String.format("Aanvraagarchief (%d)", count(response)));
-    addListener((ClickListener) event -> {
-      if (count(response) == 0) {
-        throw new ProException(INFO, "Geen aanvragen gevonden");
-      }
-      getWindow().addWindow(new VrsAanvragenWindow(aanvraagnummer, response));
-    });
   }
 
   @Override
   public void attach() {
-    if (autoOpen && !opened && count(response) > 0) {
-      opened = true;
-      click();
+    if (response == null) {
+      updateCaption();
+      addListener((Button.ClickListener) event -> {
+        if (response != null) {
+          getWindow().addWindow(new VrsAanvragenWindow(response));
+        }
+      });
+      if (autoOpen && !opened && count() > 0) {
+        opened = true;
+        click();
+      }
     }
     super.attach();
   }
 
-  private static int count(ControleAanvragenResponse response) {
-    return response != null && response.getAanvragen() != null ? response.getAanvragen().size() : 0;
+  private void updateCaption() {
+    response = null;
+    setCaption(String.format("Aanvraagarchief (%d)", count()));
+  }
+
+  private Integer count() {
+    return getResponse()
+        .map(ControleAanvragenResponse::getAanvragen)
+        .map(List::size)
+        .orElse(0);
+
+  }
+
+  private Optional<ControleAanvragenResponse> getResponse() {
+    if (response == null) {
+      try {
+        VrsService vrs = getApplication().getServices().getReisdocumentService().getVrsService();
+        this.response = vrs.getAanvragen(pl, aanvraagnummer).orElse(null);
+      } catch (RuntimeException e) {
+        new Message(getWindow(), "Fout bij het raadplegen van de aanvragen in het basisregister", TYPE_ERROR_MESSAGE);
+      }
+    }
+    return Optional.ofNullable(response);
   }
 }

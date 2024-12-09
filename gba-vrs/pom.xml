@@ -5,12 +5,12 @@
   <parent>
     <artifactId>gba-parent</artifactId>
     <groupId>nl.procura.gba</groupId>
-    <version>1.36.3</version>
+    <version>1.36.4</version>
   </parent>
-
+  
   <artifactId>gba-vrs</artifactId>
   <name>Proweb GBA - VRS</name>
-
+  
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -18,37 +18,37 @@
       <version>5.9.3</version>
       <scope>test</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
       <version>1.19.4</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-json</artifactId>
       <version>1.19.4</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>nl.vrijbrp</groupId>
       <artifactId>javax</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-jre8</artifactId>
@@ -56,7 +56,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
+  
   <build>
     <plugins>
       <plugin>
@@ -127,6 +127,15 @@
             </goals>
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/bsr-119-1_63_0.yaml</inputSpec>
+            </configuration>
+          </execution>
+          <execution>
+            <id>bsr-120</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/bsr-120-1_55_0.yaml</inputSpec>
             </configuration>
           </execution>
         </executions>

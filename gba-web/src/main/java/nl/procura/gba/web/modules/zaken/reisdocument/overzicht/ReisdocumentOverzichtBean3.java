@@ -21,7 +21,6 @@ package nl.procura.gba.web.modules.zaken.reisdocument.overzicht;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
-
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
@@ -35,8 +34,8 @@ public class ReisdocumentOverzichtBean3 implements Serializable {
   public static final String AFSLUITING  = "afsluiting";
   public static final String CODE_RAAS   = "codeRaas";
 
-  public static final String AFLEVERING2 = "aflevering2";
-  public static final String AFSLUITING2 = "afsluiting2";
+  public static final String AFLEVERING2   = "aflevering2";
+  public static final String AFSLUITING2   = "afsluiting2";
 
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Document")

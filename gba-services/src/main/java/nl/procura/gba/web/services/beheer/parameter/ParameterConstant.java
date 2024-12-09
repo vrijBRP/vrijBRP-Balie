@@ -512,34 +512,40 @@ public enum ParameterConstant implements ParameterType {
       "Neem contact op met de Rijksdienst voor Identiteitsgegevens van het ministerie van " +
           "Binnenlandse Zaken en Koninkrijksrelaties via het nummer 088-9001000."),
 
-  VRS_SERVICE_URL("reisd_vrs_url", "URL van VRS services application API",
+  VRS_SERVICE_URL("reisd_vrs_url", "URL van BR services application API",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  VRS_IDP_SERVICE_URL("reisd_vrs_idp_url", "URL van VRS services IDP API",
+  VRS_IDP_SERVICE_URL("reisd_vrs_idp_url", "URL van  BR services IDP API",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  VRS_SERVICE_TIMEOUT("reisd_vrs_timeout", "Timeout in seconden van VRS services application API",
+  VRS_SERVICE_TIMEOUT("reisd_vrs_timeout", "Timeout in seconden van  BR services application API",
       GROUP_REISDOCUMENTEN, true, false, false, "10"),
 
-  VRS_ENABLED("reisd_vrs_enabled", "VRS inschakelen",
+  VRS_ENABLED("reisd_vrs_enabled", "BR inschakelen",
       GROUP_REISDOCUMENTEN, true, false, false, "1"),
 
-  VRS_BASISREGISTER("reisd_vrs_basisregister", "VRS Basisregister inschakelen",
+  VRS_BASISREGISTER("reisd_vrs_basisregister", "BR Basisregister inschakelen",
       GROUP_REISDOCUMENTEN, true, false, false, "0"),
 
-  VRS_CLIENT_ID("reisd_vrs_client_id", "VRS client-ID",
+  VRS_REG_MELDING("reisd_vrs_reg_melding", "BR Registreren melding reisdocument",
+      GROUP_REISDOCUMENTEN, true, false, false, "0"),
+
+  VRS_CLIENT_ID("reisd_vrs_client_id", "BR client-ID",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  VRS_CLIENT_SECRET("reisd_vrs_client_secret", "VRS client-secret",
+  VRS_CLIENT_SECRET("reisd_vrs_client_secret", "BR client-secret",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  VRS_CLIENT_SCOPE("reisd_vrs_client_scope", "VRS scope",
+  VRS_CLIENT_SCOPE("reisd_vrs_client_scope", "BR scope",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  VRS_CLIENT_RESOURCE_SERVER("reisd_vrs_client_resource_server", "VRS resource server",
+  VRS_CLIENT_RESOURCE_SERVER("reisd_vrs_client_resource_server", "BR resource server",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
-  VRS_INSTANTIE_CODE("reisd_vrs_instantie_code", "VRS instantie-code",
+  VRS_INSTANTIE_CODE("reisd_vrs_instantie_code", "BR instantie-code",
+      GROUP_REISDOCUMENTEN, true, false, false, ""),
+
+  VRS_REIT_INSTRUCTIE_URL("reisd_vrs_reit_instructie_url", "BR REIT instructie URL",
       GROUP_REISDOCUMENTEN, true, false, false, ""),
 
   TERUGMBEHEER("terugmbeheer", "Beheerder van de terugmeldingen",
@@ -703,7 +709,7 @@ public enum ParameterConstant implements ParameterType {
       GROUP_SMS, true, false, false, ""),
 
   ZYNYO_ENABLED("Zynyo_enabled", "Zynyo integratie inschakelen",
-          GROUP_ZYNYO, true, true, true, ""),
+      GROUP_ZYNYO, true, true, true, ""),
 
   ZYNYO_API_ENDPOINT("Zynyo_api_endpoint", "Zynyo API endpoint",
       GROUP_ZYNYO, true, false, false, ""),

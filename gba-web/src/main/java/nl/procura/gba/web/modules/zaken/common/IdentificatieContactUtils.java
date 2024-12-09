@@ -20,7 +20,6 @@
 package nl.procura.gba.web.modules.zaken.common;
 
 import com.vaadin.ui.Window;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.web.components.layouts.page.GbaPageTemplate;
 import nl.procura.gba.web.modules.zaken.contact.ContactWindow;
@@ -83,7 +82,7 @@ public class IdentificatieContactUtils {
     boolean isRequired = IdVerplichtMate.NIET_VERPLICHT_NIET_TONEN == idService.getMateVerplicht();
     boolean isAlreadyAsked = idService.isVastGesteld(pl) && succesListener != null;
 
-    if (isRequired || isAlreadyAsked) {
+    if ((isRequired || isAlreadyAsked) && succesListener != null) {
       succesListener.onStatus(true, false);
     } else {
       window.addWindow(identificatieWindow);
@@ -91,15 +90,9 @@ public class IdentificatieContactUtils {
   }
 
   private static void start(final GbaPageTemplate page, final Object next, final boolean startProcess) {
-
-    final Services services = page.getApplication().getServices();
-    final ContactgegevensService contactService = services.getContactgegevensService();
-    final IdentificatieService idService = services.getIdentificatieService();
     final Window window = page.getParentWindow();
-
-    IdentificatieStatusListener idSuccesListener = (saved, newAdded) -> {
-
-      ContactStatusListener contactSuccesListener = (saved1, newAdded1) -> {
+    IdentificatieStatusListener idSuccesListener = (savedId, newAdded) -> {
+      ContactStatusListener contactSuccesListener = (savedContact, newAddedContact) -> {
         if (startProcess) {
           page.getApplication().getProcess().startProcess();
         }
@@ -115,8 +108,7 @@ public class IdentificatieContactUtils {
         }
       };
 
-      checkContactAkkoord(window, new ContactWindow(contactSuccesListener),
-          contactSuccesListener);
+      checkContactAkkoord(window, new ContactWindow(contactSuccesListener), contactSuccesListener);
     };
 
     checkIdentificatieAkkoord(window, new IdentificatieWindow(idSuccesListener), idSuccesListener);

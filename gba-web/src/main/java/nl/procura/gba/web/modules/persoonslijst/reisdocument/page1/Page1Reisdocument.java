@@ -19,12 +19,6 @@
 
 package nl.procura.gba.web.modules.persoonslijst.reisdocument.page1;
 
-import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.IDENTITEITSONDERZOEK;
-
-import java.util.Optional;
-
-import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
-import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.diensten.gba.ple.base.BasePLCat;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.gba.web.modules.persoonslijst.overig.listpage.PlListPage;
@@ -32,7 +26,6 @@ import nl.procura.gba.web.modules.persoonslijst.reisdocument.page2.Page2Reisdocu
 import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
-import nl.procura.validation.Bsn;
 
 public class Page1Reisdocument extends PlListPage {
 
@@ -41,7 +34,6 @@ public class Page1Reisdocument extends PlListPage {
 
   public Page1Reisdocument(BasePLCat soort) {
     super("Reisdocument");
-
     table1 = new Page1ReisdocumentTable1(soort) {
 
       @Override
@@ -53,16 +45,10 @@ public class Page1Reisdocument extends PlListPage {
 
   @Override
   protected void initPage() {
-
     super.initPage();
 
     VrsService vrsService = getServices().getReisdocumentService().getVrsService();
-    Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> vrsDocumenten = vrsService
-        .getReisdocumenten(new VrsRequest()
-            .aanleiding(IDENTITEITSONDERZOEK)
-            .bsn(new Bsn(getPl().getPersoon().getBsn().toLong())));
-
-    vrsDocumenten.ifPresent(response -> {
+    vrsService.getReisdocumenten(getPl(), null).ifPresent(response -> {
       table2 = new Page1ReisdocumentTable2(response.getReisdocumentenLijst());
     });
 

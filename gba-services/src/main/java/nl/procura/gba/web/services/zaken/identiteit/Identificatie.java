@@ -28,7 +28,6 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.jpa.personen.db.Idvaststelling;
@@ -229,11 +228,9 @@ public class Identificatie extends Idvaststelling {
   }
 
   public String getOmschrijving() {
-
     if (isVastgesteld()) {
       return trim(capitalize(String.format("Vastgesteld op %s %s ", getTijdstip(), getAanDeHandVan()).toLowerCase()));
     }
-
     return "Niet vastgesteld";
   }
 

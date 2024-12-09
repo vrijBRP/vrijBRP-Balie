@@ -42,7 +42,6 @@ import static nl.procura.standard.Globalfunctions.toNul;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
@@ -84,6 +83,8 @@ import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
+import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
+import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingBasisregister;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.clausule.Clausules;
 import nl.procura.raas.rest.domain.aanvraag.AfsluitingStatusType;
@@ -93,10 +94,14 @@ import nl.procura.standard.ProcuraDate;
 import nl.procura.validation.Bsn;
 
 public class ReisdocumentService extends AbstractZaakContactService<ReisdocumentAanvraag>
-    implements ZaakService<ReisdocumentAanvraag>, ControleerbareService {
+    implements ZaakService<ReisdocumentAanvraag>, ControleerbareService, IdentificatieBijUitreikingService {
 
   public ReisdocumentService() {
     super("Reisdocumenten", ZaakType.REISDOCUMENT);
+  }
+
+  public VrsService getVrsService() {
+    return new VrsService(getServices().getParameterService());
   }
 
   @Override
@@ -110,7 +115,6 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
   public ReisdocumentAanvraag setVolledigeZaakExtra(ReisdocumentAanvraag zaak) {
 
     ReisdocumentAanvraag impl = to(zaak, ReisdocumentAanvraag.class);
-
     BasePLExt pl = findPL(impl.getAnummer(), impl.getBurgerServiceNummer());
 
     if (impl.getClausules().getPartner() == null) {
@@ -143,11 +147,15 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
     }
 
     DocumentInhoudingenService inhoudingen = getServices().getDocumentInhoudingenService();
-    impl.setInhoudingen(
-        inhoudingen.getInhoudingenVanDeZaak(impl, findPL(impl.getAnummer(), impl.getBurgerServiceNummer())));
+    impl.setInhoudingen(inhoudingen.getInhoudingenVanDeZaak(impl, findPL(impl.getAnummer(), impl.getBurgerServiceNummer())));
     impl.setDocumentHistorie(inhoudingen.getActueelReisdocumentHistorie(pl));
+    impl.setBasisregister(getBasisregister(pl));
 
     return super.setVolledigeZaakExtra(zaak);
+  }
+
+  private DocumentInhoudingBasisregister getBasisregister(BasePLExt pl) {
+    return getServices().getReisdocumentService().getVrsService().getBasisregister(pl);
   }
 
   /**
@@ -361,10 +369,6 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
     callListeners(ServiceEvent.CHANGE);
   }
 
-  public VrsService getVrsService() {
-    return new VrsService(getServices().getParameterService());
-  }
-
   public Optional<ReisdocumentInboxData> getInboxRequestData(ReisdocumentAanvraag aanvraag) {
     return getServices().getRequestInboxService()
         .getInboxProcessor(aanvraag, InboxReisdocumentProcessor.class)
@@ -380,12 +384,19 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
     VrsService vrsService = new VrsService(getServices().getParameterService());
     if (vrsService.isEnabled()) {
       return vrsService.checkSignalering(new VrsRequest()
-          .aanvraagnummer(aanvraagnummer.getNummer())
-          .bsn(new Bsn(pl.getPersoon().getBsn().getDescr())))
+              .aanvraagnummer(aanvraagnummer.getNummer())
+              .bsn(new Bsn(pl.getPersoon().getBsn().getDescr())))
           .filter(SignaleringResult::isHit);
     } else {
       return signaleringFromPl(pl);
     }
+  }
+
+  @Override
+  public Identificatie getIdentificatieBijUitreiking(IdentificatieUitreikingZaak zaak) {
+    ReisdocumentAanvraag reisdocumentAanvraag = (ReisdocumentAanvraag) zaak;
+    DateTime datumVerstrek = new DateTime(reisdocumentAanvraag.getDAfsl(), reisdocumentAanvraag.getTAfsl());
+    return getServices().getIdentificatieService().getIdentificatie(zaak, datumVerstrek);
   }
 
   private Optional<SignaleringResult> signaleringFromPl(BasePLExt pl) {
@@ -410,4 +421,6 @@ public class ReisdocumentService extends AbstractZaakContactService<Reisdocument
 
     return map;
   }
+
+
 }

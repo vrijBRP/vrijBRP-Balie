@@ -20,7 +20,12 @@
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.*;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.DERDEGEZAG;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.NLNATIONALITEIT;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.NOGDOCINLEVEREN;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.SIGNALERING;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.STAATLOZE;
+import static nl.procura.gba.web.modules.zaken.reisdocument.page10.Page10ReisdocumentBean2.VERBLIJFSTITEL;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.fil;
 
@@ -33,13 +38,12 @@ import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
 public class Page10ReisdocumentForm2 extends ReadOnlyForm<Page10ReisdocumentBean2> {
 
   private final BasePLExt                  pl;
-  private final DocumentInhoudingenService db;
+  private final DocumentInhoudingenService service;
   private final SignaleringResult          signalering;
 
-  public Page10ReisdocumentForm2(BasePLExt pl, DocumentInhoudingenService db, SignaleringResult signalering) {
-
+  public Page10ReisdocumentForm2(BasePLExt pl, DocumentInhoudingenService service, SignaleringResult signalering) {
     this.pl = pl;
-    this.db = db;
+    this.service = service;
     this.signalering = signalering;
 
     setCaption("Indicaties");
@@ -51,21 +55,20 @@ public class Page10ReisdocumentForm2 extends ReadOnlyForm<Page10ReisdocumentBean
   }
 
   public void checkDerdeGezag(ReisdocumentType type) {
-
     String dg = pl.getGezag().heeftGezagDerden() ? setClass("red", "Ja, derde gezag") : "";
     boolean idKaart = (type == ReisdocumentType.NEDERLANDSE_IDENTITEITSKAART);
     String ct = (pl.getGezag().staatOnderCuratele()
         ? (idKaart ? "Ja, onder curatele, maar n.v.t. op dit document"
-            : setClass(
-                "red", "Ja, onder curatele"))
+        : setClass(
+            "red", "Ja, onder curatele"))
         : "");
 
     getBean().setDerdeGezag(fil(dg) ? dg : (fil(ct) ? ct : setClass("green", "Nee")));
   }
 
   public void checkSignalering() {
-    String s = isSprakeVanSignalering() ? setClass("red", "Ja") : setClass("green", "Nee");
-    getBean().setSignalering(s);
+    String signalering = isSprakeVanSignalering() ? setClass("red", "Ja") : setClass("green", "Nee");
+    getBean().setSignalering(signalering);
   }
 
   public boolean isSprakeVanSignalering() {
@@ -73,28 +76,25 @@ public class Page10ReisdocumentForm2 extends ReadOnlyForm<Page10ReisdocumentBean
   }
 
   public boolean moetNogDocumentInleveren() {
-    return db.moetNogInleveren(pl);
+    return service.moetNogInleveren(pl);
   }
 
   public void recheckDocumenten() {
-
     String isNogDoc = moetNogDocumentInleveren()
-        ? setClass("red", "Ja, nog " + db.getInTeLeverenDocumenten(pl).size())
+        ? setClass("red", "Ja, nog " + service.getAantalInTeLeverenDocumenten(pl))
         : "";
     getBean().setNogDocInleveren(fil(isNogDoc) ? isNogDoc : setClass("green", "Nee"));
   }
 
   private void reCheck() {
-
     Page10ReisdocumentBean2 b = new Page10ReisdocumentBean2();
-
     setBean(b);
 
     boolean isNL = pl.getNatio().isNederlander();
     boolean isNLB = pl.getNatio().isBehandeldAlsNederlander();
 
-    b.setNlNationaliteit(
-        isNL ? setClass("green", "Ja") : (isNLB ? "Behandeld als Nederlander" : setClass("red", "Nee")));
+    b.setNlNationaliteit(isNL ? setClass("green", "Ja")
+        : (isNLB ? "Behandeld als Nederlander" : setClass("red", "Nee")));
 
     recheckDocumenten();
 

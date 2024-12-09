@@ -21,7 +21,6 @@ package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
-
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.Field.FieldType;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
@@ -39,21 +38,26 @@ public class Page10ReisdocumentBean2 implements Serializable {
   @Field(type = FieldType.TEXT_FIELD,
       caption = "NL nationaliteit")
   private String nlNationaliteit = "";
+
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Nog documenten inleveren")
   private String nogDocInleveren = "";
+
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Signalering")
-  private String signalering     = "";
+  private String signalering = "";
+
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Derde gezag / curatele")
-  private String derdeGezag      = "";
+  private String derdeGezag = "";
+
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Verblijfstitelcode")
-  private String verblijfstitel  = "";
+  private String verblijfstitel = "";
+
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Staatloze")
-  private String staatloze       = "";
+  private String staatloze = "";
 
   public String getDerdeGezag() {
     return derdeGezag;

@@ -24,7 +24,6 @@ import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import com.vaadin.ui.Button;
-
 import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLValue;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -50,13 +49,13 @@ import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class Page14Reisdocument extends ZakenPage {
 
-  private final Button buttonInhoud   = new InhButton("Inhouding");
-  private final Button buttonVermis   = new InhButton("Vermissing");
-  private final Button buttonRechts   = new InhButton("Van rechtswege");
-  private final Button buttonOnbekend = new InhButton("Onbekend");
-  private final Button buttonHerst    = new InhButton("Herstellen");
-  private Table1       table1;
-  private BasePLExt    pl;
+  private final Button    buttonInhoud   = new InhButton("Inhouding");
+  private final Button    buttonVermis   = new InhButton("Vermissing");
+  private final Button    buttonRechts   = new InhButton("Van rechtswege");
+  private final Button    buttonOnbekend = new InhButton("Onbekend");
+  private final Button    buttonHerst    = new InhButton("Herstellen");
+  private       Table1    table1;
+  private       BasePLExt pl;
 
   public Page14Reisdocument(BasePLExt pl) {
     super("In te houden documenten");
@@ -107,12 +106,16 @@ public class Page14Reisdocument extends ZakenPage {
 
     if (button == buttonInhoud) {
       actie(InhoudingType.INHOUDING);
+
     } else if (button == buttonVermis) {
       actie(InhoudingType.VERMISSING);
+
     } else if (button == buttonOnbekend) {
       actie(InhoudingType.ONBEKEND);
+
     } else if (button == buttonRechts) {
       actie(InhoudingType.VAN_RECHTSWEGE_VERVALLEN);
+
     } else if (button == buttonHerst) {
       actie(InhoudingType.NIET_INGEHOUDEN);
     }

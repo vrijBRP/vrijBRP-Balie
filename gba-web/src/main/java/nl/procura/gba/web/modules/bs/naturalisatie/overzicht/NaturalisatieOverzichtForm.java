@@ -23,7 +23,6 @@ import static nl.procura.standard.Globalfunctions.astr;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.function.Function;
-
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
 import nl.procura.gba.web.services.bs.algemeen.functies.BsPersoonUtils;
@@ -76,7 +75,7 @@ public abstract class NaturalisatieOverzichtForm extends GbaForm<NaturalisatieOv
 
     bean.setEindeTermijn(new DateTime(dossier.getBehTermDEnd()));
     bean.setBeslissing(countVerzoekgegevens(dossier, DossierNaturalisatieVerzoeker::getBeslissingType));
-    bean.setAdvies(countVerzoekgegevens(dossier, DossierNaturalisatieVerzoeker::getAdviesBurgermeesterType));
+    bean.setAdvies(countVerzoekgegevens(dossier, DossierNaturalisatieVerzoeker::getAdviesBurgemeesterType));
     bean.setDatumBevestiging(countVerzoekgegevens(dossier, DossierNaturalisatieVerzoeker::getBehDBevest));
     bean.setDatumKoninklijkBesluit(countVerzoekgegevens(dossier, DossierNaturalisatieVerzoeker::getBehDKoningBesluit));
     bean.setNummerKoninklijkBesluit(countVerzoekgegevens(dossier,

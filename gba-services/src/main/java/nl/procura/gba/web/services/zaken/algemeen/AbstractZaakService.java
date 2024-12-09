@@ -24,9 +24,7 @@ import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import lombok.extern.slf4j.Slf4j;
 import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.ConditionalMap;
@@ -46,8 +44,8 @@ import nl.procura.gba.web.services.zaken.algemeen.zaakrelaties.ZaakRelatieServic
 import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
-
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Slf4j
 public abstract class AbstractZaakService<T extends Zaak> extends AbstractService {
@@ -115,12 +113,15 @@ public abstract class AbstractZaakService<T extends Zaak> extends AbstractServic
     ZaakHistorie historie = zaak.getZaakHistorie();
     if (historie != null) {
       zaak.setIdentificatie(getIdentificatie(zaak));
+      getServices().getIdentificatieService().setIdentificatieByUitreiking(zaak);
       historie.setStatusHistorie(getServices().getZaakStatusService().getStatusHistorie(zaak));
       historie.setAantekeningHistorie(getServices().getAantekeningService().getZaakAantekeningen(zaak));
       historie.setAttribuutHistorie(getServices().getZaakAttribuutService().getZaakAttribuutHistorie(zaak));
       historie.setBehandelaarHistorie(getServices().getZaakAttribuutService().getZaakBehandelaarHistorie(zaak));
       historie.setIdentificaties(getServices().getZaakIdentificatieService().getIdentificaties(zaak));
       historie.setRelaties(getServices().getZaakRelatieService().getGerelateerdeZaakRelaties(zaak));
+
+
     }
   }
 

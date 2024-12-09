@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>gba-parent</artifactId>
 		<groupId>nl.procura.gba</groupId>
-		<version>1.36.3</version>
+		<version>1.36.4</version>
 	</parent>
 
 	<artifactId>gba-theme</artifactId>

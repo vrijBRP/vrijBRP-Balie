@@ -155,8 +155,13 @@ public class DocSignPage extends NormalPageTemplate {
     documentInfo.setName(form.getBean().getDocument());
 
     Signatory signatory = new Signatory();
+    Boolean sendEmail = form.getBean().getEmail();
+
+    if (sendEmail) {
+      signatory.setEmail(form.getBean().getPerson().getEmail());
+    }
+
     signatory.setName(form.getBean().getPerson().getName());
-    signatory.setEmail(form.getBean().getPerson().getEmail());
     signatory.setLocale(form.getBean().getLanguage().getValue());
 
     List<AuthenticationMethod> authenticationMethods = new ArrayList<>();
@@ -168,7 +173,7 @@ public class DocSignPage extends NormalPageTemplate {
 
     signatory.setPriority("DEFAULT");
     signatory.setSignatoryRole("SIGN");
-    signatory.setDisableEmail(form.getBean().getEmail());
+    signatory.setDisableEmail(!sendEmail);
     signatory.setDisableInvitation(true);
     signatory.setDisableStatusChange(true);
 

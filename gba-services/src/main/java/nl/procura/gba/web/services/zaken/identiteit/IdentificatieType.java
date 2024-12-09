@@ -34,7 +34,7 @@ public enum IdentificatieType {
   PERSOON_GEZIEN_VNM("G", "Persoon gezien, vragen niet mogelijk"),
   VRAGEN("X", "Vragen"),
   EXTERNE_APPLICATIE("E", "Door externe applicatie"),
-  RPS("RPS", "Door VRS"),
+  RPS("RPS", "Door BR"),
   ONBEKEND("", "Onbekend");
 
   private String code = "";

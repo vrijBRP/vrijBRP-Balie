@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,7 +20,18 @@
 package nl.procura.gba.web.services.zaken.inhoudingen;
 
 import static java.lang.String.format;
-import static nl.procura.burgerzaken.gba.core.enums.GBAElem.*;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_BEZIT_BUITENL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AAND_INH_VERMIS_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.AUTORIT_VAN_AFGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_EINDE_GELDIG_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_INH_VERMIS_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_UITGIFTE_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.NR_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SIG_MET_BETREK_TOT_VERSTREK_NL_REISDOC;
+import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_NL_REISDOC;
+import static nl.procura.burgerzaken.vrsclient.api.VrsDocumentStatusType.ONGELDIG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.common.MiscUtils.to;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
@@ -28,14 +39,18 @@ import static nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType.NIET_I
 import static nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType.VAN_RECHTSWEGE_VERVALLEN;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VLUCHTELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VREEMDELINGEN_PASPOORT;
-import static nl.procura.standard.Globalfunctions.*;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.equalsIgnoreCase;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
+import nl.procura.burgerzaken.vrsclient.api.VrsDocumentStatusType;
+import nl.procura.burgerzaken.vrsclient.model.RegistratieMeldingReisdocumentResponse;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
 import nl.procura.diensten.gba.ple.base.BasePLSet;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -50,15 +65,20 @@ import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.aop.ThrowException;
 import nl.procura.gba.web.services.aop.Timer;
 import nl.procura.gba.web.services.aop.Transactional;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
-import nl.procura.gba.web.services.zaken.reisdocumenten.*;
+import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentTypeExclusions;
+import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentVermissing;
 import nl.procura.standard.ProcuraDate;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 
@@ -66,7 +86,7 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
     implements ZaakService<DocumentInhouding> {
 
   public DocumentInhoudingenService() {
-    super("Reisdocument-inhoudingen", ZaakType.INHOUD_VERMIS);
+    super("Documentinhoudingen", ZaakType.INHOUD_VERMIS);
   }
 
   /**
@@ -151,23 +171,11 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
     return list;
   }
 
-  public List<Reisdocument> getInTeLeverenDocumenten(BasePLExt pl) {
-    List<Reisdocument> documenten = new ArrayList<>();
-    for (Reisdocument document : getReisdocumentHistorie(pl)) {
-      if (moetNogInleveren(pl, document)) {
-        documenten.add(document);
-      }
-    }
-
-    return documenten;
-  }
-
   @Override
   @Timer
   @ThrowException("Fout bij het zoeken van de documentinhouding")
   public List<DocumentInhouding> getMinimalZaken(ZaakArgumenten zaakArgumenten) {
-    return new ZakenList(
-        copyList(ReisdInhDao.find(getArgumentenToMap(zaakArgumenten)), DocumentInhouding.class));
+    return new ZakenList(copyList(ReisdInhDao.find(getArgumentenToMap(zaakArgumenten)), DocumentInhouding.class));
   }
 
   @Override
@@ -219,8 +227,12 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
     ReisdocumentVermissing vermissing = new ReisdocumentVermissing();
     vermissing.setInhouding(zaak);
     vermissing.setReisdocument(getReisdocument(zaak.getBasisPersoon(), zaak.getNummerDocument()));
-
+    vermissing.setBasisregister(getBasisregister(zaak.getBasisPersoon()));
     return vermissing;
+  }
+
+  private DocumentInhoudingBasisregister getBasisregister(BasePLExt pl) {
+    return getServices().getReisdocumentService().getVrsService().getBasisregister(pl);
   }
 
   @Override
@@ -233,40 +245,53 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
   /**
    * Heeft de persoon nog een document met het meegegeven type dat nog niet ingeleverd is en niet te laat is.
    */
-  public boolean heeftActueelDocument(BasePLExt pl, ReisdocumentType reisdocumentType) {
-    for (Reisdocument rd : getReisdocumentHistorie(pl)) {
-      if (rd.getNederlandsReisdocument() != null) {
-        if (reisdocumentType == ReisdocumentType.get(rd.getNederlandsReisdocument().getVal())) {
-          if (!isReisdocumentIngehouden(pl, rd) && !isTeLaat(rd)) {
-            return true;
+  public ReisdocumentType getInTeleverenDocument(BasePLExt pl, ReisdocumentType reisdocumentType) {
+    VrsService vrsService = getServices().getReisdocumentService().getVrsService();
+    List<ReisdocumentType> types = new ArrayList<>();
+    if (vrsService.isRegistratieMeldingEnabled()) {
+      // Basisregister
+      types.addAll(vrsService.getReisdocumentenLijst(pl, null)
+          .stream()
+          .filter(reisdoc -> VrsDocumentStatusType.getByCode(reisdoc.getStatusMeestRecent().getDocumentstatusCode()) == ONGELDIG)
+          .map(reisdoc -> ReisdocumentType.get(reisdoc.getDocumentsoort().getCode()))
+          .collect(Collectors.toList()));
+
+    } else {
+      // BRP
+      for (Reisdocument doc : getReisdocumentHistorie(pl)) {
+        if (doc.getNederlandsReisdocument() != null) {
+          ReisdocumentType existingDocument = ReisdocumentType.get(doc.getNederlandsReisdocument().getVal());
+          if (!isReisdocumentIngehouden(pl, doc) && !isTeLaat(doc)) {
+            types.add(existingDocument);
           }
         }
       }
     }
 
-    return false;
-  }
-
-  /**
-   * Heeft de persoon nog een document met het meegegeven type dat nog niet ingeleverd is en niet te laat is.
-   */
-  public ReisdocumentType getInTeleverenDocument(BasePLExt pl, ReisdocumentType reisdocumentType) {
-    for (Reisdocument rd : getReisdocumentHistorie(pl)) {
-      if (rd.getNederlandsReisdocument() != null) {
-        ReisdocumentType existingDocument = ReisdocumentType.get(rd.getNederlandsReisdocument().getVal());
-        if (!isReisdocumentIngehouden(pl, rd) && !isTeLaat(rd)) {
-          if (ReisdocumentTypeExclusions.exclude(reisdocumentType, existingDocument)) {
-            return existingDocument;
-          }
-          if (pl.getNatio().isNederlander() && existingDocument
-              .isDocument(VREEMDELINGEN_PASPOORT, VLUCHTELINGEN_PASPOORT)) {
-            return existingDocument;
-          }
-        }
+    for (ReisdocumentType existingDocument : types) {
+      if (ReisdocumentTypeExclusions.exclude(reisdocumentType, existingDocument)) {
+        return existingDocument;
+      }
+      if (pl.getNatio().isNederlander()
+          && existingDocument.isDocument(VREEMDELINGEN_PASPOORT, VLUCHTELINGEN_PASPOORT)) {
+        return existingDocument;
       }
     }
 
     return null;
+  }
+
+  public long getAantalInTeLeverenDocumenten(BasePLExt pl) {
+    VrsService vrsService = getServices().getReisdocumentService().getVrsService();
+    if (vrsService.isRegistratieMeldingEnabled()) {
+      return (int) vrsService.getReisdocumentenLijst(pl, null)
+          .stream()
+          .map(doc -> doc.getStatusMeestRecent().getDocumentstatusCode())
+          .filter(code -> VrsDocumentStatusType.getByCode(code) == ONGELDIG).count();
+    }
+    return getReisdocumentHistorie(pl).stream()
+        .filter(document -> moetNogInleveren(pl, document))
+        .count();
   }
 
   public boolean isReisdocumentIngehouden(BasePLExt pl, Reisdocument rd) {
@@ -280,7 +305,7 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
   }
 
   public boolean moetNogInleveren(BasePLExt pl) {
-    return pos(getInTeLeverenDocumenten(pl).size());
+    return getAantalInTeLeverenDocumenten(pl) > 0;
   }
 
   @Override
@@ -412,6 +437,16 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
     callListeners(ServiceEvent.CHANGE);
   }
 
+  @Transactional
+  public void registreerMelding(DocumentInhouding zaak) {
+    ReisdocumentService reisdocumentService = getServices().getReisdocumentService();
+    RegistratieMeldingReisdocumentResponse response = reisdocumentService.getVrsService().registreerMelding(zaak);
+    DateTime localDateTime = DateTime.of(response.getMeldingdatum().toLocalDateTime());
+    zaak.setVrsDIn(localDateTime.getLongDate());
+    zaak.setVrsTIn(localDateTime.getLongTime());
+    save(zaak);
+  }
+
   private ConditionalMap getArgumentenToMap(ZaakArgumenten zaakArgumenten) {
 
     ZaakArgumenten nZaakArgumenten = new ZaakArgumenten(zaakArgumenten);
@@ -419,8 +454,7 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
     // Nodig omdat de PROBEV kijkt naar status 1 (in behandeling). De zaken zijn echter al wel verwerkt.
     // Dit kan weg als de verwerking via de BSM verloopt.
 
-    if (nZaakArgumenten.getStatussen().size() > 0) {
-
+    if (!nZaakArgumenten.getStatussen().isEmpty()) {
       boolean isBehandelingWel = nZaakArgumenten.getStatussen().contains(ZaakStatusType.INBEHANDELING);
       boolean isVerwerktWel = nZaakArgumenten.getStatussen().contains(ZaakStatusType.VERWERKT);
       boolean isBehandelingNiet = nZaakArgumenten.getNegeerStatussen().contains(ZaakStatusType.INBEHANDELING);
@@ -453,8 +487,7 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
   }
 
   /**
-   * Geeft aanduidingInhoudingVermissing terug
-   * Het type in de zaak overrruled het type op de persoonslijst
+   * Geeft aanduidingInhoudingVermissing terug Het type in de zaak overrruled het type op de persoonslijst
    */
   private String getInhoudingsType(BasePLExt pl, Reisdocument rd) {
     // Kijken op pl
@@ -487,8 +520,7 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
   }
 
   /**
-   * Moet het reisdocument nog worden ingeleverd.
-   * Een van rechtswege inhouding geldt als nog-niet-ingehouden
+   * Moet het reisdocument nog worden ingeleverd. Een van rechtswege inhouding geldt als nog-niet-ingehouden
    */
   private boolean moetNogInleveren(BasePLExt pl, Reisdocument rd) {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,25 @@
 
 package nl.procura.gba.web.rest.v1_0.zaak.zoeken.inhouding;
 
-import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.*;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ALLEEN_BASISREGISTER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.ANR;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.BSN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DATUM_INVOER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DEELZAAK;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DEELZAKEN;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.DOCUMENT_TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.INHOUDING_TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.MELDING_TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.NUMMER;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.OMSCHRIJVING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.REDEN_TYPE;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.REGISTRATIE_MELDING;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.RIJBEWIJS;
+import static nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType.TIJD_INVOER;
 
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingRedenType;
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingType;
+import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElement;
 import nl.procura.gba.web.rest.v1_0.algemeen.GbaRestElementType;
 import nl.procura.gba.web.rest.v1_0.zaak.GbaRestElementHandler;
@@ -62,6 +79,21 @@ public class GbaRestInhoudingVermissingHandler extends GbaRestElementHandler {
     GbaRestElement pv = inhouding.add(GbaRestElementType.PROCES_VERBAAL);
     add(pv, NUMMER, zaak.getProcesVerbaalNummer());
     add(pv, OMSCHRIJVING, zaak.getProcesVerbaalOms());
+
+    /*
+     * Registratie melding is enabled in the VRS service configuration
+     */
+    if (getServices().getReisdocumentService().getVrsService().isRegistratieMeldingEnabled()) {
+      GbaRestElement regMelding = inhouding.add(REGISTRATIE_MELDING);
+      DateTime vrsDatumTijd = zaak.getVrsDatumTijd();
+      VrsMeldingType meldingType = zaak.getVrsMelding();
+      VrsMeldingRedenType redenType = zaak.getVrsReden();
+      add(regMelding, DATUM_INVOER, vrsDatumTijd);
+      add(regMelding, TIJD_INVOER, vrsDatumTijd.getLongTime(), vrsDatumTijd.getFormatTime());
+      add(regMelding, MELDING_TYPE, meldingType.getCode(), meldingType.getDescription());
+      add(regMelding, REDEN_TYPE, redenType.getCode(), redenType.getDescription());
+      add(regMelding, ALLEEN_BASISREGISTER, zaak.isVrsOnlyBasisregister());
+    }
 
     addDeelzaken(gbaZaak, zaak);
   }

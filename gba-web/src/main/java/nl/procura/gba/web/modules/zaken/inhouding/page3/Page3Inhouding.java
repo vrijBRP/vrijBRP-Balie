@@ -38,10 +38,6 @@ public class Page3Inhouding extends ZakenPrintPage {
     super("Document vermissing: nieuw", aanvraag, aanvraag, (DocumentType) null);
   }
 
-  public Page3Inhouding(DocumentInhouding aanvraag, DocumentType documentType) {
-    super("Document vermissing: nieuw", aanvraag, aanvraag, documentType);
-  }
-
   public Page3Inhouding(ReisdocumentVermissing aanvraag, Zaak zaak) {
     super("Document vermissing: nieuw", aanvraag, zaak, DocumentType.DOCUMENT_VERMISSING);
   }

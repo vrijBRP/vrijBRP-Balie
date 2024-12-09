@@ -1,0 +1,173 @@
+---
+openapi: 3.0.1
+info:
+  title: Registratie Melding Reisdocument API
+  version: 1.55.0
+servers:
+  - url: http://api
+    description: Generated server url
+tags:
+  - name: Registratie Melding Reisdocument uitgevende instanties Controller
+    description: Registratie Melding Reisdocument uitgevende instanties API
+paths:
+  "/registratiemeldingreisdocument/uitgevendeinstanties/v1":
+    post:
+      tags:
+        - Registratie Melding Reisdocument uitgevende instanties Controller
+      summary: Registreer een melding voor een reisdocument
+      operationId: reisdocumentRegistratieMeldingReisdocument
+      parameters:
+        - in: header
+          "$ref": "#/components/parameters/pseudoniem"
+        - in: header
+          "$ref": "#/components/parameters/instantie_code"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RegistratieMeldingReisdocumentUitgevendeInstantiesRequest"
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RegistratieMeldingReisdocumentResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationErrorMessages"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      security:
+        - jwt-bearer-token: [ ]
+components:
+  schemas:
+    RegistratieMeldingReisdocumentUitgevendeInstantiesRequest:
+      required:
+        - datummelding
+        - documentnummer
+        - meldingcode
+        - redencode
+      type: object
+      properties:
+        documentnummer:
+          maxLength: 9
+          minLength: 9
+          pattern: "^(?i)[ABDEILNRS][A-NP-Z][0-9BCDFHJKLPR]{6}\\d$"
+          type: string
+        meldingcode:
+          type: string
+        redencode:
+          type: string
+        instantielocatiecode:
+          pattern: "^RDL[\\d]{5}$"
+          type: string
+        datumredenmelding:
+          pattern: yyyy-MM-dd
+          type: string
+          format: date
+        datummelding:
+          pattern: yyyy-MM-dd'T'HH:mm:ssXXX
+          type: string
+          format: date-time
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        code:
+          type: string
+        tijdstip:
+          type: string
+          format: date-time
+        titel:
+          type: string
+        instantie:
+          type: string
+    RegistratieMeldingReisdocumentResponse:
+      type: object
+      properties:
+        meldingredendatum:
+          type: string
+          format: date
+        reisdocumentNummer:
+          type: string
+        reisdocumentmeldingtypeCode:
+          type: string
+        reisdocumentredentypeCode:
+          type: string
+        instantieCode:
+          type: string
+        instantieNaam:
+          type: string
+        instantielocatieCode:
+          type: string
+        instantielocatieNaam:
+          type: string
+        administratiefOnjuist:
+          type: boolean
+        verwerkingdatum:
+          type: string
+          format: date-time
+        meldingdatum:
+          type: string
+          format: date-time
+        toelichting:
+          type: string
+    InvalidParam:
+      type: object
+      properties:
+        code:
+          type: string
+        reden:
+          type: string
+        naam:
+          type: string
+    ValidationErrorMessages:
+      type: object
+      properties:
+        status:
+          type: string
+        code:
+          type: string
+        tijdstip:
+          type: string
+          format: date-time
+        titel:
+          type: string
+        instantie:
+          type: string
+        ongeldige-parameters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InvalidParam"
+  parameters:
+    pseudoniem:
+      name: pseudoniem
+      in: header
+      description: gebruiker pseudoniem
+      schema:
+        type: string
+    instantie_code:
+      name: instantie_code
+      in: header
+      description: gebruiker instantie code
+      schema:
+        type: string
+  securitySchemes:
+    jwt-bearer-token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

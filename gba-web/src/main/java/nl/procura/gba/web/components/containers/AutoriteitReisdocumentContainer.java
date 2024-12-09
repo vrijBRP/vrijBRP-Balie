@@ -80,7 +80,7 @@ public class AutoriteitReisdocumentContainer extends TabelContainer {
     for (TabelFieldValue plaats : GbaTables.PLAATS.get()) {
       if (Globalfunctions.aval(plaats.getKey()) < 2000) {
         String value = "B" + plaats.getKey();
-        String descr = "Burgermeester van " + plaats.getDescription();
+        String descr = "Burgemeester van " + plaats.getDescription();
         add(value, descr);
       }
     }

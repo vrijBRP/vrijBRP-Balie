@@ -8,4 +8,34 @@
       <column name="d_verzoekschrift" type="numeric" defaultValue="-1"/>
     </addColumn>
   </changeSet>
+  
+  <changeSet author="Procura" id="v1_36_2">
+    <addColumn tableName="doc_inh">
+      <column defaultValueComputed="-1" name="vrs_d_in" type="numeric"/>
+    </addColumn>
+    <addColumn tableName="doc_inh">
+      <column defaultValueComputed="-1" name="vrs_t_in" type="numeric"/>
+    </addColumn>
+    <addColumn tableName="doc_inh">
+      <column name="vrs_melding_type" type="varchar(255)" defaultValue=""/>
+    </addColumn>
+    <addColumn tableName="doc_inh">
+      <column name="vrs_reden_type" type="varchar(255)" defaultValue=""/>
+    </addColumn>
+    <addColumn tableName="doc_inh">
+      <column name="vrs_only_br" type="boolean" defaultValue="false"/>
+    </addColumn>
+  </changeSet>
+  
+  <changeSet author="Procura" id="v1_36_3">
+    <addColumn tableName="doc_inh">
+      <column defaultValueComputed="-1" name="vrs_d_melding" type="numeric"/>
+    </addColumn>
+  </changeSet>
+  
+  <changeSet author="Procura" id="v1_36_4">
+    <addColumn tableName="doc_inh">
+      <column defaultValueComputed="-1" name="vrs_d_inlever" type="numeric"/>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>

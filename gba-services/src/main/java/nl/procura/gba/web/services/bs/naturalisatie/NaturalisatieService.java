@@ -34,9 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.common.DateTime;
@@ -58,6 +55,7 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
+import org.apache.commons.lang3.StringUtils;
 
 public class NaturalisatieService extends AbstractZaakContactService<Dossier> implements ZaakService<Dossier> {
 
@@ -206,7 +204,7 @@ public class NaturalisatieService extends AbstractZaakContactService<Dossier> im
         gegevens.setInburgeringType(null);
         gegevens.setNaamstGeslGew("");
         gegevens.setNaamstVoornGew("");
-        gegevens.setAdviesBurgermeesterType(null);
+        gegevens.setAdviesBurgemeesterType(null);
         gegevens.setBehDKoningBesluit(null);
         gegevens.setBehNrKoningBesluit(null);
       } else {

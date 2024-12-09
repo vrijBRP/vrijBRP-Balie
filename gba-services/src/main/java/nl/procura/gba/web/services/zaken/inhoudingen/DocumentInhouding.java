@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -19,8 +19,14 @@
 
 package nl.procura.gba.web.services.zaken.inhoudingen;
 
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.emp;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingRedenType;
+import nl.procura.burgerzaken.vrsclient.api.VrsMeldingType;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.common.DateTime;
@@ -49,11 +55,17 @@ public class DocumentInhouding extends DocInh implements ContactZaak {
   private static final long serialVersionUID = -6275820126498536480L;
 
   private final GenericZaak zaak         = new GenericZaak();
-  private boolean           opPlVerwerkt = false;
-  private String            autoriteit   = "";
+  private boolean opPlVerwerkt = false;
+  private String  autoriteit   = "";
 
   public DocumentInhouding() {
     setStatus(ZaakStatusType.OPGENOMEN);
+    setVrsDIn(-1L);
+    setVrsTIn(-1L);
+    setVrsDmelding(-1L);
+    setVrsDinlever(-1L);
+    setVrsMeldingType(VrsMeldingType.ONBEKEND.getCode());
+    setVrsRedenType(VrsMeldingRedenType.ONBEKEND.getCode());
   }
 
   @Override
@@ -293,5 +305,33 @@ public class DocumentInhouding extends DocInh implements ContactZaak {
 
   public void setSprakeVanRijbewijs(boolean sprakeVanRijbewijs) {
     setIndRijbewijs(toBigDecimal(sprakeVanRijbewijs ? 1 : 0));
+  }
+
+  public DateTime getVrsDatumTijd() {
+    return new DateTime(getVrsDIn(), along(getVrsTIn()));
+  }
+
+  public DateTime getVrsDatumRedenMelding() {
+    return new DateTime(getVrsDmelding());
+  }
+
+  public DateTime getVrsDatumInlevering() {
+    return getVrsDinlever() != null ? new DateTime(getVrsDinlever()) : null;
+  }
+
+  public VrsMeldingType getVrsMelding() {
+    return VrsMeldingType.getByCode(getVrsMeldingType());
+  }
+
+  public VrsMeldingRedenType getVrsReden() {
+    return VrsMeldingRedenType.getByCode(getVrsRedenType());
+  }
+
+  public boolean isIngeleverd() {
+    return getVrsDinlever() > 0;
+  }
+
+  public boolean isVrsRegistratieGedaan() {
+    return getVrsDIn() > 0;
   }
 }

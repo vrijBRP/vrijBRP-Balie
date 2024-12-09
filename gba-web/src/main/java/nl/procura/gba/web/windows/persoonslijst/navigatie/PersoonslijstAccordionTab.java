@@ -41,7 +41,6 @@ import static nl.procura.burgerzaken.gba.core.enums.GBARecStatus.UNKNOWN;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
-
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.diensten.gba.ple.base.BasePLCat;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -96,14 +95,14 @@ public class PersoonslijstAccordionTab extends PlAccordionTab {
       addLink(ModuleKind.class, getSoort(pl, KINDEREN));
       addLink(ModuleVerblijfstitel.class, getSoort(pl, VBTITEL));
       addLink(ModuleGezag.class, getSoort(pl, GEZAG));
-      addLink(ModuleReisdocument.class, getSoort(pl, REISDOC));
+      addLink(ModuleReisdocument.class, true, getSoort(pl, REISDOC));
       addLink(ModuleKiesrecht.class, getSoort(pl, KIESR));
       addLink(ModuleTvba.class, getSoort(pl, TIJD_VBA));
       addLink(ModuleContact.class, getSoort(pl, CONTACT));
       addLink(ModuleAfnIndicaties.class, heeftAfnemerIndicaties, false);
       addLink(ModuleKladblok.class, getSoort(pl, KLADBLOK));
       addLink(ModuleLokAfn.class, getSoort(pl, LOK_AF_IND));
-      addLink(ModuleOnderzoek.class, pl.getPersoon().getOnderzoek().getCategoriesInOnderzoek().size() > 0, false);
+      addLink(ModuleOnderzoek.class, !pl.getPersoon().getOnderzoek().getCategoriesInOnderzoek().isEmpty(), false);
     }
   }
 
@@ -122,10 +121,13 @@ public class PersoonslijstAccordionTab extends PlAccordionTab {
     return addLink(c, filled, mutatie);
   }
 
+  private AccordionLink addLink(Class<?> c, boolean filled, BasePLCat soort) {
+    boolean mutatie = soort.getSets().stream().anyMatch(set -> !set.getMutationRec().isStatus(UNKNOWN));
+    return addLink(c, filled, mutatie);
+  }
+
   private AccordionLink addLink(Class<?> c, boolean filled, boolean mutatie) {
-
     AccordionLink link = super.addLink(c);
-
     EmbeddedResource checkbox = new EmbeddedResource(GbaWebTheme.ICOON_16.CHECKBOX_NO);
 
     if (filled) {

@@ -22,7 +22,7 @@ package nl.procura.gba.web.services.bs.naturalisatie.enums;
 import nl.procura.gba.common.EnumUtils;
 import nl.procura.gba.common.EnumWithCode;
 
-public enum AdviesBurgermeesterType implements EnumWithCode<Integer> {
+public enum AdviesBurgemeesterType implements EnumWithCode<Integer> {
 
   GEEN_BEZWAAR(1, "Geen bezwaar"),
   BEZWAAR(2, "Bezwaar, zie toelichting"),
@@ -31,12 +31,12 @@ public enum AdviesBurgermeesterType implements EnumWithCode<Integer> {
   private final int    code;
   private final String oms;
 
-  AdviesBurgermeesterType(int code, String oms) {
+  AdviesBurgemeesterType(int code, String oms) {
     this.code = code;
     this.oms = oms;
   }
 
-  public static AdviesBurgermeesterType get(Number code) {
+  public static AdviesBurgemeesterType get(Number code) {
     return EnumUtils.get(values(), code, null);
   }
 

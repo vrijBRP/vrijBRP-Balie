@@ -22,20 +22,18 @@ package nl.procura.gba.web.services.bs.naturalisatie;
 import static java.util.Optional.ofNullable;
 
 import java.math.BigDecimal;
-
+import lombok.Getter;
+import lombok.Setter;
 import nl.procura.gba.common.EnumWithCode;
 import nl.procura.gba.jpa.personen.db.DossNatur;
 import nl.procura.gba.jpa.personen.db.DossNaturVerz;
 import nl.procura.gba.web.services.bs.algemeen.persoon.DossierPersoon;
-import nl.procura.gba.web.services.bs.naturalisatie.enums.AdviesBurgermeesterType;
+import nl.procura.gba.web.services.bs.naturalisatie.enums.AdviesBurgemeesterType;
 import nl.procura.gba.web.services.bs.naturalisatie.enums.AndereOuderAkkoordType;
 import nl.procura.gba.web.services.bs.naturalisatie.enums.BeslissingType;
 import nl.procura.gba.web.services.bs.naturalisatie.enums.InburgeringType;
 import nl.procura.java.reflection.ReflectionUtil;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -103,11 +101,11 @@ public class DossierNaturalisatieVerzoeker extends DossNaturVerz {
     setBehBeslissOptie(toBigDecimal(type));
   }
 
-  public AdviesBurgermeesterType getAdviesBurgermeesterType() {
-    return AdviesBurgermeesterType.get(getBehAdviesNatur());
+  public AdviesBurgemeesterType getAdviesBurgemeesterType() {
+    return AdviesBurgemeesterType.get(getBehAdviesNatur());
   }
 
-  public void setAdviesBurgermeesterType(AdviesBurgermeesterType type) {
+  public void setAdviesBurgemeesterType(AdviesBurgemeesterType type) {
     setBehAdviesNatur(toBigDecimal(type));
   }
 

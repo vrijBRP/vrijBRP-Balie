@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,10 +17,9 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.common.jackson;
+package nl.procura.burgerzaken.vrsclient.api.jackson;
 
 import java.time.OffsetDateTime;
-
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.deser.std.FromStringDeserializer;
 

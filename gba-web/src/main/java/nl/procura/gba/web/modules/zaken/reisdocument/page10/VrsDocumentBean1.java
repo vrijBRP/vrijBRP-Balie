@@ -22,11 +22,9 @@ package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 import static nl.procura.vaadin.annotation.field.Field.FieldType.TEXT_FIELD;
 
 import java.lang.annotation.ElementType;
-
+import lombok.Data;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
-
-import lombok.Data;
 
 @FormFieldFactoryBean(accessType = ElementType.FIELD)
 @Data
@@ -45,7 +43,6 @@ public class VrsDocumentBean1 {
   static final String LENGTE           = "lengte";
   static final String STAATLOOS        = "staatloos";
   static final String AANVRAAGNUMMER   = "aanvraagnummer";
-  static final String AUT_VAN_AFGIFTE  = "autoriteitVanAfgifte";
   static final String AUT_VAN_VERSTREK = "autoriteitVerstrekking";
 
   @Field(type = TEXT_FIELD,
@@ -112,11 +109,6 @@ public class VrsDocumentBean1 {
       width = "300px",
       caption = "Aanvraagnummer")
   private String aanvraagnummer;
-
-  @Field(type = TEXT_FIELD,
-      width = "300px",
-      caption = "Autoriteit van afgifte")
-  private String autoriteitVanAfgifte;
 
   @Field(type = TEXT_FIELD,
       width = "300px",

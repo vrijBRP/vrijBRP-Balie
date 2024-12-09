@@ -17,19 +17,14 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.common.jackson;
+package nl.procura.gba.web.modules.bs.naturalisatie.page50;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import nl.procura.gba.web.modules.bs.naturalisatie.aanschrijving.EnumContainer;
+import nl.procura.gba.web.services.bs.naturalisatie.enums.AdviesBurgemeesterType;
 
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.module.SimpleModule;
+public class AdviesBurgemeesterContainer extends EnumContainer {
 
-public class ProcuraModule extends SimpleModule {
-
-  public ProcuraModule() {
-    super("procura", new Version(1, 0, 0, ""));
-    addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
-    addDeserializer(LocalDate.class, new LocalDateTimeDeserializer());
+  public AdviesBurgemeesterContainer() {
+    super(AdviesBurgemeesterType.values());
   }
 }

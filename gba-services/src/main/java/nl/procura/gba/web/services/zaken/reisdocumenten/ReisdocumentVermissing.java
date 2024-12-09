@@ -19,31 +19,19 @@
 
 package nl.procura.gba.web.services.zaken.reisdocumenten;
 
+import lombok.Data;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
+import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingBasisregister;
 
+@Data
 public class ReisdocumentVermissing {
 
-  private DocumentInhouding inhouding    = null;
-  private Reisdocument      reisdocument = null;
-
-  public DocumentInhouding getInhouding() {
-    return inhouding;
-  }
-
-  public void setInhouding(DocumentInhouding inhouding) {
-    this.inhouding = inhouding;
-  }
+  private DocumentInhouding              inhouding     = null;
+  private Reisdocument                   reisdocument  = null;
+  private DocumentInhoudingBasisregister basisregister = null;
 
   public DocumentPL getPersoon() {
     return inhouding.getPersoon();
-  }
-
-  public Reisdocument getReisdocument() {
-    return reisdocument;
-  }
-
-  public void setReisdocument(Reisdocument reisdocument) {
-    this.reisdocument = reisdocument;
   }
 }

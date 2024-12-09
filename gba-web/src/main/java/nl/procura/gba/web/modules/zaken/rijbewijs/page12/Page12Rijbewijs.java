@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,21 +21,32 @@ package nl.procura.gba.web.modules.zaken.rijbewijs.page12;
 
 import static com.vaadin.event.ShortcutAction.KeyCode.F1;
 import static nl.procura.gba.common.MiscUtils.setClass;
-import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.*;
+import static nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils.checkIdentificatieAkkoord;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.AANVRAAGNR;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.BELEMMERING;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.HUIDIGRBWNR;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.NIEUWRBWNR;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.REDEN;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.SOORT;
+import static nl.procura.gba.web.modules.zaken.rijbewijs.page12.Page12RijbewijsBean1.STATUS;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_RIJBEWIJS;
-import static nl.procura.standard.Globalfunctions.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.astr;
+import static nl.procura.standard.Globalfunctions.isTru;
 
 import com.vaadin.ui.Button;
-
+import java.util.ArrayList;
+import java.util.List;
+import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.application.ProcessChangeInterceptor;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
+import nl.procura.gba.web.modules.zaken.identificatie.IdentificatieWindow;
 import nl.procura.gba.web.modules.zaken.rijbewijs.RbwUpdateToDateCheck;
 import nl.procura.gba.web.modules.zaken.rijbewijs.RijbewijsPage;
+import nl.procura.gba.web.modules.zaken.rijbewijs.page1.Page1Rijbewijs;
 import nl.procura.gba.web.modules.zaken.rijbewijs.page2.Page2RijbewijsTabel1;
 import nl.procura.gba.web.modules.zaken.rijbewijs.page9.Page9RijbewijsBean1;
+import nl.procura.gba.web.services.zaken.identiteit.IdentificatieStatusListener;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraag;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagAntwoord;
 import nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsAanvraagStatus;
@@ -65,12 +76,12 @@ public class Page12Rijbewijs extends RijbewijsPage {
   private final Button buttonUitreiken     = new Button("Uitreiken");
   private final Button buttonNietUitreiken = new Button("Niet uitreiken");
 
-  private final P1658          p1658;
-  private String               belemmering = "";
-  private Page12RijbewijsForm1 form1       = null;
-  private Page12RijbewijsForm1 form2       = null;
-  private Page2RijbewijsTabel1 table1      = null;
-  private RijbewijsAanvraag    crbAanvraag;
+  private final P1658                p1658;
+  private       String               belemmering = "";
+  private       Page12RijbewijsForm1 form1       = null;
+  private       Page12RijbewijsForm1 form2       = null;
+  private       Page2RijbewijsTabel1 table1      = null;
+  private       RijbewijsAanvraag    crbAanvraag;
 
   public Page12Rijbewijs(P1658 p1658) {
 
@@ -153,7 +164,7 @@ public class Page12Rijbewijs extends RijbewijsPage {
   public void handleEvent(Button button, int keyCode) {
 
     if (button == buttonUitreiken) {
-      updateStatus(RijbewijsStatusType.RIJBEWIJS_UITGEREIKT);
+      checkIdentificatie(() -> updateStatus(RijbewijsStatusType.RIJBEWIJS_UITGEREIKT));
 
     } else if (button == buttonNietUitreiken) {
       getParentWindow().addWindow(new ConfirmDialog(
@@ -161,7 +172,7 @@ public class Page12Rijbewijs extends RijbewijsPage {
 
         @Override
         public void buttonYes() {
-          updateStatus(RijbewijsStatusType.RIJBEWIJS_NIET_UITGEREIKT);
+          checkIdentificatie(() -> updateStatus(RijbewijsStatusType.RIJBEWIJS_NIET_UITGEREIKT));
           super.buttonYes();
         }
       });
@@ -209,8 +220,13 @@ public class Page12Rijbewijs extends RijbewijsPage {
       addInfo(info.toString());
 
     } else {
-      getApplication().getProcess().startProcess();
+      checkIdentificatie(() -> getApplication().getProcess().startProcess());
     }
+  }
+
+  private void checkIdentificatie(Runnable runnable) {
+    IdentificatieStatusListener idSuccesListener = (saved, newAdded) -> runnable.run();
+    checkIdentificatieAkkoord(getParentWindow(), new IdentificatieWindow(idSuccesListener), idSuccesListener);
   }
 
   private Page12RijbewijsForm1 getForm1(RijbewijsAanvraagAntwoord antwoord, String belemmering) {
@@ -286,12 +302,16 @@ public class Page12Rijbewijs extends RijbewijsPage {
 
       table1.init();
 
-      String msg = "De status bij het RDW is nu: <hr/><b>" + stat + "</b>.<hr/>Dit proces is voltooid.";
-      getWindow().addWindow(new OkDialog("Voltooid.", msg) {
+      getWindow().addWindow(new OkDialog("Voltooid.",
+          String.format("De status bij het RDW is nu: <hr/><b>%s</b>.<hr/>Dit proces is voltooid.", stat)) {
 
         @Override
         public void closeWindow() {
-          Page12Rijbewijs.this.getApplication().getProcess().endProcess();
+          if (getApplication() != null) {
+            ((GbaApplication) getApplication()).getProcess().endProcess();
+            getNavigation().removeOtherPages();
+            getNavigation().goToPage(Page1Rijbewijs.class);
+          }
           super.closeWindow();
         }
       });

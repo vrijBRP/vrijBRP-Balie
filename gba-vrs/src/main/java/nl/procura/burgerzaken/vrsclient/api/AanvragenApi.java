@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -52,28 +52,35 @@ public class AanvragenApi extends AbstractVrsApi {
     this.apiClient = apiClient;
   }
 
-  public ControleAanvragenResponse aanvragen(VrsRequest vrsRequest) throws ApiException {
+  public VrsResponse<VrsRequest, ControleAanvragenResponse> aanvragen(VrsRequest vrsRequest) throws ApiException {
     String localVarPath = "/controleaanvragen/v2/personalisatiegegevens";
     ApiClient.Request<Object> apiRequest = new ApiClient.Request<>(localVarPath);
     apiRequest.body(toAanvragenRequest(vrsRequest));
-    setHeaders(vrsRequest, apiRequest);
-    return apiClient.post(apiRequest, ControleAanvragenResponse.class);
+    setHeaders(vrsRequest.metadata(), apiRequest);
+    return new VrsResponse<VrsRequest, ControleAanvragenResponse>()
+        .response(apiClient.post(apiRequest, ControleAanvragenResponse.class))
+        .request(vrsRequest);
   }
 
-  public ControleAanvraagDetailResponse aanvraag(VrsRequest vrsRequest) throws ApiException {
+  public VrsResponse<VrsRequest, ControleAanvraagDetailResponse> aanvraag(VrsRequest vrsRequest) throws ApiException {
     String localVarPath = "/controleaanvragen/v2/aanvraag";
     ApiClient.Request<Object> apiRequest = new ApiClient.Request<>(localVarPath);
     apiRequest.body(toAanvraagRequest(vrsRequest));
-    setHeaders(vrsRequest, apiRequest);
-    return apiClient.post(apiRequest, ControleAanvraagDetailResponse.class);
+    setHeaders(vrsRequest.metadata(), apiRequest);
+    return new VrsResponse<VrsRequest, ControleAanvraagDetailResponse>()
+        .response(apiClient.post(apiRequest, ControleAanvraagDetailResponse.class))
+        .request(vrsRequest);
   }
 
-  public ControleAanvraagVolledigResponse aanvraagDetails(VrsRequest vrsRequest) throws ApiException {
+  public VrsResponse<VrsRequest, ControleAanvraagVolledigResponse> aanvraagDetails(VrsRequest vrsRequest)
+      throws ApiException {
     String localVarPath = "/controleaanvragen/v2/aanvraag/details";
     ApiClient.Request<Object> apiRequest = new ApiClient.Request<>(localVarPath);
     apiRequest.body(toAanvraagRequest(vrsRequest));
-    setHeaders(vrsRequest, apiRequest);
-    return apiClient.post(apiRequest, ControleAanvraagVolledigResponse.class);
+    setHeaders(vrsRequest.metadata(), apiRequest);
+    return new VrsResponse<VrsRequest, ControleAanvraagVolledigResponse>()
+        .response(apiClient.post(apiRequest, ControleAanvraagVolledigResponse.class))
+        .request(vrsRequest);
   }
 
   private ControleAanvragenRequest toAanvragenRequest(VrsRequest request) {

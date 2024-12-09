@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
-import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.REISDOCUMENTAANVRAAG;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
+import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VLUCHTELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType.VREEMDELINGEN_PASPOORT;
 import static nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringStatusType.JA;
@@ -27,19 +29,12 @@ import static nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringStatus
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.toBigDecimal;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
-import static nl.procura.commons.core.exceptions.ProExceptionType.ENTRY;
-
-import java.util.Optional;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button;
-
-import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
-import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
-import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
+import java.util.Optional;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.diensten.gba.ple.openoffice.DocumentPL;
 import nl.procura.gba.web.components.fields.values.UsrFieldValue;
@@ -47,7 +42,6 @@ import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.ReisdocumentAanvraagPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.page11.Page11Reisdocument;
-import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page18.Page18Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page21.Page21Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page23.Page23Reisdocument;
@@ -61,19 +55,17 @@ import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentC1;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterBackwardReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.validation.Bsn;
 
 /**
  * Nieuw reisdocument
  */
 public class Page10Reisdocument extends ReisdocumentAanvraagPage implements ValueChangeListener {
 
-  private final Button buttonDocumenten  = new Button("Reisdocumenten BRP");
+  private final Button buttonDocumenten  = new BrpReisdocumentenButton(this::getPl, () -> Page10Reisdocument.this);
   private final Button buttonSignalering = new Button("Signalering");
 
   private Page10ReisdocumentForm1 form1 = null;
@@ -100,46 +92,41 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
       OptieLayout.Right right = ol.getRight();
       right.setWidth("200px");
       right.setCaption("Opties");
-      right.addButton(buttonDocumenten, this);
 
       ReisdocumentService reisdocService = getServices().getReisdocumentService();
       VrsService vrsService = reisdocService.getVrsService();
 
+      if (vrsService.isBasisregisterEnabled()) {
+        right.addButton(new AanvraagArchiefButton(pl, aanvraag.getAanvraagnummer(), true), this);
+        right.addButton(new BasisregisterButton(() -> pl, aanvraag::getAanvraagnummer, this::recheckDocumenten), this);
+      }
+
+      if (!vrsService.isRegistratieMeldingEnabled()) {
+        right.addButton(buttonDocumenten, this);
+      }
+
+      // Signalering
       Optional<SignaleringResult> vrsSignalering = reisdocService.checkAanvraag(aanvraag.getAanvraagnummer(), pl);
-      form2 = new Page10ReisdocumentForm2(pl, getServices().getDocumentInhoudingenService(),
+      form2 = new Page10ReisdocumentForm2(pl,
+          getServices().getDocumentInhoudingenService(),
           vrsSignalering.orElse(null));
 
       vrsSignalering.ifPresent(result -> right.addButton(buttonSignalering, e -> this.showSignalering(result)));
-
-      Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> vrsDocumenten = vrsService
-          .getReisdocumenten(new VrsRequest()
-              .aanleiding(REISDOCUMENTAANVRAAG)
-              .bsn(new Bsn(pl.getPersoon().getBsn().toLong()))
-              .aanvraagnummer(aanvraag.getAanvraagnummer().getNummer()));
-
-      Optional<ControleAanvragenResponse> vrsAanvragen = vrsService.getAanvragen(new VrsRequest()
-          .aanleiding(REISDOCUMENTAANVRAAG)
-          .bsn(new Bsn(pl.getPersoon().getBsn().toLong()))
-          .aanvraagnummer(aanvraag.getAanvraagnummer().getNummer()));
-
-      vrsAanvragen.ifPresent(response -> {
-        right.addButton(new AanvraagArchiefButton(aanvraag.getAanvraagnummer(), response, true), this);
-      });
-
-      vrsDocumenten.ifPresent(response -> {
-        right.addButton(new BasisregisterButton(aanvraag.getAanvraagnummer(), response), this);
-      });
 
       addComponent(ol);
       addComponent(form2);
       recheckDocument();
 
     } else if (event.isEvent(AfterBackwardReturn.class)) {
-      form2.recheckDocumenten();
-      form2.repaint();
+      recheckDocumenten();
     }
 
     super.event(event);
+  }
+
+  private void recheckDocumenten() {
+    form2.recheckDocumenten();
+    form2.repaint();
   }
 
   private void showSignalering(SignaleringResult signalering) {
@@ -147,15 +134,6 @@ public class Page10Reisdocument extends ReisdocumentAanvraagPage implements Valu
       throw new ProException(INFO, "Geen signalering gevonden");
     }
     getWindow().addWindow(new SignaleringWindow(signalering));
-  }
-
-  @Override
-  public void handleEvent(Button button, int keyCode) {
-    if (button == buttonDocumenten) {
-      getNavigation().goToPage(new Page14Reisdocument(getPl()));
-    }
-
-    super.handleEvent(button, keyCode);
   }
 
   @Override

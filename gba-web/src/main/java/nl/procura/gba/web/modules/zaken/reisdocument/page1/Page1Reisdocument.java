@@ -20,15 +20,16 @@
 package nl.procura.gba.web.modules.zaken.reisdocument.page1;
 
 import com.vaadin.ui.Button;
-
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils;
 import nl.procura.gba.web.modules.zaken.common.ZakenListPage;
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable;
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable.ZaakRecord;
-import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.BasisregisterButton;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.BrpReisdocumentenButton;
 import nl.procura.gba.web.modules.zaken.reisdocument.page18.Page18Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page2.Page2Reisdocument;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
@@ -38,7 +39,8 @@ import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
  */
 public class Page1Reisdocument extends ZakenListPage<ReisdocumentAanvraag> {
 
-  private final Button buttonDocumenten = new Button("Reisdocumenten");
+  private final Button buttonDocumenten    = new BrpReisdocumentenButton(this::getPl, () -> Page1Reisdocument.this);
+  private final Button buttonBasisregister = new BasisregisterButton(this::getPl, () -> null, this::onEnter);
 
   public Page1Reisdocument() {
     super("Reisdocumenten: overzicht");
@@ -48,7 +50,19 @@ public class Page1Reisdocument extends ZakenListPage<ReisdocumentAanvraag> {
     addButton(buttonNew);
     addButton(buttonStatus);
     addButton(buttonDel);
-    addButton(buttonDocumenten);
+  }
+
+  @Override
+  protected void initPage() {
+    super.initPage();
+    VrsService vrsService = getServices().getReisdocumentService().getVrsService();
+    int index = getButtonLayout().getComponentIndex(buttonDel);
+    if (vrsService.isBasisregisterEnabled()) {
+      getButtonLayout().add(buttonBasisregister, index + 1);
+    }
+    if (!vrsService.isRegistratieMeldingEnabled()) {
+      getButtonLayout().add(buttonDocumenten, index + 1);
+    }
   }
 
   @Override
@@ -90,25 +104,15 @@ public class Page1Reisdocument extends ZakenListPage<ReisdocumentAanvraag> {
     switch (aanvr.getReisdocumentStatus().getStatusAfsluiting()) {
       case AANVRAAG_NIET_AFGESLOTEN:
         return true;
-      default:
       case ONBEKEND:
       case DOCUMENT_NIET_OPGEHAALD:
       case DOCUMENT_NIET_UITGEREIKT_ONJUIST:
       case DOCUMENT_NIET_UITGEREIKT_OVERIGE_REDEN:
       case DOCUMENT_UITGEREIKT:
       case DOCUMENT_UITGEREIKT_DOOR_ANDERE_INSTANTIE:
+      default:
         return false;
     }
-  }
-
-  @Override
-  public void handleEvent(Button button, int keyCode) {
-
-    if (button == buttonDocumenten) {
-      getNavigation().goToPage(new Page14Reisdocument(getPl()));
-    }
-
-    super.handleEvent(button, keyCode);
   }
 
   @Override

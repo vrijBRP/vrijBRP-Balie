@@ -168,6 +168,8 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_IDP_SERVICE_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_INSTANTIE_CODE;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_REG_MELDING;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_REIT_INSTRUCTIE_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_TIMEOUT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.VRS_SERVICE_URL;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.WACHTWOORD_TIJDELIJK;
@@ -255,16 +257,17 @@ import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOE
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_JAVA_SERVER_USERNAME;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PLE_NAAMGEBRUIK;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZOEK_PROFIEL;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_ENABLED;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_API_ENDPOINT;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_API_KEY;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.ZYNYO_ENABLED;
 import static nl.procura.standard.Globalfunctions.astr;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import nl.procura.gba.jpa.personen.db.Parm;
 import nl.procura.gba.web.common.validators.PropertiesValidator;
 import nl.procura.gba.web.components.fields.GbaNativeSelect;
@@ -308,17 +311,14 @@ import nl.procura.vaadin.component.field.NumberField;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
 import nl.procura.vaadin.component.validator.GetalValidator;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 @Data
 @FormFieldFactoryBean(accessType = ElementType.FIELD,
     defaultWidth = "220px")
 @FormBean(defaultCaptionWidth = "200px")
 public class ParameterBean implements Serializable {
 
-  public static final long    GEEN_GEBRUIKER             = 0;
-  public static final long    GEEN_PROFIEL               = 0;
+  public static final long GEEN_GEBRUIKER = 0;
+  public static final long GEEN_PROFIEL   = 0;
   private static final String CODE_STATUS_OPGENOMEN      = "0";
   private static final String CODE_STATUS_IN_BEHANDELING = "1";
   private static final String CODE_STATUS_VERWERKT       = "2";
@@ -1312,7 +1312,7 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(GEBR_PPD)
   @Field(type = FieldType.TEXT_FIELD,
       caption = "PPD code",
-      validators = { GetalValidator.class },
+      validators = {GetalValidator.class},
       width = "30px")
   @TextField(maxLength = 2)
   private String ppdCode = "";
@@ -1457,7 +1457,7 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(VRS_ENABLED)
   @Position(order = "10")
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "VRS inschakelen",
+      caption = "BR inschakelen",
       width = "70px")
   @Select(containerDataSource = ParmBooleanContainer.class,
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
@@ -1466,44 +1466,53 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(VRS_BASISREGISTER)
   @Position(order = "11")
   @Field(customTypeClass = GbaNativeSelect.class,
-      caption = "VRS Basisregister inschakelen",
+      caption = "BR Basisregister inschakelen",
       width = "70px")
   @Select(containerDataSource = ParmBooleanContainer.class,
       itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
   private String reisdocumentVrsBasisregister = "";
 
+  @ParameterAnnotation(VRS_REG_MELDING)
+  @Position(order = "11.1")
+  @Field(customTypeClass = GbaNativeSelect.class,
+      caption = "BR registratie melding inschakelen",
+      width = "70px")
+  @Select(containerDataSource = ParmBooleanContainer.class,
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+  private String reisdocumentVrsRegMelding = "";
+
   @ParameterAnnotation(VRS_SERVICE_URL)
   @Position(order = "12")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "URL van VRS API",
+      caption = "URL van BR API",
       width = "400px")
   private String reisdocumentVrsUrl = "";
 
   @ParameterAnnotation(VRS_IDP_SERVICE_URL)
   @Position(order = "13")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "URL van VRS Token API",
+      caption = "URL van  BR Token API",
       width = "400px")
   private String reisdocumentVrsTokenUrl = "";
 
   @ParameterAnnotation(VRS_SERVICE_TIMEOUT)
   @Position(order = "14")
   @Field(customTypeClass = NumberField.class,
-      caption = "VRS timeout",
+      caption = "BR timeout",
       width = "80px")
   private String reisdocumentVrsTimeout = "";
 
   @ParameterAnnotation(VRS_CLIENT_ID)
   @Position(order = "15")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "VRS client-id",
+      caption = "BR client-id",
       width = "400px")
   private String reisdocumentVrsClientId = "";
 
   @ParameterAnnotation(VRS_CLIENT_SECRET)
   @Position(order = "16")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "VRS client secret",
+      caption = "BR client secret",
       width = "400px")
   @TextField(secret = true)
   private String reisdocumentVrsClientSecret = "";
@@ -1511,23 +1520,30 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(VRS_CLIENT_SCOPE)
   @Position(order = "17")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "VRS scope",
+      caption = "BR scope",
       width = "400px")
   private String reisdocumentVrsScope = "";
 
   @ParameterAnnotation(VRS_CLIENT_RESOURCE_SERVER)
   @Position(order = "18")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "VRS resource server",
+      caption = "BR resource server",
       width = "400px")
   private String reisdocumentVrsResourceServer = "";
 
   @ParameterAnnotation(VRS_INSTANTIE_CODE)
   @Position(order = "19")
   @Field(type = FieldType.TEXT_FIELD,
-      caption = "VRS instantie-code",
+      caption = "BR instantie-code",
       width = "400px")
   private String reisdocumentVrsInstantiecode = "";
+
+  @ParameterAnnotation(VRS_REIT_INSTRUCTIE_URL)
+  @Position(order = "20")
+  @Field(type = FieldType.TEXT_FIELD,
+      caption = "BR reisdocument instructie URL",
+      width = "400px")
+  private String reisdVrsReitInstructieUrl = "";
 
   // Terugmelding beheer
   @ParameterAnnotation(TERUGMBEHEER)
@@ -1724,7 +1740,7 @@ public class ParameterBean implements Serializable {
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Wachtw. verloop in dagen",
       description = "Het aantal dagen voor het verloop van het wachtwoord",
-      validators = { GetalValidator.class },
+      validators = {GetalValidator.class},
       width = "40px")
   @TextField(maxLength = 3)
   private String wachtwoordVerloop = "";
@@ -1744,7 +1760,7 @@ public class ParameterBean implements Serializable {
   @Field(type = FieldType.TEXT_FIELD,
       caption = "Melding verloop account in dagen",
       description = "Melding als account binnen dit aantal dagen verloopt",
-      validators = { GetalValidator.class },
+      validators = {GetalValidator.class},
       width = "40px")
   @TextField(maxLength = 3)
   private String dagenMeldingVerloopAccount = "";
@@ -1775,7 +1791,7 @@ public class ParameterBean implements Serializable {
       caption = "Maximaal aantal zoekresultaten",
       description = "Het aantal persoonslijsten dat maximaal per zoekactie mag worden gezocht. " +
           "Dit geldt alleen voor zoeken in de gemeentelijke database.",
-      validators = { GetalValidator.class },
+      validators = {GetalValidator.class},
       width = "60px")
   @TextField(maxLength = 4)
   private String zoekMaxAantalResultaten = "";
@@ -1927,7 +1943,7 @@ public class ParameterBean implements Serializable {
   @Position(order = "1")
   @Field(type = FieldType.TEXT_FIELD,
       caption = "PROBEV gebruiker code",
-      validators = { GetalValidator.class },
+      validators = {GetalValidator.class},
       width = "90px")
   @TextField(maxLength = 10)
   private String probevGebrCode = "";
@@ -1968,10 +1984,10 @@ public class ParameterBean implements Serializable {
   @ParameterAnnotation(ZYNYO_ENABLED)
   @Position(order = "1")
   @Field(customTypeClass = GbaNativeSelect.class,
-          caption = "Zynyo integratie actief",
-          width = "70px")
+      caption = "Zynyo integratie actief",
+      width = "70px")
   @Select(containerDataSource = ParmBooleanContainer.class,
-          itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
+      itemCaptionPropertyId = ParmBooleanContainer.OMSCHRIJVING)
   private String zynyoEnabled = "";
 
   @ParameterAnnotation(ZYNYO_API_ENDPOINT)

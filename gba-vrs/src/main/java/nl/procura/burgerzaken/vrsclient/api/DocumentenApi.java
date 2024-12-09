@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -51,21 +51,28 @@ public class DocumentenApi extends AbstractVrsApi {
     this.apiClient = apiClient;
   }
 
-  public ReisdocumentInformatiePersoonsGegevensInstantieResponse documenten(VrsRequest vrsRequest) throws ApiException {
+  public VrsResponse<VrsRequest, ReisdocumentInformatiePersoonsGegevensInstantieResponse> documenten(
+      VrsRequest vrsRequest)
+      throws ApiException {
     String localVarPath = "/reisdocumentinformatie/uitgevendeinstanties/v2/personalisatiegegevens";
     Request<Object> apiRequest = new Request<>(localVarPath);
     apiRequest.body(toDocumentenRequest(vrsRequest));
-    setHeaders(vrsRequest, apiRequest);
-    return apiClient.post(apiRequest, ReisdocumentInformatiePersoonsGegevensInstantieResponse.class);
+    setHeaders(vrsRequest.metadata(), apiRequest);
+    return new VrsResponse<VrsRequest, ReisdocumentInformatiePersoonsGegevensInstantieResponse>()
+        .response(apiClient.post(apiRequest, ReisdocumentInformatiePersoonsGegevensInstantieResponse.class))
+        .request(vrsRequest);
   }
 
-  public ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse document(VrsRequest vrsRequest)
+  public VrsResponse<VrsRequest, ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse> document(
+      VrsRequest vrsRequest)
       throws ApiException {
     String localVarPath = "/reisdocumentinformatie/uitgevendeinstanties/v2/documentnummer";
     Request<Object> apiRequest = new Request<>(localVarPath);
     apiRequest.body(toDocumentRequest(vrsRequest));
-    setHeaders(vrsRequest, apiRequest);
-    return apiClient.post(apiRequest, ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.class);
+    setHeaders(vrsRequest.metadata(), apiRequest);
+    return new VrsResponse<VrsRequest, ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse>()
+        .response(apiClient.post(apiRequest, ReisdocumentInformatieDocumentnummerUitgevendeInstantiesResponse.class))
+        .request(vrsRequest);
   }
 
   private VrsReisdocumentInformatieUitgevendeInstantiesPersonalisatiegegevensRequest toDocumentenRequest(

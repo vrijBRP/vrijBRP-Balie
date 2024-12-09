@@ -20,33 +20,33 @@
 package nl.procura.gba.web.modules.zaken.reisdocument.page24;
 
 import static com.vaadin.event.ShortcutAction.KeyCode.F1;
-import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.REISDOCUMENTAANVRAAG;
 import static nl.procura.gba.common.MiscUtils.setClass;
+import static nl.procura.gba.web.modules.zaken.common.IdentificatieContactUtils.checkIdentificatieAkkoord;
 import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.FS_REISDOC;
 import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.standard.Globalfunctions.isTru;
 import static nl.procura.vaadin.theme.twee.ProcuraTheme.ICOON_24.WARNING;
 
+import com.vaadin.ui.Button;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.vaadin.ui.Button;
-
-import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
-import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
-import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.application.GbaApplication;
 import nl.procura.gba.web.application.ProcessChangeInterceptor;
 import nl.procura.gba.web.modules.zaken.common.ZaakHeaderForm;
+import nl.procura.gba.web.modules.zaken.identificatie.IdentificatieWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.ReisdocumentAanvraagPage;
 import nl.procura.gba.web.modules.zaken.reisdocument.overzicht.ReisdocumentOverzichtLayoutForm3;
+import nl.procura.gba.web.modules.zaken.reisdocument.page1.Page1Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.AanvraagArchiefButton;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.BasisregisterButton;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.BrpReisdocumentenButton;
 import nl.procura.gba.web.modules.zaken.reisdocument.page10.SignaleringWindow;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
 import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14ReisdocumentTable1;
 import nl.procura.gba.web.services.beheer.vrs.VrsService;
+import nl.procura.gba.web.services.zaken.identiteit.IdentificatieStatusListener;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.LeveringType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentAanvraag;
@@ -55,6 +55,7 @@ import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SignaleringResult;
 import nl.procura.gba.web.services.zaken.reisdocumenten.SluitingType;
 import nl.procura.vaadin.component.dialog.ConfirmDialog;
+import nl.procura.vaadin.component.dialog.OkDialog;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.accordion.AccordionLink;
@@ -62,14 +63,13 @@ import nl.procura.vaadin.component.layout.info.InfoLayout;
 import nl.procura.vaadin.component.layout.page.pageEvents.AfterReturn;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
 import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
-import nl.procura.validation.Bsn;
 
 /**
  * Uitreiken reisdocument
  */
 public class Page24Reisdocument extends ReisdocumentAanvraagPage {
 
-  private final Button buttonDocumenten = new Button("Reisdocumenten");
+  private final Button buttonDocumenten = new BrpReisdocumentenButton(this::getPl, () -> Page24Reisdocument.this);
 
   private ZaakHeaderForm                   headerForm    = null;
   private Page24ReisdocumentForm1          form1         = null;
@@ -82,12 +82,10 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
     super("Reisdocument: uitreiken", aanvraag);
     addButton(buttonPrev);
     addButton(buttonSave);
-    addButton(buttonDocumenten);
   }
 
   @Override
   public void event(PageEvent event) {
-
     if (event.isEvent(InitPage.class)) {
       ReisdocumentService reisdocService = getServices().getReisdocumentService();
       VrsService vrsService = reisdocService.getVrsService();
@@ -95,17 +93,6 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
       Optional<SignaleringResult> signalering = reisdocService
           .checkAanvraag(getAanvraag().getAanvraagnummer(), getPl())
           .filter(SignaleringResult::isHit);
-
-      Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> vrsDocumenten = vrsService
-          .getReisdocumenten(new VrsRequest()
-              .aanleiding(REISDOCUMENTAANVRAAG)
-              .bsn(new Bsn(getPl().getPersoon().getBsn().toLong()))
-              .aanvraagnummer(getAanvraag().getAanvraagnummer().getNummer()));
-
-      Optional<ControleAanvragenResponse> vrsAanvragen = vrsService.getAanvragen(new VrsRequest()
-          .aanleiding(REISDOCUMENTAANVRAAG)
-          .bsn(new Bsn(getPl().getPersoon().getBsn().toLong()))
-          .aanvraagnummer(getAanvraag().getAanvraagnummer().getNummer()));
 
       infoLayout = new InfoLayout("Ter informatie", "");
       headerForm = new ZaakHeaderForm(getAanvraag());
@@ -116,7 +103,11 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
 
       addComponent(infoLayout);
       addComponent(headerForm);
-      addComponent(new Fieldset("Huidige documenten van deze persoon", table1));
+
+      if (!vrsService.isRegistratieMeldingEnabled()) {
+        addComponent(new Fieldset("Huidige documenten van deze persoon", table1));
+      }
+
       addComponent(form4);
       addComponent(uitreikLayout);
 
@@ -128,30 +119,25 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
         addButton(signaleringButton);
       });
 
-      vrsDocumenten.ifPresent(response -> {
-        addButton(new BasisregisterButton(getAanvraag().getAanvraagnummer(), response));
-      });
+      if (vrsService.isBasisregisterEnabled()) {
+        addButton(new BasisregisterButton(this::getPl, () -> getAanvraag().getAanvraagnummer(), this::checkInfo));
+        addButton(new AanvraagArchiefButton(getPl(), getAanvraag().getAanvraagnummer(), true));
+      }
 
-      vrsAanvragen.ifPresent(result -> {
-        addButton(new AanvraagArchiefButton(getAanvraag().getAanvraagnummer(), result, true));
-      });
+      if (!vrsService.isRegistratieMeldingEnabled()) {
+        addButton(buttonDocumenten);
+      }
 
     } else if (event.isEvent(AfterReturn.class)) {
       checkInfo();
       table1.init();
     }
-
     super.event(event);
   }
 
   @Override
   public void handleEvent(Button button, int keyCode) {
-
-    if (button == buttonDocumenten) {
-
-      getNavigation().goToPage(new Page14Reisdocument(getPl()));
-    } else if (isKeyCode(button, keyCode, F1, buttonPrev)) {
-
+    if (isKeyCode(button, keyCode, F1, buttonPrev)) {
       ProcessChangeInterceptor processChangeInterceptor = new ProcessChangeInterceptor(getWindow(), null) {
 
         @Override
@@ -161,7 +147,6 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
       };
       getApplication().getProcess().intercept(processChangeInterceptor);
     } else {
-
       super.handleEvent(button, keyCode);
     }
   }
@@ -169,6 +154,10 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
   @Override
   public void onSave() {
     form1.commit();
+    checkIdentificatie(this::continueSave);
+  }
+
+  private void continueSave() {
     String msg = form4.isSprakeVanSignalering()
         ? "Wilt u de gegevens opslaan ondanks de signalering?"
         : "Wilt u de gegevens opslaan?";
@@ -179,21 +168,33 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
       public void buttonYes() {
         LeveringType statLev = form1.getBean().getAflevering();
         SluitingType statAfsl = form1.getBean().getAfsluiting();
-        getServices().getReisdocumentService().afsluiten(getAanvraag(),
-            statLev, statAfsl, getServices().getGebruiker());
+        getServices().getReisdocumentService().afsluiten(getAanvraag(), statLev, statAfsl, getServices().getGebruiker());
         headerForm.updateBean();
         form4.updateBean();
-        successMessage("De gegevens zijn opgeslagen");
-        Page24Reisdocument.this.getApplication().getProcess().endProcess();
         super.buttonYes();
+        showOkMessage(statAfsl);
       }
     });
+  }
 
-    super.onSave();
+  private void showOkMessage(SluitingType statAfsl) {
+    getApplication().getParentWindow().addWindow(new OkDialog("Voltooid.",
+        String.format("De sluiting status is nu: <hr/><b>%s</b>.<hr/>Dit proces is voltooid.",
+            statAfsl.getOms())) {
+
+      @Override
+      public void closeWindow() {
+        if (getApplication() != null) {
+          ((GbaApplication) getApplication()).getProcess().endProcess();
+          getNavigation().removeOtherPages();
+          getNavigation().goToPage(Page1Reisdocument.class);
+          super.closeWindow();
+        }
+      }
+    });
   }
 
   private void checkInfo() {
-
     buttonSave.setEnabled(true);
     uitreikLayout.setVisible(true);
 
@@ -205,8 +206,7 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
     DocumentInhoudingenService db = getServices().getDocumentInhoudingenService();
 
     if (db.moetNogInleveren(getPl())) {
-
-      int count = db.getInTeLeverenDocumenten(getPl()).size();
+      long count = db.getAantalInTeLeverenDocumenten(getPl());
       String aantal = count == 1 ? "één document" : count + " documenten";
       fouten.add(setClass(false, "Aanvrager dient nog " + aantal + " in te leveren"));
     }
@@ -243,19 +243,20 @@ public class Page24Reisdocument extends ReisdocumentAanvraagPage {
         info.append(fout);
         info.append("</li>");
       }
-
       info.append("</ul>");
 
     } else {
-
-      getApplication().getProcess().startProcess();
+      checkIdentificatie(() -> getApplication().getProcess().startProcess());
     }
 
     InfoLayout newinfoLayout = new InfoLayout("Ter informatie", info.toString());
-
     replaceComponent(infoLayout, newinfoLayout);
-
     infoLayout = newinfoLayout;
+  }
+
+  private void checkIdentificatie(Runnable runnable) {
+    IdentificatieStatusListener idSuccesListener = (saved, newAdded) -> runnable.run();
+    checkIdentificatieAkkoord(getParentWindow(), new IdentificatieWindow(idSuccesListener), idSuccesListener);
   }
 
   /**

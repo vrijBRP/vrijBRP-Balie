@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -21,8 +21,6 @@ package nl.procura.gba.web.modules.zaken.inhouding.page5;
 
 import nl.procura.gba.web.modules.zaken.common.ZakenPage;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
-import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
-import nl.procura.vaadin.component.layout.page.pageEvents.PageEvent;
 
 public class Page5Inhouding extends ZakenPage {
 
@@ -33,13 +31,5 @@ public class Page5Inhouding extends ZakenPage {
     addButton(buttonPrev);
 
     addComponent(new Page5InhoudingForm1(reisdocument));
-  }
-
-  @Override
-  public void event(PageEvent event) {
-
-    if (event.isEvent(InitPage.class)) {}
-
-    super.event(event);
   }
 }

@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.common.EnumWithCode;
 import nl.procura.gba.web.services.bs.algemeen.enums.DossierPersoonType;
@@ -75,7 +74,7 @@ public class DossierNaturalisatieTemplateData extends DocumentTemplateData {
 
         // Behandeling
         put("andereOuderAkkoord", toFieldValue(gegevens.getAndereOuderAkkoordType()));
-        put("advies", toFieldValue(gegevens.getAdviesBurgermeesterType()));
+        put("advies", toFieldValue(gegevens.getAdviesBurgemeesterType()));
         put("datumKoninklijkBesluit", toFieldValue(gegevens.getBehDKoningBesluit()));
         put("nummerKoninklijkBesluit", gegevens.getBehNrKoningBesluit());
         put("beslissing", toFieldValue(gegevens.getBeslissingType()));

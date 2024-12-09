@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,23 +17,20 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.common.jackson;
+package nl.procura.burgerzaken.vrsclient.api;
 
-import javax.ws.rs.ext.ContextResolver;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import nl.procura.standard.ProcuraDate;
 
-import org.codehaus.jackson.map.ObjectMapper;
+@Data
+@Accessors(chain = true, fluent = true)
+public class VrsMeldingRequest {
 
-public class ObjectMapperContextResolver implements ContextResolver<ObjectMapper> {
-
-  private final ObjectMapper objectMapper;
-
-  public ObjectMapperContextResolver() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new ProcuraModule());
-  }
-
-  @Override
-  public ObjectMapper getContext(Class<?> type) {
-    return objectMapper;
-  }
+  private VrsMetadata         metadata;
+  private String              documentnummer;
+  private ProcuraDate         datumTijd;
+  private VrsMeldingType      melding;
+  private VrsMeldingRedenType reden;
+  private ProcuraDate datumReden;
 }

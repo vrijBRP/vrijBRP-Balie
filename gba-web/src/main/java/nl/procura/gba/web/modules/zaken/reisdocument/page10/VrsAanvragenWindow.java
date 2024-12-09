@@ -57,13 +57,13 @@ import static nl.procura.gba.web.modules.zaken.reisdocument.page10.VrsAanvraagBe
 import static nl.procura.standard.Globalfunctions.astr;
 import static nl.procura.standard.Globalfunctions.trim;
 
+import com.vaadin.ui.Component;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import com.vaadin.ui.Component;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.burgerzaken.vrsclient.model.ControleAanvraagVolledigResponse;
 import nl.procura.burgerzaken.vrsclient.model.ControleAanvraagVolledigResponseAanvraagactiviteit;
@@ -88,18 +88,12 @@ import nl.procura.vaadin.component.layout.tabsheet.LazyTabsheet;
 import nl.procura.vaadin.theme.twee.ProcuraTheme;
 import nl.procura.validation.Bsn;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 public class VrsAanvragenWindow extends GbaModalWindow {
 
-  private final Aanvraagnummer            aanvraagnummer;
   private final ControleAanvragenResponse response;
 
-  public VrsAanvragenWindow(Aanvraagnummer aanvraagnummer,
-      ControleAanvragenResponse response) {
+  public VrsAanvragenWindow(ControleAanvragenResponse response) {
     super("Aanvragen in het aanvraagarchief van het Basisregister Reisdocumenten (Esc om te sluiten)", "1000px");
-    this.aanvraagnummer = aanvraagnummer;
     this.response = response;
   }
 
@@ -132,14 +126,15 @@ public class VrsAanvragenWindow extends GbaModalWindow {
 
       @Override
       public void setRecords() {
-        List<ControleAanvragenResponseControleAanvraagBasic> reisdocumentenLijst = response
-            .getAanvragen();
-        for (ControleAanvragenResponseControleAanvraagBasic document : reisdocumentenLijst) {
-          Record r = addRecord(document);
-          r.addValue(new Aanvraagnummer(astr(document.getAanvraagnummer())).getFormatNummer());
-          r.addValue(document.getAangevraagdReisdocumentsoort());
-          r.addValue(document.getAanvraagstatus().getAanvraagstatusOmschrijving());
-          r.addValue(DateTime.of(document.getAanvraagstatus().getBegindatum()));
+        List<ControleAanvragenResponseControleAanvraagBasic> reisdocumentenLijst = response.getAanvragen();
+        if (reisdocumentenLijst != null) {
+          for (ControleAanvragenResponseControleAanvraagBasic document : reisdocumentenLijst) {
+            Record r = addRecord(document);
+            r.addValue(new Aanvraagnummer(astr(document.getAanvraagnummer())).getFormatNummer());
+            r.addValue(document.getAangevraagdReisdocumentsoort());
+            r.addValue(document.getAanvraagstatus().getAanvraagstatusOmschrijving());
+            r.addValue(DateTime.of(document.getAanvraagstatus().getBegindatum()));
+          }
         }
       }
 

@@ -42,9 +42,6 @@ import static nl.procura.standard.Globalfunctions.toBigDecimal;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.math.NumberUtils;
-
 import nl.procura.burgerzaken.gba.core.enums.GBAElem;
 import nl.procura.diensten.gba.ple.base.BasePLElem;
 import nl.procura.diensten.gba.ple.base.BasePLRec;
@@ -86,6 +83,7 @@ import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
 import nl.procura.vaadin.component.field.fieldvalues.AnrFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.BsnFieldValue;
 import nl.procura.vaadin.component.field.fieldvalues.FieldValue;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class VerhuizingService extends AbstractZaakContactService<VerhuisAanvraag>
     implements ZaakService<VerhuisAanvraag> {
@@ -136,7 +134,7 @@ public class VerhuizingService extends AbstractZaakContactService<VerhuisAanvraa
     }
 
     for (VerhuisPersoon p : impl.getPersonen()) {
-      if (p.getPersoon().getVerblijfplaatsen().size() > 0) {
+      if (!p.getPersoon().getVerblijfplaatsen().isEmpty()) {
         BasePLRec r = getLaatsteVerblijfplaats(impl, p);
         if (r != null) {
           BasePLElem straat = r.getElem(GBAElem.STRAATNAAM);
@@ -155,6 +153,7 @@ public class VerhuizingService extends AbstractZaakContactService<VerhuisAanvraa
           BasePLElem buitenland1 = r.getElem(GBAElem.ADRES_BUITENL_1);
           BasePLElem buitenland2 = r.getElem(GBAElem.ADRES_BUITENL_2);
           BasePLElem buitenland3 = r.getElem(GBAElem.ADRES_BUITENL_3);
+          BasePLElem functieAdres = r.getElem(GBAElem.FUNCTIE_ADRES);
 
           Adres adres = new Adres(straat, huisnummer, huisletter, huisnummertoev, huisnummeraand, locatie,
               postcode, gemeentedeel, woonplaats, gemeente, datum_aanvang, emigratieland,
@@ -167,7 +166,7 @@ public class VerhuizingService extends AbstractZaakContactService<VerhuisAanvraa
           String wpl = adres.getWoonplaats().getValue().getDescr();
           String loc = adres.getLocatie().getValue().getDescr();
 
-          na.setFunctieAdres(FunctieAdres.WOONADRES);
+          na.setFunctieAdres(FunctieAdres.get(functieAdres.getValue().getVal()));
           na.setStraat(new FieldValue(adres.getStraat().getValue().getVal()));
           na.setHnr(along(adres.getHuisnummer().getValue().getVal()));
           na.setHnrL(adres.getHuisletter().getValue().getVal());
@@ -294,14 +293,13 @@ public class VerhuizingService extends AbstractZaakContactService<VerhuisAanvraa
       opslaanStandaardZaak(zaak);
     } else {
       for (VerhuisPersoon p : zaak.getPersonen()) {
-        VerhuisAanvraag gI = zaak;
-        gI.setAnr(astr(p.getAnummer().getValue()));
-        gI.setBsn(p.getBurgerServiceNummer().getBigDecimalValue());
-        gI.setAangifte(p.getAangifte().getCode());
-        gI.setIndVerwerkt(toBigDecimal(zaak.getStatus().getCode()));
-        gI.setCGemHerkomst(p.getGemeenteHerkomst().getBigDecimalValue());
-        gI.setUsr(findEntity(Usr.class, along(gI.getIngevoerdDoor().getValue())));
-        gI.setGeenVerwerking(p.isGeenVerwerking() ? 1 : 0);
+        zaak.setAnr(astr(p.getAnummer().getValue()));
+        zaak.setBsn(p.getBurgerServiceNummer().getBigDecimalValue());
+        zaak.setAangifte(p.getAangifte().getCode());
+        zaak.setIndVerwerkt(toBigDecimal(zaak.getStatus().getCode()));
+        zaak.setCGemHerkomst(p.getGemeenteHerkomst().getBigDecimalValue());
+        zaak.setUsr(findEntity(Usr.class, along(zaak.getIngevoerdDoor().getValue())));
+        zaak.setGeenVerwerking(p.isGeenVerwerking() ? 1 : 0);
         zaak.setId(null); // Null maken, zodat de volgende zaak ook wordt opgeslagen
         opslaanStandaardZaak(zaak);
       }

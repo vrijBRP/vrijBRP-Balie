@@ -21,18 +21,17 @@ package nl.procura.burgerzaken.vrsclient;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
-
 import nl.procura.burgerzaken.vrsclient.api.AanvragenApi;
 import nl.procura.burgerzaken.vrsclient.api.DocumentenApi;
+import nl.procura.burgerzaken.vrsclient.api.RegistratieMeldingApi;
 import nl.procura.burgerzaken.vrsclient.api.SignaleringApi;
 import nl.procura.burgerzaken.vrsclient.api.TokenApi;
 import nl.procura.burgerzaken.vrsclient.api.model.TokenRequest;
 import nl.procura.burgerzaken.vrsclient.api.model.TokenResponse;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 public abstract class AbstractTestWireMockClient {
 
@@ -63,6 +62,10 @@ public abstract class AbstractTestWireMockClient {
 
   protected DocumentenApi getDocumentenApi() {
     return new DocumentenApi(new ExampleJerseyClient(wireMockServer.baseUrl()));
+  }
+
+  protected RegistratieMeldingApi getRegistratieMeldingApi() {
+    return new RegistratieMeldingApi(new ExampleJerseyClient(wireMockServer.baseUrl()));
   }
 
   protected TokenResponse getToken() {

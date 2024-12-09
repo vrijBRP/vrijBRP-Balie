@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -17,14 +17,20 @@
  * beperkingen op grond van de licentie.
  */
 
-package nl.procura.gba.web.modules.bs.naturalisatie.page50;
+package nl.procura.burgerzaken.vrsclient.api.jackson;
 
-import nl.procura.gba.web.modules.bs.naturalisatie.aanschrijving.EnumContainer;
-import nl.procura.gba.web.services.bs.naturalisatie.enums.AdviesBurgermeesterType;
+import java.time.LocalDate;
+import org.codehaus.jackson.map.DeserializationContext;
+import org.codehaus.jackson.map.deser.std.FromStringDeserializer;
 
-public class AdviesBurgermeesterContainer extends EnumContainer {
+public class LocalDateDeserializer extends FromStringDeserializer<LocalDate> {
 
-  public AdviesBurgermeesterContainer() {
-    super(AdviesBurgermeesterType.values());
+  public LocalDateDeserializer() {
+    super(LocalDate.class);
+  }
+
+  @Override
+  protected LocalDate _deserialize(String value, DeserializationContext ctxt) {
+    return LocalDate.parse(value);
   }
 }

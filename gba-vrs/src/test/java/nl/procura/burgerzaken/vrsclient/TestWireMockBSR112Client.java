@@ -31,13 +31,6 @@ import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.V2_AANVRAA
 import static nl.procura.burgerzaken.vrsclient.TestConstantsInterface.V2_AANVRAGEN_ENDPOINT;
 
 import java.text.MessageFormat;
-
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpStatus;
-import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import nl.procura.burgerzaken.vrsclient.api.AanvragenApi;
 import nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType;
 import nl.procura.burgerzaken.vrsclient.api.VrsMetadata;
@@ -47,6 +40,11 @@ import nl.procura.burgerzaken.vrsclient.model.ControleAanvraagVolledigResponse;
 import nl.procura.burgerzaken.vrsclient.model.ControleAanvragenResponse;
 import nl.procura.burgerzaken.vrsclient.model.SignaleringResponse;
 import nl.procura.validation.Bsn;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
+import org.apache.http.entity.ContentType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestWireMockBSR112Client extends AbstractTestWireMockClient {
 
@@ -59,7 +57,7 @@ public class TestWireMockBSR112Client extends AbstractTestWireMockClient {
             .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())));
 
     final AanvragenApi api = getAanvragenApi();
-    final ControleAanvragenResponse response = api.aanvragen(getAanvraagReisdocumentenRequest());
+    final ControleAanvragenResponse response = api.aanvragen(getAanvraagReisdocumentenRequest()).response();
     Assertions.assertEquals("Er zijn aanvragen gevonden.", response.getResultaatomschrijving(),
         MessageFormat.format("{0} verwacht", SignaleringResponse.ResultaatCodeEnum.HIT.getValue()));
   }
@@ -73,7 +71,7 @@ public class TestWireMockBSR112Client extends AbstractTestWireMockClient {
             .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())));
 
     final AanvragenApi api = getAanvragenApi();
-    final ControleAanvraagDetailResponse response = api.aanvraag(getAanvraagReisdocumentRequest());
+    final ControleAanvraagDetailResponse response = api.aanvraag(getAanvraagReisdocumentRequest()).response();
     Assertions.assertEquals("IP8799D18", response.getDocumentNummer());
   }
 
@@ -86,7 +84,7 @@ public class TestWireMockBSR112Client extends AbstractTestWireMockClient {
             .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())));
 
     final AanvragenApi api = getAanvragenApi();
-    final ControleAanvraagVolledigResponse response = api.aanvraagDetails(getAanvraagReisdocumentRequest());
+    final ControleAanvraagVolledigResponse response = api.aanvraagDetails(getAanvraagReisdocumentRequest()).response();
     Assertions.assertEquals("IP8799D18", response.getReisdocument().getDocumentNummer());
     Assertions.assertEquals("Aanvraag is afgerond",
         response.getAanvraagstatussen().get(0).getAanvraagmeldingen().get(0).getOmschrijving());

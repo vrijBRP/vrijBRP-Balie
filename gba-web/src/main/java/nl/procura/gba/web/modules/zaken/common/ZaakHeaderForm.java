@@ -20,6 +20,7 @@
 package nl.procura.gba.web.modules.zaken.common;
 
 import static java.util.Arrays.asList;
+import static java.util.Optional.ofNullable;
 import static nl.procura.gba.common.MiscUtils.setClass;
 import static nl.procura.gba.common.ZaakType.REISDOCUMENT;
 import static nl.procura.gba.common.ZaakType.RIJBEWIJS;
@@ -28,12 +29,12 @@ import static nl.procura.standard.Globalfunctions.emp;
 import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.trim;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.procura.burgerzaken.gba.core.enums.GBACat;
 import nl.procura.gba.common.ZaakStatusType;
 import nl.procura.gba.jpa.personen.dao.GenericDao;
@@ -51,6 +52,8 @@ import nl.procura.gba.web.services.zaken.algemeen.ZaakAfhaalbaar;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.algemeen.aantekening.PlAantekening;
 import nl.procura.gba.web.services.zaken.algemeen.goedkeuring.GoedkeuringZaak;
+import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
+import nl.procura.gba.web.services.zaken.reisdocumenten.IdentificatieUitreikingZaak;
 import nl.procura.sms.rest.domain.FindMessagesRequest;
 import nl.procura.vaadin.annotation.field.Field;
 import nl.procura.vaadin.annotation.field.FormFieldFactoryBean;
@@ -60,9 +63,9 @@ import nl.procura.vaadin.component.layout.table.TableLayout.Column;
 
 public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> {
 
-  public static final String  SOORT          = "soort";
-  public static final int     DRIE           = 3;
-  public static final int     VIER           = 4;
+  public static final String SOORT = "soort";
+  public static final int    DRIE  = 3;
+  public static final int    VIER  = 4;
   private static final String ZAAKTYPE       = "zaaktype";
   private static final String ID             = "id";
   private static final String STATUS         = "status";
@@ -77,8 +80,8 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
   private static final String OPMERKINGEN    = "opmerkingen";
   private static final String COMMENTAAR     = "commentaar";
   private static final String GOEDKEURING    = "goedkeuring";
-  private final Zaak          zaak;
-  private final int           columns;
+  private final       Zaak   zaak;
+  private final       int    columns;
 
   public ZaakHeaderForm(Zaak zaak) {
     this(zaak, DRIE);
@@ -164,16 +167,16 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     String soort = (fil(zaak.getSoort()) ? " (" + zaak.getSoort() + ")" : "");
     String gebr = (fil(
         zaak.getIngevoerdDoor().getDescription())
-            ? (" door " + zaak.getIngevoerdDoor().getDescription() + ", " + zaak.getLocatieInvoer().getLocatie())
-            : "");
+        ? (" door " + zaak.getIngevoerdDoor().getDescription() + ", " + zaak.getLocatieInvoer().getLocatie())
+        : "");
 
     boolean saved = GenericDao.isSaved(zaak);
 
     String datumTijdInvoer = zaak.getDatumTijdInvoer().toString() + gebr;
     String datumIngang = pos(
         zaak.getDatumIngang().getLongDate())
-            ? zaak.getDatumIngang().toString()
-            : "Onbekende datum";
+        ? zaak.getDatumIngang().toString()
+        : "Onbekende datum";
 
     b.setZaaktype(zaak.getType().getOms() + soort);
     b.setStatus(ZaakUtils.getStatus(zaak.getStatus()));
@@ -185,8 +188,19 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
     b.setId(ZaakUtils.getRelevantZaakId(zaak));
 
     b.setAangever(getAangever());
-    b.setIdentificatie(
-        zaak.getIdentificatie() != null ? zaak.getIdentificatie().getOmschrijving() : "Niet vastgesteld");
+    String identificatie = ofNullable(zaak.getIdentificatie())
+        .map(Identificatie::getOmschrijving)
+        .orElse("Niet vastgesteld");
+
+    if (zaak instanceof IdentificatieUitreikingZaak) {
+      identificatie = "Bij aanvraag " + uncapitalize(identificatie);
+      Identificatie identificatieBijUitreiking = ((IdentificatieUitreikingZaak) zaak).getIdentificatieBijUitreiking();
+      identificatie += "<br/>Bij uitreiking (nog) " + ofNullable(identificatieBijUitreiking)
+          .map(id -> uncapitalize(id.getOmschrijving()))
+          .orElse("niet vastgesteld");
+    }
+
+    b.setIdentificatie(identificatie);
 
     // Zet de afhaallocatie
     b.setAfhaalLocatie("N.v.t.");
@@ -329,7 +343,7 @@ public class ZaakHeaderForm extends ReadOnlyForm<ZaakHeaderForm.ZaakHeaderBean> 
   @FormFieldFactoryBean(accessType = ElementType.FIELD)
   public class ZaakHeaderBean implements Serializable {
 
-    @Field(caption = "Zaak-type")
+    @Field(caption = "Zaaktype")
     private String zaaktype = "";
 
     @Field(caption = "Zaak-id")

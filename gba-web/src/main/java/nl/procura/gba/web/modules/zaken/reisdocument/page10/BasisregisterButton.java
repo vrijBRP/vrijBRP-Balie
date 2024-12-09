@@ -19,29 +19,80 @@
 
 package nl.procura.gba.web.modules.zaken.reisdocument.page10;
 
-import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static com.vaadin.ui.Window.Notification.TYPE_ERROR_MESSAGE;
 
 import com.vaadin.ui.Button;
-
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
-import nl.procura.commons.core.exceptions.ProException;
+import nl.procura.diensten.gba.ple.extensions.BasePLExt;
+import nl.procura.gba.web.components.buttons.GbaButton;
+import nl.procura.gba.web.modules.zaken.reisdocument.basisregister.VrsBasisregisterWindow;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.reisdocumenten.Aanvraagnummer;
+import nl.procura.vaadin.component.window.Message;
 
-public class BasisregisterButton extends Button {
+@Slf4j
+public class BasisregisterButton extends GbaButton {
 
-  public BasisregisterButton(Aanvraagnummer aanvraagnummer,
-      ReisdocumentInformatiePersoonsGegevensInstantieResponse response) {
-    super("");
-    setCaption(String.format("Basisregister (%d)", count(response)));
-    addListener((Button.ClickListener) event -> {
-      if (count(response) == 0) {
-        throw new ProException(INFO, "Geen documenten gevonden");
-      }
-      getWindow().addWindow(new VrsDocumentenWindow(aanvraagnummer, response));
-    });
+  private final Supplier<BasePLExt>                                     pl;
+  private final Supplier<Aanvraagnummer>                                aanvraagnummer;
+  private final Runnable                                                updateListener;
+  private       ReisdocumentInformatiePersoonsGegevensInstantieResponse response;
+
+  public BasisregisterButton(Supplier<BasePLExt> pl, Supplier<Aanvraagnummer> aanvraagnummer, Runnable updateListener) {
+    super("Basisregister");
+    this.pl = pl;
+    this.aanvraagnummer = aanvraagnummer;
+    this.updateListener = updateListener;
   }
 
-  private static int count(ReisdocumentInformatiePersoonsGegevensInstantieResponse response) {
-    return response != null && response.getReisdocumentenLijst() != null ? response.getReisdocumentenLijst().size() : 0;
+  @Override
+  public void attach() {
+    if (response == null) {
+      updateCaption();
+      addListener((Button.ClickListener) event -> {
+        if (response != null) {
+          getWindow().addWindow(new VrsBasisregisterWindow(pl.get(), aanvraagnummer.get()) {
+            @Override
+            public void closeWindow() {
+              updateCaption();
+              if (updateListener != null) {
+                updateListener.run();
+              }
+              super.closeWindow();
+            }
+          });
+        }
+      });
+    }
+
+    super.attach();
+  }
+
+  private void updateCaption() {
+    response = null;
+    setCaption(String.format("Basisregister (%d)", count()));
+  }
+
+  private Integer count() {
+    return getResponse()
+        .map(ReisdocumentInformatiePersoonsGegevensInstantieResponse::getReisdocumentenLijst)
+        .map(List::size)
+        .orElse(0);
+  }
+
+  private Optional<ReisdocumentInformatiePersoonsGegevensInstantieResponse> getResponse() {
+    if (response == null) {
+      VrsService vrs = getApplication().getServices().getReisdocumentService().getVrsService();
+      try {
+        this.response = vrs.getReisdocumenten(pl.get(), aanvraagnummer.get()).orElse(null);
+      } catch (RuntimeException e) {
+        new Message(getWindow(), "Fout bij het raadplegen van het basisregister", TYPE_ERROR_MESSAGE);
+      }
+    }
+    return Optional.ofNullable(response);
   }
 }

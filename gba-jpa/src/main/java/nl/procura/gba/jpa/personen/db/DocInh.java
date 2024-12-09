@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 - 2022 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -20,9 +20,12 @@
 package nl.procura.gba.jpa.personen.db;
 
 import java.math.BigDecimal;
-
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
 
@@ -100,6 +103,27 @@ public class DocInh extends BaseEntity<DocInhPK> implements VersionEntity {
 
   @Column(name = "version_ts")
   private Long versionTs;
+
+  @Column(name = "vrs_d_in")
+  private Long vrsDIn;
+
+  @Column(name = "vrs_d_melding")
+  private Long vrsDmelding;
+
+  @Column(name = "vrs_d_inlever")
+  private Long vrsDinlever;
+
+  @Column(name = "vrs_t_in")
+  private Long vrsTIn;
+
+  @Column(name = "vrs_melding_type")
+  private String vrsMeldingType;
+
+  @Column(name = "vrs_reden_type")
+  private String vrsRedenType;
+
+  @Column(name = "vrs_only_br")
+  private boolean vrsOnlyBasisregister;
 
   public DocInh() {
   }
@@ -249,5 +273,61 @@ public class DocInh extends BaseEntity<DocInhPK> implements VersionEntity {
   @Override
   public void setVersionTs(Long versionTs) {
     this.versionTs = versionTs;
+  }
+
+  public String getVrsRedenType() {
+    return vrsRedenType;
+  }
+
+  public void setVrsRedenType(String vrsRedenType) {
+    this.vrsRedenType = vrsRedenType;
+  }
+
+  public String getVrsMeldingType() {
+    return vrsMeldingType;
+  }
+
+  public void setVrsMeldingType(String vrsMeldingType) {
+    this.vrsMeldingType = vrsMeldingType;
+  }
+
+  public Long getVrsTIn() {
+    return vrsTIn;
+  }
+
+  public void setVrsTIn(Long vrsTIn) {
+    this.vrsTIn = vrsTIn;
+  }
+
+  public Long getVrsDIn() {
+    return vrsDIn;
+  }
+
+  public void setVrsDIn(Long vrsDIn) {
+    this.vrsDIn = vrsDIn;
+  }
+
+  public boolean isVrsOnlyBasisregister() {
+    return vrsOnlyBasisregister;
+  }
+
+  public void setVrsOnlyBasisregister(boolean onlyBasisregister) {
+    this.vrsOnlyBasisregister = onlyBasisregister;
+  }
+
+  public Long getVrsDmelding() {
+    return vrsDmelding;
+  }
+
+  public void setVrsDmelding(Long vrsDmelding) {
+    this.vrsDmelding = vrsDmelding;
+  }
+
+  public Long getVrsDinlever() {
+    return vrsDinlever;
+  }
+
+  public void setVrsDinlever(Long vrsDinlever) {
+    this.vrsDinlever = vrsDinlever;
   }
 }

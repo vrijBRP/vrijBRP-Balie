@@ -20,19 +20,22 @@
 package nl.procura.gba.web.modules.zaken.inhouding.page1;
 
 import static nl.procura.standard.Globalfunctions.astr;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import com.vaadin.ui.Button;
-
 import nl.procura.gba.common.ZaakType;
 import nl.procura.gba.web.modules.zaken.common.ZakenListPage;
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable;
 import nl.procura.gba.web.modules.zaken.common.ZakenListTable.ZaakRecord;
 import nl.procura.gba.web.modules.zaken.inhouding.page4.Page4Inhouding;
-import nl.procura.gba.web.modules.zaken.reisdocument.page14.Page14Reisdocument;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.BasisregisterButton;
+import nl.procura.gba.web.modules.zaken.reisdocument.page10.BrpReisdocumentenButton;
+import nl.procura.gba.web.services.beheer.vrs.VrsService;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
 import nl.procura.gba.web.services.zaken.algemeen.ZaakUtils;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhoudingenService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.Reisdocument;
 import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
 
 /**
@@ -40,7 +43,8 @@ import nl.procura.vaadin.component.table.indexed.IndexedTable.Record;
  */
 public class Page1Inhouding extends ZakenListPage<DocumentInhouding> {
 
-  private final Button buttonDocumenten = new Button("Reisdocumenten");
+  private final Button buttonDocumenten    = new BrpReisdocumentenButton(this::getPl, () -> Page1Inhouding.this);
+  private final Button buttonBasisregister = new BasisregisterButton(this::getPl, () -> null, this::onEnter);
 
   public Page1Inhouding() {
     super("Inhoudingen / vermissingen: overzicht");
@@ -49,9 +53,21 @@ public class Page1Inhouding extends ZakenListPage<DocumentInhouding> {
     addButton(buttonPrev);
     addButton(buttonStatus);
     addButton(buttonDel);
-    addButton(buttonDocumenten);
 
     setInfo("", "Via dit scherm kunnen alleen vermissingen en inhoudingen van reisdocumenten worden ingevoerd.");
+  }
+
+  @Override
+  protected void initPage() {
+    super.initPage();
+    VrsService vrsService = getServices().getReisdocumentService().getVrsService();
+    int index = getButtonLayout().getComponentIndex(buttonDel);
+    if (vrsService.isBasisregisterEnabled()) {
+      getButtonLayout().add(buttonBasisregister, index + 1);
+    }
+    if (!vrsService.isRegistratieMeldingEnabled()) {
+      getButtonLayout().add(buttonDocumenten, index + 1);
+    }
   }
 
   @Override
@@ -65,17 +81,17 @@ public class Page1Inhouding extends ZakenListPage<DocumentInhouding> {
     table.addColumn("Ingevoerd op", 130);
     table.addColumn("Status", 120).setUseHTML(true);
     table.addColumn("Ingevoerd door", 200);
-    table.addColumn("Soort", 150);
     table.addColumn("Nummer", 150);
-    table.addColumn("Document");
+    table.addColumn("Document", 200);
+    table.addColumn("Type melding / reden");
   }
 
   @Override
   protected void selectTableRecord(ZaakRecord<DocumentInhouding> zaakRecord) {
     DocumentInhouding inhouding = zaakRecord.getZaak();
     DocumentInhoudingenService inhoudingen = getServices().getDocumentInhoudingenService();
-    getNavigation().goToPage(
-        new Page4Inhouding(inhouding, inhoudingen.getReisdocument(getPl(), inhouding.getNummerDocument())));
+    Reisdocument reisdocument = inhoudingen.getReisdocument(getPl(), inhouding.getNummerDocument());
+    getNavigation().goToPage(new Page4Inhouding(inhouding, reisdocument));
   }
 
   @Override
@@ -85,17 +101,15 @@ public class Page1Inhouding extends ZakenListPage<DocumentInhouding> {
     record.getValues().get(1).setValue(zaak.getDatumTijdInvoer());
     record.getValues().get(2).setValue(ZaakUtils.getStatus(zaak.getStatus()));
     record.getValues().get(3).setValue(zaak.getIngevoerdDoor().getDescription());
-    record.getValues().get(4).setValue(zaak.getInhoudingType());
-    record.getValues().get(5).setValue(zaak.getNummerDocument());
-    record.getValues().get(6).setValue(astr(zaak.isSprakeVanRijbewijs() ? "Rijbewijs" : zaak.getDocumentType()));
+    record.getValues().get(4).setValue(zaak.getNummerDocument());
+    record.getValues().get(5).setValue(astr(zaak.isSprakeVanRijbewijs() ? "Rijbewijs" : zaak.getDocumentType()));
+    record.getValues().get(6).setValue(getSoort(zaak));
   }
 
-  @Override
-  public void handleEvent(Button button, int keyCode) {
-    if (button == buttonDocumenten) {
-      getNavigation().goToPage(new Page14Reisdocument(getPl()));
+  private static String getSoort(DocumentInhouding zaak) {
+    if (isNotBlank(zaak.getVrsMeldingType())) {
+      return zaak.getVrsMelding().toString() + " / " + zaak.getVrsReden().toString();
     }
-
-    super.handleEvent(button, keyCode);
+    return zaak.getInhoudingType().getOms();
   }
 }

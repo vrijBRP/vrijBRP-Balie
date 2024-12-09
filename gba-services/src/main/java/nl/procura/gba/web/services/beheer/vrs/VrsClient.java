@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 - 2024 Procura B.V.
+ * Copyright 2024 - 2025 Procura B.V.
  *
  * In licentie gegeven krachtens de EUPL, versie 1.2
  * U mag dit werk niet gebruiken, behalve onder de voorwaarden van de licentie.
@@ -25,19 +25,17 @@ import static nl.procura.commons.core.exceptions.ProExceptionSeverity.ERROR;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.WEBSERVICE;
 
-import java.net.URI;
-import java.time.Duration;
-import java.util.function.Supplier;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
-
+import java.net.URI;
+import java.time.Duration;
+import java.util.function.Supplier;
 import nl.procura.burgerzaken.vrsclient.ApiClient;
+import nl.procura.burgerzaken.vrsclient.api.jackson.ObjectMapperContextResolver;
 import nl.procura.burgerzaken.vrsclient.model.InvalidParam;
-import nl.procura.gba.web.common.jackson.ObjectMapperContextResolver;
 import nl.procura.commons.core.exceptions.ProException;
 
 public class VrsClient extends ApiClient {
@@ -92,9 +90,9 @@ public class VrsClient extends ApiClient {
           throw new ProException(WEBSERVICE, WARNING, sb.toString());
         }
       }
-      throw new ProException(WEBSERVICE, ERROR, "Fout bij het raadplegen van VRS", e);
+      throw new ProException(WEBSERVICE, ERROR, "Fout bij het raadplegen van het BR", e);
     } catch (RuntimeException e) {
-      throw new ProException(WEBSERVICE, ERROR, "Fout bij het raadplegen van VRS", e);
+      throw new ProException(WEBSERVICE, ERROR, "Fout bij het raadplegen van het BR", e);
     }
   }
 }

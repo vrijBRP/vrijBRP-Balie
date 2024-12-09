@@ -22,13 +22,27 @@ package nl.procura.gba.web.services.zaken.rijbewijs;
 import static nl.procura.gba.common.MiscUtils.copy;
 import static nl.procura.gba.common.MiscUtils.copyList;
 import static nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds.RDW_BLOK;
-import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.*;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_DATUM_GEWIJZIGD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_GEBLOKKEERD;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_GEBRUIKERSNAAM;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_URL;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_VERVALTERMIJN_DAGEN;
+import static nl.procura.gba.web.services.beheer.parameter.ParameterConstant.RYB_WACHTWOORD;
 import static nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoonType.AANGEVER;
-import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType.*;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType.GEACCORDEERD;
+import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType.GEANNULEERD;
+import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType.RIJBEWIJS_NIET_UITGEREIKT;
+import static nl.procura.gba.web.services.zaken.rijbewijs.RijbewijsStatusType.RIJBEWIJS_UITGEREIKT;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.aval;
+import static nl.procura.standard.Globalfunctions.defaultNul;
+import static nl.procura.standard.Globalfunctions.fil;
+import static nl.procura.standard.Globalfunctions.isTru;
+import static nl.procura.standard.Globalfunctions.pos;
 
 import java.util.List;
-
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.ConditionalMap;
 import nl.procura.gba.common.ZaakStatusType;
@@ -47,20 +61,27 @@ import nl.procura.gba.web.services.applicatie.meldingen.ServiceMeldingIds;
 import nl.procura.gba.web.services.applicatie.meldingen.types.RdwMelding;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.beheer.parameter.ParameterService;
-import nl.procura.gba.web.services.zaken.algemeen.*;
+import nl.procura.gba.web.services.zaken.algemeen.AbstractZaakContactService;
+import nl.procura.gba.web.services.zaken.algemeen.ControleerbareService;
+import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakArgumenten;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContact;
 import nl.procura.gba.web.services.zaken.algemeen.contact.ZaakContactpersoon;
 import nl.procura.gba.web.services.zaken.algemeen.controle.Controles;
 import nl.procura.gba.web.services.zaken.algemeen.controle.ControlesListener;
 import nl.procura.gba.web.services.zaken.algemeen.status.ZaakStatusService;
+import nl.procura.gba.web.services.zaken.identiteit.Identificatie;
 import nl.procura.gba.web.services.zaken.inhoudingen.InhoudingType;
+import nl.procura.gba.web.services.zaken.reisdocumenten.IdentificatieBijUitreikingService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.IdentificatieUitreikingZaak;
 import nl.procura.standard.ProcuraDate;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RijbewijsService extends AbstractZaakContactService<RijbewijsAanvraag>
-    implements ZaakService<RijbewijsAanvraag>, ControleerbareService {
+    implements ZaakService<RijbewijsAanvraag>, ControleerbareService, IdentificatieBijUitreikingService {
+
+  private Optional<RijbewijsAanvraagStatus> first;
 
   public RijbewijsService() {
     super("Rijbewijzen", ZaakType.RIJBEWIJS);
@@ -274,6 +295,16 @@ public class RijbewijsService extends AbstractZaakContactService<RijbewijsAanvra
 
   public boolean isAanpassingVanToepassing(String deel) {
     return aval(getParm(ParameterConstant.RYB_AANPASSINGEN)) >= aval(deel);
+  }
+
+  @Override
+  public Identificatie getIdentificatieBijUitreiking(IdentificatieUitreikingZaak zaak) {
+    RijbewijsAanvraag rijbewijsAanvraag = (RijbewijsAanvraag) zaak;
+    return rijbewijsAanvraag.getStatussen().getStatussen().stream()
+        .filter(status -> status.getStatus().is(RIJBEWIJS_UITGEREIKT, RIJBEWIJS_NIET_UITGEREIKT))
+        .findFirst()
+        .map(status -> getServices().getIdentificatieService().getIdentificatie(zaak, status.getDatumTijdRdw()))
+        .orElse(null);
   }
 
   private void checkRdw() {

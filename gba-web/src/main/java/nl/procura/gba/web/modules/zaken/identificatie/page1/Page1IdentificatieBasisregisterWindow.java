@@ -19,14 +19,10 @@
 
 package nl.procura.gba.web.modules.zaken.identificatie.page1;
 
-import static nl.procura.burgerzaken.vrsclient.api.VrsAanleidingType.IDENTITEITSONDERZOEK;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import nl.procura.burgerzaken.vrsclient.api.VrsRequest;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponse;
 import nl.procura.burgerzaken.vrsclient.model.ReisdocumentInformatiePersoonsGegevensInstantieResponseReisdocumentInformatiePersoonsgegevens;
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
@@ -38,7 +34,6 @@ import nl.procura.gba.web.services.zaken.identiteit.IdentificatieType;
 import nl.procura.gba.web.services.zaken.reisdocumenten.ReisdocumentType;
 import nl.procura.vaadin.component.layout.VLayout;
 import nl.procura.vaadin.component.layout.info.InfoLayout;
-import nl.procura.validation.Bsn;
 
 public class Page1IdentificatieBasisregisterWindow extends GbaModalWindow {
 
@@ -69,21 +64,16 @@ public class Page1IdentificatieBasisregisterWindow extends GbaModalWindow {
       addColumn("Datum afgifte", 100).setUseHTML(true);
       addColumn("Geldig tot", 100).setUseHTML(true);
       addColumn("Datum vermissing", 110).setUseHTML(true);
-
       super.setColumns();
     }
 
     @Override
     public void setRecords() {
       Services services = getApplication().getServices();
-      VrsRequest request = new VrsRequest()
-          .aanleiding(IDENTITEITSONDERZOEK)
-          .bsn(new Bsn(pl.getPersoon().getBsn().toLong()));
-
       List<ReisdocumentInformatiePersoonsGegevensInstantieResponseReisdocumentInformatiePersoonsgegevens> reisdocumentenLijst = services
           .getReisdocumentService()
           .getVrsService()
-          .getReisdocumenten(request)
+          .getReisdocumenten(pl, null)
           .map(ReisdocumentInformatiePersoonsGegevensInstantieResponse::getReisdocumentenLijst)
           .orElse(new ArrayList<>());
 
@@ -109,7 +99,8 @@ public class Page1IdentificatieBasisregisterWindow extends GbaModalWindow {
           .getObject(
               ReisdocumentInformatiePersoonsGegevensInstantieResponseReisdocumentInformatiePersoonsgegevens.class);
       if (rd != null) {
-        switch (ReisdocumentType.get(rd.getReisdocument().getDocumentsoort().getCode())) {
+        ReisdocumentType reisdocumentType = ReisdocumentType.get(rd.getReisdocument().getDocumentsoort().getCode());
+        switch (reisdocumentType) {
           case EERSTE_NATIONAAL_PASPOORT:
           case EERSTE_ZAKENPASPOORT:
           case FACILITEITEN_PASPOORT:

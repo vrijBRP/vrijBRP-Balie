@@ -19,15 +19,15 @@
 
 package nl.procura.gba.web.modules.zaken.identificatie.page1;
 
-import static nl.procura.standard.Globalfunctions.along;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.INFO;
+import static nl.procura.standard.Globalfunctions.along;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
-
 import nl.procura.bvbsn.actions.ActionVerificatieIdentiteitsDocument;
+import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.gba.web.components.layouts.OptieLayout;
 import nl.procura.gba.web.components.layouts.page.NormalPageTemplate;
 import nl.procura.gba.web.modules.hoofdmenu.zoeken.page1.tab4.search.window.BvBsnWindow;
@@ -47,7 +47,6 @@ import nl.procura.gba.web.services.zaken.rijbewijs.NrdServices;
 import nl.procura.rdw.functions.RdwMessage;
 import nl.procura.rdw.messages.P0252;
 import nl.procura.rdw.processen.p0252.f08.NATPRYBMAATR;
-import nl.procura.commons.core.exceptions.ProException;
 import nl.procura.vaadin.component.label.H2;
 import nl.procura.vaadin.component.layout.Fieldset;
 import nl.procura.vaadin.component.layout.page.pageEvents.InitPage;
@@ -124,7 +123,9 @@ public class Page1Identificatie extends NormalPageTemplate {
       ol1.getRight().setCaption("Opties");
       ol1.getRight().addButton(buttonVerifieer, this);
       ol1.getRight().addButton(buttonRijbewijs, this);
-      ol1.getRight().addButton(buttonReisdocumenten, this);
+      if (!getServices().getReisdocumentService().getVrsService().isRegistratieMeldingEnabled()) {
+        ol1.getRight().addButton(buttonReisdocumenten, this);
+      }
       ol1.getRight().addButton(buttonBasisregister, this);
 
       form2 = new Page1IdentificatieForm2();
@@ -287,14 +288,11 @@ public class Page1Identificatie extends NormalPageTemplate {
   }
 
   private void setIdentificatie(Identificatie id) {
-
     getServices().getIdentificatieService().addIdentificatie(id);
-
     setStatus(true);
   }
 
   private void setStatus(boolean saved) {
-
     if (succesListener != null) {
       succesListener.onStatus(saved, true);
     }

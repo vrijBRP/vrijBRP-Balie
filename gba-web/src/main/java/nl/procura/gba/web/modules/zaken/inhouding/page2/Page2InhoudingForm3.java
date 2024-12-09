@@ -19,7 +19,9 @@
 
 package nl.procura.gba.web.modules.zaken.inhouding.page2;
 
-import static nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingBean1.*;
+import static nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingBean1.DATUM;
+import static nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingBean1.DATUM_READONLY;
+import static nl.procura.gba.web.modules.zaken.inhouding.page2.Page2InhoudingBean1.INHOUDING;
 
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.web.components.layouts.form.GbaForm;
@@ -28,10 +30,7 @@ import nl.procura.gba.web.services.zaken.inhoudingen.DocumentInhouding;
 public class Page2InhoudingForm3 extends GbaForm<Page2InhoudingBean1> {
 
   public Page2InhoudingForm3(DocumentInhouding inhouding, boolean readOnlyDatumGeldigheid) {
-
-    setCaption("Inhouding");
     setColumnWidths("160px", "");
-
     Page2InhoudingBean1 bean = new Page2InhoudingBean1();
 
     if (inhouding != null) {

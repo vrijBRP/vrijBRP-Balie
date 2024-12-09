@@ -20,10 +20,11 @@
 package nl.procura.gba.web.services.zaken.identiteit;
 
 import static nl.procura.gba.common.MiscUtils.copy;
-import static nl.procura.standard.Globalfunctions.*;
+import static nl.procura.standard.Globalfunctions.along;
+import static nl.procura.standard.Globalfunctions.pos;
+import static nl.procura.standard.Globalfunctions.trim;
 
 import java.util.stream.Collectors;
-
 import nl.procura.diensten.gba.ple.extensions.BasePLExt;
 import nl.procura.gba.common.DateTime;
 import nl.procura.gba.jpa.personen.dao.IdVastellingDao;
@@ -33,6 +34,9 @@ import nl.procura.gba.web.services.ServiceEvent;
 import nl.procura.gba.web.services.aop.Transactional;
 import nl.procura.gba.web.services.beheer.parameter.ParameterConstant;
 import nl.procura.gba.web.services.zaken.algemeen.Zaak;
+import nl.procura.gba.web.services.zaken.algemeen.ZaakService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.IdentificatieBijUitreikingService;
+import nl.procura.gba.web.services.zaken.reisdocumenten.IdentificatieUitreikingZaak;
 
 public class IdentificatieService extends AbstractService {
 
@@ -42,7 +46,6 @@ public class IdentificatieService extends AbstractService {
 
   @Transactional
   public void addIdentificatie(Identificatie id) {
-
     long bsn = along(id.getBurgerServiceNummer().getValue());
     long cUsr = getServices().getGebruiker().getCUsr();
     String nr = id.getDocumentnr();
@@ -55,21 +58,38 @@ public class IdentificatieService extends AbstractService {
   }
 
   public Identificatie getIdentificatie(BasePLExt pl) {
-
     long bsn = along(pl.getPersoon().getBsn().getVal());
     long cUsr = along(getServices().getGebruiker().getCUsr());
-    return getIdentificatie(bsn, cUsr, "", new DateTime());
+    return getIdentificatie(bsn, cUsr, new DateTime());
+  }
+
+  public Identificatie getIdentificatie(Zaak zaak, DateTime dateTime) {
+    long bsn = along(zaak.getBurgerServiceNummer().getValue());
+    long cUsr = along(zaak.getIngevoerdDoor().getValue());
+    return getIdentificatie(bsn, cUsr, dateTime);
   }
 
   public Identificatie getIdentificatie(Zaak zaak) {
-
     if (zaak != null) {
       long bsn = along(zaak.getBurgerServiceNummer().getValue());
       long cUsr = along(zaak.getIngevoerdDoor().getValue());
-      return getIdentificatie(bsn, cUsr, zaak.getZaakId(), zaak.getDatumTijdInvoer());
+      return getIdentificatie(bsn, cUsr, zaak.getDatumTijdInvoer());
     }
 
     return new Identificatie();
+  }
+
+  public <T extends Zaak> void setIdentificatieByUitreiking(T zaak) {
+    if (zaak instanceof IdentificatieUitreikingZaak) {
+      ZaakService<Zaak> service = getServices().getZakenService().getService(zaak);
+      if (service instanceof IdentificatieBijUitreikingService) {
+        IdentificatieBijUitreikingService identificatieBijUitreikingServiceservice = (IdentificatieBijUitreikingService) service;
+        identificatieBijUitreikingServiceservice.getIdentificatieBijUitreiking((IdentificatieUitreikingZaak) zaak);
+        IdentificatieUitreikingZaak identificatieUitreikingZaak = (IdentificatieUitreikingZaak) zaak;
+        identificatieUitreikingZaak.setIdentificatieBijUitreiking(
+            identificatieBijUitreikingServiceservice.getIdentificatieBijUitreiking(identificatieUitreikingZaak));
+      }
+    }
   }
 
   public IdVerplichtMate getMateVerplicht() {
@@ -81,21 +101,8 @@ public class IdentificatieService extends AbstractService {
     return id != null && pos(id.getBurgerServiceNummer().getValue());
   }
 
-  @Transactional
-  public void removeIdentiteit(BasePLExt pl) {
-    long bsn = along(pl.getPersoon().getBsn().getVal());
-    long cUsr = getServices().getGebruiker().getCUsr();
-
-    DateTime dateTime = new DateTime();
-    IdVastellingDao.removeVaststelling(bsn, cUsr, dateTime.getLongDate(), dateTime.getLongTime());
-
-    callListeners(ServiceEvent.CHANGE);
-  }
-
-  private Identificatie getIdentificatie(long bsn, long cUsr, String zaakId, DateTime dateTime) {
-
-    Idvaststelling id = IdVastellingDao.getVaststelling(bsn, cUsr, zaakId, dateTime.getLongDate(),
-        dateTime.getLongTime());
+  private Identificatie getIdentificatie(long bsn, long cUsr, DateTime dateTime) {
+    Idvaststelling id = IdVastellingDao.getVaststelling(bsn, cUsr, dateTime.getLongDate(), dateTime.getLongTime());
     return id != null ? copy(id, Identificatie.class) : new Identificatie();
   }
 }
