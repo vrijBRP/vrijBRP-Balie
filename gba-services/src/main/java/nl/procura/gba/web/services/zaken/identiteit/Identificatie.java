@@ -24,6 +24,7 @@ import static nl.procura.standard.Globalfunctions.fil;
 import static nl.procura.standard.Globalfunctions.pos;
 import static nl.procura.standard.Globalfunctions.trim;
 import static org.apache.commons.lang3.StringUtils.capitalize;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -229,7 +230,7 @@ public class Identificatie extends Idvaststelling {
 
   public String getOmschrijving() {
     if (isVastgesteld()) {
-      return trim(capitalize(String.format("Vastgesteld op %s %s ", getTijdstip(), getAanDeHandVan()).toLowerCase()));
+      return trim(capitalize(String.format("Vastgesteld op %s %s ", getTijdstip(), uncapitalize(getAanDeHandVan()))));
     }
     return "Niet vastgesteld";
   }
