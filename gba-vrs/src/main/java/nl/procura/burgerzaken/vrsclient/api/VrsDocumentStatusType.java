@@ -31,4 +31,8 @@ public enum VrsDocumentStatusType {
   public String toString() {
     return description + (isBlank(code) ? "" : " (" + code + ")");
   }
+
+  public boolean in(VrsDocumentStatusType... statusTypes) {
+    return Arrays.stream(statusTypes).anyMatch(a -> a == this);
+  }
 }

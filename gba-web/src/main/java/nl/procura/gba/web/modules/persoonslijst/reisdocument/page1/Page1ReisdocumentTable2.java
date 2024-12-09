@@ -41,6 +41,7 @@ public class Page1ReisdocumentTable2 extends GbaTable {
   public Page1ReisdocumentTable2(
       List<ReisdocumentInformatiePersoonsGegevensInstantieResponseReisdocumentInformatiePersoonsgegevens> reisdocumenten) {
     this.reisdocumenten = reisdocumenten;
+    setSelectable(true);
   }
 
   @Override

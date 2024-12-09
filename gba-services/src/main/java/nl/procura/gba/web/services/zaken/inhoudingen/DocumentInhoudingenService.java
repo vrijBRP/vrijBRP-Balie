@@ -29,6 +29,7 @@ import static nl.procura.burgerzaken.gba.core.enums.GBAElem.DATUM_UITGIFTE_NL_RE
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.NR_NL_REISDOC;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SIG_MET_BETREK_TOT_VERSTREK_NL_REISDOC;
 import static nl.procura.burgerzaken.gba.core.enums.GBAElem.SOORT_NL_REISDOC;
+import static nl.procura.burgerzaken.vrsclient.api.VrsDocumentStatusType.GELDIG;
 import static nl.procura.burgerzaken.vrsclient.api.VrsDocumentStatusType.ONGELDIG;
 import static nl.procura.commons.core.exceptions.ProExceptionSeverity.WARNING;
 import static nl.procura.commons.core.exceptions.ProExceptionType.SELECT;
@@ -252,7 +253,10 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
       // Basisregister
       types.addAll(vrsService.getReisdocumentenLijst(pl, null)
           .stream()
-          .filter(reisdoc -> VrsDocumentStatusType.getByCode(reisdoc.getStatusMeestRecent().getDocumentstatusCode()) == ONGELDIG)
+          .filter(reisdoc -> {
+            String statusCode = reisdoc.getStatusMeestRecent().getDocumentstatusCode();
+            return VrsDocumentStatusType.getByCode(statusCode).in(GELDIG, ONGELDIG);
+          })
           .map(reisdoc -> ReisdocumentType.get(reisdoc.getDocumentsoort().getCode()))
           .collect(Collectors.toList()));
 
@@ -268,13 +272,12 @@ public class DocumentInhoudingenService extends AbstractZaakContactService<Docum
       }
     }
 
-    for (ReisdocumentType existingDocument : types) {
-      if (ReisdocumentTypeExclusions.exclude(reisdocumentType, existingDocument)) {
-        return existingDocument;
+    for (ReisdocumentType doc : types) {
+      if (ReisdocumentTypeExclusions.exclude(reisdocumentType, doc)) {
+        return doc;
       }
-      if (pl.getNatio().isNederlander()
-          && existingDocument.isDocument(VREEMDELINGEN_PASPOORT, VLUCHTELINGEN_PASPOORT)) {
-        return existingDocument;
+      if (pl.getNatio().isNederlander() && doc.isDocument(VREEMDELINGEN_PASPOORT, VLUCHTELINGEN_PASPOORT)) {
+        return doc;
       }
     }
 
